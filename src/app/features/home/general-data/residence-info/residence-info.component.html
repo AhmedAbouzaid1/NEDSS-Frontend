@@ -1,0 +1,370 @@
+<app-loader *ngIf="loadingPanel"></app-loader>
+<!-- <div class="form-titles">
+   {{'NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.PLACEHOME' | translate }}
+</div> -->
+<div class="card animate__animated animate__zoomInDown shadow mb-4">
+  <div class="card-body bg-dark-mode">
+    <div class="row">
+      <div class="col-md-6 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.GOVERNMENT" | translate }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onGovernmentChanged()"
+              tabindex="-1"
+              [(ngModel)]="selectedGovernmentId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of governments"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedGovernmentId"
+              >
+                {{ item.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernmentId"
+              optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="governments"
+              [filter]="true" filterBy="arabicName">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onGovernmentChanged()"
+              tabindex="-1"
+              [(ngModel)]="selectedGovernmentId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of governments"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedGovernmentId"
+              >
+                {{ item.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernmentId"
+              optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
+              name="governments" [filter]="true" filterBy="englishName">
+            </p-dropdown>
+          </div>
+          <small *ngIf="!generalDataService.isHomeGovernmentValid" class="form-text text-danger mess-color">
+            {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.ADMINISTRATION" | translate
+            }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onHealthAdministrationChanged()"
+              tabindex="-1"
+              [(ngModel)]="selectedHealthAdministrationId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of healthAdministrations"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedHealthAdministrationId"
+              >
+                {{ item.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations"
+              [(ngModel)]="selectedHealthAdministrationId" optionLabel="arabicName" optionValue="id" autoWidth="false"
+              [style]="{ width: '100%' }" name="healthAdministrations" [filter]="true" filterBy="arabicName">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onHealthAdministrationChanged()"
+              tabindex="-1"
+              [(ngModel)]="selectedHealthAdministrationId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of healthAdministrations"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedHealthAdministrationId"
+              >
+                {{ item.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations"
+              [(ngModel)]="selectedHealthAdministrationId" optionLabel="englishName" optionValue="id" autoWidth="false"
+              [style]="{ width: '100%' }" name="healthAdministrations" [filter]="true" filterBy="englishName">
+            </p-dropdown>
+          </div>
+          <small *ngIf="!generalDataService.isHomeHealthAdministrationValid" class="form-text text-danger mess-color">
+            {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.STATEANDCITY" | translate
+            }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onCityChanged()"
+              tabindex="-1"
+              [(ngModel)]="selectedCityId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of cities"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedCityId"
+              >
+                {{ item.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCityId"
+              optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="cities"
+              [filter]="true" filterBy="arabicName">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onCityChanged()"
+              tabindex="-1"
+              [(ngModel)]="selectedCityId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of cities"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedCityId"
+              >
+                {{ item.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCityId"
+              optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="cities"
+              [filter]="true" filterBy="englishName">
+            </p-dropdown>
+          </div>
+          <small *ngIf="!generalDataService.isHomeCityValid" class="form-text text-danger mess-color">
+            {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.HEALTHOFFICE" | translate
+            }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onHealthOfficeChanged()"
+              tabindex="-1"
+              [(ngModel)]="selectedHealthOfficeId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of healthOffices"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedHealthOfficeId"
+              >
+                {{ item.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onHealthOfficeChanged()" [options]="healthOffices"
+              [(ngModel)]="selectedHealthOfficeId" optionLabel="arabicName" optionValue="id" autoWidth="false"
+              [style]="{ width: '100%' }" name="healthOffices" [filter]="true" filterBy="arabicName">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onHealthOfficeChanged()"
+              tabindex="-1"
+              [(ngModel)]="selectedHealthOfficeId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of healthOffices"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedHealthOfficeId"
+              >
+                {{ item.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onHealthOfficeChanged()" [options]="healthOffices"
+              [(ngModel)]="selectedHealthOfficeId" optionLabel="englishName" optionValue="id" autoWidth="false"
+              [style]="{ width: '100%' }" name="healthOffices" [filter]="true" filterBy="englishName">
+            </p-dropdown>
+          </div>
+          <small *ngIf="!generalDataService.isHomeHealthOfficeIdValid" class="form-text text-danger mess-color">
+            {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+          </small>
+        </div>
+      </div>
+      <div class="col-md-6 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.REGION" | translate }}
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onPrincipalityChanged()"
+              tabindex="-1"
+              [(ngModel)]="selectedPrincipalityId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of principalities"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedPrincipalityId"
+              >
+                {{ item.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onPrincipalityChanged()" [options]="principalities"
+              [(ngModel)]="selectedPrincipalityId" optionLabel="arabicName" optionValue="id" autoWidth="false"
+              [style]="{ width: '100%' }" name="principalities" [filter]="true" filterBy="arabicName">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onPrincipalityChanged()"
+              tabindex="-1"
+              [(ngModel)]="selectedPrincipalityId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of principalities"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedPrincipalityId"
+              >
+                {{ item.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onPrincipalityChanged()" [options]="principalities"
+              [(ngModel)]="selectedPrincipalityId" optionLabel="englishName" optionValue="id" autoWidth="false"
+              [style]="{ width: '100%' }" name="principalities" [filter]="true" filterBy="englishName">
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mt-3">
+        <div class="form-outline">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.DETAILADDRESS" | translate
+            }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <!-- <textarea
+            [(ngModel)]="patient.livingAddress"
+            (blur)="
+              generalDataService.isAdressValid =
+                generalDataService.validateAddress(patient.livingAddress, false)
+            "
+            class="form-control"
+          ></textarea> -->
+          <textarea rows="3" pInputTextarea [(ngModel)]="patient.livingAddress" class="w-100" (blur)="
+              generalDataService.isAdressValid =
+                generalDataService.validateAddress(patient.livingAddress, true)
+            "></textarea>
+        </div>
+        <small *ngIf="!generalDataService.isAdressValid" class="form-text text-danger mess-color">
+          {{ generalDataService.addressValidationMessage | translate }}
+        </small>
+      </div>
+      <div class="col-md-6 mt-3" *ngIf="patient.newHomeGovernment">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.NEW_GOVERNMENT" | translate
+            }}
+          </label>
+          <input type="text" name="newHomeGovernment" [(ngModel)]="patient.newHomeGovernment"
+            #newHomeGovernment="ngModel" pInputText class="w-100" disabled />
+        </div>
+      </div>
+      <div class="col-md-6 mt-3" *ngIf="patient.newHomeHealthAdministration">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.NEW_ADMINISTRATION"
+            | translate
+            }}
+          </label>
+          <input type="text" name="newHomeHealthAdministration" [(ngModel)]="patient.newHomeHealthAdministration"
+            #newHomeHealthAdministration="ngModel" pInputText class="w-100" disabled />
+        </div>
+      </div>
+      <div class="col-md-6 mt-3" *ngIf="patient.newHomeCity">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.NEW_STATEANDCITY"
+            | translate
+            }}
+          </label>
+          <input type="text" name="newHomeCity" [(ngModel)]="patient.newHomeCity" #newHomeCity="ngModel" pInputText
+            class="w-100" disabled />
+        </div>
+      </div>
+      <div class="col-md-6 mt-3" *ngIf="patient.newHomeHealthOffice">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.NEW_HEALTHOFFICE"
+            | translate
+            }}
+          </label>
+          <input type="text" name="newHomeHealthOffice" [(ngModel)]="patient.newHomeHealthOffice"
+            #newHomeHealthOffice="ngModel" pInputText class="w-100" disabled />
+        </div>
+      </div>
+      <div class="col-md-6 mt-3" *ngIf="patient.newLivingAddress">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.NEW_DETAILADDRESS"
+            | translate
+            }}
+          </label>
+          <textarea rows="3" pInputTextarea [(ngModel)]="patient.newLivingAddress" class="w-100" disabled></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

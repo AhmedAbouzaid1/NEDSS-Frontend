@@ -1,0 +1,426 @@
+<form [formGroup]="hivForm" (ngSubmit)="save()">
+
+  <!-- <div class="row">
+  <div class="col-lg-6">
+    <h2 class="titles">HIV</h2>
+  </div>
+
+</div> -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow mt-4 color">
+        <div class="card-body">
+          <div id="jump_to_this_location"></div>
+          <h5 style="text-align: center; border: 1px solid; padding: 1%">
+            {{"NEDSS.INVESTIGATIONS.PAGES.Aids"| translate}}
+          </h5>
+          <br />
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label style="font-size: 20px;" for="">
+                  {{"NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME"| translate}}: {{patientName}}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label for="" style="font-size: 15px;">
+                  {{"NEDSS.INVESTIGATIONS.percentage"| translate}} :
+                  <span class="mx-4" style="font-size: larger; color: red">
+                    {{ precentile.value }} %
+                  </span>
+                </label>
+                <input #precentile type="range" class="form-range bg" onkeypress="false"
+                  style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
+                  value="{{controlsCount}}" formControlName="completePercentage" />
+              </div>
+            </div>
+            <div class="col-lg-4">
+              {{"NEDSS.INVESTIGATIONS.Filled"| translate}}
+              {{allFilledControlsCount}}
+              {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+              {{"NEDSS.INVESTIGATIONS.From"| translate}}
+              {{allControllesCount}}
+              {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-6">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</div>
+            <div class="col-6 has-labels">
+              <label for=""><input formControlName="fever" type="radio" name="fever" id="" value="1" /> {{
+                "NEDSS.COMMON.YES" | translate }} </label>
+              <label for=""><input formControlName="fever" type="radio" name="fever" id="" value="2" /> {{
+                "NEDSS.COMMON.NO" | translate }} </label>
+              <label for=""><input formControlName="fever" type="radio" name="fever" id="" value="3" /> {{
+                "NEDSS.REPORTS.UnKnown" | translate }}
+              </label>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Duration_Fever_Days" | translate }}</label>
+                <input formControlName="feverDurationDay" type="number" name="" id="" class="form-control" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Max_Temp" | translate }}</label>
+                <input formControlName="maxTemperature" type="number" name="" id="" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="row color">
+                <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                  <div class="row">
+                    <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.Epidemiological_Investigation" |
+                      translate }} </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
+                        <input formControlName="name" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.Practical number" | translate }}</label>
+                        <input formControlName="laboratoryName" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.History of positive condition" | translate
+                          }}</label>
+                        <input formControlName="positiveCaseHistory" type="date" name="" id="dp1684613397926"
+                          class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">
+                          {{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Date of conducting the epidemiological investigation" |
+                          translate}} </label>
+                        <input formControlName="dateEpidemiologicalInvestigation" type="date" name=""
+                          id="dp1684613397927" class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy">
+
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.QUADNAME" | translate}}</label>
+                        <input (keypress)="generalDataService.onNameKeyPress($event)" formControlName="fourName"
+                          type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Age" | translate}}</label>
+                        <input formControlName="age" type="number" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Type" | translate}}</label>
+                        <select formControlName="gender" name="" id="" class="form-control">
+                          <option value="1">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Male" | translate}}</option>
+                          <option value="2">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Feminine" | translate}}انثى</option>
+                        </select>
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Occupation" | translate}}</label>
+                        <input formControlName="job" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.MaritalStatus" | translate}}</label>
+                        <select formControlName="maritalStatus" name="" id="" class="form-control">
+                          <option value="1">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Bachelor" | translate}}</option>
+                          <option value="2">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Married" | translate}}</option>
+                          <option value="3">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Divorced" | translate}}</option>
+                          <option value="4">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Widower" | translate}}</option>
+                          <option value="5">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Separated" | translate}}</option>
+                        </select>
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Nameofhusband/wife" | translate}}</label>
+                        <input (keypress)="generalDataService.onNameKeyPress($event)" formControlName="husbandName"
+                          type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Have you ever been tested for AIDS and the
+                          sample was confirmed positive?" | translate}}</label>
+                        <select formControlName="aidsTest" name="" id="" class="form-control">
+                          <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                        </select>
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.If yes, date" | translate}}</label>
+                        <input formControlName="dateIfYes" type="date" name="" id="dp1684613397928"
+                          class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.National ID card number" |
+                          translate}}</label>
+                        <input type="text" (keypress)="generalDataService.onIdentityCardKeyPress($event)" maxlength="14"
+                          formControlName="nationalIdNumber" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Landline phone number" | translate}}</label>
+                        <input (keypress)="generalDataService.onIdentityCardKeyPress($event)"
+                          formControlName="telephoneNumber" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Mobile phone number" | translate}}</label>
+                        <input (keypress)="generalDataService.onIdentityCardKeyPress($event)" maxlength="11"
+                          formControlName="mobileNumber" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.number of children" | translate}}</label>
+                        <input (keypress)="generalDataService.onIdentityCardKeyPress($event)"
+                          formControlName="kidsNumber" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Pregnancy for women" | translate}}</label>
+                        <select formControlName="pregnancy" name="" id="" class="form-control">
+                          <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                        </select>
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-12 titles fs-6 fw-bold mb-4 color-d-2">
+                      {{"NEDSS.HOME.GENERAL_DATA_COMPLETION.the address" | translate}}
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.number of children" | translate}}</label>
+                        <input formControlName="homeNumber" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for=""> {{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Street name" | translate}}</label>
+                        <input formControlName="streetName" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for=""> {{"NEDSS.HOME.GENERAL_DATA_COMPLETION.City/Village" | translate}}</label>
+                        <select formControlName="city" name="" id="" class="form-control">
+                          <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                        </select>
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Center/neighborhood" | translate}}</label>
+                        <select formControlName="district" name="" id="" class="form-control">
+                          <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                        </select>
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Other data/distinctive mark" |
+                          translate}}</label>
+                        <input formControlName="otherData" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-12 -->
+                    <div class="col-lg-12 titles fs-6 fw-bold mb-4 color-d-2">
+                      {{"NEDSS.HOME.GENERAL_DATA_COMPLETION.The reason for performing the medical examination" |
+                      translate}}
+
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="suspectedSymptoms" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Suspected symptoms"
+                          | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="injectionDrugAddict" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Injecting drug
+                          addict" | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="bloodDonation" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Blood Donation" |
+                          translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="tuberculosisPatient" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Tuberculosis
+                          patient" | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="affectedSpousePartner" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.An affected
+                          spouse/partner" | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="dialysis" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.dialysis" |
+                          translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="venerealDisease" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Venereal disease" |
+                          translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="injuredMother" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.An injured mother"
+                          | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="travelAbroad" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Travel abroad" |
+                          translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="FollowUpPregnancy" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Follow up
+                          pregnancy" | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="voluntaryExamination" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Voluntary
+                          examination" | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Other" | translate}}</label>
+                        <input formControlName="otherReasons" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-12 titles fs-6 fw-bold mb-4 color-d-2">
+                      {{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Mode of exposure to infection" | translate}}
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="sexualRelationshipWithAnotherGender" class="form-check-input"
+                          type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Sexual relationship
+                          with another gender" | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="commercialSex" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Commercial sex" |
+                          translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="motherOfInjuredChild" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Mother of an
+                          injured child" | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="sexualRelationshipWithSpouse" class="form-check-input" type="checkbox"
+                          id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Sexual relationship
+                          with a spouse/partner" | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="drugInjection" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Drug injection" |
+                          translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="undefined" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.undefined" |
+                          translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="sameSexSexualRelationship" class="form-check-input" type="checkbox"
+                          id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Sexual relationship
+                          with the same sex" | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-check mt-4">
+                        <input formControlName="injuredMotherExposure" class="form-check-input" type="checkbox" id="">
+                        <label class="form-check-label" for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.An injured mother"
+                          | translate}}</label>
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.Mother's name" | translate}}</label>
+                        <input formControlName="motherName" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-4 -->
+                  </div><!-- / .row -->
+                </div><!-- / .col-12 -->
+              </div><!-- / .row -->
+            </div>
+
+          </div>
+        </div>
+        <div class="card-footer text-start pt-4">
+          <button type="submit" class="btn bg rounded-2 text-light mb-5"> {{
+            "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}</button>
+        </div>
+      </div>
+    </div>

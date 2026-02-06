@@ -1,0 +1,367 @@
+<div class="col-11 col-lg-12 color-d-2">
+  <form (ngSubmit)="save()" #principalityForm="ngForm" id="princip" novalidate>
+    <div class="form-titles">
+      {{ "NEDSS.HOME.CONTROL_PANEL.CODES.PRINCIPALITY" | translate }}
+    </div>
+    <div class="card shadow">
+      <div class="card-body bg-dark-mode mb-2">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label
+                >{{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_CODE" | translate }}
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                maxlength="100"
+                required
+                code
+                class="form-control"
+                name="code"
+                [(ngModel)]="principality.code"
+                #code="ngModel"
+              />
+              <div
+                *ngIf="
+                  principalityForm.controls.code?.touched &&
+                  principalityForm.controls.code?.errors?.required
+                "
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </div>
+              <!--   <div
+                *ngIf="healthAdministrationForm.controls.code?.touched && healthAdministrationForm.controls.code?.errors?.code"
+                class="form-text text-danger mess-color">
+                Invalid code format
+              </div> -->
+              <div
+                *ngIf="codeValidationMsg !== ''"
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.CODEVALIDATEMSG" | translate }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label
+                >{{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ARABIC_NAME"
+                    | translate
+                }}
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                maxlength="100"
+                required
+                arabicName
+                class="form-control"
+                name="arabicName"
+                [(ngModel)]="principality.arabicName"
+                #arabicName="ngModel"
+              />
+              <div
+                *ngIf="
+                  principalityForm.controls.arabicName?.touched &&
+                  principalityForm.controls.arabicName?.errors?.required
+                "
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </div>
+              <!--  <div
+                *ngIf="healthAdministrationForm.controls.arabicName?.touched && healthAdministrationForm.controls.arabicName?.errors?.arabicName"
+                class="form-text text-danger mess-color">
+                Invalid code format
+              </div> -->
+              <div
+                *ngIf="ArabicValidationMsg !== ''"
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.ARABICNAMEVALIDATEMSG" | translate }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label
+                >{{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ENGLISH_NAME"
+                    | translate
+                }}
+                <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                maxlength="100"
+                required
+                englishName
+                class="form-control"
+                name="englishName"
+                [(ngModel)]="principality.englishName"
+                #englishName="ngModel"
+              />
+              <div
+                *ngIf="
+                  principalityForm.controls.englishName?.touched &&
+                  principalityForm.controls.englishName?.errors?.required
+                "
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </div>
+              <!-- <div
+                *ngIf="healthAdministrationForm.controls.englishName?.touched && healthAdministrationForm.controls.englishName?.errors?.englishName"
+                class="form-text text-danger mess-color">
+                Invalid code format
+              </div> -->
+              <div
+                *ngIf="EnglishNameValidationMsg !== ''"
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.ENGLISHNAMEVALIDATEMSG" | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">{{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_CITY" | translate
+              }}</label>
+              <select
+                [(ngModel)]="principality.cityID"
+                class="form-control"
+                name="cityID"
+              >
+                <option
+                  *ngFor="let healthOffice of healthOffices"
+                  [value]="healthOffice.id"
+                >
+                  {{ healthOffice.arabicName }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-start">
+        <button
+          type="submit"
+          class="btn btn-lg bg text-light"
+          [disabled]="principalityForm.form.invalid"
+        >
+          <span class="bi bi-check2-circle"></span>
+          {{ "NEDSS.COMMON.SAVE" | translate }}
+        </button>
+        <button
+          type="button"
+          (click)="search()"
+          class="btn btn-lg bg text-light float-end"
+        >
+          <span class="bi bi-check2-circle"></span>
+          {{ "NEDSS.COMMON.SEARCH" | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="table-reponsive mt-4 shadow border rounded" *ngIf="!noData">
+    <div class="row">
+      <div class="col-lg-7 fwb p-4 pb-0">
+        {{ "NEDSS.HOME.CONTROL_PANEL.CODES.PRINCIPALITY" | translate }}
+        {{ pages }}
+      </div>
+      <div class="col-lg-5 p-4 pb-0">
+        <div class="row">
+          <div class="col-8">
+            <!-- <input type='search' name='' id='' class='form-control' placeholder='بحث ...'> -->
+            <input
+              type="search"
+              class="form-control"
+              [(ngModel)]="principalityFilter.searchText"
+              placeholder="{{ 'NEDSS.COMMON.SEARCH' | translate }}"
+              #searchInput
+            />
+            <!-- <i
+              class="text-dark fa fa-times"
+              style="margin-left: -24px; margin-right: -24px"
+              (click)="clearSearch()"
+            ></i> -->
+          </div>
+          <!-- <div class="col-4 text-start">
+            <a routerLink="#"><span class="bi bi-filetype-pdf"></span></a>
+            <a routerLink="#"><span class="bi bi-printer-fill"></span></a>
+            <a routerLink="#"><span class="bi bi-filetype-csv"></span></a>
+            <a routerLink="#"><span class="bi bi-file-earmark-excel-fill"></span></a>
+          </div> -->
+        </div>
+      </div>
+      <div class="table-responsive table-none-scroll">
+        <p-table
+          class="table"
+          [value]="principalitys"
+          (sortFunction)="sort($event)"
+          [customSort]="true"
+          [sortField]="'arabicName'"
+          [sortOrder]="1"
+          [paginator]="false"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="code">
+                <span>{{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_CODE" | translate
+                }}</span>
+                <p-sortIcon field="code"></p-sortIcon>
+              </th>
+              <th pSortableColumn="arabicName">
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ARABIC_NAME"
+                    | translate
+                }}
+                <p-sortIcon field="arabicName"></p-sortIcon>
+              </th>
+
+              <th pSortableColumn="englishName">
+                <span>{{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ENGLISH_NAME"
+                    | translate
+                }}</span>
+                <p-sortIcon field="englishName"></p-sortIcon>
+              </th>
+              <th>
+                <span>{{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
+                    | translate
+                }}</span>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>
+                <span
+                  [innerHTML]="
+                    item.code
+                      | highlighter : principalityFilter.searchText : 'partial'
+                  "
+                ></span>
+              </td>
+
+              <td>
+                <span
+                  [innerHTML]="
+                    item.arabicName
+                      | highlighter : principalityFilter.searchText : 'partial'
+                  "
+                ></span>
+              </td>
+              <td>
+                <span
+                  [innerHTML]="
+                    item.englishName
+                      | highlighter : principalityFilter.searchText : 'partial'
+                  "
+                ></span>
+              </td>
+              <td>
+                <a
+                  (click)="getById(item.id)"
+                  class="text-primary pi pi-pencil"
+                ></a>
+                &nbsp;&nbsp;
+                <a
+                  data-bs-target="#exampleModal2"
+                  data-bs-toggle="modal"
+                  (click)="nameToDelete(item)"
+                  class="text-danger mess-color bi bi-trash-fill"
+                ></a>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div class="col-lg-12 p-0" style="margin-bottom: 4px">
+          <p-paginator
+            *ngIf="!noData"
+            [rows]="principalityFilter.pageSize"
+            [totalRecords]="pages"
+            (onPageChange)="paginate($event)"
+            [first]="first"
+            [currentPageReportTemplate]="
+              'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+            "
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[
+              10,
+              20,
+              30,
+              40,
+              50,
+              70,
+              100,
+              200,
+              500,
+              1000,
+              2000,
+              pages >= 5000 ? pages : 5000
+            ]"
+          ></p-paginator>
+        </div>
+        <div class="row" [hidden]="!noData">
+          <div class="no-data content-center">
+            <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+            <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- confirm - modal -->
+
+<div
+  class="modal fade"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.arabicName }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="delete(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

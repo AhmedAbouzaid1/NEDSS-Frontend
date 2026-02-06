@@ -1,0 +1,657 @@
+<app-loader *ngIf="loadingPanel"></app-loader>
+<!-- <div class="form-titles">
+  {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DIAGNOSIS" | translate }}
+</div> -->
+<div class="card shadow mb-4">
+  <div class="card-body bg-dark-mode">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row mt-3">
+          <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->
+          <div *ngIf="patient.incidentDepartmentId !== DepartmentEnum.External" class="col-lg-4 mt-2">
+            <div class="form-group">
+              <label for="">
+                {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.PATIENT_HOSPITAL_NO"
+                | translate
+                }}
+              </label>
+              <input type="text" [(ngModel)]="patient.patientHospitalNo" pInputText class="w-100" (blur)="
+                  generalDataService.isPatientHospitalNoValid =
+                    generalDataService.validatePatientHospitalNo(
+                      patient.patientHospitalNo
+                    )
+                " />
+              <small *ngIf="!generalDataService.isPatientHospitalNoValid" class="form-text text-danger mess-color">
+                {{ "NEDSS.COMMON.PATIENT_HOSPITAL_NO_VALIDATION" | translate }}
+              </small>
+            </div>
+          </div>
+          <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->
+          <div *ngIf="patient.incidentDepartmentId !== DepartmentEnum.External" class="col-lg-4 mt-2">
+            <div class="form-group">
+              <label for="">
+                {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DOCTOR_NAME"
+                | translate
+                }}
+              </label>
+              <input type="text" [(ngModel)]="patient.doctorName" pInputText class="w-100" (blur)="
+                  generalDataService.isDoctorNameValid =
+                    generalDataService.validateDoctorName(
+                      patient.doctorName,
+                      false
+                    )
+                " (keypress)="generalDataService.onNameKeyPress($event)" />
+
+              <small *ngIf="!generalDataService.isDoctorNameValid" class="form-text text-danger mess-color">
+                {{
+                "NEDSS.COMMON.INVALID_NAME_CHARACTERS"
+                | translate : { maxLength: 30 }
+                }}
+              </small>
+            </div>
+          </div>
+          <div class="col-lg-4 mt-2">
+            <div class="form-group">
+              <label for="">
+                {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES"
+                | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <ng-multiselect-dropdown [settings]="diagnosticsMultipleDropdownSettings" [data]="diseases"
+                [(ngModel)]="selectedDiseases" (onSelect)="onDiseasesChanged()" (onDeSelect)="onDiseasesChanged()"
+                (onSelectAll)="onDiseasesSelectAll($event)" (onDeSelectAll)="onDiseasesDSelectAll()">
+              </ng-multiselect-dropdown>
+              <small *ngIf="!generalDataService.isPatientDiseasesValid" class="form-text text-danger mess-color">
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small>
+            </div>
+          </div>
+          <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->
+          <div *ngIf="patient.incidentDepartmentId !== DepartmentEnum.External" class="col-lg-4 mt-2">
+            <div class="form-group">
+              <label for="">
+                {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE"
+                | translate
+                }}
+                <span *ngIf="patient.incidentDepartmentId == 1" class="text-danger mess-color">*</span>
+              </label>
+              <mat-form-field appearance="fill">
+                <mat-label>
+                  {{
+                  "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+                  }}
+                </mat-label>
+                <input [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker"
+                  [(ngModel)]="patient.infectionDate" (blur)="
+                    generalDataService.isInfectionDateValid =
+                      generalDataService.validateField(patient.infectionDate) ||
+                      patient.incidentDepartmentId != 1
+                  " />
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <small *ngIf="!generalDataService.isInfectionDateValid" class="form-text text-danger mess-color">
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small>
+            </div>
+          </div>
+          <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->
+          <div *ngIf="patient.incidentDepartmentId !== DepartmentEnum.External" class="col-lg-4 mt-2">
+            <div class="form-group">
+              <label for="">
+                {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALENTRYDATE"
+                | translate
+                }}
+                <span *ngIf="patient.incidentDepartmentId == 1" class="text-danger mess-color">*</span>
+              </label>
+
+              <mat-form-field appearance="fill">
+                <mat-label>
+                  {{
+                  "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+                  }}</mat-label>
+                <input [min]="patient.infectionDate" [max]="maxDate" matInput [matDatepicker]="picker"
+                  [(ngModel)]="patient.hospitalEntryDate" (blur)="
+                    generalDataService.isHospitalEntryDateValid =
+                      generalDataService.validateField(
+                        patient.hospitalEntryDate
+                      ) || patient.incidentDepartmentId != 1
+                  " />
+
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <small *ngIf="!generalDataService.isHospitalEntryDateValid" class="form-text text-danger mess-color">
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small>
+            </div>
+          </div>
+          <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->
+          <div *ngIf="patient.incidentDepartmentId !== DepartmentEnum.External" class="col-lg-4 mt-2">
+            <div class="form-group">
+              <label for="">
+                {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITAL_LEAVE_DATE"
+                | translate
+                }}
+              </label>
+
+              <mat-form-field appearance="fill">
+                <mat-label>
+                  {{
+                  "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+                  }}</mat-label>
+                <input [min]="patient.hospitalEntryDate" [max]="maxDate" matInput [matDatepicker]="picker"
+                  [(ngModel)]="patient.hospitalLeaveDate" />
+
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->
+          <div *ngIf="patient.incidentDepartmentId !== DepartmentEnum.External" class="col-lg-4 mt-2">
+            <div class="form-group">
+              <label for="">
+                {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULT"
+                | translate
+                }}
+              </label>
+              <div *ngIf="currentLang == 'ar'">
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="onFinalResultChanged()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedFinalResultId"
+                  aria-hidden="true"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of finalResuls"
+                    [ngValue]="item.id"
+                    [selected]="item.id === selectedFinalResultId"
+                  >
+                    {{ item.arabicName }}
+                  </option>
+                </select> -->
+                <p-dropdown (onChange)="onFinalResultChanged()" [options]="finalResuls"
+                  [(ngModel)]="selectedFinalResultId" optionLabel="arabicName" optionValue="id" autoWidth="false"
+                  [style]="{ width: '100%' }" name="finalResuls" [required]="true" [filter]="true"
+                  filterBy="arabicName">
+                </p-dropdown>
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="onFinalResultChanged()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedFinalResultId"
+                  aria-hidden="true"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of finalResuls"
+                    [ngValue]="item.id"
+                    [selected]="item.id === selectedFinalResultId"
+                  >
+                    {{ item.englishName }}
+                  </option>
+                </select> -->
+                <p-dropdown (onChange)="onFinalResultChanged()" [options]="finalResuls"
+                  [(ngModel)]="selectedFinalResultId" optionLabel="englishName" optionValue="id" autoWidth="false"
+                  [style]="{ width: '100%' }" name="finalResuls" [required]="true" [filter]="true"
+                  filterBy="englishName">
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+          <!-- <ng-container *ngIf="!patient.hiddenInsideDepartment"> -->
+          <ng-container *ngIf="patient.incidentDepartmentId !== DepartmentEnum.External">
+            <div class="col-lg-4 mt-2" *ngIf="isPatientTransfered">
+              <div class="form-group">
+                <label for="">
+                  {{
+                  "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.GOVERNMENT_TRANSLATE"
+                  | translate
+                  }}
+                </label>
+                <div *ngIf="currentLang == 'ar'">
+                  <!-- <select
+                    class="form-control select2 select2-hidden-accessible"
+                    (change)="onGovernmentChanged()"
+                    tabindex="-1"
+                    [(ngModel)]="selectedTransferGovernmentId"
+                    aria-hidden="true"
+                    [disabled]="this.levelId != 1"
+                  >
+                    <option
+                      value="item.id"
+                      *ngFor="let item of governments"
+                      [ngValue]="item.id"
+                      [selected]="item.id === selectedTransferGovernmentId"
+                    >
+                      {{ item.arabicName }}
+                    </option>
+                  </select> -->
+                  <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments"
+                    [(ngModel)]="selectedTransferGovernmentId" [disabled]="this.levelId != 1" optionLabel="arabicName"
+                    optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="governments" [required]="true"
+                    [filter]="true" filterBy="arabicName">
+                  </p-dropdown>
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                  <!-- <select
+                    class="form-control select2 select2-hidden-accessible"
+                    (change)="onGovernmentChanged()"
+                    tabindex="-1"
+                    [(ngModel)]="selectedTransferGovernmentId"
+                    aria-hidden="true"
+                    [disabled]="this.levelId != 1"
+                  >
+                    <option
+                      value="item.id"
+                      *ngFor="let item of governments"
+                      [ngValue]="item.id"
+                      [selected]="item.id === selectedTransferGovernmentId"
+                    >
+                      {{ item.englishName }}
+                    </option>
+                  </select> -->
+                  <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments"
+                    [(ngModel)]="selectedTransferGovernmentId" [disabled]="this.levelId != 1" optionLabel="englishName"
+                    optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="governments" [required]="true"
+                    [filter]="true" filterBy="englishName">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="patient.incidentDepartmentId !== DepartmentEnum.External">
+            <div class="col-lg-4 mt-2" *ngIf="isPatientTransfered">
+              <div class="form-group">
+                <label for="">
+                  {{
+                  "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HEALTH_TRANSLATE"
+                  | translate
+                  }}
+                </label>
+                <div *ngIf="currentLang == 'ar'">
+                  <p-dropdown (onChange)="onHealthAdminChange()" [options]="HealthAdmins"
+                    [(ngModel)]="selectedTransferHealthAdminId" [disabled]="this.levelId != 1 && this.levelId != 2" optionLabel="arabicName"
+                    optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="healthAdmins" [required]="true"
+                    [filter]="true" filterBy="arabicName">
+                  </p-dropdown>
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                  <p-dropdown (onChange)="onHealthAdminChange()" [options]="HealthAdmins"
+                    [(ngModel)]="selectedTransferHealthAdminId" [disabled]="this.levelId != 1 && this.levelId != 2" optionLabel="englishName"
+                    optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="healthAdmins" [required]="true"
+                    [filter]="true" filterBy="englishName">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <!-- <ng-container *ngIf="!patient.hiddenInsideDepartment"> -->
+          <ng-container *ngIf="patient.incidentDepartmentId !== DepartmentEnum.External">
+            <div class="col-lg-4 mt-2" *ngIf="isPatientTransfered">
+              <div class="form-group">
+                <label for="">
+                  {{
+                  "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INCIDENT_SOURCE"
+                  | translate
+                  }}
+                </label>
+                <div *ngIf="currentLang == 'ar'">
+                  <!-- <select
+                    class="form-control select2 select2-hidden-accessible"
+                    (change)="onIncidentSourceChanged()"
+                    tabindex="-1"
+                    [(ngModel)]="selectedTransferIncidentSourceId"
+                    aria-hidden="true"
+                    [disabled]="
+                      this.levelId != 1 &&
+                      this.levelId != 2 &&
+                      this.levelId != 3
+                    "
+                  >
+                    <option
+                      value="item.id"
+                      *ngFor="let item of incidentSources"
+                      [ngValue]="item.id"
+                      [selected]="item.id === selectedTransferIncidentSourceId"
+                    >
+                      {{ item.arabicName }}
+                    </option>
+                  </select> -->
+                  <p-dropdown (onChange)="onIncidentSourceChanged()" [options]="incidentSources"
+                    [(ngModel)]="selectedTransferIncidentSourceId" optionLabel="arabicName" optionValue="id"
+                    autoWidth="false" [style]="{ width: '100%' }" name="incidentSources" [required]="true"
+                    [filter]="true" filterBy="arabicName" [disabled]="
+                      this.levelId != 1 &&
+                      this.levelId != 2 &&
+                      this.levelId != 3
+                    ">
+                  </p-dropdown>
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                  <!-- <select
+                    class="form-control select2 select2-hidden-accessible"
+                    (change)="onIncidentSourceChanged()"
+                    tabindex="-1"
+                    [(ngModel)]="selectedTransferIncidentSourceId"
+                    aria-hidden="true"
+                    [disabled]="
+                      this.levelId != 1 &&
+                      this.levelId != 2 &&
+                      this.levelId != 3
+                    "
+                  >
+                    <option
+                      value="item.id"
+                      *ngFor="let item of incidentSources"
+                      [ngValue]="item.id"
+                      [selected]="item.id === selectedTransferIncidentSourceId"
+                    >
+                      {{ item.englishName }}
+                    </option>
+                  </select> -->
+                  <p-dropdown (onChange)="onIncidentSourceChanged()" [options]="incidentSources"
+                    [(ngModel)]="selectedTransferIncidentSourceId" optionLabel="englishName" optionValue="id"
+                    autoWidth="false" [style]="{ width: '100%' }" name="incidentSources" [required]="true"
+                    [filter]="true" filterBy="englishName" [disabled]="
+                      this.levelId != 1 &&
+                      this.levelId != 2 &&
+                      this.levelId != 3
+                    ">
+                  </p-dropdown>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <div class="col-lg-12 mt-3">
+            <label class="form-group fzs">
+              {{
+              "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.PLACE_LAB"
+              | translate
+              }}
+            </label>
+            <div class="text-muted mt-2">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="patient.isCentralLabLab" />
+              {{
+              "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.CENTRALLAB"
+              | translate
+              }}
+            </div>
+            <div class="text-muted mt-2">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="patient.isHospitalLab" />
+
+              {{
+              "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALLAB"
+              | translate
+              }}
+            </div>
+            <div class="text-muted mt-2">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="patient.isGovernmentLab" />
+              {{
+              "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.LAB_GOVERNMENT"
+              | translate
+              }}
+            </div>
+            <!-- <div class="text-muted mt-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                (change)="onRegionalLabSelected()"
+                [(ngModel)]="patient.isRegionalLab"
+              />
+
+              {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.REGIONALLAB"
+                  | translate
+              }}
+
+              <div class="" *ngIf="isRegionalLabSelected">
+                <div *ngIf="currentLang == 'en'">
+                  <p-dropdown
+                    (onChange)="onRegionalLabChanged()"
+                    [options]="regionalLabs"
+                    [(ngModel)]="selectedRegionalLabId"
+                    optionLabel="englishName"
+                    optionValue="id"
+                    autoWidth="false"
+                    [style]="{ width: '100%' }"
+                    name="regionalLabs"
+                    [required]="true"
+                    [filter]="true"
+                    filterBy="englishName"
+                  >
+                  </p-dropdown>
+                </div>
+                <div *ngIf="currentLang == 'ar'">
+                  <p-dropdown
+                    (onChange)="onRegionalLabChanged()"
+                    [options]="regionalLabs"
+                    [(ngModel)]="selectedRegionalLabId"
+                    optionLabel="arabicName"
+                    optionValue="id"
+                    autoWidth="false"
+                    [style]="{ width: '100%' }"
+                    name="regionalLabs"
+                    [required]="true"
+                    [filter]="true"
+                    filterBy="arabicName"
+                  >
+                  </p-dropdown>
+                </div>
+              </div>
+            </div> -->
+            <div class="text-muted mt-2">
+              <input class="form-check-input" type="checkbox" (change)="onSpecialLabSelected()"
+                [(ngModel)]="patient.isSpecialLabLab" />
+              {{
+              "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.SPECIALLAB"
+              | translate
+              }}
+              <div class="row mt-3">
+                <div class="col-lg-4 mt-2" *ngIf="patient.isSpecialLabLab">
+                  <label for="">
+                    {{
+                    "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_GOVERNMENT"
+                    | translate
+                    }}
+                  </label>
+                  <div *ngIf="currentLang == 'ar'">
+                    <!-- <select
+                      class="form-control select2 select2-hidden-accessible"
+                      (change)="getSpecialHealthAdmins()"
+                      tabindex="-1"
+                      [(ngModel)]="selectedSpecialGovernmentId"
+                      aria-hidden="true"
+                    >
+                      <option
+                        value="item.id"
+                        *ngFor="let item of specialGovernment"
+                        [ngValue]="item.id"
+                        [selected]="item.id === selectedSpecialGovernmentId"
+                      >
+                        {{ item.arabicName }}
+                      </option>
+                    </select> -->
+                    <p-dropdown (onChange)="getSpecialHealthAdmins()" [options]="specialGovernment"
+                      [(ngModel)]="selectedSpecialGovernmentId" optionLabel="arabicName" optionValue="id"
+                      autoWidth="false" [style]="{ width: '100%' }" name="specialGovernment" [required]="true"
+                      [filter]="true" filterBy="arabicName">
+                    </p-dropdown>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 mt-2" *ngIf="patient.isSpecialLabLab">
+                  <label for="">
+                    {{
+                    "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_Department"
+                    | translate
+                    }}
+                  </label>
+                  <div *ngIf="currentLang == 'ar'">
+                    <!-- <select
+                      class="form-control select2 select2-hidden-accessible"
+                      (change)="getSpecialLabs()"
+                      tabindex="-1"
+                      [(ngModel)]="selectedSpecialHealthAdminId"
+                      aria-hidden="true"
+                    >
+                      <option
+                        value="item.id"
+                        *ngFor="let item of specialHealthAdmin"
+                        [ngValue]="item.id"
+                        [selected]="item.id === selectedSpecialHealthAdminId"
+                      >
+                        {{ item.arabicName }}
+                      </option>
+                    </select> -->
+                    <p-dropdown (onChange)="getSpecialLabs()" [options]="specialHealthAdmin"
+                      [(ngModel)]="selectedSpecialHealthAdminId" optionLabel="arabicName" optionValue="id"
+                      autoWidth="false" [style]="{ width: '100%' }" name="specialHealthAdmin" [required]="true"
+                      [filter]="true" filterBy="arabicName">
+                    </p-dropdown>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <!-- <select
+                      class="form-control select2 select2-hidden-accessible"
+                      (change)="getSpecialLabs()"
+                      tabindex="-1"
+                      [(ngModel)]="selectedSpecialHealthAdminId"
+                      aria-hidden="true"
+                    >
+                      <option
+                        value="item.id"
+                        *ngFor="let item of specialHealthAdmin"
+                        [ngValue]="item.id"
+                        [selected]="item.id === selectedSpecialHealthAdminId"
+                      >
+                        {{ item.englishName }}
+                      </option>
+                    </select> -->
+                    <p-dropdown (onChange)="getSpecialLabs()" [options]="specialHealthAdmin"
+                      [(ngModel)]="selectedSpecialHealthAdminId" optionLabel="englishName" optionValue="id"
+                      autoWidth="false" [style]="{ width: '100%' }" name="specialHealthAdmin" [required]="true"
+                      [filter]="true" filterBy="englishName">
+                    </p-dropdown>
+                  </div>
+                </div>
+
+                <div class="col-lg-4 mt-2" *ngIf="patient.isSpecialLabLab">
+                  <label for="">
+                    {{
+                    "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DELEGATED_TO"
+                    | translate
+                    }}
+                  </label>
+                  <div *ngIf="currentLang == 'ar'">
+                    <!-- <select
+                      class="form-control select2 select2-hidden-accessible"
+                      (change)="onSpecialLabChanged()"
+                      tabindex="-1"
+                      [(ngModel)]="selectedSpecialLabId"
+                      aria-hidden="true"
+                    >
+                      <option
+                        value="item.id"
+                        *ngFor="let item of specialLabs"
+                        [ngValue]="item.id"
+                        [selected]="item.id === selectedSpecialLabId"
+                      >
+                        {{ item.arabicName }}
+                      </option>
+                    </select> -->
+                    <p-dropdown (onChange)="onSpecialLabChanged()" [options]="specialLabs"
+                      [(ngModel)]="selectedSpecialLabId" optionLabel="arabicName" optionValue="id" autoWidth="false"
+                      [style]="{ width: '100%' }" name="specialLabs" [required]="true" [filter]="true"
+                      filterBy="arabicName">
+                    </p-dropdown>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <!-- <select
+                      class="form-control select2 select2-hidden-accessible"
+                      (change)="onSpecialLabChanged()"
+                      tabindex="-1"
+                      [(ngModel)]="selectedSpecialLabId"
+                      aria-hidden="true"
+                    >
+                      <option
+                        value="item.id"
+                        *ngFor="let item of specialLabs"
+                        [ngValue]="item.id"
+                        [selected]="item.id === selectedSpecialLabId"
+                      >
+                        {{ item.englishName }}
+                      </option>
+                    </select> -->
+                    <p-dropdown (onChange)="onSpecialLabChanged()" [options]="specialLabs"
+                      [(ngModel)]="selectedSpecialLabId" optionLabel="englishName" optionValue="id" autoWidth="false"
+                      [style]="{ width: '100%' }" name="specialLabs" [required]="true" [filter]="true"
+                      filterBy="englishName">
+                    </p-dropdown>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3" *ngIf="patient.finalDiagonisticsData">
+            <div class="col-lg-4 mt-2">
+              <label for="">
+                {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULTCATEGORY"
+                | translate
+                }}
+              </label>
+            </div>
+            <div class="col-lg-8 mt-2">
+              <label for="">
+                {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.FINALDIGONISTICS"
+                | translate
+                }}
+              </label>
+            </div>
+          </div>
+          <div class="row mt-3" *ngFor="let finalDiagonistic of patient.finalDiagonisticsData">
+            <div class="col-lg-4 mt-2" *ngIf="finalDiagonistic.caseResultCategory != ''">
+              <div class="form-group">
+                <!-- <label for="">
+                  {{
+                    "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULTCATEGORY"
+                      | translate
+                  }}
+                </label> -->
+                <input class="w-100" type="text" name="caseResultCategory" disabled
+                  [(ngModel)]="finalDiagonistic.caseResultCategory" #caseResultCategory="ngModel" pInputText />
+              </div>
+            </div>
+            <div class="col-lg-8 mt-2" *ngIf="finalDiagonistic.caseResultCategory != ''">
+              <div class="form-group">
+                <!-- <label for="">
+                  {{
+                    "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.FINALDIGONISTICS"
+                      | translate
+                  }}
+                </label> -->
+                <input class="w-100" type="text" name="finalResult" disabled [(ngModel)]="finalDiagonistic.finalResult"
+                  #finalResult="ngModel" pInputText />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

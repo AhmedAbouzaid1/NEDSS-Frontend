@@ -1,0 +1,241 @@
+<!-- [options]="cities" [(ngModel)]="selectedCities" -->
+<div [ngClass]="currentLang === 'ar' ? 'ar' : 'en'">
+<h5> {{ 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ADD_MEMBERS' | translate }}</h5>
+<div class="row justify-content-between">
+    <div class="col-md-5">
+        <form>
+            <div class="row ">
+                <div class="organization mt-2">
+                    <label class="col-md-2">{{'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ORGANIZATIONS' | translate }}</label>
+                    <div *ngIf="currentLang == 'ar'">
+                        <p-dropdown 
+                            [options]="organizations" 
+                            optionLabel="arabicName"
+                            (onChange)="onOrganizationChange($event)"
+                            [style]="{ width:'100%' }">
+                        </p-dropdown>
+                    </div>
+                    <div *ngIf="currentLang == 'en'">
+                        <p-dropdown 
+                            [options]="organizations" 
+                            optionLabel="englishName"
+                            (onChange)="onOrganizationChange($event)"
+                            [style]="{ width:'100%' }">
+                        </p-dropdown>
+                    </div>
+                </div>
+        
+        
+                <div class="government mt-2" *ngIf="organizationParts?.showGovernments">
+                    <label>
+                        {{ 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.GOVERNMENTS' | translate }}
+                    </label>
+                    <div *ngIf="currentLang == 'ar'">
+                            <p-multiSelect 
+                            [style]="{ width:'100%' }"
+                            [options]="governments" 
+                            optionLabel="arabicName"
+                            (onChange)="onGovernmentSelectionChange($event)">
+                            </p-multiSelect>
+                    </div>
+                    <div *ngIf="currentLang == 'en'">
+                            <p-multiSelect 
+                            [style]="{ width:'100%' }"
+                            [options]="governments" 
+                            optionLabel="englishName"
+                            (onChange)="onGovernmentSelectionChange($event)">
+                            </p-multiSelect>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="administration mt-2" *ngIf="organizationParts?.showHealthAdministrations">
+                <label>
+                    {{ 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ADMINISTRATIONS' | translate }}
+                </label>
+                <div *ngIf="currentLang == 'ar'">
+                        <p-multiSelect 
+                        [style]="{ width:'100%' }"
+                        [options]="healthAdmins" 
+                        optionLabel="arabicName"
+                        (onChange)="onHealthAdminSelectionChange($event)">
+                        </p-multiSelect>
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                    <p-multiSelect 
+                    [style]="{ width:'100%' }"
+                    [options]="healthAdmins" 
+                    optionLabel="englishName"
+                    (onChange)="onHealthAdminSelectionChange($event)">
+                    </p-multiSelect>
+                </div>
+            </div>
+        
+            <div class="branch mt-2" *ngIf="organizationParts?.showBranches">
+                <label>
+                    {{ 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.BRANCHES' | translate }}
+                </label>
+                <div *ngIf="currentLang == 'ar'">
+                    <p-multiSelect 
+                        [style]="{ width:'100%' }"
+                        [options]="branches" 
+                        optionLabel="arabicName"
+                        (onChange)="onBranchesSelectionChange($event)">
+                        </p-multiSelect>
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                    <p-multiSelect 
+                        [style]="{ width:'100%' }"
+                        [options]="branches" 
+                        optionLabel="englishName"
+                        (onChange)="onBranchesSelectionChange($event)">
+                        </p-multiSelect>
+                </div>
+            </div>
+        
+            <div class="area mt-2" *ngIf="organizationParts?.showAreas">
+                <label>
+                    {{ 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.AREAS' | translate }}
+                </label>
+                <div *ngIf="currentLang == 'ar'">
+                    <p-multiSelect 
+                        [style]="{ width:'100%' }"
+                        [options]="areas" 
+                        optionLabel="arabicName"
+                        (onChange)="onAreaSelectionChange($event)">
+                        </p-multiSelect>
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                    <p-multiSelect 
+                        [style]="{ width:'100%' }"
+                        [options]="areas" 
+                        optionLabel="englishName"
+                        (onChange)="onAreaSelectionChange($event)">
+                        </p-multiSelect>
+                </div>
+            </div>
+        
+        
+            <div class="university mt-2" *ngIf="organizationParts?.showUniversities">
+                <label>
+                    {{ 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.UNIVERSITIES' | translate }}
+                </label>
+                <div *ngIf="currentLang == 'ar'">
+                    <p-multiSelect 
+                        [style]="{ width:'100%' }"
+                        [options]="universities" 
+                        optionLabel="arabicName"
+                        (onChange)="onUniversitiesSelectionChange($event)">
+                        </p-multiSelect>
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                    <p-multiSelect 
+                        [style]="{ width:'100%' }"
+                        [options]="universities" 
+                        optionLabel="englishName"
+                        (onChange)="onUniversitiesSelectionChange($event)">
+                    </p-multiSelect>
+                </div>
+            </div>
+        
+        
+        
+            <div class="type mt-2">
+                <label>
+                    {{ 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.INCIDENT_SOURCE_TYPE' | translate }}
+                </label>
+                <div *ngIf="currentLang == 'ar'">
+                    <p-multiSelect 
+                    [style]="{ width:'100%' }"
+                    [options]="incidentSourceHospitalTypes" 
+                    optionLabel="arabicName"
+                    (onChange)="onIncidentSourceHospitalTypesSelectionChange($event)">
+                    </p-multiSelect>
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                    <p-multiSelect 
+                    [style]="{ width:'100%' }"
+                    [options]="incidentSourceHospitalTypes" 
+                    optionLabel="englishName"
+                    (onChange)="onIncidentSourceHospitalTypesSelectionChange($event)">
+                    </p-multiSelect>
+                </div>
+            </div>
+        
+        
+            <div class="source mt-2">
+                <label class="col-sm-2">
+                    {{ 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.INCIDENT_SOURCES' | translate }}
+                </label>
+                <div *ngIf="currentLang == 'ar'">
+                    <p-multiSelect 
+                    [style]="{ width:'100%' }"
+                    [options]="incidentSourceHospital" 
+                    optionLabel="arabicName"
+                    (onChange)="onIncidentSourceHospitalChange($event)">
+                    </p-multiSelect>
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                    <p-multiSelect 
+                    [style]="{ width:'100%' }"
+                    [options]="incidentSourceHospital" 
+                    optionLabel="englishName">
+                    (onChange)="onIncidentSourceHospitalChange($event)">
+                    </p-multiSelect>
+                </div>
+            </div>
+            
+        
+        
+            
+            <div class="users mt-2">
+                <label class="col-sm-2">
+                    {{ 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.USERS' | translate }}
+                </label>
+                <p-multiSelect 
+                [style]="{ width:'100%' }"
+                [options]="users" 
+                optionLabel="userName"
+                (onChange)="onUserChange($event)">
+                </p-multiSelect>
+            </div>
+
+            <button  type="button" class="btn bg btn-lg pr-5 pl-5 text-white rounded-5 mb-2 mt-3" (click)="addThresholdUser()">  
+                <span _ngcontent-lnh-c139="" class="bi bi-clipboard-pulse"></span> 
+                {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.SAVE" | translate}}
+            </button>
+        </form>
+    </div>
+    <div class="col-md-5">
+        <p-table [value]="thresholdUsers" *ngIf="thresholdUsers && thresholdUsers.length > 0">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>
+                        {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.USERNAME" | translate}}
+                    </th>
+                    <th>
+                        {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.INCIDENT_SOURCES" | translate}}
+                    </th>
+                    <th>
+                        {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ACTIONS" | translate}}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-user>
+                <tr>
+                    <td>{{user.userName}}</td>
+                    <td>{{user.incidentSourceName}}</td>
+                    <td>
+                        <a  (click)="delete(user)"
+                            class="text-danger mess-color bi bi-trash-fill">
+                        </a>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+</div>
+
+{{selectedOrganizationId}}

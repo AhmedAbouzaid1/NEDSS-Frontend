@@ -1,0 +1,192 @@
+<div class="row">
+    <p-card *ngFor="let patient of patients;let i = index;" [header]="" class="col-md-4 mb-3">
+        <h5 class="text-center">
+            <!-- Id -->
+            <p-radioButton name="mergeMethod" [value]="patient.id" [(ngModel)]="selectupdateRecordId"
+                [inputId]="patient.id.toString()" class="me-2"></p-radioButton>
+            {{( 'NEDSS.REPEATED_RECORDS.Record' | translate ) + ' ' + (i + 1)}}
+        </h5>
+        <p>
+
+            <!-- First Name -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" id="firstName" name="firstName" type="radio" [value]="patient.firstName"
+                    (change)="onSelectAttribute('firstName', patient.firstName)">
+                <label class="form-check-label" for="firstName">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.NAME" | translate }} :</span>
+                    {{ patient.firstName }}
+                </label>
+            </div>
+        </div>
+
+
+        <!-- Second Name -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" name="secondName" type="radio" [value]="patient.secondName"
+                    (change)="onSelectAttribute('secondName', patient.secondName)">
+                <label class="form-check-label" for="secondName">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.FATHER" | translate }} :</span>
+                    {{patient.secondName}}
+                </label>
+            </div>
+        </div>
+
+        <!-- Third Name -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" name="thirdName" type="radio" [value]="patient.thirdName"
+                    (change)="onSelectAttribute('thirdName', patient.thirdName)">
+                <label class="form-check-label" for="familyName">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.GRANDFATHER" | translate }} :</span>
+                    {{patient.thirdName}}
+                </label>
+            </div>
+        </div>
+
+        <!-- Family Name -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" name="familyName" type="radio" [value]="patient.familyName"
+                    (change)="onSelectAttribute('familyName', patient.familyName)">
+                <label class="form-check-label" for="familyName">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.FAMILY" | translate }} : </span>
+                    {{patient.familyName}}
+                </label>
+            </div>
+        </div>
+
+        <!-- HOME GOVERNMENT -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" name="homeGovernmentName" type="radio"
+                    [value]="patient.homeGovernmentName"
+                    (change)="onSelectAttribute('homeGovernmentName', patient.homeGovernmentName)">
+                <label class="form-check-label" for="homeGovernmentName">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.GOVERNMENT" | translate }} : </span>
+                    {{patient.homeGovernmentName}}
+                </label>
+            </div>
+        </div>
+
+        <!-- nationalId-->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" name="nationalId" type="radio" [value]="patient.nationalId"
+                    (change)="onSelectAttribute('nationalId', patient.nationalId)">
+                <label class="form-check-label" for="nationalId">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.NATIONAL_ID" | translate }} : </span>
+                    {{patient.nationalId}}
+                </label>
+            </div>
+        </div>
+
+        <!-- home Health Administration Name-->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" name="homeHealthAdministrationName" type="radio"
+                    [value]="patient.homeHealthAdministrationName"
+                    (change)="onSelectAttribute('homeHealthAdministrationName', patient.homeHealthAdministrationName)">
+                <label class="form-check-label" for="homeHealthAdministrationName">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.HEALTH_ADMINISTRATION" | translate }} : </span>
+                    {{patient.homeHealthAdministrationName}}
+                </label>
+            </div>
+        </div>
+
+        <!-- Home Health Office Name -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" name="homeHealthOfficeName" type="radio"
+                    [value]="patient.homeHealthOfficeName"
+                    (change)="onSelectAttribute('homeHealthOfficeName', patient.homeHealthOfficeName)">
+                <label class="form-check-label" for="homeHealthOfficeName">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.HEALTH_OFFICE" | translate }} : </span>
+                    {{patient.homeHealthOfficeName}}
+                </label>
+            </div>
+        </div>
+
+        <!-- Age -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" name="age" type="radio" [value]="patient.age"
+                    (change)="onSelectAttribute('age', patient.age)">
+                <label class="form-check-label" for="age">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.AGE" | translate }} : </span>
+                    {{patient.age}}
+                </label>
+            </div>
+        </div>
+
+        <!-- caseDiscoveryDate -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" name="caseDiscoveryDate" type="radio"
+                    [value]="patient.caseDiscoveryDate"
+                    (change)="onSelectAttribute('caseDiscoveryDate', patient.caseDiscoveryDate)">
+                <label class="form-check-label" for="caseDiscoveryDate">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.CASE_DISCOVERY_DATE" | translate }} : </span>
+                    {{patient.caseDiscoveryDate}}
+                </label>
+            </div>
+        </div>
+
+        <!-- Address -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" name="address" type="radio" [value]="patient.address"
+                    (change)="onSelectAttribute('address', patient.address)">
+                <label class="form-check-label" for="address">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.ADDRESS" | translate }} : </span>
+                    {{patient.address}}
+                </label>
+            </div>
+        </div>
+
+        <!-- Age Type Name -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input" name="ageTypeName" type="radio" [value]="patient.ageTypeName"
+                    (change)="onSelectAttribute('ageTypeName', patient.ageTypeName)">
+                <label class="form-check-label" for="ageTypeName">
+                    <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.AGE_CATEGORY" | translate }} : </span>
+                    {{patient.ageTypeName}}
+                </label>
+            </div>
+        </div>
+
+        <!-- Diseases  -->
+        <div>
+            <p class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.DISEASES" | translate }} :</p>
+            <!-- <a (click)="goToInvestigationP(patient.id)">إذهب للتقصى</a> -->
+            <div *ngFor="let disease of patient.patientDiseasesGroups">
+                <div class="row mt-3">
+                    <div class="col-md-9 d-flex align-items-center">
+                        <input class="form-check-input" type="checkbox" [value]="disease.diseaseGroupId"
+                            [id]="'disease'+disease.diseaseGroupId"
+                            (change)="onDiseaseChange(disease.diseaseGroupId, $event)">
+                        <label class="form-check-label m-0">
+                            {{ disease.diseaseGroupName }} ( نسبة التقصى {{ disease.diseaseGroupInvestigationPercentage
+                            }}%
+                            )
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <a class="col-md-2" (click)="goToInvestigation(patient.id,disease.diseaseGroupId,disease.diseaseGroupRouter)">
+                                {{ "NEDSS.REPEATED_RECORDS.GO_TO_INVESTIGATION" | translate }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-card>
+
+</div>
+
+<div class="d-flex justify-content-end">
+    <button class="btn bg text-white rounded-2" (click)="mergePatient()">
+        {{ "NEDSS.REPEATED_RECORDS.MERGE" | translate}}
+    </button>
+</div>

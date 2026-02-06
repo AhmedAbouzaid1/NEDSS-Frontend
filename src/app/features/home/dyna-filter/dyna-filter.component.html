@@ -1,0 +1,33 @@
+<div class="col-12 border border-success m-1">
+  <div class="border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10">
+    <label class="col-sm-2">{{'NEDSS.CHAT.GOVERNMENT'|translate}}</label>
+    <ng-multiselect-dropdown class="controls" [settings]="multipleDropdownSettings" [data]="govs" [(ngModel)]="_govs"
+      (onSelectAll)="SetHomeGovernments($event)" (onSelect)="SetHomeGovernments($event)" (click)="loadGovs()"
+      (onDeSelect)="SetHomeGovernments($event)" (onDeSelectAll)="SetHomeGovernments($event)">
+    </ng-multiselect-dropdown>
+  </div>
+  <div class="border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10">
+    <label class="col-sm-2">{{'NEDSS.HOME.DASHBOARD.DISEASE'|translate}}</label>
+    <ng-multiselect-dropdown class="controls" [settings]="multipleDropdownSettings" [data]="diseases"
+      [(ngModel)]="_diseases" (onSelectAll)="SetDisease($event)" (onSelect)="SetDisease($event)"
+      (click)="loadDiseases()" (onDeSelect)="SetDisease($event)" (onDeSelectAll)="SetDisease($event)">
+    </ng-multiselect-dropdown>
+  </div>
+  <div class="border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10">
+    <label class="col-sm-2">تصنيف النتائج عن طريق</label>
+    <select [(ngModel)]="filter.groupBy" (change)="setGroupBy($event)">
+      <option [ngValue]="1">محافظة الإبلاغ</option>
+      <option [ngValue]="2">الإدارة الصحية</option>
+      <option [ngValue]="3">مصدر الإبلاغ</option>
+      <option [ngValue]="4">السنة</option>
+      <option [ngValue]="5">الأسبوع</option>
+      <option [ngValue]="6">الشهر</option>
+      <option [ngValue]="7">القسم</option>
+      <option [ngValue]="8">نتيجة الحالة</option>
+      <option [ngValue]="9">الوظيفة</option>
+      <option [ngValue]="10">محافظة السكن</option>
+      <option [ngValue]="11">{{ "NEDSS.REPORTS.Disease" | translate }}</option>
+    </select>
+  </div>
+
+</div>

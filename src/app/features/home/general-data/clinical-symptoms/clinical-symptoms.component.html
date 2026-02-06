@@ -1,0 +1,1025 @@
+<div class="bg-white my-4">
+  <div class="w-100">
+    <button (click)="FEVERStatus = !FEVERStatus"
+      class="toggelBtn shadow-sm border-0 w-100 btn-clin d-flex gap-2 align-items-center">
+      <span style="flex-grow: 1" class="fw-bold fs-6">
+        {{
+        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVERDURATION" | translate
+        }}
+      </span>
+      <span [class]="
+          'pi mx-2 ' + (FEVERStatus ? 'pi-chevron-up' : 'pi-chevron-down')
+        " style="width: 24px"></span>
+    </button>
+  </div>
+  <div id="craiteria" class="row craiteria bg-dark-mode p-3 justify-content-around"
+    [ngStyle]="FEVERStatus ? { display: 'flex' } : { display: 'none' }">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+      <div class="form-group">
+        <label for="">
+          {{ "NOUR.word143" | translate }}
+          <span *ngIf="!!patient.clinicalAsymptoms.feverDuration" class="text-danger mess-color">*</span>
+          <span class="text-muted"> </span>
+        </label>
+        <input [(ngModel)]="patient.clinicalAsymptoms.feverDuration" name="feverDuration" type="number" name="" id=""
+          class="form-control" [required]="!FEVERStatus" pInputText class="w-100" (blur)="
+            generalDataService.isFeverDurationValid =
+              generalDataService.isNumberPositiveAndLessThanMax(
+                patient.clinicalAsymptoms.feverDuration,
+                3
+              )
+          " />
+        <small *ngIf="!generalDataService.isFeverDurationValid" class="form-text text-danger mess-color">
+          {{
+          "NEDSS.COMMON.MAX_DIGITS_VALIDATION"
+          | translate : { fieldName: FEVER_DURATION_DAYS, maxDigits: 3 }
+          }}
+        </small>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+      <div class="form-group">
+        <label for="">
+          {{ "NOUR.Fever_Duration" | translate }}
+          <span *ngIf="!!patient.clinicalAsymptoms.feverDuration" class="text-danger mess-color">*</span>
+          <span class="text-muted"> </span>
+        </label>
+        <p-dropdown *ngIf="currentLang == 'ar'" [options]="feverDurationTypes" (onChange)="onfeverDurationTypeChange()"
+          [(ngModel)]="patient.clinicalAsymptoms.feverDurationType" optionLabel="arabicName" optionValue="id"
+          autoWidth="false" [style]="{ width: '100%' }" name="feverDurationType"
+          [required]="!!patient.clinicalAsymptoms.feverDuration" [filter]="true" filterBy="arabicName"
+          #feverDurationType>
+        </p-dropdown>
+        <p-dropdown *ngIf="currentLang != 'ar'" [options]="feverDurationTypes" (onChange)="onfeverDurationTypeChange()"
+          [(ngModel)]="patient.clinicalAsymptoms.feverDurationType" optionLabel="englishName" optionValue="id"
+          autoWidth="false" [style]="{ width: '100%' }" name="feverDurationType"
+          [required]="!!patient.clinicalAsymptoms.feverDuration" [filter]="true" filterBy="englishName"
+          #feverDurationType>
+        </p-dropdown>
+        <small *ngIf="
+            !patient.clinicalAsymptoms.feverDurationType &&
+            isfeverDurationTypeChanged
+          " class="form-text text-danger mess-color">
+          {{
+          "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired"
+          | translate
+          }}
+        </small>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+      <div class="form-group">
+        <label for="">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_MAX_TEMP"
+          | translate
+          }} 
+          <span *ngIf="!!patient.clinicalAsymptoms.feverDuration" class="text-danger mess-color">*</span>
+        </label>
+        <input [(ngModel)]="patient.clinicalAsymptoms.feverMaxTemp" type="number" id=""
+          class="form-control feverMaxTemptyle mt-1" [required]="!!patient.clinicalAsymptoms.feverDuration" pInputText
+          class="w-100" (blur)="
+            generalDataService.isFeverMaxTemperatureValid =
+              generalDataService.validateFeverMaxTemperature(
+                patient.clinicalAsymptoms.feverMaxTemp
+              )
+          " />
+        <small *ngIf="!generalDataService.isFeverMaxTemperatureValid" class="form-text text-danger mess-color">
+          {{ "NEDSS.COMMON.FEVER_TEMPERATURE_VALIDATION" | translate }}
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ////////////////////////////////////////////////////////// -->
+
+<div class="bg-white my-4">
+  <div class="w-100">
+    <button (click)="GENERALDESIEASE = !GENERALDESIEASE"
+      class="toggelBt shadow-sm border-0 w-100 btn-clin d-flex gap-2 align-items-center">
+      <span style="flex-grow: 1" class="fw-bold fs-6">
+        {{
+        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.GENERALDESIEASE"
+        | translate
+        }}
+      </span>
+      <span [class]="
+          'pi mx-2 ' + (GENERALDESIEASE ? 'pi-chevron-up' : 'pi-chevron-down')
+        " style="width: 24px"></span>
+    </button>
+  </div>
+  <div id=" craiteri" class="row craiteria bg-dark-mode p-3 justify-content-around"
+    [ngStyle]="GENERALDESIEASE ? { display: 'flex' } : { display: 'none' }">
+    <div>
+      <div class="fwb spaceLable color-d-3">
+        {{
+        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.GENERALDESIEASE"
+        | translate
+        }}
+        <span class="text-danger mess-color" *ngIf="GENERALDESIEASE">*</span>
+      </div>
+      <div class="has-labels">
+        <label for="skinDisColoration">
+          <input name="skinDisColoration" type="radio" value="0"
+            [(ngModel)]="patient.clinicalAsymptoms.skinDisColoration" />
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YELLOW" | translate }}
+        </label>
+
+        <label for="">
+          <input name="skinDisColoration" type="radio" value="1"
+            [(ngModel)]="patient.clinicalAsymptoms.skinDisColoration" />
+
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.BLUE" | translate }}
+        </label>
+
+        <label for="">
+          <input name="skinDisColoration" type="radio" value="2"
+            [(ngModel)]="patient.clinicalAsymptoms.skinDisColoration" />
+
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.SKINDISCOLORATION2"
+          | translate
+          }}
+        </label>
+      </div>
+    </div>
+    <div class="col-12 mt-4">
+      <div class="fwb spaceLable mb-3">
+        {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.ALEARD" | translate }}
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <span class="fwb spaceLable color-d-3">
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.JERK" | translate }}
+            <span class="text-danger mess-color" *ngIf="GENERALDESIEASE">*</span>
+          </span>
+          <div class="has-labels">
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.jerk" name="jerk" type="radio" value="0" />
+
+              {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+            </label>
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.jerk" name="jerk" type="radio" value="1" />
+              {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+            </label>
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.jerk" name="jerk" type="radio" value="2" />
+              {{
+              "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+              }}
+            </label>
+          </div>
+        </div>
+        <div class="col-4 border-end border-start">
+          <span class="fwb spaceLable color-d-3">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.HEADACHE" | translate
+            }}
+            <span class="text-danger mess-color" *ngIf="GENERALDESIEASE">*</span>
+          </span>
+          <div class="has-labels">
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.headache" name="headache" type="radio" value="0" />
+              {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+            </label>
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.headache" name="headache" type="radio" value="1" />
+              {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+            </label>
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.headache" name="headache" type="radio" value="2" />
+              {{
+              "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+              }}
+            </label>
+          </div>
+        </div>
+        <div class="col-4">
+          <span class="fwb spaceLable color-d-3">{{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.EXHAUSTION" | translate
+            }}</span>
+          <span class="text-danger mess-color" *ngIf="GENERALDESIEASE">*</span>
+
+          <div class="has-labels">
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.overworkStress" name="overworkStress" type="radio"
+                value="0" />
+              {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+            </label>
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.overworkStress" name="overworkStress" type="radio"
+                value="1" />
+              {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+            </label>
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.overworkStress" name="overworkStress" type="radio"
+                value="2" />
+              {{
+              "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+              }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ///////////////////////////////////////////////////// -->
+
+<div class="bg-white my-4">
+  <div class="w-100">
+    <button (click)="!(SYMPTOMS = SYMPTOMS)"
+      class="toggelB shadow-sm border-0 w-100 btn-clin d-flex gap-2 align-items-center">
+      <span style="flex-grow: 1" class="fw-bold fs-6">
+        {{
+        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.GASTROLINTESTINAL_SYMPTOMS"
+        | translate
+        }}
+      </span>
+      <span [class]="'pi mx-2 ' + (SYMPTOMS ? 'pi-chevron-up' : 'pi-chevron-down')" style="width: 24px"></span>
+    </button>
+  </div>
+  <div id="craiter" class="row bg-dark-mode p-3 justify-content-around craiteria"
+    [ngStyle]="SYMPTOMS ? { display: 'flex' } : { display: 'none' }">
+    <div class="row">
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NAUSEA" | translate }}
+          <span class="text-danger mess-color" *ngIf="SYMPTOMS">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.nausea" name="nausea" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.nausea" name="nausea" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.nausea" name="nausea" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.VOMIT" | translate }}
+          <span class="text-danger mess-color" *ngIf="SYMPTOMS">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.vomit" name="vomit" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.vomit" name="vomit" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.vomit" name="vomit" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.DIARRHEA" | translate }}
+          <span class="text-danger mess-color" *ngIf="SYMPTOMS">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.diarrhea" name="diarrhea" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.diarrhea" name="diarrhea" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.diarrhea" name="diarrhea" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MATERYDIARRHEA"
+          | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="SYMPTOMS">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.materyDiarrhea" name="materyDiarrhea" type="radio"
+              value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.materyDiarrhea" name="materyDiarrhea" type="radio"
+              value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.materyDiarrhea" name="materyDiarrhea" type="radio"
+              value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.colic_Intestinal_Distress_Abdominal_Pain"
+          | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="SYMPTOMS">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="
+                patient.clinicalAsymptoms
+                  .colic_Intestinal_Distress_Abdominal_Pain
+              " name="colic_Intestinal_Distress_Abdominal_Pain" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="
+                patient.clinicalAsymptoms
+                  .colic_Intestinal_Distress_Abdominal_Pain
+              " name="colic_Intestinal_Distress_Abdominal_Pain" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="
+                patient.clinicalAsymptoms
+                  .colic_Intestinal_Distress_Abdominal_Pain
+              " name="colic_Intestinal_Distress_Abdominal_Pain" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MUSCUS_STOLL" | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="SYMPTOMS">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.mucusInStool" name="mucusInStool" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.mucusInStool" name="mucusInStool" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.mucusInStool" name="mucusInStool" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.CONSTIPATION" | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="SYMPTOMS">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.constipation" name="constipation" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.constipation" name="constipation" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.constipation" name="constipation" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.lossOfAppetite"
+          | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="SYMPTOMS">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.lossOfAppetite" name="lossOfAppetite" type="radio"
+              value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.lossOfAppetite" name="lossOfAppetite" type="radio"
+              value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.lossOfAppetite" name="lossOfAppetite" type="radio"
+              value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ///////////////////////////////////////// -->
+<div class="bg-white my-4">
+  <div class="w-100">
+    <button (click)="muscular = !muscular"
+      class="toggel shadow-sm border-0 w-100 btn-clin d-flex gap-2 align-items-center">
+      <span style="flex-grow: 1" class="fw-bold fs-6">
+        {{
+        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.Symptoms_of_the_nervous_and_muscular_system"
+        | translate
+        }}
+      </span>
+      <span [class]="'pi mx-2 ' + (muscular ? 'pi-chevron-up' : 'pi-chevron-down')" style="width: 24px"></span>
+    </button>
+  </div>
+  <div id=" craite" class="row craiteria bg-dark-mode p-3 justify-content-around"
+    [ngStyle]="muscular ? { display: 'flex' } : { display: 'none' }">
+    <div class="row">
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.jointPain" | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="muscular">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.jointPain" name="jointPain" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.jointPain" name="jointPain" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.jointPain" name="jointPain" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.backPain" | translate }}
+          <span class="text-danger mess-color" *ngIf="muscular">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.backPain" name="backPain" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.backPain" name="backPain" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.backPain" name="backPain" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.musclePain" | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="muscular">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.musclePain" name="musclePain" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.musclePain" name="musclePain" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.musclePain" name="musclePain" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.encephalitis" | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="muscular">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.encephalitis" name="encephalitis" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.encephalitis" name="encephalitis" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.encephalitis" name="encephalitis" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.difficultySwallowing"
+          | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="muscular">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.difficultySwallowing" name="difficultySwallowing" type="radio"
+              value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.difficultySwallowing" name="difficultySwallowing" type="radio"
+              value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.difficultySwallowing" name="difficultySwallowing" type="radio"
+              value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.cramps" | translate }}
+          <span class="text-danger mess-color" *ngIf="muscular">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.cramps" name="cramps" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.cramps" name="cramps" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.cramps" name="cramps" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.impairedMentalState"
+          | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="muscular">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.impairedMentalState" name="impairedMentalState" type="radio"
+              value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.impairedMentalState" name="impairedMentalState" type="radio"
+              value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.impairedMentalState" name="impairedMentalState" type="radio"
+              value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ///////////////////////////////// -->
+<div class="bg-white my-4">
+  <div class="w-100">
+    <button (click)="!(Respiratory = Respiratory)"
+      class="togge shadow-sm border-0 w-100 btn-clin d-flex gap-2 align-items-center">
+      <span style="flex-grow: 1" class="fw-bold fs-6">{{
+        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.Respiratory_Symptoms"
+        | translate
+        }}</span>
+      <span [class]="
+          'pi mx-2 ' + (Respiratory ? 'pi-chevron-up' : 'pi-chevron-down')
+        " style="width: 24px"></span>
+    </button>
+  </div>
+  <div id="crait" class="row craiteria bg-dark-mode p-3 justify-content-around"
+    [ngStyle]="Respiratory ? { display: 'flex' } : { display: 'none' }">
+    <div class="row">
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.soreThroat" | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="Respiratory">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.soreThroat" name="soreThroat" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.soreThroat" name="soreThroat" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.soreThroat" name="soreThroat" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.pneumonia" | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="Respiratory">*</span>
+        </div>
+        <div class="color-d-3">
+          <div class="has-labels">
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.pneumonia" name="pneumonia" type="radio" value="0" />
+              {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+            </label>
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.pneumonia" name="pneumonia" type="radio" value="1" />
+              {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+            </label>
+            <label for="">
+              <input [(ngModel)]="patient.clinicalAsymptoms.pneumonia" name="pneumonia" type="radio" value="2" />
+              {{
+              "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+              }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.runnyNose" | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="Respiratory">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.runnyNose" name="runnyNose" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.runnyNose" name="runnyNose" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.runnyNose" name="runnyNose" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.cough" | translate }}
+          <span class="text-danger mess-color" *ngIf="Respiratory">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.cough" name="cough" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.cough" name="cough" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.cough" name="cough" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.shortnessOfBreath"
+          | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="Respiratory">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.shortnessOfBreath" name="shortnessOfBreath" type="radio"
+              value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.shortnessOfBreath" name="shortnessOfBreath" type="radio"
+              value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.shortnessOfBreath" name="shortnessOfBreath" type="radio"
+              value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.dryCough" | translate }}
+          <span class="text-danger mess-color" *ngIf="Respiratory">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.dryCough" name="dryCough" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.dryCough" name="dryCough" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.dryCough" name="dryCough" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.rapidBreathing"
+          | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="Respiratory">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.rapidBreathing" name="rapidBreathing" type="radio"
+              value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.rapidBreathing" name="rapidBreathing" type="radio"
+              value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.rapidBreathing" name="rapidBreathing" type="radio"
+              value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.frequentCoughingSpells"
+          | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="Respiratory">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.frequentCoughingSpells" name="frequentCoughingSpells"
+              type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.frequentCoughingSpells" name="frequentCoughingSpells"
+              type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.frequentCoughingSpells" name="frequentCoughingSpells"
+              type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.coughByVomiting"
+          | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="Respiratory">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.coughByVomiting" name="coughByVomiting" type="radio"
+              value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.coughByVomiting" name="coughByVomiting" type="radio"
+              value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.coughByVomiting" name="coughByVomiting" type="radio"
+              value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.chestPain" | translate
+          }}
+          <span class="text-danger mess-color" *ngIf="Respiratory">*</span>
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.chestPain" name="chestPain" type="radio" value="0" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.chestPain" name="chestPain" type="radio" value="1" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.clinicalAsymptoms.chestPain" name="chestPain" type="radio" value="2" />
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.UNKNOWN" | translate
+            }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- //////////////////////////////////////////// -->
+
+<div class="bg-white my-4">
+  <div class="w-100">
+    <button (click)="!(otherdieases = otherdieases)"
+      class="togg shadow-sm border-0 w-100 btn-clin d-flex gap-2 align-items-center">
+      <span style="flex-grow: 1" class="fw-bold fs-6">
+        {{
+        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.ChronicDiseases"
+        | translate
+        }}
+      </span>
+      <span [class]="
+          'pi mx-2 ' + (otherdieases ? 'pi-chevron-up' : 'pi-chevron-down')
+        " style="width: 24px"></span>
+    </button>
+  </div>
+  <div id="crai" class="row craiteria bg-dark-mode p-3 justify-content-around"
+    [ngStyle]="otherdieases ? { display: 'flex' } : { display: 'none' }">
+    <div class="row">
+      <div class="col-11 col-md-4">
+        <div class="fwb spaceLable color-d-3">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.AreThereChronicDiseases"
+          | translate
+          }}
+        </div>
+        <div class="has-labels">
+          <label for="">
+            <input [(ngModel)]="patient.haveChronicDisease" name="ChronicDiseases" type="radio" [value]="true" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
+          </label>
+          <label for="">
+            <input [(ngModel)]="patient.haveChronicDisease" name="ChronicDiseases" type="radio" [value]="false" />
+            {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NO" | translate }}
+          </label>
+        </div>
+        <!-- <div class="form-group">
+          <label for="">
+            {{
+              "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.Question1" | translate
+            }}
+            <span class="text-danger mess-color" *ngIf="otherdieases">*</span>
+          </label>
+          <input
+            type="text"
+            name="others"
+            [(ngModel)]="patient.clinicalAsymptoms.others"
+            #others="ngModel"
+            pInputText
+            name
+            id
+            class="w-100"
+          />
+        </div> -->
+      </div>
+    </div>
+    <div class="row" *ngIf="patient.haveChronicDisease === true">
+      <div class="col-md-4 col-6 mt-2" *ngFor="let dieases of chronicDiseases; let i = index">
+        <div class="text-muted mt-2">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="selectedChronicDiseases[dieases.id]"
+            [value]="dieases.id" (change)="itemsCheck(dieases.id)" (blur)="
+            
+              generalDataService.isChronicDiseaseValid =
+                generalDataService.validateChronicDisease(
+                  patient.chronicDiseasesIds,
+                  patient.anotherChronicDisease,
+                  patient.haveChronicDisease
+                )
+            " />
+          {{ dieases.name }}
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3" *ngIf="patient.haveChronicDisease === true">
+      <div class="col-md-12 col-12 mt-2">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.AnotherChronicDiseases"
+            | translate
+            }}
+          </label>
+          <textarea rows="3" pInputTextarea [(ngModel)]="patient.anotherChronicDisease" class="w-100" (onBlur)="
+              generalDataService.isChronicDiseaseValid =
+                generalDataService.validateChronicDisease(
+                  patient.chronicDiseasesIds,
+                  patient.anotherChronicDisease,
+                  patient.haveChronicDisease
+                )
+            "></textarea>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!generalDataService.isChronicDiseaseValid">
+      <small class="form-text text-danger mess-color">
+        {{ "NEDSS.COMMON.FILEDBOTHREQUIRED" | translate }}
+      </small>
+    </div>
+  </div>
+</div>

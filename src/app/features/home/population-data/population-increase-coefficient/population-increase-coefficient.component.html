@@ -1,0 +1,645 @@
+<div class="col-12 color-d-2">
+  <form [formGroup]="overPopulationForm" (ngSubmit)="save()">
+    <div class="form-titles">
+      {{ "NEDSS.HOME.POPULATION_DATA.POPULATION_INCREASE_COE" | translate }}
+    </div>
+    <div class="card shadow">
+      <div class="card-body bg-dark-mode">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="Government">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.GOVERNEMENT"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <div *ngIf="currentLang == 'ar'">
+                <p-dropdown 
+                [options]="governments" 
+                (onChange)="governmentSelected()"  
+                [(ngModel)]="selectedGovern" 
+                [ngModelOptions]="{ standalone: true }" 
+                optionLabel="arabicName"
+                optionValue="id" 
+                [style]="{ width: '100%' }"
+                [disabled]="this.levelId != 1"
+                ></p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="governmentSelected()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedGovern"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of governments"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.arabicName }}
+                  </option>
+                </select> -->
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <p-dropdown 
+                [options]="governments" 
+                (onChange)="governmentSelected()"  
+                [(ngModel)]="selectedGovern" 
+                [ngModelOptions]="{ standalone: true }" 
+                optionLabel="englishName"
+                optionValue="id" 
+                [style]="{ width: '100%' }"
+                [disabled]="this.levelId != 1"
+                ></p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="governmentSelected()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedGovern"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of governments"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.englishName }}
+                  </option>
+                </select> -->
+              </div>
+              <small
+                *ngIf="!isGovernmentValid"
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="administration">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.ADMINISTRATION"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <div *ngIf="currentLang == 'ar'">
+                <p-dropdown 
+                [options]="healthAdministration" 
+                (onChange)="healthAdministrationSelected()"  
+                [(ngModel)]="selectedhealthAdministration" 
+                [ngModelOptions]="{ standalone: true }" 
+                optionLabel="arabicName"
+                optionValue="id" 
+                [style]="{ width: '100%' }"
+                [disabled]="this.levelId != 1 && this.levelId != 2"
+                ></p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="healthAdministrationSelected()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedhealthAdministration"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1 && this.levelId != 2"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of healthAdministration"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.arabicName }}
+                  </option>
+                </select> -->
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <p-dropdown 
+                [options]="healthAdministration" 
+                (onChange)="healthAdministrationSelected()"  
+                [(ngModel)]="selectedhealthAdministration" 
+                [ngModelOptions]="{ standalone: true }" 
+                optionLabel="englishName"
+                optionValue="id" 
+                [style]="{ width: '100%' }"
+                [disabled]="this.levelId != 1 && this.levelId != 2"
+                ></p-dropdown>
+
+                <!-- 
+                <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="healthAdministrationSelected()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedhealthAdministration"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1 && this.levelId != 2"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of healthAdministration"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.englishName }}
+                  </option>
+                </select> -->
+              </div>
+              <small
+                *ngIf="!isAdminValid"
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small>
+            </div>
+          </div>
+          <!-- <div class="col-lg-4">
+            <div class="form-group">
+              <label for="reportSource">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.INCIDENT_SOURCE"
+                    | translate
+                }}
+              <span class="text-danger mess-color">*</span> 
+              </label>
+              <div *ngIf="currentLang == 'ar'">
+                <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="incidentSourceSelected()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedincidentSource"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="
+                    this.levelId != 1 && this.levelId != 2 && this.levelId != 3
+                  "
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of incidentSources"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.arabicName }}
+                  </option>
+                </select>
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="incidentSourceSelected()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedincidentSource"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="
+                    this.levelId != 1 && this.levelId != 2 && this.levelId != 3
+                  "
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of incidentSources"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.englishName }}
+                  </option>
+                </select>
+              </div>  -->
+              <!-- <small *ngIf="!isIncidentSourceValid" class="form-text text-danger mess-color">
+                {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+              </small> -->
+              <!-- {{ selectedincidentSource }}
+            </div>
+          </div> -->
+          <!-- <div class="col-lg-12 text-center mb-4 mt-4">
+            {{
+              "NEDSS.HOME.POPULATION_DATA.POPULATION_INCREASE_FACTOR.FOLLOW_INCREASE_COE"
+                | translate
+            }}
+          </div> -->
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_INCREASE_FACTOR.FACTOR"
+                    | translate
+                }}
+                <!-- <span class="text-danger mess-color">*</span> -->
+              </label>
+              <input 
+              type="text" 
+              pInputText 
+              formControlName="increaseRate"
+              (keypress)="onNumberKeyPress($event)"
+              [style]="{ width: '100%' }"
+              />
+              <small
+              *ngIf="!isIncreaseRateValid"
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </small>
+              <!-- <input
+                type="text"
+                (keypress)="onNumberKeyPress($event)"
+                name=""
+                id=""
+                class="form-control"
+                formControlName="increaseRate"
+              /> -->
+            </div>
+          </div>
+          <!-- <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_ADD.LOWER_THAN_MONTH"
+                    | translate
+                }}
+              </label>
+              <input
+                type="text"
+                (keypress)="onNumberKeyPress($event)"
+                name=""
+                id=""
+                class="form-control"
+                formControlName="ageLowerThanMonth"
+              />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_ADD.LOWER_THAN_YEAR"
+                    | translate
+                }}
+              </label>
+              <input
+                type="text"
+                (keypress)="onNumberKeyPress($event)"
+                name=""
+                id=""
+                class="form-control"
+                formControlName="ageLowerThanYear"
+              />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_ADD.UP_TO_FIVE"
+                    | translate
+                }}
+              </label>
+              <input
+                type="text"
+                (keypress)="onNumberKeyPress($event)"
+                name=""
+                id=""
+                class="form-control"
+                formControlName="ageUpTo5"
+              />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_ADD.UP_TO_FIVETEEN"
+                    | translate
+                }}
+              </label>
+              <input
+                type="text"
+                (keypress)="onNumberKeyPress($event)"
+                name=""
+                id=""
+                class="form-control"
+                formControlName="ageUpTo15"
+              />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_ADD.UP_TO_THIRTY_FIVE"
+                    | translate
+                }}
+              </label>
+              <input
+                type="text"
+                (keypress)="onNumberKeyPress($event)"
+                name=""
+                id=""
+                class="form-control"
+                formControlName="ageUpTo35"
+              />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_ADD.UP_TO_SIXTY_FIVE"
+                    | translate
+                }}
+              </label>
+              <input
+                type="text"
+                (keypress)="onNumberKeyPress($event)"
+                name=""
+                id=""
+                class="form-control"
+                formControlName="ageUpTo65"
+              />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_ADD.MORE_THAN_SIXTY_FIVE"
+                    | translate
+                }}
+              </label>
+              <input
+                type="text"
+                (keypress)="onNumberKeyPress($event)"
+                name=""
+                id=""
+                class="form-control"
+                formControlName="ageMoreThan65"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-8"></div>
+
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_INCREASE_FACTOR.MALE"
+                    | translate
+                }}
+              </label>
+              <input
+                type="number"
+                name=""
+                id=""
+                class="form-control"
+                formControlName="maleCount"
+              />
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_INCREASE_FACTOR.FEMALE"
+                    | translate
+                }}
+              </label>
+
+              <input
+                type="number"
+                name=""
+                id=""
+                class="form-control"
+                formControlName="femalCount"
+              />
+            </div>
+          </div> -->
+        </div> 
+      </div>
+      <div class="card-footer text-start">
+        <button type="submit" class="btn btn-lg bg text-light">
+          <span class="bi bi-check2-circle"></span>
+          {{
+            "NEDSS.HOME.POPULATION_DATA.POPULATION_INCREASE_FACTOR.SAVE"
+              | translate
+          }}
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="mt-4 shadow border rounded">
+    <div class="row">
+      <div class="col-lg-6 fwb p-4 pb-0">
+        {{
+          "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.POPULATION_COUNT"
+            | translate
+        }}
+        ( {{ pages }} )
+      </div>
+      <div class="col-lg-6 p-4 pb-0">
+        <div class="row align-items-center">
+          <div class="col-7">
+              <input
+              aria-describedby="search-help"
+              pInputText
+              (blur)="search(false)" 
+              type="search"
+              name=""
+              id="search"
+              class="form-control w-100"
+              [(ngModel)]="populationFilter.searchText"
+              placeholder=" {{ 'NEDSS.COMMON.SEARCH' | translate }} ..."
+            />
+            <!-- <input
+              type="search"
+              class="form-control"
+              [(ngModel)]="populationFilter.searchText"
+              placeholder="{{ 'NEDSS.COMMON.SEARCH' | translate }}"
+              #searchInput
+            /> -->
+          </div>
+          <div class="col-5">
+            <a (click)="exportPatientsAsPdf()">
+              <span class="bi bi-filetype-pdf button-export"></span>
+            </a>
+            <button
+              style="border: none; background: none"
+              [useExistingCss]="true"
+              [printStyle]="{ '.exclude-pdf': { display: 'none' } }"
+              printTitle="{{
+                'NEDSS.HOME.POPULATION_DATA.POPULATION_INCREASE_COE' | translate
+              }}"
+              printSectionId="myTableElementId"
+              ngxPrint
+            >
+              <span class="bi bi-printer-fill button-export"></span>
+            </button>
+            <a (click)="exportPatiantsAsExcel()">
+              <span class="bi bi-file-earmark-excel-fill button-export"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="table-responsive table-none-scroll"
+        id="myTableElementId"
+        #myTableElementId
+      >
+        <p-table
+          class="table"
+          [style.direction]="dir"
+          [value]="populations"
+          (sortFunction)="sort($event)" 
+          [customSort]="true"
+          [sortField]="populationFilter.sortColumn" 
+          [sortOrder]="populationFilter.sortOrder == 'desc' ? -1 : 1"
+          [paginator]="false"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="governmentName">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.GOVERNEMENT"
+                    | translate
+                }} <p-sortIcon field="code" />
+              </th>
+              <th pSortableColumn="healthAdministrationName"> 
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.ADMINISTRATION"
+                    | translate
+                }} <p-sortIcon field="healthAdministrationName" />
+              </th>
+              <!-- <th>
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.INCIDENT_SOURCE"
+                    | translate
+                }}
+              </th> -->
+              <th pSortableColumn="increaseRate">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_INCREASE_FACTOR.FACTOR"
+                    | translate
+                }} <p-sortIcon field="increaseRate" />
+              </th>
+              <th class="exclude-pdf">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.OPERATIONS"
+                    | translate
+                }}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>
+                <span [innerHTML]="item.governmentName"></span>
+              </td>
+
+              <td>
+                <span [innerHTML]="item.healthAdministrationName"></span>
+              </td>
+              <!-- <td>
+                <span [innerHTML]="item.incidentSourceName"></span>
+              </td> -->
+              <td>
+                <span [innerHTML]="item.increaseRate"></span>
+              </td>
+
+              <td class="exclude-pdf">
+                <a
+                  (click)="getById(item.id)"
+                  class="text-primary pi pi-pencil"
+                ></a>
+                &nbsp;&nbsp;
+                <a
+                  data-bs-target="#exampleModal2"
+                  data-bs-toggle="modal"
+                  (click)="nameToDelete(item)"
+                  class="text-danger mess-color bi bi-trash-fill"
+                ></a>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div class="row" [hidden]="!noData">
+          <div class="no-data content-center">
+            <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+            <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-11 col-lg-12 m-auto p-0" style="margin-bottom: 4px">
+        <p-paginator
+          *ngIf="!noData"
+          [rows]="populationFilter.pageSize"
+          [totalRecords]="pages"
+          (onPageChange)="paginate($event)"
+          [first]="first"
+          [currentPageReportTemplate]="
+            'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+          "
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[
+            10,
+            20,
+            30,
+            40,
+            50,
+            70,
+            100,
+            200,
+            500,
+            1000,
+            2000,
+            pages >= 5000 ? pages : 5000
+          ]"
+        ></p-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.arabicName }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="delete(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

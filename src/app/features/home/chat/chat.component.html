@@ -1,0 +1,201 @@
+<div class="container-fluid row m-0 p-0 bg-light mt-4" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
+  <div class="col-11 col-md-3  bg-light Chatscontaine">
+    <div class="chatsHead d-flex justify-content-between gap-2">
+      <div class="" dir="rtl">
+        <!-- <button class="btn " type="button" id="button-addon2">search</button> -->
+        <input type="search" class="form-control py-2 rounded-2"
+          placeholder=" {{'NEDSS.CHAT.SEARCH'|translate}}" aria-label="Recipient's username"
+          aria-describedby="button-addon2">
+      </div>
+
+      <button
+        class="float-start bi bi-plus-square-dotted btn btn-outline-primary btn-sm theme_7 bg text-white align-self-start"
+        data-bs-toggle="modal" data-bs-target="#exampleModal" style="aspect-ratio: 1/1;">
+        <br>
+        {{'NEDSS.CHAT.CREATE_CHAT'|translate}}
+      </button>
+    </div>
+    <div class="Chats">
+      <ul class="no-bullets mt-2">
+        <li *ngFor="let user of chats" (click)="renderChat(user)">
+          <div class="col-1">
+            <a class="text-danger bi bi-trash-fill"  (click)="removeChat(user.id)">
+            </a>
+          </div>
+          <div class="d-flex gap-3 align-items-center">
+            <img style="width: 50px;" [src]="user.pictureBase64==null?defaultConversationImg:user.picture"
+                 alt="{{user.name}}" class="rounded-2">
+            <div class=" d-flex flex-column gap-1 justify-content-center">
+              <h6 class="mb-0"> {{user.name}}</h6>
+              <p class="mb-0" style="color: cornflowerblue;">
+                {{user.chatMessages[user.chatMessages?.length-1].message}}
+              </p>
+            </div>
+          </div>
+          <hr>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- style="display: grid; box-shadow: rgb(204, 219, 232) 1px 1px 2px 0px inset, rgba(255, 255, 255, 0.5) -1px -1px 2px 1px inset !important;"> -->
+  <div class="col-12 col-md-6 bg-white px-2 row m-auto overflow-auto">
+    <div *ngIf="!ChatOpended" class="noConversation d-grid h-100" style="min-height: 85vh; place-content: center;">
+      <div>
+        <h3> <span style="color: rgb(247, 140, 63);"> {{'NEDSS.CHAT.NO_CONVERSATION'|translate}} </span></h3>
+        <small>
+          {{'NEDSS.CHAT.PLEASE_CREATE_CHAT'|translate}} &nbsp;
+          <!-- <span style="color: rgba(28, 199, 28, 0.897);"> <b>+</b> </span> -->
+          <!-- <i class="bi bi-plus-square-dotted fs-6"></i> -->
+        </small>
+      </div>
+    </div>
+
+    <!--Chat Options Menu-->
+    <div *ngIf="ChatOpended">
+      <div class="card text-center h-100 m-0 card-chat">
+        <div class="card-header bg-white shadow-sm">
+          <div class="d-flex align-items-center justify-content-between">
+            <img style="width: 40px;" class="rounded-2"
+              [src]="currentChat.picture==null?defaultConversationImg:currentChat.picture" alt="">
+            <h4 class="fw-bold"> {{currentChat.name}}</h4>
+
+
+            <button mat-menu-item data-bs-toggle="modal" data-bs-target="#add-user-dialog"
+              class="btn btn-outline-primary btn-sm theme_7 bg" style="align-self: center;"
+              style="width: 40px; aspect-ratio: 1/1;">
+              <i class="bi bi-person-add"></i>
+            </button>
+            <!-- <button class="float-start moreBtn col-1 bi bi-three-dots-vertical" [matMenuTriggerFor]="menu">
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item data-bs-toggle="modal" data-bs-target="#add-user-dialog">
+                <span class="bi bi-person-add"> Add user</span>
+              </button>
+            </mat-menu> -->
+          </div>
+        </div>
+        <div class="card-body chatbody bg-light w-100" id="chat-body">
+          <ng-container class="align-self-end bg-danger mb-3" *ngFor="let item of currentChat.chatMessages; index as i"
+            style="min-height: 200px;">
+            <div class=" mb-1 shadow-sm"
+              [ngClass]="item.userChatMapping.userId==userId?'sentmessage':'receviedmessage'">
+              <span class="text-secondary fw-bold">{{getUserName(item?.userId)}}</span>
+              <p class="fs-5">
+                {{item.message}}
+              </p>
+
+              <p>
+                <button class="btn btn-primary" (click)="downloadFromLink(item.file)" *ngIf="item.hasFile">
+                  {{'NEDSS.CHAT.DOWNLOAD'|translate}}
+                </button>
+                <span class="float-start text-secondary">
+                  <small class="text-small">{{item.sentAtString}} </small>
+                </span>
+              </p>
+            </div>
+          </ng-container>
+        </div>
+        <div class="card-footer text-muted d-flex align-items-center justify-content-center gap-2">
+          <input type="file" class="form-control d-none" #attachFile (change)="uploadFile(attachFile.files,true)">
+          <button *ngIf="!this.attachUploaded" class="attachBtn col-1 border border-1 rounded-2 h-100"
+            (click)="attachFile.click()">
+            <span id="attach" style="rotate: 35deg;font-size: x-large;" class="bi bi-paperclip"></span>
+          </button>
+
+          <!--<small *ngIf="this.attachUploaded">{{this.filePath}}</small> -->
+
+          <form action="" class="d-flex gap-2 align-items-center col-11">
+            <!-- <mat-icon *ngIf="this.attachUploaded" id="attachIcon" (click)="resetAttach()"
+              style="rotate: 35deg;" title="{{this.filePath}}"> close </mat-icon> -->
+            <input type="text"
+              class="input input-field sendMessageinput col-9 rounded-1 flex-grow-1 py-1 m-0 sendMessColor" id="msg"
+              [formControl]="msg" placeholder=" {{'NEDSS.CHAT.ADD_MESSAGE'|translate}}">
+            <button class="btn sendMessageBtn col-2 rounded-1" style="min-width: max-content;" (click)="sendMessage()">
+              {{'NEDSS.CHAT.SEND'|translate}}
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!--Chat users-->
+  <div class=" col-12 col-md-3 bg-white px-2" *ngIf="ChatOpended">
+    <app-chat-users [users]="chatUsers" [update]="update" (userID)="removeUser($event)"></app-chat-users>
+  </div>
+</div>
+
+<!----------------------------------------------------------->
+<!----------------- Create new chat Modal ------------------->
+<!----------------------------------------------------------->
+<div class="modal fade small-modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> {{'NEDSS.CHAT.ADD_NEW_CONVERSATION'|translate}}</h5>
+        <button type="button" class="btn bg-primary bi bi-x-circle" data-bs-dismiss="modal" aria-label="Close">
+
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <div class="row fw-bold">
+                <div class="col-3">
+                  <label for="groupName"> {{'NEDSS.CHAT.CHAT_NAME'|translate}}</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <input type="text" [(ngModel)]="chatName" class="form-control"
+                  placeholder=" {{'NEDSS.CHAT.CHAT_NAME' |translate}}">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 d-flex flex-column gap-2 fw-bold" style="align-items: flex-start;">
+            <span> {{'NEDSS.CHAT.CHAT_PIC'|translate}}</span>
+            <img style="cursor: pointer; border-radius: 8px;" [src]="imageSrc" (load)="handleImageLoad()"
+              [class.loaded]="imageLoaded" width="150px" height="100px" alt="upload image" (click)="userImg.click()">
+            <input type="file" #userImg name="" id="" accept="image/*" (change)="handleInputChange($event)" hidden>
+          </div>
+        </div>
+
+        <app-chat-filter [userID]="userId" [user]="user" (usersOut)="UpdateUsers($event)"
+          (chatNameOut)="updateName($event)" [update]="update"></app-chat-filter>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="close-create-chat"
+          data-bs-dismiss="modal">{{'NEDSS.CHAT.CANCEL'|translate}}</button>
+        <button type="button" class="btn btn-primary" (click)="createChat()">
+          {{'NEDSS.CHAT.CREATE_CHAT'|translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!----------------------------------------------------------->
+<!----------------- Add User Modal ------------------->
+<!----------------------------------------------------------->
+<div class="modal fade small-modal" id="add-user-dialog" tabindex="-1" role="dialog" aria-labelledby="adduserdialoglabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="adduserdialoglabel"> {{'NEDSS.CHAT.ADD_MEMBERS'|translate}}</h5>
+        <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-chat-filter [userID]="userId" [user]="user" [currentUsers]="chatUsers" [update]="update"
+          (usersOut)="UpdateUsers($event)"></app-chat-filter>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="close-add-user"
+          data-bs-dismiss="modal">{{'NEDSS.CHAT.CANCEL'|translate}}</button>
+        <button type="button" class="btn btn-primary" (click)="addUserToChat()">
+          {{'NEDSS.CHAT.ADD_MEMBERS'|translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

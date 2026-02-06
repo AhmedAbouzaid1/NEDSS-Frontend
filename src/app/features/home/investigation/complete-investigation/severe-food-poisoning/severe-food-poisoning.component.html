@@ -1,0 +1,411 @@
+<!-- <h2 class="titles">تسمم غذائي حاد</h2> -->
+
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow mt-4 color">
+      <div class="card-body">
+        <h5 style="text-align: center; border: 1px solid; padding: 1%">
+          تسمم غذائي حاد
+        </h5>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label for="">
+                {{"NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME"| translate}}: {{ patientName }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">
+                {{"NEDSS.INVESTIGATIONS.percentage"| translate}}
+                <span class="mx-4" style="font-size: larger; color: red">
+                  <!-- {{ precentile.value }} % -->
+                  {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount / allControllesCount) * 100 |
+                  number:'1.0-2') }} %
+                </span>
+              </label>
+              <input #precentile type="range" class="form-range bg" onkeypress="false" [readonly]="true"
+                style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
+                value="{{ (allFilledControlsCount / allControllesCount) * 100 }}"
+                formControlName="investigationCompletePercentage" />
+              <!-- value="{{controlsCount}}" formControlName="completePercentage" /> -->
+            </div>
+          </div>
+          <div class="col-lg-4">
+            {{"NEDSS.INVESTIGATIONS.Filled"| translate}}
+            {{allFilledControlsCount}}
+            {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+            {{"NEDSS.INVESTIGATIONS.From"| translate}}
+            {{allControllesCount}}
+            {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">الإستقصاء الوبائي</div>
+
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">هل هذه االحالة جزء من تفشي وبائي</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
+                    [(ngModel)]="SevereFoodPoisoningData.referralPartOutbreak">
+                    <option *ngFor="let case of referralPartOutbreaks" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="">هل المريض من متداولى الأغذية؟</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
+                    [(ngModel)]="SevereFoodPoisoningData.patientFoodHandler">
+                    <option *ngFor="let case of patientFoodHandlers" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="">فى حاله نعم، هل لدى المريض شهاده صحية؟</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="
+                      SevereFoodPoisoningData.patientHealthCertificate
+                    ">
+                    <option *ngFor="let case of patientHealthCertificates" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group row">
+                  <label for="" class="col-lg-12">تاريخ آخر شهادة</label>
+                  <div class="col-lg-12">
+                    <input type="date" (blur)="calculateCompletionPercentage()"  [class]="'form-control-'+ currentLang" name="dateLastCertificate"
+                      [(ngModel)]="SevereFoodPoisoningData.dateLastCertificate" #dateLastCertificate="ngModel" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="">هل تناول أي أطعمة غير معدة بالمنزل خلال الاسبوع السابق لظهر
+                    الأعارض</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
+                    [(ngModel)]="SevereFoodPoisoningData.foodsNotPreparedHome">
+                    <option *ngFor="let case of foodsNotPreparedHomes" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="">في حالة نعم الطعام</label>
+                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"  name="food"
+                    [(ngModel)]="SevereFoodPoisoningData.food" #food="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="">مصدره</label>
+                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"  name="source"
+                    [(ngModel)]="SevereFoodPoisoningData.source" #source="ngModel" />
+                </div>
+              </div>
+
+              <div class="col-12 title fs-6 fwb">
+                الحالة الإكلينيكية (الفحص السريري)
+              </div>
+              <div class="col-6">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</div>
+              <div class="col-6 has-labels">
+                <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"  class="form-check-input" id="fever" name="fever"
+                    [(ngModel)]="SevereFoodPoisoningData.fever" #fever="ngModel" [value]="0" />
+                  {{ "NEDSS.COMMON.YES" | translate }}
+                </label>
+                <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"  class="form-check-input" id="fever" name="fever"
+                    [(ngModel)]="SevereFoodPoisoningData.fever" #fever="ngModel" [value]="1" />
+                  {{ "NEDSS.COMMON.NO" | translate }}
+                </label>
+                <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"  class="form-check-input" id="fever" name="fever"
+                    [(ngModel)]="SevereFoodPoisoningData.fever" #fever="ngModel" [value]="2" />
+                  {{ "NEDSS.REPORTS.UnKnown" | translate }}
+                </label>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Duration_Fever_Days" | translate }}</label>
+                  <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"  name="feverDurationDay"
+                    [(ngModel)]="SevereFoodPoisoningData.feverDurationDay" #feverDurationDay="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Max_Temp" | translate }}</label>
+                  <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"  name="maxTemperature"
+                    [(ngModel)]="SevereFoodPoisoningData.maxTemperature" #maxTemperature="ngModel" />
+                </div>
+              </div>
+
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">عدد مرات البراز في اليوم</label>
+                  <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"  name="numberStoolsDay"
+                    [(ngModel)]="SevereFoodPoisoningData.numberStoolsDay" #numberStoolsDay="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">هل يوجد مخاط مصاحب للبراز</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
+                    [(ngModel)]="SevereFoodPoisoningData.mucusAccompanyingStool">
+                    <option *ngFor="let case of mucusAccompanyingStools" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">هل المخاط مصاحب بدم</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
+                    [(ngModel)]="SevereFoodPoisoningData.mucusAccompaniedBlood">
+                    <option *ngFor="let case of mucusAccompaniedBloods" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">هل البراز مائي</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="SevereFoodPoisoningData.stoolWatery">
+                    <option *ngFor="let case of stoolWaterys" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-3 mt-4">منذ ظهور الاسهال هل عندك</div>
+                  <div class="col-lg-9">
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">قئ</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="SevereFoodPoisoningData.vomit">
+                            <option *ngFor="let case of vomits" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">رغبة في القئ</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
+                            [(ngModel)]="SevereFoodPoisoningData.urgeVomit">
+                            <option *ngFor="let case of urgeVomits" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">تعنية</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="SevereFoodPoisoningData.meaning">
+                            <option *ngFor="let case of meanings" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">كحة</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="SevereFoodPoisoningData.cough">
+                            <option *ngFor="let case of coughs" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">آلام بالمفاصل</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
+                            [(ngModel)]="SevereFoodPoisoningData.jointPain">
+                            <option *ngFor="let case of jointPains" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">مغص</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="SevereFoodPoisoningData.colic">
+                            <option *ngFor="let case of colics" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">صداع</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="SevereFoodPoisoningData.headache">
+                            <option *ngFor="let case of headaches" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">آلام بالعضلات</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
+                            [(ngModel)]="SevereFoodPoisoningData.muscleAches">
+                            <option *ngFor="let case of muscleAchess" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">احمرار بالجلد</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
+                            [(ngModel)]="SevereFoodPoisoningData.rednessSkin">
+                            <option *ngFor="let case of rednessSkins" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">رعشة</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="SevereFoodPoisoningData.jerk">
+                            <option *ngFor="let case of jerks" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">التهاب بالحلق</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
+                            [(ngModel)]="SevereFoodPoisoningData.soreThroat">
+                            <option *ngFor="let case of SoreThroats" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">تشنجات</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="SevereFoodPoisoningData.cramp">
+                            <option *ngFor="let case of cramps" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                          <label for="">أخرى</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"  name="other"
+                            [(ngModel)]="SevereFoodPoisoningData.other" #other="ngModel" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">التقصي البيئي</div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">نوع مصدر امياه بالمنزل</label>
+
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="SevereFoodPoisoningData.waterSource">
+                    <option *ngFor="let case of waterSources" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">أخرى</label>
+                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"  name="other2"
+                    [(ngModel)]="SevereFoodPoisoningData.other2" #other2="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل يتم تخزين المياه</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="SevereFoodPoisoningData.waterStored">
+                    <option *ngFor="let case of waterStoreds" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">نعم (نوع الخزان)</label>
+                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"  name="tankType"
+                    [(ngModel)]="SevereFoodPoisoningData.tankType" #tankType="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل لوحظ تغير فى طعم او لون او رائحة مياة الشرب خلال اسبوع
+                    من ظهور الاعراض؟
+                  </label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
+                    [(ngModel)]="SevereFoodPoisoningData.changeInDrinkingWater">
+                    <option *ngFor="let case of changeInDrinkingWaters" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">ماهى المسافة بين مصادر المياة والمجارى؟</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"  [(ngModel)]="
+                      SevereFoodPoisoningData.distanceWaterSourcesSewage
+                    ">
+                    <option *ngFor="let case of distanceWaterSourcesSewages" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-start">
+        <button type="submit" class="btn bg rounded-2 text-light" (click)="save()">
+          {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,325 @@
+<div class="table-reponsive mt-4 shadow border rounded">
+  <div class="form-group">
+    <div
+      class="form-group titles"
+      style="text-align: center; font-weight: bold"
+    >
+      <h5>
+        {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.UsersReport" | translate }}
+      </h5>
+    </div>
+  </div>
+  <div class="card shadow">
+    <div class="card-body bg-dark-mode">
+      <div class="row form-group">
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT" | translate }}
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <select
+                class="form-control select2 select2-hidden-accessible"
+                (change)="governmentSelected()"
+                tabindex="-1"
+                [(ngModel)]="selectedGovernmentId"
+                aria-hidden="true"
+                [ngModelOptions]="{ standalone: true }"
+                [disabled]="this.levelId != 1"
+              >
+                <option
+                  value="item.id"
+                  *ngFor="let item of governments"
+                  [ngValue]="item.id"
+                  [selected]="item.id === selectedGovernmentId"
+                >
+                  {{ item.arabicName }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <select
+                class="form-control select2 select2-hidden-accessible"
+                (change)="governmentSelected()"
+                tabindex="-1"
+                [(ngModel)]="selectedGovernmentId"
+                aria-hidden="true"
+                [ngModelOptions]="{ standalone: true }"
+                [disabled]="this.levelId != 1"
+              >
+                <option
+                  value="item.id"
+                  *ngFor="let item of governments"
+                  [ngValue]="item.id"
+                  [selected]="item.id === selectedGovernmentId"
+                >
+                  {{ item.englishName }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.HEALTHADMIN" | translate }}
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <select
+                class="form-control select2 select2-hidden-accessible"
+                (change)="healthAdministrationSelected()"
+                tabindex="-1"
+                [(ngModel)]="selectedHealthAdministrationId"
+                aria-hidden="true"
+                [ngModelOptions]="{ standalone: true }"
+                [disabled]="this.levelId != 1 && this.levelId != 2"
+              >
+                <option
+                  value="item.id"
+                  *ngFor="let item of healthAdministrations"
+                  [ngValue]="item.id"
+                  [selected]="item.id === selectedHealthAdministrationId"
+                >
+                  {{ item.arabicName }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <select
+                class="form-control select2 select2-hidden-accessible"
+                (change)="healthAdministrationSelected()"
+                tabindex="-1"
+                [(ngModel)]="selectedHealthAdministrationId"
+                aria-hidden="true"
+                [ngModelOptions]="{ standalone: true }"
+                [disabled]="this.levelId != 1 && this.levelId != 2"
+              >
+                <option
+                  value="item.id"
+                  *ngFor="let item of healthAdministrations"
+                  [ngValue]="item.id"
+                  [selected]="item.id === selectedHealthAdministrationId"
+                >
+                  {{ item.englishName }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="">
+              {{
+                "NEDSS.HOME.GENERAL_DATA_COMPLETION.INCIDENT_SOURCE" | translate
+              }}
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <select
+                class="form-control select2 select2-hidden-accessible"
+                (change)="onIncidentSourceChanged()"
+                tabindex="-1"
+                [(ngModel)]="selectedIncidentSourceId"
+                aria-hidden="true"
+                [ngModelOptions]="{ standalone: true }"
+                [disabled]="
+                  this.levelId != 1 && this.levelId != 2 && this.levelId != 3
+                "
+              >
+                <option
+                  value="item.id"
+                  *ngFor="let item of incidentSources"
+                  [ngValue]="item.id"
+                  [selected]="item.id === selectedIncidentSourceId"
+                >
+                  {{ item.arabicName }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <select
+                class="form-control select2 select2-hidden-accessible"
+                (change)="onIncidentSourceChanged()"
+                [ngModelOptions]="{ standalone: true }"
+                tabindex="-1"
+                [(ngModel)]="selectedIncidentSourceId"
+                aria-hidden="true"
+                [disabled]="
+                  this.levelId != 1 && this.levelId != 2 && this.levelId != 3
+                "
+              >
+                <option
+                  value="item.id"
+                  *ngFor="let item of incidentSources"
+                  [ngValue]="item.id"
+                  [selected]="item.id === selectedIncidentSourceId"
+                >
+                  {{ item.englishName }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group"></div>
+    </div>
+  </div>
+  <div class="card shadow">
+    <div class="card-body">
+      <div class="row form-group">
+        <div
+          class="col-2 float-end"
+          *ngIf="users != undefined && users.length > 0"
+        >
+          <a (click)="exportPatientsAsPdf()">
+            <span class="bi bi-filetype-pdf button-export"></span>
+          </a>
+          <button
+            style="border: none; background: none"
+            [useExistingCss]="true"
+            [printStyle]="{ '.exclude-pdf': { display: 'none' } }"
+            printTitle="{{ 'NEDSS.SEARCH.FullData' | translate }}"
+            printSectionId="myTableElementId"
+            ngxPrint
+          >
+            <span class="bi bi-printer-fill button-export"></span>
+          </button>
+          <a (click)="exportPatiantsAsExcel()"
+            ><span class="bi bi-file-earmark-excel-fill button-export"></span
+          ></a>
+        </div>
+        <div
+          class="col-12"
+          id="myTableElementId"
+          #myTableElementId
+          *ngIf="users.length > 0"
+        >
+          <table
+            [style.direction]="dir"
+            class="table table-hover table-striped table-sm"
+            *ngIf="users != undefined && users.length > 0"
+          >
+            <thead>
+              <tr>
+                <th>
+                  <span>{{ "NEDSS.HOME.USERS.USER_NAME" | translate }}</span>
+                </th>
+
+                <!-- <th>
+            <span>{{ "NEDSS.HOME.USERS.USER_TYPE" | translate }}</span>
+          </th> -->
+                <th>
+                  <span>{{ "NEDSS.HOME.USERS.GOVERNEMENT" | translate }}</span>
+                </th>
+                <th
+                  *ngIf="
+                    selectedHealthAdministrationId != null &&
+                    selectedHealthAdministrationId != -1
+                  "
+                >
+                  <span>
+                    {{ "NEDSS.SEARCH.HEALTH_ADMINISTRATION" | translate }}</span
+                  >
+                </th>
+                <th
+                  *ngIf="
+                    selectedIncidentSourceId != null &&
+                    selectedIncidentSourceId != -1
+                  "
+                >
+                  <span>{{ "NEDSS.SEARCH.INCEIDENT_SOURCE" | translate }}</span>
+                </th>
+                <th>
+                  {{ "NEDSS.HOME.USERS.POSITION" | translate }}
+                </th>
+                <th>
+                  <span>{{ "NEDSS.HOME.USERS.LEVEL" | translate }}</span>
+                </th>
+                <th>
+                  <span>{{ "NEDSS.HOME.USERS.MOBILE" | translate }}</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container>
+                <tr *ngFor="let item of users">
+                  <td>
+                    <span [innerHTML]="item.fullName"></span>
+                  </td>
+
+                  <td>
+                    {{ item.govenmentName }}
+                  </td>
+                  <td
+                    *ngIf="
+                      selectedHealthAdministrationId != null &&
+                      selectedHealthAdministrationId != -1
+                    "
+                  >
+                    {{ item.healthAdministrationName }}
+                  </td>
+                  <td
+                    *ngIf="
+                      selectedIncidentSourceId != null &&
+                      selectedIncidentSourceId != -1
+                    "
+                  >
+                    {{ item.incidentSourceName }}
+                  </td>
+                  <td>
+                    {{ item.positionName }}
+                  </td>
+                  <td>
+                    {{ item.levelName }}
+                  </td>
+
+                  <td>
+                    {{ item.phoneNo }}
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        <div
+          class="col-lg-12 p-0"
+          style="margin-bottom: 4px; margin-top: 3%"
+          *ngIf="users.length > 0"
+        >
+          <p-paginator
+            *ngIf="!noData"
+            [rows]="userFilter.pageSize"
+            [totalRecords]="pages"
+            (onPageChange)="paginate($event)"
+            [first]="first"
+            [currentPageReportTemplate]="
+              'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+            "
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[
+              10,
+              20,
+              30,
+              40,
+              50,
+              70,
+              100,
+              200,
+              500,
+              1000,
+              2000,
+              pages >= 5000 ? pages : 5000
+            ]"
+          ></p-paginator>
+        </div>
+        <div [hidden]="!noData">
+          <div class="no-data content-center">
+            <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+            <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

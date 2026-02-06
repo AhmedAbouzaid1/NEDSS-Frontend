@@ -1,0 +1,1243 @@
+<app-loader *ngIf="loadingPanel"></app-loader>
+
+<div class="col-12 color-d-2">
+  <form (ngSubmit)="save()" #generalDataCompletionForm="ngForm" novalidate>
+    <nav class="d-flex gap-4 mx-sm-4">
+      <a
+        routerLink="../zero-report"
+        class="form-titles px-md-5 fw-bold"
+        role="button"
+        style="background-color: white !important; color: rgb(67, 67, 67)"
+      >
+        {{
+          "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.ZERO_NOTIFICATION.ZERO_NOTIFICATION"
+            | translate
+        }}
+      </a>
+      <a
+        routerLink="../immediate-notification"
+        class="form-titles px-md-5 bg-secondary"
+        role="button"
+      >
+        {{
+          "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.INSTANT_NOTIFICATION"
+            | translate
+        }}
+      </a>
+    </nav>
+    <div id="jump_to_this_location"></div>
+    <div class="card shadow">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.LAB_VIEW.ADD_PATIENT.PRIMARY_DISEASE" | translate
+                    }}
+                    <span class="text-danger mess-color">*</span>
+                  </label>
+                  <!-- <div *ngIf="currentLang == 'ar'">
+                    <select
+                      class="form-control select2 select2-hidden-accessible"
+                      (change)="diseasesSelected()"
+                      [(ngModel)]="selecteddiseases"
+                      aria-hidden="true"
+                      [ngModelOptions]="{ standalone: true }"
+                    >
+                      <option
+                        value="item.id"
+                        *ngFor="let item of diseases"
+                        [ngValue]="item.id"
+                      >
+                        {{ item.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <select
+                      class="form-control select2 select2-hidden-accessible"
+                      (change)="diseasesSelected()"
+                      [(ngModel)]="selecteddiseases"
+                      aria-hidden="true"
+                      [ngModelOptions]="{ standalone: true }"
+                    >
+                      <option
+                        value="item.id"
+                        *ngFor="let item of diseases"
+                        [ngValue]="item.id"
+                      >
+                        {{ item.englishName }}
+                      </option>
+                    </select>
+                  </div> -->
+                  <div *ngIf="currentLang == 'ar'">
+                    <p-dropdown
+                      (onChange)="onDiseaseChanged()"
+                      [options]="diseases"
+                      [(ngModel)]="selectedDisase"
+                      optionLabel="arabicName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="diseases"
+                      [filter]="true"
+                      filterBy="arabicName"
+                    >
+                    </p-dropdown>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <p-dropdown
+                      (onChange)="onDiseaseChanged()"
+                      [options]="diseases"
+                      [(ngModel)]="selectedDisase"
+                      optionLabel="englishName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="diseases"
+                      [filter]="true"
+                      filterBy="arabicName"
+                    >
+                    </p-dropdown>
+                  </div>
+
+                  <!-- <ng-multiselect-dropdown
+                    [settings]="multipleDropdownSettings"
+                    [data]="diseases"
+                    [(ngModel)]="selectedDisase"
+                    [placeholder]="'NEDSS.COMMON.SELECT' | translate"
+                    [ngModelOptions]="{ standalone: true }"
+                    (onSelectAll)="onAllDiseaseChanged($event)"
+                    (onDeSelectAll)="onAllDiseaseDisChanged($event)"
+                    (onSelect)="onDiseaseChanged()"
+                    (onDeSelect)="onDiseaseDisChanged()"
+                  >
+                  </ng-multiselect-dropdown> -->
+
+                  <small
+                    *ngIf="!isDiseaseValid"
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <div
+                class="col-lg-3"
+                *ngIf="activeUSerService.getAccessibleParts?.showGovernments"
+              >
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.GOVERNEMENT"
+                        | translate
+                    }}
+                    <span class="text-danger mess-color">*</span>
+                  </label>
+
+                  <div *ngIf="currentLang == 'ar'">
+                    <p-dropdown
+                      (onChange)="governmentSelected()"
+                      [options]="governments"
+                      [(ngModel)]="selectedGovernment"
+                      optionLabel="arabicName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="governments"
+                      [filter]="true"
+                      filterBy="arabicName"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableGovernments
+                      "
+                    >
+                    </p-dropdown>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <p-dropdown
+                      (onChange)="governmentSelected()"
+                      [options]="governments"
+                      [(ngModel)]="selectedGovernment"
+                      optionLabel="englishName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="governments"
+                      [filter]="true"
+                      filterBy="englishName"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableGovernments
+                      "
+                    >
+                    </p-dropdown>
+                  </div>
+                  <small
+                    *ngIf="!isGovernmentValid"
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <div
+                class="col-lg-3 mb-3"
+                *ngIf="activeUSerService.getAccessibleParts?.showDepartments"
+              >
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.HEALTHADMIN"
+                        | translate
+                    }}
+                    <span class="text-danger mess-color">*</span>
+                  </label>
+
+                  <div *ngIf="currentLang == 'ar'">
+                    <!-- <select class="form-control select2 select2-hidden-accessible"
+                      (change)="healthAdministrationSelected()" [(ngModel)]="selectedhealthAdministration"
+                      aria-hidden="true" [ngModelOptions]="{ standalone: true }"
+                      [disabled]="this.levelId != 1 && this.levelId != 2">
+                      <option value="item.id" *ngFor="let item of healthAdministrations" [ngValue]="item.id">
+                        {{ item.arabicName }}
+                      </option>
+                    </select> -->
+                    <p-dropdown
+                      (onChange)="healthAdministrationSelected()"
+                      [options]="healthAdministrations"
+                      [(ngModel)]="selectedhealthAdministration"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableDepartments
+                      "
+                      optionLabel="arabicName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="healthAdministrations"
+                      [filter]="true"
+                      filterBy="arabicName"
+                    >
+                    </p-dropdown>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <!-- <select class="form-control select2 select2-hidden-accessible"
+                      (change)="healthAdministrationSelected()" [(ngModel)]="selectedhealthAdministration"
+                      aria-hidden="true" [ngModelOptions]="{ standalone: true }"
+                      [disabled]="this.levelId != 1 && this.levelId != 2">
+                      <option value="item.id" *ngFor="let item of healthAdministrations" [ngValue]="item.id">
+                        {{ item.englishName }}
+                      </option>
+                    </select> -->
+                    <p-dropdown
+                      (onChange)="healthAdministrationSelected()"
+                      [options]="healthAdministrations"
+                      [(ngModel)]="selectedhealthAdministration"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableDepartments
+                      "
+                      optionLabel="englishName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="healthAdministrations"
+                      [filter]="true"
+                      filterBy="englishName"
+                    >
+                    </p-dropdown>
+                  </div>
+                  <small
+                    *ngIf="!isHealthAdministrationValid"
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <div
+                class="col-lg-3 mb-3"
+                *ngIf="activeUSerService.getAccessibleParts?.showUniversities"
+              >
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_UNIVERSITY"
+                        | translate
+                    }}
+                    <span class="text-danger mess-color">*</span>
+                  </label>
+                  <div *ngIf="currentLang == 'ar'">
+                    <p-dropdown
+                      (onChange)="branchSelected()"
+                      [options]="branches"
+                      [(ngModel)]="SelectedbranchId"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts
+                          ?.enableUniversities
+                      "
+                      optionLabel="arabicName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="branches"
+                      [required]="true"
+                      [filter]="true"
+                      filterBy="arabicName"
+                    >
+                    </p-dropdown>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <p-dropdown
+                      (onChange)="branchSelected()"
+                      [options]="branches"
+                      [(ngModel)]="SelectedbranchId"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts
+                          ?.enableUniversities
+                      "
+                      optionLabel="englishName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="branches"
+                      [required]="true"
+                      [filter]="true"
+                      filterBy="englishName"
+                    >
+                    </p-dropdown>
+                  </div>
+                  <small
+                    *ngIf="!isBranchValid"
+                    class="form-text text-danger"
+                    style="font-size: small"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <div
+                class="col-lg-3 mb-3"
+                *ngIf="activeUSerService.getAccessibleParts?.showBranches"
+              >
+                <div class="form-group">
+                  <label for="govenmentId">
+                    {{
+                      "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_BRANCH"
+                        | translate
+                    }}
+                    <span class="text-danger mess-color">*</span>
+                  </label>
+                  <div *ngIf="currentLang == 'ar'">
+                    <p-dropdown
+                      (onChange)="branchSelected()"
+                      [options]="branches"
+                      [(ngModel)]="SelectedbranchId"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableBranches
+                      "
+                      optionLabel="arabicName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="branches"
+                      [required]="true"
+                      [filter]="true"
+                      filterBy="arabicName"
+                      (onBlur)="
+                        generalDataService.isBranchValid =
+                          generalDataService.validateField(SelectedbranchId)
+                      "
+                    >
+                    </p-dropdown>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <p-dropdown
+                      (onChange)="branchSelected()"
+                      [options]="branches"
+                      [(ngModel)]="SelectedbranchId"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableBranches
+                      "
+                      optionLabel="englishName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="branches"
+                      [required]="true"
+                      [filter]="true"
+                      filterBy="englishName"
+                    >
+                    </p-dropdown>
+                  </div>
+                  <small
+                    *ngIf="!isBranchValid"
+                    class="form-text text-danger"
+                    style="font-size: small"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <div
+                class="col-lg-3 mb-3"
+                *ngIf="activeUSerService.getAccessibleParts?.showAreas"
+              >
+                <div class="form-group">
+                  <label for="govenmentId">
+                    {{
+                      "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_AREA"
+                        | translate
+                    }}
+                    <span class="text-danger mess-color">*</span>
+                  </label>
+                  <div *ngIf="currentLang == 'ar'">
+                    <p-dropdown
+                      (onChange)="areaSelected()"
+                      [options]="areas"
+                      [(ngModel)]="SelectedareaId"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableAreas
+                      "
+                      optionLabel="arabicName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="areas"
+                      [required]="true"
+                      [filter]="true"
+                      filterBy="arabicName"
+                    >
+                    </p-dropdown>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <p-dropdown
+                      (onChange)="areaSelected()"
+                      [options]="areas"
+                      [(ngModel)]="SelectedareaId"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableAreas
+                      "
+                      optionLabel="englishName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="areas"
+                      [required]="true"
+                      [filter]="true"
+                      filterBy="englishName"
+                    >
+                    </p-dropdown>
+                  </div>
+                  <small
+                    *ngIf="!isAreaValid"
+                    class="form-text text-danger"
+                    style="font-size: small"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <div
+                class="col-lg-3 mb-3"
+                *ngIf="activeUSerService.getAccessibleParts?.showSources"
+              >
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.ZERO_NOTIFICATION.INCEIDENT_SOURCE"
+                        | translate
+                    }}
+                    <span class="text-danger">*</span>
+                  </label>
+                  <div *ngIf="currentLang == 'ar'">
+                    <p-dropdown
+                      (onChange)="incidentSourcesSelected()"
+                      [options]="incidentSources"
+                      [(ngModel)]="selectedincidentSource"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableSources
+                      "
+                      optionLabel="arabicName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="incidentSources"
+                      [required]="true"
+                      [filter]="true"
+                      filterBy="arabicName"
+                    >
+                    </p-dropdown>
+                    <!-- <select
+                      class="form-control select2 select2-hidden-accessible"
+                      (change)="incidentSourcesSelected()"
+                      tabindex="-1"
+                      [(ngModel)]="selectedincidentSource"
+                      aria-hidden="true"
+                      [ngModelOptions]="{ standalone: true }"
+                      [disabled]="
+                        this.levelId != 1 &&
+                        this.levelId != 2 &&
+                        this.levelId != 3
+                      "
+                    >
+                      <option
+                        value="item.id"
+                        *ngFor="let item of incidentSources"
+                        [ngValue]="item.id"
+                        [selected]="item.id === selectedincidentSource"
+                      >
+                        {{ item.arabicName }}
+                      </option>
+                    </select> -->
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <p-dropdown
+                      (onChange)="incidentSourcesSelected()"
+                      [options]="incidentSources"
+                      [(ngModel)]="selectedincidentSource"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableSources
+                      "
+                      optionLabel="englishName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="incidentSources"
+                      [required]="true"
+                      [filter]="true"
+                      filterBy="englishName"
+                    >
+                    </p-dropdown>
+                    <!-- <select
+                      class="form-control select2 select2-hidden-accessible"
+                      (change)="incidentSourcesSelected()"
+                      [ngModelOptions]="{ standalone: true }"
+                      tabindex="-1"
+                      [(ngModel)]="selectedincidentSource"
+                      aria-hidden="true"
+                      [disabled]="
+                        this.levelId != 1 &&
+                        this.levelId != 2 &&
+                        this.levelId != 3
+                      "
+                    >
+                      <option
+                        value="item.id"
+                        *ngFor="let item of incidentSources"
+                        [ngValue]="item.id"
+                        [selected]="item.id === selectedincidentSource"
+                      >
+                        {{ item.englishName }}
+                      </option>
+                    </select> -->
+                  </div>
+
+                  <small
+                    *ngIf="!isIncidentSourceValid"
+                    class="form-text text-danger"
+                    style="font-size: small"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <!-- //TODO غير دول لحاجه يكون فيها ترتيب التاريخ يوم-شهر-سنه // الـ picker التاني دا بيطلع تاريخ بشكل مختلف مطلوب يطلع 20-10-2023 -->
+
+              <!-- <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                    "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.ZERO_NOTIFICATION.FROM_DATE"
+                    | translate
+                    }}
+                    <span class="text-danger">*</span>
+                  </label>
+
+                  <mat-form-field appearance="fill">
+                    <mat-label> {{'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate }}</mat-label>
+                    <input [max]="maxDate.toISOString().split('T')[0]" matInput name="fromDate"
+                      [class]="'form-control-'+ currentLang" [matDatepicker]="picker"
+                      [(ngModel)]="immediateNotification.fromDate" (dateInput)="fromDateSelected($event)"
+                      [ngModelOptions]="{standalone: true}" />
+
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+
+                  <small *ngIf="!isFromDateValid" class="form-text text-danger">
+                    {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+                  </small>
+
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                    "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.ZERO_NOTIFICATION.TO_DATE"
+                    | translate
+                    }}
+                    <span class="text-danger">*</span>
+                  </label>
+
+                  <mat-form-field appearance="fill">
+                    <mat-label> {{'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate }}</mat-label>
+                    <input [min]="immediateNotification.fromDate" [max]="maxDate.toISOString().split('T')[0]" matInput
+                      [class]="'form-control-'+ currentLang" [matDatepicker]="picker1" name="toDate"
+                      [(ngModel)]="immediateNotification.toDate" (dateInput)="toDateSelected($event)"
+                      [ngModelOptions]="{standalone: true}" />
+
+                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+
+                  <small *ngIf="!isToDateValid" class="form-text text-danger">
+                    {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+                  </small>
+
+                </div>
+              </div> -->
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.FROM_DATE"
+                        | translate
+                    }}
+                    <span class="text-danger">*</span>
+                  </label>
+                  <mat-form-field appearance="fill">
+                    <mat-label>
+                      {{
+                        "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER"
+                          | translate
+                      }}</mat-label
+                    >
+                    <input
+                      [min]="minDate"
+                      [max]="maxDate"
+                      matInput
+                      [matDatepicker]="picker"
+                      [(ngModel)]="immediateNotification.fromDate"
+                      (dateInput)="fromDateSelected($event)"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+
+                    <mat-datepicker-toggle
+                      matIconSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                  <small
+                    *ngIf="!isFromDateValid"
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.TO_DATE"
+                        | translate
+                    }}
+                    <span class="text-danger">*</span>
+                  </label>
+                  <mat-form-field appearance="fill">
+                    <mat-label>
+                      {{
+                        "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER"
+                          | translate
+                      }}</mat-label
+                    >
+                    <input
+                      [min]="immediateNotification.fromDate"
+                      [max]="maxDate"
+                      matInput
+                      [matDatepicker]="picker1"
+                      [(ngModel)]="immediateNotification.toDate"
+                      (dateInput)="toDateSelected($event)"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+
+                    <mat-datepicker-toggle
+                      matIconSuffix
+                      [for]="picker1"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                  <small
+                    *ngIf="!isToDateValid"
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.TOTALCOUNT"
+                        | translate
+                    }}
+                    <span class="text-danger mess-color">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    [(ngModel)]="immediateNotification.infectionsCount"
+                    name="infectionsCount"
+                    (keypress)="onNumberKeyPress($event)"
+                    id="infectionsCount"
+                    pInputText
+                    class="w-100"
+                  />
+                </div>
+
+                <small
+                  *ngIf="!isValidInfectionsCount"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+
+                <!-- <div *ngIf="!infectionsCount"
+                class="form-text text-danger mess-color">
+                {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+              </div> -->
+              </div>
+
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.MALECOUNT"
+                        | translate
+                    }}
+                    <span
+                      *ngIf="immediateNotification.femaleCount"
+                      class="text-danger mess-color"
+                      >*</span
+                    >
+                  </label>
+                  <input
+                    type="number"
+                    [(ngModel)]="immediateNotification.maleCount"
+                    name="maleCount"
+                    id="maleCount"
+                    (keypress)="onNumberKeyPress($event)"
+                    pInputText
+                    class="w-100"
+                  />
+                </div>
+                <small
+                  *ngIf="!isValidMaleCount"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.FEMALECOUNT"
+                        | translate
+                    }}
+                    <span
+                      *ngIf="immediateNotification.maleCount"
+                      class="text-danger mess-color"
+                      >*</span
+                    >
+                  </label>
+                  <input
+                    type="number"
+                    [(ngModel)]="immediateNotification.femaleCount"
+                    name="femaleCount"
+                    (keypress)="onNumberKeyPress($event)"
+                    id="femaleCount"
+                    pInputText
+                    class="w-100"
+                  />
+                </div>
+                <small
+                  *ngIf="!isValidFemaleCount"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.LOWER_THAN_MONTH"
+                        | translate
+                    }}
+                    <span
+                      *ngIf="
+                        immediateNotification.ageLowerThanYear ||
+                        immediateNotification.ageUpTo5 ||
+                        immediateNotification.ageUpTo15 ||
+                        immediateNotification.ageUpTo35 ||
+                        immediateNotification.ageUpTo65 ||
+                        immediateNotification.ageMoreThan65
+                      "
+                      class="text-danger mess-color"
+                      >*</span
+                    >
+                  </label>
+                  <input
+                    type="number"
+                    [(ngModel)]="immediateNotification.ageLowerThanMonth"
+                    name="ageLowerThanMonth"
+                    (keypress)="onNumberKeyPress($event)"
+                    id="ageLowerThanMonth"
+                    pInputText
+                    class="w-100"
+                  />
+                </div>
+                <small
+                  *ngIf="!isValidAgeLowerThanMonth"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.LOWER_THAN_YEAR"
+                        | translate
+                    }}
+                    <span
+                      *ngIf="
+                        immediateNotification.ageLowerThanMonth ||
+                        immediateNotification.ageUpTo5 ||
+                        immediateNotification.ageUpTo15 ||
+                        immediateNotification.ageUpTo35 ||
+                        immediateNotification.ageUpTo65 ||
+                        immediateNotification.ageMoreThan65
+                      "
+                      class="text-danger mess-color"
+                      >*</span
+                    >
+                  </label>
+                  <input
+                    type="number"
+                    name="ageLowerThanYear"
+                    id=""
+                    pInputText
+                    class="w-100"
+                    (keypress)="onNumberKeyPress($event)"
+                    [(ngModel)]="immediateNotification.ageLowerThanYear"
+                  />
+                </div>
+                <small
+                  *ngIf="!isValidAgeLowerThanYear"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.UP_TO_FIVE"
+                        | translate
+                    }}
+                    <span
+                      *ngIf="
+                        immediateNotification.ageLowerThanYear ||
+                        immediateNotification.ageLowerThanMonth ||
+                        immediateNotification.ageUpTo15 ||
+                        immediateNotification.ageUpTo35 ||
+                        immediateNotification.ageUpTo65 ||
+                        immediateNotification.ageMoreThan65
+                      "
+                      class="text-danger mess-color"
+                      >*</span
+                    >
+                  </label>
+                  <input
+                    type="number"
+                    name="ageUpTo5"
+                    id=""
+                    pInputText
+                    class="w-100"
+                    (keypress)="onNumberKeyPress($event)"
+                    [(ngModel)]="immediateNotification.ageUpTo5"
+                  />
+                </div>
+                <small
+                  *ngIf="!isValidageUpToFive"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.UP_TO_FIVETEEN"
+                        | translate
+                    }}
+                    <span
+                      *ngIf="
+                        immediateNotification.ageLowerThanYear ||
+                        immediateNotification.ageLowerThanMonth ||
+                        immediateNotification.ageUpTo5 ||
+                        immediateNotification.ageUpTo35 ||
+                        immediateNotification.ageUpTo65 ||
+                        immediateNotification.ageMoreThan65
+                      "
+                      class="text-danger mess-color"
+                      >*</span
+                    >
+                  </label>
+                  <input
+                    type="number"
+                    name="ageUpTo15"
+                    id=""
+                    pInputText
+                    class="w-100"
+                    (keypress)="onNumberKeyPress($event)"
+                    [(ngModel)]="immediateNotification.ageUpTo15"
+                  />
+                </div>
+                <small
+                  *ngIf="!isValidageUpToFifteen"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.UP_TO_THIRTY_FIVE"
+                        | translate
+                    }}
+                    <span
+                      *ngIf="
+                        immediateNotification.ageLowerThanYear ||
+                        immediateNotification.ageLowerThanMonth ||
+                        immediateNotification.ageUpTo5 ||
+                        immediateNotification.ageUpTo15 ||
+                        immediateNotification.ageUpTo65 ||
+                        immediateNotification.ageMoreThan65
+                      "
+                      class="text-danger mess-color"
+                      >*</span
+                    >
+                  </label>
+                  <input
+                    type="number"
+                    name="ageUpTo35"
+                    id=""
+                    pInputText
+                    class="w-100"
+                    (keypress)="onNumberKeyPress($event)"
+                    [(ngModel)]="immediateNotification.ageUpTo35"
+                  />
+                </div>
+                <small
+                  *ngIf="!isValidageUpToThirtyFive"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.UP_TO_SIXTY_FIVE"
+                        | translate
+                    }}
+                    <span
+                      *ngIf="
+                        immediateNotification.ageLowerThanYear ||
+                        immediateNotification.ageLowerThanMonth ||
+                        immediateNotification.ageUpTo5 ||
+                        immediateNotification.ageUpTo15 ||
+                        immediateNotification.ageUpTo35 ||
+                        immediateNotification.ageMoreThan65
+                      "
+                      class="text-danger mess-color"
+                      >*</span
+                    >
+                  </label>
+                  <input
+                    type="number"
+                    name="ageUpTo65"
+                    id=""
+                    pInputText
+                    class="w-100"
+                    (keypress)="onNumberKeyPress($event)"
+                    [(ngModel)]="immediateNotification.ageUpTo65"
+                  />
+                </div>
+                <small
+                  *ngIf="!isValidageUpToSixtyFive"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                      "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.MORE_THAN_SIXTY_FIVE"
+                        | translate
+                    }}
+                    <span
+                      *ngIf="
+                        immediateNotification.ageLowerThanYear ||
+                        immediateNotification.ageLowerThanMonth ||
+                        immediateNotification.ageUpTo5 ||
+                        immediateNotification.ageUpTo15 ||
+                        immediateNotification.ageUpTo35 ||
+                        immediateNotification.ageMoreThan65
+                      "
+                      class="text-danger mess-color"
+                      >*</span
+                    >
+                  </label>
+                  <input
+                    type="number"
+                    name="ageMoreThan65"
+                    id=""
+                    pInputText
+                    class="w-100"
+                    (keypress)="onNumberKeyPress($event)"
+                    [(ngModel)]="immediateNotification.ageMoreThan65"
+                  />
+                </div>
+                <small
+                  *ngIf="!isValidAgeMoreThan65"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+
+              <!-- <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="">
+                    {{
+                    "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.UP_TO_SIXTY_FIVE"
+                    | translate
+                    }}
+                  </label>
+                  <input type="number" name="ageMoreThan65" id="" class="form-control"
+                    (keypress)="onNumberKeyPress($event)" [(ngModel)]="immediateNotification.ageMoreThan65" />
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-start">
+        <span style="color: red" class="float-end" *ngIf="TotalValid">
+          يجب ان يكون مجموع الأعداد يساوي عدد الحالات الإجمالي
+        </span>
+        <button type="submit" class="btn btn-lg bg text-light">
+          <span class="bi bi-check2-circle"></span>
+          {{ "NEDSS.COMMON.SAVE" | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="table-reponsive mt-4 shadow border rounded" *ngIf="!noData">
+    <div class="row">
+      <div class="d-flex flex-wrap align-items-center justify-content-between">
+        <div class="fwb p-4">
+          <span>
+            {{
+              "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.INSTANT_NOTIFICATION"
+                | translate
+            }}
+            {{ pages }}
+          </span>
+        </div>
+        <div class="row">
+          <div class="p-4">
+            <a (click)="exportPatientsAsPdf()"
+              ><span class="bi bi-filetype-pdf button-export"></span
+            ></a>
+            <button
+              style="border: none; background: none"
+              [useExistingCss]="true"
+              [printStyle]="{ '.exclude-pdf': { display: 'none' } }"
+              printTitle="{{
+                'NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.INSTANT_NOTIFICATION'
+                  | translate
+              }}"
+              printSectionId="myTableElementId"
+              ngxPrint
+            >
+              <span class="bi bi-printer-fill button-export"></span>
+            </button>
+            <a (click)="exportPatiantsAsExcel()"
+              ><span class="bi bi-file-earmark-excel-fill button-export"></span
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 mb-4" id="myTableElementId" #myTableElementId>
+        <p-table
+          class="table table-bordered"
+          [value]="immediateNotifications"
+          [paginator]="false"
+          (sortFunction)="sort($event)"
+          [customSort]="true"
+          [sortField]="immediateNotificationFilter.sortColumn"
+          [sortOrder]="immediateNotificationFilter.sortOrder == 'desc' ? -1 : 1"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                <span>
+                  {{
+                    "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.DISEASE"
+                      | translate
+                  }}
+                </span>
+              </th>
+              <th pSortableColumn="GovernmentName">
+                {{
+                  "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.GOVERNEMENT"
+                    | translate
+                }}
+                <p-sortIcon
+                  field="GovernmentName"
+                  class="exclude-pdf"
+                ></p-sortIcon>
+              </th>
+
+              <th pSortableColumn="HealthAdministrationName">
+                {{
+                  "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.HEALTHADMIN"
+                    | translate
+                }}
+                <p-sortIcon
+                  field="HealthAdministrationName"
+                  class="exclude-pdf"
+                ></p-sortIcon>
+              </th>
+              <th pSortableColumn="IncidentSourceName">
+                {{
+                  "NEDSS.HOME.ZERO_INSTANT_NOTIFICATION.INSTANT_NOTIFICATION.INCEIDENT_SOURCE"
+                    | translate
+                }}
+                <p-sortIcon
+                  field="IncidentSourceName"
+                  class="exclude-pdf"
+                ></p-sortIcon>
+              </th>
+              <th class="exclude-pdf">
+                <span>{{ "NEDSS.COMMON.ACTIONS" | translate }}</span>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>
+                <span [innerHTML]="item.diseaseName"></span>
+              </td>
+
+              <td>
+                <span [innerHTML]="item.governmentName"></span>
+              </td>
+              <td>
+                <span [innerHTML]="item.healthAdministrationName"></span>
+              </td>
+              <td>
+                <span [innerHTML]="item.incidentSourceName"></span>
+              </td>
+
+              <td class="exclude-pdf m-auto text-center">
+                <a
+                  (click)="getById(item.id)"
+                  class="text-primary pi pi-pencil"
+                ></a>
+                &nbsp;
+                <a
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  (click)="delete(item.id)"
+                  class="text-danger mess-color bi bi-trash-fill"
+                ></a>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div class="row" [hidden]="!noData">
+          <div class="no-data content-center">
+            <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+            <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-11 col-md-12" style="margin-bottom: 4px">
+        <p-paginator
+          *ngIf="!noData"
+          [rows]="immediateNotificationFilter.pageSize"
+          [totalRecords]="pages"
+          (onPageChange)="paginate($event)"
+          [first]="first"
+          [currentPageReportTemplate]="
+            'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+          "
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[
+            10,
+            20,
+            30,
+            40,
+            50,
+            70,
+            100,
+            200,
+            500,
+            1000,
+            2000,
+            pages >= 5000 ? pages : 5000
+          ]"
+        ></p-paginator>
+      </div>
+    </div>
+  </div>
+</div>

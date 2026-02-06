@@ -1,0 +1,484 @@
+<section class="profile-section">
+  <div class="row">
+    <div class="col-md-4 col-sm-6 col-12">
+      <div class="card">
+        <div class="profile-img">
+          <img
+            [src]="profile?.profilePicture ? profile?.profilePicture : imageSrc"
+            (load)="handleImageLoad()"
+            [class.loaded]="imageLoaded"
+            class="img-fluid"
+            alt=""
+          />
+          <input
+            type="file"
+            #userImg
+            name=""
+            id=""
+            accept="image/*"
+            class="bg-dark"
+            (change)="handleInputChange($event)"
+            hidden
+          />
+          <div class="mt-2">
+            <a class="change-img-link" (click)="userImg.click()">
+              {{ "NEDSS.PROFILE.CHANGE" | translate }}
+            </a>
+          </div>
+        </div>
+        <div *ngIf="profile?.userName" class="text-center mt-4">
+          <h5>
+            {{ profile?.userName }}
+          </h5>
+        </div>
+        <div *ngIf="profile?.email" class="text-center mt-2">
+          <h6>
+            {{ profile?.email }}
+          </h6>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="border-bottom pb-2">
+          <h6 class="main-title">
+            {{ "NEDSS.PROFILE.CONTACT_INFORMATION" | translate }}
+          </h6>
+        </div>
+        <div class="mt-4">
+          <div class="d-flex align-items-center">
+            <i class="pi pi-envelope"></i>
+            <h6 class="m-0 px-2">
+              {{ "NEDSS.PROFILE.EMAIL" | translate }}
+            </h6>
+          </div>
+          <span
+            *ngIf="profile?.email; else notFound"
+            class="value d-block px-4 pt-2"
+          >
+            {{ profile?.email }}
+          </span>
+          <ng-template #notFound>
+            <span class="value d-block px-4 pt-2">
+              {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+            </span>
+          </ng-template>
+        </div>
+        <div class="mt-4">
+          <div class="d-flex align-items-center">
+            <i class="pi pi-phone"></i>
+            <h6 class="m-0 px-2">
+              {{ "NEDSS.PROFILE.PHONE_NUMBER" | translate }}
+            </h6>
+          </div>
+          <span
+            *ngIf="profile?.phoneNumber; else notFound"
+            class="value d-block px-4 pt-2"
+          >
+            {{ profile?.phoneNumber }}
+          </span>
+          <ng-template #notFound>
+            <span class="value d-block px-4 pt-2">
+              {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+            </span>
+          </ng-template>
+        </div>
+      </div>
+      <div class="mt-4 mb-4">
+        <button
+          (click)="updateProfile()"
+          class="btn bg rounded-2 text-light btn-block w-100"
+        >
+          {{ "NEDSS.PROFILE.SAVE" | translate }}
+        </button>
+      </div>
+    </div>
+    <div class="col-md-8 col-sm-6 col-12">
+      <div class="card">
+        <div class="border-bottom pb-2">
+          <div class="d-flex align-items-center justify-content-between">
+            <h6 class="main-title">
+              {{ "NEDSS.PROFILE.PERSONAL_INFORMATION" | translate }}
+            </h6>
+            <div>
+              <button
+                class="btn bg text-light"
+                data-bs-toggle="modal"
+                data-bs-target="#profileModal"
+              >
+                {{ "NEDSS.PROFILE.UPDATE_PERSONAL_DATA" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.USER_NAME" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.userName; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.userName }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.FULL_NAME" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.fullName; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.fullName }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.ADDRESS" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.address; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.address }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.PHONE_NUMBER" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.phoneNumber; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.phoneNumber }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.GOVERNMENT" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.government; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.government }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.HEALTH_ADMINISTRATION" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.healthAdministration; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.healthAdministration }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.INCIDENT_SOURCE" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.incidentSource; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.incidentSource }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.DEPARTEMENT" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.department; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.department }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.LEVEL" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.level; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.level }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.POSITION" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.position; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.position }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.ROLE" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.role; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.role }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.AREA" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.area; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.area }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.BRANCH" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.branch; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.branch }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-12">
+            <div class="mt-4">
+              <div class="d-flex align-items-center">
+                <h6 class="m-0">
+                  {{ "NEDSS.PROFILE.ORGANIZATION" | translate }}
+                </h6>
+              </div>
+              <span
+                *ngIf="profile?.organization; else notFound1"
+                class="value d-block pt-2"
+              >
+                {{ profile?.organization }}
+              </span>
+              <ng-template #notFound1>
+                <span class="value d-block pt-2">
+                  {{ "NEDSS.PROFILE.NOT_FOUND" | translate }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="profileModal"
+  tabindex="-1"
+  aria-labelledby="profileModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="profileModalLabel">
+          {{ "NEDSS.PROFILE.UPDATE_PERSONAL_DATA" | translate }}
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row" *ngIf="profile">
+          <div class="col-lg-6 col-md-6 mb-3">
+            <div class="form-group">
+              <label for="fullName">
+                {{ "NEDSS.PROFILE.FULL_NAME" | translate }}
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                [(ngModel)]="profile.fullName"
+                class="w-100"
+                minlength="3"
+                maxlength="35"
+                pInputText
+              />
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-3">
+            <div class="form-group">
+              <label for="phoneNumber">
+                {{ "NEDSS.PROFILE.PHONE_NUMBER" | translate }}
+              </label>
+              <input
+                type="text"
+                name="phoneNumber"
+                [(ngModel)]="profile.phoneNumber"
+                class="w-100"
+                minlength="3"
+                maxlength="35"
+                pInputText
+              />
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-3">
+            <div class="form-group">
+              <label for="address">
+                {{ "NEDSS.PROFILE.ADDRESS" | translate }}
+              </label>
+              <input
+                type="text"
+                name="address"
+                [(ngModel)]="profile.address"
+                class="w-100"
+                minlength="3"
+                maxlength="35"
+                pInputText
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="submit"
+          class="btn bg text-light"
+          data-bs-target="#profileModal"
+          (click)="updateProfile()"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.PROFILE.SAVE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

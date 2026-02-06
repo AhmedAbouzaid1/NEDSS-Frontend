@@ -1,0 +1,1212 @@
+<h2 *ngIf="isNew == true" class="titles fw-bold mb-4 h4">
+  {{ "NEDSS.HOME.USERS.ADD_USER.ADD_USER" | translate }}
+</h2>
+
+<div
+  class="d-flex my-4 align-items-center justify-content-between gap-2 flex-wrap"
+  *ngIf="isNew == false"
+>
+  <h2 class="titles h5 fw-bold">
+    {{ "NEDSS.HOME.USERS.ADD_USER.Edit_USER" | translate }}
+  </h2>
+  <a
+    (click)="exportPatientsAsPdf()"
+    class="btn bg pr-2 pl-2 rounded-1 fwb mt-6 text-white bg"
+  >
+    <span class="pi pi-file-pdf"></span>
+    {{ "NEDSS.COMMON.EXPORT_PDF" | translate }}
+  </a>
+</div>
+
+<form (ngSubmit)="save()" #userForm="ngForm" novalidate>
+  <div class="card shadow color mb-4">
+    <div class="card-body">
+      <div class="row" #myTableElementId>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="form-group">
+            <label for="fullName">
+              {{ "NEDSS.HOME.USERS.ADD_USER.NAME" | translate
+              }}<span class="text-muted"
+                >({{ "NEDSS.HOME.USERS.ADD_USER.Quadruple" | translate }})</span
+              >
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <input
+              type="text"
+              name="fullName"
+              [(ngModel)]="user.fullName"
+              #fullName="ngModel"
+              class="w-100"
+              minlength="3"
+              maxlength="35"
+              (keypress)="generalDataService.onNameKeyPress($event)"
+              required
+              pInputText
+            />
+            <div
+              *ngIf="
+                userForm.controls.fullName?.touched &&
+                userForm.controls.fullName?.errors?.required
+              "
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+            <div
+              *ngIf="
+                userForm.controls.fullName?.touched &&
+                userForm.controls.fullName?.errors?.minlength
+              "
+              class="form-text text-danger mess-color"
+            >
+              {{
+                "NEDSS.COMMON.INVALID_NAME_CHARACTERS"
+                  | translate : { maxLength: 35 }
+              }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="form-group">
+            <label for="phoneNo">
+              {{ "NEDSS.HOME.USERS.ADD_USER.MOBILE" | translate }}
+            </label>
+            <input
+              type="text"
+              name="phoneNo"
+              [(ngModel)]="user.phoneNo"
+              #phoneNo="ngModel"
+              class="w-100"
+              (keypress)="generalDataService.onPhoneNumberKeyPress($event)"
+              (blur)="
+                generalDataService.isPhoneNumber1Valid =
+                  generalDataService.validatePhoneNumber1(user.phoneNo, false)
+              "
+              pInputText
+            />
+            <small
+              *ngIf="!generalDataService.isPhoneNumber1Valid"
+              class="form-text text-danger mess-color"
+            >
+              {{ generalDataService.phoneNo1ValidationMessage | translate }}
+            </small>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.HOME.USERS.ADD_USER.ADDRESS" | translate }}
+            </label>
+            <input
+              type="text"
+              name="address"
+              [(ngModel)]="user.address"
+              #address="ngModel"
+              class="w-100"
+              pInputText
+            />
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="form-group">
+            <label for="userName">
+              {{ "NEDSS.HOME.USERS.ADD_USER.USER_NAME" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <input
+              type="text"
+              name="userName"
+              [(ngModel)]="user.userName"
+              #userName="ngModel"
+              class="w-100"
+              pInputText
+              required
+              (change)="usernameChange()"
+              minlength="3"
+              maxlength="35"
+            />
+            <div
+              *ngIf="
+                userForm.controls.userName?.touched &&
+                userForm.controls.userName?.errors?.required
+              "
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+            <div
+              *ngIf="usernameValidationMsg !== ''"
+              class="form-text text-danger mess-color"
+            >
+              {{ usernameValidationMsg }}
+            </div>
+            <div
+              *ngIf="
+                userForm.controls.userName?.touched &&
+                userForm.controls.userName?.errors?.minlength
+              "
+              class="form-text text-danger mess-color"
+            >
+              {{
+                "NEDSS.COMMON.INVALID_NAME_CHARACTERS"
+                  | translate : { maxLength: 35 }
+              }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="form-group">
+            <label for="email">
+              {{ "NEDSS.HOME.USERS.ADD_USER.EMAIL" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <input
+              type="email"
+              name="email"
+              [(ngModel)]="user.email"
+              #email="ngModel"
+              class="w-100"
+              pInputText
+              required
+              email
+              (change)="emailChange()"
+            />
+            <div
+              *ngIf="
+                userForm.controls.email?.touched &&
+                userForm.controls.email?.errors?.required
+              "
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+            <div
+              *ngIf="
+                userForm.controls.email?.touched &&
+                userForm.controls.email?.errors?.email
+              "
+              class="form-text text-danger mess-color"
+            >
+              Invalid email format
+            </div>
+            <div
+              *ngIf="emailValidationMsg !== ''"
+              class="form-text text-danger mess-color"
+            >
+              {{ emailValidationMsg }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="form-group">
+            <label for="position">
+              {{ "NEDSS.HOME.USERS.ORGANIZATION" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <!-- <ng-multiselect-dropdown [settings]="singleDropdownSettings" [data]="organizations"
+              [(ngModel)]="Selectedorganization" name="organization" (onSelect)="organizationSelected()"
+              (onDeSelect)="organizationDeSelected()">
+            </ng-multiselect-dropdown> -->
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="organizationSelected()"
+                [options]="organizations"
+                [(ngModel)]="Selectedorganization"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="organizations"
+                [required]="true"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="organizationSelected()"
+                [options]="organizations"
+                [(ngModel)]="Selectedorganization"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="organizations"
+                [required]="true"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+            <div
+              *ngIf="!isOrganizationValid"
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="form-group">
+            <label for="level">
+              {{ "NEDSS.HOME.USERS.ADD_USER.LEVEL" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="onUserLevelChange()"
+                [options]="levels"
+                [(ngModel)]="user.levelId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="level"
+                #levelId="ngModel"
+                id="level"
+                [required]="true"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+              <div
+                *ngIf="levelId.touched && levelId.errors?.required"
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </div>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="onUserLevelChange()"
+                [options]="levels"
+                [(ngModel)]="user.levelId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="level"
+                #levelId="ngModel"
+                id="level"
+                [required]="true"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+
+              <div
+                *ngIf="levelId.touched && levelId.errors?.required"
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!disableGovernments">
+          <div class="form-group">
+            <label for="govenmentId">
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_GOVERNMENT"
+                  | translate
+              }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <!-- <ng-multiselect-dropdown [settings]="singleDropdownSettings" [data]="governments"
+              [(ngModel)]="SelectedgovenmentId" name="govenmentId" (onSelect)="governmentSelected()"
+              (onDeSelect)="governmentDeSelected()">
+            </ng-multiselect-dropdown> -->
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="governmentSelected()"
+                [options]="governments"
+                [(ngModel)]="SelectedgovenmentId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="governments"
+                [required]="true"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="governmentSelected()"
+                [options]="governments"
+                [(ngModel)]="SelectedgovenmentId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="governments"
+                [required]="true"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+            <div
+              *ngIf="!isGovernmentValid"
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!disableBranches">
+          <div class="form-group">
+            <label for="govenmentId">
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_BRANCH" | translate
+              }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="branchSelected()"
+                [options]="branches"
+                [(ngModel)]="SelectedbranchId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="branches"
+                [required]="true"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="branchSelected()"
+                [options]="branches"
+                [(ngModel)]="SelectedbranchId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="branches"
+                [required]="true"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+            <div
+              *ngIf="!isGovernmentValid"
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!disableAreas">
+          <div class="form-group">
+            <label for="govenmentId">
+              {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_AREA" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="areaSelected()"
+                [options]="areas"
+                [(ngModel)]="SelectedareaId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="areas"
+                [required]="true"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="areaSelected()"
+                [options]="areas"
+                [(ngModel)]="SelectedareaId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="areas"
+                [required]="true"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+            <div
+              *ngIf="!isGovernmentValid"
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!disableUniversities">
+          <div class="form-group">
+            <label for="govenmentId">
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_UNIVERSITY"
+                  | translate
+              }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="branchSelected()"
+                [options]="branches"
+                [(ngModel)]="SelectedbranchId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="branches"
+                [required]="true"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="branchSelected()"
+                [options]="branches"
+                [(ngModel)]="SelectedbranchId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="branches"
+                [required]="true"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+            <div
+              *ngIf="!isGovernmentValid"
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!disableDepartments">
+          <div class="form-group">
+            <label for="">
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_Department"
+                  | translate
+              }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <!-- <ng-multiselect-dropdown [settings]="singleDropdownSettings" [data]="healthAdministrations"
+              name="healthAdministrationId" [(ngModel)]="SelectedhealthAdministrationId"
+              (onSelect)="healthAdministrationSelected()" (onDeSelect)="healthAdministrationDeSelected()">
+            </ng-multiselect-dropdown> -->
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="healthAdministrationSelected()"
+                [options]="healthAdministrations"
+                [(ngModel)]="SelectedhealthAdministrationId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="healthAdministrations"
+                [required]="true"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="healthAdministrationSelected()"
+                [options]="healthAdministrations"
+                [(ngModel)]="SelectedhealthAdministrationId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="healthAdministrations"
+                [required]="true"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+            <div
+              *ngIf="!isHealthAdminValid"
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <!-- MARK IMP -->
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!disableSources">
+          <div class="form-group">
+            <label for="">
+              {{
+                "NEDSS.HOME.GENERAL_DATA_COMPLETION.INCIDENT_SOURCE" | translate
+              }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <!-- <ng-multiselect-dropdown [settings]="singleDropdownSettings" [data]="incidentSources"
+              name="incidentSourceId" [(ngModel)]="SelectedincidentSource" (onSelect)="incidentSourceSelected()"
+              (onDeSelect)="incidentSourceDeSelected()">
+            </ng-multiselect-dropdown> -->
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="incidentSourceSelected()"
+                [options]="incidentSources"
+                [(ngModel)]="SelectedincidentSource"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="incidentSources"
+                [required]="true"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="incidentSourceSelected()"
+                [options]="incidentSources"
+                [(ngModel)]="SelectedincidentSource"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="incidentSources"
+                [required]="true"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+            <div
+              *ngIf="!isIncidentSourceValid"
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.HOME.USERS.ADD_USER.ROLE" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <!-- <ng-multiselect-dropdown
+              [settings]="singleDropdownSettings"
+              [data]="roles"
+              name="roles"
+              [(ngModel)]="Selectedrole"
+              [placeholder]="'NEDSS.COMMON.SELECT' | translate"
+              (onSelect)="rolesSelected()"
+              (onDeSelect)="rolesDeSelected()"
+            >
+            </ng-multiselect-dropdown> -->
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="rolesSelected()"
+                [options]="roles"
+                [(ngModel)]="Selectedrole"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="roles"
+                [required]="true"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="rolesSelected()"
+                [options]="roles"
+                [(ngModel)]="Selectedrole"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="roles"
+                [required]="true"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="!isRoleValid" class="form-text text-danger mess-color">
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!IsPrivateLab">
+          <div class="form-group">
+            <label for="positionId">
+              {{ "NEDSS.HOME.USERS.ADD_USER.POSITION" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <!-- <ng-multiselect-dropdown [settings]="singleDropdownSettings" [data]="positions" name="positionId"
+              [(ngModel)]="SelectedpositionId" (onSelect)="positionIdSelected()" (onDeSelect)="positionIdDeSelected()">
+            </ng-multiselect-dropdown> -->
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="positionIdSelected()"
+                [options]="positions"
+                [(ngModel)]="SelectedpositionId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="positions"
+                [required]="true"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="positionIdSelected()"
+                [options]="positions"
+                [(ngModel)]="SelectedpositionId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="positions"
+                [required]="true"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!IsPrivateLab">
+          <div class="form-group">
+            <label for="departmentId">
+              {{ "NEDSS.HOME.USERS.ADD_USER.DEPARTMENT" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <!-- <ng-multiselect-dropdown [settings]="singleDropdownSettings" [data]="departments" name="departmentId"
+              [(ngModel)]="SelecteddepartmentId" (onSelect)="departmentIdSelected()"
+              (onDeSelect)="departmentIdDeSelected()">
+            </ng-multiselect-dropdown> -->
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="departmentIdSelected()"
+                [options]="departments"
+                [(ngModel)]="SelecteddepartmentId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="departments"
+                [required]="departments?.length <= 2"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="departmentIdSelected()"
+                [options]="departments"
+                [(ngModel)]="SelecteddepartmentId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="departments"
+                [required]="departments?.length <= 2"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3 d-flex align-items-end">
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="active"
+              name="active"
+              [(ngModel)]="user.active"
+            />
+            <label
+              class="form-check-label"
+              for="active"
+              style="white-space: nowrap"
+            >
+              {{ "NEDSS.HOME.USERS.USER_DETAILS.ACTIVE" | translate }}
+            </label>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="user.active == false">
+          <div class="form-group">
+            <label for="notActiveReason">
+              {{ "NEDSS.HOME.USERS.USER_DETAILS.NOTACTIVEREASON" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <input
+              type="text"
+              name="notActiveReason"
+              [(ngModel)]="user.notActiveReason"
+              #notActiveReason="ngModel"
+              class="w-100"
+              pInputText
+              required
+            />
+            <div
+              *ngIf="
+                userForm.controls.notActiveReason?.touched &&
+                userForm.controls.notActiveReason?.errors?.required
+              "
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3 d-flex align-items-end">
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="admin"
+              name="admin"
+              [(ngModel)]="user.isSuperAdmin"
+              [disabled]="!adminBool"
+            />
+            <label
+              class="form-check-label"
+              for="admin"
+              style="white-space: nowrap"
+            >
+              {{ "NEDSS.HOME.USERS.USER_DETAILS.SUPERADMIN" | translate }}
+            </label>
+          </div>
+        </div>
+
+        <!-- <div class="col-lg-4 col-md-6 mb-3">
+          <div class="form-group">
+            <label for="position">
+              {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.EVALUATION" | translate }}
+            </label>
+            <ng-multiselect-dropdown
+              [settings]="singleDropdownSettings"
+              [data]="evaluation"
+              [(ngModel)]="SelectedEvaluation"
+              name="evaluation"
+              [placeholder]="getPlaceholder()"
+            >
+            </ng-multiselect-dropdown>
+            <div
+              *ngIf="!isOrganizationValid"
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+          </div>
+        </div> -->
+      </div>
+      <div class="row">
+        <div class="col-lg-4 mb-3">
+          <div>
+            <span class="d-block mb-2">
+              {{
+                "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ADDIMAGE"
+                  | translate
+              }}
+            </span>
+            <div class="add-img-wrapper">
+              <img
+                [src]="imageSrc"
+                (load)="handleImageLoad()"
+                [class.loaded]="imageLoaded"
+                class="img-fluid"
+                alt="upload image"
+                (click)="userImg.click()"
+              />
+            </div>
+            <input
+              type="file"
+              #userImg
+              name=""
+              id=""
+              accept="image/*"
+              class="bg-dark"
+              (change)="handleInputChange($event)"
+              hidden
+            />
+          </div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-end gap-3 mt-4">
+        <button
+          type="submit"
+          [disabled]="userForm.invalid"
+          class="btn bg text-white rounded-2"
+        >
+          {{ "NEDSS.COMMON.SAVE" | translate }}
+        </button>
+        <button
+          type="button"
+          routerLink="/home/control-panel/users"
+          class="btn bg text-white rounded-2 float-end"
+        >
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow color mt-4">
+    <div class="card-body">
+      <!-- <div class="row">
+        <div class="col-lg-6 mt-4">
+          <div class="fwb mb-2">
+            {{
+              "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.PERMISSIONS"
+                | translate
+            }}
+          </div>
+          <div class="row fzs mt-3" *ngIf="currentLang == 'ar'">
+            <div class="col-lg-6 mb-4" *ngFor="let option of systemPages">
+              <div class="form-group">
+                <label
+                  class="d-flex align-items-center gap-2"
+                  for="{{ option.name }}"
+                >
+                  <input
+                    type="checkbox"
+                    disabled
+                    [checked]="option.isSelected"
+                  />
+                  {{ option.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row fzs mt-4" *ngIf="currentLang == 'en'">
+            <div class="col-lg-6 mb-4" *ngFor="let option of systemPages">
+              <div class="form-group">
+                <label
+                  class="d-flex align-items-center gap-2"
+                  for="{{ option.englishName }}"
+                >
+                  <input
+                    type="checkbox"
+                    disabled
+                    [checked]="option.isSelected"
+                  />
+                  {{ option.englishName }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mt-4">
+          <div class="fwb mb-2">
+            {{
+              "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.DISEASES"
+                | translate
+            }}
+          </div>
+
+          <div class="row fzs mt-4" *ngIf="currentLang == 'ar'">
+            <div class="col-lg-6 mb-4" *ngFor="let option of diseases">
+              <div class="form-group">
+                <label
+                  class="d-flex align-items-center gap-2"
+                  for="{{ option.name }}"
+                >
+                  <input
+                    type="checkbox"
+                    disabled
+                    [checked]="option.isSelected"
+                  />
+                  {{ option.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row fzs mt-4" *ngIf="currentLang == 'en'">
+            <div class="col-lg-6 mb-4" *ngFor="let option of diseases">
+              <div class="form-group">
+                <label
+                  class="d-flex align-items-center gap-2"
+                  for="{{ option.englishName }}"
+                >
+                  <input
+                    type="checkbox"
+                    disabled
+                    [checked]="option.isSelected"
+                  />
+                  {{ option.englishName }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mt-4">
+          <div class="fwb mb-2">
+            {{
+              "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECTEDSITES"
+                | translate
+            }}
+          </div>
+
+          <div class="row fzs mt-4" *ngIf="currentLang == 'ar'">
+            <div class="col-lg-6 mb-4" *ngFor="let option of selectedDiseases">
+              <div class="form-group">
+                <label
+                  class="d-flex align-items-center gap-2"
+                  for="{{ option.name }}"
+                >
+                  <input
+                    type="checkbox"
+                    disabled
+                    [checked]="option.isSelected"
+                  />
+                  {{ option.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row fzs mt-4" *ngIf="currentLang == 'en'">
+            <div class="col-lg-6 mb-4" *ngFor="let option of selectedDiseases">
+              <div class="form-group">
+                <label
+                  class="d-flex align-items-center gap-2"
+                  for="{{ option.englishName }}"
+                >
+                  <input
+                    type="checkbox"
+                    disabled
+                    [checked]="option.isSelected"
+                  />
+                  {{ option.englishName }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <div ngbAccordion>
+        <div
+          ngbAccordionItem
+          [collapsed]="systemPages && systemPages.length > 0 ? false : true"
+        >
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton>
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.PERMISSIONS"
+                  | translate
+              }}
+            </button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                <div *ngIf="!systemPages?.length; else NoSystemExists">
+                  <span>
+                    {{
+                      "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.NO_RESULT_FOUND"
+                        | translate
+                    }}
+                  </span>
+                </div>
+                <ng-template #NoSystemExists>
+                  <div class="row fzs mt-3" *ngIf="currentLang == 'ar'">
+                    <div
+                      class="col-lg-6 col-md-6 mb-4"
+                      *ngFor="let option of systemPages"
+                    >
+                      <ul class="px-3">
+                        <li>
+                          {{ option.name }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row fzs mt-4" *ngIf="currentLang == 'en'">
+                    <div
+                      class="col-lg-6 col-md-6 mb-4"
+                      *ngFor="let option of systemPages"
+                    >
+                      <ul class="px-3">
+                        <li>
+                          {{ option.englishName }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton>
+              <span>
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.DISEASES"
+                    | translate
+                }}
+              </span>
+            </button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                <div *ngIf="!diseases?.length; else NodiseasesExists">
+                  <span>
+                    {{
+                      "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.NO_RESULT_FOUND"
+                        | translate
+                    }}
+                  </span>
+                </div>
+                <ng-template #NodiseasesExists>
+                  <div class="row fzs mt-4" *ngIf="currentLang == 'ar'">
+                    <div
+                      class="col-lg-6 col-md-6 mb-4"
+                      *ngFor="let option of diseases"
+                    >
+                      <ul class="px-3">
+                        <li>
+                          {{ option.name }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row fzs mt-4" *ngIf="currentLang == 'en'">
+                    <div
+                      class="col-lg-6 col-md-6 mb-4"
+                      *ngFor="let option of diseases"
+                    >
+                      <ul class="px-3">
+                        <li>
+                          <!-- <input
+                          type="checkbox"
+                          disabled
+                          [checked]="option.isSelected"
+                        /> -->
+                          {{ option.englishName }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton>
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECTEDSITES"
+                  | translate
+              }}
+            </button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                <div
+                  *ngIf="
+                    !selectedDiseases?.length;
+                    else NoselectedDiseasesExists
+                  "
+                >
+                  <span>
+                    {{
+                      "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.NO_RESULT_FOUND"
+                        | translate
+                    }}
+                  </span>
+                </div>
+                <ng-template #NoselectedDiseasesExists>
+                  <div class="row fzs mt-4" *ngIf="currentLang == 'ar'">
+                    <div
+                      class="col-lg-6 col-md-6 mb-4"
+                      *ngFor="let option of selectedDiseases"
+                    >
+                      <ul class="px-3">
+                        <li>
+                          {{ option.name }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="row fzs mt-4" *ngIf="currentLang == 'en'">
+                    <div
+                      class="col-lg-6 col-md-6 mb-4"
+                      *ngFor="let option of selectedDiseases"
+                    >
+                      <ul class="px-3">
+                        <li>
+                          {{ option.englishName }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

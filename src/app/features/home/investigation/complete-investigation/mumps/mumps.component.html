@@ -1,0 +1,1250 @@
+<!-- <div class="row">
+  <div class="col-lg-6">
+    <h2 class="titles">نكاف</h2>
+  </div>
+</div> -->
+
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow mt-4 color">
+      <div class="card-body">
+        <h5 class="titles">
+          <h5 style="text-align: center; border: 1px solid; padding: 1%">
+            {{ "NEDSS.INVESTIGATIONS.PAGES.Mumps" | translate }}
+          </h5>
+        </h5>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group">
+              <label for="">
+                {{"NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME"| translate}}: {{ patientName }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">
+                {{"NEDSS.INVESTIGATIONS.percentage"| translate}}
+                <span class="mx-4" style="font-size: larger; color: red">
+                  <!-- {{ precentile.value }} % -->
+                  {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount / allControllesCount) * 100 |
+                  number:'1.0-2') }} %
+                </span>
+              </label>
+              <input #precentile type="range" class="form-range bg" onkeypress="false" [readonly]="true"
+                style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
+                value="{{ (allFilledControlsCount / allControllesCount) * 100 }}"
+                formControlName="investigationCompletePercentage" />
+              <!-- value="{{controlsCount}}" formControlName="completePercentage" /> -->
+            </div>
+          </div>
+          <div class="col-lg-4">
+            {{"NEDSS.INVESTIGATIONS.Filled"| translate}}
+            {{allFilledControlsCount}}
+            {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+            {{"NEDSS.INVESTIGATIONS.From"| translate}}
+            {{allControllesCount}}
+            {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</div>
+          <div class="col-6 has-labels">
+            <label for="">
+              <input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="fever" name="fever" [value]="0"
+                [(ngModel)]="MumpsData.fever" #fever="ngModel" />
+              {{ "NEDSS.COMMON.YES" | translate }}
+            </label>
+            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="fever" name="fever"
+                [(ngModel)]="MumpsData.fever" #fever="ngModel" [value]="1" />
+              {{ "NEDSS.COMMON.NO" | translate }}
+            </label>
+            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="fever" name="fever" [value]="2"
+                [(ngModel)]="MumpsData.fever" #fever="ngModel" />
+              {{ "NEDSS.REPORTS.UnKnown" | translate }}
+            </label>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Duration_Fever_Days" | translate }}</label>
+              <input type="number" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()" name="feverDurationDay" [(ngModel)]="MumpsData.feverDurationDay"
+                #feverDurationDay="ngModel" />
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Max_Temp" | translate }}</label>
+              <input type="number" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="maxTemperature"
+                [(ngModel)]="MumpsData.maxTemperature" #maxTemperature="ngModel" />
+            </div>
+          </div>
+
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}
+              </div>
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4">إلتهاب بالغده النكافية</div>
+                  <div class="col-8 has-labels">
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="inflammationParotidGland"
+                        name="inflammationParotidGland" [(ngModel)]="MumpsData.inflammationParotidGland"
+                        #inflammationParotidGland="ngModel" [value]="0" />
+                      {{ "NEDSS.COMMON.YES" | translate }}
+                    </label>
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="inflammationParotidGland"
+                        name="inflammationParotidGland" [(ngModel)]="MumpsData.inflammationParotidGland"
+                        #inflammationParotidGland="ngModel" [value]="1" />
+                      {{ "NEDSS.COMMON.NO" | translate }}
+                    </label>
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="inflammationParotidGland"
+                        name="inflammationParotidGland" [(ngModel)]="MumpsData.inflammationParotidGland"
+                        #inflammationParotidGland="ngModel" [value]="2" />
+                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">تاريخ بدايته</label>
+                  <input type="date" (blur)="calculateCompletionPercentage()" [class]="'form-control-'+ currentLang" name="startDate"
+                    [(ngModel)]="MumpsData.startDate" #startDate="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">إلتهاب بالخصية</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.inflammationTesticle">
+                    <option *ngFor="let case of inflammationTesticles" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل يوجد تضخم فى غدد لعابيه أخرى؟</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.enlargementSalivaryGlands">
+                    <option *ngFor="let case of enlargementSalivaryGlandss" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <h3 class="fs-5 text-success fwb">التقصي الوبائي</h3>
+          </div>
+
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">المخالطة البشرية</div>
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4">مخالط لحالة مشتبهة</div>
+                  <div class="col-8 has-labels">
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="contactSuspectedCase"
+                        name="contactSuspectedCase" [(ngModel)]="MumpsData.contactSuspectedCase"
+                        #contactSuspectedCase="ngModel" [value]="0" />
+                      {{ "NEDSS.COMMON.YES" | translate }}
+                    </label>
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="contactSuspectedCase"
+                        name="contactSuspectedCase" [(ngModel)]="MumpsData.contactSuspectedCase"
+                        #contactSuspectedCase="ngModel" [value]="1" />
+                      {{ "NEDSS.COMMON.NO" | translate }}
+                    </label>
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="contactSuspectedCase"
+                        name="contactSuspectedCase" [(ngModel)]="MumpsData.contactSuspectedCase"
+                        #contactSuspectedCase="ngModel" [value]="2" />
+                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4">جزء من تفشي وبائي أو حالات مشابهة</div>
+                  <div class="col-8 has-labels">
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="epidemicOutbreak"
+                        name="epidemicOutbreak" [(ngModel)]="MumpsData.epidemicOutbreak" #epidemicOutbreak="ngModel"
+                        [value]="0" />
+                      {{ "NEDSS.COMMON.YES" | translate }}
+                    </label>
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="epidemicOutbreak"
+                        name="epidemicOutbreak" [(ngModel)]="MumpsData.epidemicOutbreak" #epidemicOutbreak="ngModel"
+                        [value]="1" />
+                      {{ "NEDSS.COMMON.NO" | translate }}
+                    </label>
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="epidemicOutbreak"
+                        name="epidemicOutbreak" [(ngModel)]="MumpsData.epidemicOutbreak" #epidemicOutbreak="ngModel"
+                        [value]="2" />
+                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4">مخالط لحالة مؤكدة</div>
+                  <div class="col-8 has-labels">
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="contactConfirmedCase"
+                        name="contactConfirmedCase" [(ngModel)]="MumpsData.contactConfirmedCase"
+                        #contactConfirmedCase="ngModel" [value]="0" />
+                      {{ "NEDSS.COMMON.YES" | translate }}
+                    </label>
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="contactConfirmedCase"
+                        name="contactConfirmedCase" [(ngModel)]="MumpsData.contactConfirmedCase"
+                        #contactConfirmedCase="ngModel" [value]="1" />
+                      {{ "NEDSS.COMMON.NO" | translate }}
+                    </label>
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="contactConfirmedCase"
+                        name="contactConfirmedCase" [(ngModel)]="MumpsData.contactConfirmedCase"
+                        #contactConfirmedCase="ngModel" [value]="2" />
+                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-4">مخالط لمتوفي بمرض تنفسي غير معلوم</div>
+                  <div class="col-8 has-labels">
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="contactDeceasedPersonRespiratory"
+                        name="contactDeceasedPersonRespiratory" [(ngModel)]="MumpsData.contactDeceasedPersonRespiratory"
+                        #contactDeceasedPersonRespiratory="ngModel" [value]="0" />
+                      {{ "NEDSS.COMMON.YES" | translate }}
+                    </label>
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="contactDeceasedPersonRespiratory"
+                        name="contactDeceasedPersonRespiratory" [(ngModel)]="MumpsData.contactDeceasedPersonRespiratory"
+                        #contactDeceasedPersonRespiratory="ngModel" [value]="1" />
+                      {{ "NEDSS.COMMON.NO" | translate }}
+                    </label>
+                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="contactDeceasedPersonRespiratory"
+                        name="contactDeceasedPersonRespiratory" [(ngModel)]="MumpsData.contactDeceasedPersonRespiratory"
+                        #contactDeceasedPersonRespiratory="ngModel" [value]="2" />
+                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 mt-4">
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-lg-5">
+                      <label for="">عدد المخالطين المباشرين</label>
+                    </div>
+                    <div class="col-lg-7">
+                      <input type="number" class="form-control" (blur)="calculateCompletionPercentage()" name="numberDirectContacts"
+                        [(ngModel)]="MumpsData.numberDirectContacts" #numberDirectContacts="ngModel" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 mt-4">
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-lg-5">
+                      <label for="">عدد المخالطين غير المباشرين </label>
+                    </div>
+                    <div class="col-lg-7">
+                      <input type="number" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="numberNonDirectContacts"
+                        [(ngModel)]="MumpsData.numberNonDirectContacts" #numberNonDirectContacts="ngModel" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    متابعة اليوم الأول
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                  data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <div class="row">
+                      <div class="col-12 title fs-6 fwb">
+                        بيانات الحالة المخالطة
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="nameDay1"
+                            [(ngModel)]="MumpsData.nameDay1" #nameDay1="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">العمر</label>
+                          <input type="number" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="ageDay1"
+                            [(ngModel)]="MumpsData.ageDay1" #ageDay1="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">رقم التليفون</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="telephoneDay1"
+                            [(ngModel)]="MumpsData.telephoneDay1" #telephoneDay1="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">النوع</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.genderDay1">
+                            <option *ngFor="let case of genderDay1s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">نوع المخالطة</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.contactTypeDay1">
+                            <option *ngFor="let case of contactTypeDay1s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">علاقته بالحالة</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="relationshipPatientDay1"
+                            [(ngModel)]="MumpsData.relationshipPatientDay1" #relationshipPatientDay1="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-12 title fs-6 fwb">
+                        في حالة ظهور أعراض
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">تاريخ ظهور الأعراض</label>
+                          <!-- <input type="text" name="" id="" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"> -->
+
+                          <input type="date" (blur)="calculateCompletionPercentage()" [class]="'form-control-'+ currentLang" name="dateOnsetSymptomsDay1"
+                            [(ngModel)]="MumpsData.dateOnsetSymptomsDay1" #dateOnsetSymptomsDay1="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.feverDay1">
+                            <option *ngFor="let case of feverDay1s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">سعال جاف</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.dryCoughDay1">
+                            <option *ngFor="let case of dryCoughDay1s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">سعال يصاحبه بصق</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                            [(ngModel)]="MumpsData.coughingWithSpittingDay1">
+                            <option *ngFor="let case of coughingWithSpittingDay1s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">التهاب بالحلق</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.soreThroatDay1">
+                            <option *ngFor="let case of soreThroatDay1s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">صعوبة بالتنفس</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                            [(ngModel)]="MumpsData.breathingDifficultyDay1">
+                            <option *ngFor="let case of breathingDifficultyDay1s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">آلام بالمفاصل</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.jointPainDay1">
+                            <option *ngFor="let case of jointPainDay1s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">قئ</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.vomitDay1">
+                            <option *ngFor="let case of vomitDay1s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">إسهال</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.diarrheaDay1">
+                            <option *ngFor="let case of diarrheaDay1s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">أخرى</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.otherDay1">
+                            <option *ngFor="let case of otherDay1s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="otherSymptomsDay1"
+                            [(ngModel)]="MumpsData.otherSymptomsDay1" #otherSymptomsDay1="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-12 title fs-6 fwb">المعمل</div>
+                      <div class="col-4">
+                        <div class="row">
+                          <div class="col-6">تم اخذ العينة؟</div>
+                          <div class="col-6 has-labels">
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="isSampleTakenDay1"
+                                name="isSampleTakenDay1" [(ngModel)]="MumpsData.isSampleTakenDay1"
+                                #isSampleTakenDay1="ngModel" [value]="0" />
+                              {{ "NEDSS.COMMON.YES" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="isSampleTakenDay1"
+                                name="isSampleTakenDay1" [(ngModel)]="MumpsData.isSampleTakenDay1"
+                                #isSampleTakenDay1="ngModel" [value]="1" />
+                              {{ "NEDSS.COMMON.NO" | translate }}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group row">
+                          <div class="col-lg-4">
+                            <label class="mt-2" for="">تاريخ أخذ العينة</label>
+                          </div>
+                          <div class="col-lg-8">
+                            <!-- <input type="text" name="" id="" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"> -->
+
+                            <input type="date" (blur)="calculateCompletionPercentage()" [class]="'form-control-'+ currentLang" name="dateSampleTakenDay1"
+                              [(ngModel)]="MumpsData.dateSampleTakenDay1" #dateSampleTakenDay1="ngModel" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="row">
+                          <div class="col-4">نتيجة العينة</div>
+                          <div class="col-8 has-labels">
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay1"
+                                name="sampleResultDay1" [(ngModel)]="MumpsData.sampleResultDay1"
+                                #sampleResultDay1="ngModel" [value]="0" />
+                              {{ "NEDSS.COMMON.YES" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay1"
+                                name="sampleResultDay1" [(ngModel)]="MumpsData.sampleResultDay1"
+                                #sampleResultDay1="ngModel" [value]="1" />
+                              {{ "NEDSS.COMMON.NO" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay1"
+                                name="sampleResultDay1" [(ngModel)]="MumpsData.sampleResultDay1"
+                                #sampleResultDay1="ngModel" [value]="2" />
+                              لم ترد
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    متابعة اليوم الثاني
+                  </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="collapseTwo"
+                  data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <div class="row">
+                      <div class="col-12 title fs-6 fwb">
+                        بيانات الحالة المخالطة
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="nameDay2"
+                            [(ngModel)]="MumpsData.nameDay2" #nameDay2="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">العمر</label>
+                          <input type="number" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="ageDay2"
+                            [(ngModel)]="MumpsData.ageDay2" #ageDay2="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">رقم التليفون</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="telephoneDay2"
+                            [(ngModel)]="MumpsData.telephoneDay2" #telephoneDay2="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">النوع</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.genderDay2">
+                            <option *ngFor="let case of genderDay2s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">نوع المخالطة</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.contactTypeDay2">
+                            <option *ngFor="let case of contactTypeDay2s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">علاقته بالحالة</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="relationshipPatientDay2"
+                            [(ngModel)]="MumpsData.relationshipPatientDay2" #relationshipPatientDay2="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-12 title fs-6 fwb">
+                        في حالة ظهور أعراض
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">تاريخ ظهور الأعراض</label>
+                          <input type="date" (blur)="calculateCompletionPercentage()" [class]="'form-control-'+ currentLang" name="dateOnsetSymptomsDay2"
+                            [(ngModel)]="MumpsData.dateOnsetSymptomsDay2" #dateOnsetSymptomsDay2="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.feverDay2">
+                            <option *ngFor="let case of feverDay2s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">سعال جاف</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.dryCoughDay2">
+                            <option *ngFor="let case of dryCoughDay2s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">سعال يصاحبه بصق</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                            [(ngModel)]="MumpsData.coughingWithSpittingDay2">
+                            <option *ngFor="let case of coughingWithSpittingDay2s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">التهاب بالحلق</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.soreThroatDay2">
+                            <option *ngFor="let case of soreThroatDay2s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">صعوبة بالتنفس</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                            [(ngModel)]="MumpsData.breathingDifficultyDay2">
+                            <option *ngFor="let case of breathingDifficultyDay2s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">آلام بالمفاصل</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.jointPainDay2">
+                            <option *ngFor="let case of jointPainDay2s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">قئ</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.vomitDay2">
+                            <option *ngFor="let case of vomitDay2s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">إسهال</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.diarrheaDay2">
+                            <option *ngFor="let case of diarrheaDay2s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">أخرى</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.otherDay2">
+                            <option *ngFor="let case of otherDay2s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="otherSymptomsDay2"
+                            [(ngModel)]="MumpsData.otherSymptomsDay2" #otherSymptomsDay2="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-12 title fs-6 fwb">المعمل</div>
+                      <div class="col-4">
+                        <div class="row">
+                          <div class="col-6">تم اخذ العينة؟</div>
+                          <div class="col-6 has-labels">
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="isSampleTakenDay2"
+                                name="isSampleTakenDay2" [(ngModel)]="MumpsData.isSampleTakenDay2"
+                                #isSampleTakenDay2="ngModel" [value]="0" />
+                              {{ "NEDSS.COMMON.YES" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="isSampleTakenDay2"
+                                name="isSampleTakenDay2" [(ngModel)]="MumpsData.isSampleTakenDay2"
+                                #isSampleTakenDay2="ngModel" [value]="1" />
+                              {{ "NEDSS.COMMON.NO" | translate }}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group row">
+                          <div class="col-lg-4">
+                            <label class="mt-2" for="">تاريخ أخذ العينة</label>
+                          </div>
+                          <div class="col-lg-8">
+                            <input type="date" (blur)="calculateCompletionPercentage()" [class]="'form-control-'+ currentLang" name="dateSampleTakenDay2"
+                              [(ngModel)]="MumpsData.dateSampleTakenDay2" #dateSampleTakenDay2="ngModel" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="row">
+                          <div class="col-4">نتيجة العينة</div>
+                          <div class="col-8 has-labels">
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay2"
+                                name="sampleResultDay2" [(ngModel)]="MumpsData.sampleResultDay2"
+                                #sampleResultDay2="ngModel" [value]="0" />
+                              {{ "NEDSS.COMMON.YES" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay2"
+                                name="sampleResultDay2" [(ngModel)]="MumpsData.sampleResultDay2"
+                                #sampleResultDay2="ngModel" [value]="1" />
+                              {{ "NEDSS.COMMON.NO" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay2"
+                                name="sampleResultDay2" [(ngModel)]="MumpsData.sampleResultDay2"
+                                #sampleResultDay2="ngModel" [value]="2" />
+                              لم ترد
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSeven">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                    متابعة بعد 7 ايام
+                  </button>
+                </h2>
+                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="collapseSeven"
+                  data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <div class="row">
+                      <div class="col-12 title fs-6 fwb">
+                        بيانات الحالة المخالطة
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="nameDay7"
+                            [(ngModel)]="MumpsData.nameDay7" #nameDay7="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">العمر</label>
+                          <input type="number" class="form-control" (blur)="calculateCompletionPercentage()" name="ageDay7" [(ngModel)]="MumpsData.ageDay7"
+                            #ageDay7="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">رقم التليفون</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="telephoneDay7"
+                            [(ngModel)]="MumpsData.telephoneDay7" #telephoneDay7="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">النوع</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.genderDay7">
+                            <option *ngFor="let case of genderDay7s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">نوع المخالطة</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.contactTypeDay7">
+                            <option *ngFor="let case of contactTypeDay7s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">علاقته بالحالة</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="relationshipPatientDay7"
+                            [(ngModel)]="MumpsData.relationshipPatientDay7" #relationshipPatientDay7="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-12 title fs-6 fwb">
+                        في حالة ظهور أعراض
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">تاريخ ظهور الأعراض</label>
+                          <input type="date" (blur)="calculateCompletionPercentage()" maxlength="100" [class]="'form-control-'+ currentLang"
+                            name="dateOnsetSymptomsDay7" [(ngModel)]="MumpsData.dateOnsetSymptomsDay7"
+                            #dateOnsetSymptomsDay7="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.feverDay7">
+                            <option *ngFor="let case of feverDay7s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">سعال جاف</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.dryCoughDay7">
+                            <option *ngFor="let case of dryCoughDay7s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">سعال يصاحبه بصق</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                            [(ngModel)]="MumpsData.coughingWithSpittingDay7">
+                            <option *ngFor="let case of coughingWithSpittingDay7s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">التهاب بالحلق</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.soreThroatDay7">
+                            <option *ngFor="let case of soreThroatDay7s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">صعوبة بالتنفس</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                            [(ngModel)]="MumpsData.breathingDifficultyDay7">
+                            <option *ngFor="let case of breathingDifficultyDay7s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">آلام بالمفاصل</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.jointPainDay7">
+                            <option *ngFor="let case of jointPainDay7s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">قئ</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.vomitDay7">
+                            <option *ngFor="let case of vomitDay7s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">إسهال</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.diarrheaDay7">
+                            <option *ngFor="let case of diarrheaDay7s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">أخرى</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.otherDay7">
+                            <option *ngFor="let case of otherDay7s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="otherSymptomsDay7"
+                            [(ngModel)]="MumpsData.otherSymptomsDay7" #otherSymptomsDay7="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-12 title fs-6 fwb">المعمل</div>
+                      <div class="col-4">
+                        <div class="row">
+                          <div class="col-6">تم اخذ العينة؟</div>
+                          <div class="col-6 has-labels">
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="isSampleTakenDay7"
+                                name="isSampleTakenDay7" [(ngModel)]="MumpsData.isSampleTakenDay7"
+                                #isSampleTakenDay7="ngModel" [value]="0" />
+                              {{ "NEDSS.COMMON.YES" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="isSampleTakenDay7"
+                                name="isSampleTakenDay7" [(ngModel)]="MumpsData.isSampleTakenDay7"
+                                #isSampleTakenDay7="ngModel" [value]="1" />
+                              {{ "NEDSS.COMMON.NO" | translate }}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group row">
+                          <div class="col-lg-4">
+                            <label class="mt-2" for="">تاريخ أخذ العينة</label>
+                          </div>
+                          <div class="col-lg-8">
+                            <input type="date" (blur)="calculateCompletionPercentage()" maxlength="100" [class]="'form-control-'+ currentLang"
+                              name="dateSampleTakenDay7" [(ngModel)]="MumpsData.dateSampleTakenDay7"
+                              #dateSampleTakenDay7="ngModel" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="row">
+                          <div class="col-4">نتيجة العينة</div>
+                          <div class="col-8 has-labels">
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay7"
+                                name="sampleResultDay7" [(ngModel)]="MumpsData.sampleResultDay7"
+                                #sampleResultDay7="ngModel" [value]="1" />
+                              {{ "NEDSS.COMMON.YES" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay7"
+                                name="sampleResultDay7" [(ngModel)]="MumpsData.sampleResultDay7"
+                                #sampleResultDay7="ngModel" [value]="1" />
+                              {{ "NEDSS.COMMON.NO" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay7"
+                                name="sampleResultDay7" [(ngModel)]="MumpsData.sampleResultDay7"
+                                #sampleResultDay7="ngModel" [value]="2" />
+                              لم ترد
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSevenTeen">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseSevenTeen" aria-expanded="true" aria-controls="collapseSevenTeen">
+                    متابعة بعد 14 يوم
+                  </button>
+                </h2>
+                <div id="collapseSevenTeen" class="accordion-collapse collapse" aria-labelledby="collapseSevenTeen"
+                  data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <div class="row">
+                      <div class="col-12 title fs-6 fwb">
+                        بيانات الحالة المخالطة
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="nameDay14"
+                            [(ngModel)]="MumpsData.nameDay14" #nameDay14="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">العمر</label>
+                          <input type="number" class="form-control" (blur)="calculateCompletionPercentage()" name="ageDay14" [(ngModel)]="MumpsData.ageDay14"
+                            #ageDay14="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">رقم التليفون</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="telephoneDay14"
+                            [(ngModel)]="MumpsData.telephoneDay14" #telephoneDay14="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">النوع</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.genderDay14">
+                            <option *ngFor="let case of genderDay14s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">نوع المخالطة</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.contactTypeDay14">
+                            <option *ngFor="let case of contactTypeDay14s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">علاقته بالحالة</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="relationshipPatientDay14"
+                            [(ngModel)]="MumpsData.relationshipPatientDay14" #relationshipPatientDay14="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-12 title fs-6 fwb">
+                        في حالة ظهور أعراض
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">تاريخ ظهور الأعراض</label>
+                          <input type="date" (blur)="calculateCompletionPercentage()" maxlength="100" [class]="'form-control-'+ currentLang"
+                            name="dateOnsetSymptomsDay14" [(ngModel)]="MumpsData.dateOnsetSymptomsDay14"
+                            #dateOnsetSymptomsDay14="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.feverDay14">
+                            <option *ngFor="let case of feverDay14s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">سعال جاف</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.dryCoughDay14">
+                            <option *ngFor="let case of dryCoughDay14s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">سعال يصاحبه بصق</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                            [(ngModel)]="MumpsData.coughingWithSpittingDay14">
+                            <option *ngFor="let case of coughingWithSpittingDay14s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">التهاب بالحلق</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.soreThroatDay14">
+                            <option *ngFor="let case of soreThroatDay14s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">صعوبة بالتنفس</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                            [(ngModel)]="MumpsData.breathingDifficultyDay14">
+                            <option *ngFor="let case of breathingDifficultyDay14s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">آلام بالمفاصل</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.jointPainDay14">
+                            <option *ngFor="let case of jointPainDay14s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">قئ</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.vomitDay14">
+                            <option *ngFor="let case of vomitDay14s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">إسهال</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.diarrheaDay14">
+                            <option *ngFor="let case of diarrheaDay14s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">أخرى</label>
+                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.otherDay14">
+                            <option *ngFor="let case of otherDay14s" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
+                          <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="otherSymptomsDay14"
+                            [(ngModel)]="MumpsData.otherSymptomsDay14" #otherSymptomsDay14="ngModel" />
+                        </div>
+                      </div>
+                      <div class="col-12 title fs-6 fwb">المعمل</div>
+                      <div class="col-4">
+                        <div class="row">
+                          <div class="col-6">تم اخذ العينة؟</div>
+                          <div class="col-6 has-labels">
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="isSampleTakenDay14"
+                                name="isSampleTakenDay14" [(ngModel)]="MumpsData.isSampleTakenDay14"
+                                #isSampleTakenDay14="ngModel" [value]="0" />
+                              {{ "NEDSS.COMMON.YES" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="isSampleTakenDay14"
+                                name="isSampleTakenDay14" [(ngModel)]="MumpsData.isSampleTakenDay14"
+                                #isSampleTakenDay14="ngModel" [value]="1" />
+                              {{ "NEDSS.COMMON.NO" | translate }}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group row">
+                          <div class="col-lg-4">
+                            <label class="mt-2" for="">تاريخ أخذ العينة</label>
+                          </div>
+                          <div class="col-lg-8">
+                            <input type="date" (blur)="calculateCompletionPercentage()" maxlength="100" [class]="'form-control-'+ currentLang"
+                              name="dateSampleTakenDay14" [(ngModel)]="MumpsData.dateSampleTakenDay14"
+                              #dateSampleTakenDay14="ngModel" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="row">
+                          <div class="col-4">نتيجة العينة</div>
+                          <div class="col-8 has-labels">
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay14"
+                                name="sampleResultDay14" [(ngModel)]="MumpsData.sampleResultDay14"
+                                #sampleResultDay14="ngModel" [value]="0" />
+                              {{ "NEDSS.COMMON.YES" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay14"
+                                name="sampleResultDay14" [(ngModel)]="MumpsData.sampleResultDay14"
+                                #fesampleResultDay14ver="ngModel" [value]="1" />
+                              {{ "NEDSS.COMMON.NO" | translate }}
+                            </label>
+                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="sampleResultDay14"
+                                name="sampleResultDay14" [(ngModel)]="MumpsData.sampleResultDay14"
+                                #sampleResultDay14="ngModel" [value]="2" />
+                              لم ترد
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">الحالة التطعيمية</div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل حصل المريض على الجرعة الأولى من طعم MMR؟</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.mmrVaccine">
+                    <option *ngFor="let case of mmrVaccines" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">تاريخها</label>
+                  <input type="date" (blur)="calculateCompletionPercentage()" [class]="'form-control-'+ currentLang" name="dateMmrVaccine"
+                    [(ngModel)]="MumpsData.dateMmrVaccine" #dateMmrVaccine="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل حصل المريض على الجرعة الثانية من طعم MMR؟</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.mmrVaccine2">
+                    <option *ngFor="let case of mmrVaccines2" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">تاريخها</label>
+                  <input type="date" (blur)="calculateCompletionPercentage()" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
+                    name="dateMmrVaccine2" [(ngModel)]="MumpsData.dateMmrVaccine2" #dateMmrVaccine2="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل حصل المريض على جرعات أخرى من طعم MMR؟</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="MumpsData.otherMmrVaccine">
+                    <option *ngFor="let case of otherMmrVaccines" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">تاريخها</label>
+
+                  <input type="date" (blur)="calculateCompletionPercentage()" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
+                    name="dateOtherMmrVaccine" [(ngModel)]="MumpsData.dateOtherMmrVaccine"
+                    #dateOtherMmrVaccine="ngModel" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-start">
+        <button type="submit" (click)="save()" class="btn bg rounded-2 text-light">
+          {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

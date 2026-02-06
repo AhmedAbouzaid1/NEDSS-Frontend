@@ -1,0 +1,323 @@
+<div id="pdfTables" [class]="lang">
+  <div
+    class="d-flex align-items-center justify-content-between my-5 px-4 w-100"
+  >
+    <div class="d-flex align-items-center">
+      <img
+        width="80"
+        height="80"
+        src="../../../../../../Content/Images/logo.png"
+        alt=""
+      />
+      <div class="ministry-title mx-4">
+        <h6 class="mb-1">وزارة الصحة</h6>
+        <h6 class="mb-1">الادارة المركزية للشئون الوقائية</h6>
+        <br *ngIf="lang == 'en'" />
+        <h6 class="mb-1">الإدارة العامة للوبائيات والترصد</h6>
+      </div>
+    </div>
+    <div>
+      <div>
+        <h5 class="box-title">
+          <!-- {{ "NEDSS.REPORTS_LABELS.DiseseBasedOnPatient" | translate }} -->
+            {{ reportTitle }}
+        </h5>
+      </div>
+      <div
+        class="d-flex align-items-center justify-content-center mt-3 fwb fs-13"
+      >
+        <span class="px-1"> {{ "NEDSS.HOME.DASHBOARD.FROM" | translate }}</span>
+        <span class="px-1"> {{ fromDate }}</span>
+        <span class="px-1"> {{ "NEDSS.HOME.DASHBOARD.TO" | translate }}</span>
+        <span class="px-1"> {{ toDate }}</span>
+      </div>
+    </div>
+    <div>
+      <img
+        width="80"
+        height="80"
+        src="../../../../../../Content/Images/mohp.png"
+        alt=""
+      />
+    </div>
+  </div>
+  <div class="col-12 table_report2">
+    <h5 class="ps-3 mb-2 totalCount">
+      {{ "NEDSS.REPORTS.TOTAL_CASES_COUNT" | translate }}: {{ totalCount }}
+    </h5>
+    <table
+      id="myTable"
+      [style.direction]="dir"
+      class="table table-hover table-striped table-sm mb-0"
+    >
+      <tbody>
+        <tr *ngFor="let disease of tableData">
+          <td class="px-4">
+            <h6 class="head-name mb-2">
+              {{ "NEDSS.REPORTS_LABELS.PatientInfo" | translate }}
+            </h6>
+            <div class="d-flex align-items-center" *ngIf="disease.firstName">
+              <p class="col-4 bold mb-1">
+                {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.firstName }}</p>
+            </div>
+            <div class="d-flex align-items-center" *ngIf="disease.secondName">
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_COMPLETION.FATHER_NAME" | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.secondName }}</p>
+            </div>
+            <div class="d-flex align-items-center" *ngIf="disease.thirdName">
+              <p class="col-4 bold mb-1">
+                {{ "NEDSS.REPEATED_RECORDS.GRANDFATHER" | translate }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.thirdName }}</p>
+            </div>
+            <div class="d-flex align-items-center" *ngIf="disease.familyName">
+              <p class="col-4 bold mb-1">
+                {{ "NEDSS.REPEATED_RECORDS.FAMILY" | translate }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.familyName }}</p>
+            </div>
+            <div class="d-flex align-items-center" *ngIf="disease.gender">
+              <p class="col-4 bold mb-1">
+                {{ "NEDSS.REPEATED_RECORDS.GENDER" | translate }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.gender }}</p>
+            </div>
+            <div class="d-flex align-items-center" *ngIf="disease.age">
+              <p class="col-4 bold mb-1">
+                {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGE" | translate }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.age }}</p>
+            </div>
+            <div class="d-flex align-items-center" *ngIf="disease.ageType">
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGETYPE" | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.ageType }}</p>
+            </div>
+            <div class="d-flex align-items-center" *ngIf="disease.phoneNo">
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.Phone" | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.phoneNo }}</p>
+            </div>
+          </td>
+          <td class="px-4">
+            <h6 class="head-name mb-2">
+              {{ "NEDSS.REPORTS_LABELS.IncidentSource" | translate }}
+            </h6>
+            <div
+              class="d-flex align-items-center"
+              *ngIf="disease.incidentGovernmentName"
+            >
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.GOVERNMENT" | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.incidentGovernmentName }}</p>
+            </div>
+            <div
+              class="d-flex align-items-center"
+              *ngIf="disease.incidentHealthAdministrationName"
+            >
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.ADMINISTRATION"
+                    | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">
+                {{ disease?.incidentHealthAdministrationName }}
+              </p>
+            </div>
+            <div
+              class="d-flex align-items-center"
+              *ngIf="disease.incidentSourceName"
+            >
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INCIDENT_SOURCE"
+                    | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.incidentSourceName }}</p>
+            </div>
+
+            <h6 class="head-name mb-2 mt-2">
+              {{ "NEDSS.REPORTS_LABELS.HomeAddress" | translate }}
+            </h6>
+            <div
+              class="d-flex align-items-center"
+              *ngIf="disease.homeGovernmentName"
+            >
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.GOVERNMENT" | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.homeGovernmentName }}</p>
+            </div>
+            <div
+              class="d-flex align-items-center"
+              *ngIf="disease.homeHealthAdministrationName"
+            >
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.ADMINISTRATION"
+                    | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">
+                {{ disease?.homeHealthAdministrationName }}
+              </p>
+            </div>
+            <div
+              class="d-flex align-items-center"
+              *ngIf="disease.homeHealthOfficeName"
+            >
+              <p class="col-4 bold mb-1">
+                {{ "NEDSS.HOME.USERS.HEALTH_OFFICE" | translate }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.homeHealthOfficeName }}</p>
+            </div>
+            <div class="d-flex align-items-center" *ngIf="disease.homeCityName">
+              <p class="col-4 bold mb-1">
+                {{ "NEDSS.PROFILE.CITY" | translate }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.homeCityName }}</p>
+            </div>
+            <div
+              class="d-flex align-items-center"
+              *ngIf="disease.homePrincipalityName"
+            >
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_COMPLETION.Center/Area" | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.homePrincipalityName }}</p>
+            </div>
+          </td>
+
+          <td class="px-4">
+            <h6 class="head-name mb-2">
+              {{ "NEDSS.REPORTS_LABELS.DieseaseInfo" | translate }}
+            </h6>
+            <div class="d-flex align-items-center" *ngIf="disease.incidentDate">
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INCIDENTDATE"
+                    | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.incidentDate }}</p>
+            </div>
+            <div
+              class="d-flex align-items-center"
+              *ngIf="disease.hospitalEntryDate"
+            >
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALENTRYDATE"
+                    | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.hospitalEntryDate }}</p>
+            </div>
+            <div
+              class="d-flex align-items-center"
+              *ngIf="disease.caseDiscoveryDate"
+            >
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DIEASESEDISCOVERDATE"
+                    | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.caseDiscoveryDate }}</p>
+            </div>
+            <div
+              class="d-flex align-items-center"
+              *ngIf="disease.initialDiseases"
+            >
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES"
+                    | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.initialDiseases }}</p>
+            </div>
+            <div class="d-flex align-items-center" *ngIf="disease.result">
+              <p class="col-4 bold mb-1">
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULT"
+                    | translate
+                }}
+              </p>
+              <p class="col-8 mb-1">{{ disease?.result }}</p>
+            </div>
+            <div *ngIf="disease.finalDiagonisticsData?.length">
+              <div class="d-flex align-items-center">
+                <p class="col-4 bold mb-3">
+                  {{
+                    "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULTCATEGORY"
+                      | translate
+                  }}
+                </p>
+                <div class="col-8 mb-1">
+                  <div
+                    class="d-flex flex-wrap align-items-center mb-3"
+                    *ngFor="let finalDisease of disease.finalDiagonisticsData"
+                  >
+                    <div class="col-6">
+                      <span>
+                        {{ finalDisease?.caseDiagnosis }}
+                      </span>
+                    </div>
+                    <div class="col-6">
+                      <span
+                        *ngFor="let result of finalDisease?.finalDiseaseResult"
+                      >
+                        {{ result }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="d-flex align-items-center">
+                <p class="col-4 bold mb-1">
+                  {{
+                    "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.FINALDIGONISTICS"
+                      | translate
+                  }}
+                </p>
+                <p class="col-8 mb-1">
+                  <span
+                    class="d-block"
+                    *ngFor="let finalDisease of disease.finalDiagonisticsData"
+                    >{{ finalDisease?.finalDiseaseResult }}</span
+                  >
+                </p>
+              </div> -->
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="d-flex align-items-center my-5 px-4">
+    <h6>{{ "NEDSS.REPORTS.ExportCurrentDate" | translate }}:</h6>
+    <h6 class="px-2">{{ currentDate | date : "yyyy-MM-dd" }}</h6>
+  </div>
+</div>

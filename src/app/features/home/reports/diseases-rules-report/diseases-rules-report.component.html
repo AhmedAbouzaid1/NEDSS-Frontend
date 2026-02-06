@@ -1,0 +1,131 @@
+<app-loader *ngIf="loadingPanel"></app-loader>
+<div class="box box-primary mt-4 hide-print">
+  <div class="box-header with-border p-2">
+    <h6 class="box-title">
+      {{ "NEDSS.REPORTS_LABELS.DISEASES_RULES_REPORT" | translate }}
+    </h6>
+  </div>
+
+  <div class="box-body row mt-3 hide-print">
+    <div class="col-lg-4 mb-4">
+      <div class="form-group">
+        <label for="">
+          {{ "NEDSS.REPORTS.DISEASE_GROUP" | translate }}
+          <span class="text-danger">*</span>
+        </label>
+        <ng-multiselect-dropdown
+          [settings]="multipleDropdownSettings"
+          [data]="diseasesGroups"
+          [(ngModel)]="selectedDiseaseGroups"
+          #diseaseGroupsDropdown="ngModel"
+          required
+          ></ng-multiselect-dropdown>
+          <small
+          *ngIf="!isDiseaseGroupsValid"
+          class="form-text text-danger mess-color"
+        >
+          {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+        </small>
+      </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-end mt-2 mb-2">
+      <button
+        (click)="getDiseasesRulesReport()"
+        class="btn btn-lg bg text-light"
+      >
+        <i class="fa fa-search"></i>
+        {{ "NEDSS.REPORTS.Search" | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!--Start No Data -->
+<div *ngIf="!showTableData" class="mt-4 pb-4 pt-4 box border0 clear hide-print">
+  <div align="center" class="color">
+    {{ "NEDSS.REPORTS.NothingToPreview" | translate }}<br />
+    <br /><img
+      width="100%"
+      height="100%"
+      src="../../../../../assets/images/no-data.png"
+      width="150"
+    /><br /><br />
+    <span class="color hover bolds">
+      <i class="fa fa-arrow-left"></i>
+      {{ "NEDSS.REPORTS.DoSearch" | translate }}
+    </span>
+    <div></div>
+  </div>
+</div>
+<!--End No Data -->
+
+<!-- Start Table -->
+<div class="table-report box hide-print" *ngIf="showTableData">
+  <div class="row m-0">
+    <div
+      class="table-reponsive d-flex align-items-center justify-content-end w-100 py-3 px-3"
+    >
+      <a (click)="exportToPdf()"
+        ><span class="pi pi-file-pdf button-export"></span
+      ></a>
+      <a (click)="print()"><span class="pi pi-print button-export"></span></a>
+      <a (click)="generateReportToExcel()"
+        ><span class="pi pi-file-excel button-export"></span
+      ></a>
+    </div>
+    <table
+      [style.direction]="dir"
+      class="table table-hover table-striped table-sm mb-0"
+    >
+      <thead>
+        <tr>
+          <th></th>
+          <th
+            *ngFor="let headerName of tableData?.diseasesRulesDataColumnsNames"
+          >
+            {{ headerName }}
+          </th>
+        </tr>
+      </thead>
+      <ng-container *ngFor="let data of tableData.diseasesRulesData">
+        <tbody>
+          <tr class="table-secondary">
+            <td colspan="100%">
+              <strong>{{ data.diseaseGroupName }}</strong>
+            </td>
+          </tr>
+          <ng-container *ngFor="let data2 of data.rulesData">
+            <tr>
+              <td>
+                {{ data2?.sqeuenceNumber }}
+              </td>
+              <td>
+                {{ data2?.diseaseCheckName }}
+              </td>
+              <td>
+                {{ data2?.diseaseLabTestName }}
+              </td>
+              <td>
+                {{ data2?.diseaseLabTestResultName }}
+              </td>
+              <td>
+                {{ data2?.caseResultCategoryName }}
+              </td>
+              <td>
+                {{ data2?.diseaseName }}
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </ng-container>
+    </table>
+  </div>
+  <!-- End Table -->
+</div>
+
+<!-- start component to print -->
+<div *ngIf="tableData && showTableData" id="pdfTable">
+  <app-diseases-rules-report-pdf [pdfData]="tableData">
+  </app-diseases-rules-report-pdf>
+  <!-- end component to print -->
+</div>

@@ -1,0 +1,699 @@
+<form [formGroup]="feverRashForm" (ngSubmit)="save()">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow mt-4 color">
+        <div class="card-body">
+          <h5 style="text-align: center; border: 1px solid; padding: 1%">
+            الحمى والطفح الجلدى
+          </h5>
+          <br />
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label for="">
+                  {{"NEDSS.INVESTIGATIONS.percentage"| translate}}
+                  <span class="mx-4" style="font-size: larger; color: red">
+                    <!-- {{ precentile.value }} % -->
+                    {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount / allControllesCount) * 100 | number:'1.0-2') }} %
+                  </span>
+                </label>
+                <input #precentile type="range" class="form-range bg" onkeypress="false" [readonly]="true"
+                        style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
+                       value="{{ (allFilledControlsCount / allControllesCount) * 100 }}"  />
+                        <!-- value="{{controlsCount}}" formControlName="completePercentage" /> -->
+              </div>
+            </div>
+            <div class="col-lg-4">
+              {{"NEDSS.INVESTIGATIONS.Filled"| translate}}
+              {{allFilledControlsCount}}
+              {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+              {{"NEDSS.INVESTIGATIONS.From"| translate}}
+              {{allControllesCount}}
+              {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</div>
+            <div class="col-6 has-labels">
+              <label for="">
+                <input formControlName="fever" type="radio" name="fever" id="" value="1" (blur)="calculateCompletionPercentage()"/>
+                {{ "NEDSS.COMMON.YES" | translate }}
+              </label>
+              <label for="">
+                <input formControlName="fever" type="radio" name="fever" id="" value="2" (blur)="calculateCompletionPercentage()"/>
+                {{ "NEDSS.COMMON.NO" | translate }}
+              </label>
+              <label for="">
+                <input formControlName="fever" type="radio" name="fever" id="" value="3" (blur)="calculateCompletionPercentage()" />
+                {{ "NEDSS.REPORTS.UnKnown" | translate }}
+              </label>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Duration_Fever_Days" | translate }}</label>
+                <input formControlName="feverDays" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()"  />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Max_Temp" | translate }}</label>
+                <input formControlName="maxTemperature" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()"  />
+              </div>
+            </div>
+          </div>
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">طفح جلدي غير حوصلي</label>
+                  <select formControlName="vesicularRash" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" >
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">بقع كوبليك (Koplik’s spots)</label>
+                  <select formControlName="koplikSpots" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="">تاريخ الحمى</label>
+                  <input formControlName="historyFever" type="date" name="" id="" [class]="'form-control-'+ currentLang"  (blur)="calculateCompletionPercentage()"
+                    placeholder="dd/mm/yyyy" />
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="">تاريخ الطفح</label>
+                  <input formControlName="historyRash" type="date" name="" id="" [class]="'form-control-'+ currentLang" (blur)="calculateCompletionPercentage()"
+                    placeholder="dd/mm/yyyy" />
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label for="">تاريخ الإبلاغ</label>
+                  <input formControlName="reportingDate" type="date" name="" id="" (blur)="calculateCompletionPercentage()"
+                    [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-check mt-4">
+                  <input formControlName="femaleChildbearingAge" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                    value="option1" />
+                  <label class="form-check-label" for="">أنثى في سن الإنجاب</label>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-check mt-4">
+                  <input formControlName="pregnant" class="form-check-input" type="checkbox" id="" value="option1" (blur)="calculateCompletionPercentage()"/>
+                  <label class="form-check-label" for="">حامل</label>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">اسبوع الحمل</label>
+                  <input formControlName="pregnancyWeek" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()"/>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">مقبلة على حمل</label>
+                  <select formControlName="comingCarry" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">التشخيص التفريقي DD</div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="suspectedMeasles" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                        value="0" />
+                      <label class="form-check-label" for="">اشتباه حصبة</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="felineDisease" class="form-check-input" type="checkbox" id="" value="0" (blur)="calculateCompletionPercentage()" />
+                      <label class="form-check-label" for="">داء القطط</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="suspicionDengueFever" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                        value="0" />
+                      <label class="form-check-label" for="">اشتباه حمى الدنج</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="skinAllergies" class="form-check-input" type="checkbox" id="" value="0" (blur)="calculateCompletionPercentage()" />
+                      <label class="form-check-label" for="">حساسية جلدية</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="suspicionGermanMeasles" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                        value="0" />
+                      <label class="form-check-label" for="">اشتباه حصبة الماني</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="babyPink" class="form-check-input" type="checkbox" id="" value="0" (blur)="calculateCompletionPercentage()"/>
+                      <label class="form-check-label" for="">طفلية وردية</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="mouthHandFootSyndrome" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                        value="0" />
+                      <label class="form-check-label" for="">متلازمة الفم و اليد و القدم</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="foodAllergy" class="form-check-input" type="checkbox" id="" value="0" (blur)="calculateCompletionPercentage()"/>
+                      <label class="form-check-label" for="">حساسية طعام</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="viralDermatitis" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                        value="0" />
+                      <label class="form-check-label" for="">التهاب بالجلد فيروسي</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="bacterialInfection" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                        value="0" />
+                      <label class="form-check-label" for="">عدوى بكتيريه</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="red" class="form-check-input" type="checkbox" id="" value="0"  (blur)="calculateCompletionPercentage()"/>
+                      <label class="form-check-label" for="">حمرة</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="insectAllergy" class="form-check-input" type="checkbox" id="" value="0" (blur)="calculateCompletionPercentage()" />
+                      <label class="form-check-label" for="">حساسية حشرية</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="sideEffectAfterVaccination" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                        value="0" />
+                      <label class="form-check-label" for="">اثر جانبي بعد التطعيم</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="kawasaki" class="form-check-input" type="checkbox" id="" value="0" (blur)="calculateCompletionPercentage()"/>
+                      <label class="form-check-label" for="">كواساكي</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="seasonalFever" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                        value="option1" />
+                      <label class="form-check-label" for="">حمى موسمية</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="drugAllergy" class="form-check-input" type="checkbox" id="" value="0"  (blur)="calculateCompletionPercentage()"/>
+                      <label class="form-check-label" for="">حساسية دوائية</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="scarletfever" class="form-check-input" type="checkbox" id="" value="0" (blur)="calculateCompletionPercentage()" />
+                      <label class="form-check-label" for="">حمى قرمزية</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="johnsonSyndrome" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                        value="option1" />
+                      <label class="form-check-label" for="">متلازمة جونسون</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="encephalitis" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                        value="option1" />
+                      <label class="form-check-label" for="">التهاب بالمخ</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="coronaSuspicion" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()" />
+                      <label class="form-check-label" for="">اشتباه كورونا</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-check mt-4">
+                      <input formControlName="suspicionImmunodeficiency" class="form-check-input" type="checkbox" id="" (blur)="calculateCompletionPercentage()"
+                        value="0" />
+                      <label class="form-check-label" for="">اشتباه نقص المناعة</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb mb-3">العينات</div>
+                  <div class="col-sm-2 fwb">نوع العينة</div>
+                  <div class="col-sm-3 fwb">تاريخ جمع العيانات</div>
+                  <div class="col-sm-3 fwb">تاريخ إرسال البيانات</div>
+                  <div class="col-sm-12">
+                    <hr />
+                  </div>
+                  <div class="col-sm-2 mt-2">الدم</div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <input formControlName="bloodCollectingDate" type="date" name="" id="" (blur)="calculateCompletionPercentage()"
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <input formControlName="bloodSendDate" type="date" name="" id="" (blur)="calculateCompletionPercentage()"
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="row mt-2">
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="bloodSample" class="form-check-input" name="bloodSample" type="radio" (blur)="calculateCompletionPercentage()"
+                            id="" value="1" />
+                          <label class="form-check-label" for="">عينة أولى</label>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="bloodSample" class="form-check-input" type="radio" name="bloodSample" (blur)="calculateCompletionPercentage()"
+                            id="" value="2" />
+                          <label class="form-check-label" for="">عينة ثانية</label>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="bloodSample" class="form-check-input" type="radio" name="bloodSample" (blur)="calculateCompletionPercentage()"
+                            id="" value="3" />
+                          <label class="form-check-label" for="">عينة معادة</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2 mt-2">مسحة حلق</div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <input formControlName="throatSwabCollectingDate" type="date" name="" id="" (blur)="calculateCompletionPercentage()"
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <input formControlName="throatSwabSendDate" type="date" name="" id="" (blur)="calculateCompletionPercentage()"
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="row mt-2">
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="throatSwabSample" name="throatSwabSample" class="form-check-input" (blur)="calculateCompletionPercentage()" 
+                            type="radio" id="" value="1" />
+                          <label class="form-check-label" for="">عينة أولى</label>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="throatSwabSample" name="throatSwabSample" class="form-check-input" (blur)="calculateCompletionPercentage()"
+                            type="radio" id="" value="2" />
+                          <label class="form-check-label" for="">عينة ثانية</label>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="throatSwabSample" name="throatSwabSample" class="form-check-input" (blur)="calculateCompletionPercentage()"
+                            type="radio" id="" value="3" /> 
+                          <label class="form-check-label" for="">عينة معادة</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 title fs-6 fwb mb-3">
+                    عينات المخالط ان وجد
+                  </div>
+                  <div class="col-sm-2 fwb">نوع العينة</div>
+                  <div class="col-sm-3 fwb">تاريخ جمع العيانات</div>
+                  <div class="col-sm-3 fwb">تاريخ إرسال البيانات</div>
+                  <div class="col-sm-12">
+                    <hr />
+                  </div>
+                  <div class="col-sm-2 mt-2">الدم</div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <input formControlName="contactbloodCollectingDate" type="date" name="" id="" (blur)="calculateCompletionPercentage()"
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <input formControlName="contactbloodSendDate" type="date" name="" id="" (blur)="calculateCompletionPercentage()"
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="row mt-2">
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="contactbloodSample" name="contactbloodSample" class="form-check-input" (blur)="calculateCompletionPercentage()"
+                            type="radio" id="" value="1" />
+                          <label class="form-check-label" for="">عينة أولى</label>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="contactbloodSample" name="contactbloodSample" class="form-check-input" (blur)="calculateCompletionPercentage()"
+                            type="radio" id="" value="2" />
+                          <label class="form-check-label" for="">عينة ثانية</label>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="contactbloodSample" name="contactbloodSample" class="form-check-input" (blur)="calculateCompletionPercentage()"
+                            type="radio" id="" value="3" />
+                          <label class="form-check-label" for="">عينة معادة</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2 mt-2">مسحة حلق</div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <input formControlName="contactthroatSwabCollectingDate" type="date" name="" id="" (blur)="calculateCompletionPercentage()"
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <input formControlName="contactthroatSwabSendDate" type="date" name="" id="" (blur)="calculateCompletionPercentage()"
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="row mt-2">
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="contactthroatSwabSample" name="contactthroatSwabSample" (blur)="calculateCompletionPercentage()"
+                            class="form-check-input" type="radio" id="" value="1" />
+                          <label class="form-check-label" for="">عينة أولى</label>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="contactthroatSwabSample" name="contactthroatSwabSample" (blur)="calculateCompletionPercentage()"
+                            class="form-check-input" type="radio" id="" value="2" />
+                          <label class="form-check-label" for="">عينة ثانية</label>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-check">
+                          <input formControlName="contactthroatSwabSample" name="contactthroatSwabSample" (blur)="calculateCompletionPercentage()"
+                            class="form-check-input" type="radio" id="" value="3" />
+                          <label class="form-check-label" for="">عينة معادة</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">التقصي الوبائي</div>
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label for="">كود الحالة</label>
+                      <input formControlName="statusCode" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-12 titles fs-6 fw-bold">
+                    المخالطة البشرية
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">هل يوجد حالات مؤكدة خلال شهر سابق في نطاق
+                        الإدارة</label>
+                      <select formControlName="confirmedCasesDuringPreviousMonth" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">في حالة نعم تاريخ الحالة</label>
+                      <input formControlName="contactWithCase" type="date" name="" id=""
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">هل يوجد حالة حمى وطفح جلدي خلال شهر سابق في نطاق
+                        الإدارة</label>
+                      <select formControlName="caseFeverRash" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">في حالة نعم تاريخ الحالة</label> 
+                      <input formControlName="rashContactWithCase" type="date" name="" id="" (blur)="calculateCompletionPercentage()"
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">هل انتقلت الحالة إلأى منطقة موبؤة بالحصبة أو الحصبة
+                        الألماني قبل ظهور الطفح الجلدي بـ 23 يوماً</label>
+                      <select formControlName="measlesInfestedArea" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">في حالة نعم تاريخ الزيارة</label>
+                      <input formControlName="dateVisit" type="date" name="" id=""
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" (blur)="calculateCompletionPercentage()"/>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">هل الحالة مخالطة لحالة وافدة</label>
+                      <select formControlName="importedCase" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- /.col-lg-6 -->
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="">في حالة نعم. اسم الحالة</label>
+                      <input formControlName="caseName" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <!-- /.col-lg-3 -->
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for="">في حالة نعم. بلد الحالة</label>
+                      <input formControlName="countryOfCase" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <!-- /.col-lg-3 -->
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">هل الحالة جزء من تفشي وبائي</label>
+                      <select formControlName="epidemicOutbreak" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- /.col-lg-6 -->
+                  <div class="col-lg-12 row">
+                    <div class="col-lg-2">في حالة تفشي وبائي</div>
+                    <div class="col-lg-10 row">
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="">اسم الحالة مصدر العدوى </label>
+                          <input formControlName="sourceInfection" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()"/>
+                        </div>
+                      </div>
+                      <!-- /.col-lg-6 -->
+
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="">كود الحالة في حالة إبلاغها </label>
+                          <input formControlName="statusCodCase" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()"/>
+                        </div>
+                      </div>
+                      <!-- /.col-lg-6 -->
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="">تاريخ الطفح الجلدي مصدر العدوى </label>
+                          <input formControlName="historyRashSource" type="date" placeholder="dd/mm/yyyy" name="" id="" (blur)="calculateCompletionPercentage()"
+                            [class]="'form-control-'+ currentLang" />
+                        </div>
+                      </div>
+                      <!-- /.col-lg-6 -->
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="">تصنيفها النهائي</label>
+                          <input formControlName="finalClassification" type="text" name="" id="" class="form-control"  (blur)="calculateCompletionPercentage()"/>
+                        </div>
+                      </div>
+                      <!-- /.col-lg-6 -->
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">الحالة التطعيمية</label>
+                      <select formControlName="vaccinationStatus" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">لم يستحق</option>
+                        <option value="2">جرعة واحدة</option>
+                        <option value="3">جرعتين فأكثر</option>
+                        <option value="4">غير معلوم</option>
+                        <option value="5">غير مقتنع بالتطعيم</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- /.col-lg-6 -->
+                  <div class=" table-responsive table-none-scroll">
+                    <table class="table table-bordered table-striped-columns">
+                      <thead>
+                        <tr>
+                          <th>الجرعة</th>
+                          <th>MMR1</th>
+                          <th>MMR2</th>
+                          <th>حملة 2015</th>
+                          <th>حملة 2020</th>
+                          <th>أخرى</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>الوحدة</td>
+                          <td>
+                            <input formControlName="mmr1Unit" type="text" class="form-control"  (blur)="calculateCompletionPercentage()"/>
+                          </td>
+                          <td>
+                            <input formControlName="mmr2Unit" type="text" class="form-control"  (blur)="calculateCompletionPercentage()"/>
+                          </td>
+                          <td>
+                            <input formControlName="campaign2015Unit" type="text" class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="campaign2020Unit" type="text" class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="otherUnit" type="text" class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>الإدارة</td>
+                          <td>
+                            <input formControlName="mmr1Management" type="text" class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="mmr2Management" type="text" class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="campaign2015Management" type="text" class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="campaign2020Management" type="text" class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="otherManagement" type="text" class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">عدد المخالطين المباشرين</label>
+                      <input formControlName="numberDirectContacts" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <!-- /.col-lg-6 -->
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">عدد المخالطين غير المباشرين</label>
+                      <input formControlName="numberIndirectContacts" type="number" name="" id="" (blur)="calculateCompletionPercentage()"
+                        class="form-control" />
+                    </div>
+                  </div>
+                  <!-- /.col-lg-6 -->
+                </div>
+                <!-- / .row -->
+              </div>
+              <!-- / .col-12 -->
+            </div>
+            <!-- / .row -->
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-start pt-4">
+        <button type="submit" class="btn bg rounded-2 text-light mb-5">
+          {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

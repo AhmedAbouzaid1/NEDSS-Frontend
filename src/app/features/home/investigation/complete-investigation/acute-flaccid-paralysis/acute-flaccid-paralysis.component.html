@@ -1,0 +1,2683 @@
+<form [formGroup]="AcuteFlaccidParalysisForm" (ngSubmit)="save()">
+<div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt">
+  <h5 style="text-align: center; border: 1px solid; padding: 1%">
+    {{"NEDSS.Complete_Investigation.acute-flaccid.Acute flaccid paralysis" | translate }}
+  </h5>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label for="">
+          {{"NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME"| translate}}: {{ patientName }}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="form-group">
+        <label for="">
+          {{"NEDSS.INVESTIGATIONS.percentage"| translate}}
+          <span class="mx-4" style="font-size: larger; color: red">
+            <!-- {{ precentile.value }} % -->
+            {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount / allControllesCount) * 100 |
+            number:'1.0-2') }} %
+          </span>
+        </label>
+        <input #precentile type="range" class="form-range bg" onkeypress="false" [readonly]="true"
+          style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
+          value="{{ (allFilledControlsCount / allControllesCount) * 100 }}"
+          formControlName="investigationCompletePercentage" />
+        <!-- value="{{controlsCount}}" formControlName="completePercentage" /> -->
+      </div>
+    </div>
+    <div class="col-lg-4">
+      {{"NEDSS.INVESTIGATIONS.Filled"| translate}}
+      {{allFilledControlsCount}}
+      {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+      {{"NEDSS.INVESTIGATIONS.From"| translate}}
+      {{allControllesCount}}
+      {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+    </div>
+  </div>
+
+    <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt bg-dark-mode small-screen-card">
+      <div class="row">
+        {{"NEDSS.Complete_Investigation.acute-flaccid.Special symptoms: acute flaccid paralysis" | translate }}
+        <div class="col-12 title fs-6 fwb"> </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">
+              {{"NEDSS.Complete_Investigation.acute-flaccid.Is there sudden relaxation of the affected organs ?" |
+              translate }}
+            </label>
+            <select formControlName="suddenRelaxationAffectedOrgans" fromco name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">علامة بابينسكي</label>
+            <select formControlName="babinskiSign1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+              <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">اذكر الاعضاء المصابة بالشلل :</label>
+            <select formControlName="mentionParalyzedOrgans" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">عضو واحد</option>
+              <option value="2">عضوين</option>
+              <option value="3">الاعضاء الاربعة</option>
+              <option value="4">تناظر في الاعضاء المصابة</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">تناظر في الاعضاء المصابة</label>
+            <select formControlName="symmetryAffectedOrgans1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">اكتمال الشلل خلال اربعة ايام</label>
+            <select formControlName="completeParalysisWithinFourDays" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+              <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">وجود احساس بالاعضاء المصابة</label>
+            <select formControlName="feelingAffectedOrgans1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+              <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">هل الحالة خطر؟</label>
+            <select formControlName="isConditionDangerous" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}"</option>
+              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">الطفل اقل من خمس اعوام</label>
+            <select formControlName="childLessFiveYears" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">عدم تناظر الاعضاء</label>
+            <select formControlName="memberAsymmetry" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">سرعة اكتمال الشلل</label>
+            <select formControlName="speedCompleteParalysis" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">سلامة الاحساس بالاعضاء المصابة</label>
+            <select formControlName="feelingSafeAffectedOrgans" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">هل تلقي الطفل أي حقن خلال الــ3 أيام قبل حدوث الشلل ؟</label>
+            <select formControlName="isChildReceiveInjections3DaysBeforeOnsetParalysis" name="" id=""
+              class="form-control" (blur)="calculateCompletionPercentage()">
+              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt bg-dark-mode small-screen-card">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="">في حالة {{ "NEDSS.COMMON.YES" | translate }} أذكر مكان الحقن بالالية</label>
+              <select formControlName="mentionInjectionSiteMechanism" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                <option value="1">الناحية اليمنى</option>
+                <option value="2">الناحية اليسري</option>
+                <option value="3">الناحيتين</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="">الموقع الجغرافي الذي تم الحقن به</label>
+              <select formControlName="geographicalLocationInjectionMade" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                <option value="1">صيدلية</option>
+                <option value="2"></option>
+                <option value="3">منزل</option>
+                <option value="4">عيادة</option>
+                <option value="5">اخري</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="">هل تمت التوعية بالموقع</label>
+              <select formControlName="isSiteAware1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <h3 class="fs-5 text-success fwb">
+          البلاغ بالفاكس عن حالة شلل رخو حاد
+        </h3>
+        <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt bg-dark-mode small-screen-card">
+          <div class="row">
+            <!-- <div class="col-12 title fs-6 fwb">البلاغ بالفاكس عن حالة شلل رخو حاد</div> -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">في حاله أن الحاله غير مصرية يتم ذكرالجنسية</label>
+                <input formControlName="nationalityMentioned" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <!-- /.col-lg-6 -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ دخول البلاد</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="dateEntryIntoCountry" name="" id="dp1684700331553"
+                  placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-12 title fs-6 fwb">معلومات عن اكتشاف الحالة</div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for=""> المديرية المبلغة عن الحالة:</label>
+                <input formControlName="directorateReportingCase" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.REPORTS.HealthAdministration" | translate }}</label>
+                <input formControlName="administration" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اسم المبلغ (مكتشف) الحالة:</label>
+                <input formControlName="nameInformant" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">موقع الابلاغ عن الحالة:</label>
+                <input formControlName="reportingSite" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ الابلاغ (من مكتشف الحالة)</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="reportDate" name="" id="dp1684700331553" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الجهة الصحية المبلغ لها:</label>
+                <input formControlName="reportedHealthAuthority" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-12 title fs-6 fwb">الاعراض المرضية</div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ بدء الشلل</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="dateOnsetParalysis" name="" id="dp1684700331553"
+                  placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">هل الشلل رخو </label>
+                <select formControlName="isParalysisFlaccid" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الاعضاء المصابة بالشلل:</label>
+                <input formControlName="paralyzedMembers" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تناظر الاعضاء المصابة</label>
+                <select formControlName="symmetryAffectedOrgans" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">وجود ارتفاع في درجة الحرارة عند بدء الشلل </label>
+                <select formControlName="presenceHighTemperatureParalysisBegins" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اكتمال الشلل خلال اربعة ايام</label>
+                <select formControlName="completeParalysisWithinFourDays1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                  <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for=""> وجود احساس بالاعضاء المصابة</label>
+                <select formControlName="feelingAffectedOrgans" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                  <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">هل تعتبر الحالة خطرة (Hot Case)؟ </label>
+                <select formControlName="isCaseDangerous" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- /.col-lg-6 -->
+          </div>
+          <!-- /.col-lg-6 -->
+        </div>
+      </div>
+
+      <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt bg">
+        <div class="row">
+          <div class="table-responsive table-none-scroll">
+            <table class="table table-bordered table-striped-columns">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>مسئول الترصد بالادارة</th>
+                  <th>مسئول الترصد بالمديرية</th>
+                  <th>المدير الوقائى بالمديرية</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}:</td>
+                  <td>
+                    <input formControlName="administrationMonitoringOfficerName1" type="text" name="" id=""
+                      class="form-control" (blur)="calculateCompletionPercentage()" />
+                  </td>
+                  <td>
+                    <input formControlName="monitoringOfficerDirectorateName1" type="text" name="" id=""
+                      class="form-control" (blur)="calculateCompletionPercentage()" />
+                  </td>
+                  <td>
+                    <input formControlName="preventiveDirectorDirectorateName1" type="text" name="" id=""
+                      class="form-control" (blur)="calculateCompletionPercentage()" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>التوقيع:</td>
+                  <td>
+                    <input formControlName="administrationMonitoringOfficerSignature1" type="text" name="" id=""
+                      class="form-control" (blur)="calculateCompletionPercentage()" />
+                  </td>
+                  <td>
+                    <input formControlName="monitoringOfficerDirectorateSignature1" type="text" name="" id=""
+                      class="form-control" (blur)="calculateCompletionPercentage()" />
+                  </td>
+                  <td>
+                    <input formControlName="preventiveDirectorDirectorateSignature1" type="text" name="" id=""
+                      class="form-control" (blur)="calculateCompletionPercentage()" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>التاريخ::</td>
+                  <td>
+                    <input type="date" (blur)="calculateCompletionPercentage()" formControlName="administrationMonitoringOfficerDate1" name=""
+                      placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                  </td>
+                  <td>
+                    <input type="date" (blur)="calculateCompletionPercentage()" formControlName="monitoringOfficerDirectorateDate1" name=""
+                      placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                  </td>
+                  <td>
+                    <input type="date" (blur)="calculateCompletionPercentage()" formControlName="preventiveDirectorDirectorateDate1" name=""
+                      placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <h3 class="fs-5 text-success fwb">
+          التقصي الوبائي لحالة شلل رخو حاد ( نموذج 2)
+        </h3>
+        <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt bg-dark-mode small-screen-card">
+          <div class="row">
+            <div class="col-12 title fs-6 fwb">معلومات عن الحالة</div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اسم الحالة :</label>
+                <input formControlName="clinicalExaminationCaseName" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <!-- /.col-lg-6 -->
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الرقم القومي(بعد اقراره من الوزارة)</label>
+                <input formControlName="clinicalExaminationCaseNationaId" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ الميلاد</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="clinicalExaminationCaseDateBirth" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العمربالشهور</label>
+                <input formControlName="clinicalExaminationCaseAgeMonths" type="number" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">النوع</label>
+                <select formControlName="clinicalExaminationCaseGender" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">ذكر</option>
+                  <option value="2">انثى</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for=""> اسم الطبيب القائم بالفحص</label>
+                <input formControlName="clinicalExaminationCaseNameExaminingDoctor" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تخصصه</label>
+                <input formControlName="clinicalExaminationCaseSpecialty" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">مكان فحص المريض:</label>
+                <input formControlName="clinicalExaminationCaseWhereExaminePatient" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ دخول المستشفى:</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="clinicalExaminationCaseDateAdmissionHospital" name=""
+                  placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ بداية الشلل</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="clinicalExaminationCaseDateOnsetParalysis" name=""
+                  placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ اكتمال الشلل</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="clinicalExaminationCaseDateImmobilizationCompleted" name=""
+                  placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اكتمال الشلل خلال 4 ايام</label>
+                <select formControlName="clinicalExaminationCaseCompleteParalysis4Days" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">هل الشلل موجود منذ الولادة</label>
+                <select formControlName="clinicalExaminationCaseIsParalysisPresentBirth" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">هل حدث الشلل بسبب حادث او كسر</label>
+                <select formControlName="clinicalExaminationCaseIsParalysisAccidentFracture" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اذا نعم, اذكر السبب: </label>
+                <input formControlName="clinicalExaminationCaseStateReason" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-12 title fs-6 fwb">
+              اذا كانت الاجابة "نعم" لأحد السؤلين الاخيرين توقف عن الفحص واكتب
+              التشخيص الاولى للحالة في اخر خانة من الاستمارة
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">هل تلقي الطفل أي حقن خلال الــ3 أيام قبل حدوث الشلل</label>
+                <select formControlName="childReceiveInjections3Days" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">أذكر مكان الحقن بالجسم في حالة نعم</label>
+                <input formControlName="mentionPlaceInjectionBody" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الموقع التي تم الحقن به في حالة نعم</label>
+                <input formControlName="injectionSite" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">هل تمت التوعية بالموقع</label>
+                <select formControlName="isSiteAware" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12 title fs-6 fwb">الاعراض المرضية</div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">عدم التماثل</label>
+                <select formControlName="asymmetry" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الجزء المشلول رخو؟</label>
+                <select formControlName="paralyzedPartFlaccid" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">إحساس سليم في الأجزاء المشلولة</label>
+                <select formControlName="soundSensationParalyzedParts" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12 title fs-6 fwb">
+              هل ظهرت أي من الأعراض التالية قبل الشلل أو في بدايته:
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">حمي</label>
+                <select formControlName="fever" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">في حالة نعم اذكر التاريخ</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="feverDate" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اسهال</label>
+                <select formControlName="diarrhea" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">في حالة نعم اذكر التاريخ</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="diarrheaDate" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">قئ</label>
+                <select formControlName="vomit" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">في حالة نعم اذكر التاريخ</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="vomitDate" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">زكام</label>
+                <select formControlName="coryza" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">في حالة نعم اذكر التاريخ</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="coryzaDate" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">السيطرة على العضلة العاصرة</label>
+                <select formControlName="sphincterControl" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تصلب الرقبة</label>
+                <select formControlName="stiffNeck" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">التشنجات</label>
+                <select formControlName="convulsions" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">علامة بابينسكي</label>
+                <select formControlName="babinskiSign" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">ردود الفعل </label>
+                <select formControlName="reactions" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">قوة العضلات</label>
+                <select formControlName="muscleStrength" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">فرط التوتر</option>
+                  <option value="2">نقص التوتر</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for=""> أي علامات سريرية أخرى (يرجى التحديد):</label>
+                <input formControlName="otherClinicalSigns" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">التشخيص الاولي للحالة (اسم المرض المسبب للشلل):</label>
+                <input formControlName="initialDiagnosisCondition" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+
+            <div class="table-responsive table-none-scroll">
+              <table class="table table-bordered table-striped-columns">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>مسئول الترصد بالادارة</th>
+                    <th>مسئول الترصد بالمديرية</th>
+                    <th>المدير الوقائى بالمديرية</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}:</td>
+                    <td>
+                      <input formControlName="administrationMonitoringOfficerName2" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </td>
+                    <td>
+                      <input formControlName="monitoringOfficerDirectorateName2" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </td>
+                    <td>
+                      <input formControlName="preventiveDirectorDirectorateName2" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>التوقيع:</td>
+                    <td>
+                      <input formControlName="administrationMonitoringOfficerSignature2" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </td>
+                    <td>
+                      <input formControlName="monitoringOfficerDirectorateSignature2" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </td>
+                    <td>
+                      <input formControlName="preventiveDirectorDirectorateSignature2" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>التاريخ::</td>
+                    <td>
+                      <input type="date" (blur)="calculateCompletionPercentage()" formControlName="administrationMonitoringOfficerDate2" name=""
+                        placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                    </td>
+                    <td>
+                      <input type="date" (blur)="calculateCompletionPercentage()" formControlName="monitoringOfficerDirectorateDate2" name=""
+                        placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                    </td>
+                    <td>
+                      <input type="date" (blur)="calculateCompletionPercentage()" formControlName="preventiveDirectorDirectorateDate2" name=""
+                        placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <h3 class="fs-5 text-success fwb">
+          التقصي الوبائي لحالة شلل رخو حاد ( نموذج 3)
+        </h3>
+
+        <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt bg-dark-mode small-screen-card">
+          <div class="row">
+            <div class="col-12 title fs-6 fwb">معلومات عن الحالة</div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اسم الحالة</label>
+                <input formControlName="epidemiologicalInvestigationCaseName" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الرقم القومي(بعد اقراره من الوزارة)</label>
+                <input formControlName="epidemiologicalInvestigationNationalId" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ الميلاد</label>
+                <input formControlName="epidemiologicalInvestigationDateBirth" type="date" (blur)="calculateCompletionPercentage()" name=""
+                  class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العمربالشهور</label>
+                <input formControlName="epidemiologicalInvestigationAgeMonths" type="number" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">النوع</label>
+                <select formControlName="epidemiologicalInvestigationGender" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">ذكر</option>
+                  <option value="2">انثى</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 title fs-6 fwb">
+              عنوان الاقامة كما في شهادة الميلاد
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العنوان</label>
+                <input formControlName="epidemiologicalInvestigationAddressBirthCertificate" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الشارع</label>
+                <input formControlName="epidemiologicalInvestigationStreetBirthCertificate" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for=""> الوحدة الصحية </label>
+                <input formControlName="epidemiologicalInvestigationHealthUnitBirthCertificate" type="text" name=""
+                  id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.REPORTS.HealthAdministration" | translate }}</label>
+                <input formControlName="epidemiologicalInvestigationAdministratioBirthCertificaten" type="text" name=""
+                  id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.HOME.USERS.AUDIT-TRIAL.GOVERNMENT" | translate }} </label>
+                <input formControlName="epidemiologicalInvestigationGovernorateBirthCertificate" type="text" name=""
+                  id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-12 title fs-6 fwb">عنوان الاقامة حاليا</div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العنوان</label>
+                <input formControlName="epidemiologicalInvestigationAddress" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الشارع</label>
+                <input formControlName="epidemiologicalInvestigationStreet" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for=""> الوحدة الصحية </label>
+                <input formControlName="epidemiologicalInvestigationHealthUnit" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.REPORTS.HealthAdministration" | translate }}</label>
+                <input formControlName="epidemiologicalInvestigationAdministratio" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.HOME.USERS.AUDIT-TRIAL.GOVERNMENT" | translate }} </label>
+                <input formControlName="epidemiologicalInvestigationGovernorate" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الإقامة حاليا في منطقة </label>
+                <select formControlName="epidemiologicalInvestigationCurrentlyResidingArea" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">ريف</option>
+                  <option value="2">حضر</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">رقم التليفون</label>
+                <input formControlName="epidemiologicalInvestigationphoneNumber" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-12 title fs-6 fwb">
+              في حاله أن الحاله غير مصرية يتم ذكر
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONATILY" | translate}}</label>
+                <input formControlName="epidemiologicalInvestigationNationality" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ دخول البلاد</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="epidemiologicalInvestigationDateEntryIntoCountry" name=""
+                  placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-12 title fs-6 fwb">معلومات عن الاكتشاف والتقصي</div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اسم المبلغ (مكتشف) الحالة:</label>
+                <input formControlName="epidemiologicalInvestigationNameInformant" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ الابلاغ(من مكتشف الحالة)</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="epidemiologicalInvestigationReportingDate" name=""
+                  placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اسم الطبيب القائم بالتقصي</label>
+                <input formControlName="epidemiologicalInvestigationNameAttendingPhysician" type="text" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ التقصي</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="epidemiologicalInvestigationDate" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ بدء الشلل</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="epidemiologicalInvestigationDateOnsetParalysis" name=""
+                  placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-12 title fs-6 fwb">المعلومات الوبائية</div>
+
+            <div class="col-12 title fs-6 fwb">
+              اذكر تحركات الحالة خلال 30 يوم قبل بدء الشلل:
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العنوان</label>
+                <input formControlName="movesAdress1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اسم المنطقة</label>
+                <input formControlName="movesAreaName1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.REPORTS.FromDate" | translate }}</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="movesFromDate1" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">إلي تاريخ</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="movesToDate1" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العنوان</label>
+                <input formControlName="movesAdress2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اسم المنطقة</label>
+                <input formControlName="movesAreaName2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.REPORTS.FromDate" | translate }}</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="movesFromDate2" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">إلي تاريخ</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="movesToDate2" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العنوان</label>
+                <input formControlName="movesAdress3" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اسم المنطقة</label>
+                <input formControlName="movesAreaName3" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.REPORTS.FromDate" | translate }}</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="movesFromDate3" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">إلي تاريخ</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="movesToDate3" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العنوان</label>
+                <input formControlName="movesAdress4" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اسم المنطقة</label>
+                <input formControlName="movesAreaName4" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.REPORTS.FromDate" | translate }}</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="movesFromDate4" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">إلي تاريخ</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="movesToDate4" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+
+            <div class="col-12 title fs-6 fwb">
+              اذكر حالات شلل رخو حاد خلال 60 يوم قبل بدء الشلل في المنطقة التي
+              زارتها الحالة:
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
+                <input formControlName="casesName1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العنوان</label>
+                <input formControlName="casesAdress1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ بدء الشلل</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="casesDateOnsetParalysis1" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
+                <input formControlName="casesName2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العنوان</label>
+                <input formControlName="casesAdress2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ بدء الشلل</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="casesDateOnsetParalysis2" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
+                <input formControlName="casesName3" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العنوان</label>
+                <input formControlName="casesAdress3" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ بدء الشلل</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="casesDateOnsetParalysis3" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
+                <input formControlName="casesName4" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">العنوان</label>
+                <input formControlName="casesAdress4" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">تاريخ بدء الشلل</label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="casesDateOnsetParalysis4" name="" placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 title fs-6 fwb">
+          اذكر اي زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء
+          الشلل
+        </div>
+        <div class="col-12 table-responsive table-none-scroll">
+          <table class="table table-bordered table-striped-columns">
+            <thead>
+              <tr>
+                <th>اسم الوافد</th>
+                <th>صلته بالحالة</th>
+                <th>المنطقة التي يقيم بها-عنوان</th>
+                <th>الزيارة من تاريخ</th>
+                <th>الى تاريخ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input formControlName="visitsName1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="visitsRelevance1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="visitsAddress1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="visitsFromDate1" name="" placeholder="dd/mm/yyyy"
+                    class="form-control datePicker hasDatepicker" />
+                </td>
+                <td>
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="visitsToDate1" name="" placeholder="dd/mm/yyyy"
+                    class="form-control datePicker hasDatepicker" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input formControlName="visitsName2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="visitsRelevance2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="visitsAddress2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="visitsFromDate2" name="" placeholder="dd/mm/yyyy"
+                    class="form-control datePicker hasDatepicker" />
+                </td>
+                <td>
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="visitsToDate2" name="" placeholder="dd/mm/yyyy"
+                    class="form-control datePicker hasDatepicker" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input formControlName="visitsName3" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="visitsRelevance3" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="visitsAddress3" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="visitsFromDate3" name="" id="dp1684700331553"
+                    placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                </td>
+                <td>
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="visitsToDate3" name="" id="dp1684700331553"
+                    placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-12 title fs-6 fwb">
+          اذكر حالات شلل رخو حاد خلال 60 يوم قبل بدء الشلل في المنطقة التي
+          زارتها الحالة:
+        </div>
+
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
+            <input formControlName="before60daysName" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">العنوان</label>
+            <input formControlName="before60daysAdress" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">تاريخ بدء الشلل</label>
+            <input type="date" (blur)="calculateCompletionPercentage()" formControlName="before60daysDateOnsetParalysis" name="" placeholder="dd/mm/yyyy"
+              class="form-control datePicker hasDatepicker" />
+          </div>
+        </div>
+        <div class="col-12 title fs-6 fwb">
+          اذكر جميع الجهات الصحية التي ترددت عليها الحالة بعد حدوث الشلل:
+        </div>
+        <div class="col-12 table-responsive table-none-scroll">
+          <table class="table table-bordered table-striped-columns">
+            <thead>
+              <tr>
+                <th>اسم الجهة</th>
+                <th>اسم الطبيب المعالج</th>
+                <th>عنوان المنشأة الصحية</th>
+                <th>تاريخ الزيارة للجهة (من –الى)</th>
+                <th>بلغت فوريا عن الحالة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input formControlName="nameHealthAuthority1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="nameAttendingPhysician1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="addressHealthFacility1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="healthAuthorityFromDate1" name="" id="dp1684700331553"
+                    placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="healthAuthorityToDate1" name="" id="dp1684700331553"
+                    placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                </td>
+                <td>
+                  <div class="col-6 has-labels">
+                    <label for=""><input formControlName="immediatelyReportedSituation1" type="radio" (blur)="calculateCompletionPercentage()"
+                        name="immediatelyReportedSituation1" id="" value="1" />
+                      {{ "NEDSS.COMMON.YES" | translate }}
+                    </label>
+                    <label for=""><input formControlName="immediatelyReportedSituation1" type="radio" (blur)="calculateCompletionPercentage()"
+                        name="immediatelyReportedSituation1" id="" value="2" />
+                      {{ "NEDSS.COMMON.NO" | translate }}
+                    </label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input formControlName="nameHealthAuthority2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="nameAttendingPhysician2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="addressHealthFacility2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="healthAuthorityFromDate2" name="" id="dp1684700331553"
+                    placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="healthAuthorityToDate2" name="" id="dp1684700331553"
+                    placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                </td>
+                <td>
+                  <div class="col-6 has-labels">
+                    <label for=""><input formControlName="immediatelyReportedSituation2" type="radio" (blur)="calculateCompletionPercentage()"
+                        name="immediatelyReportedSituation2" id="" value="1" />
+                      {{ "NEDSS.COMMON.YES" | translate }}
+                    </label>
+                    <label for=""><input formControlName="immediatelyReportedSituation2" type="radio" (blur)="calculateCompletionPercentage()"
+                        name="immediatelyReportedSituation2" id="" value="2" />
+                      {{ "NEDSS.COMMON.NO" | translate }}
+                    </label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input formControlName="nameHealthAuthority3" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="nameAttendingPhysician3" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="addressHealthFacility3" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="healthAuthorityFromDate3" name="" id="dp1684700331553"
+                    placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                  <input type="date" (blur)="calculateCompletionPercentage()" formControlName="healthAuthorityToDate3" name="" id="dp1684700331553"
+                    placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                </td>
+                <td>
+                  <div class="col-6 has-labels">
+                    <label for=""><input formControlName="immediatelyReportedSituation3" type="radio" (blur)="calculateCompletionPercentage()"
+                        name="immediatelyReportedSituation3" id="" value="1" />
+                      {{ "NEDSS.COMMON.YES" | translate }}
+                    </label>
+                    <label for=""><input formControlName="immediatelyReportedSituation3" type="radio" (blur)="calculateCompletionPercentage()"
+                        name="immediatelyReportedSituation3" id="" value="2" />
+                      {{ "NEDSS.COMMON.NO" | translate }}
+                    </label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input formControlName="nameHealthAuthority4" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="nameAttendingPhysician4" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input formControlName="addressHealthFacility4" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                </td>
+                <td>
+                  <input type="date" 
+                  (blur)="calculateCompletionPercentage()" 
+                  formControlName="healthAuthorityFromDate4" 
+                  name="" 
+                  id="dp1684700331553"
+                  placeholder="dd/mm/yyyy" 
+                  class="form-control datePicker hasDatepicker" />
+
+                  <input 
+                  type="date" 
+                  (blur)="calculateCompletionPercentage()" 
+                  formControlName="healthAuthorityToDate4" 
+                  name="" 
+                  id="dp16847003315533" 
+                  placeholder="dd/mm/yyyy"
+                  class="form-control datePicker hasDatepicker" />
+                </td>
+                <td>
+                  <div class="col-6 has-labels">
+                    <label for=""><input formControlName="immediatelyReportedSituation4" type="radio" (blur)="calculateCompletionPercentage()"
+                        name="immediatelyReportedSituation4" id="" value="1" />
+                      {{ "NEDSS.COMMON.YES" | translate }}
+                    </label>
+                    <label for=""><input formControlName="immediatelyReportedSituation4" type="radio" (blur)="calculateCompletionPercentage()"
+                        name="immediatelyReportedSituation4" id="" value="2" />
+                      {{ "NEDSS.COMMON.NO" | translate }}
+                    </label>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- <div class="col-12 title fs-6 fwb">
+  معلومات عن الحالة التطعيمية
+</div>
+<div class="col-lg-6">
+  <div class="form-group">
+    <label for="">عدد جرعات طعم شلل الاطفال قبل بدء الشلل:</label>
+    <input formControlName="numberDaysPlacementDevice" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+  </div>
+</div> -->
+
+        <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt ">
+          <div class="row">
+            <div class="col-12 title fs-6 fwb">
+              اذكر بالتفصيل الاجراءات الخاصة التي اتخذت حيال الجهات الصحية التي
+              ترددت عليها الحالة ولم تبلغ فورا:
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الجهة الصحية</label>
+                <input formControlName="healthAuthority" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الاجراءات المتخذة </label>
+                <select formControlName="actionsTaken" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">تثقيف صحي</option>
+                  <option value="2">رفع وعي</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">طرق الابلاغ المختلفة</label>
+                <select formControlName="differentReportingMethods" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                  <option value="1">تليفونيا</option>
+                  <option value="2">فاكس</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">التاريخ </label>
+                <input type="date" (blur)="calculateCompletionPercentage()" formControlName="specialProceduresDate" name="" id="dp1684700331553"
+                  placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+              </div>
+            </div>
+          </div>
+          <!-- /.col-lg-6 -->
+        </div>
+        <div class="col-12">
+          <h3 class="fs-5 text-success fwb">معلومات عن الحالة التطعيمية</h3>
+        </div>
+        <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+          <div class="row">
+            <div class="col-12 title fs-6 fwb">
+              عدد جرعات طعم شلل الاطفال قبل بدء الشلل:
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">
+                  {{ "NEDSS.REPORTS.Total" | translate }}
+                </label>
+                <input formControlName="numberDosesBeforeTotal" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الروتينية</label>
+                <input formControlName="numberDosesBeforeRoutine" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">الحملات</label>
+                <input formControlName="numberDosesBeforeCampaigns" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">مبادرة السولك:</label>
+                <input formControlName="numberDosesBeforeBehaviorInitiative" type="number" name="" id=""
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+
+            <div class="col-12">
+              <h3 class="fs-5 text-success fwb">جرعات الروتيني</h3>
+            </div>
+            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-12">
+                  <table class="table table-bordered table-striped-columns">
+                    <tbody>
+                      <tr>
+                        <td colspan="4">جرعات الروتيني</td>
+                      </tr>
+                      <tr>
+                        <td>الجرعة</td>
+                        <td colspan="2">التاريخ</td>
+                        <td>
+                          حدد المصدر (السجلات او اقوال الام او الاثنين معا
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>صفرية</td>
+                        <td colspan="2">
+                          <input type="date" (blur)="calculateCompletionPercentage()" formControlName="routineDosesZeroDate" name="" placeholder="dd/mm/yyyy"
+                            class="form-control datePicker hasDatepicker" />
+                        </td>
+                        <td>
+                          <input formControlName="routineDosesZeroSource" type="text" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td rowspan="2">ج1</td>
+                        <td>سابين</td>
+                        <td>
+                          <input type="date" (blur)="calculateCompletionPercentage()" formControlName="routineSabine1Date" name="" placeholder="dd/mm/yyyy"
+                            class="form-control datePicker hasDatepicker" />
+                        </td>
+                        <td>
+                          <input formControlName="routineSabine1Source" type="text" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>سولك</td>
+                        <td>
+                          <input type="date" (blur)="calculateCompletionPercentage()" formControlName="routineSalk1Date" name="" placeholder="dd/mm/yyyy"
+                            class="form-control datePicker hasDatepicker" />
+                        </td>
+                        <td>
+                          <input formControlName="routineSalk1Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td rowspan="2">ج2</td>
+                        <td>سابين</td>
+                        <td>
+                          <input type="date" (blur)="calculateCompletionPercentage()" formControlName="routineSabine2Date" name="" placeholder="dd/mm/yyyy"
+                            class="form-control datePicker hasDatepicker" />
+                        </td>
+                        <td>
+                          <input formControlName="routineSabine2Source" type="text" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>سولك</td>
+                        <td>
+                          <input type="date" (blur)="calculateCompletionPercentage()" formControlName="routineSalk2Date" name="" placeholder="dd/mm/yyyy"
+                            class="form-control datePicker hasDatepicker" />
+                        </td>
+                        <td>
+                          <input formControlName="routineSalk2Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td rowspan="2">ج3</td>
+                        <td>سابين</td>
+                        <td>
+                          <input type="date" (blur)="calculateCompletionPercentage()" formControlName="routineSabine3Date" name="" placeholder="dd/mm/yyyy"
+                            class="form-control datePicker hasDatepicker" />
+                        </td>
+                        <td>
+                          <input formControlName="routineSabine3Source" type="text" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>سولك</td>
+                        <td>
+                          <input type="date" (blur)="calculateCompletionPercentage()" formControlName="routineSalk3Date" name="" placeholder="dd/mm/yyyy"
+                            class="form-control datePicker hasDatepicker" />
+                        </td>
+                        <td>
+                          <input formControlName="routineSalk3Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>رابعة</td>
+                        <td colspan="2">
+                          <input type="date" (blur)="calculateCompletionPercentage()" formControlName="routine4Date" name="" placeholder="dd/mm/yyyy"
+                            class="form-control datePicker hasDatepicker" />
+                        </td>
+                        <td>
+                          <input formControlName="routine4Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>الخامسة</td>
+                        <td colspan="2">
+                          <input type="date" (blur)="calculateCompletionPercentage()" formControlName="routine5Date" name="" placeholder="dd/mm/yyyy"
+                            class="form-control datePicker hasDatepicker" />
+                        </td>
+                        <td>
+                          <input formControlName="routine5Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>منشطة</td>
+                        <td colspan="2">
+                          <input type="date" (blur)="calculateCompletionPercentage()" formControlName="routineStimulantDate" name="" placeholder="dd/mm/yyyy"
+                            class="form-control datePicker hasDatepicker" />
+                        </td>
+                        <td>
+                          <input formControlName="routineStimulantSource" type="text" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <h3 class="fs-5 text-success fwb">جرعات الحملات</h3>
+            </div>
+
+            <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                  <div class="row">
+                    <div class="col-12 table-responsive table-none-scroll">
+                      <table class="table table-bordered table-striped-columns">
+                        <tbody>
+                          <tr>
+                            <td colspan="4">جرعات الروتيني</td>
+                          </tr>
+                          <tr>
+                            <td>الجرعة</td>
+                            <td colspan="2">التاريخ</td>
+                            <td>
+                              حدد المصدر (السجلات او اقوال الام او الاثنين معا
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>صفرية</td>
+                            <td colspan="2">
+                              <input type="date" (blur)="calculateCompletionPercentage()" formControlName="campaignDosesZeroDate" name=""
+                                placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                            </td>
+                            <td>
+                              <input formControlName="campaignDosesZeroSource" type="text" name="" id=""
+                                class="form-control" (blur)="calculateCompletionPercentage()" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td rowspan="2">ج1</td>
+                            <td>سابين</td>
+                            <td>
+                              <input type="date" (blur)="calculateCompletionPercentage()" formControlName="campaignSabine1Date" name="" placeholder="dd/mm/yyyy"
+                                class="form-control datePicker hasDatepicker" />
+                            </td>
+                            <td>
+                              <input formControlName="campaignSabine1Source" type="text" name="" id=""
+                                class="form-control" (blur)="calculateCompletionPercentage()" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>سولك</td>
+                            <td>
+                              <input type="date" (blur)="calculateCompletionPercentage()" formControlName="campaignSalk1Date" name="" placeholder="dd/mm/yyyy"
+                                class="form-control datePicker hasDatepicker" />
+                            </td>
+                            <td>
+                              <input formControlName="campaignSalk1Source" type="text" name="" id=""
+                                class="form-control" (blur)="calculateCompletionPercentage()" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td rowspan="2">ج2</td>
+                            <td>سابين</td>
+                            <td>
+                              <input type="date" (blur)="calculateCompletionPercentage()" formControlName="campaignSabine2Date" name="" placeholder="dd/mm/yyyy"
+                                class="form-control datePicker hasDatepicker" />
+                            </td>
+                            <td>
+                              <input formControlName="campaignSabine2Source" type="text" name="" id=""
+                                class="form-control" (blur)="calculateCompletionPercentage()" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>سولك</td>
+                            <td>
+                              <input type="date" (blur)="calculateCompletionPercentage()" formControlName="campaignSalk2Date" name="" placeholder="dd/mm/yyyy"
+                                class="form-control datePicker hasDatepicker" />
+                            </td>
+                            <td>
+                              <input formControlName="campaignSalk2Source" type="text" name="" id=""
+                                class="form-control" (blur)="calculateCompletionPercentage()" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td rowspan="2">ج3</td>
+                            <td>سابين</td>
+                            <td>
+                              <input type="date" (blur)="calculateCompletionPercentage()" formControlName="campaignSabine3Date" name="" placeholder="dd/mm/yyyy"
+                                class="form-control datePicker hasDatepicker" />
+                            </td>
+                            <td>
+                              <input formControlName="campaignSabine3Source" type="text" name="" id=""
+                                class="form-control" (blur)="calculateCompletionPercentage()" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>سولك</td>
+                            <td>
+                              <input type="date" (blur)="calculateCompletionPercentage()" formControlName="campaignSalk3Date" name="" placeholder="dd/mm/yyyy"
+                                class="form-control datePicker hasDatepicker" />
+                            </td>
+                            <td>
+                              <input formControlName="campaignSalk3Source" type="text" name="" id=""
+                                class="form-control" (blur)="calculateCompletionPercentage()" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>رابعة</td>
+                            <td colspan="2">
+                              <input type="date" (blur)="calculateCompletionPercentage()" formControlName="campaign4Date" name="" placeholder="dd/mm/yyyy"
+                                class="form-control datePicker hasDatepicker" />
+                            </td>
+                            <td>
+                              <input formControlName="campaign4Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>الخامسة</td>
+                            <td colspan="2">
+                              <input type="date" (blur)="calculateCompletionPercentage()" formControlName="campaign5Date" name="" placeholder="dd/mm/yyyy"
+                                class="form-control datePicker hasDatepicker" />
+                            </td>
+                            <td>
+                              <input formControlName="campaign5Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>منشطة</td>
+                            <td colspan="2">
+                              <input type="date" (blur)="calculateCompletionPercentage()" formControlName="campaignStimulantDate" name=""
+                                placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                            </td>
+                            <td>
+                              <input formControlName="campaignStimulantSource" type="text" name="" id=""
+                                class="form-control" (blur)="calculateCompletionPercentage()" />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+            </div>
+
+            <div class="col-12">
+              <h3 class="fs-5 text-success fwb">
+                قياس نسبة التغطية بالتطعيمات
+              </h3>
+            </div>
+
+            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <!-- <div class="col-12 title fs-6 fwb">الارتباط  الوبائي / طريقة الاكتشاف </div> -->
+
+                <div class="table-responsive table-none-scroll">
+                  <table class="table table-bordered table-striped-columns">
+                    <tbody>
+                      <tr>
+                        <td rowspan="3">الجرعة</td>
+                        <td colspan="6">نسبة التغطية على مستوى الوحدة</td>
+                        <td colspan="3" rowspan="2">
+                          نسبة التغطية على مستوى الادارة للشهر السابق من حدوث
+                          الشلل
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3">
+                          من سجلات التطعيم للشهر السابق من حدوث الشلل
+                        </td>
+                        <td colspan="3">ميدانيا</td>
+                      </tr>
+                      <tr>
+                        <td>عدد الاطفال</td>
+                        <td>عدد المطعمين</td>
+                        <td>النسبة</td>
+                        <td>عددالاطفال</td>
+                        <td>عددالمطعمين</td>
+                        <td>النسبة</td>
+                        <td>عدد الاطفال</td>
+                        <td>عدد المطعمين</td>
+                        <td>النسبة</td>
+                      </tr>
+                      <tr>
+                        <td>الثالثة شلل</td>
+                        <td>
+                          <input formControlName="monthPriorOnsetParalysisnumberChildren3" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOnsetParalysisNumberVaccinators3" type="number" name=""
+                            id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOnsetParalysisPercentege3" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="fieldNumberChildren3" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="fieldNumberVaccinators3" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="fieldPercentege3" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOccurrenceParalysisNumberChildren3" type="number" name=""
+                            id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOccurrenceParalysisNumberVaccinators3" type="number" name=""
+                            id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOccurrenceParalysisPercentege3" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>الرابعة شلل</td>
+                        <td>
+                          <input formControlName="monthPriorOnsetParalysisnumberChildren4" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOnsetParalysisNumberVaccinators4" type="number" name=""
+                            id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOnsetParalysisPercentege4" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="fieldNumberChildren4" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="fieldNumberVaccinators4" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="fieldPercentege4" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOccurrenceParalysisNumberChildren4" type="number" name=""
+                            id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOccurrenceParalysisNumberVaccinators4" type="number" name=""
+                            id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOccurrenceParalysisPercentege4" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>المنشطة</td>
+                        <td>
+                          <input formControlName="monthPriorOnsetParalysisnumberChildrenStimulant" type="number" name=""
+                            id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOnsetParalysisNumberVaccinatorsStimulant" type="number"
+                            name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOnsetParalysisPercentegeStimulant" type="number" name=""
+                            id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="fieldNumberChildrenStimulant" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="fieldNumberVaccinatorsStimulant" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="fieldPercentegeStimulant" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOccurrenceParalysisNumberChildrenStimulant" type="number"
+                            name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOccurrenceParalysisNumberVaccinatorsStimulant" type="number"
+                            name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="monthPriorOccurrenceParalysisPercentegeStimulant" type="number"
+                            name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-12 table-responsive table-none-scroll">
+                  <table class="table table-bordered table-striped-columns">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>اسم المخالط</th>
+                        <th>عمره بالاشهر</th>
+                        <th>صلته بالحالة (القرابة)</th>
+                        <th>تاريخ اخذ العينة</th>
+                        <th>تاريخ ارسالها</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>لمخالطين خاص بالحالات الخطرة</td>
+                        <td>
+                          <input formControlName="dangerousCases1NameContact" type="text" name=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases1AgeMonths" type="number" name=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases1Kinship" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases1DateSampleTaken" type="date" (blur)="calculateCompletionPercentage()" name=""
+                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases1DateSent" type="date" (blur)="calculateCompletionPercentage()" name=""
+                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>لمخالطين (خاص بالحالات الخطرة</td>
+                        <td>
+                          <input formControlName="dangerousCases2NameContact" type="text" name=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases2AgeMonths" type="number" name=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases2Kinship" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases2DateSampleTaken" type="date" (blur)="calculateCompletionPercentage()" name=""
+                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases2DateSent" type="date" (blur)="calculateCompletionPercentage()" name=""
+                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>لمخالطين (خاص بالحالات الخطرة</td>
+                        <td>
+                          <input formControlName="dangerousCases3NameContact" type="text" name=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases3AgeMonths" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases3Kinship" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases3DateSampleTaken" type="date" (blur)="calculateCompletionPercentage()" name=""
+                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                        </td>
+                        <td>
+                          <input formControlName="dangerousCases3DateSent" type="date" (blur)="calculateCompletionPercentage()" name=""
+                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          الحالات التي ليست لها عينات براز كافية والحالات من
+                          المحافظات الحدودية- اخرى)
+                        </td>
+                        <td>
+                          <input formControlName="casesNotHaveSamples1NameContact" type="text" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="casesNotHaveSamples1AgeMonts" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="casesNotHaveSamples1Kinship" type="text" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="casesNotHaveSamples1DateSampleTaken" type="date" (blur)="calculateCompletionPercentage()" name="" id=""
+                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                        </td>
+                        <td>
+                          <input formControlName="casesNotHaveSamples1DateSent" type="date" (blur)="calculateCompletionPercentage()" name="" id=""
+                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          الحالات التي ليست لها عينات براز كافية والحالات من
+                          المحافظات الحدودية- اخرى)
+                        </td>
+                        <td>
+                          <input formControlName="casesNotHaveSamples2NameContact" type="text" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="casesNotHaveSamples2AgeMonts" type="number" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="casesNotHaveSamples2Kinship" type="text" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </td>
+                        <td>
+                          <input formControlName="casesNotHaveSamples2DateSampleTaken" type="date" (blur)="calculateCompletionPercentage()" name="" id=""
+                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                        </td>
+                        <td>
+                          <input formControlName="casesNotHaveSamples2DateSent" type="date" (blur)="calculateCompletionPercentage()" name="" id=""
+                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 table-responsive table-none-scroll">
+                    <table class="table table-bordered table-striped-columns">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>مسئول الترصد بالادارة</th>
+                          <th>مسئول الترصد بالمديرية</th>
+                          <th>المدير الوقائى بالمديرية</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}:</td>
+                          <td>
+                            <input formControlName="administrationMonitoringOfficerName3" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="monitoringOfficerDirectorateName3" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="preventiveDirectorDirectorateName3" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>التوقيع:</td>
+                          <td>
+                            <input formControlName="administrationMonitoringOfficerSignature3" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="monitoringOfficerDirectorateSignature3" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="preventiveDirectorDirectorateSignature3" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>التاريخ::</td>
+                          <td>
+                            <input type="date" (blur)="calculateCompletionPercentage()" formControlName="administrationMonitoringOfficerDate3" name=""
+                              placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                          </td>
+                          <td>
+                            <input type="date" (blur)="calculateCompletionPercentage()" formControlName="monitoringOfficerDirectorateDate3" name=""
+                              placeholder="dd/mm/yyyy" class="form-control datePicker hasDatepicker" />
+                          </td>
+                          <td>
+                            <input type="date" (blur)="calculateCompletionPercentage()" formControlName="preventiveDirectorDirectorateDate3" name=""
+                              id="dp1684700331553" placeholder="dd/mm/yyyy"
+                              class="form-control datePicker hasDatepicker" />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <h3 class="fs-5 text-success fwb">
+                  نسبة التغطية الميدانية للتطعيمات الروتينية في موقع حاله شلل
+                  رخو حاد
+                </h3>
+              </div>
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">
+                    الارتباط الوبائي / طريقة الاكتشاف
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">اسم الحاله</label>
+                      <input formControlName="fieldCoverageRatioCaseName" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <!-- /.col-lg-6 -->
+
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">الرقم القومي</label>
+                      <input formControlName="fieldCoverageRatioNationalId" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">شارع / قرية</label>
+                      <input formControlName="fieldCoverageRatioVillage" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for=""> مكتب صحة / وحدة</label>
+                      <input formControlName="fieldCoverageRatioHealthUnit" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">إدارة</label>
+                      <input formControlName="fieldCoverageRatioAdministraion" type="text" name=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for=""> {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.GOVERNMENT" | translate }}</label>
+                      <input formControlName="fieldCoverageRatioGovernment" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+
+                  <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                    <div class="row">
+                      <div class="col-12 table-responsive table-none-scroll">
+                        <table class="table table-bordered table-striped-columns">
+                          <tbody>
+                            <tr>
+                              <td>الجرعة</td>
+                              <td colspan="2">التاريخ</td>
+                              <td>المصدر</td>
+                            </tr>
+                            <tr>
+                              <td>الجرعة الصفرية</td>
+                              <td colspan="2">
+                                <input formControlName="dosesZeroDate" type="date" (blur)="calculateCompletionPercentage()" name=""
+                                  class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                              </td>
+                              <td>
+                                <input formControlName="dosesZeroSource" type="text" name="" id=""
+                                  class="form-control" (blur)="calculateCompletionPercentage()" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td rowspan="2">الجرعة الأولي</td>
+                              <td>سابين</td>
+                              <td>
+                                <input formControlName="sabine1Date" type="date" (blur)="calculateCompletionPercentage()" name=""
+                                  class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                              </td>
+                              <td>
+                                <input formControlName="sabine1Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>سولك</td>
+                              <td>
+                                <input formControlName="salk1Date" type="date" (blur)="calculateCompletionPercentage()" name=""
+                                  class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                              </td>
+                              <td>
+                                <input formControlName="salk1Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td rowspan="2">الجرعة الثانية</td>
+                              <td>سابين</td>
+                              <td>
+                                <input formControlName="sabine2Date" type="date" (blur)="calculateCompletionPercentage()" name=""
+                                  class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                              </td>
+                              <td>
+                                <input formControlName="sabine2Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>سولك</td>
+                              <td>
+                                <input formControlName="salk2Date" type="date" (blur)="calculateCompletionPercentage()" name=""
+                                  class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                              </td>
+                              <td>
+                                <input formControlName="salk2Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td rowspan="2">الجرعة الثالثة</td>
+                              <td>سابين</td>
+                              <td>
+                                <input formControlName="sabine3Date" type="date" (blur)="calculateCompletionPercentage()" name=""
+                                  class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                              </td>
+                              <td>
+                                <input formControlName="sabine3Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>سولك</td>
+                              <td>
+                                <input formControlName="salk3Date" type="date" (blur)="calculateCompletionPercentage()" name=""
+                                  class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                              </td>
+                              <td>
+                                <input formControlName="salk3Source" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>الجرعة الرابعة</td>
+                              <td colspan="2">
+                                <input formControlName="date4" type="date" (blur)="calculateCompletionPercentage()" name=""
+                                  class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                              </td>
+                              <td>
+                                <input formControlName="source4" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>الجرعة الخامسة</td>
+                              <td colspan="2">
+                                <input formControlName="date5" type="date" (blur)="calculateCompletionPercentage()" name=""
+                                  class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                              </td>
+                              <td>
+                                <input formControlName="source5" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>الجرعة المنشطة</td>
+                              <td colspan="2">
+                                <input formControlName="stimulantDate" type="date" (blur)="calculateCompletionPercentage()" name=""
+                                  class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                              </td>
+                              <td>
+                                <input formControlName="stimulantSource" type="text" name="" id=""
+                                  class="form-control" (blur)="calculateCompletionPercentage()" />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">مراقب مكتب الصحة / الوحدة الصحية</label>
+                      <input formControlName="healthBureauObserver" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for=""> مراقب ترصد الإدارة</label>
+                      <input formControlName="managementMonitor" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for=""> مسئول ترصد الإدارة</label>
+                      <input formControlName="managementOversightOfficer" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for=""> مسئول تطعيمات المديرية </label>
+                      <input formControlName="directorateVaccinationOfficer" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for=""> المدير الوقائي</label>
+                      <input formControlName="preventiveDirector" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <h3 class="fs-5 text-success fwb">
+                  المتابعة بعد 60 يوم لحالة شلل رخو حاد
+                </h3>
+              </div>
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">بيانات عن الحالة</div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">اسم الحالة</label>
+                      <input formControlName="followUpAfter60DaysName" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">الرقم القومي: </label>
+                      <input formControlName="followUpAfter60DaysNationalId" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">تاريخ الميلاد </label>
+                      <input formControlName="followUpAfter60DaysDateBirth" type="date" (blur)="calculateCompletionPercentage()" name=""
+                        class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">العمربالشهور:</label>
+                      <input formControlName="followUpAfter60DaysAgeMonths" type="number" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for=""> النوع</label>
+                      <select formControlName="followUpAfter60DaysGender" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">ذكر</option>
+                        <option value="2">أنثي</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">العنوان</label>
+                      <input formControlName="followUpAfter60DaysAddress" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for=""> {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.GOVERNMENT" | translate }} </label>
+                      <input formControlName="followUpAfter60DaysGovernorate" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">تاريخ بدء حدوث الشلل </label>
+                      <input formControlName="followUpAfter60DaysDateParalysisBegan" type="date" (blur)="calculateCompletionPercentage()" name=""
+                        class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">تاريخ المتابعة </label>
+                      <input formControlName="followUpAfter60DaysFollowUpDate" type="date" (blur)="calculateCompletionPercentage()" name=""
+                        class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">اسم الطبيب القائم بالمتابعة</label>
+                      <input formControlName="followUpAfter60DaysDoctorName" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">تخصصه</label>
+                      <input formControlName="followUpAfter60DaysSpecialty" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">مكان المتابعة</label>
+                      <input formControlName="followUpAfter60DaysFollowUpPlace" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">المتابعة</label>
+                      <select formControlName="followUpAfter60DaysFollowUp" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">موجود</option>
+                        <option value="2">غير موجود</option>
+                        <option value="3">وفاة</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">في حالة نعم،تاريخ الوفاة </label>
+                      <input formControlName="followUpAfter60DaysDateDeath" type="date" (blur)="calculateCompletionPercentage()" name=""
+                        class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">سبب الوفاة</label>
+                      <input formControlName="followUpAfter60DaysCauseDeath" type="text" name="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">هل يوجد شلل رخو متبقي بعد 60 يوم؟ </label>
+                      <select formControlName="followUpAfter60DaysIsFlaccidParalysisAfter60Days" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">اذا نعم حدد مكان الشلل المتبقي </label>
+                      <input formControlName="followUpAfter60DaysLocateRemainingParalysis" type="text" name=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">هل يوجد ضمور بالعضلات؟</label>
+                      <select formControlName="followUpAfter60DaysMuscleAtrophy" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">اذا نعم حدد مكان الضمور</label>
+                      <input formControlName="followUpAfter60DaysMuscleAtrophyPlace" type="text" name=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">هل الاحساس موجود بالاعضاء المصابة</label>
+                      <select formControlName="followUpAfter60DaysIsFeelingPresentAffectedOrgans" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">نتائج الفحص المعملي لعينات البراز للحالة:</label>
+                      <select formControlName="followUpAfter60DaysResultsLaboratoryExaminationStoolSamplesCase" name=""
+                        id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">سلبي</option>
+                        <option value="2">فيروس</option>
+                        <option value="3">شلل اطفال شرس</option>
+                        <option value="4">فيروس سابين</option>
+                        <option value="5">فيروس معوي اخر</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- <div class="col-lg-6">
+              <div class="form-group">
+                <label for="">اسم الحالة</label>
+                <input formControlName="other" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div> -->
+                  <div class="col-12 title fs-6 fwb">
+                    نتائج الفحص المعملي لعينات البراز للمخالطين:
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">مخالط 1 </label>
+                      <input formControlName="followUpAfter60DaysMixer1" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">مخالط 2</label>
+                      <input formControlName="followUpAfter60DaysMixer2" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">مخالط 3</label>
+                      <input formControlName="followUpAfter60DaysMixer3" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-12 title fs-6 fwb">نتائج الاختبار</div>
+
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">CT/MRI </label>
+                      <input formControlName="followUpAfter60DaysCt" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">Electro-myelograph (EMG) </label>
+                      <input formControlName="followUpAfter60DaysEmg" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">Cerebro-Spinal Fluid (CSF) results </label>
+                      <select formControlName="followUpAfter60DaysCsf" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                        <option value="1">Normal</option>
+                        <option value="2">Septic</option>
+                        <option value="3">Aseptic</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for=""> Other clinical signs:</label>
+                      <input formControlName="followUpAfter60DaysOtherClinicalSigns" type="text" name="" id=""
+                        class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">يذكر اسم المرض الذى سبب الشلل عند الابلاغ عن
+                        الحالة</label>
+                      <input formControlName="followUpAfter60DaysMentionNameDiseaseParalysisReportingCase" type="text"
+                        name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                    </div>
+                  </div>
+                  <div class="col-12 title fs-6 fwb">اطباء لجنة المتابعة</div>
+
+                  <div class="col-12 table-responsive table-none-scroll">
+                    <table class="table table-bordered table-striped-columns">
+                      <thead>
+                        <tr>
+                          <th>{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</th>
+                          <th>الوظيفة والتخصص</th>
+                          <th>التاريخ</th>
+                          <th>التوقيع</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeName1" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeSpecialization1" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeDate1" type="date" (blur)="calculateCompletionPercentage()" name=""
+                              class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                          </td>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeSignature1" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeName2" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeSpecialization2" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeDate2" type="date" (blur)="calculateCompletionPercentage()" name=""
+                              class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                          </td>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeSignature2" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeName3" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeSpecialization3" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeDate3" type="date" (blur)="calculateCompletionPercentage()" name=""
+                              class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                          </td>
+                          <td>
+                            <input formControlName="doctorsFollowUpCommitteeSignature3" type="text" name="" id=""
+                              class="form-control" (blur)="calculateCompletionPercentage()" />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+              </div>
+            </div>
+            <div class="card-footer text-start pt-4">
+              <button (click)="save()" type="submit" class="btn bg rounded-2 text-light mb-5">
+                {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

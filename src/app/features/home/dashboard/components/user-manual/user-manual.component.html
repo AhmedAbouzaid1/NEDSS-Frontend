@@ -1,0 +1,162 @@
+<h2 class="titles">{{ "NEDSS.HELP.HELP" | translate }}</h2>
+
+<div class="card shadow color rounded small-screen-card">
+  <div class="card-body bg-dark-mode ">
+    <form [formGroup]="addCaseForm" (ngSubmit)="addHelpDocument()">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">{{ "NEDSS.HELP.MAIN_BRANCH" | translate }} <span class="text-danger">*</span></label>
+
+            <select name="" id="" class="form-control" formControlName="mainBranchId">
+              <option *ngFor="let branch of AllAppPages" [value]="branch.id">
+                {{ branch.arabicName }}
+              </option>
+            </select>
+            <small *ngIf="!isBranchValid" class="form-text text-danger mess-color">
+              {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+            </small>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">{{ "NEDSS.HELP.ADDRESS" | translate }} <span class="text-danger">*</span></label>
+
+            <input type="text" name="" id="" class="form-control" formControlName="title" />
+            <small *ngIf="!isTitleValid" class="form-text text-danger mess-color">
+              {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+            </small>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="">{{ "NEDSS.HELP.CONTENT" | translate }} <span class="text-danger">*</span></label>
+
+            <input type="text" name="" id="" class="form-control" formControlName="content" />
+            <small *ngIf="!isContentValid" class="form-text text-danger mess-color">
+              {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+            </small>
+          </div>
+        </div>
+        <div class="col-lg-6 d-flex">
+          <div class="form-group" style="margin: auto">
+            <button (click)="fileInput.click()" type="button" class="btn bg rounded-2 btn-light mt-4 d-inline-block"
+              style="color: aliceblue">
+              {{ "NEDSS.HELP.FILE_UPLOAD" | translate }}
+            </button>
+
+            <input class="form-control" type="file" #fileInput style="display: none"
+              (change)="onFileSelect($event.target)" multiple />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3" *ngFor="let selected of listOfFiles; let index = index">
+            <h3>
+              {{ selected }} -- &nbsp;
+              <span id="attached" class="pi pi-trash" (click)="removeSelectedFile(index)"></span>
+            </h3>
+          </div>
+        </div>
+        <!-- <div class="custom-file-container" data-upload-id="my-unique-id"></div> -->
+        <div class="col-lg-12" *ngIf="!editMode">
+          <button class="btn bg btn-lg text-white rounded-2 m-auto d-block pr-4 pl-4 mt-4" type="submit">
+            {{ "NEDSS.HELP.SAVE" | translate }}
+          </button>
+        </div>
+        <div class="col-lg-12" *ngIf="editMode">
+          <button class="btn bg btn-lg text-white rounded-2 m-auto d-block pr-4 pl-4 mt-4" type="submit"
+            (click)="editMode = false; currentManualId = null">
+            {{ "NEDSS.HELP.EDIT" | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="table-reponsive mt-4 shadow border rounded">
+  <div class="row">
+    <div class="col-lg-7 fwb p-4 pb-0">
+      {{ "NEDSS.HELP.HELP" | translate }} ({{ Mauals.length }})
+    </div>
+    <div class="col-lg-5 p-4 pb-0">
+      <div class="row">
+        <div class="col-8">
+          <input type="search" name="" id="" class="form-control"
+            placeholder="{{ 'NEDSS.SEARCH.SEARCH' | translate }} ..." />
+        </div>
+        <!-- <div class="col-4 text-start">
+          <a href="#"><span class="bi bi-filetype-pdf"></span></a>
+          <a href="#"><span class="bi bi-printer-fill"></span></a>
+          <a href="#"><span class="bi bi-filetype-csv"></span></a>
+          <a href="#"><span class="bi bi-file-earmark-excel-fill"></span></a>
+        </div> -->
+      </div>
+    </div>
+    <div class="col-12 table-reponsive">
+      <table class="table table-hover table-striped table-sm">
+        <thead>
+          <tr class="color">
+            <th>{{ "NEDSS.HELP.MAIN_BRANCH" | translate }}</th>
+            <th>{{ "NEDSS.HELP.ADDRESS" | translate }}</th>
+            <th>{{ "NEDSS.HELP.CONTENT" | translate }}</th>
+            <th>{{ "NEDSS.HELP.ATTACHES" | translate }}</th>
+            <th>{{ "NEDSS.HELP.ACTIONS" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of Mauals">
+            <td *ngIf="currentLang=='ar'">{{ item.arabicName }}</td>
+            <td *ngIf="currentLang=='en'">{{ item.englishName }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.content }}</td>
+            <td>
+              <a *ngFor="let attach of item.optionHelpAttachments" href="{{ attach.path }}" target="_blank"
+                class="btn pdflink btn-link">{{ attach.fileName }}</a>
+            </td>
+            <td>
+              <a (click)="editMaual(item)" class="bi bi-pencil text-primary"></a>
+              <a data-bs-target="#exampleModal2" data-bs-toggle="modal" (click)="nameToDelete(item)"
+                class="bi bi-trash-fill text-danger mess-color"></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade opast" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog bord-round">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{
+        "NEDSS.COMMON.SURE_DELETE" | translate
+        }}.
+        <strong style="color: red">
+          <td *ngIf="currentLang=='ar'">{{ underDeleting.arabicName }}</td>
+          <td *ngIf="currentLang=='en'">{{ underDeleting.englishName }}</td>
+
+
+        </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="deleteManual(underDeleting.id)"
+          data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

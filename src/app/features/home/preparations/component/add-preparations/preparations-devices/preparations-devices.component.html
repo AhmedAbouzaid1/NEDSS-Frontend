@@ -1,0 +1,371 @@
+<app-loader *ngIf="loadingPanel"></app-loader>
+<form (ngSubmit)="save()" #preparationsDeviceForm="ngForm" novalidate>
+  <div class="card shadow rounded mt-4">
+    <div class="card-body color">
+      <div class="row">
+        <div class="col-lg-4 mb-2">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.PREPARATION.DEVICE_CATEGORY" | translate }}
+              <Span style="color: red">*</Span></label
+            >
+            <!-- <p-multiSelect
+              [options]="deviceCategorys"
+              [(ngModel)]="selecteddeviceCategoryId"
+              optionLabel="arabicName"
+              name="deviceCategoryId"
+              (onClick)="deviceCategorySelected($event)"
+              [ngModelOptions]="{ standalone: true }"
+              [style]="{ width: '100%', height: '40px' }"
+            /> -->
+
+            <p-dropdown
+            [options]="deviceCategorys"
+            [(ngModel)]="preparationsDevice.deviceCategoryId"
+            optionLabel="arabicName"
+            optionValue="id"
+            autoWidth="false"
+            [style]="{ width: '100%' }"
+            name="governments"
+            [filter]="true"
+            filterBy="arabicName"
+            (onClick)="deviceCategorySelected()"
+          >
+          </p-dropdown>
+            <!-- <ng-multiselect-dropdown
+              [settings]="singleDropdownSettings"
+              [data]="deviceCategorys"
+              name="deviceCategoryId"
+              [(ngModel)]="selecteddeviceCategoryId"
+              [ngModelOptions]="{ standalone: true }"
+              (onSelect)="deviceCategorySelected($event)"
+            >
+            </ng-multiselect-dropdown> -->
+          </div>
+        </div>
+        <div class="col-lg-4 mb-2">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.PREPARATION.DEVICE_TYPE" | translate }}
+              <Span style="color: red">*</Span></label
+            >
+
+            <p-dropdown
+              [options]="deviceTypes"
+              [(ngModel)]="preparationsDevice.deviceTypeId"
+              optionLabel="arabicName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="deviceTypeId"
+              [filter]="true"
+              filterBy="arabicName"
+            >
+            </p-dropdown>
+
+            <!-- <select
+              [(ngModel)]="preparationsDevice.deviceTypeId"
+              name="deviceTypeId"
+              class="form-control"
+            >
+              <option [value]="-1"></option>
+              <option *ngFor="let option of deviceTypes" [value]="option.id">
+                {{ option.arabicName }}
+              </option>
+            </select> -->
+          </div>
+        </div>
+        <div class="col-lg-4 mb-2">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.PREPARATION.SERIAL_NUMBER" | translate }}
+              <Span style="color: red">*</Span></label
+            >
+
+            <input
+              type="text"
+              name="serialNo"
+              id=""
+              class="w-100"
+              pInputText
+              [(ngModel)]="preparationsDevice.serialNo"
+              #serialNo="ngModel"
+            />
+
+            <!-- <input
+              type="text"
+              name="serialNo"
+              [(ngModel)]="preparationsDevice.serialNo"
+              #serialNo="ngModel"
+              class="form-control"
+            /> -->
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="form-group">
+            <label for=""
+              >{{ "NEDSS.PREPARATION.SPECIFICATION" | translate }}
+              <Span style="color: red">*</Span></label
+            >
+
+            <textarea
+              [style]="{ width: '100%' }"
+              name="deviceSpecifications"
+              rows="4"
+              #deviceSpecifications="ngModel"
+              cols="30"
+              pInputTextarea
+              [(ngModel)]="preparationsDevice.deviceSpecifications"
+            >
+            </textarea>
+
+            <!-- <textarea
+              name="deviceSpecifications"
+              [(ngModel)]="preparationsDevice.deviceSpecifications"
+              #deviceSpecifications="ngModel"
+              class="form-control"
+            ></textarea> -->
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group mr-1">
+            <label for="" class="d-inline-block mt-4">
+              <input
+                type="checkbox"
+                name="isDeviceWorking"
+                [(ngModel)]="preparationsDevice.isDeviceWorking"
+                #isDeviceWorking="ngModel"
+                class="form-check-input"
+                name="hasRoom"
+              />
+
+              <!-- <input
+                type="checkbox"
+                name="isDeviceWorking"
+                [(ngModel)]="preparationsDevice.isDeviceWorking"
+                #isDeviceWorking="ngModel"
+                class="d-inline-block mt-3"
+              /> -->
+
+              {{ "NEDSS.PREPARATION.DEVICE_WORKING" | translate }}
+              <Span style="color: red">*</Span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer mt-4">
+        <span
+          class="float-end"
+          style="color: red; font-size: large; font-weight: 800"
+          *ngIf="pleaseComplete"
+          >{{ "NEDSS.PREPARATION.ALL_FIELDS_MENDATORY" | translate }}</span
+        >
+      </div>
+    </div>
+  </div>
+  <div class="card-footer d-flex justify-content-end">
+    <button
+      type="submit"
+      class="btn bg pr-4 pl-4 btn-lg text-white rounded-3 btn-light mt-4"
+    >
+      {{ "NEDSS.PREPARATION.SAVE" | translate }}
+    </button>
+  </div>
+</form>
+
+<div class="card shadow rounded mt-4">
+  <div class="table-reponsive mt-4 shadow border rounded" *ngIf="!noData">
+    <div class="d-flex m-0 justify-content-between m-3">
+      <div class="fwb">
+        {{ "NEDSS.PREPARATION.COUNT_DEVICES" | translate }}
+        {{ pages }}
+      </div>
+      <div class="">
+        <a (click)="exportPatientsAsPdf()"
+          ><span class="bi bi-filetype-pdf button-export"></span
+        ></a>
+        <button
+          style="border: none; background: none"
+          [useExistingCss]="true"
+          [printStyle]="{ '.exclude-pdf': { display: 'none' } }"
+          printTitle="{{
+            'NEDSS.PREPARATION.MONITOR_UNIT_LIST.PREPARATIONS' | translate
+          }}"
+          printSectionId="myTableElementId"
+          ngxPrint
+        >
+          <span class="bi bi-printer-fill button-export"></span>
+        </button>
+        <a (click)="exportPatiantsAsExcel()"
+          ><span class="bi bi-file-earmark-excel-fill button-export"></span
+        ></a>
+      </div>
+    </div>
+    <div
+      class="table-responsive table-none-scroll"
+      id="myTableElementId"
+      #myTableElementId
+    >
+      <p-table
+        class="table"
+        [value]="preparationsDevices"
+        [sortOrder]="1"
+        [paginator]="false"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="arabicName">
+              {{ "NEDSS.PREPARATION.DEVICE_CATEGORY" | translate }}
+              <p-sortIcon class="exclude-pdf" field="arabicName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="phoneNo1">
+              <span> {{ "NEDSS.PREPARATION.DEVICE_TYPE" | translate }} </span>
+              <p-sortIcon class="exclude-pdf" field="phoneNo1"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="nationalId">
+              <span>
+                {{ "NEDSS.PREPARATION.SERIAL_NUMBER" | translate }}
+              </span>
+              <p-sortIcon class="exclude-pdf" field="nationalId"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nationalId">
+              <span>
+                {{ "NEDSS.PREPARATION.SPECIFICATION" | translate }}
+              </span>
+              <p-sortIcon class="exclude-pdf" field="nationalId"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nationalId">
+              <span>
+                {{ "NEDSS.PREPARATION.DEVICE_WORKING" | translate }}
+              </span>
+              <p-sortIcon class="exclude-pdf" field="nationalId"></p-sortIcon>
+            </th>
+            <th class="exclude-pdf">
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
+                  | translate
+              }}</span>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>
+              <span [innerHTML]="item.deviceCategoryName"></span>
+            </td>
+
+            <td>
+              <span [innerHTML]="item.deviceTypeName"></span>
+            </td>
+            <td>
+              <span [innerHTML]="item.serialNo"></span>
+            </td>
+            <td>
+              <span [innerHTML]="item.deviceSpecifications"></span>
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                disabled="true"
+                [(ngModel)]="item.isDeviceWorking"
+                #isDeviceWorking="ngModel"
+                name="isDeviceWorking"
+              />
+            </td>
+            <td class="exclude-pdf">
+              <a
+                (click)="getById(item.id)"
+                class="text-primary pi pi-pencil"
+              ></a>
+              &nbsp;&nbsp;
+              <a
+                data-bs-target="#exampleModal2"
+                data-bs-toggle="modal"
+                (click)="nameToDelete(item)"
+                class="text-danger bi bi-trash-fill"
+              ></a>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div class="col-11 col-lg-12 exclude-pdf" style="margin-bottom: 4px">
+        <p-paginator
+          *ngIf="!noData"
+          [rows]="preparationsDeviceFilter.pageSize"
+          [totalRecords]="pages"
+          (onPageChange)="paginate($event)"
+          [first]="first"
+          [currentPageReportTemplate]="
+            'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+          "
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[
+            10,
+            20,
+            30,
+            40,
+            50,
+            70,
+            100,
+            200,
+            500,
+            1000,
+            2000,
+            pages >= 5000 ? pages : 5000
+          ]"
+        ></p-paginator>
+      </div>
+      <div class="row m-0" [hidden]="!noData">
+        <div class="no-data content-center">
+          <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+          <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade opast"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog bord-round">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate }}.
+        <strong style="color: red">
+          <td>{{ underDeleting2.deviceTypeName }}</td>
+        </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="delete(underDeleting2.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

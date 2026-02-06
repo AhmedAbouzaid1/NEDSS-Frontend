@@ -1,0 +1,472 @@
+<form [formGroup]="generalReportForm">
+  <div class="card-body bg-dark-mode">
+    <div class="row">
+      <div
+        class="col-lg-4 mb-4"
+        *ngIf="activeUSerService.getAccessibleParts?.showGovernments"
+      >
+        <div class="form-group">
+          <label for="">{{ "NEDSS.EVENTS.GOVERNMENT" | translate }}</label>
+
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="governmentSelected()"
+              tabindex="-1"
+              [(ngModel)]="governmentselectedId"
+              aria-hidden="true"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="this.levelId != 1"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of governments"
+                [ngValue]="item.id"
+                [selected]="item.id === governmentselectedId"
+              >
+                {{ item.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown
+              (onChange)="governmentSelected()"
+              [options]="governments"
+              [(ngModel)]="governmentselectedId"
+              optionLabel="arabicName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="governments"
+              formControlName="government"
+              [filter]="true"
+              filterBy="arabicName"
+              [disabled]="
+                !activeUSerService.getAccessibleParts?.enableGovernments
+              "
+            >
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <p-dropdown
+              (onChange)="governmentSelected()"
+              [options]="governments"
+              [(ngModel)]="governmentselectedId"
+              optionLabel="englishName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="governments"
+              formControlName="government"
+              [filter]="true"
+              filterBy="englishName"
+              [disabled]="
+                !activeUSerService.getAccessibleParts?.enableGovernments
+              "
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="col-lg-4 mb-4"
+        *ngIf="activeUSerService.getAccessibleParts?.showDepartments"
+      >
+        <div class="form-group">
+          <label for="">{{ "NEDSS.EVENTS.ADMINISTRATION" | translate }}</label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="healthAdministrationSelected()"
+              tabindex="-1"
+              [(ngModel)]="selectedhealthAdministrationId"
+              aria-hidden="true"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="this.levelId != 1 && this.levelId != 2"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of healthAdministration"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedhealthAdministrationId"
+              >
+                {{ item.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown
+              (onChange)="healthAdministrationSelected()"
+              [options]="healthAdministration"
+              [(ngModel)]="selectedhealthAdministrationId"
+              optionLabel="arabicName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="healthAdministration"
+              formControlName="healthAdministration"
+              [filter]="true"
+              filterBy="arabicName"
+              [disabled]="
+                !activeUSerService.getAccessibleParts?.enableDepartments
+              "
+            >
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <p-dropdown
+              (onChange)="healthAdministrationSelected()"
+              [options]="healthAdministration"
+              [(ngModel)]="selectedhealthAdministrationId"
+              optionLabel="englishName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="healthAdministration"
+              formControlName="healthAdministration"
+              [filter]="true"
+              filterBy="englishName"
+              [disabled]="
+                !activeUSerService.getAccessibleParts?.enableDepartments
+              "
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="col-lg-4 mb-4"
+        *ngIf="activeUSerService.getAccessibleParts?.showUniversities"
+      >
+        <div class="form-group">
+          <label for="govenmentId">
+            {{
+              "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_UNIVERSITY" | translate
+            }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <p-dropdown
+              (onChange)="branchSelected()"
+              [options]="branches"
+              [(ngModel)]="SelectedbranchId"
+              optionLabel="arabicName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="branches"
+              formControlName="universityId"
+              [filter]="true"
+              filterBy="arabicName"
+              [disabled]="
+                !activeUSerService.getAccessibleParts?.enableUniversities
+              "
+            >
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <p-dropdown
+              (onChange)="branchSelected()"
+              [options]="branches"
+              [(ngModel)]="SelectedbranchId"
+              optionLabel="englishName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="branches"
+              formControlName="universityId"
+              [filter]="true"
+              filterBy="englishName"
+              [disabled]="
+                !activeUSerService.getAccessibleParts?.enableUniversities
+              "
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="col-lg-4 mb-4"
+        *ngIf="activeUSerService.getAccessibleParts?.showBranches"
+      >
+        <div class="form-group">
+          <label for="govenmentId">
+            {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_BRANCH" | translate }}
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <p-dropdown
+              (onChange)="branchSelected()"
+              [options]="branches"
+              [(ngModel)]="SelectedbranchId"
+              optionLabel="arabicName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="branches"
+              formControlName="branchId"
+              [filter]="true"
+              filterBy="arabicName"
+              [disabled]="!activeUSerService.getAccessibleParts?.enableBranches"
+            >
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <p-dropdown
+              (onChange)="branchSelected()"
+              [options]="branches"
+              [(ngModel)]="SelectedbranchId"
+              optionLabel="englishName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="branches"
+              formControlName="branchId"
+              [filter]="true"
+              filterBy="englishName"
+              [disabled]="!activeUSerService.getAccessibleParts?.enableBranches"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="col-lg-4 mb-4"
+        *ngIf="activeUSerService.getAccessibleParts?.showAreas"
+      >
+        <div class="form-group">
+          <label for="govenmentId">
+            {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_AREA" | translate }}
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <p-dropdown
+              (onChange)="areaSelected()"
+              [options]="areas"
+              [(ngModel)]="SelectedareaId"
+              optionLabel="arabicName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="areas"
+              formControlName="areaId"
+              [filter]="true"
+              filterBy="arabicName"
+              [disabled]="!activeUSerService.getAccessibleParts?.enableAreas"
+            >
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <p-dropdown
+              (onChange)="areaSelected()"
+              [options]="areas"
+              [(ngModel)]="SelectedareaId"
+              optionLabel="englishName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="areas"
+              formControlName="areaId"
+              [filter]="true"
+              filterBy="englishName"
+              [disabled]="!activeUSerService.getAccessibleParts?.enableAreas"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="col-lg-4 mb-4"
+        *ngIf="activeUSerService.getAccessibleParts?.showSources"
+      >
+        <div class="form-group">
+          <label for="">
+            {{ "NEDSS.SEARCH.INCEIDENT_SOURCE" | translate }}
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="incidentSourcesSelected()"
+              tabindex="-1"
+              [(ngModel)]="selectedincidentSources"
+              aria-hidden="true"
+              [ngModelOptions]="{ standalone: true }"
+              [disabled]="
+                this.levelId != 1 && this.levelId != 2 && this.levelId != 3
+              "
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of incidentSources"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedincidentSources"
+              >
+                {{ item.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown
+              (onChange)="incidentSourcesSelected()"
+              [options]="incidentSources"
+              [(ngModel)]="selectedincidentSources"
+              optionLabel="arabicName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="incidentSources"
+              formControlName="reportSource"
+              [filter]="true"
+              filterBy="arabicName"
+              [disabled]="!activeUSerService.getAccessibleParts?.enableSources"
+            >
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <p-dropdown
+              (onChange)="incidentSourcesSelected()"
+              [options]="incidentSources"
+              [(ngModel)]="selectedincidentSources"
+              optionLabel="englishName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="incidentSources"
+              formControlName="reportSource"
+              [filter]="true"
+              filterBy="englishName"
+              [disabled]="!activeUSerService.getAccessibleParts?.enableSources"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 mb-4">
+        <div class="form-group">
+          <label for="">{{ "NEDSS.SEARCH.DEPARTMENT" | translate }}</label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="departmentselected()"
+              tabindex="-1"
+              [(ngModel)]="selectedDep"
+              aria-hidden="true"
+              [ngModelOptions]="{ standalone: true }"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of departments"
+                [ngValue]="item.id"
+              >
+                {{ item.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown
+              (onChange)="departmentselected()"
+              [options]="departments"
+              [(ngModel)]="selectedDep"
+              optionLabel="arabicName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="departments"
+              formControlName="departmentId"
+              [filter]="true"
+              filterBy="arabicName"
+            >
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <p-dropdown
+              (onChange)="departmentselected()"
+              [options]="departments"
+              [(ngModel)]="selectedDep"
+              optionLabel="englishName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="departments"
+              formControlName="departmentId"
+              [filter]="true"
+              filterBy="englishName"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 mb-4">
+        <div class="form-group">
+          <label for=""> {{ "NEDSS.EVENTS.FROM_DATE" | translate }} </label>
+          <mat-form-field appearance="fill">
+            <mat-label>
+              {{
+                "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+              }}</mat-label
+            >
+            <input
+              [min]="minDate"
+              [max]="maxDate"
+              matInput
+              [matDatepicker]="picker"
+              [(ngModel)]="patient.startDate"
+              formControlName="startDate"
+              (dateInput)="fromDateSelected($event)"
+            />
+
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="col-lg-3 mb-4">
+        <div class="form-group">
+          <label for=""> {{ "NEDSS.EVENTS.TO_DATE" | translate }} </label>
+
+          <mat-form-field appearance="fill">
+            <mat-label>
+              {{
+                "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+              }}</mat-label
+            >
+
+            <input
+              [min]="patient.startDate"
+              [max]="maxDate"
+              matInput
+              [matDatepicker]="picker1"
+              [(ngModel)]="patient.endDate"
+              formControlName="endDate"
+              placeholder="{{
+                'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate
+              }}"
+              (dateInput)="endDateSelected($event)"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker1"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="col-lg-12 d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-lg bg text-light"
+          (click)="clearAll()"
+        >
+          <span class="pi pi-times"></span>
+          {{ "NEDSS.SEARCH.CLEAR_ALL" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="card-footer text-start">
+          <button type="submit" class="btn btn-lg bg text-light"> <span
+                  class="bi bi-check2-circle"></span> بحث </button>
+      </div> -->
+</form>

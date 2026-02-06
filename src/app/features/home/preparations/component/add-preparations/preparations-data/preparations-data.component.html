@@ -1,0 +1,765 @@
+<app-loader *ngIf="loadingPanel"></app-loader>
+<form (ngSubmit)="save()" #preparationsDataForm="ngForm" novalidate>
+  <div class="card shadow rounded">
+    <div class="card-body">
+      <div class="row color">
+        <div class="row">
+          <div
+            class="col-lg-4 mb-2"
+            *ngIf="activeUSerService.getAccessibleParts?.showGovernments"
+          >
+            <div class="form-group">
+              <label for="govenmentId" class="">
+                {{
+                  "NEDSS.HOME.PREPARATION.MONITOR_UNIT_ADD.PREPARATION_DATA.GOVERNEMENT"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <div>
+                <div *ngIf="currentLang == 'ar'">
+                  <p-dropdown
+                    (onChange)="govenmentSelected()"
+                    [options]="govenments"
+                    [(ngModel)]="selectedGovernment"
+                    optionLabel="arabicName"
+                    optionValue="id"
+                    autoWidth="false"
+                    [style]="{ width: '100%' }"
+                    name="governments"
+                    [filter]="true"
+                    filterBy="arabicName"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableGovernments
+                    "
+                  >
+                  </p-dropdown>
+
+                  <!-- <select class="form-control select2 select2-hidden-accessible" (change)="govenmentSelected()"
+                      tabindex="-1" [(ngModel)]="selectedGovernment" aria-hidden="true" [disabled]="this.levelId!=1"
+                      [ngModelOptions]="{standalone: true}">
+                      <option value="item.id" *ngFor="let item of govenments" [ngValue]="item.id"
+                        [selected]="item.id === selectedGovernment">
+                        {{item.arabicName}}
+                      </option>
+                    </select> -->
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                  <p-dropdown
+                    (onChange)="govenmentSelected()"
+                    [options]="govenments"
+                    [(ngModel)]="selectedGovernment"
+                    optionLabel="englishName"
+                    optionValue="id"
+                    autoWidth="false"
+                    [style]="{ width: '100%' }"
+                    name="governments"
+                    [filter]="true"
+                    filterBy="englishName"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableGovernments
+                    "
+                  >
+                  </p-dropdown>
+
+                  <!-- <select class="form-control select2 select2-hidden-accessible" (change)="govenmentSelected()"
+                      tabindex="-1" [(ngModel)]="selectedGovernment" aria-hidden="true"
+                      [ngModelOptions]="{standalone: true}" [disabled]="this.levelId!=1">
+                      <option value="item.id" *ngFor="let item of govenments" [ngValue]="item.id"
+                        [selected]="item.id === selectedGovernment">
+                        {{item.englishName}}
+                      </option>
+                    </select> -->
+                </div>
+
+                <small
+                  *ngIf="!isGovernmentValid"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="col-lg-4 mb-2"
+            *ngIf="activeUSerService.getAccessibleParts?.showDepartments"
+          >
+            <div class="form-group">
+              <label for="" class="">
+                {{
+                  "NEDSS.HOME.PREPARATION.MONITOR_UNIT_ADD.PREPARATION_DATA.HEALTH_ADMINISTRATION"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <div>
+                <div *ngIf="currentLang == 'ar'">
+                  <p-dropdown
+                    (onChange)="HealthAdministrationSelected()"
+                    [options]="healthAdministrations"
+                    [(ngModel)]="selectedhealthAdministrationId"
+                    optionLabel="arabicName"
+                    optionValue="id"
+                    autoWidth="false"
+                    [style]="{ width: '100%' }"
+                    name="healthAdministrationId"
+                    [filter]="true"
+                    filterBy="arabicName"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableDepartments
+                    "
+                  >
+                  </p-dropdown>
+
+                  <!-- <select class="form-control select2 select2-hidden-accessible"
+                      (change)="HealthAdministrationSelected()" 
+                      tabindex="-1"
+                      [(ngModel)]="selectedhealthAdministrationId" 
+                      aria-hidden="true"
+                      [ngModelOptions]="{standalone: true}" 
+                      [disabled]="this.levelId!=1 && this.levelId!=2">
+                      <option value="item.id" *ngFor="let item of healthAdministrations" [ngValue]="item.id"
+                        [selected]="item.id === selectedhealthAdministrationId">
+                        {{item.arabicName}}
+                      </option>
+                    </select> -->
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                  <p-dropdown
+                    (onChange)="HealthAdministrationSelected()"
+                    [options]="healthAdministrations"
+                    [(ngModel)]="selectedhealthAdministrationId"
+                    optionLabel="englishName"
+                    optionValue="id"
+                    autoWidth="false"
+                    [style]="{ width: '100%' }"
+                    name="healthAdministration"
+                    [filter]="true"
+                    filterBy="englishName"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableDepartments
+                    "
+                  >
+                  </p-dropdown>
+
+                  <!-- <select class="form-control select2 select2-hidden-accessible"
+                      (change)="HealthAdministrationSelected()" tabindex="-1"
+                      [(ngModel)]="selectedhealthAdministrationId" aria-hidden="true"
+                      [ngModelOptions]="{standalone: true}" [disabled]="this.levelId!=1 && this.levelId!=2">
+                      <option value="item.id" *ngFor="let item of healthAdministrations" [ngValue]="item.id"
+                        [selected]="item.id === selectedhealthAdministrationId">
+                        {{item.englishName}}
+                      </option>
+                    </select> -->
+                </div>
+                <small
+                  *ngIf="!isHealthAdministrationValid"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="col-lg-4 mb-2"
+            *ngIf="activeUSerService.getAccessibleParts?.showSources"
+          >
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.PREPARATION.MONITOR_UNIT_ADD.PREPARATION_DATA.INCEIDENT_SOURCE"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <div>
+                <div *ngIf="currentLang == 'ar'">
+                  <p-dropdown
+                    (onChange)="incidentSourcesSelected()"
+                    [options]="incidentSources"
+                    [(ngModel)]="selectedincidentSourceId"
+                    optionLabel="arabicName"
+                    optionValue="id"
+                    autoWidth="false"
+                    [style]="{ width: '100%' }"
+                    name="incidentSourceId"
+                    [filter]="true"
+                    filterBy="arabicName"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableSources
+                    "
+                  >
+                  </p-dropdown>
+
+                  <!-- <select class="form-control select2 select2-hidden-accessible" (change)="incidentSourcesSelected()"
+                      tabindex="-1" [(ngModel)]="selectedincidentSourceId" aria-hidden="true"
+                      [ngModelOptions]="{standalone: true}"
+                      [disabled]="this.levelId!=1 && this.levelId!=2 && this.levelId!=3">
+                      <option value="item.id" *ngFor="let item of incidentSources" [ngValue]="item.id"
+                        [selected]="item.id === selectedincidentSourceId">
+                        {{item.arabicName}}
+                      </option>
+                    </select> -->
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                  <p-dropdown
+                    (onChange)="incidentSourcesSelected()"
+                    [options]="incidentSources"
+                    [(ngModel)]="selectedincidentSourceId"
+                    optionLabel="englishName"
+                    optionValue="id"
+                    autoWidth="false"
+                    [style]="{ width: '100%' }"
+                    name="incidentSourceId"
+                    [filter]="true"
+                    filterBy="englishName"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableSources
+                    "
+                  >
+                  </p-dropdown>
+
+                  <!-- <select class="form-control select2 select2-hidden-accessible" (change)="incidentSourcesSelected()"
+                      [ngModelOptions]="{standalone: true}" tabindex="-1" [(ngModel)]="selectedincidentSourceId"
+                      aria-hidden="true" [disabled]="this.levelId!=1 && this.levelId!=2 && this.levelId!=3">
+                      <option value="item.id" *ngFor="let item of incidentSources" [ngValue]="item.id"
+                        [selected]="item.id === selectedincidentSourceId">
+                        {{item.englishName}}
+                      </option>
+                    </select> -->
+                </div>
+
+                <small
+                  *ngIf="!isIncidentSourceValid"
+                  class="form-text text-danger mess-color"
+                >
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-2">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.PREPARATION.MONITOR_UNIT_ADD.PREPARATION_DATA.ADDRESS"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+
+              <input
+                type="text"
+                name="address"
+                id=""
+                class="w-100"
+                pInputText
+                [(ngModel)]="preparationsData.address"
+                [maxlength]="100"
+                #address="ngModel"
+                (blur)="
+                  isAddressValid = generalDataService.validateAddress(
+                    preparationsData.address,
+                    true
+                  )
+                "
+              />
+              <!-- <input type="text" maxlength="100" required class="form-control" name="address"
+                  [(ngModel)]="preparationsData.address" #address="ngModel"
+                  (blur)="isAddressValid = generalDataService.validateAddress(preparationsData.address, true)" /> -->
+              <small
+                *ngIf="!isAddressValid"
+                class="form-text text-danger mess-color"
+              >
+                {{ generalDataService.addressValidationMessage | translate }}
+              </small>
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-2">
+            <div class="form-group">
+              <label for="">
+                {{ "NEDSS.PREPARATION.PHONE1" | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+
+              <input
+                type="text"
+                name="phoneNo1"
+                id=""
+                class="w-100"
+                pInputText
+                [(ngModel)]="preparationsData.phoneNo1"
+                #phoneNo1="ngModel"
+                (blur)="
+                  isPhone1Valid = generalDataService.validatePhoneNumber1(
+                    preparationsData.phoneNo1,
+                    true
+                  )
+                "
+                (keypress)="generalDataService.onPhoneNumberKeyPress($event)"
+              />
+
+              <!-- <input type="text" required class="form-control" name="phoneNo1" [(ngModel)]="preparationsData.phoneNo1"
+                  #phoneNo1="ngModel" (keypress)="generalDataService.onPhoneNumberKeyPress($event)"
+                  (blur)="isPhone1Valid = generalDataService.validatePhoneNumber1(preparationsData.phoneNo1, true)" /> -->
+
+              <small
+                *ngIf="!isPhone1Valid"
+                class="form-text text-danger mess-color"
+              >
+                {{ generalDataService.phoneNo1ValidationMessage | translate }}
+              </small>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-2">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.PREPARATION.MONITOR_UNIT_ADD.PREPARATION_DATA.FAX"
+                    | translate
+                }}
+              </label>
+
+              <p-inputNumber
+                [(ngModel)]="preparationsData.fax"
+                name="fax"
+                #fax="ngModel"
+                class="w-100"
+                mode="decimal"
+                inputId="withoutgrouping"
+                (blur)="isFaxValid = validateFax()"
+                [useGrouping]="false"
+                [style]="{ width: '100%' }"
+              />
+
+              <!--<input type="number" name="fax" [(ngModel)]="preparationsData.fax" #fax="ngModel" class="form-control"
+                  (blur)="isFaxValid = validateFax()" /> -->
+            </div>
+          </div>
+          <div class="col-lg-4 mb-2">
+            <div class="form-group">
+              <label for="">
+                {{ "NEDSS.PREPARATION.PHONE2" | translate }}
+              </label>
+
+              <input
+                type="text"
+                name="phoneNo2"
+                id=""
+                class="w-100"
+                pInputText
+                [(ngModel)]="preparationsData.phoneNo2"
+                #phoneNo2="ngModel"
+                (blur)="
+                  isPhone2Valid = generalDataService.validatePhoneNumber2(
+                    preparationsData.phoneNo2,
+                    true
+                  )
+                "
+                (keypress)="generalDataService.onPhoneNumberKeyPress($event)"
+              />
+
+              <!-- <input type="text" name="phoneNo2" [(ngModel)]="preparationsData.phoneNo2" #phoneNo2="ngModel"
+                  class="form-control" (keypress)="generalDataService.onPhoneNumberKeyPress($event)"
+                  (blur)="isPhone2Valid = generalDataService.validatePhoneNumber2(preparationsData.phoneNo2, true)" /> -->
+            </div>
+          </div>
+          <div class="col-lg-4 mb-2">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.PREPARATION.MONITOR_UNIT_ADD.PREPARATION_DATA.OFFICE_COUNT"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+
+              <p-inputNumber
+                [(ngModel)]="preparationsData.officesCount"
+                name="officesCount"
+                #officesCount="ngModel"
+                class="w-100"
+                mode="decimal"
+                name="officesCount"
+                inputId="withoutgrouping"
+                [style]="{ width: '100%' }"
+                (blur)="isOfficeCountValid = validateOfficeCount()"
+                [useGrouping]="false"
+              />
+
+              <!-- <input type="number" name="officesCount" [(ngModel)]="preparationsData.officesCount"
+                  #officesCount="ngModel" class="form-control" (blur)="isOfficeCountValid = validateOfficeCount()" /> -->
+
+              <small
+                *ngIf="!isOfficeCountValid"
+                class="form-text text-danger mess-color"
+              >
+                {{ officeCountValidationMsg | translate }}
+              </small>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-2">
+            <div class="form-group">
+              <label for="">
+                {{
+                  "NEDSS.HOME.PREPARATION.MONITOR_UNIT_ADD.PREPARATION_DATA.CHAIR_COUNT"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+
+              <p-inputNumber
+                [(ngModel)]="preparationsData.chairsCount"
+                name="chairsCount"
+                #chairsCount="ngModel"
+                class="w-100"
+                mode="decimal"
+                name="chairsCount"
+                inputId="withoutgrouping"
+                [style]="{ width: '100%' }"
+                (blur)="isChairCountValid = validateChairCount()"
+                [useGrouping]="false"
+              />
+
+              <!-- <input type="number" name="chairsCount" [(ngModel)]="preparationsData.chairsCount"
+                  #chairsCount="ngModel" class="form-control" (blur)="isChairCountValid = validateChairCount()" /> -->
+
+              <small
+                *ngIf="!isChairCountValid"
+                class="form-text text-danger mess-color"
+              >
+                {{ chairCountValidationMsg | translate }}
+              </small>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <div class="form-group">
+              <label for="">
+                {{ "NEDSS.PREPARATION.SHANON_COUNT" | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+
+              <p-inputNumber
+                [style]="{ width: '100%' }"
+                [(ngModel)]="preparationsData.shanonCount"
+                #shanonCount="ngModel"
+                class="w-100"
+                mode="decimal"
+                name="shanonCount"
+                inputId="withoutgrouping"
+                (blur)="isShanonCountValid = validateShannonCount()"
+                [useGrouping]="false"
+              />
+
+              <!-- <input type="number" name="shanonCount" [(ngModel)]="preparationsData.shanonCount"
+                  #shanonCount="ngModel" class="form-control" (blur)="isShanonCountValid = validateShannonCount()" /> -->
+
+              <small
+                *ngIf="!isShanonCountValid"
+                class="form-text text-danger mess-color"
+              >
+                {{ shannonCountValidationMsg | translate }}
+              </small>
+            </div>
+          </div>
+          <!-- <div class="col-lg-4"></div> -->
+          <div class="col-lg-8 has-labels">
+            <label for="hasRoom ">
+              <input
+                type="checkbox"
+                id="hasRoom"
+                [(ngModel)]="preparationsData.hasRoom"
+                #hasRoom="ngModel"
+                class="form-check-input"
+                name="hasRoom"
+                (change)="changeRoom()"
+              />
+              {{
+                "NEDSS.HOME.PREPARATION.MONITOR_UNIT_ADD.PREPARATION_DATA.HAS_ROOM"
+                  | translate
+              }}
+            </label>
+            <label for="isRoomPrepared">
+              <input
+                type="checkbox"
+                id="isRoomPrepared"
+                [disabled]="!preparationsData.hasRoom"
+                [(ngModel)]="preparationsData.isRoomPrepared"
+                class="form-check-input"
+                #isRoomPrepared="ngModel"
+                name="isRoomPrepared"
+              />
+              {{
+                "NEDSS.HOME.PREPARATION.MONITOR_UNIT_ADD.PREPARATION_DATA.HAS_ROOM_RREPARED"
+                  | translate
+              }}
+            </label>
+            <label for="hasAirConditioner">
+              <input
+                type="checkbox"
+                id="hasAirConditioner"
+                [(ngModel)]="preparationsData.hasAirConditioner"
+                [disabled]="!preparationsData.hasRoom"
+                class="form-check-input"
+                #hasAirConditioner="ngModel"
+                name="hasAirConditioner"
+              />
+              {{
+                "NEDSS.HOME.PREPARATION.MONITOR_UNIT_ADD.PREPARATION_DATA.HAS_AIR_ROOM"
+                  | translate
+              }}
+            </label>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">
+                {{ "NEDSS.PREPARATION.NOTES" | translate }}
+              </label>
+              <textarea
+                [style]="{ width: '100%' }"
+                name="notes"
+                rows="5"
+                #notes="ngModel"
+                cols="30"
+                pInputTextarea
+                [(ngModel)]="preparationsData.notes"
+                (blur)="
+                  isNotesValid = generalDataService.validateNotes(
+                    preparationsData.notes,
+                    false
+                  )
+                "
+              >
+              </textarea>
+
+              <!-- <textarea name="notes" [(ngModel)]="preparationsData.notes" #notes="ngModel"
+                  (blur)="isNotesValid = generalDataService.validateNotes(preparationsData.notes, false)"
+                  class="form-control"></textarea> -->
+
+              <small
+                *ngIf="!isNotesValid"
+                class="form-text text-danger mess-color"
+              >
+                {{ generalDataService.notesValidationMessage | translate }}
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="col-lg-3">
+          <div class="mb-4 border-bottom pb-4">
+            <a class="text-center d-block w-100 color">
+              <span class="display-2 bi bi-card-image"></span> <br />
+              {{ "NEDSS.PREPARATION.UPLOAD_IMAGES" | translate }}
+            </a>
+          </div>
+          <div class="">
+            <a class="text-center d-block w-100 color border-color">
+              <span class="display-2 bi bi-file-pdf"></span> <br />
+              {{ "NEDSS.PREPARATION.UPLOAD_PDF" | translate }}
+            </a>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <div class="card-footer mt-4">
+      <span
+        class="float-end"
+        style="color: red; font-size: large; font-weight: 800"
+        *ngIf="pleaseComplete"
+      >
+        {{ "NEDSS.PREPARATION.ALL_FIELDS_MENDATORY" | translate }}
+      </span>
+    </div>
+  </div>
+  <div class="d-flex justify-content-end">
+    <button
+      type="submit"
+      class="btn bg pr-4 pl-4 btn-lg text-white rounded-3 btn-light mt-4"
+      [disabled]="disableAddBtn"
+    >
+      {{ "NEDSS.PREPARATION.SAVE" | translate }}
+    </button>
+  </div>
+</form>
+
+
+
+
+<!-- /////////// -->
+
+
+<div
+class="table-responsive table-none-scroll mt-3"
+id="myTableElementId"
+#myTableElementId
+*ngIf="!noData"
+>
+<p-table
+  class="table"
+  [style.direction]="dir"
+  [value]="preparations"
+  [paginator]="false"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>
+        <span>{{
+          "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.GOVERNEMENT"
+            | translate
+        }}</span>
+      </th>
+      <th>
+        <span>{{
+          "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.HEALTH_ADMINISTRATION"
+            | translate
+        }}</span>
+      </th>
+      <th>
+        <span>{{
+          "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.INCEIDENT_SOURCE"
+            | translate
+        }}</span>
+      </th>
+      <th class="exclude-pdf">
+        <span>{{
+          "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
+            | translate
+        }}</span>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-item>
+    <tr>
+      <td>
+        <span
+          [innerHTML]="
+            item.govenmentNamw
+              | highlighter : preparationsFilter.searchText : 'partial'
+          "
+        ></span>
+      </td>
+
+      <td>
+        <span
+          [innerHTML]="
+            item.healthAdministrationName
+              | highlighter : preparationsFilter.searchText : 'partial'
+          "
+        ></span>
+      </td>
+      <td>
+        <span
+          [innerHTML]="
+            item.incidentSourceName
+              | highlighter : preparationsFilter.searchText : 'partial'
+          "
+        ></span>
+      </td>
+      <td class="exclude-pdf">
+        <a
+          (click)="getById(item.id)"
+          class="text-primary pi pi-pencil"
+        ></a>
+        &nbsp;&nbsp;
+        <a
+          data-bs-target="#exampleModal2"
+          data-bs-toggle="modal"
+          (click)="nameToDelete(item)"
+          class="text-danger bi bi-trash-fill"
+        ></a>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<div class="row" [hidden]="!noData">
+  <div class="no-data content-center">
+    <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+    <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+  </div>
+</div>
+</div>
+<div class="col-11 col-md-12" style="margin-bottom: 4px">
+<p-paginator
+  *ngIf="!noData"
+  [rows]="preparationsFilter.pageSize"
+  [totalRecords]="pages"
+  (onPageChange)="paginate($event)"
+  [first]="first"
+  [currentPageReportTemplate]="
+    'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+  "
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[
+    10,
+    20,
+    30,
+    40,
+    50,
+    70,
+    100,
+    200,
+    500,
+    1000,
+    2000,
+    pages >= 5000 ? pages : 5000
+  ]"
+></p-paginator>
+</div>
+
+
+
+
+<div
+  class="modal fade opast"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog bord-round">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate }}.
+        <strong style="color: red">
+          <td>{{ underDeleting.govenmentNamw }}</td>
+        </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="delete(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ///////////////////// -->
+
+
+

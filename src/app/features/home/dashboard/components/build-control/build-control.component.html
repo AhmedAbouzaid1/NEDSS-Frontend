@@ -1,0 +1,51 @@
+<ng-container *ngIf="control.type=='header'">
+  <div class="control-container" [ngStyle] =control.properties>
+    <p   >{{control.label}}</p>
+    <div  class="actions">
+      <i  (click)="onControlClick( control.id)" class="bi bi-eye text-info"></i>
+      <i  (click)="onControlDeleteClick( control.id)" class="bi bi-trash text-danger mess-color"></i>
+    </div>
+  </div>
+
+
+ </ng-container>
+
+ <ng-container *ngIf="control.type=='text'">
+    <div  class="control-container"  [ngStyle] =control.properties>
+      <p class="d-inline" >{{control.label}}</p>
+      <input type="text" (change)="onChange($event)" class="d-inline" [readonly]="control.isReadOnly"   [value]="  control.isFromDataBase==true? dataBase['state']:'' "  >
+  <div  class="actions">
+    <i  (click)="onControlClick( control.id)" class="bi bi-eye text-info "></i>
+    <i  (click)="onControlDeleteClick( control.id)" class="bi bi-trash text-danger mess-color "></i>
+  </div>
+
+    </div>
+
+ </ng-container>
+ <ng-container *ngIf="control.type=='radio'">
+  <div  class="control-container" [ngStyle] =control.properties>
+  <label   class="form-check-label">{{control.label}}</label>
+ <ng-container *ngFor="let item   of getList(control.listItem);let index=index">
+    <div      class="form-check form-check-inline ">
+       <input (change)="onChange($event)" class="form-check-input" type="radio" name="{{control.id}}" value="{{item}}"  id="col{{control.id}}{{index}}"  >
+      <label for="col{{index}}" class="form-check-label">{{item}}</label>
+      </div>
+  </ng-container>
+  <div  class="actions">
+    <i  (click)="onControlClick( control.id)" class="bi bi-eye text-info"></i>
+    <i  (click)="onControlDeleteClick( control.id)" class="bi bi-trash text-danger mess-color"></i>
+  </div>
+</div>
+
+</ng-container>
+
+<ng-container *ngIf="control.type=='select'">
+  <div  [ngStyle] =control.properties>
+
+<select  (change)="onChange($event)" class="custom-select custom-select-sm rounded-0  "  name="{{control.name}}" >
+  <ng-container *ngFor="let item   of getList(control.listItem)">
+    <option value="{{item}}">{{item}}</option>
+  </ng-container>
+</select>
+</div>
+</ng-container>

@@ -1,0 +1,14 @@
+<div class="border border-primary border-3 rounded rounded-3 shadow p-3">
+  <h4 class="text-center text-primary">Chart builder</h4>
+  <div>
+    <label>عدد الإحصائيات</label>
+    <input type="number" [(ngModel)]="noOfCharts" (change)="addRemoveChart()">
+  </div>
+  <div *ngFor="let x of arr(noOfCharts).fill(1); let i = index;">
+    <div class="col-sm-5 float-right">
+      <app-dyna-filter (filterOut)="Update($event, i)"></app-dyna-filter>
+    </div>
+  </div>
+</div>
+
+<button (click)="GetFilteredData()">Filter</button>

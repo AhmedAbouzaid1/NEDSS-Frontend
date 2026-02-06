@@ -1,0 +1,375 @@
+<h2 class="titles">
+  {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.EVALUATION" | translate }}
+</h2>
+
+<form #diseaseFieldForm="ngForm" id="evaluation-que">
+  <div class="card shadow color rounded">
+    <div class="card-body bg-dark-mode">
+      <div class="row">
+        <div *ngIf="currentLang == 'ar'">
+          <select
+            class="form-control select2 select2-hidden-accessible"
+            (change)="onDiseaseFormChanged()"
+            tabindex="-1"
+            [(ngModel)]="selectedDiseaseFormID"
+            aria-hidden="true"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <option
+              value="item.id"
+              *ngFor="let item of diseaseFields"
+              [ngValue]="item.id"
+              [selected]="item.id === selectedDiseaseFormID"
+            >
+              {{ item.nameAr }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="currentLang == 'en'">
+          <select
+            class="form-control select2 select2-hidden-accessible"
+            (change)="onDiseaseFormChanged()"
+            tabindex="-1"
+            [(ngModel)]="selectedDiseaseFormID"
+            aria-hidden="true"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <option
+              value="item.id"
+              *ngFor="let item of diseaseFields"
+              [ngValue]="item.id"
+              [selected]="item.id === selectedDiseaseFormID"
+            >
+              {{ item.nameEn }}
+            </option>
+          </select>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <select
+                class="form-control select2 select2-hidden-accessible"
+                (change)="onGovernmentChanged()"
+                tabindex="-1"
+                [(ngModel)]="selectedGovernmentId"
+                aria-hidden="true"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <option
+                  value="item.id"
+                  *ngFor="let item of governments"
+                  [ngValue]="item.id"
+                  [selected]="item.id === selectedGovernmentId"
+                >
+                  {{ item.arabicName }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <select
+                class="form-control select2 select2-hidden-accessible"
+                (change)="onGovernmentChanged()"
+                tabindex="-1"
+                [(ngModel)]="selectedGovernmentId"
+                aria-hidden="true"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <option
+                  value="item.id"
+                  *ngFor="let item of governments"
+                  [ngValue]="item.id"
+                  [selected]="item.id === selectedGovernmentId"
+                >
+                  {{ item.englishName }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="">{{
+                "NEDSS.HOME.DASHBOARD.FROM" | translate
+              }}</label>
+
+              <mat-form-field appearance="fill">
+                <mat-label>
+                  {{
+                    "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+                  }}</mat-label
+                >
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  [class]="'form-control-' + currentLang"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="fromDate"
+                  (dateInput)="onFromDateSelection($event)"
+                />
+
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="">{{ "NEDSS.HOME.DASHBOARD.TO" | translate }}</label>
+
+              <mat-form-field appearance="fill">
+                <mat-label>
+                  {{
+                    "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+                  }}</mat-label
+                >
+                <input
+                  matInput
+                  [matDatepicker]="pickerto"
+                  [min]="fromDate"
+                  [class]="'form-control-' + currentLang"
+                  [(ngModel)]="toDate"
+                  [ngModelOptions]="{ standalone: true }"
+                  (dateInput)="onToDateSelection($event)"
+                />
+
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="pickerto"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #pickerto></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <button
+            (click)="save()"
+            *ngIf="!isEdit"
+            [disabled]="!diseaseFieldForm.valid"
+            class="btn btn-sm btn-primary btn-lg rounded-2 m-auto d-inline-block pr-4 pl-4 mt-4 save-button-des"
+          >
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+          </button>
+          <button
+            (click)="edit()"
+            *ngIf="isEdit"
+            [disabled]="!diseaseFieldForm.valid"
+            class="btn mx-1 btn-sm btn-lg btn-info save-button-des rounded-2 m-auto d-inline-block pr-4 pl-4 mt-4"
+          >
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.EDIT" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="table-reponsive mt-4 shadow border rounded" *ngIf="!noData">
+  <div class="row">
+    <div class="col-lg-7 fwb p-4 pb-0">
+      {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.FEILDS" | translate }}
+      {{ pages }}
+    </div>
+    <div class="col-lg-5 p-4 pb-0">
+      <div class="row">
+        <div class="col-8">
+          <input
+            type="search"
+            class="form-control"
+            [(ngModel)]="diseaseFieldFilter.searchText"
+            placeholder="{{ 'NEDSS.COMMON.SEARCH' | translate }}"
+            #searchInput
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <p-table
+        [value]="reviews"
+        (sortFunction)="sort($event)"
+        [customSort]="true"
+        [sortField]="'fieldLabel'"
+        [sortOrder]="1"
+        [paginator]="false"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="diseaseFieldName">
+              <span>
+                {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.EVALUATION" | translate }}
+              </span>
+              <p-sortIcon field="diseaseFieldName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="governmentName">
+              <span>
+                {{
+                  "NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT" | translate
+                }}
+              </span>
+              <p-sortIcon field="governmentName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fromDate">
+              <span>
+                {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.FROMDATE" | translate }}
+              </span>
+              <p-sortIcon field="fromDate"></p-sortIcon>
+            </th>
+            <th pSortableColumn="toDate">
+              <span>
+                {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.TODATE" | translate }}
+              </span>
+              <p-sortIcon field="toDate"></p-sortIcon>
+            </th>
+            <th>
+              <span>
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
+                    | translate
+                }}
+              </span>
+            </th>
+            <th>
+              <span></span>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>
+              <span
+                [innerHTML]="
+                  item.diseaseFormName
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "
+              ></span>
+            </td>
+            <td>
+              <span
+                [innerHTML]="
+                  item.governmentName
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "
+              ></span>
+            </td>
+            <td>
+              <span
+                [innerHTML]="
+                  item.fromDate
+                    | date : 'dd/MM/yyyy'
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "
+              ></span>
+            </td>
+            <td>
+              <span
+                [innerHTML]="
+                  item.toDate
+                    | date : 'dd/MM/yyyy'
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "
+              ></span>
+            </td>
+            <td>
+              <a
+                (click)="getById(item.id)"
+                class="text-primary pi pi-pencil"
+              ></a>
+              &nbsp;&nbsp;
+              <a
+                data-bs-target="#exampleModal2"
+                data-bs-toggle="modal"
+                (click)="nameToDelete(item)"
+                class="text-danger mess-color bi bi-trash-fill"
+              ></a>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div class="col-lg-12 p-0" style="margin-bottom: 4px">
+        <p-paginator
+          *ngIf="!noData"
+          [rows]="diseaseFieldFilter.pageSize"
+          [totalRecords]="pages"
+          (onPageChange)="paginate($event)"
+          [first]="first"
+          [currentPageReportTemplate]="
+            'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+          "
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[
+            10,
+            20,
+            30,
+            40,
+            50,
+            70,
+            100,
+            200,
+            500,
+            1000,
+            2000,
+            pages >= 5000 ? pages : 5000
+          ]"
+        ></p-paginator>
+      </div>
+      <div class="row" [hidden]="!noData">
+        <div class="no-data content-center">
+          <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+          <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- confirm - modal -->
+
+<div
+  class="modal fade"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.nameAr }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="delete(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

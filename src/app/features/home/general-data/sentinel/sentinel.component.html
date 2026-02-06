@@ -1,0 +1,401 @@
+<div class="row mb-6">
+  <div class="col-12 my-2">
+    <div class="color mt-4 ">
+      <div class="card card-body rounded-2 mx-2 mb-4 card-alt bg-dark-mode">
+        <div class="col-lg-12 ">
+          <div class="form-group row align-items-center">
+            <label for="" class="col-lg-4">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.PATIENT_NAME' | translate }}<span
+                class="text-danger mess-color">*</span></label>
+            <div class="col-lg-8">
+              <input [(ngModel)]="sentinelData.patientName" type="text" name="" id="" pInputText class="w-100" required
+                (change)="update(this)" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color">
+      <div class="card card-body rounded-2 mx-2 mb-4 card-alt bg-dark-mode">
+        <div class="row">
+          <div class="col-12 title fs-6 fwb my-2">
+            {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.SARI_CASE_AND_EXTENDED_DEFINITION' | translate }}
+            <span class="text-danger mess-color">*</span>
+          </div>
+          <div class="col-lg-6 my-2">
+            <div class="form-group">
+              <label for="">
+                {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.SARI_CASE_DEFINITION' | translate }}<span
+                  class="text-danger mess-color">*</span>
+              </label>
+              <p-dropdown [options]="sariCaseDefinitions" [(ngModel)]="sentinelData.sariCaseDefinition"
+                optionLabel="name" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
+                (onChange)="update(this)" [required]="true" name="sariCaseDefinition">
+                <ng-template let-selected pTemplate="selectedItem">
+                  <div>{{ selected.name | translate }}</div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>{{ item.name | translate }}</div>
+                </ng-template>
+              </p-dropdown>
+              <!-- <select name="" id="" [(ngModel)]="sentinelData.sariCaseDefinition" class="form-control" required
+                      (change)="update(this)">
+                <option [ngValue]=1>
+                  {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.SARI_CASE_DEFINITION_OPTION_1' | translate }}
+                </option>
+                <option [ngValue]=2>{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.SARI_CASE_DEFINITION_OPTION_2' | translate }}</option>
+              </select> -->
+            </div>
+          </div>
+          <div class="col-lg-6 my-2">
+            <div class="form-group">
+              <label for="">
+                {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.PATIENT_MEET_SARI' | translate }}<span
+                  class="text-danger mess-color">*</span>
+              </label>
+              <p-dropdown [options]="patientMeetSARIs" [(ngModel)]="sentinelData.patientMeetSARI" optionLabel="name"
+                optionValue="id" autoWidth="false" [style]="{ width: '100%' }" (onChange)="update(this)"
+                name="patientMeetSARI">
+                <ng-template let-selected pTemplate="selectedItem">
+                  <div>{{ selected.name | translate }}</div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>{{ item.name | translate }}</div>
+                </ng-template>
+              </p-dropdown>
+              <!-- <select (change)="update(this)" [(ngModel)]="sentinelData.patientMeetSARI" name="" id=""
+                      class="form-control">
+                <option value="1">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.YES' | translate }}</option>
+                <option value="2">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.NO' | translate }}</option>
+              </select> -->
+            </div>
+          </div>
+          <div class="col-lg-12 my-2">
+            {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.SARI_EXTENDED_DEFINITION' | translate }}
+          </div>
+          <div class="col-lg-12 mt-4">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.PATIENT_MEET_EXTENDED_SARI' | translate }}</label>
+              <p-dropdown [options]="patientMeetExtendedSARIs" [(ngModel)]="sentinelData.patientMeetExtendedSARI"
+                optionLabel="name" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
+                (onChange)="update(this)" name="patientMeetExtendedSARI">
+                <ng-template let-selected pTemplate="selectedItem">
+                  <div>{{ selected.name | translate }}</div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>{{ item.name | translate }}</div>
+                </ng-template>
+              </p-dropdown>
+              <!-- <select [(ngModel)]="sentinelData.patientMeetExtendedSARI" name="" id="" class="form-control"
+                      (change)="update(this)">
+                <option value="1">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.YES' | translate }}</option>
+                <option value="2">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.NO' | translate }}</option>
+              </select> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color">
+      <div class="card card-body rounded-2 mx-2 mb-4 card-alt bg-dark-mode">
+        <div class="row">
+          <div class="col-12 title fs-6 fwb">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.PNEUMONIA_CASE_DEFINITION' | translate
+            }}</div>
+          <div class="col-lg-6 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.PNEUMONIA_CASE_DEFINITION' | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <p-dropdown [options]="pneumoniaCaseDefinitions" [(ngModel)]="sentinelData.pneumoniaCaseDefinition"
+                optionLabel="name" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
+                (onChange)="update(this)" name="pneumoniaCaseDefinition">
+                <ng-template let-selected pTemplate="selectedItem">
+                  <div>{{ selected.name | translate }}</div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>{{ item.name | translate }}</div>
+                </ng-template>
+              </p-dropdown>
+              <!-- <select [(ngModel)]="sentinelData.pneumoniaCaseDefinition" name="" id="" class="form-control"
+                      (change)="update(this)">
+                <option value="1">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.PNEUMONIA_CASE_DEFINITION_OPTION_1' | translate }}</option>
+                <option value="2">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.PNEUMONIA_CASE_DEFINITION_OPTION_2' | translate }}</option>
+                <option value="3">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.PNEUMONIA_CASE_DEFINITION_OPTION_3' | translate }}</option>
+              </select> -->
+            </div>
+          </div>
+
+          <div class="col-lg-12 my-2">
+            {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.CAUSES_PNEUMONIA' | translate }}
+            <span class="text-danger mess-color">*</span>
+
+            <div class="row mt-2 ">
+              <div class="form-group col-lg-2 my-2">
+                <label for="">
+                  <input type="radio" [checked]="sentinelData.causesPneumonia==1"
+                    [(ngModel)]="sentinelData.causesPneumonia" value="1" name="causesPneumonia" id="cp1"
+                    (change)="update(this)" />
+                  {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.CAUSES_PNEUMONIA_OPTION_1' | translate }}
+                </label>
+              </div>
+              <div class="form-group col-lg-2 my-2">
+                <label for="">
+                  <input type="radio" [checked]="sentinelData.causesPneumonia==2"
+                    [(ngModel)]="sentinelData.causesPneumonia" value="2" name="causesPneumonia" id="cp2"
+                    (change)="update(this)" />
+                  {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.CAUSES_PNEUMONIA_OPTION_2' | translate }}
+                </label>
+              </div>
+              <div class="form-group col-lg-2 my-2">
+                <label for="">
+                  <input type="radio" [checked]="sentinelData.causesPneumonia==3"
+                    [(ngModel)]="sentinelData.causesPneumonia" value="3" name="causesPneumonia" id="cp3"
+                    (change)="update(this)" />
+                  {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.CAUSES_PNEUMONIA_OPTION_3' | translate }}
+                </label>
+              </div>
+              <div class="form-group col-lg-2 my-2">
+                <label for="">
+                  <input type="radio" [checked]="sentinelData.causesPneumonia==4"
+                    [(ngModel)]="sentinelData.causesPneumonia" value="4" name="causesPneumonia" id="cp4"
+                    (change)="update(this)" />
+                  {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.CAUSES_PNEUMONIA_OPTION_4' | translate }}
+                </label>
+              </div>
+              <div class="form-group col-lg-2 my-2">
+                <label for="">
+                  <input type="radio" [checked]="sentinelData.causesPneumonia==5"
+                    [(ngModel)]="sentinelData.causesPneumonia" value="5" name="causesPneumonia" id="cp5"
+                    (change)="update(this)" />
+                  {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.CAUSES_PNEUMONIA_OPTION_5' | translate }}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.DOES_CASE' | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <p-dropdown [options]="doesCases" [(ngModel)]="sentinelData.doesCase" optionLabel="name" optionValue="id"
+                autoWidth="false" [style]="{ width: '100%' }" (onChange)="update(this)" name="doesCase">
+                <ng-template let-selected pTemplate="selectedItem">
+                  <div>{{ selected.name | translate }}</div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>{{ item.name | translate }}</div>
+                </ng-template>
+              </p-dropdown>
+              <!-- <select [(ngModel)]="sentinelData.doesCase" name="" id="" class="form-control" (change)="update(this)">
+                <option value="1">CAP</option>
+                <option value="2">VAP</option>
+                <option value="3">HAP</option>
+              </select> -->
+            </div>
+          </div>
+          <div class="col-lg-6 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.VAP_OR_HAP' | translate }}</label>
+
+              <mat-form-field appearance="fill">
+                <mat-label> {{'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate }}</mat-label>
+                <input matInput [matDatepicker]="picker1" [(ngModel)]="sentinelData.surveyDate" />
+
+                <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.VAP_OR_HAP' | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <input (change)="update(this)" type="number" name="" id="dp1683033938288" pInputText class="w-100"
+                placeholder="0" [(ngModel)]="sentinelData.vapOrHap" />
+            </div>
+          </div>
+
+          <div class="col-lg-6 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.WARD_ADMISSION' | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <p-dropdown [options]="wardAdmissions" [(ngModel)]="sentinelData.wardAdmission" optionLabel="name"
+                optionValue="id" autoWidth="false" [style]="{ width: '100%' }" (onChange)="update(this)"
+                name="wardAdmission">
+                <ng-template let-selected pTemplate="selectedItem">
+                  <div>{{ selected.name | translate }}</div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>{{ item.name | translate }}</div>
+                </ng-template>
+              </p-dropdown>
+              <!-- <select [(ngModel)]="sentinelData.wardAdmission" name="" id="" class="form-control"
+                      (change)="update(this)">
+                <option value="1">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.WARD_ADMISSION_OPTION_1' | translate }}</option>
+                <option value="2">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.WARD_ADMISSION_OPTION_2' | translate }}</option>
+                <option value="3">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.WARD_ADMISSION_OPTION_3' | translate }}</option>
+                <option value="4">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.WARD_ADMISSION_OPTION_4' | translate }}</option>
+                <option value="5">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.OTHER' | translate }}</option>
+              </select> -->
+            </div>
+          </div>
+          <div class="col-lg-6 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.OTHER' | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <input [(ngModel)]="sentinelData.otherPneumonia" type="text" name="" id="" pInputText class="w-100"
+                (change)="update(this)" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color">
+      <div class="card card-body rounded-2 mx-2 mb-4 card-alt bg-dark-mode">
+        <div class="row">
+          <div class="col-12 title fs-6 fwb">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.INFLUENZA_ANTIVIRUS' | translate }}
+          </div>
+          <div class="col-lg-12 my-2">
+            <div class="form-group">
+              <label for="">
+                {{'NEDSS.HOME.GENERAL_DATA_SENTINEL.INFLUENZA_ANTIVIRAL' | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <p-dropdown [options]="patientReceiveInfluenzaAntivirals"
+                [(ngModel)]="sentinelData.patientReceiveInfluenzaAntiviral" optionLabel="name" optionValue="id"
+                autoWidth="false" [style]="{ width: '100%' }" (onChange)="update(this)"
+                name="patientReceiveInfluenzaAntiviral">
+                <ng-template let-selected pTemplate="selectedItem">
+                  <div>{{ selected.name | translate }}</div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>{{ item.name | translate }}</div>
+                </ng-template>
+              </p-dropdown>
+              <!-- <select [(ngModel)]="sentinelData.patientReceiveInfluenzaAntiviral" name="" id="" class="form-control"
+                      (change)="update(this)">
+                <option value="1">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.YES' | translate }}</option>
+                <option value="2">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.NO' | translate }}</option>
+                <option value="3">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.UNKNOWN' | translate }}</option>
+              </select> -->
+            </div>
+          </div>
+          <div class="col-lg-6 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.ANTIBIOTICS_TAKEN' | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <p-dropdown [options]="antibioticsTakenWithInLastWeeks"
+                [(ngModel)]="sentinelData.antibioticsTakenWithInLastWeek" optionLabel="name" optionValue="id"
+                autoWidth="false" [style]="{ width: '100%' }" (onChange)="update(this)"
+                name="antibioticsTakenWithInLastWeek">
+                <ng-template let-selected pTemplate="selectedItem">
+                  <div>{{ selected.name | translate }}</div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>{{ item.name | translate }}</div>
+                </ng-template>
+              </p-dropdown>
+              <!-- <select [(ngModel)]="sentinelData.antibioticsTakenWithInLastWeek" name="" id="" class="form-control"
+                      (change)="update(this)">
+                <option value="1">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.YES' | translate }}</option>
+                <option value="2">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.NO' | translate }}</option>
+                <option value="3">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.UNKNOWN' | translate }}</option>
+              </select> -->
+            </div>
+          </div>
+          <div class="col-lg-6 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.ANTIBIOTICS_IS_TAKEN' | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <p-dropdown [options]="antibioticsIsTakens" [(ngModel)]="sentinelData.antibioticsIsTaken"
+                optionLabel="name" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
+                (onChange)="update(this)" name="antibioticsIsTaken">
+                <ng-template let-selected pTemplate="selectedItem">
+                  <div>{{ selected.name | translate }}</div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div>{{ item.name | translate }}</div>
+                </ng-template>
+              </p-dropdown>
+              <!-- <select [(ngModel)]="sentinelData.antibioticsIsTaken" name="" id="" class="form-control"
+                      (change)="update(this)">
+                <option value="1">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.YES' | translate }}</option>
+                <option value="2">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.ANTIBIOTICS_IS_TAKEN_OPTION_2' | translate }}</option>
+                <option value="3">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.ANTIBIOTICS_IS_TAKEN_OPTION_3' | translate }}</option>
+                <option value="4">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.ANTIBIOTICS_IS_TAKEN_OPTION_4' | translate }}</option>
+              </select> -->
+            </div>
+          </div>
+          <div class="col-lg-4 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.ANTIBIOTICS_NAME' | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <input [(ngModel)]="sentinelData.antibioticsName" type="text" name="" id="" pInputText class="w-100"
+                (change)="update(this)" />
+            </div>
+          </div>
+          <div class="col-lg-4 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.DATE_FIRST_DOSE' | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+
+              <mat-form-field appearance="fill">
+                <mat-label> {{'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate }}</mat-label>
+                <input matInput [matDatepicker]="picker2" [(ngModel)]="sentinelData.dateFirstDose" />
+
+                <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-lg-4 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.DATE_LAST_DOSE' | translate }}</label>
+              <mat-form-field appearance="fill">
+                <mat-label> {{'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate }}</mat-label>
+                <input matInput [matDatepicker]="picker3" [(ngModel)]="sentinelData.dateLastDose"
+                  [min]="sentinelData.dateFirstDose" />
+
+                <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+                <mat-datepicker #picker3></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-lg-6 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.DATE_SPECIMEN_COLLECTION' | translate }}</label>
+              <mat-form-field appearance="fill">
+                <mat-label> {{'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate }}</mat-label>
+                <input matInput [matDatepicker]="picker4" [(ngModel)]="sentinelData.dateSpecimenCollection" />
+
+                <mat-datepicker-toggle matIconSuffix [for]="picker4"></mat-datepicker-toggle>
+                <mat-datepicker #picker4></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-lg-6 my-2">
+            <div class="form-group">
+              <label for="">{{'NEDSS.HOME.GENERAL_DATA_SENTINEL.DATE_SPECIMEN_SHIPMENT' | translate }}</label>
+              <mat-form-field appearance="fill">
+                <mat-label> {{'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate }}</mat-label>
+                <input matInput [matDatepicker]="picker5" [(ngModel)]="sentinelData.dateSpecimenShipment"
+                  [min]="sentinelData.dateSpecimenCollection" />
+
+                <mat-datepicker-toggle matIconSuffix [for]="picker5"></mat-datepicker-toggle>
+                <mat-datepicker #picker5></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,217 @@
+<div class="row gap-2 mt-2 mx-4">
+  <!-- <div class="col-6">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label for="groupName"> {{'NEDSS.CHAT.CHAT_NAME'|translate}}</label>
+        </div>
+      </div>
+      <div class="col-6">
+        <input type="text" [(ngModel)]="chatName" class="form-control"
+          placeholder=" {{'NEDSS.CHAT.CHAT_NAME' |translate}}">
+      </div>
+    </div>
+  </div> -->
+  <!-- <div class="col-6">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label for="groupPic">{{'NEDSS.CHAT.CHAT_PIC'|translate}}</label>
+        </div>
+      </div>
+      <div class="col-6">
+
+        <input type="file" class="form-control" #groupPic (change)="uploadFile($event,false)"
+          style="padding:9px; display:none;">
+        <img src="assets/upload-image.png" (click)="groupPic.click()" style="width:55px;">
+      </div>
+    </div>
+  </div> -->
+  <div class="border border-primary rounded rounded-3 p-3 row gap-2">
+    <div class="col-12">
+      <h5> {{'NEDSS.CHAT.ADD_MEMBERS'|translate}}</h5>
+    </div>
+    <div class="col-12">
+      <div class="input-group border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10">
+        <label class="col-sm-2">أنواع مصادر الإبلاغ</label>
+        <ng-multiselect-dropdown class="controls" [settings]="multipleDropdownSettings" [data]="incidentSourceTypes"
+          [(ngModel)]="incidentSourceTypeIDs" (onSelectAll)="SetIncidentSourceTypes($event)"
+          (onSelect)="SetIncidentSourceTypes($event)" (click)="loadGovsAdmins()"
+          (onDeSelect)="SetIncidentSourceTypes($event)" (onDeSelectAll)="SetIncidentSourceTypes($event)">
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="input-group border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10">
+        <label class="col-sm-2">{{'NEDSS.CHAT.CORGANIZATION'|translate}}</label>
+        <ng-multiselect-dropdown class="controls" [settings]="multipleDropdownSettings" [data]="organizations"
+          [(ngModel)]="organizationIDs" (onSelectAll)="SetOrganizations($event)" (onSelect)="SetOrganizations($event)"
+          (click)="loadGovsAdmins()" (onDeSelect)="SetOrganizations($event)" (onDeSelectAll)="SetOrganizations($event)">
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+    <!-- <div class="col-12">
+      <div class="input-group border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10">
+        <label class="col-sm-2">{{'NEDSS.CHAT.CORGANIZATION'|translate}}</label>
+        <select name="reportSource" class="form-control col-sm-10" [(ngModel)]="organizationID"
+          (click)="loadGovsAdmins()">
+          <option [ngValue]="-1" selected disabled disabled selected>-- اختر تصنيف المنشأت --</option>
+          <option [ngValue]="0">الكل</option>
+          <option *ngFor="let org of organizations" [value]="org.id">{{org.arabicName}}</option>
+        </select>
+      </div> -->
+    <div class="col-12">
+      <div class="input-group border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10">
+        <label class="col-sm-2">{{'NEDSS.CHAT.GOVERNMENT'|translate}}</label>
+        <ng-multiselect-dropdown class="controls" [settings]="multipleDropdownSettings" [data]="governments"
+          [(ngModel)]="governmentIDs" (onSelectAll)="SetGovernments($event)" (onSelect)="SetGovernments($event)"
+          (click)="loadGovsAdmins()" (onDeSelect)="SetGovernments($event)" (onDeSelectAll)="SetGovernments($event)">
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+    <!-- <div class="input-group border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10"
+      *ngIf="organizationID>-1">
+      <label class="form-label col-sm-2">{{'NEDSS.CHAT.GOVERNMENT'|translate}}</label>
+      <select name="city" class="form-control col-sm-10" [(ngModel)]="govID" (ngModelChange)="FilterAdministrations()">
+        <option [ngValue]="-1" selected disabled>-- اختر محافظة --</option>
+        <option [ngValue]="0">الكل</option>
+        <option *ngFor="let gov of governments; let i = index;" [ngValue]="gov.id">{{gov.arabicName}}</option>
+      </select>
+    </div> -->
+    <div class="col-12">
+      <div class="input-group border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10">
+        <label class="col-sm-2">{{'NEDSS.CHAT.ADMINISTRATION'|translate}}</label>
+        <ng-multiselect-dropdown class="controls" [settings]="multipleDropdownSettings" [data]="healthAdmins"
+          [(ngModel)]="healthAdminIDs" (onSelectAll)="SetAdmins($event)" (onSelect)="SetAdmins($event)"
+          (click)="loadGovsAdmins()" (onDeSelect)="SetAdmins($event)" (onDeSelectAll)="SetAdmins($event)">
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+
+    <!-- <div class="input-group border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10" *ngIf="govID>-1">
+      <label class="form-label  col-sm-2">{{'NEDSS.CHAT.ADMINISTRATION'|translate}}</label>
+      <select name="administration" class="form-control col-sm-10" [(ngModel)]="adminID"
+        (ngModelChange)="FilterIncidentSources()">
+        <option [ngValue]="-1" disabled selected>-- اختر إدارة --</option>
+        <option [ngValue]="0">الكل</option>
+        <option *ngFor="let healthAdmin of healthAdmins" [ngValue]="healthAdmin.id">{{healthAdmin.arabicName}}
+        </option>
+      </select>
+    </div> -->
+    <div class="col-12">
+      <div class="input-group border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10">
+        <label class="col-sm-2">{{'NEDSS.CHAT.INCIDENT_SOURCE'|translate}}</label>
+        <ng-multiselect-dropdown class="controls" [settings]="multipleDropdownSettings" [data]="incidentSources"
+          [(ngModel)]="incidentSourceIDs" (onSelectAll)="setIncidentSources($event)"
+          (onSelect)="setIncidentSources($event)" (onDeSelect)="setIncidentSources($event)"
+          (onDeSelectAll)="setIncidentSources($event)" (click)="getFilteredIncidentSources()">
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+
+    <!-- <div class="input-group border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10" *ngIf="adminID>-1">
+      <label class="form-label  col-sm-2">{{'NEDSS.CHAT.INCIDENT_SOURCE'|translate}}</label>
+      <select name="reportSource" class="form-control col-sm-10" [(ngModel)]="incidentSourceID"
+        (change)="getAllUsersForChat()">
+        <option [ngValue]="-1" selected disabled disabled selected>-- اختر مصدر إبلاغ --</option>
+        <option [ngValue]="0">الكل</option>
+        <option *ngFor="let incidentSource of incidentSources" [value]="incidentSource.id">
+          {{incidentSource.arabicName}}</option>
+      </select>
+    </div> -->
+    <div class="col-12">
+      <div class="input-group border border-primary rounded rounded-3 p-3 bg-primary bg-opacity-10">
+        <label class="col-sm-2">{{
+          "NEDSS.HOME.CONTROL_PANEL.CODES.USERS"
+          | translate
+          }}</label>
+        <ng-multiselect-dropdown class="controls" [settings]="multipleUserSettings" [data]="usersAvailableForChat"
+          [(ngModel)]="tempUsers" (onSelectAll)="selectUsers($event)" (onSelect)="selectUsers($event)"
+          (onDeSelect)="selectUsers($event)" (onDeSelectAll)="selectUsers($event)" (click)="getFilteredUsers()">
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+    <div class="table-responsive table-none-scroll table-wrapper">
+      <table class="table table-small table-striped">
+        <thead>
+          <tr>
+            <th>
+
+            </th>
+            <th>
+              اسم المستخدم
+            </th>
+            <th>
+              مصدر الإبلاغ
+            </th>
+            <th>
+
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of chosenUsers; let i = index;">
+            <td>
+              {{i+1}}
+            </td>
+            <td>
+              {{u.fullName}}
+            </td>
+            <td>
+              {{u.healthAdministrationName}}
+            </td>
+            <td>
+              <button class="btn btn-outline-danger" style="float:left;" (click)="deleteUser(i)"><span
+                  class="bi bi-trash">delete</span></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- <div class="col-12">
+      <div class="row">
+        <div class="col-3" *ngFor="let user of this.usersAvailableForChat">
+          <div class="row">
+            <div class="col-3">
+              <img class="rounded-circle"
+                src="https://png.pngtree.com/png-vector/20190710/ourlarge/pngtree-business-user-profile-vector-png-image_1541960.jpg"
+                style="width:52px;">
+            </div>
+            <div class="col-5">
+              {{user.fullName}}
+            </div>
+            <div class="col-2">
+              <input type="checkbox" [(ngModel)]="user.isSelected" value="{{user.id}}" (change)="FilterUsers()">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="input-group">
+        <label class="form-label  col-sm-2">{{'NEDSS.CHAT.DEPARTMENT'|translate}}</label>
+        <select name="department" id="" class="form-control col-sm-10" formControlName="departmentId">
+          <option *ngFor="let dep of department" [value]="dep.id" (change)="getAllUsersForChat()">{{ dep.arabicName}}</option>
+        </select>
+      </div> -->
+
+
+
+    <!-- <div class="col-4">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-3">
+            <label for="groupName">تحديد الكل
+            </label>
+          </div>
+          <div class="col-6">
+           <input type="checkbox" id="selectAll" >
+
+          </div>
+          </div>
+          </div>
+        </div> -->
+
+  </div>
+
+</div>

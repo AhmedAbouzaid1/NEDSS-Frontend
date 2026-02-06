@@ -1,0 +1,135 @@
+<div id="pdfTables" [class]="lang">
+  <div
+    class="d-flex align-items-center justify-content-between my-5 px-4 w-100"
+  >
+    <div class="d-flex align-items-center">
+      <img
+        width="80"
+        height="80"
+        src="../../../../../../Content/Images/logo.png"
+        alt=""
+      />
+      <div class="ministry-title mx-4">
+        <h6 class="mb-1">وزارة الصحة</h6>
+        <h6 class="mb-1">الادارة المركزية للشئون الوقائية</h6>
+        <br *ngIf="lang == 'en'" />
+        <h6 class="mb-1">الإدارة العامة للوبائيات والترصد</h6>
+      </div>
+    </div>
+    <div>
+      <div>
+        <h5 class="box-title">
+          {{ "NEDSS.REPORTS_LABELS.ImmediateReportingReport" | translate }}
+        </h5>
+      </div>
+      <div
+        class="d-flex align-items-center justify-content-center mt-3 fwb fs-13"
+      >
+        <span class="px-1"> {{ "NEDSS.HOME.DASHBOARD.FROM" | translate }}</span>
+        <span class="px-1"> {{ fromDate }}</span>
+        <span class="px-1"> {{ "NEDSS.HOME.DASHBOARD.TO" | translate }}</span>
+        <span class="px-1"> {{ toDate }}</span>
+      </div>
+    </div>
+    <div>
+      <img
+        width="80"
+        height="80"
+        src="../../../../../../Content/Images/mohp.png"
+        alt=""
+      />
+    </div>
+  </div>
+  <div class="col-12 table_report">
+    <table
+      [style.direction]="dir"
+      class="table table-hover table-striped table-sm mb-0"
+    >
+      <thead class="transparent-bg">
+        <tr>
+          <th
+            colspan="3"
+            style="text-align: center !important; font-size: 14px !important"
+          >
+            {{ allData?.reportTitle }}
+          </th>
+        </tr>
+      </thead>
+
+      <thead class="transparent-bg">
+        <tr>
+          <th colspan="3">
+            {{ allData?.tableTitle }}
+          </th>
+        </tr>
+      </thead>
+
+      <thead class="transparent-bg">
+        <tr>
+          <th></th>
+          <th style="text-align: center !important">
+            {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.FROM_DATE" | translate }}
+          </th>
+          <th style="text-align: center !important">
+            {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.TO_DATE" | translate }}
+          </th>
+        </tr>
+      </thead>
+
+      <thead class="transparent-bg">
+        <tr>
+          <th style="text-align: center !important">
+            {{ "NEDSS.EVENTS.PERIOD" | translate }}
+          </th>
+          <th style="text-align: center !important">
+            {{ fromDate }}
+          </th>
+          <th style="text-align: center !important">
+            {{ toDate }}
+          </th>
+        </tr>
+      </thead>
+
+      <thead>
+        <tr class="color">
+          <th class="px-4" *ngFor="let header of tableHeader">
+            {{ header }}
+          </th>
+        </tr>
+      </thead>
+
+      <ng-container *ngFor="let data of tableData">
+        <tbody>
+          <ng-container
+            *ngFor="let diseaseData of data?.instantNotificationDiseasesData"
+          >
+            <tr>
+              <td>
+                {{ data?.sourceName }}
+              </td>
+              <td>
+                {{ diseaseData?.diseaseGroupName }}
+              </td>
+              <td>
+                {{ diseaseData?.totalCasesCountOfDiseaseGroup }}
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </ng-container>
+      <tfoot>
+        <tr class="totalCountRowColor">
+          <td class="countTextColor pt-3 pb-3">
+            {{ "NEDSS.REPORTS.TOTAL_CASES_COUNT" | translate }}
+          </td>
+          <td></td>
+          <td class="countTextColor pt-3 pb-3">{{ totalCount }} </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div class="d-flex align-items-center my-5 px-4">
+    <h6>{{ "NEDSS.REPORTS.ExportCurrentDate" | translate }}:</h6>
+    <h6 class="px-2">{{ currentDate | date : "yyyy-MM-dd" }}</h6>
+  </div>
+</div>

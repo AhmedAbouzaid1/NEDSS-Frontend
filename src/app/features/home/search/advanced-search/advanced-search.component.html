@@ -1,0 +1,358 @@
+<div class="card card-primary card-tabs">
+  <div class="card-header p-0 pt-1" *ngIf="currentLang == 'ar'">
+    <ul class="nav nav-tabs">
+      <li class="nav-item" *ngFor="let item of items">
+        <a
+          [ngClass]="currentLang == 'ar' ? 'nav-link' : 'nav-link-en'"
+          routerLink="{{ item.routerLink }}"
+          routerLinkActive="active"
+        >
+          {{ item.label }}
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-header p-0 pt-1" *ngIf="currentLang == 'en'">
+    <ul class="nav nav-tabs">
+      <li class="nav-item" *ngFor="let item of items2">
+        <a
+          [ngClass]="currentLang == 'en' ? 'nav-link' : 'nav-link-en'"
+          routerLink="{{ item.routerLink }}"
+          routerLinkActive="active"
+        >
+          {{ item.label }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="card shadow">
+  <router-outlet class="bg"></router-outlet>
+</div>
+
+<div class="mt-5 d-flex justify-content-end">
+  <button
+    type="submit"
+    class="btn btn-lg bg text-light mb-4"
+    (click)="search()"
+    style="position: relative"
+  >
+    <span class="pi pi-search"></span> {{ "NEDSS.SEARCH.SEARCH" | translate }}
+  </button>
+</div>
+
+<div
+  class="table-reponsive mt-4 shadow border rounded"
+  *ngIf="patients != undefined && patients.length > 0"
+>
+  <div class="m-3 d-flex justify-content-end">
+    <a (click)="exportPatientsAsPdf()"
+      ><span class="bi bi-filetype-pdf button-export"></span
+    ></a>
+    <button
+      style="border: none; background: none"
+      [useExistingCss]="true"
+      [printStyle]="{ '.exclude-pdf': { display: 'none' } }"
+      printTitle="{{ 'NEDSS.SEARCH.ADVANCED_SEARCH' | translate }}"
+      printSectionId="myTableElementId"
+      ngxPrint
+    >
+      <span class="bi bi-printer-fill button-export"></span>
+    </button>
+    <a (click)="exportPatiantsAsExcel()"
+      ><span class="bi bi-file-earmark-excel-fill button-export"></span
+    ></a>
+  </div>
+
+  <div
+    class="col-12 table-responsive table-none-scroll"
+    id="myTableElementId"
+    #myTableElementId
+  >
+    <p-table
+      class="table table-bordered"
+      [style.direction]="dir"
+      [value]="patients"
+      [paginator]="false"
+      (sortFunction)="sort($event)"
+      [customSort]="true"
+      [sortField]="patient.sortColumn"
+      [sortOrder]="patient.sortOrder == 'desc' ? -1 : 1"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="fullName">
+            {{ "NEDSS.HOME.FAST_SEARCH.Name" | translate }}
+            <p-sortIcon field="fullName" class="exclude-pdf"></p-sortIcon>
+          </th>
+          <th pSortableColumn="nationality">
+            {{ "NEDSS.HOME.FAST_SEARCH.Nationality" | translate }}
+            <p-sortIcon field="nationality" class="exclude-pdf"></p-sortIcon>
+          </th>
+          <th pSortableColumn="nationalId">
+            {{ "NEDSS.HOME.FAST_SEARCH.National_Id" | translate }}
+            <p-sortIcon field="nationalId" class="exclude-pdf"></p-sortIcon>
+          </th>
+          <th pSortableColumn="incidentGovernmentName">
+            {{ "NEDSS.HOME.FAST_SEARCH.Government" | translate }}
+            <p-sortIcon
+              field="incidentGovernmentName"
+              class="exclude-pdf"
+            ></p-sortIcon>
+          </th>
+          <th>
+            {{ "NEDSS.HOME.FAST_SEARCH.Phone_No1" | translate }}
+          </th>
+          <th>
+            {{ "NEDSS.HOME.FAST_SEARCH.Start_Disease" | translate }}
+          </th>
+          <th>
+            {{ "NEDSS.HOME.FAST_SEARCH.Operations" | translate }}
+          </th>
+          <!-- <th class="align-items-center" *ngIf="i !== 9">
+          {{ column }}
+        </th>
+        <th *ngIf="i == 9" class="exclude-pdf">
+          {{ column }}
+        </th> -->
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-i="rowIndex" let-element>
+        <tr
+          class="example-element-row"
+          (click)="element.expanded = !element.expanded"
+        >
+          <td>{{ element.fullName }}</td>
+          <td>{{ element.nationality }}</td>
+          <td>{{ element.nationalId }}</td>
+          <td>{{ element.incidentGovernmentName }}</td>
+          <td>{{ element.phoneNo1 }}</td>
+          <td>{{ element.caseDiscoveryDate | date : "dd/MM/yyy" }}</td>
+          <td class="exclude-pdf mw-xc">
+            <a
+              (click)="GetById(element.id)"
+              class="text-primary pi pi-pencil"
+            ></a>
+            <a
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              (click)="nameToDelete(element)"
+              class="text-danger mess-color pi pi-trash"
+            ></a>
+          </td>
+        </tr>
+        <tr
+          class="example-detail-row exclude-pdf"
+          [class.example-expanded-row]="element.expanded"
+        >
+          <td [attr.colspan]="columnsToDisplay.length">
+            <div
+              class=""
+              [@detailExpand]="element.expanded ? 'expanded' : 'collapsed'"
+            >
+              <div class="example-element-description">
+                <span class="">
+                  {{ "NEDSS.SEARCH.HEALTH_ADMINISTRATION" | translate }} :
+                  &nbsp;<span style="color: black; margin-left: 4%">
+                    {{ element.homeHealthAdministrationName }}
+                  </span> </span
+                >&nbsp;
+                <span class="">
+                  {{ "NEDSS.SEARCH.HEALTH_OFFICE" | translate }} : &nbsp;<span
+                    style="color: black; margin-left: 4%"
+                  >
+                    {{ element.homeHealthOfficeName }}
+                  </span> </span
+                >&nbsp;
+                <span class="">
+                  {{ "NEDSS.SEARCH.INCEIDENT_SOURCE" | translate }}
+                  : &nbsp;<span style="color: black; margin-left: 4%">
+                    {{ element.incidentSourceName }}
+                  </span> </span
+                >&nbsp;
+                <span class="">
+                  {{ "NEDSS.SEARCH.LAB_CHECKS" | translate }} : &nbsp;<span
+                    style="color: black; margin-left: 4%"
+                    >{{ element.labChecksExistance }}</span
+                  > </span
+                >&nbsp;
+                <span class="">
+                  {{ "NEDSS.SEARCH.EXTRA_PHONE_NUMBER" | translate }} :
+                  &nbsp;<span style="color: black; margin-left: 4%">{{
+                    element.phoneNo2
+                  }}</span> </span
+                >&nbsp;
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!-- <table [style.direction]="dir" class="table basic-table mat-elevation-z8">
+      <thead>
+        <tr>
+          <ng-container *ngFor="let column of columnsToDisplay; let i = index">
+            <th *ngIf="i !== 6" style="text-align: center; color: white">
+              {{ column }}
+            </th>
+            <th
+              *ngIf="i == 6"
+              class="exclude-pdf"
+              style="text-align: center; color: white"
+            >
+              {{ column }}
+            </th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody style="background: #ffffff !important">
+        <ng-container *ngFor="let element of patients">
+          <tr
+            class="example-element-row"
+            (click)="element.expanded = !element.expanded"
+          >
+            <ng-container
+              *ngFor="let column of columnsToDisplay; let i = index"
+            >
+              <td *ngIf="i !== 6" style="text-align: center">
+                {{ element[dataToShow[i]] }}
+              </td>
+              <td *ngIf="i == 6" style="text-align: center" class="exclude-pdf">
+                <a
+                  *ngIf="i == 6"
+                  (click)="GetById(element.id)"
+                  class="text-primary pi pi-pencil"
+                ></a>
+                &nbsp;
+
+                <a
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  (click)="nameToDelete(element)"
+                  *ngIf="i == 6"
+                  class="text-danger mess-color pi pi-trash"
+                ></a>
+              </td>
+            </ng-container>
+          </tr>
+
+          <tr
+            class="example-detail-row exclude-pdf"
+            [class.example-expanded-row]="element.expanded"
+          >
+            <td [attr.colspan]="columnsToDisplay.length">
+              <div
+                class=""
+                [@detailExpand]="element.expanded ? 'expanded' : 'collapsed'"
+              >
+                <div class="example-element-description">
+                  <span class="">
+                    {{ "NEDSS.SEARCH.HEALTH_ADMINISTRATION" | translate }} :
+                    &nbsp;<span style="color: black; margin-left: 4%">
+                      {{ element.homeHealthAdministrationName }}
+                    </span> </span
+                  >&nbsp;
+                  <span class="">
+                    {{ "NEDSS.SEARCH.HEALTH_OFFICE" | translate }} : &nbsp;<span
+                      style="color: black; margin-left: 4%"
+                    >
+                      {{ element.homeHealthOfficeName }}
+                    </span> </span
+                  >&nbsp;
+                  <span class="">
+                    {{ "NEDSS.SEARCH.INCEIDENT_SOURCE" | translate }}
+                    : &nbsp;<span style="color: black; margin-left: 4%">
+                      {{ element.incidentSourceName }}
+                    </span> </span
+                  >&nbsp;
+                  <span class="">
+                    {{ "NEDSS.SEARCH.LAB_CHECKS" | translate }} : &nbsp;<span
+                      style="color: black; margin-left: 4%"
+                      >{{ element.labChecksExistance }}</span
+                    > </span
+                  >&nbsp;
+                  <span class="">
+                    {{ "NEDSS.SEARCH.EXTRA_PHONE_NUMBER" | translate }} :
+                    &nbsp;<span style="color: black; margin-left: 4%">{{
+                      element.phoneNo2
+                    }}</span> </span
+                  >&nbsp;
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table> -->
+  </div>
+  <div class="col-lg-12 p-0" style="margin-bottom: 50px">
+    <p-paginator
+      *ngIf="!noData"
+      [rows]="patient.pageSize"
+      [totalRecords]="pages"
+      (onPageChange)="paginate($event)"
+      [first]="first"
+      [currentPageReportTemplate]="
+        'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+      "
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[
+        10,
+        20,
+        30,
+        40,
+        50,
+        70,
+        100,
+        200,
+        500,
+        1000,
+        2000,
+        pages >= 5000 ? pages : 5000
+      ]"
+    ></p-paginator>
+  </div>
+</div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          style="color: burlywood"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.fullName }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="delete(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

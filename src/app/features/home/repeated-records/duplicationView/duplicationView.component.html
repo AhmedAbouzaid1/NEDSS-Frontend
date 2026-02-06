@@ -1,0 +1,119 @@
+<h2 class="titles h5 fw-bold mb-4">
+  {{ "NEDSS.REPEATED_RECORDS.TITLE" | translate }}
+</h2>
+
+<p-table [value]="repeatedPatient" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header">
+      <tr>
+          <th></th>
+          <th>{{ "NEDSS.REPEATED_RECORDS.NAME" | translate }}</th>
+          <th>{{ "NEDSS.REPEATED_RECORDS.FATHER" | translate }}</th>
+          <th>{{ "NEDSS.REPEATED_RECORDS.GRANDFATHER" | translate }}</th>
+          <th>{{ "NEDSS.REPEATED_RECORDS.FAMILY" | translate }}</th>
+          <th>{{ "NEDSS.REPEATED_RECORDS.NATIONAL_ID" | translate }}</th>
+          <th>{{ "NEDSS.REPEATED_RECORDS.GOVERNMENT" | translate }}</th>
+          <th>{{ "NEDSS.REPEATED_RECORDS.HEALTH_ADMINISTRATION" | translate }}</th>
+          <th>{{ "NEDSS.REPEATED_RECORDS.HEALTH_OFFICE" | translate }}</th>
+          <th>{{ "NEDSS.REPEATED_RECORDS.AGE" | translate }}</th>
+          <th>{{ "NEDSS.REPEATED_RECORDS.AGE_CATEGORY" | translate }}</th>
+          <th>{{ "NEDSS.REPEATED_RECORDS.DISEASES" | translate }}</th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-patient>
+      <tr>
+          <td>
+            <input type="checkbox" (change)="toggleSelection(patient.id, $event)">
+          </td>
+          <td>{{ patient.firstName }}</td>
+          <td>{{ patient.secondName }}</td>
+          <td>{{ patient.thirdName }}</td>
+          <td>{{ patient.familyName }}</td>
+          <td>{{ patient.nationalId }}</td>
+          <td>{{ patient.homeGovernmentName }}</td>
+          <td>{{ patient.homeHealthAdministrationName }}</td>
+          <td>{{ patient.homeHealthOfficeName }}</td>
+          <td>{{ patient.age }}</td>
+          <td>{{ patient.ageTypeName }}</td>
+          <td>{{ getDiseaseGroupNames(patient.patientDiseasesGroups) }}</td>
+        </tr>
+  </ng-template>
+</p-table>
+
+<div class="d-flex justify-content-between">
+  <button class="btn bg text-white rounded-2">
+    {{ "NEDSS.REPEATED_RECORDS.BACK" | translate }}
+  </button>
+  <button class="btn bg text-white rounded-2" [disabled]="selectedPatientIds.length <= 1" (click)="submitSelectedPatients()">
+    {{ "NEDSS.REPEATED_RECORDS.CONTINUE_MERGE" | translate }}
+  </button>
+</div>
+
+
+
+
+
+<!-- 
+
+
+<div class='mt-4 shadow border rounded'>
+  <div class='row'>
+    <div class='col-lg-7 fwb p-4 pb-0'> {{"NEDSS.REPEATED_RECORDS.CASES_COUNT" | translate}}
+      {{ data.length }}
+    </div>
+    <div class='col-lg-5 p-4 pb-0'>
+      <div class='row'>
+        <div class='col-8'>
+          <input type='search' name='' id='' class='form-control'
+            placeholder='{{"NEDSS.REPEATED_RECORDS.SEARCH" | translate}} ...'>
+        </div>
+
+      </div>
+    </div>
+    <div class='table-responsive table-none-scroll'>
+      <table class='table table-hover table-striped table-sm'>
+        <thead>
+          <tr class='color'>
+            <th><input type="checkbox" name="" id="" [(ngModel)]="Allchecked" (change)="onSelectAll($event.target)">
+            </th>
+            <th>{{"NEDSS.REPEATED_RECORDS.GROUP" | translate}}</th>
+            <th> {{"NEDSS.REPEATED_RECORDS.REPORT_DATE" | translate}}</th>
+            <th>{{"NEDSS.REPEATED_RECORDS.NAME" | translate}}</th>
+            <th>{{"NEDSS.REPEATED_RECORDS.FATHER_NAME" | translate}}</th>
+            <th>{{"NEDSS.REPEATED_RECORDS.GRANDFATHER" | translate}}</th>
+            <th>{{"NEDSS.REPEATED_RECORDS.FAMILY" | translate}}</th>
+            <th>{{"NEDSS.REPEATED_RECORDS.ACCOMODATION" | translate}}</th>
+            <th>{{"NEDSS.REPEATED_RECORDS.INCIDENT_SOURCE" | translate}}</th>
+            <th>{{"NEDSS.REPEATED_RECORDS.DISEASE" | translate}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data">
+            <td><input type="checkbox" [checked]="item.checked" (change)="onSelected($event.target,item)" name="" id="">
+            </td>
+            <td>{{item.id}}</td>
+            <td>{{item.caseDiscoveryDate}}</td>
+            <td>{{item.firstName}}</td>
+            <td>{{item.secondName}}</td>
+            <td> {{item.thirdName}} </td>
+            <td> {{item.familyName}} </td>
+            <td> {{item.address}}</td>
+            <td>{{item.incidentSourceName}} </td>
+            <td>{{item.diseasesName}}</td>
+
+          </tr>
+          <tr>
+            <td colspan="5" class="text-end">
+              <a routerLink='/home/repeated-records' routerLinkActive="router-link-active"
+                style="background-color: dodgerblue;"
+                class="btn btn-primary btn-lg">{{"NEDSS.REPEATED_RECORDS.BACK" | translate}}</a>
+            </td>
+            <td colspan="5" class="text-start">
+              <a style="background-color: dodgerblue;" routerLink="/home/duplication-review" (click)="pushToReview()"
+                class="btn btn-primary btn-lg ">{{"NEDSS.REPEATED_RECORDS.REVISE" | translate}}</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> -->

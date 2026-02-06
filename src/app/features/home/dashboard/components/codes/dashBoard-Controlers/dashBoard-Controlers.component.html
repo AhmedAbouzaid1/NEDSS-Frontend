@@ -1,0 +1,571 @@
+<div class="col-11 col-lg-12 color-d-2">
+  <div class="form-titles">
+    {{ "NEDSS.HOME.CONTROL_PANEL.CODES.DASHBOARDCONTROL" | translate }}
+  </div>
+  <div class="card shadow">
+    <div class="card-body bg-dark-mode mb-2">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label>
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ARABIC_NAME" | translate
+              }}
+            </label>
+            <input
+              type="text"
+              maxlength="100"
+              [class.is-invalid]="code.invalid && code.touched"
+              required
+              class="form-control"
+              name="code"
+              [(ngModel)]="arabicName"
+              #code="ngModel"
+            />
+            <!-- <div *ngIf="code?.touched && code?.errors?.required" class="form-text text-danger mess-color">
+              {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+            </div> -->
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label>
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ENGLISH_NAME" | translate
+              }}
+            </label>
+            <input
+              type="text"
+              maxlength="100"
+              required
+              class="form-control"
+              name="code"
+              [(ngModel)]="englishName"
+              #code="ngModel"
+            />
+            <div
+              *ngIf="englishName?.touched && englishName?.errors?.required"
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4"></div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label>
+              {{ "NEDSS.HOME.CONTROL_PANEL.CODES.CHARTCONTROL" | translate }}
+            </label>
+            <ng-multiselect-dropdown
+              class=""
+              [required]="requiredField2"
+              [settings]="multipleDropdownSettings"
+              [data]="charts"
+              [(ngModel)]="selectedCharts"
+              (onSelect)="onItemSelect2($event)"
+              #code="ngModel"
+              (onSelectAll)="onSelectAll2($event)"
+            >
+            </ng-multiselect-dropdown>
+            <p *ngIf="!requiredField2" style="color: red">
+              {{ "NEDSS.COMMON.SELECTVALUE" | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.HOME.CONTROL_PANEL.CODES.ABBREVIATEDDATA" | translate }}
+
+              <span class="text-danger mess-color">*</span></label
+            >
+            <ng-multiselect-dropdown
+              [required]="requiredField"
+              [settings]="multipleDropdownSettings"
+              [data]="dashBoardCards"
+              [(ngModel)]="selectedDashBoardCards"
+              (onSelect)="onItemSelect($event)"
+              (onSelectAll)="onSelectAll($event)"
+            >
+            </ng-multiselect-dropdown>
+            <p *ngIf="!requiredField" style="color: red">
+              {{ "NEDSS.COMMON.SELECTVALUE" | translate }}
+            </p>
+          </div>
+        </div>
+
+        <button
+          style="width: 10rem; align-self: center; margin-right: 5%"
+          type="button"
+          data-bs-target="#UserModal"
+          data-bs-toggle="modal"
+          class="btn btn-sm mt-4 bg text-light"
+        >
+          {{ "NEDSS.HOME.CONTROL_PANEL.CODES.CHOOSEUSERS" | translate }}
+        </button>
+      </div>
+    </div>
+    <div class="card-footer text-start mb-0">
+      <button
+        type="button"
+        (click)="AddDashBoard()"
+        [disabled]="code.invalid"
+        class="btn btn-lg bg text-light"
+      >
+        <span class="bi bi-check2-circle"></span>
+        {{ "NEDSS.COMMON.SAVE" | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="table-reponsive mt-4 shadow border rounded" *ngIf="!noData">
+    <div class="row">
+      <div class="col-lg-5 fwb p-4 pb-0">
+        {{ "NEDSS.HOME.CONTROL_PANEL.CODES.DASHBOARDCONTROL" | translate }}
+        {{ Dashslength }}
+      </div>
+      <div class="col-lg-7 p-4 pb-0">
+        <div class="row">
+          <div class="col-7">
+            <!-- <input type='search' name='' id='' class='form-control' placeholder='بحث ...'> -->
+            <input
+              type="search"
+              class="form-control"
+              [(ngModel)]="deviceCategoryFilter.searchText"
+              placeholder="{{ 'NEDSS.COMMON.SEARCH' | translate }}"
+              #searchInput
+            />
+          </div>
+          <!-- <div class="col-5 mb-2">
+            <a routerLink="#"><span class="bi bi-filetype-pdf button-export"></span></a>
+            <a routerLink="#"><span class="bi bi-printer-fill button-export"></span></a>
+            <a routerLink="#"><span class="bi bi-filetype-csv button-export"></span></a>
+            <a routerLink="#"><span class="bi bi-file-earmark-excel-fill button-export"></span></a>
+          </div> -->
+        </div>
+      </div>
+      <div class="table-responsive table-none-scroll">
+        <p-table
+          class="table"
+          [value]="AllDashBoards"
+          (sortFunction)="sort($event)"
+          [customSort]="true"
+          [sortField]="'arabicName'"
+          [sortOrder]="1"
+          [paginator]="false"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="code">
+                <span>{{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_CODE" | translate
+                }}</span>
+              </th>
+              <th pSortableColumn="arabicName">
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ARABIC_NAME"
+                    | translate
+                }}
+              </th>
+
+              <th pSortableColumn="englishName">
+                <span>{{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ENGLISH_NAME"
+                    | translate
+                }}</span>
+              </th>
+              <th pSortableColumn="englishName">
+                <span>
+                  {{ "NEDSS.REPORTS.The Number of Charts" | translate }}
+                </span>
+              </th>
+              <th pSortableColumn="englishName">
+                <span>
+                  {{ "NEDSS.REPORTS.The Number of Data Cards" | translate }}
+                </span>
+              </th>
+              <th>
+                <span>{{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
+                    | translate
+                }}</span>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>
+                <span
+                  [innerHTML]="
+                    item.id
+                      | highlighter
+                        : deviceCategoryFilter.searchText
+                        : 'partial'
+                  "
+                ></span>
+              </td>
+
+              <td>
+                <span
+                  [innerHTML]="
+                    item.arabicName
+                      | highlighter
+                        : deviceCategoryFilter.searchText
+                        : 'partial'
+                  "
+                ></span>
+              </td>
+              <td>
+                <span
+                  [innerHTML]="
+                    item.englishName
+                      | highlighter
+                        : deviceCategoryFilter.searchText
+                        : 'partial'
+                  "
+                ></span>
+              </td>
+              <td>
+                <span
+                  [innerHTML]="
+                    item.chartNumbers.length
+                      | highlighter
+                        : deviceCategoryFilter.searchText
+                        : 'partial'
+                  "
+                ></span>
+              </td>
+              <td>
+                <span
+                  [innerHTML]="
+                    item.cardNumbers.length
+                      | highlighter
+                        : deviceCategoryFilter.searchText
+                        : 'partial'
+                  "
+                ></span>
+              </td>
+              <td>
+                <a
+                  role="button"
+                  (click)="editDashBoard(item)"
+                  class="text-primary pi pi-pencil"
+                ></a>
+                &nbsp;&nbsp;
+                <a
+                  role="button"
+                  data-bs-target="#confilmationModal"
+                  data-bs-toggle="modal"
+                  (click)="nameToDelete(item)"
+                  class="text-danger mess-color bi bi-trash-fill"
+                ></a>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <!-- <div class="col-lg-12 p-0" style="margin-bottom: 4px">
+          <p-paginator
+            *ngIf="!noData"
+            [rows]="deviceCategoryFilter.pageSize"
+            [totalRecords]="pages"
+            (onPageChange)="paginate($event)"
+            [first]="first"
+            [currentPageReportTemplate]="
+              'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+            "
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 20, 30, 40, 50,70,100,200,500,1000,2000, pages >= 5000? pages:5000]"
+          ></p-paginator>
+        </div> -->
+        <div class="row" [hidden]="!noData">
+          <div class="no-data content-center">
+            <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+            <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Choose Users - modal -->
+
+<div
+  class="modal fade small-modal"
+  id="UserModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  style="position: fixed; left: 14.5%"
+>
+  <div class="modal-dialog">
+    <div class="modal-content modal-content-width">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.HOME.CONTROL_PANEL.CODES.CHOOSEUSERS" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">{{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.ORGANIZATION" | translate
+              }}</label>
+              <select
+                class="form-control customddl"
+                name="organizationID"
+                [(ngModel)]="selectedOrganization"
+                (change)="onincidentSourcesChanged()"
+              >
+                <option
+                  *ngFor="let organization of organizations"
+                  [value]="organization.id"
+                >
+                  {{ organization.arabicName }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="level">{{
+                "NEDSS.HOME.USERS.LEVEL" | translate
+              }}</label>
+              <select
+                name="level"
+                id="level"
+                class="form-control customddl"
+                [(ngModel)]="selectedLevel"
+                (change)="onincidentSourcesChanged()"
+              >
+                <option value="1">
+                  {{ "NEDSS.HOME.USERS.Ministry" | translate }}
+                </option>
+                <option value="2">
+                  {{ "NEDSS.HOME.USERS.GOVERNEMENT" | translate }}
+                </option>
+                <option value="3">
+                  {{ "NEDSS.HOME.USERS.HEALTHADMIN" | translate }}
+                </option>
+                <option value="4">
+                  {{ "NEDSS.HOME.USERS.INCEIDENT_SOURCE" | translate }}
+                </option>
+
+                <!-- Ministry=1,
+
+                    Government = 2,
+                     HealthAdministration = 3,
+                    IncidentSources = 4 -->
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4" *ngIf="!disableGovernment">
+              <div class="form-group">
+                <label for="">
+                  {{
+                    "NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT" | translate
+                  }}
+                  <span class="text-danger mess-color">*</span></label
+                >
+                <ng-multiselect-dropdown
+                  [settings]="singleDropdownSettings"
+                  [data]="governments"
+                  [(ngModel)]="selectedGovernment"
+                  (onSelect)="onGovernmentChanged()"
+                  (onDeSelect)="onGovernmentChanged()"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-4" *ngIf="!disableAdmin">
+              <div class="form-group">
+                <label for=""
+                  >{{
+                    "NEDSS.HOME.GENERAL_DATA_COMPLETION.HEALTHADMIN" | translate
+                  }}
+                  <span class="text-danger mess-color">*</span></label
+                >
+                <ng-multiselect-dropdown
+                  [settings]="singleDropdownSettings"
+                  [data]="healthAdministration"
+                  [(ngModel)]="selectedHealthAdministration"
+                  (onSelect)="onHealthAdministrationChanged()"
+                  (onDeSelect)="onHealthAdministrationChanged()"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-4" *ngIf="!disableIncidentSrc">
+              <div class="form-group">
+                <label for="">
+                  {{
+                    "NEDSS.HOME.GENERAL_DATA_COMPLETION.INCIDENT_SOURCE"
+                      | translate
+                  }}
+                  <span class="text-danger mess-color">*</span></label
+                >
+                <ng-multiselect-dropdown
+                  [settings]="singleDropdownSettings"
+                  [data]="incidentSources"
+                  [(ngModel)]="selectedIncidentSource"
+                  (onSelect)="onincidentSourcesChanged()"
+                  (onDeSelect)="onincidentSourcesChanged()"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="form-group">
+                <label for="">
+                  {{ "NEDSS.HOME.CONTROL_PANEL.CODES.USERS" | translate }}
+                  <span class="text-danger mess-color">*</span></label
+                >
+                <ng-multiselect-dropdown
+                  [settings]="multipleuserSettings"
+                  (onSelect)="onUserChanged($event)"
+                  (onSelectAll)="onUserChanged($event)"
+                  (onDeSelectAll)="onUserChanged($event)"
+                  [data]="users"
+                  [(ngModel)]="selectedUsers"
+                  (onDeSelect)="onUserChanged($event)"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </div>
+          <div
+            class="box-body table-responsive table-none-scroll"
+            id="myTableElementId"
+            style="max-height: 18rem; overflow-y: scroll"
+          >
+            <div
+              id="DataTables_Table_0_wrapper"
+              class="dataTables_wrapper no-footer"
+            >
+              <div
+                id="DataTables_Table_0_processing"
+                class="dataTables_processing"
+                style="display: none"
+              >
+                Processing...
+              </div>
+              <table
+                class="table table-striped table-bordered table-hover allajaxlist dataTable no-footer"
+                data-export-title="Birth Report"
+                id="DataTables_Table_0"
+                role="grid"
+                aria-describedby="DataTables_Table_0_info"
+              >
+                <thead>
+                  <tr role="row">
+                    <th colspan="3" class="reportTitle">
+                      {{
+                        "NEDSS.HOME.CONTROL_PANEL.CODES.DETERMINED" | translate
+                      }}
+                      {{
+                        "NEDSS.HOME.CONTROL_PANEL.CODES.DETERMINED" | translate
+                      }}
+                      :: {{ myDatalength }}
+                    </th>
+                  </tr>
+                  <tr role="row">
+                    <th class="sorting_disabled">
+                      {{ "NEDSS.HOME.CONTROL_PANEL.CODES.CODE" | translate }}
+                    </th>
+                    <th class="sorting_disabled">
+                      {{ "NEDSS.HOME.CONTROL_PANEL.CODES.NAME" | translate }}
+                    </th>
+                    <th class="sorting_disabled">
+                      {{ "NEDSS.HOME.CONTROL_PANEL.CODES.ACTIONS" | translate }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="odd" *ngFor="let item of filterdData">
+                    <td valign="top" class="dataTables_empty">
+                      {{ item.id }}
+                    </td>
+                    <td valign="top" class="dataTables_empty">
+                      {{ item.fullName }}
+                    </td>
+                    <td>
+                      <a
+                        (click)="DeleteUser(item)"
+                        class="text-danger mess-color bi bi-trash-fill"
+                      ></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+            {{ "NEDSS.COMMON.CANCEL" | translate }}
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- confirm - modal -->
+<div
+  class="modal fade small-modal"
+  id="confilmationModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content modal-content-width">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.arabicName }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="deleteChart(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

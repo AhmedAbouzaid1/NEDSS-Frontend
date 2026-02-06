@@ -1,0 +1,333 @@
+<app-loader *ngIf="loadingPanel"></app-loader>
+<div class="box box-primary mt-4 hide-print">
+    <div class="box-header with-border p-2">
+        <h6 class="box-title">
+            {{ "NEDSS.REPORTS_LABELS.POPULATIONS_REPORT" | translate }}
+        </h6>
+    </div>
+
+    <div class="row box-body mt-3 hide-print">
+        <div class="col-12 mb-4">
+            <label for="">
+                {{
+                "NEDSS.REPORTS.Level"
+                    | translate
+                }}
+                <span class="text-danger">*</span>
+            </label>
+        <div
+            class="form-group d-flex align-items-center mt-3"
+            style="gap: 35px"
+            >
+            <div class="d-flex align-items-center gap-1"
+            *ngIf="currentUserLevel == 1">
+                <input
+                type="radio"
+                name="central"
+                id="central"
+                [(ngModel)]="levelValue"
+                [value]="levelsEnum.Central"
+                (change)="onLevelChange()"
+                />
+                <label class="form-check-label" for="central">
+                {{
+                    "NEDSS.REPORTS.Central"
+                    | translate
+                }}
+                </label>
+            </div>
+            <div class="d-flex align-items-center gap-1"
+            *ngIf="currentUserLevel == 1 || currentUserLevel == 3">
+            <input
+                type="radio"
+                name="governorate"
+                id="governorate"
+                [(ngModel)]="levelValue"
+                [value]="levelsEnum.Governorate"
+                (change)="onLevelChange()"
+                />
+                <label class="form-check-label" for="governorate">
+                {{
+                    "NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT"
+                    | translate
+                }}
+                </label>
+            </div>
+            <div class="d-flex align-items-center gap-1"  
+                *ngIf="currentUserLevel == 1 || currentUserLevel == 3 || currentUserLevel == 4">
+                <input
+                type="radio"
+                name="administration"
+                id="administration"
+                [(ngModel)]="levelValue"
+                [value]="levelsEnum.Administration"
+                (change)="onLevelChange()"
+                />
+                <label class="form-check-label" for="administration">
+                    {{
+                        "NEDSS.REPORTS.Administration"
+                        | translate
+                    }}
+                </label>
+        </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 mb-4" *ngIf="levelValue === levelsEnum.Governorate || levelValue === levelsEnum.Administration">
+                <div class="form-group">
+                    <label for="government">
+                        {{ "NEDSS.REPORTS.GOVERNMENT" | translate }}
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div *ngIf="currentLang == 'ar'">
+                        <p-dropdown
+                            (onChange)="onGovernmentChanged()"
+                            [options]="governments"
+                            [(ngModel)]="selectedGovernmentId"
+                            optionLabel="arabicName"
+                            optionValue="id"
+                            autoWidth="false"
+                            [style]="{ width: '100%' }"
+                            [filter]="true"
+                            filterBy="arabicName"
+                        >
+                        </p-dropdown>
+                    </div>
+                    <div *ngIf="currentLang == 'en'">
+                        <p-dropdown
+                            (onChange)="onGovernmentChanged()"
+                            [options]="governments"
+                            [(ngModel)]="selectedGovernmentId"
+                            optionLabel="englishName"
+                            optionValue="id"
+                            autoWidth="false"
+                            [style]="{ width: '100%' }"
+                            [filter]="true"
+                            filterBy="englishName"
+                        >
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-4" *ngIf="levelValue === levelsEnum.Administration">
+                <div class="form-group">
+                    <label for="government">
+                        {{ "NEDSS.REPORTS.HealthAdministration" | translate }}
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div *ngIf="currentLang == 'ar'">
+                        <p-dropdown
+                            
+                            [options]="healthAdministrations"
+                            [(ngModel)]="selectedHealthAdminId"
+                            optionLabel="arabicName"
+                            optionValue="id"
+                            autoWidth="false"
+                            [style]="{ width: '100%' }"
+                            [filter]="true"
+                            filterBy="englishName"
+                        >
+                        </p-dropdown>
+                    </div>
+                    <div *ngIf="currentLang == 'en'">
+                        <p-dropdown
+                            
+                            [options]="healthAdministrations"
+                            [(ngModel)]="selectedHealthAdminId"
+                            optionLabel="englishName"
+                            optionValue="id"
+                            autoWidth="false"
+                            [style]="{ width: '100%' }"
+                            [filter]="true"
+                            filterBy="englishName"
+                        >
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 mb-4">
+            <label>
+                {{ "NEDSS.REPORTS.YEAR" | translate }}
+                <span class="text-danger">*</span>
+            </label>
+            <mat-form-field appearance="fill">
+                <mat-label>
+                    {{ "NEDSS.REPORTS.YEAR" | translate }}
+                </mat-label>
+                <input matInput [matDatepicker]="dp" [(ngModel)]="selectedDate" [readonly]="true" />
+                <mat-hint>YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                <mat-datepicker #dp
+                                startView="multi-year"
+                                (yearSelected)="setYear($event, dp)"
+                                panelClass="example-year-picker">
+                </mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-end mt-2 mb-2">
+            <button (click)="getReportResult()" class="btn btn-lg bg text-light">
+                <i class="fa fa-search"></i>
+                {{ "NEDSS.REPORTS.Search" | translate }}
+            </button>
+        </div>
+    </div>
+</div>
+
+<!--Start No Data -->
+<div *ngIf="!showTableData || tableData === null" class="mt-4 pb-4 pt-4 box border0 clear hide-print">
+    <div align="center" class="color">
+        {{ "NEDSS.REPORTS.NothingToPreview" | translate }}<br />
+        <br />
+        <img
+            width="100%"
+            height="100%"
+            src="../../../../../assets/images/no-data.png"
+            width="150"
+            />
+        <br/><br/>
+        <span class="color hover bolds">
+            <i class="fa fa-arrow-left"></i>
+            {{ "NEDSS.REPORTS.DoSearch" | translate }}
+        </span>
+        <div></div>
+    </div>
+</div>
+<!--End No Data -->
+
+
+<!-- Start Table -->
+<div class="table-report box hide-print" *ngIf="showTableData && tableData">
+    <div class="row m-0">
+        <div class="table-reponsive d-flex align-items-center justify-content-end w-100 py-3 px-3">
+            <a (click)="exportToPdf()"
+            ><span class="pi pi-file-pdf button-export"></span
+            ></a>
+            <a (click)="print()"><span class="pi pi-print button-export"></span></a>
+            <a (click)="generateReportToExcel()"
+            ><span class="pi pi-file-excel button-export"></span></a>
+        </div>
+    </div>
+    <table
+        [style.direction]="dir"
+        class="table table-hover table-striped table-sm mb-0">
+        <thead>
+            <tr>
+                <!-- Column with 2-row vertical merge -->
+                <th rowspan="2">
+                    {{ tableData?.mergedVerticallyHeaders[0] }}
+                </th>
+
+                <!-- First element with 2-column horizontal merge -->
+                <th *ngIf="tableData?.mergedHorizontallyHeaders?.[0]" colspan="2">
+                    {{ tableData?.mergedHorizontallyHeaders[0] }}
+                </th>
+
+                    <!-- Second element with 7-column horizontal merge -->
+                <th *ngIf="tableData?.mergedHorizontallyHeaders?.[1]" colspan="7">
+                    {{ tableData?.mergedHorizontallyHeaders[1] }}
+                </th>
+            
+                <!-- Population data columns in a separate row below
+                <th *ngFor="let headerName of tableData?.populationsDataColumnsNames" rowspan="1">
+                    {{ headerName }}
+                </th> -->
+            
+                <!-- Second vertically merged column -->
+                <th rowspan="2">
+                    {{ tableData?.mergedVerticallyHeaders[1] }}
+                </th>
+                </tr>
+            <!-- Second row for population data columns if needed -->
+            <tr>
+                <th *ngFor="let headerName of tableData?.populationsDataColumnsNames">
+                    {{ headerName }}
+                </th>
+            </tr>
+        </thead>
+        <ng-container *ngFor="let data of tableData.populationsSourcesData">
+            <tbody>
+                <tr>
+                    <td>
+                        {{ data?.sourceName }}
+                    </td>
+                    <td>
+                        {{ data?.maleCount }}
+                    </td>
+                    <td>
+                        {{ data?.femaleCount }}
+                    </td>
+                    <td>
+                        {{ data?.ageLowerThanMonth }}
+                    </td>
+                    <td>
+                        {{ data?.ageLowerThanYear }}
+                    </td>
+                    <td>
+                        {{ data?.ageUpTo5 }}
+                    </td>
+                    <td>
+                        {{ data?.ageUpTo15 }}
+                    </td>
+                    <td>
+                        {{ data?.ageUpTo35 }}
+                    </td>
+                    <td>
+                        {{ data?.ageUpTo65 }}
+                    </td>
+                    <td>
+                        {{ data?.ageMoreThan65 }}
+                    </td>
+                    <td>
+                        {{ data?.populationCount }}
+                    </td>
+                </tr>
+            </tbody>
+        </ng-container>
+        <tfoot>
+            <tr class="fw-bold">
+                <td>
+                    {{ tableData?.mergedVerticallyHeaders[1] }}
+                </td>
+                <td>
+                    {{ tableData?.totalMaleCount }}
+                </td>
+                <td>
+                    {{ tableData?.totalFemaleCount }}
+                </td>
+                <td>
+                    {{ tableData?.totalAgeLowerThanMonth }}
+                </td>
+                <td>
+                    {{ tableData?.totalAgeLowerThanYear }}
+                </td>
+                <td>
+                    {{ tableData?.totalAgeUpTo5 }}
+                </td>
+                <td>
+                    {{ tableData?.totalAgeUpTo15 }}
+                </td>
+                <td>
+                    {{ tableData?.totalAgeUpTo35 }}
+                </td>
+                <td>
+                    {{ tableData?.totalAgeUpTo65 }}
+                </td>
+                <td>
+                    {{ tableData?.totalAgeMoreThan65 }}
+                </td>
+                <td>
+                    {{ tableData?.totalPopulationCount }}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    </div>
+<!-- End Table -->
+
+<!-- start component to print -->
+    <div *ngIf="tableData && showTableData" id="pdfTable">
+        <app-populations-report-pdf [pdfData]="tableData"> </app-populations-report-pdf>
+    </div>
+<!-- end component to print -->

@@ -1,0 +1,240 @@
+<div class="row">
+  <div class="col-11 col-md-4">
+    <h2 class="titles">
+      {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DISEASE_RULES" | translate }}
+    </h2>
+  </div>
+  <div class="col-11 col-md-8">
+    <div class="form-group row">
+      <label for="" class="col-lg-2 mt-4">
+        {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DISEASE" | translate }}
+        <span class="text-danger mess-color">*</span></label>
+      <div class="col-lg-10 mt-4">
+        <p-dropdown [options]="diseaseGroups" (onChange)="onDiseaseGroupChanged()"
+          [(ngModel)]="diseaseRule.diseaseGroupId" [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+          optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="diseaseGroups" [required]="true"
+          [filter]="true" [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'">
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="form-titles">
+  {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ADD_RULES" | translate }}
+</div>
+<div class="card shadow small-screen-card">
+  <div class="card-body bg-dark-mode" id="diseas-rule">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="">
+            {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.SAMPLE" | translate }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+
+          <p-dropdown [options]="checkSamples" [(ngModel)]="diseaseRule.diseaseCheckId"
+            [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="diseaseCheckId" [required]="true" [filter]="true"
+            [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'">
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="">
+            {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK" | translate }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+
+          <p-dropdown [options]="labChecks" [(ngModel)]="diseaseRule.diseaseLabTestId"
+            [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="labChecks" [required]="true" [filter]="true"
+            [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'">
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="">
+            {{
+            "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK_RESULT"
+            | translate
+            }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+
+          <p-dropdown [options]="labCheckResults" [(ngModel)]="diseaseRule.diseaseLabTestResultId"
+            [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="labCheckResults" [required]="true" [filter]="true"
+            [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'">
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="">
+            {{
+            "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.RESULT_CATEGORIES"
+            | translate
+            }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+
+          <p-dropdown [options]="caseResultCategories" [(ngModel)]="diseaseRule.caseResultCategoryId"
+            [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="caseResultCategories" [required]="true" [filter]="true"
+            [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'">
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="">
+            {{
+            "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.FINAL_RESULT" | translate
+            }}
+            <span class="text-danger mess-color">*</span></label>
+          <!-- <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="diseases" [(ngModel)]="selectedDisease"
+            (onSelect)="onFinalDiseaseChanged()" (onDeSelect)="onFinalDiseaseChanged()"
+            [ngModelOptions]="{ standalone: true }">
+          </ng-multiselect-dropdown> -->
+
+          <p-dropdown [options]="diseases" [(ngModel)]="diseaseRule.diseaseId"
+            [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="diseaseId" [required]="true" [filter]="true"
+            [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'">
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer mb-0">
+    <div class="row">
+      <div class="col-7 col-sm-5">
+        <button type="submit" class="d-block m-auto btn btn-lg bg text-light pr-5 pl-5" (click)="save()">
+          {{ "NEDSS.COMMON.SAVE" | translate }}
+        </button>
+      </div>
+      <div class="col-7 col-sm-5">
+        <button type="submit" class="d-block m-auto btn btn-lg border-color color pr-5 pl-5 btn-light-color"
+          (click)="clearSelections()">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-reponsive mt-4 shadow border rounded">
+  <div class="row">
+    <div class="col-lg-7 fwb p-4 pb-0">
+      {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.RULES_COUNT" | translate }}
+      ({{ pages }})
+    </div>
+
+    <div class="col-12 table-responsive table-none-scroll">
+      <p-table class="table" [value]="diseaseRules" [paginator]="false">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.SAMPLE" | translate }}
+            </th>
+            <th>
+              {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.TEST" | translate }}
+            </th>
+            <th>
+              {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.RESULT" | translate }}
+            </th>
+            <th>
+              {{
+              "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DIAGNOSIS" | translate
+              }}
+            </th>
+            <th>
+              {{
+              "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.FINAL_RESULT"
+              | translate
+              }}
+            </th>
+            <th>
+              {{ "NEDSS.COMMON.ACTIONS" | translate }}
+            </th>
+            <th>
+              <span></span>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td><span [innerHTML]="item.sample"> </span></td>
+            <td><span [innerHTML]="item.labCheck"> </span></td>
+            <td><span [innerHTML]="item.checkResult"> </span></td>
+            <td><span [innerHTML]="item.diagonistic"> </span></td>
+            <td><span [innerHTML]="item.finalDisease"> </span></td>
+            <td>
+              <a (click)="getById(item.id)" class="text-primary pi pi-pencil"></a>
+              &nbsp;&nbsp;
+              <a data-bs-target="#exampleModal2" data-bs-toggle="modal" (click)="nameToDelete(item)"
+                class="text-danger mess-color bi bi-trash-fill"></a>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div class="col-lg-12 p-0" style="margin-bottom: 4px">
+        <p-paginator *ngIf="!noData" [rows]="rulesFilter.pageSize" [totalRecords]="pages"
+          (onPageChange)="paginate($event)" [first]="first" [currentPageReportTemplate]="
+            'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+          " [showCurrentPageReport]="true" [rowsPerPageOptions]="[
+            10,
+            20,
+            30,
+            40,
+            50,
+            70,
+            100,
+            200,
+            500,
+            1000,
+            2000,
+            pages >= 5000 ? pages : 5000
+          ]"></p-paginator>
+      </div>
+      <div class="row" [hidden]="!noData">
+        <div class="no-data content-center">
+          <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+          <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- confirm - modal -->
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.sample }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="delete(underDeleting.id)" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

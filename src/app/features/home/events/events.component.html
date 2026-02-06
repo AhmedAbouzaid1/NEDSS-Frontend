@@ -1,0 +1,2019 @@
+<h2 class="titles">{{ "NEDSS.EVENTS.EVENTS" | translate }}</h2>
+<div class="row">
+  <form [formGroup]="generalReportForm" (ngSubmit)="search()">
+    <div class="card shadow">
+      <div class="card-body bg-dark-mode">
+        <div class="row">
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label for="government">
+                {{ "NEDSS.EVENTS.GOVERNMENT" | translate }}
+              </label>
+              <div *ngIf="currentLang == 'ar'">
+                <p-dropdown
+                  (onChange)="governmentSelected()"
+                  [options]="governments"
+                  [(ngModel)]="selectedGovernment"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="governments"
+                  [filter]="true"
+                  filterBy="arabicName"
+                  formControlName="homeGovernmentId"
+                >
+                </p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="governmentSelected()"
+                  [(ngModel)]="selectedGovernment"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of governments"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.arabicName }}
+                  </option>
+                </select> -->
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <p-dropdown
+                  (onChange)="governmentSelected()"
+                  [options]="governments"
+                  [(ngModel)]="selectedGovernment"
+                  optionLabel="englishName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="governments"
+                  [filter]="true"
+                  filterBy="englishName"
+                  formControlName="homeGovernmentId"
+                >
+                </p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="governmentSelected()"
+                  [(ngModel)]="selectedGovernment"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of governments"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.englishName }}
+                  </option>
+                </select> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label for="administration">
+                {{ "NEDSS.EVENTS.ADMINISTRATION" | translate }}
+              </label>
+              <div *ngIf="currentLang == 'ar'">
+                <p-dropdown
+                  (onChange)="healthAdministrationSelected()"
+                  [options]="healthAdministration"
+                  [(ngModel)]="selectedhealthAdministration"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="healthAdministration"
+                  [filter]="true"
+                  filterBy="arabicName"
+                  formControlName="homeHealthAdministrationId"
+                >
+                </p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="healthAdministrationSelected()"
+                  [(ngModel)]="selectedhealthAdministration"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1 && this.levelId != 2"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of healthAdministration"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.arabicName }}
+                  </option>
+                </select> -->
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <p-dropdown
+                  (onChange)="healthAdministrationSelected()"
+                  [options]="healthAdministration"
+                  [(ngModel)]="selectedhealthAdministration"
+                  optionLabel="englishName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="healthAdministration"
+                  [filter]="true"
+                  filterBy="englishName"
+                  formControlName="homeHealthAdministrationId"
+                >
+                </p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="healthAdministrationSelected()"
+                  [(ngModel)]="selectedhealthAdministration"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1 && this.levelId != 2"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of healthAdministration"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.englishName }}
+                  </option>
+                </select> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label for="" class="form-label">
+                {{ "NEDSS.EVENTS.CITY" | translate }}
+              </label>
+
+              <div *ngIf="currentLang == 'ar'">
+                <p-dropdown
+                  (onChange)="homeCitySelected()"
+                  [options]="cities"
+                  [(ngModel)]="healthCitySelected"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="cities"
+                  [filter]="true"
+                  filterBy="arabicName"
+                  formControlName="homeCityId"
+                >
+                </p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="homeCitySelected()"
+                  [(ngModel)]="healthCitySelected"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of cities"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.arabicName }}
+                  </option>
+                </select> -->
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <p-dropdown
+                  (onChange)="homeCitySelected()"
+                  [options]="cities"
+                  [(ngModel)]="healthCitySelected"
+                  optionLabel="englishName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="cities"
+                  [filter]="true"
+                  filterBy="englishName"
+                  formControlName="homeCityId"
+                >
+                </p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="homeCitySelected()"
+                  [(ngModel)]="healthCitySelected"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of cities"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.englishName }}
+                  </option>
+                </select> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label for="" class="form-label">
+                {{ "NEDSS.EVENTS.HEALTH_OFFICE" | translate }}
+              </label>
+              <div *ngIf="currentLang == 'ar'">
+                <p-dropdown
+                  (onChange)="homeHealthOfficeSelected()"
+                  [options]="healthOfficcies"
+                  [(ngModel)]="SelectedhealthOfficcieId"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="healthOfficcies"
+                  [filter]="true"
+                  filterBy="arabicName"
+                  formControlName="homeHealthOfficeId"
+                >
+                </p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="homeHealthOfficeSelected()"
+                  [(ngModel)]="SelectedhealthOfficcieId"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of healthOfficcies"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.arabicName }}
+                  </option>
+                </select> -->
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <p-dropdown
+                  (onChange)="homeHealthOfficeSelected()"
+                  [options]="healthOfficcies"
+                  [(ngModel)]="SelectedhealthOfficcieId"
+                  optionLabel="englishName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="healthOfficcies"
+                  [filter]="true"
+                  filterBy="englishName"
+                  formControlName="homeHealthOfficeId"
+                >
+                </p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="homeHealthOfficeSelected()"
+                  [(ngModel)]="SelectedhealthOfficcieId"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of healthOfficcies"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.englishName }}
+                  </option>
+                </select> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label for="" class="form-label">
+                {{ "NEDSS.EVENTS.DESIEASE_CATEGORY" | translate }}
+              </label>
+              <ng-multiselect-dropdown
+                [settings]="multipleDropdownSettings"
+                [data]="Diseasies"
+                (onSelect)="patientDiseasesSelected($event)"
+                (onDeSelect)="patientDiseasesDSelected()"
+              >
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label for="" class="form-label">
+                {{ "NEDSS.EVENTS.CASE_CATEGORY" | translate }}
+              </label>
+              <div *ngIf="currentLang == 'ar'">
+                <p-dropdown
+                  (onChange)="caseResultCategorySelected()"
+                  [options]="Categories"
+                  [(ngModel)]="selectedCategoryId"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="Categories"
+                  [filter]="true"
+                  filterBy="arabicName"
+                  formControlName="caseResultCategoryId"
+                >
+                </p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="caseResultCategorySelected()"
+                  [(ngModel)]="selectedCategoryId"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of Categories"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.arabicName }}
+                  </option>
+                </select> -->
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <p-dropdown
+                  (onChange)="caseResultCategorySelected()"
+                  [options]="Categories"
+                  [(ngModel)]="selectedCategoryId"
+                  optionLabel="englishName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="Categories"
+                  [filter]="true"
+                  filterBy="englishName"
+                  formControlName="caseResultCategoryId"
+                >
+                </p-dropdown>
+                <!-- <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="caseResultCategorySelected()"
+                  [(ngModel)]="selectedCategoryId"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of Categories"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.englishName }}
+                  </option>
+                </select> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label for="startDate">
+                {{ "NEDSS.EVENTS.FROM_DATE" | translate }}
+              </label>
+
+              <mat-form-field appearance="fill">
+                <mat-label>
+                  {{
+                    "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+                  }}</mat-label
+                >
+                <input
+                  [min]="minDate"
+                  [max]="maxDate"
+                  matInput
+                  [matDatepicker]="picker"
+                  formControlName="startDate"
+                  (dateChange)="onStartDateChange($event.value)"
+                />
+
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label for="endDate">
+                {{ "NEDSS.EVENTS.TO_DATE" | translate }}
+              </label>
+
+              <mat-form-field appearance="fill">
+                <mat-label>
+                  {{
+                    "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+                  }}</mat-label
+                >
+                <input
+                  [min]="startDate"
+                  [max]="maxDate"
+                  matInput
+                  [matDatepicker]="picker1"
+                  formControlName="endDate"
+                />
+
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker1"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <div class="fwb spaceLable color-d-3">
+              {{ "NEDSS.EVENTS.EVENT" | translate }}
+            </div>
+            <div class="has-labels">
+              <label for="IsEventEnded">
+                <input
+                  name="IsEventEnded"
+                  type="radio"
+                  [value]="null"
+                  [(ngModel)]="generalReportFormfilter.isEventEnded"
+                  formControlName="IsEventEnded"
+                />
+                {{ "NEDSS.EVENTS.ALL" | translate }}
+              </label>
+
+              <label for="IsEventEnded">
+                <input
+                  name="IsEventEnded"
+                  type="radio"
+                  [value]="true"
+                  [(ngModel)]="generalReportFormfilter.isEventEnded"
+                  formControlName="IsEventEnded"
+                />
+                {{ "NEDSS.EVENTS.EVENT_ENDED" | translate }}
+              </label>
+
+              <label for="">
+                <input
+                  name="IsEventEnded"
+                  type="radio"
+                  [value]="false"
+                  [(ngModel)]="generalReportFormfilter.isEventEnded"
+                  formControlName="IsEventEnded"
+                />
+
+                {{ "NEDSS.EVENTS.EVENT_NOT_ENDED" | translate }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="card-footer d-flex align-items-center justify-content-end mt-2 mb-0"
+      >
+        <button type="submit" class="btn btn-lg bg text-light">
+          <span class="bi bi-check2-circle"></span>
+          {{ "NEDSS.EVENTS.SEARCH" | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<br />
+<div class="mt-3" *ngIf="!noData">
+  <div
+    class="d-flex flex-wrap align-items-center justify-content-between gap-2"
+  >
+    <div class="d-flex align-items-center gap-3">
+      <button
+        class="btn btn-info-c btn-light-color btn-block-small"
+        style="margin-left: 15px"
+        (click)="getAllPaitents()"
+        [ngClass]="!event ? 'active' : ''"
+      >
+        {{ "NEDSS.EVENTS.ALL_PATIENTS" | translate }}
+      </button>
+      <button
+        class="btn btn-info-c btn-light-color btn-block-small"
+        (click)="getAllEvents()"
+        [ngClass]="event ? 'active' : ''"
+      >
+        {{ "NEDSS.EVENTS.ALL_EVENTS" | translate }}
+      </button>
+    </div>
+    <button
+      class="btn btn-lg bg text-light"
+      data-bs-toggle="modal"
+      data-bs-target="#AddtoEvent"
+      *ngIf="!event"
+      (click)="EventsShow()"
+      [disabled]="disAbledAddToEvent"
+    >
+      <span class="pi pi-user-plus px-2"></span>
+
+      {{ "NEDSS.EVENTS.ADD_TO_EVENT" | translate }}
+    </button>
+    <button
+      class="btn btn-lg bg text-light"
+      data-bs-toggle="modal"
+      data-bs-target="#AddEvent"
+      *ngIf="event"
+      (click)="showAddEventModal()"
+    >
+      <span class="pi pi-plus px-2"></span>
+      {{ "NEDSS.EVENTS.ADD_EVENT" | translate }}
+    </button>
+  </div>
+  <div class="mt-4">
+    <h2 class="titles" *ngIf="!event">
+      {{ "NEDSS.EVENTS.PATIENTS_COUNTS" | translate }} ({{ pages }})
+    </h2>
+    <h2 class="titles" *ngIf="event">
+      {{ "NEDSS.EVENTS.EVENTS_COUNTS" | translate }} ({{ pages }})
+    </h2>
+  </div>
+</div>
+<div
+  class="table-reponsive mt-4 shadow border rounded bg-dark-mode"
+  *ngIf="!noData"
+>
+  <div class="p-4 pb-0">
+    <div
+      class="d-flex justify-content-between align-items-center gap-2 flex-wrap"
+    >
+      <div class="mb-3">
+        <input
+          type="search"
+          class="w-100"
+          pInputText
+          (keyup)="Tablesearch($event)"
+          placeholder="{{ 'NEDSS.COMMON.SEARCH' | translate }}"
+          #searchInput
+        />
+      </div>
+      <div>
+        <div class="text-center mb-3" *ngIf="event">
+          <a (click)="exportEventsAsPdf()"
+            ><span class="pi pi-file-pdf button-export"></span
+          ></a>
+          <button
+            style="border: none; background: none"
+            [useExistingCss]="true"
+            [printStyle]="{ '.exclude-pdf': { display: 'none' } }"
+            printTitle="{{ 'NEDSS.EVENTS.EVENTS' | translate }}"
+            printSectionId="myTableElementId"
+            ngxPrint
+          >
+            <span class="pi pi-print button-export"></span>
+          </button>
+          <a (click)="exportEventsAsExcel()"
+            ><span class="pi pi-file-excel button-export"></span
+          ></a>
+        </div>
+        <div class="text-center mb-3" *ngIf="!event">
+          <a (click)="exportPatientsAsPdf()"
+            ><span class="pi pi-file-pdf button-export"></span
+          ></a>
+          <button
+            style="border: none; background: none"
+            [useExistingCss]="true"
+            [printStyle]="{ '.exclude-pdf': { display: 'none' } }"
+            printTitle="{{ 'NEDSS.EVENTS.EVENTS' | translate }}"
+            printSectionId="myTableElementId"
+            ngxPrint
+          >
+            <span class="pi pi-print button-export"></span>
+          </button>
+          <a (click)="exportPatiantsAsExcel()"
+            ><span class="pi pi-file-excel button-export"></span
+          ></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" id="myTableElementId" #myTableElementId>
+    <div class="col-12 table_report">
+      <p-table
+        class="table table-bordered"
+        [value]="dataSource"
+        [paginator]="false"
+        (sortFunction)="sort($event)"
+        [customSort]="true"
+        [sortField]="generalReportFormfilter.sortColumn"
+        [sortOrder]="generalReportFormfilter.sortOrder == 'desc' ? -1 : 1"
+      >
+        <ng-template pTemplate="header">
+          <tr class="color" *ngIf="!event">
+            <th class="exclude-pdf">
+              <input
+                class="form-check-input"
+                style="margin-top: -1.2%"
+                type="checkbox"
+                [(ngModel)]="select_all"
+                (ngModelChange)="onSelectAll($event)"
+              />
+            </th>
+            <th pSortableColumn="Name">
+              {{ "NEDSS.EVENTS.FIRST_NAME" | translate }}
+              <p-sortIcon field="FullName" class="exclude-pdf"></p-sortIcon>
+            </th>
+            <th>{{ "NEDSS.EVENTS.GOVERNMENT" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.CITY" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.HEALTH_OFFICE" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.NATIONAL_ID" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.PHONE" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.LAB_CHECKS" | translate }}</th>
+          </tr>
+          <tr class="color" *ngIf="event">
+            <th>
+              {{
+                "NEDSS.HOME.GENERAL_DATA_COMPLETION.PATIENT_COUNT" | translate
+              }}
+            </th>
+            <th pSortableColumn="Name">
+              {{ "NEDSS.EVENTS.EVENT_NAME" | translate }}
+              <p-sortIcon field="Name" class="exclude-pdf"></p-sortIcon>
+            </th>
+            <th>
+              {{ "NEDSS.EVENTS.EVENT_PATIENTDISEASES" | translate }}
+            </th>
+            <th>{{ "NEDSS.EVENTS.EVENT_GOVERNMENT" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.HEALTH_ADMINSTRATION" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.EVENT_DATE" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.EVENT_TIME" | translate }}</th>
+            <th class="exclude-pdf">
+              {{ "NEDSS.EVENTS.ACTIONS" | translate }}
+            </th>
+            <th class="exclude-pdf">
+              {{ "NEDSS.REPEATED_RECORDS.VIEW" | translate }}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-op>
+          <ng-container *ngIf="!event">
+            <tr>
+              <td class="exclude-pdf">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [checked]="select_all"
+                  (change)="onSelected(op)"
+                />
+              </td>
+              <td>
+                <span [innerHTML]="op.fullName"></span>
+              </td>
+              <td>
+                <span [innerHTML]="op.homeGovernmentName"></span>
+              </td>
+              <td>
+                <span [innerHTML]="op.homeCityName"></span>
+              </td>
+              <td>
+                <span [innerHTML]="op.homeHealthOfficeName"></span>
+              </td>
+              <td>
+                <span [innerHTML]="op.nationalId"></span>
+              </td>
+              <td>
+                <span [innerHTML]="op.phoneNo1"></span>
+              </td>
+              <td>
+                <span [innerHTML]="op.labChecksExistance"></span>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="event">
+            <tr>
+              <td *ngIf="op?.eventPatients?.[0]?.totalCount; else NoTotalCount">
+                <span [innerHTML]="op?.eventPatients?.[0]?.totalCount"></span>
+              </td>
+              <ng-template #NoTotalCount>
+                <td>0</td>
+              </ng-template>
+              <td>
+                <span [innerHTML]="op.name"></span>
+              </td>
+              <td>
+                <span [innerHTML]="op.diseaseGroupName"></span>
+              </td>
+              <td>
+                <span [innerHTML]="op.governmentName"></span>
+              </td>
+              <td>
+                <span [innerHTML]="op.healthAdministrationName"></span>
+              </td>
+              <td>
+                <span [innerHTML]="op.eventDiscoveryDate | date : 'dd/MM/yyyy'">
+                </span>
+              </td>
+              <td>
+                <span [innerHTML]="op.eventDiscoveryTime"></span>
+              </td>
+              <td class="exclude-pdf">
+                <a
+                  (click)="editEvent(op)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#AddEvent"
+                  class="text-primary fzs px-2"
+                >
+                  <i class="pi pi-pencil"></i>
+                </a>
+                <a
+                  class="text-primary fzs"
+                  data-bs-target="#exampleModal2"
+                  data-bs-toggle="modal"
+                  (click)="nameToDelete(op)"
+                >
+                  <i class="pi pi-trash"></i>
+                </a>
+              </td>
+              <td class="exclude-pdf">
+                <a
+                  (click)="viewEventPatientClick(op)"
+                  class="text-primary fzs"
+                  data-bs-target="#ViewEventPatient"
+                  data-bs-toggle="modal"
+                >
+                  <i class="pi pi-eye color"></i>
+                </a>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-template>
+      </p-table>
+      <!-- <table
+        [style.direction]="dir"
+        class="table table-hover table-striped table-sm"
+      >
+        <thead>
+          <tr class="color" *ngIf="!event">
+            <th class="exclude-pdf">
+              <input
+                class="form-check-input"
+                style="margin-top: -1.2%"
+                type="checkbox"
+                [(ngModel)]="select_all"
+                (ngModelChange)="onSelectAll($event)"
+              />
+            </th>
+            <th>{{ "NEDSS.EVENTS.FIRST_NAME" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.GOVERNMENT" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.CITY" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.HEALTH_OFFICE" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.NATIONAL_ID" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.PHONE" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.LAB_CHECKS" | translate }}</th>
+          </tr>
+          <tr class="color" *ngIf="event">
+            <th>
+              {{
+                "NEDSS.HOME.GENERAL_DATA_COMPLETION.PATIENT_COUNT" | translate
+              }}
+            </th>
+            <th>{{ "NEDSS.EVENTS.EVENT_NAME" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.EVENT_GOVERNMENT" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.HEALTH_ADMINSTRATION" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.EVENT_DATE" | translate }}</th>
+            <th>{{ "NEDSS.EVENTS.EVENT_TIME" | translate }}</th>
+            <th class="exclude-pdf">
+              {{ "NEDSS.EVENTS.ACTIONS" | translate }}
+            </th>
+            <th class="exclude-pdf">
+              {{ "NEDSS.REPEATED_RECORDS.VIEW" | translate }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="!event">
+            <tr *ngFor="let op of dataSource">
+              <td class="exclude-pdf">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [checked]="select_all"
+                  (change)="onSelected(op)"
+                />
+              </td>
+              <td>{{ op.fullName }}</td>
+              <td>{{ op.homeGovernmentName }}</td>
+              <td>{{ op.homeCityName }}</td>
+              <td>{{ op.homeHealthOfficeName }}</td>
+              <td>{{ op.nationalId }}</td>
+              <td>{{ op.phoneNo1 }}</td>
+              <td>{{ op.labChecksExistance }}</td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="event">
+            <tr *ngFor="let op of dataSource">
+              <td *ngIf="op?.eventPatients?.[0]?.totalCount; else NoTotalCount">
+                {{ op?.eventPatients?.[0]?.totalCount }}
+              </td>
+              <ng-template #NoTotalCount>
+                <td>0</td>
+              </ng-template>
+              <td>{{ op.name }}</td>
+              <td>{{ op.governmentName }}</td>
+              <td>{{ op.healthAdministrationName }}</td>
+              <td>
+                <span [innerHTML]="op.eventDiscoveryDate | date : 'dd/MM/yyyy'">
+                </span>
+              </td>
+              <td>{{ op.eventDiscoveryTime }}</td>
+              <td class="exclude-pdf">
+                <a
+                  (click)="editEvent(op)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#AddEvent"
+                  class="text-primary fzs px-2"
+                >
+                  <i class="pi pi-pencil"></i>
+                </a>
+                <a
+                  class="text-primary fzs"
+                  data-bs-target="#exampleModal2"
+                  data-bs-toggle="modal"
+                  (click)="nameToDelete(op)"
+                >
+                  <i class="pi pi-trash"></i>
+                </a>
+              </td>
+              <td class="exclude-pdf">
+                <a
+                  (click)="viewEventPatientClick(op)"
+                  class="text-primary fzs"
+                  data-bs-target="#ViewEventPatient"
+                  data-bs-toggle="modal"
+                >
+                  <i class="pi pi-eye color"></i>
+                </a>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table> -->
+    </div>
+  </div>
+  <div class="col-11 col-md-12 p-0">
+    <p-paginator
+      *ngIf="!noData"
+      [rows]="generalReportForm.value.pageSize"
+      [totalRecords]="pages"
+      (onPageChange)="paginate($event)"
+      [first]="first"
+      [currentPageReportTemplate]="
+        'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+      "
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[
+        10,
+        20,
+        30,
+        40,
+        50,
+        70,
+        100,
+        200,
+        500,
+        1000,
+        2000,
+        pages >= 5000 ? pages : 5000
+      ]"
+    ></p-paginator>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal modal-md fade opast"
+  id="AddtoEvent"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog bord-round color" role="document">
+    <form [formGroup]="patientToEventForm">
+      <div class="modal-content bg-dark-mode">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitleId">
+            {{ "NEDSS.EVENTS.ADD_TO_EVENT" | translate }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.EVENT_NAME" | translate }}
+                    <Span style="color: red">*</Span>
+                  </label>
+                  <div *ngIf="currentLang == 'ar'">
+                    <p-dropdown
+                      (onChange)="onEventChanged()"
+                      [options]="EventShow"
+                      [(ngModel)]="selectedEventId"
+                      optionLabel="name"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="events"
+                      [filter]="true"
+                      filterBy="name"
+                      formControlName="eventId"
+                    >
+                    </p-dropdown>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <p-dropdown
+                      (onChange)="onEventChanged()"
+                      [options]="EventShow"
+                      [(ngModel)]="selectedEventId"
+                      optionLabel="name"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="events"
+                      [filter]="true"
+                      filterBy="name"
+                      formControlName="eventId"
+                    >
+                    </p-dropdown>
+                  </div>
+                </div>
+                <!-- <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.EVENT_NAME" | translate }}
+                    <Span style="color: red">*</Span>
+                  </label>
+                  <select
+                    class="form-control select2 select2-hidden-accessible"
+                    (change)="onEventChanged()"
+                    tabindex="-1"
+                    [(ngModel)]="selectedEventId"
+                    [ngModelOptions]="{ standalone: true }"
+                    aria-hidden="true"
+                  >
+                    <option
+                      value="item.id"
+                      *ngFor="let item of EventShow"
+                      [ngValue]="item.id"
+                    >
+                      {{ item.name }}
+                    </option>
+                  </select>
+                </div> -->
+              </div>
+              <!-- <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.EVENT_CODE" | translate }}
+                    <Span style="color: red">*</Span>
+                  </label>
+                  
+                  <input required type="text" name="eventCodePatient" id="" class="form-control" [(ngModel)]="eventCodePatient"  />
+                  <small *ngIf="!isFormValid" class="form-text text-danger mess-color">
+                   {{ "NEDSS.EVENTS.required" | translate }}
+                 </small>
+                
+                  
+
+                </div>
+              </div> -->
+              <div class="col-lg-12">
+                <div class="form-group" *ngIf="notadded.length > 0">
+                  <label style="color: red !important" for="">
+                    {{ "NEDSS.EVENTS.name_already_exist" | translate }}
+                  </label>
+                  <div *ngFor="let ep of notadded">
+                    &nbsp;
+                    <span>{{ ep.patientName }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div
+                  class="form-group"
+                  *ngIf="notadded.length > 0 && eventPatientsadd.length > 0"
+                >
+                  <label
+                    style="color: green !important; font-size: 18px !important"
+                    for=""
+                  >
+                    {{ "NEDSS.EVENTS.already_added" | translate }}
+                  </label>
+                  <div *ngFor="let ep of eventPatientsadd">
+                    &nbsp;
+                    <span>{{ ep.patientName }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="d-flex w-100 gap-2 justify-content-end">
+            <button
+              id="cancelEventButton2"
+              type="button"
+              class="btn border border-color rounded-5 pr-3 pl-3 btn-lg btn-light-color"
+              data-bs-dismiss="modal"
+              (click)="patientToEventForm.reset()"
+            >
+              {{ "NEDSS.EVENTS.END" | translate }}
+            </button>
+
+            <button
+              type="button"
+              class="btn bg text-light rounded-5 pr-3 pl-3 btn-lg"
+              (click)="AddpatientToEvent()"
+              [disabled]="notadded.length > 0 || AlreadyExist"
+            >
+              {{ "NEDSS.EVENTS.SAVE" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal modal-lg fade opast"
+  id="AddEvent"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalTitleId"
+  aria-hidden="true"
+>
+  <div class="modal-dialog bord-round color" role="document">
+    <div class="modal-content bg-dark-mode">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitleId">
+          {{
+            (updatingEvent
+              ? "NEDSS.EVENTS.EDIT_TO_EVENT"
+              : "NEDSS.EVENTS.CREATE_EVENT"
+            ) | translate
+          }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form [formGroup]="AddEventForm">
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <!--Event Name-->
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.EVENT_NAME" | translate }}
+                    <Span style="color: red">*</Span>
+                  </label>
+                  <input
+                    type="text"
+                    name=""
+                    id=""
+                    class="w-100"
+                    pInputText
+                    [(ngModel)]="eventName"
+                    (blur)="
+                      generalDataService.isFirstNameValid =
+                        generalDataService.validateFirstName(eventName, true)
+                    "
+                    (keypress)="generalDataService.onNameKeyPress($event)"
+                    formControlName="name"
+                  />
+                  <small
+                    *ngIf="!generalDataService.isFirstNameValid"
+                    class="form-text text-danger mess-color"
+                  >
+                    {{
+                      generalDataService.firstNameValidationMessage | translate
+                    }}
+                  </small>
+                </div>
+              </div>
+
+              <!--event Code-->
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.EVENT_CODE" | translate }}
+                    <Span style="color: red">*</Span>
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    name=""
+                    id=""
+                    pInputText
+                    class="w-100"
+                    [(ngModel)]="eventCode"
+                    (blur)="
+                      generalDataService.isSecondNameValid =
+                        generalDataService.validateSecondName(eventCode, true)
+                    "
+                    formControlName="code"
+                  />
+                  <small
+                    *ngIf="!isFormValid"
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.EVENTS.required" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <!-- Patient Diseases -->
+              <div class="col-lg-4 mb-3">
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.PATIENTDISEASES" | translate }}
+                    <Span style="color: red">*</Span>
+                  </label>
+                  <div *ngIf="currentLang == 'ar'">
+                    <p-dropdown
+                      [options]="primaryDiseases"
+                      [(ngModel)]="selectedDiseaseGroupId"
+                      optionLabel="arabicName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      formControlName="diseaseGroupId"
+                    >
+                    </p-dropdown>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <p-dropdown
+                      [options]="primaryDiseases"
+                      [(ngModel)]="selectedDiseaseGroupId"
+                      optionLabel="englishName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      formControlName="patientDiseases"
+                    >
+                    </p-dropdown>
+                  </div>
+                </div>
+              </div>
+
+              <!--Event Discovery Time-->
+              <div class="col-lg-3 mb-">
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.EVENT_DISCOVERY_TIME" | translate }}
+                    <Span style="color: red">*</Span>
+                  </label>
+                  <input
+                    type="time"
+                    name=""
+                    id=""
+                    [class]="'form-control-' + currentLang"
+                    class="w-100"
+                    formControlName="eventDiscoveryTime"
+                  />
+                </div>
+              </div>
+
+              <!--Event Discovery Date-->
+              <div class="col-lg-3 mb-2">
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.EVENT_DISCOVERY_DATE" | translate }}
+                    <Span style="color: red">*</Span>
+                  </label>
+                  <input
+                    type="date"
+                    name=""
+                    id=""
+                    [min]="minDateE"
+                    [max]="maxDateE"
+                    [class]="'form-control-' + currentLang"
+                    class="w-100"
+                    placeholder="yyyy-MM-dd"
+                    formControlName="eventDiscoveryDate"
+                  />
+                </div>
+              </div>
+
+              <!--Event Start Date-->
+              <div class="col-lg-3 mb-2">
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.EVENT_STRART_DATE" | translate }}
+                    <Span style="color: red">*</Span>
+                  </label>
+                  <input
+                    type="date"
+                    name=""
+                    id=""
+                    [min]="minDateE"
+                    [max]="maxDateE"
+                    [(ngModel)]="startDDate"
+                    [class]="'form-control-' + currentLang"
+                    class="w-100"
+                    placeholder="{{
+                      'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate
+                    }}"
+                    formControlName="eventStartDate"
+                  />
+                </div>
+              </div>
+
+              <!--Event End Date-->
+              <div class="col-lg-3 mb-2">
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.EVENT_END_DATE" | translate }}
+                  </label>
+                  <input
+                    type="date"
+                    name=""
+                    id=""
+                    [min]="startDDate"
+                    [class]="'form-control-' + currentLang"
+                    class="w-100"
+                    placeholder="{{
+                      'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate
+                    }}"
+                    formControlName="eventEndDate"
+                  />
+                </div>
+              </div>
+
+              <!--Radio Buttons-->
+              <div class="row my-3">
+                <div
+                  class="col-lg-3 mb-3"
+                  *ngIf="
+                    activeUSerService.getAccessibleParts
+                      ?.showGovernmentEventLevel
+                  "
+                >
+                  <div class="d-flex gap-3 align-items-center">
+                    <label
+                      for="government"
+                      class="gap-1 d-flex align-items-center"
+                    >
+                      <p-radioButton
+                        [value]="eventRadio.Government"
+                        [(ngModel)]="radioEventCheck"
+                        inputId="government"
+                        formControlName="CheckEvent"
+                        (onClick)="changeEventRadio()"
+                      ></p-radioButton>
+                      {{ "NEDSS.EVENTS.GOVERNMENT" | translate }}
+                    </label>
+                  </div>
+                </div>
+
+                <div
+                  class="col-lg-3 mb-3"
+                  *ngIf="
+                    activeUSerService.getAccessibleParts
+                      ?.showDepartmentEventLevel
+                  "
+                >
+                  <div class="d-flex gap-3 align-items-center">
+                    <label
+                      for="healthAdministration"
+                      class="gap-1 d-flex align-items-center"
+                    >
+                      <p-radioButton
+                        [value]="eventRadio.HealthAdministration"
+                        [(ngModel)]="radioEventCheck"
+                        inputId="healthAdministration"
+                        formControlName="CheckEvent"
+                        (onClick)="changeEventRadio()"
+                      ></p-radioButton>
+                      <!-- <input
+                        type="radio"
+                        ngModel="radioEventCheck"
+                        id="healthAdministration"
+                        value="2"
+                        formControlName="CheckEvent"
+                        onchange="changeEventRadio(event)"
+                      /> -->
+                      {{ "NEDSS.EVENTS.ADMINISTRATION" | translate }}
+                    </label>
+                  </div>
+                </div>
+
+                <div
+                  class="col-lg-3 mb-3"
+                  *ngIf="
+                    activeUSerService.getAccessibleParts?.showBranchEventLevel
+                  "
+                >
+                  <div class="d-flex gap-3 align-items-center">
+                    <label for="Branch" class="gap-1 d-flex align-items-center">
+                      <p-radioButton
+                        [value]="eventRadio.Branch"
+                        [(ngModel)]="radioEventCheck"
+                        inputId="Branch"
+                        formControlName="CheckEvent"
+                        (onClick)="changeEventRadio()"
+                      ></p-radioButton>
+                      <!-- <input
+                      type="radio"
+                      ngModel="radioEventCheck"
+                      id="IncidentSource"
+                      value="3"
+                      formControlName="CheckEvent"
+                      onchange="changeEventRadio(event)"
+                    /> -->
+                      {{ "NEDSS.EVENTS.BRANCH" | translate }}
+                    </label>
+                  </div>
+                </div>
+
+                <div
+                  class="col-lg-3 mb-3"
+                  *ngIf="
+                    activeUSerService.getAccessibleParts
+                      ?.showUniversityEventLevel
+                  "
+                >
+                  <div class="d-flex gap-3 align-items-center">
+                    <label
+                      for="University"
+                      class="gap-1 d-flex align-items-center"
+                    >
+                      <p-radioButton
+                        [value]="eventRadio.University"
+                        [(ngModel)]="radioEventCheck"
+                        inputId="University"
+                        formControlName="CheckEvent"
+                        (onClick)="changeEventRadio()"
+                      ></p-radioButton>
+                      <!-- <input
+                      type="radio"
+                      ngModel="radioEventCheck"
+                      id="IncidentSource"
+                      value="3"
+                      formControlName="CheckEvent"
+                      onchange="changeEventRadio(event)"
+                    /> -->
+                      {{ "NEDSS.EVENTS.UNIVERSITY" | translate }}
+                    </label>
+                  </div>
+                </div>
+
+                <div
+                  class="col-lg-3 mb-3"
+                  *ngIf="
+                    activeUSerService.getAccessibleParts?.showAreaEventLevel
+                  "
+                >
+                  <div class="d-flex gap-3 align-items-center">
+                    <label for="Area" class="gap-1 d-flex align-items-center">
+                      <p-radioButton
+                        [value]="eventRadio.Area"
+                        [(ngModel)]="radioEventCheck"
+                        inputId="Area"
+                        formControlName="CheckEvent"
+                        (onClick)="changeEventRadio()"
+                      ></p-radioButton>
+                      <!-- <input
+                      type="radio"
+                      ngModel="radioEventCheck"
+                      id="IncidentSource"
+                      value="3"
+                      formControlName="CheckEvent"
+                      onchange="changeEventRadio(event)"
+                    /> -->
+                      {{ "NEDSS.EVENTS.AREA" | translate }}
+                    </label>
+                  </div>
+                </div>
+
+                <div
+                  class="col-lg-3 mb-3"
+                  *ngIf="
+                    activeUSerService.getAccessibleParts?.showSourceEventLevel
+                  "
+                >
+                  <div class="d-flex gap-3 align-items-center">
+                    <label
+                      for="IncidentSource"
+                      class="gap-1 d-flex align-items-center"
+                    >
+                      <p-radioButton
+                        [value]="eventRadio.IncidentSource"
+                        [(ngModel)]="radioEventCheck"
+                        inputId="IncidentSource"
+                        formControlName="CheckEvent"
+                        (onClick)="changeEventRadio()"
+                      ></p-radioButton>
+                      <!-- <input
+                      type="radio"
+                      ngModel="radioEventCheck"
+                      id="IncidentSource"
+                      value="3"
+                      formControlName="CheckEvent"
+                      onchange="changeEventRadio(event)"
+                    /> -->
+                      {{ "NEDSS.EVENTS.INCIDENT_SOURCE" | translate }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!--government -->
+              <div
+                class="col-lg-3 mb-2"
+                *ngIf="eventCheckResult && eventCheckResult.displayGovernments"
+              >
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.GOVERNMENT" | translate }}
+                    <Span
+                      *ngIf="eventCheckResult.needGovernments"
+                      style="color: red"
+                      >*</Span
+                    >
+                  </label>
+
+                  <!-- <p-dropdown
+                      (onChange)="addGovernmentSelected()"
+                      [options]="governments"
+                      [(ngModel)]="addSelectedgovernment"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableGovernments
+                      "
+                      optionLabel="arabicName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="governments"
+                      [required]="true"
+                      [filter]="true"
+                      filterBy="arabicName"
+                      formControlName="governmentId"
+                      (onBlur)="
+                        generalDataService.isIncidentGovernmentValid =
+                          generalDataService.checkIncidentGovernmentValid(
+                            addSelectedgovernment
+                          )
+                      "
+                    >
+                    </p-dropdown> -->
+                  <ng-multiselect-dropdown
+                    [settings]="multipleDropdownSettings"
+                    [data]="multiGovernments"
+                    [(ngModel)]="addSelectedgovernment"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableGovernments
+                    "
+                    formControlName="governmentId"
+                    (onSelectAll)="onAllGovernmentEventChanged($event)"
+                    (onDeSelectAll)="onAllGovernmentEventDisChanged($event)"
+                    (onSelect)="onGovernmentEventChanged()"
+                    (onDeSelect)="onGovernmentEventDisChanged()"
+                  >
+                  </ng-multiselect-dropdown>
+                  <div
+                    *ngIf="!generalDataService.isIncidentGovernmentValid"
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </div>
+                </div>
+              </div>
+
+              <!--Health Administration -->
+              <div
+                class="col-lg-3 mb-2"
+                *ngIf="
+                  eventCheckResult &&
+                  eventCheckResult.displayHealthAdministrations
+                "
+              >
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.ADMINISTRATION" | translate }}
+                    <Span
+                      *ngIf="eventCheckResult.needHealthAdministrations"
+                      style="color: red"
+                      >*</Span
+                    >
+                  </label>
+
+                  <!-- <p-dropdown
+                      (onChange)="addHealthAdministrationSelected()"
+                      [options]="addHealthAdministration"
+                      [(ngModel)]="addhealthAdministrationId"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableDepartments
+                      "
+                      optionLabel="arabicName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="addHealthAdministration"
+                      formControlName="healthAdministrationId"
+                      [filter]="true"
+                      filterBy="arabicName"
+                      (onBlur)="
+                        generalDataService.isIncidentHealthAdministrationValid =
+                          generalDataService.checkIncidentHealthAdministrationValid(
+                            addhealthAdministrationId
+                          )
+                      "
+                    >
+                    </p-dropdown> -->
+                  <ng-multiselect-dropdown
+                    [settings]="multipleDropdownSettings"
+                    [data]="checkHealthAdministration"
+                    [(ngModel)]="addSelectedhealthAdministration"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableDepartments
+                    "
+                    formControlName="healthAdministrationId"
+                    (onSelectAll)="
+                      onAllHealthAdministrationEventChanged($event)
+                    "
+                    (onDeSelectAll)="
+                      onAllHealthAdministrationEventDisChanged($event)
+                    "
+                    (onSelect)="onHealthAdministrationEventChanged()"
+                    (onDeSelect)="onHealthAdministrationEventDisChanged()"
+                  >
+                  </ng-multiselect-dropdown>
+
+                  <small
+                    *ngIf="
+                      !generalDataService.isIncidentHealthAdministrationValid
+                    "
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <!--Branches -->
+              <div
+                class="col-lg-3 mb-2"
+                *ngIf="eventCheckResult && eventCheckResult.displayBranchs"
+              >
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.BRANCH" | translate }}
+                    <Span
+                      *ngIf="eventCheckResult.needBranchs"
+                      style="color: red"
+                      >*</Span
+                    >
+                  </label>
+
+                  <ng-multiselect-dropdown
+                    [settings]="multipleDropdownSettings"
+                    [data]="checkBranches"
+                    [(ngModel)]="addSelectedBranch"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableBranches
+                    "
+                    formControlName="branchId"
+                    (onSelectAll)="onAllBranchEventChanged($event)"
+                    (onDeSelectAll)="onAllBranchEventDisChanged($event)"
+                    (onSelect)="onBranchEventChanged()"
+                    (onDeSelect)="onBranchEventDisChanged()"
+                  >
+                  </ng-multiselect-dropdown>
+
+                  <small
+                    *ngIf="
+                      !generalDataService.isIncidentHealthAdministrationValid
+                    "
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <!--University -->
+              <div
+                class="col-lg-3 mb-2"
+                *ngIf="eventCheckResult && eventCheckResult.displayUniversities"
+              >
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.UNIVERSITY" | translate }}
+                    <Span
+                      *ngIf="eventCheckResult.needUniversities"
+                      style="color: red"
+                      >*</Span
+                    >
+                  </label>
+
+                  <ng-multiselect-dropdown
+                    [settings]="multipleDropdownSettings"
+                    [data]="checkBranches"
+                    [(ngModel)]="addSelectedBranch"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableUniversities
+                    "
+                    formControlName="UniversityId"
+                    (onSelectAll)="onAllBranchEventChanged($event)"
+                    (onDeSelectAll)="onAllBranchEventDisChanged($event)"
+                    (onSelect)="onBranchEventChanged()"
+                    (onDeSelect)="onBranchEventDisChanged()"
+                  >
+                  </ng-multiselect-dropdown>
+
+                  <small
+                    *ngIf="
+                      !generalDataService.isIncidentHealthAdministrationValid
+                    "
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <!--Area -->
+              <div
+                class="col-lg-3 mb-2"
+                *ngIf="eventCheckResult && eventCheckResult.displayAreas"
+              >
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.AREA" | translate }}
+                    <Span *ngIf="eventCheckResult.needAreas" style="color: red"
+                      >*</Span
+                    >
+                  </label>
+
+                  <ng-multiselect-dropdown
+                    [settings]="multipleDropdownSettings"
+                    [data]="checkAreas"
+                    [(ngModel)]="addSelectedArea"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableAreas
+                    "
+                    formControlName="AreaId"
+                    (onSelectAll)="onAllAreaEventChanged($event)"
+                    (onDeSelectAll)="onAllAreaEventDisChanged($event)"
+                    (onSelect)="onAreaEventChanged()"
+                    (onDeSelect)="onAreaEventDisChanged()"
+                  >
+                  </ng-multiselect-dropdown>
+
+                  <small
+                    *ngIf="
+                      !generalDataService.isIncidentHealthAdministrationValid
+                    "
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <!--Incident Source -->
+              <div
+                class="col-lg-3 mb-2"
+                *ngIf="
+                  eventCheckResult && eventCheckResult.displayIncidentSources
+                "
+              >
+                <div class="form-group">
+                  <label for="">
+                    {{ "NEDSS.EVENTS.INCIDENT_SOURCE" | translate }}
+                    <Span
+                      *ngIf="eventCheckResult.needIncidentSources"
+                      style="color: red"
+                      >*</Span
+                    >
+                  </label>
+
+                  <ng-multiselect-dropdown
+                    [settings]="multipleDropdownSettings"
+                    [data]="checkIncidentSource"
+                    [(ngModel)]="addhomeHealthOffice"
+                    [disabled]="
+                      !activeUSerService.getAccessibleParts?.enableSources
+                    "
+                    formControlName="healthOfficeId"
+                    (onSelectAll)="onAllIncidentSourceEventChanged($event)"
+                    (onDeSelectAll)="onAllIncidentSourceDisChanged($event)"
+                    (onSelect)="onIncidentSourceChanged()"
+                    (onDeSelect)="onIncidentSourceDisChanged()"
+                  >
+                  </ng-multiselect-dropdown>
+                  <!-- <p-dropdown
+                      [options]="addHealthOfficcies"
+                      [(ngModel)]="addhomeHealthOffice"
+                      [disabled]="
+                        !activeUSerService.getAccessibleParts?.enableSources
+                      "
+                      optionLabel="arabicName"
+                      optionValue="id"
+                      autoWidth="false"
+                      [style]="{ width: '100%' }"
+                      name="addHealthOfficcies"
+                      [required]="true"
+                      [filter]="true"
+                      filterBy="arabicName"
+                      formControlName="healthOfficeId"
+                      (onBlur)="
+                        generalDataService.isIncidentSourceValid =
+                          generalDataService.checkIncidentSourceValid(
+                            addhomeHealthOffice
+                          )
+                      "
+                    >
+                    </p-dropdown> -->
+
+                  <small
+                    *ngIf="!generalDataService.isIncidentSourceValid"
+                    class="form-text text-danger mess-color"
+                  >
+                    {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                  </small>
+                </div>
+              </div>
+
+              <!--Period-->
+              <!-- <div class="col-lg-3 mb-3">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.EVENTS.PERIOD" | translate }}</label>
+                  <p-dropdown
+                    [options]="periods"
+                    optionLabel="name"
+                    optionValue="id"
+                    autoWidth="false"
+                    [style]="{ width: '100%' }"
+                    name="periods"
+                    [filter]="false"
+                    filterBy="name"
+                  >
+                  </p-dropdown>
+                </div>
+              </div> -->
+
+              <div class="row">
+                <!--Description-->
+                <div class="col-lg-6 mb-2">
+                  <div class="form-group">
+                    <label for="">
+                      {{ "NEDSS.EVENTS.DISCRIPTION" | translate }}
+                      <Span style="color: red">*</Span>
+                    </label>
+                    <!-- <textarea
+                      name=""
+                      id=""
+                      class="form-control"
+                      formControlName="description"
+                    ></textarea> -->
+                    <textarea
+                      rows="2"
+                      pInputTextarea
+                      class="w-100"
+                      formControlName="description"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <!--Address-->
+                <div class="col-lg-6 mb-2">
+                  <div class="form-group">
+                    <label for="">
+                      {{ "NEDSS.EVENTS.DETAILD_ADDRESS" | translate }}
+                      <Span style="color: red">*</Span>
+                    </label>
+                    <!-- <textarea
+                      name=""
+                      id=""
+                      class="form-control"
+                      formControlName="address"
+                    ></textarea> -->
+                    <textarea
+                      rows="2"
+                      pInputTextarea
+                      class="w-100"
+                      formControlName="address"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: center">
+            <small
+              *ngIf="!isFormValid"
+              class="form-text text-danger mess-color"
+            >
+              {{ "NEDSS.COMMON.PLEASE_FILL_NEEDED_DATA" | translate }}
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div
+            class="d-flex align-items-center justify-content-end w-100 gap-3"
+          >
+            <div>
+              <button
+                type="button"
+                id="cancelEventButton"
+                class="btn btn-warning border border-color rounded-3 pr-3 pl-3 btn-lg btn-light-color"
+                data-bs-dismiss="modal"
+                (click)="AddEventForm.reset(); updatingEvent = false"
+              >
+                {{ "NEDSS.EVENTS.END" | translate }}
+              </button>
+            </div>
+            <div *ngIf="!updatingEvent">
+              <button
+                type="submit"
+                id="addEventButton"
+                class="btn btn-info bg text-light rounded-3 pr-3 pl-3 btn-lg mx-2"
+                data-bs-target="#AddEvent"
+                *ngIf="event"
+                [disabled]="!validateAddEvent()"
+                (click)="addEvent()"
+              >
+                {{ "NEDSS.EVENTS.SAVE" | translate }}
+              </button>
+            </div>
+            <div *ngIf="updatingEvent">
+              <button
+                type="button"
+                class="btn btn-info bg text-light rounded-3 pr-3 pl-3 btn-lg mx-2"
+                data-bs-target="#AddEvent"
+                id="updateEventButton"
+                [disabled]="!validateAddEvent()"
+                (click)="updateEvent(); updatingEvent = false"
+              >
+                {{ "NEDSS.EVENTS.EDIT" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- confirm - modal -->
+
+<div
+  class="modal fade opast"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog bord-round">
+    <div class="modal-content bg-dark-mode">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.name }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="deleteEvent(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!----  View Event Patient-->
+<div
+  class="modal modal-lg fade opast"
+  id="ViewEventPatient"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalTitleId"
+>
+  <div class="modal-dialog bord-round color" role="document">
+    <form [formGroup]="ViewEventPatientForm">
+      <div class="modal-content bg-dark-mode">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitleId">
+            {{ "NEDSS.EVENTS.View_EVENT_Patient" | translate }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <table
+            [style.direction]="dir"
+            class="table table-hover table-striped table-sm"
+          >
+            <thead>
+              <tr class="color">
+                <th>{{ "NEDSS.EVENTS.FIRST_NAME" | translate }}</th>
+                <th>{{ "NEDSS.EVENTS.INCIDENT_SOURCE" | translate }}</th>
+                <th class="exclude-pdf">
+                  {{ "NEDSS.EVENTS.ACTIONS" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container>
+                <tr *ngFor="let ep of eventPatients">
+                  <td>{{ ep.patientName }}</td>
+                  <td>{{ ep.patientIncidentSource }}</td>
+                  <td>
+                    <a
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      (click)="nameToDelete(ep)"
+                      class="text-danger mess-color pi pi-trash"
+                    ></a>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- confirm - modal -->
+
+<div
+  class="modal fade opast"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog bord-round">
+    <div class="modal-content bg-dark-mode">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.pname }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="delete(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

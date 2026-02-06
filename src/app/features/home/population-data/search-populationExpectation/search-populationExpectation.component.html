@@ -1,0 +1,477 @@
+<div class="col-12 col-lg-12 color-d-2">
+  <form [formGroup]="populationExpectationForm" (ngSubmit)="findPopulation()">
+    <div class="form-titles">
+      {{ "NEDSS.HOME.POPULATION_DATA.SEARCH_POPULATION_DATA" | translate }}
+    </div>
+    <div class="card shadow">
+      <div class="card-body bg-dark-mode">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="Government">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.GOVERNEMENT"
+                    | translate
+                }}
+              </label>
+              <div *ngIf="currentLang == 'ar'">
+                <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="governmentSelected()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedGovernment"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of governments"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.arabicName }}
+                  </option>
+                </select>
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="governmentSelected()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedGovernment"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of governments"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.englishName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="administration">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.ADMINISTRATION"
+                    | translate
+                }}
+              </label>
+              <div *ngIf="currentLang == 'ar'">
+                <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="healthAdministrationSelected()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedhealthAdministrationId"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1 && this.levelId != 2"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of healthAdministration"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.arabicName }}
+                  </option>
+                </select>
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <select
+                  class="form-control select2 select2-hidden-accessible"
+                  (change)="healthAdministrationSelected()"
+                  tabindex="-1"
+                  [(ngModel)]="selectedhealthAdministrationId"
+                  aria-hidden="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1 && this.levelId != 2"
+                >
+                  <option
+                    value="item.id"
+                    *ngFor="let item of healthAdministration"
+                    [ngValue]="item.id"
+                  >
+                    {{ item.englishName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="">{{
+                "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.YEAR"
+                  | translate
+              }}</label>
+              <select name="" id="" class="form-control" formControlName="year">
+                <option *ngFor="let year of years" [value]="year">
+                  {{ year }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="">{{
+                "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.YEAR_TO_PREDICT"
+                  | translate
+              }}</label>
+              <select
+                name=""
+                id=""
+                class="form-control"
+                formControlName="expectedYear"
+              >
+                <option *ngFor="let year of years" [value]="year">
+                  {{ year }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-start mb-0">
+        <button type="submit" class="btn btn-lg bg text-light">
+          {{
+            "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.SEARCH"
+              | translate
+          }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-lg bg text-light float-end"
+          data-bs-target="#yearTransfer"
+          data-bs-toggle="modal"
+        >
+          {{
+            "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.NEWYEAR"
+              | translate
+          }}
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div
+    class="table-responsive table-none-scroll mt-4 shadow border rounded"
+    *ngIf="!noData"
+  >
+    <div class="row">
+      <div class="col-lg-6 fwb p-4 pb-0">
+        {{
+          "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.POPULATION_COUNT"
+            | translate
+        }} 
+        <span>
+          ( {{ pages }} )
+        </span>
+      </div>
+      <div class="col-lg-6 p-4 pb-0">
+        <div class="row">
+          <div class="col-7">
+            <input
+            aria-describedby="search-help"
+            pInputText
+            (blur)="search(false)" 
+            type="search"
+            name=""
+            id="search"
+            class="form-control w-100"
+            [(ngModel)]="populationFilter.searchText"
+            placeholder=" {{ 'NEDSS.COMMON.SEARCH' | translate }} ..."
+          />
+          </div>
+          <div class="col-5 pt-3 mb-2">
+            <a (click)="exportPatientsAsPdf()"
+              ><span class="bi bi-filetype-pdf button-export"></span
+            ></a>
+            <button
+              style="border: none; background: none"
+              [useExistingCss]="true"
+              [printStyle]="{ '.exclude-pdf': { display: 'none' } }"
+              printTitle="{{
+                'NEDSS.HOME.POPULATION_DATA.SEARCH_POPULATION_DATA' | translate
+              }}"
+              printSectionId="myTableElementId"
+              ngxPrint
+            >
+              <span class="bi bi-printer-fill button-export"></span>
+            </button>
+            <a (click)="exportPatiantsAsExcel()"
+              ><span class="bi bi-file-earmark-excel-fill button-export"></span
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12" id="myTableElementId" #myTableElementId>
+        <p-table
+          class="table"
+          [style.direction]="dir"
+          [value]="populations"
+          [paginator]="false"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.GOVERNEMENT"
+                    | translate
+                }}
+              </th>
+              <th>
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.ADMINISTRATION"
+                    | translate
+                }}
+              </th>
+              <!-- <th>
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.INCIDENT_SOURCE"
+                    | translate
+                }}
+              </th> -->
+              <th>
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.YEAR"
+                    | translate
+                }}
+              </th>
+              <th>
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.POPULATION_COUNT"
+                    | translate
+                }}
+              </th>
+              <th>
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.YEAR_TO_PREDICT"
+                    | translate
+                }}
+              </th>
+              <th>
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.POPULATION_COUNT"
+                    | translate
+                }}
+              </th>
+              <!-- <th class="exclude-pdf">
+                {{
+                  "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.OPERATIONS"
+                    | translate
+                }}
+              </th> -->
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>
+                <span [innerHTML]="item.governmentName"></span>
+              </td>
+
+              <td>
+                <span [innerHTML]="item.healthAdministrationName"></span>
+              </td>
+              <!-- <td>
+                <span [innerHTML]="item.incidentSourceName"></span>
+              </td> -->
+              <td>
+                <span [innerHTML]="item.year"></span>
+              </td>
+              <td>
+                <span [innerHTML]="item.populationCount"></span>
+              </td>
+              <td>
+                <span [innerHTML]="item.expectedYear"></span>
+              </td>
+
+              <td>
+                <span [innerHTML]="item.expectedPopulationCount"></span>
+              </td>
+
+              <!-- <td class="exclude-pdf">
+                <a
+                  [routerLink]="[
+                    '/home/population-data/edit-population-data',
+                    item.id
+                  ]"
+                  class="text-primary pi pi-pencil"
+                ></a>
+                &nbsp;&nbsp;
+                <a
+                  data-bs-target="#exampleModal2"
+                  data-bs-toggle="modal"
+                  (click)="nameToDelete(item)"
+                  class="text-danger mess-color bi bi-trash-fill"
+                ></a>
+              </td> -->
+            </tr>
+          </ng-template>
+        </p-table>
+        <div class="row" [hidden]="!noData">
+          <div class="no-data content-center">
+            <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+            <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12 p-0" style="margin-bottom: 4px">
+        <p-paginator
+          *ngIf="!noData"
+          [rows]="populationFilter.pageSize"
+          [totalRecords]="pages"
+          (onPageChange)="paginate($event)"
+          [first]="first"
+          [currentPageReportTemplate]="
+            'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+          "
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[
+            10,
+            20,
+            30,
+            40,
+            50,
+            70,
+            100,
+            200,
+            500,
+            1000,
+            2000,
+            pages >= 5000 ? pages : 5000
+          ]"
+        ></p-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- confirm - modal -->
+<!-- 
+<div
+  class="modal fade opast"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog bord-round">
+    <div class="modal-content bord-round">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red">
+          {{ underDeleting.governmentName }}
+        </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="delete(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->
+<!-- year Transfer - modal -->
+
+<div
+  class="modal fade opast"
+  id="yearTransfer"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog bord-round">
+    <form [formGroup]="calculateForm" (ngSubmit)="CalculateNewYear()">
+      <div class="modal-content bord-round">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            {{ "NOUR.YEAR_DRIFT" | translate }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="col-lg-10">
+            <div class="form-group">
+              <label for="">{{
+                "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.YEAR"
+                  | translate
+              }}</label>
+              <select
+                name=""
+                id=""
+                class="form-control"
+                formControlName="year"
+                (change)="yearChange()"
+              >
+                <option *ngFor="let year of years" [value]="year">
+                  {{ year }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-10">
+            <div class="form-group">
+              <label for="">{{
+                "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.YEAR_TO_PREDICT"
+                  | translate
+              }}</label>
+              <select
+                name=""
+                id=""
+                class="form-control"
+                formControlName="newYear"
+                (change)="yearChange()"
+              >
+                <option *ngFor="let year of years" [value]="year">
+                  {{ year }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+            {{ "NEDSS.COMMON.CANCEL" | translate }}
+          </button>
+          <button
+            type="submit"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            [disabled]="yearSubmtionDesable"
+          >
+            {{ "NOUR.DRIFT" | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

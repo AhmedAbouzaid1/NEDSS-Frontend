@@ -1,0 +1,219 @@
+<form (ngSubmit)="onSubmitForm()" #formEntity="ngForm">
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row mt-2 form-section">
+        <div class="col-2 border ">
+          <ng-container *ngIf="template==='main'">
+            <ng-container *ngTemplateOutlet="templateMainContainer"></ng-container>
+          </ng-container>
+          <ng-container *ngIf="template==='sub'">
+            <ng-container *ngTemplateOutlet="templateSubContainer"></ng-container>
+          </ng-container>
+          <ng-container *ngIf="template==='control'">
+            <ng-container *ngTemplateOutlet="templateControle"></ng-container>
+          </ng-container>
+        </div>
+        <div class="col-8">
+          <div class="row justify.content-around">
+            <div class="col-6">
+              <button (click)="OnAddMainContainer()" type="button" class="btn btn-success  " data-container="body"
+                title="print"> {{
+                "NEDSS.HOME.USERS.AUDIT-TRIAL.Adding a new Section" | translate }}
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
+            <div class="col-6">
+              <button type="submit" class="btn btn-info  " data-container="body" title="print"> {{
+                "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+                <i class="bi bi-save"></i>
+              </button>
+            </div>
+
+          </div>
+          <div class="row ">
+            <div class="form-container mt-3" id="Dynamicform">
+              <ng-container *ngFor="let item of form;let mainIndex=index; trackBy: trackByFn">
+                <div [ngStyle]=" getDynamicStyles(item.id)" id=" {{item.id}}" class="main-container">
+                  <div class="main-actions" title="الرئيسى">
+                    <i (click)="deleteMainContainer(item.id )"
+                      class="text-danger mess-color bi bi-trash action-icon fa-3x"></i>
+                    <i (click)="openMainContainer(item.id,templateMainContainer)"
+                      class="text-info  bi bi-eye action-icon   "></i>
+                    <i (click)="addSubContainer(item.id)" class="text-succes  bi bi-plus action-icon  "></i>
+                  </div>
+                  <ng-container *ngFor="let container of item.subContainers;let index=index; trackBy: trackByFn">
+                    <div (dragover)="allowDrop($event)" (drop)="dropControl($event)" id="{{container.id}}"
+                      [ngStyle]=container.properties class="sub-container">
+                      <div class="actions">
+                        <i (click)="deleteSubContainer(container.id )"
+                          class="text-danger mess-color bi bi-trash action-icon  "></i>
+                        <i (click)="openContainer(container.id,templateSubContainer)"
+                          class="text-info  bi bi-eye action-icon  "></i>
+                        <i (click)="addControl(container.id)" class="text-success bi bi-plus action-icon "></i>
+                      </div>
+                      <ng-container *ngFor="let control of container.controls; trackBy: trackByFn">
+                        <build-control (onControlDelete)="onControlDelete($event)"
+                          (onControlProperty)="onControlProperty($event,templateControle)" [dataBase]="dataBase"
+                          [control]="control"
+                          (onModelChange)="formBuild[control.id]=$event.target.value"></build-control>
+                      </ng-container>
+                    </div>
+
+
+                  </ng-container>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="col-2 border">
+          <ng-container *ngFor="let control of controls ; trackBy: trackByFn">
+            <div draggable="true" (dragstart)="drag(control.id)" class="control-drag">{{control.nameAr}}</div>
+          </ng-container>
+
+        </div>
+
+
+      </div>
+    </div>
+  </section>
+</form>
+
+<ng-template #templateMainContainer>
+  <div id="sub-container-model">
+    <div class="modal-header bg-dark p-1">
+      <ul class="  nav nav-tabs " id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-home-tab" data-toggle="pill" data-target="#pills-home" type="button"
+            role="tab" aria-controls="pills-home" aria-selected="true">الخصائص</button>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <div class="modal-body">
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <ng-container *ngFor="let item of properties">
+              <div class="form-row">
+                <div class="col-12">
+                  <label>{{item.name}}</label>
+                  <input type="{{item.type}}" class="form-control" [(ngModel)]="mainContainer.properties[item.name]" />
+                </div>
+
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #templateSubContainer>
+  <div id="sub-container-model">
+
+
+    <div class="modal-header bg-dark p-1">
+      <ul class="  nav nav-tabs " id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-home-tab" data-toggle="pill" data-target="#pills-home" type="button"
+            role="tab" aria-controls="pills-home" aria-selected="true">الخصائص</button>
+        </li>
+
+
+      </ul>
+
+    </div>
+
+    <div>
+
+      <div class="modal-body">
+
+
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+            <ng-container *ngFor="let item of properties">
+
+              <div class="form-row">
+                <div class="col-12">
+                  <label>{{item.name}}</label>
+
+                  <input type="{{item.type}}" class="form-control" [(ngModel)]="subContainer?.properties[item?.name]" />
+                </div>
+
+              </div>
+            </ng-container>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</ng-template>
+<ng-template #templateControle>
+  <div id="control">
+    <div class="modal-header bg-dark p-1">
+      <ul class="  nav nav-tabs " id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-home-tab" data-toggle="pill" data-target="#pills-home" type="button"
+            role="tab" aria-controls="pills-home" aria-selected="true">الخصائص</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-profile-tab" data-toggle="pill" data-target="#pills-profile" type="button"
+            role="tab" aria-controls="pills-profile" aria-selected="false">الحقول</button>
+        </li>
+
+      </ul>
+
+    </div>
+
+    <div>
+
+      <div class="modal-body">
+
+
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <ng-container *ngFor="let item of properties; trackBy: trackByFn">
+
+              <div class="form-row">
+                <div class="col-12">
+                  <label>{{item.name}}</label>
+                  <input type="{{item.type}}" class="form-control"
+                    [(ngModel)]="controlSelected?.properties[item?.name]" />
+                </div>
+
+              </div>
+            </ng-container>
+
+
+          </div>
+          <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <div class="form-row">
+              <div class="col-12">
+                <label>label</label>
+                <input type="text" class="form-control" [(ngModel)]="controlSelected.label" />
+              </div>
+              <div class="col-12">
+                <label>list</label>
+                <input type="text" class="form-control" [(ngModel)]="controlSelected.listItem" />
+              </div>
+            </div>
+
+            <select [(ngModel)]="controlSelected.type" class="custom-select custom-select-sm rounded-0  " name="type">
+              <ng-container *ngFor="let item   of controls">
+                <option value="{{item.type}}">{{item.nameAr}}</option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,488 @@
+<div class="row">
+  <div class="col-11 col-md-5">
+    <h2 class="titles">
+      <span class="fs-5">
+        {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.ADDSPECIALSYMPTOMS" | translate }}
+      </span>
+    </h2>
+  </div>
+  <div class="col-11 col-md-7">
+    <div class="form-group row mt-4">
+      <label for="" class="col-lg-3 mt-3">
+        <!-- {{
+        "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.selectDisease"
+        | translate
+        }} -->
+      </label>
+      <div class="col-lg-9">
+        <div *ngIf="currentLang == 'ar'">
+          <p-dropdown (onChange)="onDiseaseChange($event)" [options]="diseases"
+            [(ngModel)]="diseasesFieldForm.diseaseGroupId" optionLabel="arabicName" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="diseaseId" [filter]="true" filterBy="arabicName"
+            [placeholder]="'NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.selectDisease' | translate">
+          </p-dropdown>
+        </div>
+        <div *ngIf="currentLang == 'en'">
+          <p-dropdown (onChange)="onDiseaseChange($event)" [options]="diseases"
+            [(ngModel)]="diseasesFieldForm.diseaseGroupId" optionLabel="englishName" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="diseaseId" [filter]="true" filterBy="arabicName"
+            [placeholder]="'NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.selectDisease' | translate">
+          </p-dropdown>
+        </div>
+
+        <!-- <select
+          (change)="onDiseaseChange($event)"
+          [(ngModel)]="diseasesFieldForm.diseaseGroupId"
+          name="diseaseId"
+          id="diseaseId"
+          class="form-control"
+          required
+        >
+          <option disabled>
+            {{
+              "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.selectDisease"
+                | translate
+            }}
+          </option>
+          <ng-container *ngFor="let disease of diseases">
+            <option value="{{ disease.id }}">{{ disease.arabicName }}</option>
+          </ng-container>
+        </select> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<form #diseaseFieldForm="ngForm">
+  <div class="mb-4 row">
+    <div class="col-6">
+      <div class="col-lg-6"></div>
+    </div>
+  </div>
+  <div class="card shadow color rounded" id="diseas-speci">
+    <div class="card-body bg-dark-mode">
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <div class="form-group">
+            <label for="">{{
+              "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.FieldLabel"
+              | translate
+              }}</label>
+            <input #FieldLabel="ngModel" [(ngModel)]="diseasesFieldForm.englishName" type="text" name="FieldLabel"
+              id="FieldLabel" class="w-100" pInputText required />
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="form-group">
+            <label for="">{{
+              "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.FieldLabelAr"
+              | translate
+              }}</label>
+            <input #FieldLabel="ngModel" [(ngModel)]="diseasesFieldForm.arabicName" type="text" name="fieldLabelAr"
+              id="fieldLabelAr" class="w-100" pInputText required />
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mt-3">
+          <div class="form-group">
+            <label for="">{{
+              "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.FieldType"
+              | translate
+              }}</label>
+            <p-dropdown (onChange)="onFieldTypeChange($event)" [options]="diseaseGroupQuestionTypeList"
+              [(ngModel)]="diseasesFieldForm.diseaseGroupQuestionType" optionLabel="name" optionValue="id"
+              autoWidth="false" [style]="{ width: '100%' }" name="FieldType" [filter]="false"
+              [disabled]="diseasesFieldForm?.id">
+              <ng-template let-selected pTemplate="selectedItem">
+                <div>{{ selected.name | translate }}</div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div>{{ item.name | translate }}</div>
+              </ng-template>
+            </p-dropdown>
+            <!-- <select (change)="onFieldTypeChange($event)" #FieldType="ngModel" [(ngModel)]="diseasesFieldForm.fieldType"
+              name="FieldType" id="FieldType" class="form-control" required>
+              <option value="number">
+                {{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.number"
+                | translate
+                }}
+              </option>
+              <option value="text">
+                {{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.text"
+                | translate
+                }}
+              </option>
+
+              <option value="date">
+                {{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.date"
+                | translate
+                }}
+              </option>
+              <option value="dateTime">
+                {{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.dateTime"
+                | translate
+                }}
+              </option>
+              <option value="checkBox">
+                {{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.checkBox"
+                | translate
+                }}
+              </option>
+              <option value="list">
+                {{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.list"
+                | translate
+                }}
+              </option>
+              <option value="radio">
+                {{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.radio"
+                | translate
+                }}
+              </option>
+            </select> -->
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mt-3 d-flex align-items-end">
+          <div class="form-group">
+            <label for="isRequired" class="d-block">
+              <input #isRequired="ngModel" [(ngModel)]="diseasesFieldForm.isRequired" type="checkbox" value=""
+                id="isRequired" name="isRequired" class="form-check-input" />
+              {{
+              "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.isRequired"
+              | translate
+              }}</label>
+          </div>
+        </div>
+        <ng-container *ngIf="isListShow == true">
+          <div class="col-12 col-lg-12 mt-3">
+            <div class="form-group">
+              <!-- <label for="">{{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.listItem"
+                | translate
+                }}</label> -->
+              <!-- <input #listItem="ngModel" [(ngModel)]="diseasesFieldForm.listItem" type="text" name="listItem"
+                id="listItem" class="form-control form-control-sm" required /> -->
+              <form #answersForms="ngForm">
+                <div class="row d-flex justify-content-between align-items-center">
+                  <div class="col-lg-5 col-md-6 col-sm-6 col-12">
+                    <div class="form-group">
+                      <label for="">
+                        {{
+                        "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.AnswerAr"
+                        | translate
+                        }}
+                      </label>
+                      <input #FieldLabel="ngModel" [(ngModel)]="repeaterFields.arabicName" type="text" name="AnswerAr"
+                        id="AnswerAr" class="w-100" pInputText required />
+                    </div>
+                  </div>
+
+                  <div class="col-lg-5 col-md-6 col-sm-6 col-12 mt-sm-0 mt-4">
+                    <div class="form-group">
+                      <label for="">
+                        {{
+                        "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.AnswerEn"
+                        | translate
+                        }}
+                      </label>
+                      <input #FieldLabel="ngModel" [(ngModel)]="repeaterFields.englishName" type="text" name="AnswerEn"
+                        id="AnswerEn" class="w-100" pInputText required />
+                    </div>
+                  </div>
+
+
+
+                  <div class="col-lg-2 mt-4">
+                    <p-button (onClick)="saveAnswer(answersForms)" *ngIf="!isEditAnswer"
+                      [disabled]="!answersForms.valid">
+                      <i class="fa fa-plus"></i>
+                    </p-button>
+                    <p-button (onClick)="editAnswer(answersForms)" *ngIf="isEditAnswer"
+                      [disabled]="!answersForms.valid">
+                      <i class="fa fa-check"></i>
+                    </p-button>
+                    <p-button (onClick)="resetRepeaterFields()" class="mx-3" styleClass="p-button-outlined">
+                      <i class="fa fa-x"></i>
+                    </p-button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- answers -->
+          <div class="col-12 col-lg-12">
+            <div class="card shadow color rounded mt-4 p-0">
+              <div class="card-body bg-dark-mode p-0">
+                <div class="col-12 table-responsive">
+                  <div class="card shadow color rounded">
+                    <div class="card-body bg-dark-mode p-0">
+                      <p-table class="table" [value]="
+                        diseasesFieldForm.diseaseGroupQuestionAnswers
+                            | slice
+                              : firstPageAnswer
+                              : (AnswersPaginator.pageIndex + 1) *
+                                  AnswersPaginator.pageSize
+                        " [paginator]="false">
+                        <ng-template pTemplate="header">
+                          <tr>
+                            <th>
+                              <span>{{
+                                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.AnswerAr"
+                                | translate
+                                }}</span>
+                            </th>
+                            <th>
+                              <span>{{
+                                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.AnswerEn"
+                                | translate
+                                }}</span>
+                            </th>
+                            <th>
+                              <span>{{
+                                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
+                                | translate
+                                }}</span>
+                            </th>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item let-idx="rowIndex">
+                          <tr>
+                            <td>
+                              <span> {{ item?.arabicName }} </span>
+                            </td>
+                            <td>
+                              <span> {{ item?.englishName }} </span>
+                            </td>
+                            <td>
+                              <a (click)="startEditAnswer(idx)" class="text-primary pi pi-pencil"></a>
+                              &nbsp;&nbsp;
+                              <a (click)="RemoveAnswer(idx)" class="text-danger mess-color pi pi-trash px-4"></a>
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                      <div class="col-lg-12 p-0" style="margin-bottom: 4px">
+                        <p-paginator *ngIf="diseasesFieldForm?.diseaseGroupQuestionAnswers?.length"
+                          [rows]="AnswersPaginator.pageSize"
+                          [totalRecords]="diseasesFieldForm?.diseaseGroupQuestionAnswers?.length"
+                          (onPageChange)="paginateAnswers($event)" [first]="firstPageAnswer"
+                          [currentPageReportTemplate]="
+                            'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+                          " [showCurrentPageReport]="false" [rowsPerPageOptions]="[5]"></p-paginator>
+                      </div>
+                      <div class="row" *ngIf="!diseasesFieldForm?.diseaseGroupQuestionAnswers?.length">
+                        <div class="no-data content-center">
+                          <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+                          <span>{{
+                            "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.No_Answers"
+                            | translate
+                            }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+
+
+        <div class="col-lg-12 mt-3">
+          <p-button (click)="save()" *ngIf="!isEdit"
+            [disabled]="!diseasesFieldForm.diseaseGroupId || !diseaseFieldForm.valid || (isListShow && !diseasesFieldForm?.diseaseGroupQuestionAnswers?.length)">
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+          </p-button>
+
+          <p-button (click)="edit()" *ngIf="isEdit"
+            [disabled]="!diseasesFieldForm.diseaseGroupId || !diseaseFieldForm.valid || (isListShow && !diseasesFieldForm?.diseaseGroupQuestionAnswers?.length)">
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.EDIT" | translate }}
+          </p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="table-reponsive mt-4 shadow border rounded" *ngIf="!noData">
+  <div class="row">
+    <div class="col-lg-7 fwb p-4 pb-0">
+      {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.FEILDS" | translate }}
+      {{ pages }}
+    </div>
+    <div class="col-lg-5 p-4 pb-0">
+      <div class="row">
+        <div class="col-8">
+          <!-- <input type='search' name='' id='' class='form-control' placeholder='بحث ...'> -->
+          <input type="search" class="form-control" [(ngModel)]="diseaseFieldFilter.searchText"
+            placeholder="{{ 'NEDSS.COMMON.SEARCH' | translate }}" #searchInput />
+          <!-- <i class="text-dark fa fa-times" style="margin-left: -24px; margin-right: -24px" (click)="clearSearch()"></i> -->
+        </div>
+        <!-- <div class="col-4 text-start">
+          <a routerLink="#"><span class="bi bi-filetype-pdf"></span></a>
+          <a routerLink="#"><span class="bi bi-printer-fill"></span></a>
+          <a routerLink="#"><span class="bi bi-filetype-csv"></span></a>
+          <a routerLink="#"><span class="bi bi-file-earmark-excel-fill"></span></a>
+        </div> -->
+      </div>
+    </div>
+    <div class="table-responsive table-none-scroll">
+      <p-table [value]="diseasesField" (sortFunction)="sort($event)" [customSort]="true" [sortField]="'fieldLabel'"
+        [sortOrder]="1" [paginator]="false">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="englishName">
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.FieldLabel"
+                | translate
+                }}</span>
+              <p-sortIcon field="englishName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="arabicName">
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.FieldLabelAr"
+                | translate
+                }}</span>
+              <p-sortIcon field="arabicName"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="diseaseGroupQuestionType">
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.FieldType"
+                | translate
+                }}</span>
+              <p-sortIcon field="diseaseGroupQuestionType"></p-sortIcon>
+            </th>
+            <th pSortableColumn="isRequired">
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.isRequired"
+                | translate
+                }}</span>
+              <p-sortIcon field="isRequired"></p-sortIcon>
+            </th>
+            <!-- <th pSortableColumn="listItem">
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.listItem"
+                | translate
+                }}</span>
+              <p-sortIcon field="listItem"></p-sortIcon>
+            </th> -->
+            <th>
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
+                | translate
+                }}</span>
+            </th>
+            <th>
+              <span></span>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>
+              <span [innerHTML]="
+                  item.englishName
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "></span>
+            </td>
+            <td>
+              <span [innerHTML]="
+                  item.arabicName
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "></span>
+            </td>
+
+            <td>
+              <span [innerHTML]="
+                  ((diseaseGroupQuestionTypeList | filter : item.diseaseGroupQuestionType : 'id')?.[0]?.name | translate)
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "></span>
+            </td>
+            <td>
+              <span [innerHTML]="
+                  item.isRequired
+                    ? 'مطلوب'
+                    : ('غير مطلوب'
+                      | highlighter : diseaseFieldFilter.searchText : 'partial')
+                "></span>
+            </td>
+            <!-- <td>
+              <span [innerHTML]="
+                  item.listItem
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "></span>
+            </td> -->
+            <td>
+              <a (click)="getById(item.id)" class="text-primary pi pi-pencil"></a>
+              &nbsp;&nbsp;
+              <a data-bs-target="#exampleModal2" data-bs-toggle="modal" (click)="nameToDelete(item)"
+                class="text-danger mess-color bi bi-trash-fill"></a>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div class="col-lg-12 p-0" style="margin-bottom: 4px">
+        <p-paginator *ngIf="!noData" [rows]="diseaseFieldFilter.pageSize" [totalRecords]="pages"
+          (onPageChange)="paginate($event)" [first]="first" [currentPageReportTemplate]="
+            'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+          " [showCurrentPageReport]="false" [rowsPerPageOptions]="[
+            10,
+            20,
+            30,
+            40,
+            50,
+            70,
+            100,
+            200,
+            500,
+            1000,
+            2000,
+            pages >= 5000 ? pages : 5000
+          ]"></p-paginator>
+      </div>
+      <div class="row" [hidden]="!noData">
+        <div class="no-data content-center">
+          <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+          <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- confirm - modal -->
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.arabicName }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="delete(underDeleting.id)" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

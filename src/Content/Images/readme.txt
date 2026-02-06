@@ -1,0 +1,1 @@
+this folder is to contain the images that is independent of the theme and the module

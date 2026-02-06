@@ -1,0 +1,328 @@
+<p class="text-primary mt-4 fwb">
+  {{ "NEDSS.REPEATED_RECORDS.MERGE_PROPERITES" | translate }}
+</p>
+<form [formGroup]="migrationForm" (ngSubmit)="SolveConflict()">
+  <div class="card border">
+    <div class="card-body">
+      <div class="row color">
+        <div class="col-lg-12">
+          <div class="row border-bottom mb-4 pb-4">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-lg-1 fwb">
+                  {{ "NEDSS.REPEATED_RECORDS.CHOOSE" | translate }}:
+                </div>
+                <div class="col-lg-9">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <div class="form-check">
+                        <input class="form-check-input toggleRecords" type="radio" name="select" value="vars"
+                          [formControl]="SelectionCategories" />
+                        <label class="form-check-label" for="">
+                          {{ "NEDSS.REPEATED_RECORDS.VARIABLES" | translate }}
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div class="form-check">
+                        <input class="form-check-input toggleRecords" type="radio" name="select" id="" value="records"
+                          [formControl]="SelectionCategories" />
+                        <label class="form-check-label" for="">
+                          {{ "NEDSS.REPEATED_RECORDS.RECORDS" | translate }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-9 mt-4" *ngIf="SelectionCategories.value == 'records'">
+                  <div class="row" id="recordesContainer">
+                    <div class="col-lg-3" *ngFor="let item of list; let i = index">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="log" value="{{ i }}"
+                          [formControl]="RecordToKeep" />
+                        <label class="form-check-label" for="">
+                          {{ "NEDSS.REPEATED_RECORDS.RECORD" | translate }}
+                          {{ i + 1 }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-lg-1 fwb">التقصي:</div>
+                                        <div class="col-lg-9">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input followUpToggle" type="radio"
+                                                            name="Taqassy" value="1" formControlName="Taqassy">
+                                                        <label class="form-check-label" for="">
+                                                            تم
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input followUpToggle" type="radio"
+                                                            name="Taqassy" id="" value="0" formControlName="Taqassy">
+                                                        <label class="form-check-label" for="">
+                                                            لم يتم
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6" *ngIf="migrationForm.value.Taqassy == 1" >
+                                                    <div class="form-group">
+                                                        <div class="row "  id="followUpContainer">
+                                                            <div class="col-lg-4 mt-2">
+                                                                <label for="">ناريخ التقصي</label>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                <input type="date" name="" placeholder="dd/mm/yyyy" id="" [class]="'form-control-'+ currentLang" formControlName="TaqassyDate">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+          </div>
+        </div>
+        <ng-container *ngIf="SelectionCategories.value == 'vars'">
+          <input type="number" hidden formControlName="id" [(ngModel)]="list[0].id" />
+          <div class="col-lg-3 mt-4 border-left border-1 border-theme_7" *ngFor="let item of list; let i = index">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for=""><input type="radio" name="lastUpdateDate" [value]="list[i].id"
+                      formControlName="lastUpdateDate" />{{
+                    "NEDSS.REPEATED_RECORDS.LAST_UPDATE" | translate
+                    }}</label>
+
+                  <input type="text" #lastUpdateDate [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
+                    [(ngModel)]="list[i].caseDiscoveryDate" [ngModelOptions]="{standalone: true}" readonly />
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    <input type="radio" name="governmentId" [value]="list[i].id" formControlName="governmentId" />
+                    {{ "NEDSS.REPEATED_RECORDS.GOVERNMENT" | translate }}</label>
+                  <input type="text" id="" class="form-control" [(ngModel)]="list[i].governmentName"
+                    [ngModelOptions]="{standalone: true}" readonly />
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    <input type="radio" name="healthAdminstrationId" [value]="list[i].id"
+                      formControlName="healthAdminstrationId" />{{
+                    "NEDSS.REPEATED_RECORDS.HEALTH_ADMINISTRATION" | translate
+                    }}
+                  </label>
+                  <input type="text" id="" class="form-control" [(ngModel)]="list[i].healthAdministrationName"
+                    [ngModelOptions]="{standalone: true}" readonly />
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    <input type="radio" name="reportSourceId" [value]="list[i].id" formControlName="reportSourceId" />
+                    {{ "NEDSS.REPEATED_RECORDS.INCIDENT_SOURCE" | translate }}
+                  </label>
+                  <input type="text" id="" class="form-control" [(ngModel)]="list[i].incidentSourceName"
+                    [ngModelOptions]="{standalone: true}" readonly />
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="firstName">
+                    <input type="radio" name="firstName" [value]="list[i].id" formControlName="firstName" />
+                    {{ "NEDSS.REPEATED_RECORDS.CASE_NAME" | translate }}</label>
+                  <input type="text" id="" class="form-control" [(ngModel)]="list[i].firstName"
+                    [ngModelOptions]="{standalone: true}" readonly />
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    <input type="radio" name="secondName" [value]="list[i].id" formControlName="secondName" />
+                    {{ "NEDSS.REPEATED_RECORDS.FATHER_NAME" | translate }}
+                  </label>
+                  <input type="text" id="" class="form-control" [value]="list[i].secondName" readonly />
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    <input type="radio" name="thirdName" [value]="list[i].id" formControlName="thirdName" />
+                    {{
+                    "NEDSS.REPEATED_RECORDS.GRANDFATHER" | translate
+                    }}</label>
+                  <input type="text" class="form-control" [(ngModel)]="list[i].thirdName"
+                    [ngModelOptions]="{standalone: true}" readonly />
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    <input type="radio" name="familyName" [value]="list[i].id" formControlName="familyName" />
+                    {{
+                    "NEDSS.REPEATED_RECORDS.FAMILY_NAME" | translate
+                    }}</label>
+                  <input type="text" class="form-control" [(ngModel)]="list[i].familyName"
+                    [ngModelOptions]="{standalone: true}" readonly />
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    <input type="radio" name="nationalId" [value]="list[i].id" formControlName="nationalId" />
+                    {{
+                    "NEDSS.REPEATED_RECORDS.NATIONAL_ID" | translate
+                    }}</label>
+                  <input type="text" class="form-control" [(ngModel)]="list[i].nationalId"
+                    [ngModelOptions]="{standalone: true}" readonly />
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    <input type="radio" name="phone" [value]="list[i].id" formControlName="phone" />
+                    {{ "NEDSS.REPEATED_RECORDS.PHONE" | translate }}</label>
+                  <input type="text" class="form-control" [(ngModel)]="list[i].phone"
+                    [ngModelOptions]="{standalone: true}" readonly />
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    <input type="radio" name="gender" [value]="list[i].id" formControlName="gender" />
+                    {{ "NEDSS.REPEATED_RECORDS.GENDER" | translate }}</label>
+                  <select name="gender" id="gender" #gender class="form-control" disabled>
+                    <option value="1">
+                      {{ "NEDSS.REPEATED_RECORDS.MALE" | translate }}
+                    </option>
+                    <option value="2">
+                      {{ "NEDSS.REPEATED_RECORDS.FEMALE" | translate }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    <input type="radio" name="age" [value]="list[i].id" formControlName="age" />
+                    {{ "NEDSS.REPEATED_RECORDS.AGE" | translate }}</label>
+                  <input type="number" class="form-control" [(ngModel)]="list[i].age"
+                    [ngModelOptions]="{standalone: true}" readonly />
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    <input type="radio" name="ageCategoryId" [value]="list[i].id" formControlName="ageCategoryId" />
+                    {{
+                    "NEDSS.REPEATED_RECORDS.AGE_CATEGORY" | translate
+                    }}</label>
+                  <select class="form-control" [(ngModel)]="list[i].ageTypeId" [ngModelOptions]="{standalone: true}"
+                    disabled>
+                    <option *ngFor="let AgeType of AgeTypes" [value]="AgeType.id">
+                      {{ AgeType.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for=""> <input type="radio" name="" id=""> المحافظة</label>
+                                        <select name="" id="" class="form-control">
+                                            <option value=""></option>
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label for="">الإدارة</label>
+                <option *ngFor="let gov of governments" [value]="gov.id">{{ gov.arabicName}}</option>
+
+                                        <select name="" id="" class="form-control">
+                                            <option value=""></option>
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div> -->
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for=""><input type="radio" name="healthOfficeId" [value]="list[i].id"
+                      formControlName="healthOfficeId" />
+                    {{ "NEDSS.REPEATED_RECORDS.HEALTH_OFFICE" | translate }}
+                  </label>
+                  <input type="text" id="" class="form-control" [(ngModel)]="list[i].incidentSourceName"
+                    [ngModelOptions]="{standalone: true}" readonly />
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container class="table-responsive table-none-scroll" *ngIf="SelectionCategories.value == 'records'">
+          <table class="table table-hover table-striped table-sm">
+            <thead>
+              <tr class="color">
+                <th>{{ "NEDSS.REPEATED_RECORDS.GROUP" | translate }}</th>
+                <th>{{ "NEDSS.REPEATED_RECORDS.REPORT_DATE" | translate }}</th>
+                <th>{{ "NEDSS.REPEATED_RECORDS.NAME" | translate }}</th>
+                <th>{{ "NEDSS.REPEATED_RECORDS.FATHER_NAME" | translate }}</th>
+                <th>{{ "NEDSS.REPEATED_RECORDS.GRANDFATHER" | translate }}</th>
+                <th>{{ "NEDSS.REPEATED_RECORDS.FAMILY_NAME" | translate }}</th>
+                <th>{{ "NEDSS.REPEATED_RECORDS.ACCOMODATION" | translate }}</th>
+                <th>
+                  {{ "NEDSS.REPEATED_RECORDS.INCIDENT_SOURCE" | translate }}
+                </th>
+                <th>{{ "NEDSS.REPEATED_RECORDS.DISEASE" | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of list">
+                <td>{{ item.id }}</td>
+                <td>{{ item.caseDiscoveryDate }}</td>
+                <td>{{ item.firstName }}</td>
+                <td>{{ item.secondName }}</td>
+                <td>{{ item.thirdName }}</td>
+                <td>{{ item.familyName }}</td>
+                <td>{{ item.address }}</td>
+                <td>{{ item.incidentSourceName }}</td>
+                <td>{{ item.diseasesName }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+      </div>
+    </div>
+    <div class="card-footer text-start">
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-12 col-md-6">
+          <div class="row">
+            <div class="col-6">
+              <button type="submit" class="btn bg d-block w-100 btn-lg text-white rounded-5 mt-4">
+                {{ "NEDSS.REPEATED_RECORDS.SAVE" | translate }}
+              </button>
+            </div>
+            <div class="col-6">
+              <button type="submit" routerLink="/home/repeated-records"
+                class="btn border d-block border-3 w-100 btn-lg text-primary rounded-5 mt-4">
+                {{ "NEDSS.COMMON.CANCEL" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

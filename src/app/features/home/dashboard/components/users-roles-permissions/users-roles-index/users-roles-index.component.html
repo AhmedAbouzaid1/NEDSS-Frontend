@@ -1,0 +1,323 @@
+<div class="row">
+  <div class="col-lg-6">
+    <h2 class="titles">
+      {{ "NEDSS.HOME.USERS.ADD_USER.ROLE" | translate }}
+    </h2>
+  </div>
+  <div class="col-lg-6">
+    <a routerLink="../add-roles" class="btn bg rouded-4 text-light mt-4">
+      {{ "NEDSS.HOME.USERS.ADD_USER.ADD_ROLE" | translate }}
+    </a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-3"></div>
+  <div class="col-11">
+    <form [formGroup]="roleFilterForm" (ngSubmit)="search()">
+      <div class="card shadow mt-4 color">
+        <div class="card-body bg-dark-mode">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="name">{{
+                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ARABIC_NAME"
+                    | translate
+                }}</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-control"
+                  formControlName="arabicName"
+                />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="userType">
+                  {{
+                    "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ENGLISH_NAME"
+                      | translate
+                  }}
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-control"
+                  formControlName="englishName"
+                />
+              </div>
+            </div>
+            <div class="col-lg-6">
+                <label class="col-md-2">{{'NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ORGANIZATIONS' | translate }}</label>
+                <div *ngIf="currentLang == 'ar'">
+                    <p-dropdown 
+                        [options]="organizations" 
+                        optionLabel="arabicName"
+                        (onChange)="onOrganizationChange($event)"
+                        [style]="{ width:'100%' }">
+                    </p-dropdown>
+                </div>
+                <div *ngIf="currentLang == 'en'">
+                    <p-dropdown 
+                        [options]="organizations" 
+                        optionLabel="englishName"
+                        (onChange)="onOrganizationChange($event)"
+                        [style]="{ width:'100%' }">
+                    </p-dropdown>
+                </div>
+            </div>
+            <div class="col-lg-6">
+              <label class="col-md-2">{{'NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.LEVEL' | translate }}</label>
+              <div *ngIf="currentLang == 'ar'">
+                  <!-- <p-dropdown 
+                      [options]="levels" 
+                      optionLabel="arabicName"
+                      (onChange)="onLevelChange($event)"
+                      [style]="{ width:'100%' }">
+                  </p-dropdown> -->
+                  <p-multiSelect 
+                  [style]="{ width:'100%' }"
+                  [options]="levels" 
+                  [(ngModel)]="selectedLevelId"
+                  defaultLabel="أختر المستوى"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  (onChange)="onLevelChange($event)"
+                  [ngModelOptions]="{standalone: true}"
+                  >
+                  </p-multiSelect>
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                  <!-- <p-dropdown 
+                  [options]="levels" 
+                  optionLabel="englishName"
+                  (onChange)="onLevelChange($event)"
+                  [style]="{ width:'100%' }">
+                  </p-dropdown> -->
+                  <p-multiSelect 
+                  [style]="{ width:'100%' }"
+                  [options]="levels" 
+                  [(ngModel)]="selectedLevelId"
+                  defaultLabel="Select levels"
+                  optionLabel="englishName"
+                  optionValue="id"
+                  (onChange)="onLevelChange($event)"
+                  [ngModelOptions]="{standalone: true}"
+                  >
+                  </p-multiSelect>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-start">
+          <button type="submit" class="btn bg rounded-2 text-light">
+            {{ "NEDSS.COMMON.SEARCH" | translate }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="table-reponsive mt-4 shadow border rounded" *ngIf="!noData">
+  <div class="row">
+    <div class="col-lg-7 fwb p-4 pb-0">
+      {{
+        "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ROLE_COUNT" | translate
+      }}
+
+      {{ users?.length }}
+    </div>
+    <!-- <div class="col-lg-5 p-4 pb-0">
+      <div class="row">
+        <div class="col-8"></div>
+        <div class='col-4 pt-3 text-start'>
+          <a (click)="exportEventsAsPdf()"><span class='bi bi-filetype-pdf'></span></a>
+          <button style="border: none;background: none;" [useExistingCss]="true"
+            [printStyle]="{'.exclude-pdf': {'display': 'none'}}"
+            printTitle="{{ 'NEDSS.HOME.USERS.ADD_USER.ROLE' | translate }}" printSectionId="myTableElementId" ngxPrint>
+            <span class='bi bi-printer-fill'></span>
+          </button>
+          <a (click)="exportEventsAsExcel()"><span class='bi bi-file-earmark-excel-fill'></span></a>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-12" id="myTableElementId" #myTableElementId>
+      <p-table class="table" [value]="users" [paginator]="false">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ARABIC_NAME"
+                  | translate
+              }}</span>
+            </th>
+            <th>
+              <span>
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ENGLISH_NAME"
+                    | translate
+                }}
+              </span>
+            </th>
+            <th>
+              <span>
+                {{'NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ORGANIZATIONS' | translate }}
+              </span>
+            </th>
+            <th>
+              <span>
+                {{'NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.LEVELS' | translate }}
+              </span>
+            </th>
+            <th class="exclude-pdf">
+              <span>
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ACTIONS"
+                    | translate
+                }}
+              </span>
+            </th>
+          </tr></ng-template
+        >
+
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>
+              <span [innerHTML]="item.arabicName"></span>
+            </td>
+
+            <td>
+              <span [innerHTML]="item.englishName"></span>
+            </td>
+            <td>
+              <span [innerHTML]="item.organizationName"></span>
+            </td>
+            <td>
+              <span [innerHTML]="item.levelsNames"></span>
+            </td>
+            <td class="exclude-pdf">
+              <a
+                routerLink="../add-roles/{{ item.id }}"
+                target="_blank"
+                class="text-primary pi pi-pencil"
+              ></a>
+              &nbsp;&nbsp;
+              <!-- <a data-bs-target="#exampleModal2" data-bs-toggle="modal" class="text-danger bi bi-trash-fill"></a> -->
+              <a
+                data-bs-target="#exampleModal2"
+                data-bs-toggle="modal"
+                (click)="nameToDelete(item)"
+                class="text-danger bi bi-trash-fill"
+              ></a>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div *ngIf="noData" class="row">
+        <div class="no-data content-center">
+          <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+          <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12 p-0" style="margin-bottom: 4px">
+      <p-paginator
+        *ngIf="!noData"
+        [rows]="roleFilterForm.value.pageSize"
+        [totalRecords]="pages"
+        (onPageChange)="paginate($event)"
+        [first]="first"
+        [currentPageReportTemplate]="
+          'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+        "
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[
+          10,
+          20,
+          30,
+          40,
+          50,
+          70,
+          100,
+          200,
+          500,
+          1000,
+          2000,
+          pages >= 5000 ? pages : 5000
+        ]"
+      ></p-paginator>
+    </div>
+  </div>
+</div>
+
+<!-- confirm - modal -->
+
+<!-- <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ "NEDSS.COMMON.SURE_DELETE_ATTENTION"|translate}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE"|translate}}<strong style="color: red;"> </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{"NEDSS.COMMON.CANCEL"|translate}}
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+          {{"NEDSS.COMMON.DELETE"|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div
+  class="modal fade opast"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog bord-round">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate }}.
+        <strong style="color: red">
+          <td *ngIf="currentLang == 'ar'">{{ underDeleting2.arabicName }}</td>
+          <td *ngIf="currentLang == 'en'">{{ underDeleting2.englishName }}</td>
+        </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="nameTodelete(underDeleting2.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

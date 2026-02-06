@@ -1,0 +1,800 @@
+<!-- <h2 class="titles">أمراض الإسهال</h2> -->
+
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow mt-4 color">
+      <div class="card-body">
+        <h5 style="text-align: center; border: 1px solid; padding: 1%">
+          أمراض الإسهال
+        </h5>
+        <br />
+        <div class="row">
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">التقصي الوبائي للحالة</div>
+              <div class="col-lg-12 fwb mb-2 color-d-2">
+                عند دخول المستشفى (العلامات و الأعراض)
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">تاريخ ظهور الأعراض</label>
+                  <input type="date" [class]="'form-control-'+ currentLang" name="dateOnsetSymptomsDay1"
+                    placeholder="dd/mm/yyyy" [(ngModel)]="diarrheaData.dateOnsetSymptoms"
+                    #dateOnsetSymptomsDay1="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">درجة الحرارة</label>
+                  <input type="number" class="form-control" name="tempDegree" [(ngModel)]="diarrheaData.tempDegree"
+                    #tempDegree="ngModel" />
+                </div>
+              </div>
+
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">عدد مرات البراز في اليوم</label>
+                  <input type="text" maxlength="100" class="form-control" name="numberStoolsDay"
+                    [(ngModel)]="diarrheaData.numberStoolsDay" #numberStoolsDay="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">هل يوجد مخاط مصاحب للبراز</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.isMucusStool">
+                    <option *ngFor="let case of isMucusStools" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">هل المخاط مصاحب بدم</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.isMucusBlood">
+                    <option *ngFor="let case of isMucusBloods" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">هل البراز مائي</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.isStoolWatery">
+                    <option *ngFor="let case of isStoolWaterys" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-3 mt-4">منذ ظهور الاسهال هل عندك</div>
+                  <div class="col-lg-9">
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">قئ</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.vomit">
+                            <option *ngFor="let case of vomits" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">رغبة في القئ</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.urgeVomit">
+                            <option *ngFor="let case of urgeVomits" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">تعنية</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.meaning">
+                            <option *ngFor="let case of meanings" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">كحة</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.cough">
+                            <option *ngFor="let case of coughs" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">آلام بالمفاصل</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.jointPain">
+                            <option *ngFor="let case of jointPains" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">مغص</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.colic">
+                            <option *ngFor="let case of colics" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">صداع</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.headache">
+                            <option *ngFor="let case of headaches" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">آلام بالعضلات</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.muscleAches">
+                            <option *ngFor="let case of muscleAchess" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">احمرار بالجلد</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.rednessSkin">
+                            <option *ngFor="let case of rednessSkins" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">رعشة</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.jerk">
+                            <option *ngFor="let case of jerks" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">التهاب بالحلق</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.soreThroat">
+                            <option *ngFor="let case of soreThroats" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">تشنجات</label>
+                          <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.cramps">
+                            <option *ngFor="let case of crampss" [value]="case.id">
+                              {{ case.arabicName }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                          <label for="">أخرى</label>
+                          <input type="text" maxlength="100" class="form-control" name="other"
+                            [(ngModel)]="diarrheaData.other" #other="ngModel" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-3">الحالة العامة</div>
+                  <div class="col-9 has-labels">
+                    <label for=""><input type="radio" class="form-check-input" id="generalSituation"
+                        name="generalSituation" [(ngModel)]="diarrheaData.generalSituation" #generalSituation="ngModel"
+                        [value]="0" />
+                      بحالة جيدة
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="generalSituation"
+                        name="generalSituation" [(ngModel)]="diarrheaData.generalSituation" #generalSituation="ngModel"
+                        [value]="1" />
+                      متهيج
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="generalSituation"
+                        name="generalSituation" [(ngModel)]="diarrheaData.generalSituation" #generalSituation="ngModel"
+                        [value]="2" />
+                      غير متزن
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="generalSituation"
+                        name="generalSituation" [(ngModel)]="diarrheaData.generalSituation" #generalSituation="ngModel"
+                        [value]="3" />
+                      فاقد الوعي
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-3">العيون</div>
+                  <div class="col-9 has-labels">
+                    <label for=""><input type="radio" class="form-check-input" id="eyes" name="eyes"
+                        [(ngModel)]="diarrheaData.eyes" #eyes="ngModel" [value]="0" />
+                      عادي
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="eyes" name="eyes"
+                        [(ngModel)]="diarrheaData.eyes" #eyes="ngModel" [value]="1" />
+                      غائر
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="eyes" name="eyes"
+                        [(ngModel)]="diarrheaData.eyes" #eyes="ngModel" [value]="2" />
+                      غائر جداً و جاف
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-3">عند عرض الماء</div>
+                  <div class="col-9 has-labels">
+                    <label for=""><input type="radio" class="form-check-input" id="viewingWater" name="viewingWater"
+                        [(ngModel)]="diarrheaData.viewingWater" #viewingWater="ngModel" [value]="0" />
+                      يشرب بصورة طبيعية
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="viewingWater" name="viewingWater"
+                        [(ngModel)]="diarrheaData.viewingWater" #viewingWater="ngModel" [value]="1" />
+                      بشرب بشراهة
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="viewingWater" name="viewingWater"
+                        [(ngModel)]="diarrheaData.viewingWater" #viewingWater="ngModel" [value]="2" />
+                      غير قادر ع الشرب (يشرب بتوعك)
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="viewingWater" name="viewingWater"
+                        [(ngModel)]="diarrheaData.viewingWater" #viewingWater="ngModel" [value]="3" />
+                      لم يعرض له الماء
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-5">
+                    عند قرص جلد البطن وتركه هل يعود الجلد لطبيعته
+                  </div>
+                  <div class="col-7 has-labels">
+                    <label for=""><input type="radio" class="form-check-input" id="pinchingSkinAbdomen"
+                        name="pinchingSkinAbdomen" [(ngModel)]="diarrheaData.pinchingSkinAbdomen"
+                        #pinchingSkinAbdomen="ngModel" [value]="0" />
+                      فوراً
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="pinchingSkinAbdomen"
+                        name="pinchingSkinAbdomen" [(ngModel)]="diarrheaData.pinchingSkinAbdomen"
+                        #pinchingSkinAbdomen="ngModel" [value]="1" />
+                      ببطء
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="pinchingSkinAbdomen"
+                        name="pinchingSkinAbdomen" [(ngModel)]="diarrheaData.pinchingSkinAbdomen"
+                        #pinchingSkinAbdomen="ngModel" [value]="2" />
+                      ببطء جداً (أكثر من ثانيتين)
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-5">قوة النبض</div>
+                  <div class="col-7 has-labels">
+                    <label for=""><input type="radio" class="form-check-input" id="pulseStrength" name="pulseStrength"
+                        [(ngModel)]="diarrheaData.pulseStrength" #pulseStrength="ngModel" [value]="0" />
+                      طبيعي
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="pulseStrength" name="pulseStrength"
+                        [(ngModel)]="diarrheaData.pulseStrength" #pulseStrength="ngModel" [value]="1" />
+                      ضعيف
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="pulseStrength" name="pulseStrength"
+                        [(ngModel)]="diarrheaData.pulseStrength" #pulseStrength="ngModel" [value]="2" />
+                      غير موجود
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="pulseStrength" name="pulseStrength"
+                        [(ngModel)]="diarrheaData.pulseStrength" #pulseStrength="ngModel" [value]="3" />
+                      غير متأكد
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-5">اليافوخ الأمامي منزلق لأسفل (للرضع)</div>
+                  <div class="col-7 has-labels">
+                    <label for=""><input type="radio" class="form-check-input" id="anteriorFontanelSlidDown"
+                        name="anteriorFontanelSlidDown" [(ngModel)]="diarrheaData.anteriorFontanelSlidDown"
+                        #anteriorFontanelSlidDown="ngModel" [value]="0" />
+                      {{ "NEDSS.COMMON.YES" | translate }}
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="anteriorFontanelSlidDown"
+                        name="anteriorFontanelSlidDown" [(ngModel)]="diarrheaData.anteriorFontanelSlidDown"
+                        #anteriorFontanelSlidDown="ngModel" [value]="1" />
+                      {{ "NEDSS.COMMON.NO" | translate }}
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="anteriorFontanelSlidDown"
+                        name="anteriorFontanelSlidDown" [(ngModel)]="diarrheaData.anteriorFontanelSlidDown"
+                        #anteriorFontanelSlidDown="ngModel" [value]="2" />
+                      غير متأكد
+                    </label>
+                    <label for=""><input type="radio" class="form-check-input" id="anteriorFontanelSlidDown"
+                        name="anteriorFontanelSlidDown" [(ngModel)]="diarrheaData.anteriorFontanelSlidDown"
+                        #anteriorFontanelSlidDown="ngModel" [value]="3" />
+                      غير منطبق
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل توجد أي علامات أخرى</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.otherSign">
+                    <option *ngFor="let case of otherSigns" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
+                  <input type="text" maxlength="100" class="form-control" name="otherSymptoms"
+                    [(ngModel)]="diarrheaData.otherSymptoms" #otherSymptoms="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">لو اقل من 18 شهر، هل الطفل</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.childLess18Month">
+                    <option *ngFor="let case of childLess18Months" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">نوع الطعام</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.typeFood">
+                    <option *ngFor="let case of typeFoods" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for=""> لو طازج كيفية غسله</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.freshHowToWash">
+                    <option *ngFor="let case of freshHowToWashs" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for=""> لو مطبوخ كيفية حفظه</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.cookedHowToSave">
+                    <option *ngFor="let case of cookedHowToSaves" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-lg-12">
+                <hr />
+              </div>
+              <div class="col-12 fs-6 fwb mb-2 color-d-2">
+                قبل دخول المستشفى
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل تم اخذ مضاد حيوى فى الايام السابقة للدخول ؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.antibioticsTakenAdmission">
+                    <option *ngFor="let case of antibioticsTakenAdmissions" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">اسم المضاد</label>
+                  <input type="text" maxlength="100" class="form-control" name="nameAntithesis"
+                    [(ngModel)]="diarrheaData.nameAntithesis" #nameAntithesis="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل تم إعطاء دواء للإسهال</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.medicineDiarrhea">
+                    <option *ngFor="let case of medicineDiarrheas" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">اسم دواء الإسهال</label>
+                  <input type="text" maxlength="100" class="form-control" name="diarrheaMedicineName"
+                    [(ngModel)]="diarrheaData.diarrheaMedicineName" #diarrheaMedicineName="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">هل تم تطعيمه ضد فيروس روتا</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.vaccinatedAgainstRotavirus">
+                    <option *ngFor="let case of vaccinatedAgainstRotaviruss" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">ميعاد التطعيم</label>
+                  <input type="date" [class]="'form-control-'+ currentLang" name="vaccinationDate"
+                    placeholder="dd/mm/yyyy" [(ngModel)]="diarrheaData.vaccinationDate" #vaccinationDate="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">عدد الجرعات</label>
+                  <input type="number" class="form-control" name="numberDoses" [(ngModel)]="diarrheaData.numberDoses"
+                    #numberDoses="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">تاريخ آخر جرعة</label>
+                  <input type="date" [class]="'form-control-'+ currentLang" name="dateLastDose" placeholder="dd/mm/yyyy"
+                    [(ngModel)]="diarrheaData.dateLastDose" #dateLastDose="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-12 fwb mb-2 color-d-2">{{ "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors" | translate }}
+              </div>
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-6">
+                    خلال الـ ٧ ايام الاخيرة هل لامست انت اوطفلك اى من الحيوانات
+                    الاتية او مخلفاتهم ؟
+                  </div>
+                  <div class="col-lg-6 row">
+                    <div class="col-lg-4 form-group">
+                      <label for="">
+                        <input type="checkbox" name="" id="" />
+                        رومي
+                      </label>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                      <label for="">
+                        <input type="checkbox" name="" id="" />
+                        بط
+                      </label>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                      <label for="">
+                        <input type="checkbox" name="" id="" />
+                        فراخ
+                      </label>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                      <label for="">
+                        <input type="checkbox" name="" id="" />
+                        خنازير
+                      </label>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                      <label for="">
+                        <input type="checkbox" name="" id="" />
+                        حمام
+                      </label>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                      <label for="">
+                        <input type="checkbox" name="" id="" />
+                        أوز
+                      </label>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                      <label for="">
+                        <input type="checkbox" name="" id="" />
+                        قطط
+                      </label>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                      <label for="">
+                        <input type="checkbox" name="" id="" />
+                        كلاب
+                      </label>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-lg-4">
+                        <label class="mt-2" for="">حيوانات أخرى</label>
+                      </div>
+                      <div class="col-lg-8">
+                        <input type="text" maxlength="100" class="form-control" name="otherAnimals"
+                          [(ngModel)]="diarrheaData.otherAnimals" #otherAnimals="ngModel" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-9">
+                    خلال ال٧ ايام الاخيرة قبل مرضك ،هل كنت على اتصال (اتصال مع
+                    سوائل الجسم او عناية بشخص يعانى من الاسهال) مع اى شخص يعانى
+                    من اسهال او قئ؟
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="form-group">
+                      <label for=""></label>
+                      <select name="case" id="" class="form-control"
+                        [(ngModel)]="diarrheaData.vaccinatedAgainstRotavirus">
+                        <option *ngFor="let case of vaccinatedAgainstRotaviruss" [value]="case.id">
+                          {{ case.arabicName }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل الطفل يعاني من أي امراض مزمنة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.illnessContact">
+                    <option *ngFor="let case of illnessContacts" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">لستة المراض من الترصد</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.illnessContact">
+                    <option *ngFor="let case of illnessContacts" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل يعاني اي فرد من افراد الاسرة من أمراض مناعية بالجهاز
+                    الهضمي</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.sufferImmuneDigestive">
+                    <option *ngFor="let case of sufferImmuneDigestives" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">الأمراض المناعية</label>
+                  <input type="text" maxlength="100" class="form-control" name="immuneDiseases"
+                    [(ngModel)]="diarrheaData.immuneDiseases" #immuneDiseases="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-3">
+                درجة تاثير المرض (illness of Burden (فى الحالات الداخلى:
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">تم دخول رعاية مركزة؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.admittedIntensiveCare">
+                    <option *ngFor="let case of admittedIntensiveCares" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">الخروج النهائي</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.finalExit">
+                    <option *ngFor="let case of finalExits" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">تاريخ الخروج</label>
+                  <input type="date" [class]="'form-control-'+ currentLang" name="exitDate" placeholder="dd/mm/yyyy"
+                    [(ngModel)]="diarrheaData.exitDate" #exitDate="ngModel" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">التقصي البيئي</div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">نوع مصدر امياه بالمنزل</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.waterSource">
+                    <option *ngFor="let case of waterSources" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">أخرى</label>
+                  <input type="text" maxlength="100" class="form-control" name="other1"
+                    [(ngModel)]="diarrheaData.other1" #other1="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل يتم تخزين المياه</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.isWaterStored">
+                    <option *ngFor="let case of isWaterStoreds" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">نعم (نوع الخزان)</label>
+                  <input type="text" maxlength="100" class="form-control" name="tankType"
+                    [(ngModel)]="diarrheaData.tankType" #tankType="ngModel" />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل لوحظ تغير فى طعم او لون او رائحة مياة الشرب خلال اسبوع
+                    من ظهور الاعراض؟
+                  </label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.changeTasteColorSmellwater">
+                    <option *ngFor="let case of changeTasteColorSmellwaters" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">ماهى المسافة بين مصادر المياة والمجارى؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.distanceWaterSourcesSewage">
+                    <option *ngFor="let case of distanceWaterSourcesSewages" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">
+                يتم إستكمال هذا الجزء في حالة حدوث تفشي وبائي
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group row">
+                    <label class="col-lg-12 mt-4" for="">هل تم اخذ عينات مياة للتحليل من منزل المريض/المنطقة؟
+                    </label>
+                    <div class="col-lg-12">
+                      <select name="case" id="" class="form-control"
+                        [(ngModel)]="diarrheaData.samplesTakenAnalysisPatient">
+                        <option *ngFor="let case of samplesTakenAnalysisPatients" [value]="case.id">
+                          {{ case.arabicName }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  فى حالة نعم ،هل كانت العينة إيجابية لأى من المذكور ادناه؟
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <div class="form-check">
+                        <label class="form-check-label" for="">
+                          <input class="form-check-input" type="checkbox" value="" id="" />
+                          Campylobacter
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-check">
+                        <label class="form-check-label" for="">
+                          <input class="form-check-input" type="checkbox" value="" id="" />
+                          Salmonella species
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-check">
+                        <label class="form-check-label" for="">
+                          <input class="form-check-input" type="checkbox" value="" id="" />
+                          Entamoeba Histolytica
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-check">
+                        <label class="form-check-label" for="">
+                          <input class="form-check-input" type="checkbox" value="" id="" />
+                          Shigella species
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="row form-group">
+                        <label for="" class="col-lg-4 mt-4">أخرى</label>
+                        <div class="col-lg-8">
+                          <input type="text" maxlength="100" class="form-control" name="other2"
+                            [(ngModel)]="diarrheaData.other2" #other2="ngModel" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">ما هى انواع عينات المياة التى ثبت تلوثها؟</label>
+                    <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.waterSamplesPolluted">
+                      <option *ngFor="let case of waterSamplesPolluteds" [value]="case.id">
+                        {{ case.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">هل تم اخذ عينة من نظام المجارى؟</label>
+                    <select name="case" id="" class="form-control" [(ngModel)]="diarrheaData.sampleTakenSewerSystem">
+                      <option *ngFor="let case of sampleTakenSewerSystems" [value]="case.id">
+                        {{ case.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-start">
+        <button type="submit" class="btn bg rounded-2 text-light" (click)="save()">
+          {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

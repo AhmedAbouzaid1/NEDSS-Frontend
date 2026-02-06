@@ -1,0 +1,45 @@
+<h2 class="titles">{{"NEDSS.HELP.HELP"|translate}}</h2>
+
+<div class="card  shadow color rounded helpMargin">
+    <div class="card-body bg-dark-mode">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label for="">{{"NEDSS.HELP.MAIN_BRANCH"|translate}} </label>
+                    <select name="" id="" class="form-control" [formControl]="showHelpId">
+                        <option *ngFor="let page of AllAppPages" [value]="page.id">{{ page.arabicName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <button type="submit" (click)="showHelp()"
+                    class="btn bg pr-2 pl-2 d-inline-block m-auto mt-4 text-light">{{"NEDSS.HELP.SHOW"|translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card  shadow color rounded  mt-4">
+    <div class="card-body bg-dark-mode">
+        <div class="color-d-2 fwb"> {{specificHelp.title}}</div>
+        <div class="mt-4 color-d-3">
+            {{"NEDSS.HELP.CONTENT"|translate}}: {{specificHelp.content}}
+        </div>
+        <div class="my-4 color-d-4">{{"NEDSS.HELP.ATTACHES"|translate}}: </div>
+        <div class="row">
+            <div class="col-2" style="margin-left: 10%;" *ngFor="let item of specificHelp.optionHelpAttachments">
+                <div>
+                    <img src="../../../../assets/images/largepreview.png" style="margin-right: 20%;"
+                        class="img-fluid border">
+                </div>
+                <div>
+                    <a href="C:/Novel Co/Projects/NEDSS/Novel.NEDSS/API/{{item.path}}" class="btn text-primary">
+                        <span class="bi bi-download fwb"></span>
+                        {{item.fileName}}
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

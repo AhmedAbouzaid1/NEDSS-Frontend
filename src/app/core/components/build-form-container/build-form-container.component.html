@@ -1,0 +1,193 @@
+<form [formGroup]="form!"   >
+
+  <div class="title">
+    <div class="row my-1">
+      <div class="col-12 col-md-1">
+        <img width="50" height="50" src="../../../../Content/Images/logo.png" alt="">
+      </div>
+      <div class="col-12 col-md-10">
+        <p class="h3 text-center">{{projectFileds.nameAr}}</p>
+
+      </div>
+    </div>
+  </div>
+  <ng-container *ngFor="let main of getMainContainer() ">
+    <ng-container *ngFor="let sub of main.subContainers">
+      <ng-container *ngFor="let field of sub.controls">
+        <ng-container *ngFor="let field of sub.controls">
+          <ng-container [ngSwitch]="field.fieldType">
+
+            <div class="form-group   row    col-12 col-md-6  mb-1" *ngSwitchCase="'text'">
+              <label class="col-12 col-md-4 col-form-label "> {{field.fieldLabelAr}}
+              </label>
+              <div class="col-12 col-md-8">
+                <input  [formControlName]="field.fieldName"   type="test"
+                  class="form-control  "  [ngClass]="{
+                    'is-valid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.valid,
+                    'is-invalid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.invalid
+                  }"
+                  />
+                   <div *ngIf="getFormFiled(field.fieldName)?.touched && getFormFiled(field.fieldName)?.invalid">
+                    <div *ngIf="getFormFiled(field.fieldName)?.hasError('required')" class="text-danger"
+                       >{{
+                        "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired" | translate
+                      }}</div>
+                  </div>
+
+              </div>
+            </div>
+
+
+
+            <div class="col-12  col-md-6 row  mb-1" *ngSwitchCase="'number'">
+              <label class="col-12 col-md-4     ">{{field.fieldLabelAr}}</label>
+              <div class="col-12 col-md-8">
+                <input [formControlName]="field.fieldName" type="number" InputTirmFilter
+                  class="form-control form-control-sm " [ngClass]="{
+                    'is-valid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.valid,
+                    'is-invalid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.invalid
+                  }" />
+                  <div *ngIf="getFormFiled(field.fieldName)?.touched && getFormFiled(field.fieldName)?.invalid">
+                    <div *ngIf="getFormFiled(field.fieldName)?.hasError('required')" class="text-danger"
+                       >{{
+                        "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired" | translate
+                      }}</div>
+                  </div>
+
+              </div>
+            </div>
+            <div class="col-12  col-md-6 row  mb-1 " *ngSwitchCase="'dateTime'">
+              <label class="col-12 col-md-4     ">{{field.fieldLabelAr}}</label>
+              <div class="col-12 col-md-8">
+                <input [formControlName]="field.fieldName" type="datetime-local" InputTirmFilter
+                  class="form-control form-control-sm " [ngClass]="{
+                    'is-valid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.valid,
+                    'is-invalid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.invalid
+                  }"/>
+                  <div *ngIf="getFormFiled(field.fieldName)?.touched && getFormFiled(field.fieldName)?.invalid">
+                    <div *ngIf="getFormFiled(field.fieldName)?.hasError('required')" class="text-danger"
+                       >{{
+                        "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired" | translate
+                      }}</div>
+                  </div>
+
+              </div>
+            </div>
+
+            <div class="col-12  col-md-6 row  mb-1" *ngSwitchCase="'date'">
+              <label class="col-12 col-md-4     ">{{field.fieldLabelAr}}</label>
+              <div class="col-12 col-md-8">
+                <input  [formControlName]="field.fieldName" type="date" InputTirmFilter
+                  class="form-control form-control-sm " [ngClass]="{
+                    'is-valid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.valid,
+                    'is-invalid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.invalid
+                  }"/>
+                  <div *ngIf="getFormFiled(field.fieldName)?.touched && getFormFiled(field.fieldName)?.invalid">
+                    <div *ngIf="getFormFiled(field.fieldName)?.hasError('required')" class="text-danger"
+                       >{{
+                        "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired" | translate
+                      }}</div>
+                  </div>
+
+              </div>
+            </div>
+
+            <div class="col-12  col-md-6 row  mb-1" *ngSwitchCase="'time'">
+              <label class="col-12 col-md-4     ">{{field.fieldLabelAr}}</label>
+              <div class="col-12 col-md-8">
+                <input [formControlName]="field.fieldName" type="time" InputTirmFilter
+                  class="form-control form-control-sm " [ngClass]="{
+                    'is-valid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.valid,
+                    'is-invalid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.invalid
+                  }"/>
+                  <div *ngIf="getFormFiled(field.fieldName)?.touched && getFormFiled(field.fieldName)?.invalid">
+                    <div *ngIf="getFormFiled(field.fieldName)?.hasError('required')" class="text-danger"
+                       >{{
+                        "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired" | translate
+                      }}</div>
+                  </div>
+
+              </div>
+            </div>
+            <div class="col-12  col-md-6 row  mb-1" *ngSwitchCase="'checkbox'">
+              <label class="col-12 col-md-4     ">{{field.fieldLabelAr}}</label>
+              <div class="col-12 col-md-8 text-center">
+                <bdi>
+                  <div class="icheck-primary d-inline text-center">
+                    <input type="checkbox" [formControlName]="field.fieldName" id="{{field.fieldName}}" >
+                    <label for="{{field.fieldName}}">
+                    </label>
+                  </div>
+                </bdi>
+                <div *ngIf="getFormFiled(field.fieldName)?.touched && getFormFiled(field.fieldName)?.invalid">
+                  <div *ngIf="getFormFiled(field.fieldName)?.hasError('required')" class="text-danger"
+                     >{{
+                      "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired" | translate
+                    }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12  col-md-6 row  mb-1" *ngSwitchCase="'list'">
+              <label class="col-12 col-md-4     ">{{field.fieldLabelAr}}</label>
+              <div class="col-12 col-md-8">
+                <select class="custom-select  rounded-0  " [formControlName]="field.fieldName" [ngClass]="{
+                  'is-valid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.valid,
+                  'is-invalid': getFormFiled(field.fieldName)?.touched&& getFormFiled(field.fieldName)?.invalid
+                }">
+                  <ng-container *ngFor="let item   of getList(field.listItem)">
+                    <option value="{{item}}">{{item}}</option>
+                  </ng-container>
+                </select>
+                <div *ngIf="getFormFiled(field.fieldName)?.touched && getFormFiled(field.fieldName)?.invalid">
+                  <div *ngIf="getFormFiled(field.fieldName)?.hasError('required')" class="text-danger"
+                     >{{
+                      "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired" | translate
+                    }}</div>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-12 col-md-6 row  mb-1" *ngSwitchCase="'radio'">
+              <label class="col-12 col-md-4     ">{{field.fieldLabelAr}}</label>
+             <div class="col-12 col-md-8 text-center">
+               <div class="form-group"  >
+                  <ng-container *ngFor="let item   of getList(field.listItem);let index=index">
+                   <div class="form-check form-check-inline">
+                     <input class="form-check-input" type="radio" value="{{item}}" [formControlName]="field.fieldName" id="{{field.fieldName+index}}"  required="">
+                     <label for="{{field.fieldName+index}}" class="form-check-label">{{item}}</label>
+                     </div>
+                 </ng-container>
+                 </div>
+               <div *ngIf="getFormFiled(field.fieldName)?.touched && getFormFiled(field.fieldName)?.invalid">
+                 <div *ngIf="getFormFiled(field.fieldName)?.hasError('required')" class="text-danger"
+                   translate>filed required</div>
+               </div>
+             </div>
+           </div>
+          </ng-container>
+          </ng-container>
+</ng-container>
+      </ng-container>
+    </ng-container>
+  <!-- <div class="row report-body">
+    <ng-container *ngFor="let main of getMainContainer() ">
+      <p  *ngIf="main.title!=''" class="main-title">{{main.title}}</p>
+
+      <div class="main-container">
+      <div  >
+        <ng-container *ngFor="let sub of main.subContainers">
+          <p  *ngIf="sub.title!=''" class="main-title">{{sub.title}}</p>
+<div class="sub-container">
+
+        </div>
+        </ng-container>
+      </div>
+      </div>
+
+
+    </ng-container>
+
+
+            </div> -->
+  </form>

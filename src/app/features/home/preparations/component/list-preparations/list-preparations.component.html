@@ -1,0 +1,548 @@
+<div class="row">
+  <div class="col-6">
+    <h2 class="titles">
+      {{ "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.PREPARATIONS" | translate }}
+    </h2>
+  </div>
+  <div class="col-6">
+    <a
+      href="/#/home/preparations/add-preparations/preparations-data"
+      class="btn bg rounded-2 text-light mt-3 btn-lg"
+      [ngClass]="this.currentLang === 'ar' ? 'float-start' : 'float-end'"
+    >
+      {{ "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.ADD_NEW" | translate }}
+    </a>
+  </div>
+</div>
+<form (ngSubmit)="search()" #notInferringForm="ngForm" novalidate>
+  <div class="card shadow rounded mt-3">
+    <div class="card-body">
+      <div class="row color">
+        <div
+          class="col-lg-4 my-2"
+          *ngIf="activeUSerService.getAccessibleParts?.showGovernments"
+        >
+          <div class="form-group">
+            <label for="">
+              {{
+                "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.GOVERNEMENT"
+                  | translate
+              }}
+            </label>
+            <!-- <label for="" class="col-6 mt-2">
+              {{
+                "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.GOVERNEMENT"
+                  | translate
+              }}
+            </label> -->
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="governmentSelected()"
+                [options]="governments"
+                [(ngModel)]="selectedgovenmentId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="governments"
+                [filter]="true"
+                filterBy="arabicName"
+                [disabled]="
+                  !activeUSerService.getAccessibleParts?.enableGovernments
+                "
+              >
+              </p-dropdown>
+
+              <!-- <select
+                  [(ngModel)]="selectedgovenmentId"
+                  name="govenmentId"
+                  (change)="governmentSelected()"
+                  class="form-control"
+                  (blur)="
+                    generalDataService.isIncidentGovernmentValid =
+                      generalDataService.checkIncidentGovernmentValid(
+                        selectedgovenmentId
+                      )
+                  "
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1"
+                >
+                  <option
+                    *ngFor="let option of governments"
+                    [value]="option.id"
+                  >
+                    {{ option.arabicName }}
+                  </option>
+                </select> -->
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="governmentSelected()"
+                [options]="governments"
+                [(ngModel)]="selectedgovenmentId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="governments"
+                [filter]="true"
+                filterBy="englishName"
+                [disabled]="
+                  !activeUSerService.getAccessibleParts?.enableGovernments
+                "
+              >
+              </p-dropdown>
+
+              <!-- <select
+                  [(ngModel)]="selectedgovenmentId"
+                  name="govenmentId"
+                  (change)="governmentSelected()"
+                  class="form-control"
+                  (blur)="
+                    generalDataService.isIncidentGovernmentValid =
+                      generalDataService.checkIncidentGovernmentValid(
+                        selectedgovenmentId
+                      )
+                  "
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1"
+                >
+                  <option
+                    *ngFor="let option of governments"
+                    [value]="option.id"
+                  >
+                    {{ option.englishName }}
+                  </option>
+                </select> -->
+            </div>
+            <!-- <div
+              *ngIf="!generalDataService.isIncidentGovernmentValid"
+              class="form-text text-danger"
+            >
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </div> -->
+          </div>
+        </div>
+
+        <div
+          class="col-lg-4 my-2"
+          *ngIf="activeUSerService.getAccessibleParts?.showDepartments"
+        >
+          <div class="form-group">
+            <label for="">
+              {{
+                "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.HEALTH_ADMINISTRATION"
+                  | translate
+              }}
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="healthAdministrationSelected()"
+                [options]="healthAdministrations"
+                [(ngModel)]="SelectedhealthAdministrationId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="healthAdministrationId"
+                [filter]="true"
+                filterBy="arabicName"
+                [disabled]="
+                  !activeUSerService.getAccessibleParts?.enableDepartments
+                "
+                (onBlur)="
+                  generalDataService.isIncidentHealthAdministrationValid =
+                    generalDataService.checkIncidentHealthAdministrationValid(
+                      SelectedhealthAdministrationId
+                    )
+                "
+              >
+              </p-dropdown>
+
+              <!-- <select
+                  [(ngModel)]="SelectedhealthAdministrationId"
+                  name="healthAdministrationId"
+                  (change)="healthAdministrationSelected()"
+                  class="form-control"
+                  (blur)="
+                    generalDataService.isIncidentHealthAdministrationValid =
+                      generalDataService.checkIncidentHealthAdministrationValid(
+                        SelectedhealthAdministrationId
+                      )
+                  "
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1 && this.levelId != 2"
+                >
+                  <option
+                    *ngFor="let option of healthAdministrations"
+                    [value]="option.id"
+                  >
+                    {{ option.arabicName }}
+                  </option>
+                </select> -->
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="healthAdministrationSelected()"
+                [options]="healthAdministrations"
+                [(ngModel)]="SelectedhealthAdministrationId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="healthAdministration"
+                [filter]="true"
+                filterBy="englishName"
+                [disabled]="
+                  !activeUSerService.getAccessibleParts?.enableDepartments
+                "
+                (onBlur)="
+                  generalDataService.isIncidentHealthAdministrationValid =
+                    generalDataService.checkIncidentHealthAdministrationValid(
+                      SelectedhealthAdministrationId
+                    )
+                "
+              >
+              </p-dropdown>
+
+              <!-- <select
+                  [(ngModel)]="SelectedhealthAdministrationId"
+                  name="healthAdministrationId"
+                  (change)="healthAdministrationSelected()"
+                  class="form-control"
+                  (blur)="
+                    generalDataService.isIncidentHealthAdministrationValid =
+                      generalDataService.checkIncidentHealthAdministrationValid(
+                        SelectedhealthAdministrationId
+                      )
+                  "
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="this.levelId != 1 && this.levelId != 2"
+                >
+                  <option
+                    *ngFor="let option of healthAdministrations"
+                    [value]="option.id"
+                  >
+                    {{ option.englishName }}
+                  </option>
+                </select> -->
+            </div>
+            <!-- <small *ngIf="!generalDataService.isIncidentHealthAdministrationValid" class="form-text text-danger">
+                {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+              </small> -->
+          </div>
+        </div>
+
+        <div
+          class="col-lg-4 my-2"
+          *ngIf="activeUSerService.getAccessibleParts?.showSources"
+        >
+          <div class="form-group">
+            <label for="">
+              {{
+                "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.INCEIDENT_SOURCE"
+                  | translate
+              }}
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="incidentSourceSelected()"
+                [options]="incidentSources"
+                [(ngModel)]="SelectedincidentSourceId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="incidentSourceId"
+                [filter]="true"
+                filterBy="arabicName"
+                [disabled]="
+                  !activeUSerService.getAccessibleParts?.enableSources
+                "
+              >
+              </p-dropdown>
+
+              <!-- <select
+                  [(ngModel)]="SelectedincidentSourceId"
+                  name="incidentSourceId"
+                  (change)="incidentSourceSelected()"
+                  class="form-control"
+                  (blur)="
+                    generalDataService.isIncidentSourceValid =
+                      generalDataService.checkIncidentSourceValid(
+                        SelectedincidentSourceId
+                      )
+                  "
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="
+                    this.levelId != 1 && this.levelId != 2 && this.levelId != 3
+                  "
+                >
+                  <option
+                    *ngFor="let option of incidentSources"
+                    [value]="option.id"
+                  >
+                    {{ option.arabicName }}
+                  </option>
+                </select> -->
+            </div>
+
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="incidentSourceSelected()"
+                [options]="incidentSources"
+                [(ngModel)]="SelectedincidentSourceId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="incidentSourceId"
+                [filter]="true"
+                filterBy="englishName"
+                [disabled]="
+                  !activeUSerService.getAccessibleParts?.enableSources
+                "
+              >
+              </p-dropdown>
+
+              <!-- <select
+                  [(ngModel)]="SelectedincidentSourceId"
+                  name="incidentSourceId"
+                  (change)="incidentSourceSelected()"
+                  class="form-control"
+                  (blur)="
+                    generalDataService.isIncidentSourceValid =
+                      generalDataService.checkIncidentSourceValid(
+                        SelectedincidentSourceId
+                      )
+                  "
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="
+                    this.levelId != 1 && this.levelId != 2 && this.levelId != 3
+                  "
+                >
+                  <option
+                    *ngFor="let option of incidentSources"
+                    [value]="option.id"
+                  >
+                    {{ option.englishName }}
+                  </option>
+                </select>  -->
+
+              <!-- <small
+                *ngIf="!generalDataService.isIncidentSourceValid"
+                class="form-text text-danger"
+              >
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer d-flex justify-content-end mt-4 mb-0">
+    <button type="submit" class="btn btn-lg bg text-light">
+      <!-- <span class="bi bi-check2-circle"></span> -->
+      <span class="bi bi-search"></span>
+      {{ "NEDSS.COMMON.SEARCH" | translate }}
+    </button>
+  </div>
+</form>
+<div class="table-reponsive mt-4 shadow border rounded" *ngIf="!noData">
+  <div class="row">
+    <div class="col-lg-7 fwb p-4 pb-0">
+      {{
+        "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.PREPARATIONS_COUNT"
+          | translate
+      }}
+      {{ pages }}
+    </div>
+    <div class="col-lg-5 p-4 pb-0">
+      <div class="row">
+        <div class="col-6 col-md-8"></div>
+        <div class="col-6 col-md-4 d-flex pt-3 mb-2">
+          <a (click)="exportPatientsAsPdf()"
+            ><span class="bi bi-filetype-pdf button-export"></span
+          ></a>
+          <button
+            style="border: none; background: none"
+            [useExistingCss]="true"
+            [printStyle]="{ '.exclude-pdf': { display: 'none' } }"
+            printTitle="{{
+              'NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.PREPARATIONS'
+                | translate
+            }}"
+            printSectionId="myTableElementId"
+            ngxPrint
+          >
+            <span class="bi bi-printer-fill button-export"></span>
+          </button>
+          <a (click)="exportPatiantsAsExcel()"
+            ><span class="bi bi-file-earmark-excel-fill button-export"></span
+          ></a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="table-responsive table-none-scroll"
+      id="myTableElementId"
+      #myTableElementId
+    >
+      <p-table
+        class="table"
+        [style.direction]="dir"
+        [value]="preparations"
+        [paginator]="false"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              <span>{{
+                "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.GOVERNEMENT"
+                  | translate
+              }}</span>
+            </th>
+            <th>
+              <span>{{
+                "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.HEALTH_ADMINISTRATION"
+                  | translate
+              }}</span>
+            </th>
+            <th>
+              <span>{{
+                "NEDSS.HOME.PREPARATION.MONITOR_UNIT_LIST.INCEIDENT_SOURCE"
+                  | translate
+              }}</span>
+            </th>
+            <th class="exclude-pdf">
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
+                  | translate
+              }}</span>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>
+              <span
+                [innerHTML]="
+                  item.govenmentNamw
+                    | highlighter : preparationsFilter.searchText : 'partial'
+                "
+              ></span>
+            </td>
+
+            <td>
+              <span
+                [innerHTML]="
+                  item.healthAdministrationName
+                    | highlighter : preparationsFilter.searchText : 'partial'
+                "
+              ></span>
+            </td>
+            <td>
+              <span
+                [innerHTML]="
+                  item.incidentSourceName
+                    | highlighter : preparationsFilter.searchText : 'partial'
+                "
+              ></span>
+            </td>
+            <td class="exclude-pdf">
+              <a
+                (click)="getById(item.id)"
+                class="text-primary pi pi-pencil"
+              ></a>
+              &nbsp;&nbsp;
+              <a
+                data-bs-target="#exampleModal2"
+                data-bs-toggle="modal"
+                (click)="nameToDelete(item)"
+                class="text-danger bi bi-trash-fill"
+              ></a>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div class="row" [hidden]="!noData">
+        <div class="no-data content-center">
+          <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+          <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-11 col-md-12" style="margin-bottom: 4px">
+      <p-paginator
+        *ngIf="!noData"
+        [rows]="preparationsFilter.pageSize"
+        [totalRecords]="pages"
+        (onPageChange)="paginate($event)"
+        [first]="first"
+        [currentPageReportTemplate]="
+          'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+        "
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[
+          10,
+          20,
+          30,
+          40,
+          50,
+          70,
+          100,
+          200,
+          500,
+          1000,
+          2000,
+          pages >= 5000 ? pages : 5000
+        ]"
+      ></p-paginator>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade opast"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog bord-round">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate }}.
+        <strong style="color: red">
+          <td>{{ underDeleting.govenmentNamw }}</td>
+        </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="delete(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

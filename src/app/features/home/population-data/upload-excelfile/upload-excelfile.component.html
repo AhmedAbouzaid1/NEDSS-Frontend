@@ -1,0 +1,135 @@
+<div class="col-8 col-lg-9 color-d-2">
+    <form (submit)="Import()">
+        <div class="form-titles">{{ "NEDSS.COMMON.Upload excel file" | translate }} </div>
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <a (click)="DownloadTemplete(false)"  class="text-center d-block w-100 color">
+                            <span class="display-2 bi bi-download"></span> <br>
+                            <h6>{{ "NEDSS.COMMON.Download excel file" | translate }}</h6>
+                        </a>
+                    </div><!-- / .col-lg-2 -->
+                    <div class="col-lg-4">
+                      <a (click)="DownloadTemplete(true)"  class="text-center d-block w-100 color border-right border-color">
+                        <h6> <span class="display-2 bi bi-download"></span> <br> {{ "NEDSS.COMMON.Download_EMPTY_FILE" | translate }}</h6>
+                    </a>
+                    </div>
+                    <div class="col-lg-4">
+                        <a (click)="ImportFile.click()" 
+                            class="text-center d-block w-100 color border-right border-color">
+                            <span class="display-2 bi bi-upload"></span> <br>
+                            <h6>{{ "NEDSS.COMMON.Upload excel file" | translate }}</h6>
+                      </a>
+                        <input type="file" accept=".xlsx, .xls, .csv" #ImportFile hidden 
+                            (change)="onFileSelect($event.target)" />
+                        <div class="text-center mt-3">
+                          <h5 *ngIf="selectedFile">
+                            {{ selectedFile?.name }} &nbsp;
+                            <span id="attached" class="pi pi-trash text-danger" (click)="removeSelectedFile()"></span>
+                        </h5>
+                        </div>
+                    </div><!-- / .col-lg-6 -->
+                </div><!-- / .row -->
+            </div>
+            <div class="card-footer text-start">
+                <button [disabled]="selectedFile==null?true:false || !this.selectedGovernment || !selectedHealthAdministration || !selectedYear" type="submit" class="btn btn-lg bg text-light"> {{
+                    "NEDSS.COMMON.Upload" | translate }}</button>
+            </div>
+        </div>
+    </form>
+
+    <form action="#" [formGroup]="addPopulationFormGroup" (ngSubmit)="DownloadTemplete(false)">
+    
+      <div class="card shadow">
+        <span class="text-danger mess-color" *ngIf="pleaseComplete">  {{
+          "NOUR.Please-select-one-of-the-fields" | translate
+          }}</span>
+        <div class="card-body bg-dark-mode">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group ">
+                <div *ngIf="currentLang== 'ar'">
+                <label for="govSelect">
+                {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT" | translate }}
+                  <span class="text-danger mess-color">*</span>
+                </label>
+                <div>
+                  <p-dropdown [(ngModel)]="selectedGovernment" (onChange)="onGovernmentChanged()" [options]="governments" [ngModelOptions]="{standalone: true}"
+                    optionValue="id" optionLabel="arabicName" [style]="{width:'100%'}" 
+                    (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)"></p-dropdown>
+                  </div>
+<!--                     
+                  <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
+                    [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
+                    (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)">
+                    <option value="item.id" *ngFor="let item of governments" [ngValue]="item.id">
+                      {{item.arabicName}}
+                    </option>
+                  </select> -->
+                </div>
+              <div *ngIf="currentLang== 'en'">
+                <p-dropdown [(ngModel)]="selectedGovernment" (onChange)="onGovernmentChanged()" [options]="governments" [ngModelOptions]="{standalone: true}"
+                optionValue="id" optionLabel="englishName" [style]="{width:'100%'}" 
+                (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)"></p-dropdown>
+<!-- 
+                <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
+                  [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
+                
+                  (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)">
+                  <option value="item.id" *ngFor="let item of governments" [ngValue]="item.id">
+                    {{item.englishName}}
+                  </option>
+                </select> -->
+              </div>
+            </div>
+        </div>
+<div class="col-lg-4">
+    <div class="form-group">
+        <label for="">
+          {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.HEALTHADMIN" | translate }}
+          <span class="text-danger mess-color">*</span>
+        </label>
+        <div >
+          <!-- (change)="onHealthAdministrationChanged()" -->
+          <p-dropdown [(ngModel)]="selectedHealthAdministration" [options]="healthAdministration" [ngModelOptions]="{standalone: true}"
+          optionValue="id" optionLabel="arabicName" [style]="{width:'100%'}" 
+          (blur)="generalDataService.isIncidentHealthAdministrationValid = generalDataService.checkIncidentHealthAdministrationValid(selectedHealthAdministration)"></p-dropdown>
+
+          <!-- <select class="form-control select2 select2-hidden-accessible" 
+            [(ngModel)]="selectedHealthAdministration" aria-hidden="true" [ngModelOptions]="{standalone: true}"
+            (blur)="generalDataService.isIncidentHealthAdministrationValid = generalDataService.checkIncidentHealthAdministrationValid(selectedHealthAdministration)">
+            <option value="item.id" *ngFor="let item of healthAdministration" [ngValue]="item.id">
+              {{item.arabicName}}
+            </option>
+          </select> -->
+        </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="form-group">
+        <label for="">
+          {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.year" | translate }}
+          <span class="text-danger mess-color">*</span>
+        </label>
+        <div>
+          <!-- <select class="form-control select2 select2-hidden-accessible"
+            [(ngModel)]="selectedIncidentSource" aria-hidden="true" [ngModelOptions]="{standalone: true}"
+            >
+            <option value="item.id" *ngFor="let item of incidentSources" [ngValue]="item.id">
+              {{item.arabicName}}
+            </option>
+          </select> -->
+          <p-dropdown [options]="years" [(ngModel)]="selectedYear" [ngModelOptions]="{standalone: true}" optionLabel="year"
+          optionValue="year" [style]="{ width: '100%' }"></p-dropdown>
+        </div>
+    </div>
+  </div>
+      </div>
+    </div>
+</div>
+</form>
+</div>
+
+

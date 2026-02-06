@@ -1,0 +1,94 @@
+<!-- <p>{{patients | json}}</p> -->
+<div class="d-flex justify-content-center gap-5 mt-3 mb-3">
+    <div class="d-flex align-items-center">
+        <p-radioButton name="mergeMethod" value="pickOne" [(ngModel)]="mergeMethod" inputId="pickOne"></p-radioButton>
+        <label for="ingredient2" class="ml-2">إستخدام السجلات</label>
+
+    </div>
+
+    <div class="d-flex align-items-center">
+        <p-radioButton name="mergeMethod" value="pickEach" [(ngModel)]="mergeMethod" inputId="pickEach"></p-radioButton>
+        <label for="ingredient1" class="ml-2">إستخدام المتغيرات</label>
+    </div>
+</div>
+
+<div *ngIf="mergeMethod === 'pickOne'">
+    <div class="row">
+        <p-card *ngFor="let patient of patients;let i = index;" [header]="" class="col-md-4 mb-3">
+            <h5 class="text-center">
+                <p-radioButton name="mergeMethod" [value]="patient.id" [(ngModel)]="selectRecordId"
+                    [inputId]="patient.id.toString()" class="me-2"></p-radioButton>
+                {{( 'NEDSS.REPEATED_RECORDS.Record' | translate ) + ' ' + (i + 1)}}
+            </h5>
+            <p>
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.NAME" | translate }} :</span>
+                {{patient.firstName}}
+            </p>
+            <p>
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.FATHER" | translate }} :</span>
+                {{patient.secondName}}
+            </p>
+            <p>
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.GRANDFATHER" | translate }} :</span>
+                {{patient.thirdName}}
+            </p>
+            <p>
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.FAMILY" | translate }} : </span>
+                {{patient.familyName}}
+            </p>
+            <p>
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.GOVERNMENT" | translate }} : </span>
+                {{patient.homeGovernmentName}}
+            </p>
+            <p>
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.NATIONAL_ID" | translate }} :</span>
+                {{patient.nationalId}}
+            </p>
+            <p>
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.HEALTH_ADMINISTRATION" | translate }} :</span>
+                {{patient.homeHealthAdministrationName}}
+            </p>
+            <p>
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.HEALTH_OFFICE" | translate }} :</span>
+                {{patient.homeHealthOfficeName}}
+            </p>
+            <p>
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.AGE" | translate }} : </span>
+                {{patient.age}}
+            </p>
+            <p>
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.CASE_DISCOVERY_DATE" | translate }} : </span>
+                {{patient.caseDiscoveryDate | date:'MM/dd/yyyy - h:mm a' }}
+            </p>
+            <p>
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.ADDRESS" | translate }} : </span>
+                {{patient.address}}
+            </p>
+            <p class="mb-2">
+                <span class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.AGE_CATEGORY" | translate }} :</span>
+                {{patient.ageTypeName}}
+            </p>
+            <div>
+                <p class="fw-bold">{{ "NEDSS.REPEATED_RECORDS.DISEASES" | translate }} :</p>
+                <p *ngFor="let disease of patient.patientDiseasesGroups">
+                    <span class="ps-3">
+                        {{ disease.diseaseGroupName }}
+                        (
+                        نسبة التقصى
+                        {{ disease.diseaseGroupInvestigationPercentage }} %
+                        )
+                    </span>
+                </p>
+            </div>
+        </p-card>
+
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <button class="btn bg text-white rounded-2" (click)="submitPickOne()">{{ "NEDSS.REPEATED_RECORDS.MERGE" | translate }}</button>
+    </div>
+</div>
+
+<div *ngIf="mergeMethod === 'pickEach'">
+    <app-merge-records-per-attribute [patients]="patients"></app-merge-records-per-attribute>
+</div>

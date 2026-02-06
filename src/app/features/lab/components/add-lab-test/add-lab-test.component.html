@@ -1,0 +1,466 @@
+<div class="row mt-4">
+  <div class="col-lg-8">
+    <div class="card shadow color rounded">
+      <div class="card-header bg text-light fwb">
+        {{ "NEDSS.LAB_VIEW.ADD_PATIENT.PATIENT_DATA" | translate }}
+      </div>
+      <div class="card-body bg-dark-mode">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-4 color-d-1">
+                {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME" | translate }}
+              </div>
+              <div class="col-8 fwb">{{ patient?.fullName }}</div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-4 color-d-1">
+                {{ "NEDSS.LAB_VIEW.ADD_PATIENT.NATIONAL_ID" | translate }}
+              </div>
+              <div class="col-8 fwb">{{ patient?.nationalId }}</div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-4 color-d-1">
+                {{ "NEDSS.LAB_VIEW.ADD_PATIENT.GOVERBMENT" | translate }}
+              </div>
+              <div class="col-8 fwb">{{ patient?.homeGovernment }}</div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-4 color-d-1">
+                {{ "NEDSS.LAB_VIEW.ADD_PATIENT.ADMINISTRATION" | translate }}
+              </div>
+              <div class="col-8 fwb">
+                {{ patient?.homeHealthAdministration }}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-4 color-d-1">
+                {{ "NEDSS.LAB_VIEW.ADD_PATIENT.HEALTH_OFFICE" | translate }}
+              </div>
+              <div class="col-8 fwb">{{ patient?.homeHealthOffice }}</div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-4 color-d-1">
+                {{ "NEDSS.LAB_VIEW.ADD_PATIENT.CITY" | translate }}
+              </div>
+              <div class="col-8 fwb">{{ patient?.homeCity }}</div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-4 color-d-1">
+                {{ "NEDSS.LAB_VIEW.ADD_PATIENT.NATIONALITY" | translate }}
+              </div>
+              <div class="col-8 fwb">{{ patient?.nationality }}</div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="row">
+              <div class="col-4 color-d-1">
+                {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.MOBILE" | translate }}
+              </div>
+              <div class="col-8 fwb">{{ patient?.phoneNo1 }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card shadow color rounded">
+      <div class="card-header bg text-light fwb">
+        {{ "NEDSS.LAB_VIEW.ADD_PATIENT.PRIMARY_CHECK" | translate }}
+      </div>
+      <div class="card-body bg-dark-mode">
+        <div class="row">
+          <div class="col-5 color-d-1 mt-2">
+            {{ "NEDSS.LAB_VIEW.ADD_PATIENT.PRIMARY_DISEASE" | translate }}
+          </div>
+          <div class="col-7 fwb mt-2">{{ patient?.patientDiseases }}</div>
+          <div class="col-5 color-d-1 mt-2">
+            {{ "NEDSS.LAB_VIEW.ADD_PATIENT.CASE_RESULT_CATEGORY" | translate }}
+          </div>
+          <div class="col-7 fwb mt-2">
+            {{ patient?.caseStatus == "" ? "اشتباه" : patient?.caseStatus }}
+          </div>
+          <div class="col-5 color-d-1 mt-2">
+            {{ "NEDSS.LAB_VIEW.ADD_PATIENT.INFECTION_DATE" | translate }}
+          </div>
+          <div class="col-7 fwb mt-2">{{ patient?.infectionDate }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12">
+    <div class="card shadow color rounded mt-4">
+      <div class="card-header bg text-light fwb">
+        {{ "NEDSS.LAB_VIEW.ADD_PATIENT.ADD_SAMPLE" | translate }}
+      </div>
+      <div class="card-body bg-dark-mode">
+        <div class="row">
+          <div class="col-lg-6 mt-4">
+            <div class="form-group">
+              <label for="" class="form-label">
+                {{ "NEDSS.EVENTS.DESIEASE" | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <!-- <select
+                name=""
+                id=""
+                class="form-control"
+                [(ngModel)]="patientAddCheck.diseaseGroupId"
+                (change)="filterdDiseaseChange()"
+              >
+                <option
+                  *ngFor="let Diseas of filterdDisease"
+                  [value]="Diseas.id"
+                >
+                  {{ Diseas.arabicName }}
+                </option>
+              </select> -->
+              <div *ngIf="currentLang == 'ar'">
+                <p-dropdown
+                  (onChange)="filterdDiseaseChange()"
+                  [options]="filterdDisease"
+                  [(ngModel)]="patientAddCheck.diseaseGroupId"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="filterdDisease"
+                  [filter]="true"
+                  filterBy="arabicName"
+                >
+                </p-dropdown>
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <p-dropdown
+                  (onChange)="filterdDiseaseChange()"
+                  [options]="filterdDisease"
+                  [(ngModel)]="patientAddCheck.diseaseGroupId"
+                  optionLabel="englishName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="filterdDisease"
+                  [filter]="true"
+                  filterBy="englishName"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mt-4">
+            <div class="form-group">
+              <label for=""
+                >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.GET_SAMPLE_DATE" | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <input
+                type="date"
+                [(ngModel)]="patientAddCheck.getSampleDate"
+                [class]="'form-control-' + currentLang"
+                style="
+                  border-radius: 6px !important;
+                  width: 100%;
+                  padding: 0.5rem 0.75rem;
+                  margin-bottom: 0 !important;
+                "
+                placeholder="dd/mm/yyyy"
+              />
+            </div>
+          </div>
+          <div class="col-lg-6 mt-4">
+            <div class="form-group">
+              <label for=""
+                >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAMPLE" | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <ng-multiselect-dropdown
+                [settings]="multipleDropdownSettings"
+                [data]="checkSamples"
+                [(ngModel)]="selectedCheckSample"
+                (onSelect)="onSampleChanged()"
+                (onDeSelect)="onSampleChanged()"
+              >
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-6 mt-4">
+            <div class="form-group">
+              <label for=""
+                >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_TEST" | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <!-- <ng-multiselect-dropdown
+                [settings]="singleDropdownSettings"
+                [data]="labChecks"
+                [(ngModel)]="selectedLabCheck"
+                (onSelect)="onLabCheckChanged()"
+                (onDeSelect)="onLabCheckChanged()"
+              >
+              </ng-multiselect-dropdown> -->
+              <div *ngIf="currentLang == 'ar'">
+                <p-dropdown
+                  (onChange)="onLabCheckChanged()"
+                  [options]="labChecks"
+                  [(ngModel)]="selectedLabCheck"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="labChecks"
+                  [filter]="true"
+                  filterBy="arabicName"
+                >
+                </p-dropdown>
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <p-dropdown
+                  (onChange)="onLabCheckChanged()"
+                  [options]="labChecks"
+                  [(ngModel)]="selectedLabCheck"
+                  optionLabel="englishName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="labChecks"
+                  [filter]="true"
+                  filterBy="englishName"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mt-4">
+            <div class="form-group">
+              <label for=""
+                >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_TEST_RESULT" | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <!-- <ng-multiselect-dropdown
+                [settings]="singleDropdownSettings"
+                [data]="labCheckResults"
+                [(ngModel)]="selectedLabCheckResult"
+                (onSelect)="onLabCheckResultChanged()"
+                (onDeSelect)="onLabCheckResultChanged()"
+              >
+              </ng-multiselect-dropdown> -->
+              <div *ngIf="currentLang == 'ar'">
+                <p-dropdown
+                  (onChange)="onLabCheckResultChanged()"
+                  [options]="labCheckResults"
+                  [(ngModel)]="selectedLabCheckResult"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="labCheckResults"
+                  [filter]="true"
+                  filterBy="arabicName"
+                >
+                </p-dropdown>
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <p-dropdown
+                  (onChange)="onLabCheckResultChanged()"
+                  [options]="labCheckResults"
+                  [(ngModel)]="selectedLabCheckResult"
+                  optionLabel="englishName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="labCheckResults"
+                  [filter]="true"
+                  filterBy="englishName"
+                >
+                </p-dropdown>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mt-4">
+            <div class="form-group">
+              <label for=""
+                >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.RESULT_DATE" | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <input
+                type="date"
+                [(ngModel)]="patientAddCheck.labResultDate"
+                [class]="'form-control-' + currentLang"
+                style="
+                  border-radius: 6px !important;
+                  width: 100%;
+                  padding: 0.5rem 0.75rem;
+                  margin-bottom: 0 !important;
+                "
+                placeholder="dd/mm/yyyy"
+                [min]="patientAddCheck.getSampleDate"
+              />
+            </div>
+          </div>
+          <div class="col-lg-12 d-flex justify-content-end mt-4">
+            <button
+              type="submit"
+              (click)="save()"
+              class="btn bg rouded-4 text-light"
+            >
+              <span class="bi bi-plus-circle-fill"></span>
+              {{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAVE_SAMPLE" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-12">
+    <div class="table-reponsive mt-4 shadow border rounded" *ngIf="!noData">
+      <div class="row">
+        <div class="col-lg-7 fwb p-4 pb-0">
+          {{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAMPLE_COUNT" | translate }}
+          {{ pages }}
+        </div>
+        <div class="col-12">
+          <p-table class="table" [value]="patientChecks" [paginator]="false">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>
+                  {{ "NEDSS.EVENTS.DESIEASE" | translate }}
+                </th>
+                <th>
+                  {{ "NEDSS.LAB_VIEW.ADD_PATIENT.GET_SAMPLE_DATE" | translate }}
+                </th>
+                <th>{{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAMPLE" | translate }}</th>
+                <th>{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_TEST" | translate }}</th>
+                <th>
+                  {{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_TEST_RESULT" | translate }}
+                </th>
+                <th>
+                  {{ "NEDSS.LAB_VIEW.ADD_PATIENT.RESULT_DATE" | translate }}
+                </th>
+                <th>{{ "NEDSS.COMMON.ACTIONS" | translate }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td><span [innerHTML]="item.diseaseName"> </span></td>
+                <td>
+                  <span [innerHTML]="item.getSampleDate | date : 'dd/MM/yyyy'">
+                  </span>
+                </td>
+                <td><span [innerHTML]="item.diseaseCheck"> </span></td>
+                <td><span [innerHTML]="item.dieaseLabTest"> </span></td>
+                <td><span [innerHTML]="item.diseaseLabTestResult"> </span></td>
+                <td>
+                  <span [innerHTML]="item.labResultDate | date : 'dd/MM/yyyy'">
+                  </span>
+                </td>
+                <td>
+                  <a
+                    (click)="getCheckById(item.id)"
+                    class="text-primary pi pi-pencil"
+                  ></a>
+                  &nbsp;&nbsp;
+                  <a
+                    data-bs-target="#exampleModal2"
+                    data-bs-toggle="modal"
+                    (click)="nameToDelete(item)"
+                    class="text-danger mess-color bi bi-trash-fill"
+                  ></a>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <div class="col-lg-12 p-0" style="margin-bottom: 4px">
+            <p-paginator
+              *ngIf="!noData"
+              [rows]="checkFilter.pageSize"
+              [totalRecords]="pages"
+              (onPageChange)="paginate($event)"
+              [first]="first"
+              [currentPageReportTemplate]="
+                'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+              "
+              [showCurrentPageReport]="true"
+              [rowsPerPageOptions]="[
+                10,
+                20,
+                30,
+                40,
+                50,
+                70,
+                100,
+                200,
+                500,
+                1000,
+                2000,
+                pages >= 5000 ? pages : 5000
+              ]"
+            ></p-paginator>
+          </div>
+          <div class="row" [hidden]="!noData">
+            <div class="no-data content-center">
+              <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+              <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+            </div>
+          </div>
+
+          <div class="col-lg-5 p-4 pb-0"></div>
+          <div class="col-lg-5 p-4 pb-0"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- confirm - modal -->
+
+<div
+  class="modal fade"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h5 class="modal-title" id="exampleModalLabel">{{ "NEDSS.COMMON.SURE_DELETE_ATTENTION"|translate}}</h5> -->
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.nameAr }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="delete(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

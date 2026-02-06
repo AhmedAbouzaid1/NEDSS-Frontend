@@ -1,0 +1,44 @@
+<div>
+  <div class="card card-primary card-tabs">
+    <div class="card-header p-0 pt-1" *ngIf="currentLang == 'ar'">
+      <ul class="nav nav-tabs">
+        <li class="nav-item" *ngFor="let item of items">
+          <a
+            [ngClass]="currentLang == 'ar' ? 'nav-link' : 'nav-link-en'"
+            routerLink="{{ item.routerLink }}"
+            routerLinkActive="active"
+          >
+            {{ item.label }}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card-header p-0 pt-1" *ngIf="currentLang == 'en'">
+      <ul class="nav nav-tabs">
+        <li class="nav-item" *ngFor="let item of items2">
+          <a
+            [ngClass]="currentLang == 'en' ? 'nav-link' : 'nav-link-en'"
+            routerLink="{{ item.routerLink }}"
+            routerLinkActive="active"
+          >
+            {{ item.label }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <router-outlet (notifyChange)="onChildNotification()"></router-outlet>
+
+  <!-- <p-tabView>
+        <p-tabPanel header="بيانات وحدة الترصد">
+          <app-preparations-data [disableTab]="disableTab"></app-preparations-data>
+        </p-tabPanel>
+        <p-tabPanel header="بيانات فريق الترصد" [disabled]="disableTab">
+          <app-preparations-team></app-preparations-team>
+        </p-tabPanel>
+        <p-tabPanel header="بيانات الاجهزة" [disabled]="disableTab">
+          <app-preparations-devices></app-preparations-devices>
+        </p-tabPanel>
+      </p-tabView> -->
+</div>

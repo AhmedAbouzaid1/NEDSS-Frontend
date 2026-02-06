@@ -1,0 +1,21 @@
+export interface PopulationReportResponse {
+    year: number,
+    mergedVerticallyHeaders: string[],
+    mergedHorizontallyHeaders: string[],
+    populationsDataColumnsNames: string[],
+    populationsSourcesData: any[],
+    totalMaleCount: number,
+    totalFemaleCount: number,
+    totalAgeLowerThanMonth: number,
+    totalAgeLowerThanYear: number,
+    totalAgeUpTo5: number,
+    totalAgeUpTo15: number,
+    totalAgeUpTo35: number,
+    totalAgeUpTo65: number,
+    totalAgeMoreThan65: number,
+    totalPopulationCount: number,
+    reportTitle:string,
+    tableTitle:string,
+    fromDate: Date,
+    toDate: Date
+}

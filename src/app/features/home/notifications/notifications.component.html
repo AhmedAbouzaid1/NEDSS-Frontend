@@ -1,0 +1,272 @@
+<!-- <ul class="container" aria-labelledby="navbarDropdownMenuLink">
+  <li *ngFor="let not of notifications">
+    <a
+      role="button"
+      *ngIf="not.hasUrl"
+      class="bg"
+      (click)="load(not.url)"
+      style="color: white"
+      >{{ not.message }}</a
+    >
+    <a *ngIf="!not.hasUrl" role="button" class="bg" style="color: white">{{
+      not.message
+    }}</a>
+    <hr />
+  </li>
+</ul> -->
+
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="box-title titlefix">
+          {{ "NOUR.NOTIFICATIONS" | translate }}
+        </h3>
+        <button
+          *ngIf="notifications?.length"
+          class="btn btn-danger d-flex align-items-center"
+          (click)="this.DeleteAll()"
+        >
+          <i class="pi pi-trash"></i>
+          <span> {{ "NOUR.DELETE_ALL" | translate }}</span>
+        </button>
+      </div>
+      <div class="card">
+        <div
+          *ngIf="notifications?.length; else noNotiicationExist"
+          class="card-body"
+        >
+          <div
+            *ngFor="let item of notifications"
+            [class]="
+              item.seen
+                ? 'notification-wrapper is-seen d-flex pb-4 mb-4'
+                : 'notification-wrapper d-flex pb-4 mb-4'
+            "
+          >
+            <div class="width-5">
+              <button
+                class="btn btn-delete"
+                (click)="deleteNotification(item.id)"
+              >
+                <i class="pi pi-times"></i>
+              </button>
+            </div>
+            <div class="width-95" (click)="load(item.url, item)">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="notification-type mb-3">
+                  <span
+                    *ngIf="
+                      item.notificationType ==
+                      NotificationsTypesEnum.NewPatientAdded
+                    "
+                    class="badge text-bg-primary p-2"
+                  >
+                    {{ "NOTIFICATIONS.NewPatientAdded" | translate }}
+                  </span>
+                  <span
+                    *ngIf="
+                      item.notificationType ==
+                      NotificationsTypesEnum.NewExternalPatientAdded
+                    "
+                    class="badge text-bg-warning p-2"
+                  >
+                    {{ "NOTIFICATIONS.NewExternalPatientAdded" | translate }}
+                  </span>
+                  <span
+                    *ngIf="
+                      item.notificationType ==
+                      NotificationsTypesEnum.NewNotInferringCaseAdded
+                    "
+                    class="badge text-bg-danger p-2"
+                  >
+                    {{ "NOTIFICATIONS.NewNotInferringCaseAdded" | translate }}
+                  </span>
+                  <span
+                    *ngIf="
+                      item.notificationType ==
+                      NotificationsTypesEnum.EditInPatientAddedFromGeneralData
+                    "
+                    class="badge text-bg-secondary p-2"
+                  >
+                    {{
+                      "NOTIFICATIONS.EditInPatientAddedFromGeneralData"
+                        | translate
+                    }}
+                  </span>
+                  <span
+                    *ngIf="
+                      item.notificationType ==
+                      NotificationsTypesEnum.EditInPatientAddedFromLab
+                    "
+                    class="badge text-bg-info p-2"
+                  >
+                    {{ "NOTIFICATIONS.EditInPatientAddedFromLab" | translate }}
+                  </span>
+                  <span
+                    *ngIf="
+                      item.notificationType ==
+                      NotificationsTypesEnum.EpidemicThresholdReached
+                    "
+                    class="badge text-bg-success p-2"
+                  >
+                    {{ "NOTIFICATIONS.EpidemicThresholdReached" | translate }}
+                  </span>
+                </div>
+                <div class="notification-date d-flex align-items-center">
+                  <i class="pi pi-clock"></i>
+                  <span>{{ item.createdDate }}</span>
+                </div>
+              </div>
+              <!-- <div class="notification-title mb-3">
+                <span class="bold"> {{ item.title }} </span>
+              </div> -->
+              <div class="notification-msg">
+                <span>{{ item.message }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noNotiicationExist>
+          <div
+            class="card-body d-flex align-items-center justify-content-center py-5"
+          >
+            <h5>
+              {{ "NOTIFICATIONS.NoNotificationExist" | translate }}
+            </h5>
+          </div>
+        </ng-template>
+      </div>
+      <!-- <div class="box box-primary">
+        <div class="box-body bg-dark-mode">
+          <div
+            id="accordion"
+            class="accordionclick ui-accordion ui-widget ui-helper-reset"
+            role="tablist"
+          >
+            <div class="notigybg">
+              <div class="cDate">{{ "NOUR.TYPE" | translate }}</div>
+              <div class="title">{{ "NOUR.TOPICS" | translate }}</div>
+              <div class="seen">{{ "NOUR.DATE" | translate }}</div>
+            </div>
+
+            <div class="accordion" id="accordionExample">
+              <div
+                class="card notifica-card"
+                *ngFor="let item of notifications"
+              >
+                <div class="card-header" id="heading{{ item.id }}">
+                  <h2 class="mb-0">
+                    <a
+                      class="btn btn-link"
+                      style="text-decoration: none"
+                      role="button"
+                      data-toggle="collapse"
+                      [attr.aria-expanded]="item.isExpanded"
+                      [attr.aria-controls]="'collapse' + item.id"
+                      (click)="toggleCollapse(item)"
+                    >
+                      <span class="cDate color">
+                        {{ item.createdDate | date }}
+                      </span>
+
+                      <span class="title"> {{ item.title }} </span>
+
+                      <span class="seen">
+                        {{
+                          (item.seen == true
+                            ? "NOUR.SEEN"
+                            : "NOUR.NOT_YET_SEEN"
+                          ) | translate
+                        }}
+                      </span>
+                    </a>
+                  </h2>
+                </div>
+
+                <div
+                  [id]="'collapse' + item.id"
+                  class="collapse"
+                  [ngbCollapse]="!item.isExpanded"
+                  data-parent="#accordionExample"
+                >
+                  <div
+                    class="card-body"
+                    role="button"
+                    (click)="load(item.url, item)"
+                  >
+                    {{ item.message }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br />
+          <br />
+          <ul class="pagination"></ul>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</section>
+
+<!-- <div class="accordion-item" *ngFor="let item of notifici">
+  <h2 class="accordion-header" id="{{ item.id + 1 }}">
+    <button
+      class="accordion-button collapsed"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target=" '#'  {{ item.id }}"
+      aria-expanded="false"
+      aria-controls="{{ item.id }}"
+    >
+      Accordion Item #3
+    </button>
+  </h2>
+  <div
+    id="{{ item.id }}"
+    class="accordion-collapse collapse"
+    (aria-labelledby)="(item.id)"
+    data-bs-parent="#accordionExample"
+  >
+    <div class="accordion-body">
+      <strong>This is the third item's accordion body.</strong> It is hidden by
+      default, until the collapse plugin adds the appropriate classes that we
+      use to style each element. These classes control the overall appearance,
+      as well as the showing and hiding via CSS transitions. You can modify any
+      of this with custom CSS or overriding our default variables. It's also
+      worth noting that just about any HTML can go within the
+      <code>.accordion-body</code>, though the transition does limit overflow.
+    </div>
+  </div>
+</div> -->
+<!--
+<div class="accordion" id="accordionExample">
+  <div class="card" *ngFor="let item of items">
+    <div class="card-header" id="heading{{ item.id }}">
+      <h2 class="mb-0">
+        <a
+          class="btn btn-link"
+          type="button"
+          data-toggle="collapse"
+          data-target="#collapse{{ item.id }}"
+          aria-expanded="true"
+          aria-controls="collapse{{item.id}}"
+        >
+          {{ item.title }}
+        </a>
+      </h2>
+    </div>
+    < aria-controls="collapse{{item.id}}"
+aria-labelledby="heading{{item.id}}"
+    <div
+      id="collapse{{ item.id }}"
+      class="collapse"
+      data-parent="#accordionExample"
+    >
+      <div class="card-body">
+        {{ item.content }}
+      </div>
+    </div>
+  </div>
+</div> -->

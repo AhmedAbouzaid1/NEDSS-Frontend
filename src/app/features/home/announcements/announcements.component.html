@@ -1,0 +1,222 @@
+<h2 class="titles">
+  {{ "NEDSS.ANNOUNCEMENTS.ANNOUNCEMENTS_NOTES" | translate }}
+</h2>
+
+<form *ngIf="isSuperAdminAndCentral" [formGroup]="addAnounceForm" (ngSubmit)="addAnnouncment()">
+  <div class="card shadow color rounded bg-dark-mode">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.ANNOUNCEMENTS.SUBJECT_TITLE" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <input type="text" name="" id="" class="form-control" formControlName="subject" />
+            <small *ngIf="!isSubjectTitleValid" class="form-text text-danger mess-color">
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </small>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <button (click)="fileInput.click()" type="button" class="btn bg text-white rounded-1 mt-4 d-inline-block">
+            {{ "NEDSS.ANNOUNCEMENTS.FILE_UPLOAD" | translate }}
+          </button>
+          <input style="display: none" #attachments type="file" (change)="onFileChanged($event.target)" #fileInput />
+        </div>
+        <div class="col-12">
+          <div class="d-flex gap-2 mt-2">
+            <ng-container *ngFor="let selected of oldFiles; let index = index">
+              <div class="rounded-2 p-2 border border-1 border-primary mb-3">
+                <p class="pb-0 mb-0">
+                  {{ selected | attachemntName }} -- &nbsp;
+                  <span id="attached" class="pi pi-trash" (click)="removeOldSelectedFile(index)"></span>
+                </p>
+              </div>
+            </ng-container>
+            <ng-container *ngFor="let selected of listOfFiles; let index = index">
+              <div class="rounded-2 p-2 border border-1 border-primary mb-3">
+                <p class="pb-0 mb-0">
+                  {{ selected }} -- &nbsp;
+                  <span id="attached" class="pi pi-trash" (click)="removeSelectedFile(index)"></span>
+                </p>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.ANNOUNCEMENTS.DISCRIPTION" | translate }}
+            </label>
+            <textarea name="" id="" class="form-control" formControlName="body"></textarea>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="row mt-4">
+            <div class="col-12 fwb">
+              {{ "NEDSS.ANNOUNCEMENTS.SUBJECT_TYPE" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </div>
+            <div class="col-12 mt-4 has-labels d-flex align-items-center" style="gap: 50px">
+              <label for="">
+                <input type="radio" name="subjectType" [value]="1" formControlName="subjectType"
+                  (change)="typeChange()" />
+                {{ "NEDSS.ANNOUNCEMENTS.ADD" | translate }}
+              </label>
+              <label for="">
+                <input type="radio" name="subjectType" [value]="2" formControlName="subjectType"
+                  (change)="typeChange()" />
+                {{ "NEDSS.ANNOUNCEMENTS.EDIT" | translate }}
+              </label>
+              <label for="">
+                <input type="radio" name="subjectType" [value]="3" formControlName="subjectType"
+                  (change)="typeChange()" />
+                {{ "NEDSS.ANNOUNCEMENTS.ANNOUNSAT" | translate }}
+              </label>
+              <label for="">
+                <input type="radio" name="subjectType" [value]="4" formControlName="subjectType"
+                  (change)="typeChange()" />
+                {{ "NEDSS.ANNOUNCEMENTS.NOTES" | translate }}
+              </label>
+              <label>
+                <input type="radio" name="subjectType" [value]="5" formControlName="subjectType" />
+                {{ "NEDSS.ANNOUNCEMENTS.OTHERS" | translate }}
+              </label>
+              <div *ngIf="addAnounceForm.value.subjectType == 5">
+                <label for="" class="fwb">
+                  {{
+                  "NEDSS.ANNOUNCEMENTS.SUBJECT_TYPE_DISCRIPTION" | translate
+                  }}
+                </label>
+                <input type="text" class="form-control" name="" id="" formControlName="subjectTypeOther" />
+              </div>
+            </div>
+            <small *ngIf="!isSubjectTypeValid" class="form-text text-danger mess-color">
+              {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+            </small>
+          </div>
+        </div>
+        <div class="col-12 mt-5">
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn bg btn-lg text-white rounded-2 mt-1">
+              {{ "NEDSS.ANNOUNCEMENTS.SAVE" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="mt-4 shadow border rounded">
+  <div class="row">
+    <div class="col-lg-7 fwb p-4 pb-0">
+      {{ "NEDSS.ANNOUNCEMENTS.ANNOUNCEMENTS_NOTES_COUNT" | translate }}
+    </div>
+    <div class="col-lg-5 p-4 pb-0">
+      <div class="row">
+        <div class="col-7">
+          <input type="search" name="" id="" class="form-control"
+            placeholder=" {{ 'NEDSS.ANNOUNCEMENTS.SEARCH' | translate }} ..." />
+        </div>
+        <div *ngIf="isSuperAdminAndCentral" class="col-5 pt-3 mb-2">
+          <a (click)="exportPatientsAsPdf()">
+            <span class="bi bi-filetype-pdf button-export"></span>
+          </a>
+          <button style="border: none; background: none" [useExistingCss]="true"
+            [printStyle]="{ '.exclude-pdf': { display: 'none' } }" printTitle="{{
+              'NEDSS.ANNOUNCEMENTS.ANNOUNCEMENTS_NOTES' | translate
+            }}" printSectionId="myTableElementId" ngxPrint>
+            <span class="bi bi-printer-fill button-export"></span>
+          </button>
+          <a (click)="exportPatiantsAsExcel()">
+            <span class="bi bi-file-earmark-excel-fill button-export"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive table-none-scroll" id="myTableElementId" #myTableElementId>
+      <table [style.direction]="dir" class="table table-hover table-striped table-sm">
+        <thead>
+          <tr class="color">
+            <th>{{ "NEDSS.ANNOUNCEMENTS.SUBJECT_TYPE" | translate }}</th>
+            <th>{{ "NEDSS.ANNOUNCEMENTS.SUBJECT_TITLE" | translate }}</th>
+            <th>{{ "NEDSS.ANNOUNCEMENTS.DISCRIPTION" | translate }}</th>
+            <th>{{ "NEDSS.ANNOUNCEMENTS.ATTACHES" | translate }}</th>
+            <th class="exclude-pdf" *ngIf="isSuperAdminAndCentral">
+              {{ "NEDSS.ANNOUNCEMENTS.ACTIONS" | translate }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let annon of announcments">
+            <td>{{ annon.subjectTypeName }}</td>
+            <td>{{ annon.subject }}</td>
+            <td>{{ annon.body }}</td>
+            <td class="mw_500">
+              <div class="attachment_td">
+                <a target="_blank" *ngFor="let item of annon?.filesUrls" href="{{ item }}"
+                  class="btn btn-link btn-sm text-primary" style="text-decoration: none;"><span
+                    class="pi pi-file"></span>
+                  <p>{{item | attachemntName}}</p>
+                </a>
+              </div>
+            </td>
+            <td *ngIf="isSuperAdminAndCentral" class="exclude-pdf mw-xc">
+              <a (click)="EditAnnoun(annon)" class="text-primary pi pi-pencil px-3"></a>
+              <a data-bs-target="#exampleModal2" data-bs-toggle="modal" (click)="nameToDelete(annon)"
+                class="text-danger mess-color bi bi-trash-fill"></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="col-lg-12 p-0" style="margin-bottom: 50px">
+        <p-paginator role="menubar" *ngIf="this.announcments?.length" [rows]="paginator.pageSize" [totalRecords]="pages"
+          (onPageChange)="paginate($event)" [first]="first" [currentPageReportTemplate]="
+            'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+          " [showCurrentPageReport]="true" [rowsPerPageOptions]="[
+            10,
+            20,
+            30,
+            40,
+            50,
+            70,
+            100,
+            200,
+            500,
+            1000,
+            2000,
+            pages >= 5000 ? pages : 5000
+          ]" (click)="onPaginatorClick($event)">
+        </p-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- confirm - modal -->
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.subject }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="DeletAnnon(underDeleting.id)" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

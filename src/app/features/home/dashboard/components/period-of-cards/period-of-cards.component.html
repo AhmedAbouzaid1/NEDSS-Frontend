@@ -1,0 +1,176 @@
+<section>
+  <br />
+  <div class="row">
+    <div class="col-12 mx-auto">
+      <form [formGroup]="periodOfCardsForm" (ngSubmit)="onSubmit()">
+        <div class="card shadow mt-8 color">
+          <div class="card-body bg-dark-mode">
+            <header
+              class="col-12 d-flex align-items-start gap-2 justify-content-between align-items-center flex-wrap mb-4"
+            >
+              <h2 class="titles h5 fw-bold">
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.EDIT_PERIOD_OF_CARDS" | translate
+                }}
+              </h2>
+            </header>
+
+            <div class="row m-0">
+              <div class="d-flex gap-3 align-items-center mb-3">
+                <label for="fixed" class="gap-1 d-flex align-items-center">
+                  <input
+                    type="radio"
+                    name="periodType"
+                    id="fixed"
+                    value="1"
+                    formControlName="periodType"
+                    (change)="onPeriodTypeChange()"
+                  />
+                  {{ "NEDSS.HOME.CONTROL_PANEL.FIXED_PERIOD" | translate }}
+                </label>
+                <label for="relative" class="gap-1 d-flex align-items-center">
+                  <input
+                    type="radio"
+                    name="periodType"
+                    id="relative"
+                    value="2"
+                    formControlName="periodType"
+                    (change)="onPeriodTypeChange()"
+                  />
+                  {{ "NEDSS.HOME.CONTROL_PANEL.RELATIVE_PERIOD" | translate }}
+                </label>
+              </div>
+
+              <div
+                class="col-lg-4 mb-3"
+                *ngIf="periodType.value == CardsPeriodTypeEnum.FixedPeriod"
+              >
+                <div class="form-group">
+                  <label for="">
+                      {{ "NEDSS.HOME.CONTROL_PANEL.DATE_FROM" | translate }}
+                      <span class="text-danger mess-color">*</span>
+                  </label>
+
+                  <mat-form-field appearance="fill">
+                    <mat-label>
+                      {{
+                        "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER"
+                          | translate
+                      }}</mat-label
+                    >
+                    <input
+                      matInput
+                      [matDatepicker]="picker"
+                      [min]="minDate"
+                      [max]="maxDate"
+                      formControlName="fromDate"
+                    />
+
+                    <mat-datepicker-toggle
+                      matIconSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div
+                class="col-lg-4 mb-3"
+                *ngIf="periodType.value == CardsPeriodTypeEnum.FixedPeriod"
+              >
+                <div class="form-group">
+                  <label for="">
+                      {{ "NEDSS.HOME.CONTROL_PANEL.DATE_TO" | translate }}
+                      <span class="text-danger mess-color">*</span>
+                  </label>
+
+                  <mat-form-field appearance="fill">
+                    <mat-label>
+                      {{
+                        "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER"
+                          | translate
+                      }}</mat-label
+                    >
+                    <input
+                      matInput
+                      [matDatepicker]="picker1"
+                      formControlName="toDate"
+                    />
+
+                    <mat-datepicker-toggle
+                      matIconSuffix
+                      [for]="picker1"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div
+                class="col-lg-4 mb-3"
+                *ngIf="periodType.value == CardsPeriodTypeEnum.RelativePeriod"
+              >
+                <label class="col-md-2">
+                    {{ "NEDSS.HOME.CONTROL_PANEL.DurationValue" | translate }}
+                    <span class="text-danger mess-color">*</span>
+                </label>
+                <input
+                  pInputText
+                  pKeyFilter="int"
+                  formControlName="durationValue"
+                  [style]="{ width: '100%' }"
+                />
+              </div>
+
+              <div class="col-lg-4 mb-3"
+                *ngIf="periodType.value == CardsPeriodTypeEnum.RelativePeriod"
+              >
+                <label class="col-md-2 w-100">
+                    {{ "NEDSS.HOME.CONTROL_PANEL.Duration" | translate }}
+                    <span class="text-danger mess-color">*</span>
+                </label>
+                <div *ngIf="currentLang == 'en'">
+                  <p-dropdown
+                    formControlName="durationUnit"
+                    [options]="periodOptionsData"
+                    optionLabel="englishName"
+                    optionValue="value"
+                    [style]="{ width: '100%' }"
+                  >
+                  </p-dropdown>
+                </div>
+                <div *ngIf="currentLang == 'ar'">
+                  <p-dropdown
+                    formControlName="durationUnit"
+                    [options]="periodOptionsData"
+                    optionLabel="arabicName"
+                    optionValue="value"
+                    [style]="{ width: '100%' }"
+                  >
+                  </p-dropdown>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 mb-3">
+                <label 
+                *ngIf="periodType.value == CardsPeriodTypeEnum.RelativePeriod && 
+                periodOfCardsForm.get('durationValue')?.value && 
+                periodOfCardsForm.get('durationValue')?.value > 0 && 
+                periodOfCardsForm.get('durationUnit')?.value" class="form-label">
+                    {{ "NEDSS.HOME.CONTROL_PANEL.PERIOD_LABEL" | translate }} {{ periodOfCardsForm.get('durationValue')?.value }} {{ getDurationUnit() }}
+                </label>
+                
+            </div>
+          </div>
+          <div
+            class="card-footer d-flex align-items-center justify-content-end"
+          >
+            <button type="submit" class="btn bg rounded-2 text-light">
+              {{ "NEDSS.HOME.CONTROL_PANEL.EDIT" | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

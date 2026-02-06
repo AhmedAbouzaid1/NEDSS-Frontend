@@ -1,0 +1,563 @@
+<div class="card shadow mb-4">
+  <div class="card-body bg-dark-mode">
+    <div class="row">
+      <!--First Name-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.FIRST_NAME" | translate
+            }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <input type="text" name="firstName" [(ngModel)]="patient.firstName" #firstName="ngModel" class="w-100"
+            (keypress)="generalDataService.onNameKeyPress($event)" pInputText (blur)="
+              generalDataService.isFirstNameValid =
+                generalDataService.validateFirstName(patient.firstName, true)
+            " />
+          <small *ngIf="!generalDataService.isFirstNameValid" class="form-text text-danger mess-color">
+            {{ generalDataService.firstNameValidationMessage | translate }}
+          </small>
+        </div>
+      </div>
+
+      <!--Second Name-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.SECOND_NAME" | translate
+            }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <input type="text" name="secondName" [(ngModel)]="patient.secondName" #secondName="ngModel" pInputText
+            class="w-100" (blur)="
+              generalDataService.isSecondNameValid =
+                generalDataService.validateSecondName(patient.secondName, true)
+            " (keypress)="generalDataService.onNameKeyPress($event)" />
+          <small *ngIf="!generalDataService.isSecondNameValid" class="form-text text-danger mess-color">
+            {{ generalDataService.secondNameValidationMessage | translate }}
+          </small>
+        </div>
+      </div>
+
+      <!--Third Name-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.THIRD_NAME" | translate
+            }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <input type="text" name="thirdName" [(ngModel)]="patient.thirdName" #thirdName="ngModel" pInputText
+            class="w-100" (blur)="
+              generalDataService.isThirdNameValid =
+                generalDataService.validateThirdName(patient.thirdName, true)
+            " (keypress)="generalDataService.onNameKeyPress($event)" />
+          <small *ngIf="!generalDataService.isThirdNameValid" class="form-text text-danger mess-color">
+            {{ generalDataService.thirdNameValidationMessage | translate }}
+          </small>
+        </div>
+      </div>
+
+      <!--Family Name-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.FAMILY_NAME" | translate
+            }}
+          </label>
+          <input type="text" name="familyName" [(ngModel)]="patient.familyName" #familyName="ngModel" pInputText
+            class="w-100" (blur)="
+              generalDataService.isFamilyNameValid =
+                !patient.familyName || generalDataService.validateFamilyName(patient.familyName, false)
+            " (keypress)="generalDataService.onNameKeyPress($event)" />
+          <small *ngIf="!generalDataService.isFamilyNameValid" class="form-text text-danger mess-color">
+            {{ generalDataService.familyNameValidationMessage | translate }}
+          </small>
+        </div>
+      </div>
+
+      <!--Phone Number 1-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO1" | translate }}
+          </label>
+          <input type="text" name="phoneNo1" [(ngModel)]="patient.phoneNo1" #phoneNo1="ngModel" pInputText class="w-100"
+            (keypress)="generalDataService.onPhoneNumberKeyPress($event)" (blur)="
+              generalDataService.isPhoneNumber1Valid =
+                generalDataService.validatePhoneNumber1(patient.phoneNo1, false)
+            " />
+        </div>
+        <small *ngIf="!generalDataService.isPhoneNumber1Valid" class="form-text text-danger mess-color">
+          {{ generalDataService.phoneNo1ValidationMessage | translate }}
+        </small>
+      </div>
+
+      <!--Phone Number 3-->
+      <div class="col-lg-3 mt-3" *ngIf="patient.newPhoneNo1">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.NEWPHONENO1" | translate
+            }}
+          </label>
+          <input type="text" name="newPhoneNo1" [(ngModel)]="patient.newPhoneNo1" #newPhoneNo1="ngModel" pInputText
+            class="w-100" disabled />
+        </div>
+      </div>
+
+      <!--Phone Number 2-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO2" | translate }}
+          </label>
+          <input type="text" name="phoneNo2" [(ngModel)]="patient.phoneNo2" #phoneNo2="ngModel" pInputText class="w-100"
+            (keypress)="generalDataService.onPhoneNumberKeyPress($event)" />
+        </div>
+      </div>
+
+      <!--Gender-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.GENDER" | translate }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              [disabled]="disableFieldsDueToNationalId()"
+              [(ngModel)]="patient.genderId"
+              class="form-control"
+              (blur)="
+                generalDataService.isGenderValid =
+                  generalDataService.checkGenderValid(patient.genderId)
+              "
+            >
+              <option *ngFor="let relation of gender" [value]="relation.id">
+                {{ relation.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown [options]="gender" [(ngModel)]="patient.genderId" optionLabel="arabicName" optionValue="id"
+              autoWidth="false" [style]="{ width: '100%' }" name="gender"
+              [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
+              [filter]="true" filterBy="arabicName" (onBlur)="
+                generalDataService.isGenderValid =
+                  generalDataService.checkGenderValid(patient.genderId)
+              ">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select
+              [disabled]="disableFieldsDueToNationalId()"
+              [(ngModel)]="patient.genderId"
+              class="form-control"
+              (blur)="
+                generalDataService.isGenderValid =
+                  generalDataService.checkGenderValid(patient.genderId)
+              "
+            >
+              <option *ngFor="let relation of gender" [value]="relation.id">
+                {{ relation.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown [options]="gender" [(ngModel)]="patient.genderId" optionLabel="englishName" optionValue="id"
+              autoWidth="false" [style]="{ width: '100%' }" name="gender"
+              [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
+              [filter]="true" filterBy="englishName" (onBlur)="
+                generalDataService.isGenderValid =
+                  generalDataService.checkGenderValid(patient.genderId)
+              ">
+            </p-dropdown>
+          </div>
+          <small *ngIf="!generalDataService.isGenderValid" class="form-text text-danger mess-color">
+            {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+          </small>
+        </div>
+      </div>
+
+      <!-- <div class="mt-5">
+        <h3>
+          {{
+            patient?.birthDate ? (patient?.birthDate | date : "dd/MM/yyyy") : ""
+          }}
+        </h3>
+      </div> -->
+
+      <!--Birth Date-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.BIRTHDATE" | translate
+            }}
+          </label>
+          <mat-form-field appearance="fill">
+            <mat-label>
+              {{
+              "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+              }}</mat-label>
+            <input [max]="maxDate" matInput [matDatepicker]="picker" [(ngModel)]="patient.birthDate"
+              style="color: black"
+              [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
+              (ngModelChange)="
+                onBirthDateChanged();
+                generalDataService.isBirthDateValid =
+                  generalDataService.validateBirthDate(patient.birthDate, false)
+              " />
+
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <small *ngIf="!generalDataService.isBirthDateValid" class="form-text text-danger mess-color">
+            {{ generalDataService.birthDateValidationMessage | translate }}
+          </small>
+        </div>
+      </div>
+
+      <!--Age-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGE" | translate }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <input type="text" name="age" [disabled]="disableFieldsDueToNationalId()"
+            [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
+            [(ngModel)]="patient.age" #age="ngModel" pInputText class="w-100" (keypress)="onNumberKeyPress($event)"
+            (blur)="
+              generalDataService.isAgeValid = generalDataService.validateAge(
+                patient.age,
+                true
+              )
+            " />
+          <small *ngIf="!generalDataService.isAgeValid" class="form-text text-danger mess-color">
+            {{ generalDataService.ageValidationMessage | translate }}
+          </small>
+        </div>
+      </div>
+
+      <!--Age Type-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGETYPE" | translate }}
+            <span class="text-danger mess-color">*</span>
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              [disabled]="disableFieldsDueToNationalId()"
+              [(ngModel)]="patient.ageTypeId"
+              class="form-control"
+              (blur)="
+                generalDataService.isAgeTypeValid =
+                  generalDataService.checkAgeTypeValid(patient.ageTypeId)
+              "
+            >
+              <option *ngFor="let relation of ageType" [value]="relation.id">
+                {{ relation.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown [options]="ageType" [(ngModel)]="patient.ageTypeId" optionLabel="arabicName" optionValue="id"
+              autoWidth="false" [style]="{ width: '100%' }" name="ageType"
+              [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
+              [filter]="true" filterBy="arabicName" (onBlur)="
+                generalDataService.isAgeTypeValid =
+                  generalDataService.checkAgeTypeValid(patient.ageTypeId)
+              ">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select
+              [disabled]="disableFieldsDueToNationalId()"
+              [(ngModel)]="patient.ageTypeId"
+              class="form-control"
+              (blur)="
+                generalDataService.isAgeTypeValid =
+                  generalDataService.checkAgeTypeValid(patient.ageTypeId)
+              "
+            >
+              <option *ngFor="let relation of ageType" [value]="relation.id">
+                {{ relation.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown [options]="ageType" [(ngModel)]="patient.ageTypeId" optionLabel="englishName" optionValue="id"
+              autoWidth="false" [style]="{ width: '100%' }" name="ageType"
+              [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
+              [filter]="true" filterBy="englishName" (onBlur)="
+                generalDataService.isAgeTypeValid =
+                  generalDataService.checkAgeTypeValid(patient.ageTypeId)
+              ">
+            </p-dropdown>
+          </div>
+          <small *ngIf="!generalDataService.isAgeTypeValid" class="form-text text-danger mess-color">
+            {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+          </small>
+        </div>
+      </div>
+
+      <!--Marital Status-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.MARITALSTATUS"
+            | translate
+            }}
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select [(ngModel)]="patient.maritalStatusId" class="form-control">
+              <option
+                *ngFor="let relation of maritalStatus"
+                [value]="relation.id"
+              >
+                {{ relation.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown [options]="maritalStatus" [(ngModel)]="patient.maritalStatusId" optionLabel="arabicName"
+              optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="maritalStatus" [filter]="true"
+              filterBy="arabicName">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select [(ngModel)]="patient.maritalStatusId" class="form-control">
+              <option
+                *ngFor="let relation of maritalStatus"
+                [value]="relation.id"
+              >
+                {{ relation.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown [options]="maritalStatus" [(ngModel)]="patient.maritalStatusId" optionLabel="englishName"
+              optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="maritalStatus" [filter]="true"
+              filterBy="englishName">
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <!--Job Category-->
+      <div class="col-lg-3 mt-3">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.JOBCATEGORY" | translate
+            }}
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onJobCategoryChanged()"
+              [(ngModel)]="selectedJobCategoryId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of jobCategories"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedJobCategoryId"
+              >
+                {{ item.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onJobCategoryChanged()" [options]="jobCategories"
+              [(ngModel)]="selectedJobCategoryId" optionLabel="arabicName" optionValue="id" autoWidth="false"
+              [style]="{ width: '100%' }" name="jobCategories" [filter]="true" filterBy="arabicName">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onJobCategoryChanged()"
+              [(ngModel)]="selectedJobCategoryId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of jobCategories"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedJobCategoryId"
+              >
+                {{ item.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onJobCategoryChanged()" [options]="jobCategories"
+              [(ngModel)]="selectedJobCategoryId" optionLabel="englishName" optionValue="id" autoWidth="false"
+              [style]="{ width: '100%' }" name="jobCategories" [filter]="true" filterBy="englishName">
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <!--Job-->
+      <div class="col-lg-3 mt-3" *ngIf="!isStudent && !isOthers && selectedJobCategoryId != 5">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.JOB" | translate }}
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onJobChanged()"
+              [(ngModel)]="selectedJobId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of jobs"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedJobId"
+              >
+                {{ item.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onJobChanged()" [options]="jobs" [(ngModel)]="selectedJobId"
+              optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="jobs"
+              [filter]="true" filterBy="arabicName">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select
+              class="form-control select2 select2-hidden-accessible"
+              (change)="onJobChanged()"
+              [(ngModel)]="selectedJobId"
+              aria-hidden="true"
+            >
+              <option
+                value="item.id"
+                *ngFor="let item of jobs"
+                [ngValue]="item.id"
+                [selected]="item.id === selectedJobId"
+              >
+                {{ item.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown (onChange)="onJobChanged()" [options]="jobs" [(ngModel)]="selectedJobId"
+              optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="jobs"
+              [filter]="true" filterBy="englishName">
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <!--Student Status-->
+      <div class="col-lg-3 mt-3" *ngIf="isStudent">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.STUDENTSTATUS"
+            | translate
+            }}
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select [(ngModel)]="patient.educationPhaseId" class="form-control">
+              <option
+                *ngFor="let relation of educationalPhase"
+                [value]="relation.id"
+              >
+                {{ relation.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown [options]="educationalPhase" [(ngModel)]="patient.educationPhaseId" optionLabel="arabicName"
+              optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="educationalPhase" [filter]="true"
+              filterBy="arabicName">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select [(ngModel)]="patient.educationPhaseId" class="form-control">
+              <option
+                *ngFor="let relation of educationalPhase"
+                [value]="relation.id"
+              >
+                {{ relation.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown [options]="educationalPhase" [(ngModel)]="patient.educationPhaseId" optionLabel="englishName"
+              optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="educationalPhase" [filter]="true"
+              filterBy="englishName">
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <!--School Category-->
+      <div class="col-lg-3 mt-3" *ngIf="isStudent">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.SCHOOLCATEGORY"
+            | translate
+            }}
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <!-- <select [(ngModel)]="patient.schoolCategoryId" class="form-control">
+              <option
+                *ngFor="let relation of schoolCategory"
+                [value]="relation.id"
+              >
+                {{ relation.arabicName }}
+              </option>
+            </select> -->
+            <p-dropdown [options]="schoolCategory" [(ngModel)]="patient.schoolCategoryId" optionLabel="arabicName"
+              optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="schoolCategory" [filter]="true"
+              filterBy="arabicName">
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <!-- <select [(ngModel)]="patient.schoolCategoryId" class="form-control">
+              <option
+                *ngFor="let relation of schoolCategory"
+                [value]="relation.id"
+              >
+                {{ relation.englishName }}
+              </option>
+            </select> -->
+            <p-dropdown [options]="schoolCategory" [(ngModel)]="patient.schoolCategoryId" optionLabel="englishName"
+              optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="schoolCategory" [filter]="true"
+              filterBy="englishName">
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <!--School Name or Job Place-->
+      <div class="col-lg-3 mt-3" *ngIf="!isOthers && selectedJobCategoryId != 5">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{
+            isStudent
+            ? ("NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.SCHOOLNAME"
+            | translate)
+            : ("NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.JOBPLACE"
+            | translate)
+            }}
+          </label>
+          <input type="text" name="workAddress" [(ngModel)]="patient.workAddress" #workAddress="ngModel" pInputText
+            (blur)="
+              generalDataService.isAdressValid =
+                generalDataService.validateAddress(patient.workAddress, false)
+            " class="w-100" />
+        </div>
+        <small *ngIf="!generalDataService.isAdressValid" class="form-text text-danger mess-color">
+          {{ generalDataService.addressValidationMessage | translate }}
+        </small>
+      </div>
+
+      <!--Job Name-->
+      <div class="col-lg-3 mt-3" *ngIf="isOthers">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.JOBNAME" | translate }}
+          </label>
+          <input type="text" name="patientJobName" [(ngModel)]="patient.patientJobName" #patientJobName="ngModel"
+            pInputText class="w-100" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

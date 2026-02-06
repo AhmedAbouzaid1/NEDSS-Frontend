@@ -1,0 +1,209 @@
+<div class="col-12 col-lg-12 color-d-2 mt-4">
+  <form (ngSubmit)="search()" #sysAuditForm="ngForm" novalidate>
+    <div class="form-titles">
+      {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SYSTEMFOLLOWUP" | translate }}
+    </div>
+    <div class="card shadow">
+      <div class="card-body bg-dark-mode">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for=""> {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.USERNAME" | translate }} </label>
+              <select [(ngModel)]="sysAuditFilter.userId" class="form-control" name="userId">
+                <option *ngFor="let user of users" [value]="user.id">
+                  {{ user.fullName }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">{{ "NEDSS.HOME.USERS.AUDIT-TRIAL.PAGE" | translate }} </label>
+              <select [(ngModel)]="sysAuditFilter.pageId" class="form-control" name="pageId">
+                <option *ngFor="let page of sysPages" [value]="page.id">
+                  {{ page.arabicName }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="form-group">
+              <label for="">{{ "NEDSS.HOME.USERS.AUDIT-TRIAL.EVENT" | translate }} </label>
+              <select [(ngModel)]="sysAuditFilter.actionId" class="form-control" name="healthAdministrationID">
+                <option *ngFor="let action of actions" [value]="action.id">
+                  {{ action.arabicName }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="fromDate">{{ "NEDSS.REPORTS.FromDate" | translate }}</label>
+              <input type="date" [(ngModel)]="sysAuditFilter.fromDate" name="fromDate" id="fromDate"
+                class="form-control datePicker " />
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="form-group">
+              <label for="toDate"> {{ "NEDSS.REPORTS.To" | translate }} </label>
+              <input type="date" [min]="sysAuditFilter.fromDate" [(ngModel)]="sysAuditFilter.toDate" name="toDate"
+                id="toDate" class="form-control datePicker " />
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="card-footer text-center">
+        <button type="submit" class="btn btn-lg bg text-light">
+          <span class="bi bi-check2-circle"></span>
+          {{ "NEDSS.COMMON.SEARCH" | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="table-responsive table-none-scroll mt-4 shadow border rounded" *ngIf="!noData">
+    <div class="row">
+      <div class="col-lg-7 fwb p-4 pb-0">
+        {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SYSTEMFOLLOWUP" | translate }}
+        {{ pages }}
+      </div>
+      <!-- <div class="col-lg-5 p-4 pb-0">
+        <div class="row">
+          <div class="col-8"></div>
+          <div class="col-4 ">
+            <a routerLink="#"><span class="bi bi-filetype-pdf"></span></a>
+            <a routerLink="#"><span class="bi bi-printer-fill"></span></a>
+            <a routerLink="#"><span class="bi bi-filetype-csv"></span></a>
+            <a routerLink="#"><span class="bi bi-file-earmark-excel-fill"></span></a>
+          </div>
+        </div>
+      </div> -->
+      <div class="col-12 table-responsive table-none-scroll">
+
+        <p-table [value]="sysAudits" [sortOrder]="1" [paginator]="false">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.USERNAME" | translate }}
+              </th>
+              <!-- <th>
+                نوع المستخدم
+              </th> -->
+              <th>
+                {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.GOVERNMENT" | translate }}
+              </th>
+              <th>
+                {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.JOB" | translate }}
+              </th>
+              <th>
+                {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SCREEN" | translate }}
+              </th>
+
+              <th pSortableColumn="caseDiscoveryDate">
+                {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.EVENT" | translate }}
+              </th>
+              <th>
+                {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.EVENTTIME" | translate }}
+              </th>
+
+
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>
+                <span [innerHTML]="
+                    item.userName"></span>
+              </td>
+
+              <!-- <td>
+                <span [innerHTML]="
+                    item.userType"></span>
+              </td> -->
+              <td>
+                <span [innerHTML]="
+                    item.userGovernment
+
+                  "></span>
+              </td>
+              <td>
+                <span [innerHTML]="
+                    item.userPosition
+
+                  "></span>
+              </td>
+              <td>
+                <span [innerHTML]="
+                    item.pageName
+
+                  "></span>
+              </td>
+              <td>
+                <span [innerHTML]="
+                    item.actionName
+
+                  "></span>
+              </td>
+
+              <td>
+                <span [innerHTML]="
+                    item.date | date:'dd/MM/yyyy'
+
+                  "></span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div class="col-11 col-md-12" style="margin-bottom: 4px">
+          <p-paginator *ngIf="!noData" [rows]="sysAuditFilter.pageSize" [totalRecords]="pages"
+            (onPageChange)="paginate($event)" [first]="first" [currentPageReportTemplate]="
+              'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+            " [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 20, 30, 40, 50,70,100,200,500,1000,2000, pages >= 5000? pages:5000]"></p-paginator>
+        </div>
+        <div class="row" [hidden]="!noData">
+          <div class="no-data content-center">
+            <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+            <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p-dialog style="background-color: white" header="{{
+    'NEDSS.HOME.NOT_INFERENCE_CASES.NOT_INFORMING_RESON' | translate
+  }}" [(visible)]="BasicShow" [style]="{ width: '30vw' }" [draggable]="false" [resizable]="false">
+  <div class="modal-body">
+    <div class="container-fluid">
+      <div class="my-4">
+        {{ "NEDSS.HOME.NOT_INFERENCE_CASES.SUBJECT_TYPE" | translate }}
+        <br />
+        <span class="color-d-3">
+          {{ "NEDSS.HOME.USERS.ADD_USER.ADDRESS" | translate }} , {{ "NEDSS.HOME.USERS.ADD_USER.MOBILE" | translate }}
+        </span>
+      </div>
+      <div class="my-4">
+        {{ "NEDSS.HOME.USERS.ADD_USER.DESCRIPTION" | translate }}
+        <br />
+        <span class="color-d-3"> {{ "NEDSS.HOME.USERS.ADD_USER.The phone number is incorrect and the address is not the
+          current residence" | translate }} </span>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="modal-footer">
+      <button (click)="BasicShow = false" type="button"
+        class="btn border border-3 border-color rounded-4 pl-3 pr-3 m-auto d-block" data-bs-dismiss="modal">
+        {{ "NEDSS.HOME.USERS.ADD_USER.END" | translate }}
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>

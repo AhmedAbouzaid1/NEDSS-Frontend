@@ -1,0 +1,410 @@
+<app-loader *ngIf="loadingPanel"></app-loader>
+<div class="col-8 col-lg-12 color-d-2">
+  <form (ngSubmit)="save()" #usersRolesPermissionForm="ngForm" novalidate>
+    <div class="form-titles">
+      {{
+        "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.PERMISSIONS" | translate
+      }}
+    </div>
+    <div class="card shadow">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label
+                >{{
+                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ARABIC_NAME"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <input
+                type="text"
+                maxlength="100"
+                required
+                pInputText
+                class="w-100"
+                name="arabicName"
+                [(ngModel)]="usersRolesPermission.arabicName"
+                #arabicName="ngModel"
+                (blur)="
+                  isShowErrorAr = usersRolesPermission.arabicName ? false : true
+                "
+              />
+              <small
+                *ngIf="isShowErrorAr"
+                class="form-text text-danger mess-color"
+              >
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired"
+                    | translate
+                }}
+              </small>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label
+                >{{
+                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ENGLISH_NAME"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <input
+                type="text"
+                maxlength="100"
+                required
+                pInputText
+                class="w-100"
+                name="englishName"
+                [(ngModel)]="usersRolesPermission.englishName"
+                #englishName="ngModel"
+                (blur)="
+                  isShowErrorEn = usersRolesPermission.englishName
+                    ? false
+                    : true
+                "
+              />
+              <small
+                *ngIf="isShowErrorEn"
+                class="form-text text-danger mess-color"
+              >
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired"
+                    | translate
+                }}
+              </small>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="col-md-4">
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ORGANIZATIONS"
+                  | translate
+              }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                [options]="organizations"
+                optionLabel="arabicName"
+                (onChange)="onOrganizationChange($event)"
+                optionValue="id"
+                [(ngModel)]="selectedOrganizationId"
+                [ngModelOptions]="{standalone: true}"
+                [style]="{ width: '100%' }"
+              >
+              </p-dropdown>
+              <small
+                *ngIf="isShowErrorOrgn"
+                class="form-text text-danger mess-color"
+              >
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired"
+                    | translate
+                }}
+              </small>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                [options]="organizations"
+                optionLabel="englishName"
+                (onChange)="onOrganizationChange($event)"
+                [(ngModel)]="selectedOrganizationId"
+                optionValue="id"
+                [ngModelOptions]="{ standalone: true }"
+                [style]="{ width: '100%' }"
+              >
+              </p-dropdown>
+              <small
+                *ngIf="isShowErrorOrgn"
+                class="form-text text-danger mess-color"
+              >
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired"
+                    | translate
+                }}
+              </small>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <label class="col-md-4">
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.LEVEL"
+                  | translate
+              }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <div *ngIf="currentLang == 'ar'">
+              <!-- <p-dropdown
+                [options]="levels"
+                optionLabel="arabicName"
+                [(ngModel)]="selectedLevelId"
+                optionValue="id"
+                [ngModelOptions]="{ standalone: true }"
+                (onChange)="onLevelChange($event)"
+                [style]="{ width: '100%' }"
+              >
+              </p-dropdown> -->
+              <p-multiSelect 
+                            [style]="{ width:'100%' }"
+                            [options]="levels" 
+                            [(ngModel)]="selectedLevelId"
+                            defaultLabel="أختر المستوى"
+                            optionLabel="arabicName"
+                            optionValue="id"
+                            (onChange)="onLevelChange($event)"
+                            [ngModelOptions]="{standalone: true}"
+                            >
+              </p-multiSelect>
+              <small
+                *ngIf="isShowErrorLvl"
+                class="form-text text-danger mess-color"
+              >
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired"
+                    | translate
+                }}
+              </small>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <!-- <p-dropdown
+                [options]="levels"
+                optionLabel="englishName"
+                optionValue="id"
+                (onChange)="onLevelChange($event)"
+                [(ngModel)]="selectedLevelId"
+                [ngModelOptions]="{standalone: true}"
+                [style]="{ width: '100%' }"
+                (blur)="
+                  isShowErrorLvl = usersRolesPermission.levelId ? false : true
+                "
+              >
+              </p-dropdown> -->
+              <p-multiSelect 
+              [style]="{ width:'100%' }"
+              [options]="levels" 
+              optionLabel="englishName"
+              optionValue="id"
+              [(ngModel)]="selectedLevelId"
+              (onChange)="onLevelChange($event)"
+              [ngModelOptions]="{standalone: true}">
+              </p-multiSelect>
+              <small
+                *ngIf="isShowErrorLvl"
+                class="form-text text-danger mess-color"
+              >
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired"
+                    | translate
+                }}
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6 mt-4">
+            <div class="row">
+              <div class="fwb mb-2">
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.PERMISSIONS"
+                    | translate
+                }}
+              </div>
+              <div class="mb-2">
+                <div class="form-group">
+                  <label for="chkAllSystemPage">
+                    <input
+                      type="checkbox"
+                      (change)="chkAllSystemPageChange($event)"
+                      name="chkAllSystemPage"
+                      id="chkAllSystemPage"
+                    />
+                    {{
+                      "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL"
+                        | translate
+                    }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="card color rounded">
+              <div class="card-body bg-dark-mode shadow-bord">
+                <div class="row fzs">
+                  <div class="col-lg-6 mb-0" *ngFor="let option of systemPages">
+                    <div class="form-group">
+                      <label for="{{ option.name }}">
+                        <input
+                          type="checkbox"
+                          [checked]="option.isSelected"
+                          (change)="chkSystemPageChange($event)"
+                          [value]="option.id"
+                          name="systemPages"
+                          id="{{ option.name }}"
+                        />
+                        {{ option.name }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4">
+            <div class="row">
+              <div class="mb-2 fwb">
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.DISEASES"
+                    | translate
+                }}
+              </div>
+              <div class="mb-2">
+                <div class="form-group">
+                  <label for="chkAllDisease">
+                    <input
+                      type="checkbox"
+                      (change)="chkAllDiseaseChange($event)"
+                      name="chkAllDisease"
+                      id="chkAllDisease"
+                    />
+                    {{
+                      "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL"
+                        | translate
+                    }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="card color rounded">
+              <div class="card-body bg-dark-mode shadow-bord">
+                <div class="row fzs">
+                  <div class="col-lg-6" *ngFor="let option of diseases">
+                    <div class="form-group">
+                      <label for="{{ option.name }}">
+                        <input
+                          type="checkbox"
+                          [checked]="option.isSelected"
+                          (change)="chkDiseaseChange($event)"
+                          [value]="option.id"
+                          name="chkdiseases"
+                          id="{{ option.name }}"
+                        />
+                        {{ option.name }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mt-4">
+            <div class="row">
+              <div class="mb-2 fwb">
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.Ratings"
+                    | translate
+                }}
+              </div>
+              <div class="mb-2">
+                <div class="form-group">
+                  <label for="chkAll">
+                    <input
+                      type="checkbox"
+                      (change)="chkAllChange($event)"
+                      name="chkAll"
+                      id="chkAll"
+                    />
+                    {{
+                      "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL"
+                        | translate
+                    }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="card color rounded">
+              <div class="card-body bg-dark-mode shadow-bord">
+                <div class="row fzs">
+                  <div
+                    class="col-lg-6"
+                    *ngFor="let option of selectedFieldlist"
+                  >
+                    <div class="form-group">
+                      <label for="{{ option.name }}">
+                        <input
+                          type="checkbox"
+                          [checked]="option.isSelected"
+                          (change)="chkDiseasefiledChange($event)"
+                          [value]="option.id"
+                          name="chks"
+                          id="{{ option.name }}"
+                        />
+                        {{ option.name }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 mt-4">
+            <div class="row">
+              <div class="fwb mb-2">
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECTEDSITES"
+                    | translate
+                }}
+              </div>
+              <div class="mb-2">
+                <div class="form-group">
+                  <label for="chkAllSelectedDiseases">
+                    <input
+                      type="checkbox"
+                      (change)="chkAllSelectedDiseaseChange($event)"
+                      name="chkAllSelectedDiseases"
+                      id="chkAllSelectedDiseases"
+                    />
+                    {{
+                      "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL"
+                        | translate
+                    }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="card color rounded">
+              <div class="card-body bg-dark-mode shadow-bord">
+                <div class="row fzs">
+                  <div class="col-lg-6" *ngFor="let option of selectedDiseases">
+                    <div class="form-group">
+                      <label for="Selected{{ option.name }}">
+                        <input
+                          type="checkbox"
+                          [checked]="option.isSelected"
+                          (change)="chkSelectedDiseaseChange($event)"
+                          [value]="option.id"
+                          name="chkSelectedDiseases"
+                          id="Selected{{ option.name }}"
+                        />
+                        {{ option.name }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-start">
+          <button type="submit" class="btn btn-lg bg text-light">
+            <span class="bi bi-check2-circle"></span>
+            {{ "NEDSS.COMMON.SAVE" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

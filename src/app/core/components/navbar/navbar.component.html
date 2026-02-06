@@ -1,0 +1,169 @@
+<nav
+  class="navbar-white navbar-light navbar-default shadow-sm px-0"
+  style="min-width: max-content"
+>
+  <div
+    class="top-nav navbar-white navbar-light d-flex align-items-center justify-content-between flex-wrap flex-row-reverse px-0"
+  >
+    <div class="d-flex align-items-center">
+      <button
+        *ngIf="language == 'en'"
+        href="#"
+        class="change-lang hover"
+        (click)="langChanged('ar')"
+      >
+        AR
+      </button>
+      <button
+        *ngIf="language == 'ar'"
+        href="#"
+        class="change-lang hover"
+        (click)="langChanged('en')"
+      >
+        EN
+      </button>
+      <button
+        id="btn-color-dark"
+        class="change-theme hover"
+        href="#"
+        (click)="toggleDarkLight()"
+      >
+        <span>
+          <i
+            class="pi"
+            [ngClass]="{
+              'pi-sun': this.dark,
+              'pi-moon': !this.dark
+            }"
+          ></i>
+
+          <!-- <span class="d-none d-md-inline-block" style="color: inherit">{{
+            this.dark ? "Light" : "Dark"
+          }}</span> -->
+        </span>
+      </button>
+
+      <a
+        role="button"
+        routerLink="./Notifications"
+        class="notification hover position-relative"
+      >
+        <span
+          style="right: -1rem !important; font-size: 10px !important"
+          *ngIf="notifications?.length > 0"
+          class="position-absolute bg top-0 mt-1 start-100 translate-middle badge rounded-pill"
+        >
+          {{ notifications?.length }}
+        </span>
+        <span class="pi pi-bell"></span>
+      </a>
+
+      <a role="button" class="chat hover position-relative" routerLink="./chat">
+        <!--This Just display the number of unread messages-->
+        <span
+          style="right: -1rem !important; font-size: 10px !important"
+          *ngIf="chatNotifications?.message != '0'"
+          class="position-absolute bg top-0 mt-1 start-100 translate-middle badge rounded-pill"
+        >
+          {{ chatNotifications?.message }}
+          <!-- Here message contain count of chat notifications -->
+        </span>
+        <span class="bi bi-chat-dots"></span>
+      </a>
+
+      <span dir="ltr" class="ms-3">
+        <span class="open dropright">
+          <button
+            class="btn dropdown-toggle text-end btn-sm"
+            type="button"
+            id="triggerId"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            style="font-size: 10px !important"
+          >
+            <span class="d-none d-md-block">{{ username }}<br /></span>
+            <span class="d-none d-sm-inline-block">{{ userLevel }}</span>
+          </button>
+          <div
+            class="dropdown-menu dropdown-menu-left"
+            aria-labelledby="triggerId"
+          >
+            <button class="dropdown-item">
+              <a
+                class="chang-color-drop d-block w-100"
+                routerLink="/home/profile"
+              >
+                {{ "NOUR.Myprofile" | translate }}
+              </a>
+            </button>
+            <button (click)="chngPassword()" class="dropdown-item">
+              <a class="chang-color-drop">
+                {{ "NEDSS.HOME.NAV_BAR.CHANGE_PASSWORD" | translate }}
+              </a>
+            </button>
+            <button class="dropdown-item" (click)="logout()">
+              <a class="chang-color-drop">
+                {{ "NEDSS.HOME.NAV_BAR.LOGOUT" | translate }}
+              </a>
+            </button>
+          </div>
+        </span>
+        <img
+          [src]="userImage"
+          alt="userImage"
+          width="50px"
+          height="50px"
+          class="rounded-circle avatar-img m-0"
+        />
+      </span>
+      <!-- <span>
+        <img src="../../../../Content/Images/logo.png">
+      </span> -->
+    </div>
+    <!-- <div class="top-header-logo mx-4">
+      <img class="img-fluid" src="../../../../Content/Images/logo.png" />
+    </div> -->
+    <a routerLink="./chart" class="top-header-logo mx-4">
+      <img class="img-fluid" src="../../../../Content/Images/logo.png" />
+    </a>
+
+    <!-- <select
+        name=""
+        class="px-2 my-auto rounded-3 change_lang_select my-auto ms-3 me-0"
+        style="height: 34px"
+        (change)="langChanged()"
+        [(ngModel)]="language"
+      >
+        <option *ngFor="let lang of applanguages" [value]="lang.code">
+          {{ lang.name }}
+        </option>
+      </select> -->
+  </div>
+</nav>
+
+<p-dialog
+  class="bor"
+  [draggable]="false"
+  [resizable]="false"
+  header="{{ 'NEDSS.HOME.NAV_BAR.CHANGE_PASSWORD' | translate }}"
+  [(visible)]="visible"
+  [style]="{ width: '70vw' }"
+>
+  <app-changenpassword></app-changenpassword>
+  <button
+    class="btn btn-primary"
+    style="color: #fff !important; background: #007bff !important"
+    (click)="onSendForm()"
+  >
+    {{ "NEDSS.COMMON.SAVE" | translate }}
+  </button>
+</p-dialog>
+
+<!-- <p-dialog class="bor" [draggable]="false" [resizable]="false" header='{{ "NEDSS.HOME.NAV_BAR.CHANGE_PASSWORD" | translate  }}'
+  [(visible)]="visible" [style]="{ width: '70vw' }">
+
+  <app-changenpassword></app-changenpassword>
+  <button class="btn btn-primary" style="color: #fff !important; background: #007BFF !important;" (click)="onSendForm()">{{"NEDSS.COMMON.SAVE"| translate }}</button>
+
+</p-dialog> -->

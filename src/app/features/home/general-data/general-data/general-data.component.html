@@ -1,0 +1,200 @@
+<app-loader *ngIf="loadingPanel"></app-loader>
+<h2 class="titles h5 fw-bold mb-4">
+  {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.PUBLICREPORTING" | translate }}
+</h2>
+<!-- <nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <button
+      class="nav-link active"
+      id="nav-home-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#nav-home"
+      type="button"
+      role="tab"
+      aria-controls="nav-home"
+      aria-selected="true"
+    >
+      Home
+    </button>
+    <button
+      class="nav-link"
+      id="nav-profile-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#nav-profile"
+      type="button"
+      role="tab"
+      aria-controls="nav-profile"
+      aria-selected="false"
+    >
+      Profile
+    </button>
+    <button
+      class="nav-link disabled"
+      id="nav-contact-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#nav-contact"
+      type="button"
+      role="tab"
+      aria-controls="nav-contact"
+      aria-selected="false"
+    >
+      Contact
+    </button>
+  </div>
+</nav> -->
+<!-- <div class="tab-content" id="nav-tabContent">
+  <div
+    class="tab-pane fade show active"
+    id="nav-home"
+    role="tabpanel"
+    aria-labelledby="nav-home-tab"
+  >
+    1
+  </div>
+  <div
+    class="tab-pane fade"
+    id="nav-profile"
+    role="tabpanel"
+    aria-labelledby="nav-profile-tab"
+  >
+    2
+  </div>
+  <div
+    class="tab-pane fade"
+    id="nav-contact"
+    role="tabpanel"
+    aria-labelledby="nav-contact-tab"
+  >
+    3
+  </div>
+</div> -->
+<div class="row">
+  <div class="col-12 mb-4">
+    <app-side-menu
+      [completedTabs]="completedTabs"
+      [activeAllTabs]="activeAllTabs"
+      [currentTab]="currentTab"
+      [active]="activeTab"
+      (onTabChange)="onTabChange($event)"
+      *ngIf="!isLoadingData"
+    ></app-side-menu>
+  </div>
+  <div class="col-12">
+    <!-- <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="incident-info" role="tabpanel" aria-labelledby="incident-info-tab">
+        <app-incident-info></app-incident-info>
+      </div>
+      <div class="tab-pane fade" id="demographic-data" role="tabpanel" aria-labelledby="demographic-data-tab">
+        <app-demographic-data></app-demographic-data>
+      </div>
+      <div class="tab-pane fade" id="residence-info" role="tabpanel" aria-labelledby="residence-info-tab">
+        <app-residence-info></app-residence-info>
+      </div>
+      <div class="tab-pane fade" id="clinical-symptoms" role="tabpanel" aria-labelledby="clinical-symptoms-tab">
+        <app-clinical-symptoms></app-clinical-symptoms>
+      </div>
+      <div class="tab-pane fade" id="special-symptoms" role="tabpanel" aria-labelledby="special-symptoms-tab">
+        <app-special-symptoms></app-special-symptoms>
+      </div>
+      <div class="tab-pane fade" id="diagonistic-info" role="tabpanel" aria-labelledby="diagonistic-info-tab">
+        <app-diagonistics></app-diagonistics>
+      </div>
+      <div class="tab-pane fade" id="sentinel" role="tabpanel" aria-labelledby="sentinel-tab">
+        <app-sentinel></app-sentinel>
+      </div>
+    </div> -->
+    <!-- <router-outlet></router-outlet> -->
+  </div>
+  <div class="d-flex justify-content-end gap-3">
+    <button
+      *ngIf="
+        !sharedDataService.inSential &&
+        (finalTab ||
+          (generalDataEnum.DiagnosticInfo == activeTab &&
+            !patient.fields?.length &&
+            !sharedDataService.ShowSentinel &&
+            !(activeAllTabs && !finalTab)))
+      "
+      type="submit"
+      tabindex="0"
+      class="btn btn-lg bg text-light"
+      (click)="addPatient()"
+      [disabled]="loadingPanel"
+    >
+      <span
+        [class]="
+          'bi bg ' +
+          (finalTab ||
+          (generalDataEnum.DiagnosticInfo == activeTab &&
+            !patient.fields?.length &&
+            !sharedDataService.ShowSentinel)
+            ? 'bi-check2-circle'
+            : '')
+        "
+      ></span>
+      {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.SAVE" | translate }}
+    </button>
+    <button
+      *ngIf="
+        !sharedDataService.inSential &&
+        !finalTab &&
+        !(
+          finalTab ||
+          (generalDataEnum.DiagnosticInfo == activeTab &&
+            !patient.fields?.length &&
+            !sharedDataService.ShowSentinel)
+        )
+      "
+      type="submit"
+      tabindex="0"
+      class="btn btn-lg bg text-light"
+      (click)="addPatient()"
+      [disabled]="loadingPanel"
+    >
+      {{ "NEDSS.COMMON.NEXT" | translate }}
+    </button>
+    <button
+      *ngIf="
+        sharedDataService.inSential && finalTab && !(activeAllTabs && !finalTab)
+      "
+      type="submit"
+      tabindex="1"
+      class="btn btn-lg bg text-light"
+      (click)="addPatient()"
+      [disabled]="loadingPanel"
+    >
+      <span [class]="'bi bg ' + (finalTab ? 'bi-check2-circle' : '')"></span>
+      {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.SAVE" | translate }}
+    </button>
+
+    <button
+      *ngIf="activeAllTabs && !finalTab"
+      tabindex="1"
+      type="submit"
+      class="btn btn-lg bg text-light"
+      (click)="save()"
+      [disabled]="loadingPanel"
+    >
+      <span [class]="'bi bg ' + (finalTab ? 'bi-check2-circle' : '')"></span>
+      {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.SAVE" | translate }}
+    </button>
+  </div>
+</div>
+
+<!-- [disabled]="loadingPanel" -->
+<!-- <div class="content-center">
+  <button type="submit" *ngIf="patient.id == null" class="btn btn-lg bg text-light" (click)="addPatient()">
+    <span [class]="'bi bg ' + (finalTab? 'bi-check2-circle':'')"></span>
+    {{ (finalTab? "NEDSS.HOME.GENERAL_DATA_COMPLETION.SAVE": "NEDSS.COMMON.NEXT") | translate }}
+  </button>
+  <button type="submit" *ngIf="patient.id != null&&!finalTab" class="btn btn-lg bg text-light" (click)="addPatient()">
+    <span [class]="'bi bg ' + (finalTab? 'bi-check2-circle':'')"></span>
+    {{"NEDSS.COMMON.NEXT"| translate }}
+
+  </button>
+  <button type="submit" *ngIf="patient.id != null" class="btn btn-lg bg text-light" (click)="addPatient()">
+    <span [class]="'bi bg ' + (finalTab? 'bi-check2-circle':'')"></span>
+
+    {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.SAVE"| translate }}
+  </button>
+</div> -->

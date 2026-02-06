@@ -1,0 +1,468 @@
+<div class="box box-primary mt-4">
+  <div class="box-header with-border p-2">
+    <h6 class="box-title">
+      {{ "NEDSS.REPORTS.number of cases according diagnosis and source of reporting" | translate }}
+    </h6>
+  </div>
+
+  <div class="box-body row">
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="">
+          {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT" | translate }}
+          <span class="text-danger">*</span>
+        </label>
+        <div *ngIf="currentLang== 'ar'">
+          <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()" tabindex="-1"
+            [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
+            (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)"
+            [disabled]="this.levelId!=1">
+            <option value="item.id" *ngFor="let item of governments" [ngValue]="item.id">
+              {{item.arabicName}}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="currentLang== 'en'">
+          <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()" tabindex="-1"
+            [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
+            (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)"
+            [disabled]="this.levelId!=1">
+            <option value="item.id" *ngFor="let item of governments" [ngValue]="item.id">
+              {{item.englishName}}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="!generalDataService.isIncidentGovernmentValid" class="form-text text-danger">
+          {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="">
+          {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.HEALTHADMIN" | translate }}
+          <span class="text-danger">*</span>
+        </label>
+
+        <div *ngIf="currentLang== 'ar'">
+          <select class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
+            tabindex="-1" [(ngModel)]="selectedHealthAdministration" aria-hidden="true"
+            (blur)="generalDataService.isIncidentHealthAdministrationValid = generalDataService.checkIncidentHealthAdministrationValid(selectedHealthAdministration)"
+            [ngModelOptions]="{standalone: true}" [disabled]="this.levelId!=1 && this.levelId!=2">
+            <option value="item.id" *ngFor="let item of healthAdministration" [ngValue]="item.id">
+              {{item.arabicName}}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="currentLang== 'en'">
+          <select class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
+            tabindex="-1" [(ngModel)]="selectedHealthAdministration" aria-hidden="true"
+            (blur)="generalDataService.isIncidentHealthAdministrationValid = generalDataService.checkIncidentHealthAdministrationValid(selectedHealthAdministration)"
+            [ngModelOptions]="{standalone: true}" [disabled]="this.levelId!=1 && this.levelId!=2">
+            <option value="item.id" *ngFor="let item of healthAdministration" [ngValue]="item.id">
+              {{item.englishName}}
+            </option>
+          </select>
+        </div>
+        <small *ngIf="!generalDataService.isIncidentHealthAdministrationValid" class="form-text text-danger">
+          {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+        </small>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <label for="">
+          {{
+          "NEDSS.HOME.GENERAL_DATA_COMPLETION.INCIDENT_SOURCE" | translate
+          }}
+          <span class="text-danger">*</span>
+        </label>
+        <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="incidentSources"
+          [(ngModel)]="selectedIncidentSource" [disabled]="this.levelId!=1 && this.levelId!=2 && this.levelId!=3">
+        </ng-multiselect-dropdown>
+      </div>
+      <small *ngIf="!generalDataService.isIncidentSourceValid" class="form-text text-danger">
+        {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+      </small>
+    </div>
+
+    <div class="col-lg-3 ">
+      <div class="form-group">
+        <label for="" class="form-label">
+          {{ "NEDSS.EVENTS.CASE_CATEGORY" | translate }}
+        </label>
+        <!-- <select name="" id="" class="form-control" tCategoryId">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <option *ngFor="let category of Categories" [value]="category.id">{{ category.arabicName}}</option>
+      </select> -->
+        <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="Categories"
+          [(ngModel)]="selectedCaseCategory">
+        </ng-multiselect-dropdown>
+      </div>
+      <small *ngIf="!isValidCategory" class="form-text text-danger">
+        {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+      </small>
+    </div>
+    <div class="col-lg-3 mt-2">
+      <div class="form-group">
+        <label for=""> {{ "NEDSS.REPORTS.From" | translate }} <span class="text-danger">*</span></label>
+
+        <mat-form-field appearance="fill">
+          <mat-label> {{'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate }}</mat-label>
+          <input matInput [min]="minDate" [max]="maxDate" [class]="'form-control-'+ currentLang"
+            [matDatepicker]="picker" [(ngModel)]="fromDate" />
+
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col-lg-3 mt-2">
+      <div class="form-group">
+        <label for=""> {{ "NEDSS.REPORTS.To" | translate }} <span class="text-danger">*</span></label>
+        <mat-form-field appearance="fill">
+          <mat-label> {{'NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER' | translate }}</mat-label>
+          <input matInput [min]="fromDate" [max]="maxDate" [class]="'form-control-'+ currentLang"
+            [matDatepicker]="picker1" [(ngModel)]="toDate" />
+
+          <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <a class="col-lg-6 moreDetals-ar" (click)="moreCriteriaToggle()" *ngIf="currentLang=='ar'"> {{moreDetails}}</a>
+    <a class="col-lg-6 moreDetals-en" (click)="moreCriteriaToggle()" *ngIf="currentLang=='en'"> {{moreDetails}}</a>
+    <hr>
+    <hr>
+    <div id="moreCriteria" class="row bg-dark-mode mb-3 py-2">
+      <div class="col-lg-3 mt-2">
+        <div class="form-group">
+          <label for="">{{ "NEDSS.REPORTS.Diseases" | translate }} </label>
+          <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="diseases"
+            [(ngModel)]="selectedDiseases">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="">
+            {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT" | translate }}
+            <span class="text-danger">*</span>
+          </label>
+          <ng-multiselect-dropdown [settings]="singleDropdownSettings" [data]="governments"
+            [(ngModel)]="selectedGovernment" (onSelect)="onGovernmentChanged()" (onDeSelect)="onGovernmentChanged()">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="">
+            {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.HEALTHADMIN" | translate }}
+            <span class="text-danger">*</span>
+          </label>
+          <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="healthAdministration"
+            [(ngModel)]="selectedHealthAdministration">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="" class="form-label"> {{ "NEDSS.REPORTS.SurveillanceType" | translate }} </label>
+          <!-- <select name="" id="" class="form-control" tCategoryId">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <option *ngFor="let category of Categories" [value]="category.id">{{ category.arabicName}}</option>
+        </select> -->
+          <div *ngIf="currentLang== 'ar'">
+            <select class="form-control select2 select2-hidden-accessible" tabindex="-1" [(ngModel)]="tarasodSelect"
+              aria-hidden="true" [disabled]="this.levelId!=1" [ngModelOptions]="{standalone: true}">
+              <option value="item.id" *ngFor="let item of tarasodType" [ngValue]="item.id"
+                [selected]="item.id === tarasodSelect">
+                {{item.arabicName}}
+              </option>
+            </select>
+          </div>
+          <div *ngIf="currentLang== 'en'">
+            <select class="form-control select2 select2-hidden-accessible" tabindex="-1" [(ngModel)]="tarasodSelect"
+              aria-hidden="true" [ngModelOptions]="{standalone: true}">
+              <option value="item.id" *ngFor="let item of tarasodType" [ngValue]="item.id"
+                [selected]="item.id === tarasodSelect">
+                {{item.englishName}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 mt-2">
+        <div class="form-group">
+          <label for="outComeSelect">{{ "NEDSS.REPORTS.OutComeResult" | translate }}</label>
+          <select name="" id="outComeSelect" class="form-control" style="height: 2rem">
+            <option value="0">{{ "NEDSS.REPORTS.ALL" | translate }}</option>
+            <option value="3">{{ "NEDSS.REPORTS.Healing" | translate }}</option>
+            <option value="3">{{ "NEDSS.REPORTS.treatment" | translate }}</option>
+            <option value="3">{{ "NEDSS.REPORTS.transfer" | translate }}</option>
+            <option value="3">{{ "NEDSS.REPORTS.DEATH" | translate }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-3 mt-2">
+        <div class="form-group">
+          <label for="">
+            {{
+            "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES"
+            | translate
+            }}
+          </label>
+          <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="diseases"
+            [(ngModel)]="StartselectedDiseases">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-3 mt-2">
+        <div class="form-group">
+          <label for=""> {{ "NEDSS.REPORTS.TheFinalDiagnosis" | translate }} </label>
+          <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="diseases"
+            [(ngModel)]="EndselectedDiseases">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-3 mt-2">
+        <div class="form-group">
+          <label for="" class="form-label">
+            {{ "NEDSS.HOME.DASHBOARD.Year" | translate }}
+          </label>
+          <div *ngIf="currentLang== 'ar'">
+            <select class="form-control select2 select2-hidden-accessible" aria-hidden="true"
+              [(ngModel)]="selectedOption" [ngModelOptions]="{standalone: true}">
+              <option value="item.id" *ngFor="let item of yearsOptions" [ngValue]="item.id">
+                {{item.arabicName}}
+              </option>
+            </select>
+          </div>
+          <div *ngIf="currentLang== 'en'">
+            <select class="form-control select2 select2-hidden-accessible" aria-hidden="true"
+              [(ngModel)]="selectedOption" [ngModelOptions]="{standalone: true}">
+              <option value="item.id" *ngFor="let item of yearsOptions" [ngValue]="item.id">
+                {{item.englishName}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3" *ngIf="selectedOption!=-1 && selectedOption==1">
+        <div class="form-group">
+          <label for="yearsSelect">{{ "NEDSS.REPORTS.Years" | translate }}</label>
+          <ng-multiselect-dropdown class="" id="yearsSelect" [settings]="multipleDropdownSettings" [data]="years"
+            [(ngModel)]="selectedyears">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-3 mt-2" *ngIf="selectedOption!=-1 && selectedOption==3">
+        <div class="form-group">
+          <label for="startYrear">{{ "NEDSS.REPORTS.StartYear" | translate }}</label>
+
+          <div *ngIf="currentLang== 'ar'">
+            <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="startSelectedyears"
+              aria-hidden="true" [ngModelOptions]="{standalone: true}">
+              <option value="item.id" *ngFor="let item of years" [ngValue]="item.id"
+                [selected]="item.id === startSelectedyears">
+                {{item.arabicName}}
+              </option>
+            </select>
+          </div>
+          <div *ngIf="currentLang== 'en'">
+            <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="startSelectedyears"
+              aria-hidden="true" [ngModelOptions]="{standalone: true}">
+              <option value="item.id" *ngFor="let item of years" [ngValue]="item.id"
+                [selected]="item.id === startSelectedyears">
+                {{item.englishName}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 mt-2" *ngIf="selectedOption!=-1 && selectedOption==3">
+        <div class="form-group">
+          <label for="endYear">{{ "NEDSS.REPORTS.EndYear" | translate }}</label>
+          <div *ngIf="currentLang== 'ar'">
+            <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="endSelectedyears"
+              aria-hidden="true" [ngModelOptions]="{standalone: true}">
+              <option value="item.id" *ngFor="let item of years" [ngValue]="item.id"
+                [selected]="item.id === endSelectedyears">
+                {{item.arabicName}}
+              </option>
+            </select>
+          </div>
+          <div *ngIf="currentLang== 'en'">
+            <select class="form-control select2 select2-hidden-accessible" [(ngModel)]="endSelectedyears"
+              aria-hidden="true" [ngModelOptions]="{standalone: true}">
+              <option value="item.id" *ngFor="let item of years" [ngValue]="item.id"
+                [selected]="item.id === endSelectedyears">
+                {{item.englishName}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 mt-2" *ngIf="selectedOption!=-1 && selectedOption==5">
+        <div class="form-group">
+          <label id="dis" for="duration">{{ "NEDSS.REPORTS.ReportDuration" | translate }}</label>
+          <select name="" id="duration" style="height: 2rem" class="form-control" (change)="methodChange()"
+            [(ngModel)]="selectedReportMethod">
+            <option value="0" selected>{{ "NEDSS.HOME.DASHBOARD.Select" | translate }}</option>
+            <option value="1">{{ "NEDSS.REPORTS.Week" | translate }}</option>
+            <option value="2">{{ "NEDSS.REPORTS.Month" | translate }}</option>
+            <option value="3">{{ "NEDSS.REPORTS.Quarter" | translate }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-3 mt-2 d-flex" *ngIf="selectedOption!=-1 && selectedOption==5">
+        <div class="form-group">
+          <label id="ds" for="from">{{ "NEDSS.REPORTS.From" | translate }} </label>
+          <input type="number" class="" style="width: 5rem" name="" id="from" min="1" [max]="max"
+            [(ngModel)]="startDate" />
+        </div>
+
+        <div class="form-group" style="margin-right: 30%">
+          <label id="ds" for="to">{{ "NEDSS.REPORTS.To" | translate }}</label>
+          <input type="number" name="" class="" style="width: 5rem" id="to" min="1" [max]="max" [(ngModel)]="endDate" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <label for="" class="d-flex mt-4">
+          {{ "NEDSS.REPORTS.ReportType" | translate }} :: &nbsp;
+          <label for="table" (click)="reportType = 1; reportTypeChange(1); " style="margin-right: 10%">
+            {{ "NEDSS.REPORTS.Table" | translate }}
+            <input type="radio" name="reportType" id="table" />
+          </label>
+          &nbsp;
+          <label for="chart" (click)=" reportType = 2; reportTypeChange(2);"
+            style="margin-right: 10%; margin-left: 10%">
+            {{ "NEDSS.REPORTS.Chart" | translate }}
+            <input type="radio" name="reportType" id="chart" />
+          </label>
+        </label>
+      </div>
+      <div class="col-sm-6 col-md-3 col-lg-3 mt-2">
+        <div class="col-sm-12">
+          <button (click)="getReport()" [disabled]="
+              reportType == 1 ? false : reportType == 2 ? false : true
+            " name="search" class="btn bg mt-4 btn-sm checkbox-toggle pull-right" style="margin-bottom: 10%">
+            <i class="fa fa-search"></i> {{ "NEDSS.REPORTS.Search" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="box border0 clear">
+      <div *ngIf="!nodata" class="row ActionsContainer">
+        <label class="col-lg-9" *ngIf="reportType == 1">
+          <input type="text" (keyup)="Tablesearch($event)" class="searchInput form-control"
+            aria-controls="DataTables_Table_0" />
+        </label>
+        <div class="col-lg-1" id="DataTables_Table_0_length" *ngIf="reportType == 1">
+          <label>
+            <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshCountries()">
+              <option [ngValue]="10">10</option>
+              <option [ngValue]="20">20</option>
+              <option [ngValue]="50">50</option>
+            </select>
+          </label>
+        </div>
+        <div class="dt-buttons btn-group btn-group2 col-lg-1" *ngIf="filterdData.length > 0 && reportType == 1">
+          <a class="btn btn-default dt-button buttons-excel buttons-html5 btn-excel" (click)="exportPatiantsAsExcel()"
+            tabindex="0" aria-controls="DataTables_Table_0" title="Excel">
+            <span>
+              <img src="../../../../../assets/images/excel.png" alt="Exel" />
+            </span>
+          </a>
+          <a class="btn btn-default dt-button buttons-pdf buttons-html5 btn-pdf" (click)="exportPatientsAsPdf()"
+            tabindex="0" aria-controls="DataTables_Table_0" title="PDF">
+            <span>
+              <img src="../../../../../assets/images/pdf.png" alt="ExportPdf" />
+            </span>
+          </a>
+          <button class="btn btn-default dt-button buttons-print btn-print" [useExistingCss]="true" [printSectionId]="
+              reportType == 1 ? 'myTableElementId' : 'chartElementId'
+            " ngxPrint tabindex="0" aria-controls="DataTables_Table_0" href="#" title="Print">
+            <span>
+              <img src="../../../../../assets/images/printer.png" alt="print" />
+            </span>
+          </button>
+        </div>
+        <label class="col-lg-6 d-flex" *ngIf="reportType == 2">
+          <button class="btn btn-default mx-4 border colorWait" style="margin-right: 20% !important"
+            (click)="changeChartType(2)">
+            {{ "NEDSS.REPORTS.PieChart" | translate }}
+          </button>
+          <button class="btn btn-default mx-4 border colorWait" (click)="changeChartType(1)">
+            {{ "NEDSS.REPORTS.barGraph" | translate }}
+          </button>
+        </label>
+      </div>
+      <div *ngIf="nodata" class="mt-4">
+        <div align="center" class="color">
+          {{ "NEDSS.REPORTS.NothingToPreview" | translate }}<br />
+          <br /><img width="100%" height="100%" src="../../../../../assets/images/no-data.png"
+            width="150" /><br /><br />
+          <span class="color hover bolds">
+            <i class="fa fa-arrow-left"></i>
+            {{ "NEDSS.REPORTS.DoSearch" | translate }}
+          </span>
+          <div></div>
+        </div>
+      </div>
+      <div id="tableChart">
+        <div class="box-body table-responsive table-none-scroll-report" id="myTableElementId">
+          <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
+            <div id="DataTables_Table_0_processing" class="dataTables_processing" style="display: none">
+              {{ "NEDSS.REPORTS.Processing" | translate }}
+            </div>
+            <table [style.direction]="dir"
+              class="table table-striped table-bordered table-hover allajaxlist dataTable no-footer"
+              data-export-title="Birth Report" id="DataTables_Table_0" role="grid"
+              aria-describedby="DataTables_Table_0_info">
+              <thead>
+                <tr role="row" *ngIf="!nodata">
+                  <th colspan="2" class="reportTitle">
+                    {{ "NEDSS.REPORTS.TheNumberOfCasesAccordingToTheReportingDepartment" | translate }} :: {{ Summtion
+                    }}
+                  </th>
+                </tr>
+                <tr role="row">
+                  <th class="sorting_disabled">{{ "NEDSS.REPORTS.HealthAdministration" | translate }}</th>
+                  <th class="sorting_disabled">{{ "NEDSS.REPORTS.CasesCount" | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd" *ngFor="let item of filterdData">
+                  <td valign="top" class="dataTables_empty">
+                    {{ item.incidentHealthAr }}
+                  </td>
+                  <td valign="top" class="dataTables_empty">
+                    {{ item.patientCount }}
+                  </td>
+                </tr>
+                <tr>
+                  <td style="color: red; font-weight: 800;">{{ "NEDSS.REPORTS.Total" | translate }}</td>
+                  <td> {{Summtion}} </td>
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="recordes" *ngIf="!nodata">
+          {{ "NEDSS.REPORTS.Show" | translate }} {{ startingIndex }} {{ "NEDSS.REPORTS.To" | translate }} {{ endingIndex
+          }} {{ "NEDSS.REPORTS.From" | translate }}
+          <span style="color: red"> {{ myDatalength }} </span>
+        </div>
+        <ngb-pagination [pageSize]="pageSize" [collectionSize]="myDatalength" [(page)]="page"
+          (pageChange)="refreshCountries()"></ngb-pagination>
+      </div>
+      <div class="text-center float-center svg-scroll" id="chartReport2">
+        <div class="text-center float-center svg-scroll-div" id="chartElementId"></div>
+      </div>
+    </div>
+  </div>
+</div>

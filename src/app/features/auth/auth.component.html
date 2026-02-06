@@ -1,0 +1,181 @@
+<!-- <div class="container">
+  <div class="row ">
+      <div class="col-md-12 mt-5 auth">
+          <form class="form-login" [formGroup]="LoginForm" (ngSubmit)="login(LoginForm)">
+              <div class="form-group ">
+                  <label for="exampleInputEmail1"> Email : <span style="color: red;">*</span></label>
+                  <div class="w-50">
+                    <input #name type="email" formControlName="email" class="form-control w-100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small *ngIf="LoginForm.controls['email'].touched &&
+                      LoginForm.controls['email'].errors" class="form-text  text-danger">Enter Invaled
+                      Email
+                    </small>
+                  </div>
+              </div>
+              <div class="form-group ml-2">
+                  <label for="exampleInputPassword1"> Password : <span style="color: red;">*</span></label>
+                  <div class="w-50 mr-4">
+                      <input #password type="password" formControlName="password" class="form-control w-100 " id="exampleInputPassword1" placeholder="Password">
+                      <small *ngIf="LoginForm.controls['password'].touched &&
+                        LoginForm.controls['password'].errors" class="form-text  text-danger">
+                        password must be more than 8 charactors</small>
+                  </div>
+                </div>
+              <div class="form-group">
+                <button type="submit" class="btn "  >Sign in</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div> -->
+
+<div class="login">
+  <div class="container">
+    <div class="d-flex justify-content-center">
+      <div>
+        <img src="../../../Content/Images/logo.png" class="logo img-fluid mt-5">
+      </div>
+      <div>
+        <img src="../../../Content/Images/mohp.png" class="logo img-fluid mt-5">
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-3"></div>
+      <div class="col-lg-6 mt-5 ">
+        <div class="card shadow color rounded m-auto bg-light rounded-2">
+          <!-- <div class="card-header">
+                        <p class="fwb color text-center mt-4">تسجيل الدخول</p>
+                    </div> -->
+          <form [formGroup]="LoginForm" (ngSubmit)="login(LoginForm)">
+            <div class="card-body bg-light rounded-2">
+              <div class="row text-muted fwb">
+                <div class="col-lg-6">
+                  <!-- <div class="form-group">
+                                      <label for="">البريد الإلكتروني</label>
+                                      <input type="email"  #name type="email" formControlName="email" class="form-control">
+                                      <small *ngIf="LoginForm.controls['email'].touched &&
+                                        LoginForm.controls['email'].errors" class="form-text  text-danger">البريد الإلكتروني غير صحيح
+                                      </small>
+                                  </div>
+                                  -->
+                  <div class="form-group">
+                    <label for=""> {{"NEDSS.HOME.LOGIN.USERNAME" | translate}}</label>
+
+                    <input type="text" #name type="text" formControlName="username" class="form-control">
+                    <small *ngIf="LoginForm.controls['username'].touched &&
+                                      LoginForm.controls['username'].errors" class="form-text  text-danger">
+                      {{"NEDSS.HOME.LOGIN.USERNAME_ERROR" | translate}}
+                    </small>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for=""> {{"NEDSS.HOME.LOGIN.PASSWORD" | translate}}</label>
+                    <input type="password" #password type="password" formControlName="password" class="form-control">
+                    <small *ngIf="LoginForm.controls['password'].touched &&
+                                      LoginForm.controls['password'].errors" class="form-text  text-danger">
+                      {{"NEDSS.HOME.LOGIN.PASS_MANDATORY" | translate}}</small>
+                  </div>
+                </div>
+                <div class="col-lg-12 text-start py-0">
+                  <a href="#" class="color" (click)="forgotPassword()"><small>{{"NEDSS.HOME.LOGIN.FORGET_PASSWORD" |
+                      translate}}</small></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer bg-transparent">
+              <div class="row w-100">
+                <div class="col-5">
+                  <div class="row">
+                    <div class="col-lg-5">
+                      <label for="select1" class="mt-2 fs-7">{{"NEDSS.HOME.LOGIN.CHOOSE_LANGUAGE" | translate}}</label>
+                    </div>
+                    <div class="col-lg-7">
+                      <select name="select1" id="select1" class="pl-1 pr-1 form-control form-control-sm"
+                        (change)="langChanged()" [(ngModel)]="language" [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let lang of appLanguages" [value]="lang.code">{{ lang.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+
+                </div>
+                <div class="col-2"></div>
+                <div class="col-5 p-0">
+                  <button type="submit" class="btn bg d-block w-100 btn-lg text-white rounded-4 btn-primary">
+                    {{"NEDSS.HOME.LOGIN.LOGIN" | translate}}</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="text-center">
+          <small class="mt-4 d-block text-light copyrights"
+            [innerHTML]="'NEDSS.HOME.LOGIN.RIGHTS_RESERVED' | translate"></small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal modal-lg fade" id="changePassword" style="overflow: initial;" tabindex="-1" role="dialog"
+  aria-labelledby="modalTitleId" aria-hidden="true">
+  <div class="modal-dialog color" role="document">
+    <div class="modal-content" style="margin-right: -14rem !important;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitleId"> تغير كلمه المرور</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for=""> كلمة المرور</label>
+                  <input type="text" name="password" id="password" class="form-control" [ngModel]="password">
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for=""> تاكيد كلمة المرور</label>
+                  <input type="time" name="confirmPassword" id="confirmPassword" class="form-control"
+                    [ngModel]="confirmPassword">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <div class="row w-100">
+            <div class="col-lg-6 text-start">
+              <button type="button" class="btn btn-warning border border-color rounded-3 pr-3 pl-3 btn-lg"
+                data-bs-dismiss="modal">إنهاء</button>
+            </div>
+            <div class="col-lg-6">
+              <button type="button" class="btn btn-info bg text-light rounded-3 pr-3 pl-3 btn-lg"
+                data-bs-dismiss="modal" (click)="chngPassword()"> تغير كلمه المرور</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<p-dialog [draggable]="false" [resizable]="false" header="تغيير كلمة المرور" [(visible)]="visible"
+  [style]="{ width: '50vw' }">
+
+  <app-change-password></app-change-password>
+  <button class="btn btn-primary" (click)="onSendForm()">{{"NEDSS.COMMON.SAVE"| translate }}</button>
+
+</p-dialog>

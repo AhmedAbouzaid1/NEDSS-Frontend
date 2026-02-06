@@ -1,0 +1,322 @@
+<app-loader *ngIf="loadingPanel"></app-loader>
+<div class="box box-primary mt-4 hide-print">
+  <div class="box-header with-border p-2">
+    <h6 class="box-title">
+      {{ "NEDSS.REPORTS_LABELS.UserReports" | translate }}
+    </h6>
+  </div>
+
+  <div class="box-body row mt-3 hide-print">
+    <div class="col-lg-4 mb-4">
+      <label class="col-md-2">
+        {{
+          "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ORGANIZATIONS"
+            | translate
+        }}
+        
+      </label>
+      <div *ngIf="currentLang == 'ar'">
+        <p-dropdown
+          [options]="organizations"
+          optionLabel="arabicName"
+          (onChange)="onOrganizationChange($event)"
+          [style]="{ width: '100%' }"
+        >
+        </p-dropdown>
+      </div>
+      <div *ngIf="currentLang == 'en'">
+        <p-dropdown
+          [options]="organizations"
+          optionLabel="englishName"
+          (onChange)="onOrganizationChange($event)"
+          [style]="{ width: '100%' }"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4" *ngIf="organizationParts?.showGovernments">
+      <div class="form-group">
+        <label for="">
+          {{
+            "NEDSS.HOME.GENERAL_DATA_COMPLETION.INCEIDENT_GOVERNMENT"
+              | translate
+          }}
+          
+        </label>
+        <ng-multiselect-dropdown
+          [settings]="multipleDropdownSettings"
+          [data]="governments"
+          [(ngModel)]="selectedGoverments"
+          (onSelect)="onGovernmentChanged()"
+          (onDeSelect)="onGovernmentChanged()"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+
+    <div
+      class="col-lg-4 mb-4"
+      *ngIf="organizationParts?.showHealthAdministrations"
+    >
+      <div class="form-group">
+        <label for="">
+          {{
+            "NEDSS.HOME.GENERAL_DATA_COMPLETION.INCEIDENT_HEALTHADMIN"
+              | translate
+          }}
+          
+        </label>
+        <ng-multiselect-dropdown
+          [settings]="multipleDropdownSettings"
+          [data]="healthAdministrations"
+          [(ngModel)]="selectedHealthAdministrations"
+          (onSelect)="onHealthAdministrationChanged()"
+          (onDeSelect)="onHealthAdministrationChanged()"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4" *ngIf="organizationParts?.showBranches">
+      <div class="form-group">
+        <label for="">
+          {{
+            "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.BRANCHES" | translate
+          }}
+          
+        </label>
+        <ng-multiselect-dropdown
+          [settings]="multipleDropdownSettings"
+          [data]="branches"
+          [(ngModel)]="selectedBranches"
+          (onSelect)="onBranchesSelectionChange()"
+          (onDeSelect)="onBranchesSelectionChange()"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4" *ngIf="organizationParts?.showAreas">
+      <div class="form-group">
+        <label for="">
+          {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.AREAS" | translate }}
+          
+        </label>
+        <ng-multiselect-dropdown
+          [settings]="multipleDropdownSettings"
+          [data]="areas"
+          [(ngModel)]="selectedAreas"
+          (onSelect)="onAreaSelectionChange()"
+          (onDeSelect)="onAreaSelectionChange()"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4" *ngIf="organizationParts?.showUniversities">
+      <div class="form-group">
+        <label for="">
+          {{
+            "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.UNIVERSITIES"
+              | translate
+          }}
+          
+        </label>
+        <ng-multiselect-dropdown
+          [settings]="multipleDropdownSettings"
+          [data]="universities"
+          [(ngModel)]="selectedUniversities"
+          (onSelect)="onUniveristiesChange()"
+          (onDeSelect)="onUniveristiesChange()"
+          >>
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4" *ngIf="selectedOrginzationId">
+      <div class="form-group">
+        <label for="">
+          {{
+            "NEDSS.HOME.GENERAL_DATA_COMPLETION.INCEIDENT_SOURCE" | translate
+          }}
+          
+        </label>
+        <ng-multiselect-dropdown
+          [settings]="multipleDropdownSettings"
+          [data]="incidentSources"
+          [(ngModel)]="selectedIncidentSources"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+      <!-- <small
+        *ngIf="!generalDataService.isIncidentSourceValid"
+        class="form-text text-danger mess-color"
+      >
+        {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+      </small> -->
+    </div>
+
+    <div class="col-lg-4 mb-4">
+      <div class="form-group">
+        <label for="">
+          {{ "NEDSS.HOME.USERS.USER_DETAILS.ROLE" | translate }}
+        </label>
+        <ng-multiselect-dropdown
+          [settings]="multipleDropdownSettings"
+          [data]="roles"
+          [(ngModel)]="selectedRoles"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+      <div class="form-group">
+        <label for="">
+          {{ "NEDSS.HOME.USERS.USER_DETAILS.DEPARTMENT" | translate }}
+        </label>
+        <ng-multiselect-dropdown
+          [settings]="multipleDropdownSettings"
+          [data]="departments"
+          [(ngModel)]="selectedDepartments"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+      <div class="form-group">
+        <label for="">
+          {{ "NEDSS.HOME.USERS.USER_DETAILS.POSITION" | translate }}
+          
+        </label>
+        <ng-multiselect-dropdown
+          [settings]="multipleDropdownSettings"
+          [data]="positions"
+          [(ngModel)]="selectedPositions"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-end mt-2 mb-2">
+      <button (click)="getReportResult()" class="btn btn-lg bg text-light">
+        <i class="fa fa-search"></i>
+        {{ "NEDSS.REPORTS.Search" | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!--Start No Data -->
+<div *ngIf="!showTableData" class="mt-4 pb-4 pt-4 box border0 clear hide-print">
+  <div align="center" class="color">
+    {{ "NEDSS.REPORTS.NothingToPreview" | translate }}<br />
+    <br /><img
+      width="100%"
+      height="100%"
+      src="../../../../../assets/images/no-data.png"
+      width="150"
+    /><br /><br />
+    <span class="color hover bolds">
+      <i class="fa fa-arrow-left"></i>
+      {{ "NEDSS.REPORTS.DoSearch" | translate }}
+    </span>
+    <div></div>
+  </div>
+</div>
+<!--End No Data -->
+
+<!-- Start Table -->
+<div class="table-report box hide-print" *ngIf="showTableData">
+  <div class="row m-0">
+    <div
+      class="table-reponsive d-flex align-items-center justify-content-end w-100 py-3 px-3"
+    >
+      <a (click)="exportToPdf()"
+        ><span class="pi pi-file-pdf button-export"></span
+      ></a>
+      <a (click)="print()"><span class="pi pi-print button-export"></span></a>
+      <a (click)="generateReportToExcel()"
+        ><span class="pi pi-file-excel button-export"></span
+      ></a>
+    </div>
+    <div class="col-md-2 mb-2">
+      <span class="fw-bold">
+        {{ "NEDSS.REPORTS.TOTAL_USERS_COUNT" | translate }}:
+        {{ tableData?.totalCount }}
+      </span>
+    </div>
+    <div class="col-md-2">
+      <span class="fw-bold">
+        {{ "NEDSS.REPORTS.TOTAL_ACTIVE_USERS" | translate }}:
+        {{ tableData?.totalActiveCount }}
+      </span>
+    </div>
+    <div class="col-md-2">
+      <span class="fw-bold">
+        {{ "NEDSS.REPORTS.TOTAL_INACTIVE_USERS" | translate }}:
+        {{ tableData?.totalNotActiveCount }}
+      </span>
+    </div>
+  </div>
+  <table
+    [style.direction]="dir"
+    class="table table-hover table-striped table-sm mb-0"
+  >
+    <thead>
+      <tr>
+        <th *ngFor="let headerName of tableData?.userDataColumnsNames">
+          {{ headerName }}
+        </th>
+      </tr>
+    </thead>
+    <ng-container *ngFor="let data of tableData.usersData">
+      <tbody>
+        <tr>
+          <td>
+            {{ data?.fullName }}
+          </td>
+          <td>
+            {{ data?.levelName }}
+          </td>
+          <td>
+            {{ data?.userName }}
+          </td>
+          <td>
+            {{ data?.roleName }}
+          </td>
+          <td>
+            {{ data?.lastLoggedInDate | date : "medium" }}
+          </td>
+          <td>
+            {{ data?.organizationName }}
+          </td>
+          <td>
+            {{ data?.phoneNo }}
+          </td>
+          <td>
+            {{ data?.email }}
+          </td>
+          <td>
+            {{ data?.departmentName }}
+          </td>
+          <td>
+            {{ data?.positionName }}
+          </td>
+          <td>
+            {{ data?.responsibilityName }}
+          </td>
+        </tr>
+      </tbody>
+    </ng-container>
+  </table>
+</div>
+<!-- End Table -->
+
+<!-- start component to print -->
+<div *ngIf="tableData && showTableData" id="pdfTable">
+  <app-user-report-pdf [pdfData]="tableData"> </app-user-report-pdf>
+</div>
+<!-- end component to print -->

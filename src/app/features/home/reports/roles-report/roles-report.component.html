@@ -1,0 +1,253 @@
+<app-loader *ngIf="loadingPanel"></app-loader>
+<div class="box box-primary mt-4 hide-print">
+  <div class="box-header with-border p-2">
+    <h6 class="box-title">
+      {{ "NEDSS.REPORTS_LABELS.RulesReport" | translate }}
+    </h6>
+  </div>
+
+  <div class="box-body mt-3">
+    <div class="row">
+      <div class="col-lg-4 col-sm-6 mb-4">
+        <div class="form-group">
+          <label for="government">
+            {{ "NEDSS.PROFILE.ROLE" | translate }}
+          </label>
+          <ng-multiselect-dropdown
+            [settings]="multipleDropdownSettings"
+            [data]="roles"
+            [(ngModel)]="selectedRole"
+          >
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-sm-6 mb-4">
+        <div class="form-group">
+          <label for="government">
+            {{ "NEDSS.EVENTS.GOVERNMENT" | translate }}
+          </label>
+          <ng-multiselect-dropdown
+            [settings]="multipleDropdownSettings"
+            [data]="governments"
+            [(ngModel)]="selectedgovernment"
+            (onSelect)="onGovernmentChanged()"
+            (onDeSelect)="onGovernmentChanged()"
+          >
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-sm-6 mb-4">
+        <div class="form-group">
+          <label for="administration">
+            {{ "NEDSS.EVENTS.ADMINISTRATION" | translate }}
+          </label>
+          <ng-multiselect-dropdown
+            [settings]="multipleDropdownSettings"
+            [data]="healthAdministration"
+            [(ngModel)]="selectedhealthAdministration"
+            (onSelect)="onHealthAdministrationChanged()"
+            (onDeSelect)="onHealthAdministrationChanged()"
+          >
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-sm-6 mb-4">
+        <div class="form-group">
+          <label for="administration">
+            {{ "NEDSS.EVENTS.INCIDENT_SOURCE" | translate }}
+          </label>
+          <ng-multiselect-dropdown
+            [settings]="multipleDropdownSettings"
+            [data]="incidentSources"
+            [(ngModel)]="selectedIncidentSource"
+          >
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="d-flex align-items-center justify-content-end mt-2 mb-2">
+        <button (click)="getReportResult()" class="btn btn-lg bg text-light">
+          <i class="fa fa-search"></i>
+          {{ "NEDSS.REPORTS.Search" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="box border0 clear hide-print">
+  <!-- <div>
+    <button class="btn btn-lg bg text-light" (click)="exportToPdf()">
+      {{ "NEDSS.REPORTS.Search" | translate }}
+    </button>
+  </div> -->
+  <div *ngIf="!nodata" class="row">
+    <label class="col-lg-9" *ngIf="reportType == 1">
+      <input
+        type="text"
+        (keyup)="Tablesearch($event)"
+        class="searchInput form-control"
+        aria-controls="DataTables_Table_0"
+      />
+    </label>
+    <div
+      class="col-lg-1"
+      id="DataTables_Table_0_length"
+      *ngIf="reportType == 1"
+    >
+      <label>
+        <select
+          class="form-select"
+          style="width: auto"
+          [(ngModel)]="pageSize"
+          (ngModelChange)="refreshCountries()"
+        >
+          <option [ngValue]="10">10</option>
+          <option [ngValue]="20">20</option>
+          <option [ngValue]="50">50</option>
+        </select>
+      </label>
+    </div>
+    <div
+      class="dt-buttons btn-group btn-group2 col-lg-1"
+      *ngIf="filterdData.length > 0 && reportType == 1"
+    >
+      <a
+        class="btn btn-default dt-button buttons-excel buttons-html5 btn-excel"
+        (click)="exportPatiantsAsExcel()"
+        tabindex="0"
+        aria-controls="DataTables_Table_0"
+        title="Excel"
+      >
+        <span>
+          <img src="../../../../../assets/images/excel.png" alt="Exel" />
+        </span>
+      </a>
+      <a
+        class="btn btn-default dt-button buttons-pdf buttons-html5 btn-pdf"
+        (click)="exportPatientsAsPdf()"
+        tabindex="0"
+        aria-controls="DataTables_Table_0"
+        title="PDF"
+      >
+        <span>
+          <img src="../../../../../assets/images/pdf.png" alt="ExportPdf" />
+        </span>
+      </a>
+      <button
+        class="btn btn-default dt-button buttons-print btn-print"
+        [useExistingCss]="true"
+        [printSectionId]="
+          reportType == 1 ? 'myTableElementId' : 'chartElementId'
+        "
+        ngxPrint
+        tabindex="0"
+        aria-controls="DataTables_Table_0"
+        href="#"
+        title="Print"
+      >
+        <span>
+          <img src="../../../../../assets/images/printer.png" alt="print" />
+        </span>
+      </button>
+    </div>
+    <label class="col-lg-6 d-flex" *ngIf="reportType == 2">
+      <button
+        class="btn btn-default mx-4 border colorWait"
+        style="margin-right: 20% !important"
+        (click)="changeChartType(2)"
+      >
+        {{ "NEDSS.REPORTS.PieChart" | translate }}
+      </button>
+      <button
+        class="btn btn-default mx-4 border colorWait"
+        (click)="changeChartType(1)"
+      >
+        {{ "NEDSS.REPORTS.barGraph" | translate }}
+      </button>
+    </label>
+  </div>
+  <div *ngIf="nodata" class="mt-4 pb-4">
+    <div align="center" class="color">
+      {{ "NEDSS.REPORTS.NothingToPreview" | translate }}<br />
+      <br /><img
+        width="100%"
+        height="100%"
+        src="../../../../../assets/images/no-data.png"
+        width="150"
+      /><br /><br />
+      <span class="color hover bolds">
+        <i class="fa fa-arrow-left"></i>
+        {{ "NEDSS.REPORTS.DoSearch" | translate }}
+      </span>
+      <div></div>
+    </div>
+  </div>
+  <div *ngIf="!nodata" id="tableChart">
+    <div
+      class="table-reponsive d-flex align-items-center justify-content-end w-100 py-3 px-3"
+    >
+      <a (click)="exportToPdf()"
+        ><span class="pi pi-file-pdf button-export"></span
+      ></a>
+      <a (click)="print()"><span class="pi pi-print button-export"></span></a>
+      <a (click)="generateReportToExcel()"
+        ><span class="pi pi-file-excel button-export"></span
+      ></a>
+    </div>
+    <div class="col-12 table_report">
+      <table
+        [style.direction]="dir"
+        class="table table-hover table-striped table-sm mb-0"
+      >
+        <thead class="transparent-bg">
+          <tr>
+            <th
+              class="text-center"
+              colspan="3"
+              style="text-align: center !important; font-size: 14px !important"
+            >
+              {{ "NEDSS.REPORTS_LABELS.RulesReport" | translate }}
+            </th>
+          </tr>
+        </thead>
+        <thead>
+          <tr class="color">
+            <th class="px-4">
+              {{ "NEDSS.REPORTS.SequenceNumber" | translate }}
+            </th>
+            <th class="px-4" *ngFor="let header of tableHeader">
+              {{ header }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of tableData">
+            <td class="px-4">
+              {{ data?.sequenceNumber }}
+            </td>
+            <td class="px-4">
+              {{ data?.roleName }}
+            </td>
+            <td class="px-4">
+              {{ data?.numberOfUsers }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="text-center float-center svg-scroll" id="chartReport">
+    <div
+      class="text-center float-center svg-scroll-div"
+      id="chartElementId"
+    ></div>
+  </div>
+</div>
+<div *ngIf="!nodata" id="pdfTable">
+  <app-roles-report-pdf [pdfData]="allData"></app-roles-report-pdf>
+</div>

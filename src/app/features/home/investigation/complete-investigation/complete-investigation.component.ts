@@ -1,0 +1,45 @@
+import { InvestigationService } from './../services/investigation.service';
+import { Component, OnInit } from '@angular/core';
+import { InvestigationComponent } from '../investigation.component';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-complete-investigation',
+  templateUrl: './complete-investigation.component.html',
+  styleUrls: ['./complete-investigation.component.css'],
+})
+export class CompleteInvestigationComponent implements OnInit {
+  patientDiseases: any[];
+  currentId: any;
+  constructor(
+    private investigation: InvestigationComponent,
+    private Router: Router,
+    public InvestigationService: InvestigationService
+  ) { }
+
+  ngOnInit() {
+    this.currentId = this.InvestigationService.currentid;
+    //;
+    this.patientDiseases = this.InvestigationService.patientDiseases;
+    if (this.patientDiseases.length >= 1) {
+      this.InvestigationService.diseaseGroupID =
+        this.patientDiseases[0].diseaseGroupId;
+      //alert(JSON.stringify(this.patientDiseases));
+      this.Router.navigateByUrl(
+        '/home/investigations/compelete-investigation/' +
+        this.patientDiseases[0].router
+      );
+    }
+  }
+  ngOnDestroy(): void {
+    if (this.Router.url == '/home/investigations/compelete-investigation') {
+      this.InvestigationService.view = false;
+    } else {
+      this.InvestigationService.view = true;
+    }
+  }
+  setDesiese(item: any) {
+    this.InvestigationService.diseaseGroupID = item.diseaseGroupId;
+    //diseaseGroupID;
+  }
+}

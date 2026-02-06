@@ -1,0 +1,116 @@
+<div class="card card-primary card-tabs">
+  <div class="card-header p-0 pt-1">
+
+    <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs" (activeIdChange)="changeTab()">
+      <li [ngbNavItem]="generalDataEnum.IncidentInfo">
+        <button ngbNavLink>{{ "NEDSS.GENERAL_DATA_SIDEMENU.INCIDENTINFO0" | translate }}</button>
+        <ng-template ngbNavContent>
+          <app-incident-info></app-incident-info>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="generalDataEnum.DemographicInfo" [disabled]="completedTabs < 1 && !activeAllTabs">
+        <button ngbNavLink>{{ "NEDSS.GENERAL_DATA_SIDEMENU.DEMOGRAPHIC_INFO" | translate }}</button>
+        <ng-template ngbNavContent>
+          <app-demographic-data></app-demographic-data>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="generalDataEnum.ResidenceInfo" [disabled]="completedTabs < 2 && !activeAllTabs">
+        <button ngbNavLink>{{ "NEDSS.GENERAL_DATA_SIDEMENU.RESIDENCEINFO" | translate }}</button>
+        <ng-template ngbNavContent>
+          <app-residence-info></app-residence-info>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="generalDataEnum.ClinicalSymptoms" [disabled]="completedTabs < 3 && !activeAllTabs">
+        <button ngbNavLink>{{ "NEDSS.GENERAL_DATA_SIDEMENU.CLINICALSYMPTOMS" | translate }}</button>
+        <ng-template ngbNavContent>
+          <app-clinical-symptoms></app-clinical-symptoms>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="generalDataEnum.DiagnosticInfo" [disabled]="completedTabs < 4 && !activeAllTabs">
+        <button ngbNavLink>{{ "NEDSS.GENERAL_DATA_SIDEMENU.DIAGNOISTICIFO" | translate }}</button>
+        <ng-template ngbNavContent>
+          <app-diagonistics></app-diagonistics>
+        </ng-template>
+      </li>
+      <li *ngIf="patient?.fields?.length" [ngbNavItem]="generalDataEnum.SpecialSymptom"
+        [disabled]="completedTabs < 5 && !activeAllTabs">
+        <button ngbNavLink>{{ "NEDSS.GENERAL_DATA_SIDEMENU.SPECIALSYMTOMS" | translate }}</button>
+        <ng-template ngbNavContent>
+          <app-special-symptoms></app-special-symptoms>
+        </ng-template>
+      </li>
+      <li *ngIf="sharedDataService.ShowSentinel" [ngbNavItem]="generalDataEnum.Sentinal"
+        [disabled]="(completedTabs < 6 && !activeAllTabs)">
+        <button ngbNavLink>{{ "NEDSS.GENERAL_DATA_SIDEMENU.SENTINEL" | translate }}</button>
+        <ng-template ngbNavContent>
+          <app-sentinel></app-sentinel>
+        </ng-template>
+      </li>
+    </ul>
+
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+    <!-- <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="incident-info-tab" data-bs-toggle="tab" data-bs-target="#incident-info"
+          type="button" role="tab" aria-controls="incident-info" aria-selected="true">
+          <span class="d-inline-block d-md-none">1 &nbsp;</span>
+          <span [class]="'d-md-inline-block'" style="color: inherit !important">
+            {{ "NEDSS.GENERAL_DATA_SIDEMENU.INCIDENTINFO0" | translate }}
+          </span>
+        </button>
+        <button class="nav-link" [ngClass]="completedTabs < 1 && !activeAllTabs ? 'disabled' : ''"
+          id="demographic-data-tab" data-bs-toggle="tab" data-bs-target="#demographic-data" type="button" role="tab"
+          aria-controls="demographic-data" aria-selected="false">
+          <span class="d-inline-block d-md-none">2&nbsp;</span>
+          <span [class]="'d-md-inline-block d-none'">
+            {{ "NEDSS.GENERAL_DATA_SIDEMENU.DEMOGRAPHIC_INFO" | translate }}
+          </span>
+        </button>
+        <button class="nav-link" [ngClass]="completedTabs < 2 && !activeAllTabs ? 'disabled' : ''"
+          id="residence-info-tab" data-bs-toggle="tab" data-bs-target="#residence-info" type="button" role="tab"
+          aria-controls="residence-info" aria-selected="false">
+          <span class="d-inline-block d-md-none">3&nbsp;</span>
+          <span [class]="'d-md-inline-block d-none'">
+            {{ "NEDSS.GENERAL_DATA_SIDEMENU.RESIDENCEINFO" | translate }}
+          </span>
+        </button>
+        <button class="nav-link" [ngClass]="completedTabs < 3 && !activeAllTabs ? 'disabled' : ''"
+          id="clinical-symptoms-tab" data-bs-toggle="tab" data-bs-target="#clinical-symptoms" type="button" role="tab"
+          aria-controls="clinical-symptoms" aria-selected="false">
+          <span class="d-inline-block d-md-none">4&nbsp;</span>
+          <span [class]="'d-md-inline-block d-none'">
+            {{ "NEDSS.GENERAL_DATA_SIDEMENU.CLINICALSYMPTOMS" | translate }}
+          </span>
+        </button>
+        <button class="nav-link" [ngClass]="completedTabs < 4 && !activeAllTabs ? 'disabled' : ''"
+          id="special-symptoms-tab" data-bs-toggle="tab" data-bs-target="#special-symptoms" type="button" role="tab"
+          aria-controls="special-symptoms" aria-selected="false">
+          <span class="d-inline-block d-md-none">5&nbsp;</span>
+
+          <span [class]="'d-md-inline-block d-none'">
+            {{ "NEDSS.GENERAL_DATA_SIDEMENU.DIAGNOISTICIFO" | translate }}
+          </span>
+        </button>
+        <button class="nav-link" [ngClass]="completedTabs < 5 && !activeAllTabs ? 'disabled' : ''"
+          id="diagonistic-info-tab" data-bs-toggle="tab" data-bs-target="#diagonistic-info" type="button" role="tab"
+          aria-controls="diagonistic-info" aria-selected="false">
+          <span class="d-inline-block d-md-none">6&nbsp;</span>
+
+          <span [class]="'d-md-inline-block d-none'">
+            {{ "NEDSS.GENERAL_DATA_SIDEMENU.SPECIALSYMTOMS" | translate }}
+          </span>
+        </button>
+        <button class="nav-link" [ngClass]="completedTabs < 6 && !activeAllTabs ? 'disabled' : ''" id="sentinel-tab"
+          data-bs-toggle="tab" data-bs-target="#sentinel" type="button" role="tab" aria-controls="sentinel"
+          aria-selected="false">
+          <span class="d-inline-block d-md-none">7&nbsp;</span>
+
+          <span [class]="'d-md-inline-block d-none'">
+            {{ "NEDSS.GENERAL_DATA_SIDEMENU.SENTINEL" | translate }}
+          </span>
+        </button>
+      </div>
+    </nav> -->
+  </div>
+</div>

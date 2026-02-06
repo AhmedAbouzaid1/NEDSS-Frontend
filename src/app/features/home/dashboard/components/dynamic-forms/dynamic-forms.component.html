@@ -1,0 +1,307 @@
+<div class="row">
+  <div class="col-11 col-md-6">
+    <h2 class="titles">
+      <span class="fs-5">
+        {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.ADDNEWMODELDINAMICFORM" | translate }}
+      </span>
+    </h2>
+  </div>
+  <div class="col-6">
+    <div class="form-group row mt-4">
+      <label for="" class="col-11 col-md-3 mt-2">{{
+        "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.selectDisease"
+          | translate
+      }}</label>
+      <div class="col-lg-9">
+        <select
+          (change)="onDiseaseChange($event)"
+          [(ngModel)]="diseasesFieldForm.diseaseGroupId"
+          name="diseaseId"
+          id="diseaseId"
+          class="form-control"
+        >
+          <option value="">
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.Notexist" | translate }}
+          </option>
+          <ng-container *ngFor="let disease of diseases">
+            <option value="{{ disease.id }}">{{ disease.arabicName }}</option>
+          </ng-container>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form #diseaseFieldForm="ngForm" id="dynam-form">
+  <div class="card shadow color rounded">
+    <div class="card-body bg-dark-mode">
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <div class="form-group">
+            <label for="">{{
+              "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.nameAr" | translate
+            }}</label>
+            <input
+              #NameAr="ngModel"
+              [(ngModel)]="diseasesFieldForm.nameAr"
+              type="text"
+              name="NameAr"
+              id="NameAr"
+              class="form-control form-control-sm"
+              required
+            />
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="form-group">
+            <label for="">{{
+              "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.nameEn" | translate
+            }}</label>
+            <input
+              #NameEn="ngModel"
+              [(ngModel)]="diseasesFieldForm.nameEn"
+              type="text"
+              name="NameEn"
+              id="NameEn"
+              class="form-control form-control-sm"
+              required
+            />
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="form-group">
+            <label for="isShowSideBare" class="d-block">
+              <input
+                #isShowSideBare="ngModel"
+                [(ngModel)]="diseasesFieldForm.isShowSideBare"
+                type="checkbox"
+                value=""
+                id="isShowSideBare"
+                name="isShowSideBare"
+                class="form-check-input"
+              />
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.isShowSideBare"
+                  | translate
+              }}</label
+            >
+          </div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="form-group">
+            <label for="isEvaluation" class="d-block">
+              <input
+                #isEvaluation="ngModel"
+                [(ngModel)]="diseasesFieldForm.isEvaluation"
+                type="checkbox"
+                value=""
+                id="isEvaluation"
+                name="isEvaluation"
+                class="form-check-input"
+              />
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.isEvaluation"
+                  | translate
+              }}</label
+            >
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <button
+            (click)="save()"
+            *ngIf="!isEdit"
+            [disabled]="!diseaseFieldForm.valid"
+            class="btn btn-sm btn-primary btn-lg rounded-2 m-auto d-inline-block pr-4 pl-4 mt-4 save-button-des"
+          >
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+          </button>
+          <button
+            (click)="edit()"
+            *ngIf="isEdit"
+            [disabled]="!diseaseFieldForm.valid"
+            class="btn mx-1 btn-sm btn-lg btn-info save-button-des rounded-2 m-auto d-inline-block pr-4 pl-4 mt-4"
+          >
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.EDIT" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="table-reponsive mt-4 shadow border rounded" *ngIf="!noData">
+  <div class="row">
+    <div class="col-lg-7 fwb p-4 pb-0">
+      {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.MODELS" | translate }}
+      {{ pages }}
+    </div>
+    <div class="col-lg-5 p-4 pb-0">
+      <div class="row">
+        <div class="col-8">
+          <!-- <input type='search' name='' id='' class='form-control' placeholder='بحث ...'> -->
+          <input
+            type="search"
+            class="form-control"
+            [(ngModel)]="diseaseFieldFilter.searchText"
+            placeholder="{{ 'NEDSS.COMMON.SEARCH' | translate }}"
+            #searchInput
+          />
+          <!-- <i class="text-dark fa fa-times" style="margin-left: -24px; margin-right: -24px" (click)="clearSearch()"></i> -->
+        </div>
+        <!-- <div class="col-4 text-start">
+          <a routerLink="#"><span class="bi bi-filetype-pdf"></span></a>
+          <a routerLink="#"><span class="bi bi-printer-fill"></span></a>
+          <a routerLink="#"><span class="bi bi-filetype-csv"></span></a>
+          <a routerLink="#"><span class="bi bi-file-earmark-excel-fill"></span></a>
+        </div> -->
+      </div>
+    </div>
+    <div class="col-12 table-responsive table-none-scroll">
+      <p-table
+        class="table"
+        [value]="diseasesField"
+        (sortFunction)="sort($event)"
+        [customSort]="true"
+        [sortField]="'nameAr'"
+        [sortOrder]="1"
+        [paginator]="false"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="nameAr">
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.nameAr"
+                  | translate
+              }}</span>
+              <p-sortIcon field="nameAr"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nameEn">
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.nameEn"
+                  | translate
+              }}</span>
+              <p-sortIcon field="nameEn"></p-sortIcon>
+            </th>
+            <th pSortableColumn="isShowSideBare">
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.isShowSideBare"
+                  | translate
+              }}</span>
+              <p-sortIcon field="isShowSideBare"></p-sortIcon>
+            </th>
+            <th pSortableColumn="isEvaluation">
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.isEvaluation"
+                  | translate
+              }}</span>
+              <p-sortIcon field="isEvaluation"></p-sortIcon>
+            </th>
+
+            <th>
+              <span>{{
+                "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
+                  | translate
+              }}</span>
+            </th>
+            <th>
+              <span></span>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>
+              <span
+                [innerHTML]="
+                  item.nameAr
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "
+              ></span>
+            </td>
+            <td>
+              <span
+                [innerHTML]="
+                  item.nameEn
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "
+              ></span>
+            </td>
+            <td>
+              <span
+                [innerHTML]="
+                  item.isShowSideBare
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "
+              ></span>
+            </td>
+            <td>
+              <span
+                [innerHTML]="
+                  item.isEvaluation
+                    | highlighter : diseaseFieldFilter.searchText : 'partial'
+                "
+              ></span>
+            </td>
+
+            <td>
+              <a
+                (click)="getById(item.id)"
+                class="text-primary pi pi-pencil"
+              ></a>
+              &nbsp;&nbsp;
+              <a
+                (click)="delete(item.id)"
+                class="text-danger mess-color bi bi-trash-fill"
+              ></a>
+              &nbsp;&nbsp;
+              <a
+                *ngIf="false"
+                (click)="viewDesgin(item.id)"
+                class="text-success bi bi-eye"
+              ></a>
+              &nbsp;&nbsp;
+              <a
+                (click)="getContainers(item.id)"
+                class="text-info bi bi-file-post"
+              ></a>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div class="col-lg-12 p-0" style="margin-bottom: 4px">
+        <p-paginator
+          *ngIf="!noData"
+          [rows]="diseaseFieldFilter.pageSize"
+          [totalRecords]="pages"
+          (onPageChange)="paginate($event)"
+          [first]="first"
+          [currentPageReportTemplate]="
+            'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+          "
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[
+            10,
+            20,
+            30,
+            40,
+            50,
+            70,
+            100,
+            200,
+            500,
+            1000,
+            2000,
+            pages >= 5000 ? pages : 5000
+          ]"
+        ></p-paginator>
+      </div>
+      <div class="row" [hidden]="!noData">
+        <div class="no-data content-center">
+          <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+          <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

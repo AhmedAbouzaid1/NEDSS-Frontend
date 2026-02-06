@@ -1,0 +1,393 @@
+<div class="col-11 col-lg-12 color-d-2">
+  <form (ngSubmit)="save()" #governmentForm="ngForm" id="govern" novalidate>
+    <div class="form-titles">
+      {{ "NEDSS.HOME.CONTROL_PANEL.CODES.GOVERNMENTS" | translate }}
+    </div>
+    <div class="card shadow">
+      <div class="card-body bg-dark-mode mb-2">
+        <div class="row">
+          <!-- <div class="col-lg-2">
+                        <div class="form-group">
+                            <label>{{'NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_CODE'|translate}}</label>
+                            <input type="text" maxlength="100" required class="form-control" name="code"
+                                [(ngModel)]="government.code" #code="ngModel">
+                        </div>
+                    </div> -->
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="code">
+                {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_CODE" | translate }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <input
+                type="code"
+                name="code"
+                [(ngModel)]="government.code"
+                #code="ngModel"
+                class="form-control"
+                required
+                code
+                (change)="codeChange()"
+              />
+              <div
+                *ngIf="
+                  governmentForm.controls.code?.touched &&
+                  governmentForm.controls.code?.errors?.required
+                "
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </div>
+              <!-- <div *ngIf="governmentForm.controls.code?.touched && governmentForm.controls.code?.errors?.code"
+                                class="form-text text-danger mess-color">
+                                Invalid code format
+                            </div> -->
+              <div
+                *ngIf="codeValidationMsg !== ''"
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.CODEVALIDATEMSG" | translate }}
+              </div>
+            </div>
+          </div>
+
+          <!--    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>{{'NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ARABIC_NAME'|translate}}</label>
+                            <input type="text" maxlength="100" required class="form-control" name="arabicName"
+                                [(ngModel)]="government.arabicName" #arabicName="ngModel">
+                        </div>
+                    </div>  -->
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="arabicName">
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ARABIC_NAME"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <input
+                type="arabicName"
+                name="arabicName"
+                [(ngModel)]="government.arabicName"
+                #arabicName="ngModel"
+                class="form-control"
+                required
+                arabicName
+                (change)="arabicNameChange()"
+              />
+              <div
+                *ngIf="
+                  governmentForm.controls.arabicName?.touched &&
+                  governmentForm.controls.arabicName?.errors?.required
+                "
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </div>
+              <!--    <div *ngIf="governmentForm.controls.arabicName?.touched && governmentForm.controls.arabicName?.errors?.arabicName"
+                                class="form-text text-danger mess-color">
+                                Invalid arabicName format
+                            </div> -->
+              <div
+                *ngIf="ArabicNameValidationMsg !== ''"
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.ARABICNAMEVALIDATEMSG" | translate }}
+              </div>
+            </div>
+          </div>
+
+          <!-- 
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>{{'NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ENGLISH_NAME'|translate}}</label>
+                            <input type="text" maxlength="100" required class="form-control" name="englishName"
+                                [(ngModel)]="government.englishName" #englishName="ngModel">
+                        </div>
+                    </div>
+
+ -->
+
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="englishName">
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ENGLISH_NAME"
+                    | translate
+                }}
+                <span class="text-danger mess-color">*</span>
+              </label>
+              <input
+                type="englishName"
+                name="englishName"
+                [(ngModel)]="government.englishName"
+                #arabicName="ngModel"
+                class="form-control"
+                required
+                arabicName
+                (change)="englishNameChange()"
+              />
+              <div
+                *ngIf="
+                  governmentForm.controls.englishName?.touched &&
+                  governmentForm.controls.englishName?.errors?.required
+                "
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </div>
+              <!-- <div *ngIf="governmentForm.controls.englishName?.touched && governmentForm.controls.englishName?.errors?.englishName"
+                                class="form-text text-danger mess-color">
+                                Invalid arabicName format
+                            </div> -->
+              <div
+                *ngIf="EnglishNameValidationMsg !== ''"
+                class="form-text text-danger mess-color"
+              >
+                {{ "NEDSS.COMMON.ENGLISHNAMEVALIDATEMSG" | translate }}
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-3">
+                                      <div class="form-check mt-4">
+                                          <label class="form-check-label" for="is_child">
+                                            <input class="form-check-input" type="checkbox" name="is_child" [(ngModel)]="government.isParent" #isParentGovernment="ngModel">
+                                            {{'NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_IS_PARENT_GOVERNMENT'|translate}}
+                                        </label>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-3" *ngIf="!government.isParent">
+                                    <div class="form-group">
+                                        <label for="">{{'NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_PARENT_GOVERNMENT'|translate}}</label>
+                                        <select [(ngModel)]="government.parentId" class="form-control" name="parent">
+                                          <option *ngFor="let government of parentGovernments" [value]="government.id">{{ government.arabicName}}</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+        </div>
+      </div>
+      <div class="card-footer text-start">
+        <button
+          type="submit"
+          class="btn btn-lg bg text-light"
+          [disabled]="governmentForm.form.invalid"
+        >
+          <span class="bi bi-check2-circle"></span>
+          {{ "NEDSS.COMMON.SAVE" | translate }}
+        </button>
+        <button
+          type="button"
+          (click)="search()"
+          class="btn btn-lg bg text-light float-end"
+        >
+          <span class="bi bi-check2-circle"></span>
+          {{ "NEDSS.COMMON.SEARCH" | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="table-reponsive mt-4 shadow border rounded">
+    <div class="row">
+      <div class="col-lg-7 fwb p-4 pb-0">
+        {{ "NEDSS.HOME.CONTROL_PANEL.CODES.GOVERNMENTS" | translate }}
+        {{ pages }}
+      </div>
+      <div class="col-lg-5 p-4 pb-0">
+        <div class="row">
+          <div class="col-8">
+            <!-- <input type='search' name='' id='' class='form-control' placeholder='بحث ...'> -->
+            <input
+              type="search"
+              class="form-control"
+              [(ngModel)]="governmentFilter.searchText"
+              placeholder="{{ 'NEDSS.COMMON.SEARCH' | translate }}"
+              #searchInput
+            />
+            <!-- <i  class="text-dark pi pi-search" style="margin-left: -24px; margin-right: -24px;" (click)="clearSearch()"></i> -->
+          </div>
+          <!-- <div class='col-4 text-start'>
+                                            <a routerLink='#'><span class='bi bi-filetype-pdf'></span></a>
+                                            <a routerLink='#'><span class='bi bi-printer-fill'></span></a>
+                                            <a routerLink='#'><span class='bi bi-filetype-csv'></span></a>
+                                            <a routerLink='#'><span class='bi bi-file-earmark-excel-fill'></span></a>
+                                        </div> -->
+        </div>
+      </div>
+      <div class="table-responsive table-none-scroll">
+        <p-table
+          class="table"
+          [value]="governments"
+          (sortFunction)="sort($event)"
+          [customSort]="true"
+          [sortField]="'arabicName'"
+          [sortOrder]="1"
+          [paginator]="false"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="code">
+                <span>{{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_CODE" | translate
+                }}</span>
+                <p-sortIcon field="code"></p-sortIcon>
+              </th>
+              <th pSortableColumn="arabicName">
+                {{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ARABIC_NAME"
+                    | translate
+                }}
+                <p-sortIcon field="arabicName"></p-sortIcon>
+              </th>
+
+              <th pSortableColumn="englishName">
+                <span>{{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_ENGLISH_NAME"
+                    | translate
+                }}</span>
+                <p-sortIcon field="englishName"></p-sortIcon>
+              </th>
+              <th>
+                <span>{{
+                  "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
+                    | translate
+                }}</span>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>
+                <span
+                  [innerHTML]="
+                    item.code
+                      | highlighter : governmentFilter.searchText : 'partial'
+                  "
+                ></span>
+              </td>
+
+              <td>
+                <span
+                  [innerHTML]="
+                    item.arabicName
+                      | highlighter : governmentFilter.searchText : 'partial'
+                  "
+                ></span>
+              </td>
+              <td>
+                <span
+                  [innerHTML]="
+                    item.englishName
+                      | highlighter : governmentFilter.searchText : 'partial'
+                  "
+                ></span>
+              </td>
+              <td>
+                <a
+                  (click)="getById(item.id)"
+                  class="text-primary pi pi-pencil"
+                ></a>
+                &nbsp;&nbsp;
+                <a
+                  data-bs-target="#exampleModal2"
+                  data-bs-toggle="modal"
+                  (click)="nameToDelete(item)"
+                  class="text-danger mess-color bi bi-trash-fill"
+                ></a>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <div class="col-lg-12 p-0" style="margin-bottom: 4px">
+          <p-paginator
+            *ngIf="!noData"
+            [rows]="governmentFilter.pageSize"
+            [totalRecords]="pages"
+            (onPageChange)="paginate($event)"
+            [first]="first"
+            [currentPageReportTemplate]="
+              'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
+            "
+            [showCurrentPageReport]="true"
+            [rowsPerPageOptions]="[10, 20, 30, 40, 50]"
+          ></p-paginator>
+        </div>
+        <div class="row" [hidden]="!noData">
+          <div class="no-data content-center">
+            <img src="../../../../../../../Content/Images/svg/no-data.svg" />
+
+            <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+          </div>
+        </div>
+        <!-- <table class='table table-hover table-striped table-sm'>
+                                        <thead>
+                                            <tr class='color'>
+                                                <th>الكود</th>
+                                                <th>الاسم عربي</th>
+                                                <th>الاسم انجليزي</th>
+                                                <th>عمليات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of governments ">
+                                                <td>{{item[1]}}</td>
+                                                <td>{{item[2]}}</td>
+                                                <td>{{item[3]}}</td>
+                                                <td>
+                                                     get item to edit
+                                                    <a  class="text-primary pi pi-pencil"></a>
+                                                    <a (click)="delete(item['id'])" class="text-danger mess-color bi bi-trash-fill"></a>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- confirm - modal -->
+
+<div
+  class="modal fade"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          {{ "NEDSS.COMMON.SURE_DELETE_ATTENTION" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.COMMON.SURE_DELETE" | translate
+        }}<strong style="color: red"> {{ underDeleting.arabicName }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="delete(underDeleting.id)"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.COMMON.DELETE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
