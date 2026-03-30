@@ -1,2 +1,38 @@
-<router-outlet></router-outlet>
+<section class="reports-page">
+  <div class="reports-header">
+    <h4>{{ "NEDSS.HOME.SIDE_BAR.ITEM_REPORTS" | translate }}</h4>
+    <p>{{ "NEDSS.REPORTS.REPORTS_SELECTOR_SUBTITLE" | translate }}</p>
+  </div>
+
+  <div class="search-wrap">
+    <i class="bi bi-search"></i>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      [placeholder]="'NEDSS.HOME.SIDE_BAR.ITEM_ADVANCED_SEARCH' | translate"
+    />
+  </div>
+
+  <div class="reports-grid" *ngIf="filteredReports.length > 0; else emptyState">
+    <a
+      *ngFor="let report of filteredReports"
+      class="report-card"
+      [routerLink]="report.route"
+    >
+      <div class="report-icon">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+      </div>
+      <div class="report-text">
+        <div class="report-title">{{ report.labelKey | translate }}</div>
+      </div>
+      <i class="bi bi-arrow-left-short report-arrow"></i>
+    </a>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      {{ "NEDSS.REPORTS.NO_MATCHING_REPORTS" | translate }}
+    </div>
+  </ng-template>
+</section>
 
