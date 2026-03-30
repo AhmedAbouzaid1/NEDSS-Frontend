@@ -8,7 +8,7 @@ import {
   HostListener,
   QueryList,
 } from '@angular/core';
-import { PatientModel } from '../models/patient-model';
+import { PatientModel, FeverSymptoms } from '../models/patient-model';
 import { SharedDataService } from '../services/shared-data.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import {
@@ -488,6 +488,7 @@ export class IncidentInfoComponent implements OnInit {
       this.generalDataService.checkIncidentDepartmentValid(
         this.patient.incidentDepartmentId
       );
+    this.sharedDataService.setPatientObject({ ...this.patient });
   }
 
   getLookups() {
@@ -956,7 +957,11 @@ export class IncidentInfoComponent implements OnInit {
     patient.homePrincipalityId = data.homePrincipalityId;
     patient.livingAddress = data.livingAddress;
     patient.homeGovernmentId = data.homeGovernmentId;
-    patient.clinicalAsymptoms = {};
+    patient.clinicalSymptomIds =
+      data?.clinicalSymptomIds ?? data?.ClinicalSymptomIds ?? [];
+    if (patient.feverSymptoms == undefined || patient.feverSymptoms == null) {
+      patient.feverSymptoms = new FeverSymptoms();
+    }
     patient.incidentBranchId = data.SelectedbranchId;
     this.sharedDataService.setPatientObject(patient);
 

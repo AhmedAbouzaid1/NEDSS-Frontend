@@ -371,7 +371,7 @@ export class GeneralDataService {
     var inc = this.validateIncidentInfo(patient) == -1;
     var dem = this.validateDemographicInfo(patient) == -1;
     var res = this.validateResidenceInfo(patient) == -1;
-    var cli = this.validateClinicalSymptoms(patient) == -1;
+    var cli = true;
     var dia = this.validateDiagnostics(patient) == -1;
 
     if (!inc || !dem || !res || !cli || !dia) {
@@ -698,17 +698,17 @@ export class GeneralDataService {
 
   validateClinicalSymptoms(patient): any {
     if (
-      patient.clinicalAsymptoms != undefined &&
-      patient.clinicalAsymptoms != null
+      patient.feverSymptoms != undefined &&
+      patient.feverSymptoms != null
     ) {
       this.isFeverDurationValid = this.isNumberPositiveAndLessThanMax(
-        patient.clinicalAsymptoms.feverDuration,
+        patient.feverSymptoms.feverDuration,
         3
       );
       this.isFeverMaxTemperatureValid =
         this.validateFeverMaxTemperature(
-          patient.clinicalAsymptoms.feverMaxTemp
-        ) || !patient.clinicalAsymptoms.feverDuration;
+          patient.feverSymptoms.feverMaxTemp
+        ) || !patient.feverSymptoms.feverDuration;
       this.isChronicDiseaseValid = this.validateChronicDisease(
         patient.chronicDiseasesIds,
         patient.anotherChronicDisease,
@@ -716,90 +716,13 @@ export class GeneralDataService {
       );
 
       this.isFeverDurationTypeValid =
-        !!patient.clinicalAsymptoms.feverDurationType ||
-        !patient.clinicalAsymptoms.feverDuration;
-
-      this.isGeneralSymptomsValid =
-        !!(
-          !patient.clinicalAsymptoms.skinDisColoration &&
-          !patient.clinicalAsymptoms.jerk &&
-          !patient.clinicalAsymptoms.headache &&
-          !patient.clinicalAsymptoms.overworkStress
-        ) ||
-        !!(
-          patient.clinicalAsymptoms.skinDisColoration &&
-          patient.clinicalAsymptoms.jerk &&
-          patient.clinicalAsymptoms.headache &&
-          patient.clinicalAsymptoms.overworkStress
-        );
-
-      this.isGASTROLINTESTINALSympotomsValid =
-        !!(
-          patient.clinicalAsymptoms.nausea &&
-          patient.clinicalAsymptoms.vomit &&
-          patient.clinicalAsymptoms.diarrhea &&
-          patient.clinicalAsymptoms.materyDiarrhea &&
-          patient.clinicalAsymptoms.colic_Intestinal_Distress_Abdominal_Pain &&
-          patient.clinicalAsymptoms.mucusInStool &&
-          patient.clinicalAsymptoms.constipation &&
-          patient.clinicalAsymptoms.lossOfAppetite
-        ) ||
-        !!(
-          !patient.clinicalAsymptoms.nausea &&
-          !patient.clinicalAsymptoms.vomit &&
-          !patient.clinicalAsymptoms.diarrhea &&
-          !patient.clinicalAsymptoms.materyDiarrhea &&
-          !patient.clinicalAsymptoms.colic_Intestinal_Distress_Abdominal_Pain &&
-          !patient.clinicalAsymptoms.mucusInStool &&
-          !patient.clinicalAsymptoms.constipation &&
-          !patient.clinicalAsymptoms.lossOfAppetite
-        );
-
-      this.isNervousSystemSymptomValid =
-        !!(
-          patient.clinicalAsymptoms.jointPain &&
-          patient.clinicalAsymptoms.backPain &&
-          patient.clinicalAsymptoms.musclePain &&
-          patient.clinicalAsymptoms.encephalitis &&
-          patient.clinicalAsymptoms.difficultySwallowing &&
-          patient.clinicalAsymptoms.cramps &&
-          patient.clinicalAsymptoms.impairedMentalState
-        ) ||
-        !!(
-          !patient.clinicalAsymptoms.jointPain &&
-          !patient.clinicalAsymptoms.backPain &&
-          !patient.clinicalAsymptoms.musclePain &&
-          !patient.clinicalAsymptoms.encephalitis &&
-          !patient.clinicalAsymptoms.difficultySwallowing &&
-          !patient.clinicalAsymptoms.cramps &&
-          !patient.clinicalAsymptoms.impairedMentalState
-        );
-
-      this.isRespiratorySystemSymptomValid =
-        !!(
-          patient.clinicalAsymptoms.soreThroat &&
-          patient.clinicalAsymptoms.pneumonia &&
-          patient.clinicalAsymptoms.runnyNose &&
-          patient.clinicalAsymptoms.cough &&
-          patient.clinicalAsymptoms.shortnessOfBreath &&
-          patient.clinicalAsymptoms.dryCough &&
-          patient.clinicalAsymptoms.rapidBreathing &&
-          patient.clinicalAsymptoms.frequentCoughingSpells &&
-          patient.clinicalAsymptoms.coughByVomiting &&
-          patient.clinicalAsymptoms.chestPain
-        ) ||
-        !!(
-          !patient.clinicalAsymptoms.soreThroat &&
-          !patient.clinicalAsymptoms.pneumonia &&
-          !patient.clinicalAsymptoms.runnyNose &&
-          !patient.clinicalAsymptoms.cough &&
-          !patient.clinicalAsymptoms.shortnessOfBreath &&
-          !patient.clinicalAsymptoms.dryCough &&
-          !patient.clinicalAsymptoms.rapidBreathing &&
-          !patient.clinicalAsymptoms.frequentCoughingSpells &&
-          !patient.clinicalAsymptoms.coughByVomiting &&
-          !patient.clinicalAsymptoms.chestPain
-        );
+        Number(patient.feverSymptoms.feverDurationType) > 0 ||
+        !patient.feverSymptoms.feverDuration;
+        
+      this.isGeneralSymptomsValid = true;
+      this.isGASTROLINTESTINALSympotomsValid = true;
+      this.isNervousSystemSymptomValid = true;
+      this.isRespiratorySystemSymptomValid = true;
 
       var validationResults = [
         this.isFeverDurationValid,

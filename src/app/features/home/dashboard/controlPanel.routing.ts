@@ -27,6 +27,7 @@ import { ExamineCasesComponent } from './components/examine-cases/examine-cases.
 import { NonInferenceCasesComponent } from './components/non-inference-cases/non-inference-cases.component';
 import { UncompletedInvestigationsComponent } from './components/uncompleted-investigations/uncompleted-investigations.component';
 import { SystemSettingsComponent } from './components/controlPanel/system-settings/system-settings.component';
+import { DiseaseClinicalSymptomsMappingComponent } from './components/controlPanel/disease-clinical-symptoms-mapping/disease-clinical-symptoms-mapping.component';
 import { VisitNewReviewComponent } from './components/visit-new-review/visit-new-review.component';
 import { AddUpdateContainerFieldComponent } from './components/add-update-container-field/add-update-container-field.component';
 import { PeriodOfCardsComponent } from './components/period-of-cards/period-of-cards.component';
@@ -106,6 +107,11 @@ const routes: Routes = [
   {
     path: 'system-settings',
     component: SystemSettingsComponent,
+    canActivate: [NavigationGuard],
+  },
+  {
+    path: 'disease-clinical-symptoms',
+    component: DiseaseClinicalSymptomsMappingComponent,
     canActivate: [NavigationGuard],
   },
   {
