@@ -21,11 +21,6 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
   isfeverDurationTypeChanged: boolean;
 
   FEVERStatus: boolean = true;
-  GENERALDESIEASE: boolean = false;
-  SYMPTOMS: boolean = false;
-  muscular: boolean = false;
-  Respiratory: boolean = false;
-  otherdieases: boolean = false;
 
   FEVER_DURATION_DAYS: string;
 
@@ -39,8 +34,6 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
   chronicDiseases!: any[];
   selectedChronicDiseases: any = {};
   loadingPanel: boolean = false;
-  sectionSearchTerm: string = '';
-  selectedSectionIds: string[] = [];
 
   private lastDiseaseAndDeptKey: string = '';
   private diseaseMappingRequestSeq = 0;
@@ -67,92 +60,7 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
     private lookupsService: LookupsGetterService,
     private userMsg: UserMessageService,
     public generalDataService: GeneralDataService,
-  ) {}
-
-  sectionOptions: {
-    id: string;
-    titleKey: string;
-    label: string;
-    questionKeys: string[];
-    questionLabels: string[];
-  }[] = [
-    {
-      id: 'general',
-      titleKey: 'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.GENERALDESIEASE',
-      label: '',
-      questionKeys: [
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YELLOW',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.BLUE',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.SKINDISCOLORATION2',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.JERK',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.HEADACHE',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.EXHAUSTION',
-      ],
-      questionLabels: [],
-    },
-    {
-      id: 'gastro',
-      titleKey:
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.GASTROLINTESTINAL_SYMPTOMS',
-      label: '',
-      questionKeys: [
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.NAUSEA',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.VOMIT',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.DIARRHEA',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MATERYDIARRHEA',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.colic_Intestinal_Distress_Abdominal_Pain',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MUSCUS_STOLL',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.CONSTIPATION',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.lossOfAppetite',
-      ],
-      questionLabels: [],
-    },
-    {
-      id: 'muscular',
-      titleKey:
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.Symptoms_of_the_nervous_and_muscular_system',
-      label: '',
-      questionKeys: [
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.jointPain',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.backPain',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.musclePain',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.encephalitis',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.difficultySwallowing',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.cramps',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.impairedMentalState',
-      ],
-      questionLabels: [],
-    },
-    {
-      id: 'respiratory',
-      titleKey:
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.Respiratory_Symptoms',
-      label: '',
-      questionKeys: [
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.soreThroat',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.pneumonia',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.runnyNose',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.cough',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.shortnessOfBreath',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.dryCough',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.rapidBreathing',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.frequentCoughingSpells',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.coughByVomiting',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.chestPain',
-      ],
-      questionLabels: [],
-    },
-    {
-      id: 'chronic',
-      titleKey: 'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.ChronicDiseases',
-      label: '',
-      questionKeys: [
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.AreThereChronicDiseases',
-        'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.AnotherChronicDiseases',
-      ],
-      questionLabels: [],
-    },
-  ];
+  ) { }
 
   ngOnInit() {
     this.multipleDropdownSettings = {
@@ -215,7 +123,7 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
 
     this.currentLang =
       localStorage.getItem('ls.currentLang') !== undefined &&
-      localStorage.getItem('ls.currentLang') !== 'undefined'
+        localStorage.getItem('ls.currentLang') !== 'undefined'
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
 
@@ -229,7 +137,6 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
       });
 
     this.getChronicDisease();
-    this.updateSectionLabels();
   }
 
   private loadDiseasesForExternalAutofillFlag() {
@@ -377,14 +284,6 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
                 m?.clinicalSymptomId ?? m?.ClinicalSymptomId ?? 0,
               );
 
-              // Fallback for old payloads that still send symptomKey.
-              if (!id && m?.symptomKey) {
-                const option = (this.clinicalSymptomsOptions || []).find(
-                  (o) => o.code === String(m?.symptomKey),
-                );
-                id = option?.id ? Number(option.id) : 0;
-              }
-
               if (!id || Number.isNaN(id)) {
                 return;
               }
@@ -445,144 +344,6 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
 
   onfeverDurationTypeChange() {
     this.isfeverDurationTypeChanged = true;
-  }
-
-  updateSectionLabels() {
-    this.sectionOptions = this.sectionOptions.map((x) => ({
-      ...x,
-      label: this.translateService.instant(x.titleKey),
-      questionLabels: (x.questionKeys || []).map((q) =>
-        this.translateService.instant(q),
-      ),
-    }));
-  }
-
-  get filteredSectionOptions() {
-    const search = this.sectionSearchTerm?.trim().toLowerCase();
-    return this.sectionOptions.filter((section) => {
-      if (this.selectedSectionIds.includes(section.id)) {
-        return false;
-      }
-
-      if (!search) {
-        return true;
-      }
-
-      const inSection = section.label?.toLowerCase().includes(search);
-      const inQuestions = (section.questionLabels || []).some((q) =>
-        q?.toLowerCase().includes(search),
-      );
-      return inSection || inQuestions;
-    });
-  }
-
-  addSection(sectionId: string) {
-    if (!this.selectedSectionIds.includes(sectionId)) {
-      this.selectedSectionIds.push(sectionId);
-    }
-    this.openSection(sectionId);
-    this.sectionSearchTerm = '';
-  }
-
-  removeSection(sectionId: string) {
-    this.selectedSectionIds = this.selectedSectionIds.filter(
-      (id) => id !== sectionId,
-    );
-  }
-
-  showAllSections() {
-    this.selectedSectionIds = this.sectionOptions.map((x) => x.id);
-    this.FEVERStatus = true;
-    this.GENERALDESIEASE = true;
-    this.SYMPTOMS = true;
-    this.muscular = true;
-    this.Respiratory = true;
-    this.otherdieases = true;
-  }
-
-  hideAllSections() {
-    this.selectedSectionIds = [];
-    this.GENERALDESIEASE = false;
-    this.SYMPTOMS = false;
-    this.muscular = false;
-    this.Respiratory = false;
-    this.otherdieases = false;
-  }
-
-  isSectionVisible(sectionId: string) {
-    return this.selectedSectionIds.includes(sectionId);
-  }
-
-  getSectionTitleKey(sectionId: string) {
-    return (
-      this.sectionOptions.find((section) => section.id === sectionId)
-        ?.titleKey || ''
-    );
-  }
-
-  toggleSection(sectionId: string) {
-    switch (sectionId) {
-      case 'fever':
-        this.FEVERStatus = !this.FEVERStatus;
-        break;
-      case 'general':
-        this.GENERALDESIEASE = !this.GENERALDESIEASE;
-        break;
-      case 'gastro':
-        this.SYMPTOMS = !this.SYMPTOMS;
-        break;
-      case 'muscular':
-        this.muscular = !this.muscular;
-        break;
-      case 'respiratory':
-        this.Respiratory = !this.Respiratory;
-        break;
-      case 'chronic':
-        this.otherdieases = !this.otherdieases;
-        break;
-    }
-  }
-
-  isSectionOpen(sectionId: string) {
-    switch (sectionId) {
-      case 'fever':
-        return this.FEVERStatus;
-      case 'general':
-        return this.GENERALDESIEASE;
-      case 'gastro':
-        return this.SYMPTOMS;
-      case 'muscular':
-        return this.muscular;
-      case 'respiratory':
-        return this.Respiratory;
-      case 'chronic':
-        return this.otherdieases;
-      default:
-        return false;
-    }
-  }
-
-  private openSection(sectionId: string) {
-    switch (sectionId) {
-      case 'fever':
-        this.FEVERStatus = true;
-        break;
-      case 'general':
-        this.GENERALDESIEASE = true;
-        break;
-      case 'gastro':
-        this.SYMPTOMS = true;
-        break;
-      case 'muscular':
-        this.muscular = true;
-        break;
-      case 'respiratory':
-        this.Respiratory = true;
-        break;
-      case 'chronic':
-        this.otherdieases = true;
-        break;
-    }
   }
 
   // ----- Clinical symptoms (normalized) -----

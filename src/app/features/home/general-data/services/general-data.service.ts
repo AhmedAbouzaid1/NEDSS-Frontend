@@ -288,8 +288,6 @@ export class GeneralDataService {
     }
   }
   updateSentinel(sentinel: any) {
-    console.log('Update Sentinel');
-    console.log(sentinel);
     return this.APIs.update(
       this.sentinelControllerURL + 'UpdateSentinel',
       sentinel
@@ -308,8 +306,6 @@ export class GeneralDataService {
     let isSending: boolean = false;
     if (tempD != null && tempD != undefined && tempD.length > 0) {
       for (let i = 0; i < tempD.length; i++) {
-        console.log(tempD);
-        console.log(isSending);
         if (isSending == false) {
           tempD[0].patient.id = null;
           this.APIs.post(
@@ -718,7 +714,7 @@ export class GeneralDataService {
       this.isFeverDurationTypeValid =
         Number(patient.feverSymptoms.feverDurationType) > 0 ||
         !patient.feverSymptoms.feverDuration;
-        
+
       this.isGeneralSymptomsValid = true;
       this.isGASTROLINTESTINALSympotomsValid = true;
       this.isNervousSystemSymptomValid = true;
@@ -1120,8 +1116,8 @@ export class GeneralDataService {
   }
   validateTwoCharsPattern(name: string) {
     let namePattern = /^[A-Za-z\u0600-\u06FF ]{2,15}$/;
-    if(name){
-      if (!namePattern.test(name) || name.split('')?.filter(x=>x != ' ')?.length < 2) {
+    if (name) {
+      if (!namePattern.test(name) || name.split('')?.filter(x => x != ' ')?.length < 2) {
         return this.translate.instant('NEDSS.COMMON.INVALID_NAME_CHARACTERS_TWO', {
           maxLength: 15,
         });

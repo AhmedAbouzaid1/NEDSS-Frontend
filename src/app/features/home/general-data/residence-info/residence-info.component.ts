@@ -56,18 +56,17 @@ export class ResidenceInfoComponent implements OnInit {
     private userMsg: UserMessageService,
     private customService: CustomeService,
     public generalDataService: GeneralDataService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadingPanel = true;
     this.currentLang =
       localStorage.getItem('ls.currentLang') !== undefined &&
-      localStorage.getItem('ls.currentLang') !== 'undefined'
+        localStorage.getItem('ls.currentLang') !== 'undefined'
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
     this.sharedDataService.getPatientObject().subscribe((patientObject) => {
       this.patient = patientObject;
-      console.log(this.patient.newLivingAddress);
     });
     this.levelId = JSON.parse(
       localStorage.getItem('ls.authorizationData')
@@ -79,8 +78,8 @@ export class ResidenceInfoComponent implements OnInit {
     this.multipleDropdownSettings = MultipleDropdownSettings;
     this.loadingPanel = false;
   }
-  onItemSelect(item: any) {}
-  onSelectAll(items: any) {}
+  onItemSelect(item: any) { }
+  onSelectAll(items: any) { }
 
   onGovernmentChanged() {
     if (this.selectedGovernmentId != -1) {

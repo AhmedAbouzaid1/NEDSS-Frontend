@@ -211,6 +211,5 @@ export class SharedDataService {
 
   setSentinelDataObject(value: SentinelData) {
     this.sentinelData.next(value);
-    console.log(this.sentinelData);
   }
 }
