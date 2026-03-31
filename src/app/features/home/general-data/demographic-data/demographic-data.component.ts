@@ -98,13 +98,39 @@ export class DemographicDataComponent implements OnInit {
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
     this.sharedDataService.getPatientObject().subscribe((patientObject) => {
-      this.patient = patientObject;
+      this.patient = this.normalizePatientForDisplay(patientObject);
     });
     this.getJobCategories();
 
     this.singleDropdownSettings = SingleDropdownSettings;
     this.multipleDropdownSettings = MultipleDropdownSettings;
     this.loadingPanel = false;
+  }
+
+  private normalizePatientForDisplay(patientObject: PatientModel): PatientModel {
+    const patient = { ...patientObject };
+
+    patient.genderId = this.toNumberOrNull(patient.genderId);
+    patient.age = this.toNumberOrNull(patient.age);
+    patient.ageTypeId = this.toNumberOrNull(patient.ageTypeId);
+
+    if (patient.birthDate) {
+      const parsedDate = new Date(patient.birthDate as any);
+      if (!isNaN(parsedDate.getTime())) {
+        patient.birthDate = parsedDate as any;
+      }
+    }
+
+    return patient;
+  }
+
+  private toNumberOrNull(value: any): number | null {
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+
+    const numberValue = Number(value);
+    return Number.isNaN(numberValue) ? null : numberValue;
   }
 
   onItemSelect(item: any) { }
