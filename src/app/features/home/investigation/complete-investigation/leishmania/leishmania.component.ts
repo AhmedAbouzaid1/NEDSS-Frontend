@@ -94,14 +94,12 @@ export class LeishmaniaComponent implements OnInit {
       medicalTeam: new FormControl(),
       placeConfirmedCases: new FormControl(),
 
-
       contactSuspectedCase: new FormControl(),
       epidemicOutbreak: new FormControl(),
       contactConfirmedCase: new FormControl(),
       numberNonDirectContacts: new FormControl(),
       numberDirectContacts: new FormControl(),
 
-      dateEntry: new FormControl(),
       diseaseGroupId: new FormControl(this.investigationService.diseaseGroupID),
       investigationCompletePercentage: new FormControl(),
     })
@@ -112,7 +110,7 @@ export class LeishmaniaComponent implements OnInit {
 
     this.currentId = this.investigationService.currentid
     this.leishmaniaForm.controls['patientID'].setValue(this.currentId)
-    this.investigationService.getByIdleishmania(this.currentId).subscribe(
+    this.investigationService.getByIdleishmania(this.currentId, this.investigationService.diseaseGroupID).subscribe(
       res => {
         console.log(res);
         var v = res.data;
@@ -127,10 +125,10 @@ export class LeishmaniaComponent implements OnInit {
         // if (v.sampleResultDay14 == null) { v.sampleResultDay14 = 2; }
         this.leishmaniaForm.patchValue(v)
 
-        //historyTravel
-        this.leishmaniaForm.controls['historyTravel'].setValue(this.datePipe.transform(this.leishmaniaForm.value.historyTravel, 'yyyy-MM-dd'));
-        this.leishmaniaForm.controls['dateEntry'].setValue(this.datePipe.transform(this.leishmaniaForm.value.dateEntry, 'yyyy-MM-dd'));
-        this.leishmaniaForm.controls['history'].setValue(this.datePipe.transform(this.leishmaniaForm.value.history, 'yyyy-MM-dd'));
+        //treatmentStartDate
+        this.leishmaniaForm.controls['treatmentStartDate'].setValue(
+          this.datePipe.transform(this.leishmaniaForm.value.treatmentStartDate, 'yyyy-MM-dd')
+        );
 
         const apiVisits = v?.PatientVisitHistory ?? v?.patientVisitHistory;
         if (Array.isArray(apiVisits) && apiVisits.length > 0) {
