@@ -22,7 +22,7 @@ export class LeishmaniaComponent implements OnInit {
   patientName: string;
 
   get patientVisitHistory(): FormArray {
-    return this.leishmaniaForm.get('PatientVisitHistory') as FormArray;
+    return this.leishmaniaForm.get('patientVisitHistory') as FormArray;
   }
 
   createPatientVisitHistoryGroup(data?: any): FormGroup {
@@ -72,7 +72,7 @@ export class LeishmaniaComponent implements OnInit {
       dose: new FormControl(),
       conditionAssessment: new FormControl(),
       result: new FormControl(),
-      PatientVisitHistory: new FormArray([]),
+      patientVisitHistory: new FormArray([]),
 
       chronicChestDiseases: new FormControl(),
       chronicHeartDisease: new FormControl(),
@@ -216,7 +216,7 @@ export class LeishmaniaComponent implements OnInit {
     //Exclude fields you don't want to count (like 'id')
     const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
 
-    const baseFields = Object.keys(data).filter((key) => !excludedFields.includes(key) && key !== 'PatientVisitHistory');
+    const baseFields = Object.keys(data).filter((key) => !excludedFields.includes(key) && key !== 'patientVisitHistory');
     let totalFields = baseFields.length;
 
     let filled = baseFields.reduce((acc, key) => {
