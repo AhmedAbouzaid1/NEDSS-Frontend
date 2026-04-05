@@ -179,8 +179,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div id="treatmentForm" class="col-lg-6 border-right"
-                  *ngIf="isYes('leishmaniaTreatmentProtocolImplemented')">
+                <div id="treatmentForm" class="col-lg-6 border-right">
                   <p class="mt-4 mb-4">
                     <font style="vertical-align: inherit">
                       <font style="vertical-align: inherit"> {{"NOUR.word14" | translate }}</font>
@@ -312,7 +311,8 @@
           </div>
           <!-- / .row -->
 
-          <app-patient-visit-history [visits]="patientVisitHistory"></app-patient-visit-history>
+          <app-patient-visit-history [visits]="patientVisitHistory"
+            (visitsChanged)="calculateCompletionPercentage()"></app-patient-visit-history>
 
           <div class="row color">
             <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">

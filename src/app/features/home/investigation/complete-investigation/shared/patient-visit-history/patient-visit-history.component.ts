@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -8,6 +8,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 })
 export class PatientVisitHistoryComponent {
     @Input() visits: FormArray;
+    @Output() visitsChanged = new EventEmitter<void>();
 
     get visitControls(): FormGroup[] {
         return this.visits?.controls as FormGroup[];
@@ -15,6 +16,7 @@ export class PatientVisitHistoryComponent {
 
     createVisitGroup(data?: any): FormGroup {
         return new FormGroup({
+            id: new FormControl(data?.id || null),
             nameHealthFacility: new FormControl(data?.nameHealthFacility || null),
             healthFacilityBelongs: new FormControl(data?.healthFacilityBelongs || null),
             dateVisit: new FormControl(data?.dateVisit || null),
@@ -28,12 +30,14 @@ export class PatientVisitHistoryComponent {
     addVisit(): void {
         if (this.visits) {
             this.visits.push(this.createVisitGroup());
+            this.visitsChanged.emit();
         }
     }
 
     removeVisit(index: number): void {
-        if (this.visits && this.visits.length > 1) {
+        if (this.visits) {
             this.visits.removeAt(index);
+            this.visitsChanged.emit();
         }
     }
 }

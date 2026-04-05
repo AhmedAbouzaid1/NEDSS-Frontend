@@ -27,6 +27,7 @@ export class LeishmaniaComponent implements OnInit {
 
   createPatientVisitHistoryGroup(data?: any): FormGroup {
     return new FormGroup({
+      id: new FormControl(data?.id || null),
       nameHealthFacility: new FormControl(data?.nameHealthFacility || null),
       healthFacilityBelongs: new FormControl(data?.healthFacilityBelongs || null),
       dateVisit: new FormControl(data?.dateVisit || null),
@@ -102,11 +103,7 @@ export class LeishmaniaComponent implements OnInit {
 
       diseaseGroupId: new FormControl(this.investigationService.diseaseGroupID),
       investigationCompletePercentage: new FormControl(),
-    })
-
-    if (this.patientVisitHistory.length === 0) {
-      this.patientVisitHistory.push(this.createPatientVisitHistoryGroup());
-    }
+    });
 
     this.currentId = this.investigationService.currentid
     this.leishmaniaForm.controls['patientID'].setValue(this.currentId)
@@ -143,8 +140,6 @@ export class LeishmaniaComponent implements OnInit {
               exitDate: this.datePipe.transform(item?.exitDate, 'yyyy-MM-dd')
             }));
           });
-        } else if (this.patientVisitHistory.length === 0) {
-          this.patientVisitHistory.push(this.createPatientVisitHistoryGroup());
         }
         this.calculateCompletionPercentage();
 
@@ -227,7 +222,7 @@ export class LeishmaniaComponent implements OnInit {
       return acc;
     }, 0);
 
-    if (Array.isArray(this.patientVisitHistory?.controls)) {
+    if (Array.isArray(this.patientVisitHistory?.controls) && this.patientVisitHistory.controls.length > 0) {
       const caseFields = this.patientVisitHistory.controls.reduce((count, row) => {
         const rowValue = (row as FormGroup).value;
         const rowKeys = Object.keys(rowValue);
@@ -249,9 +244,5 @@ export class LeishmaniaComponent implements OnInit {
 
     this.allControllesCount = totalFields;
     this.allFilledControlsCount = filled;
-  }
-
-  isYes(controlName: string): boolean {
-    return this.leishmaniaForm?.get(controlName)?.value == 1;
   }
 }
