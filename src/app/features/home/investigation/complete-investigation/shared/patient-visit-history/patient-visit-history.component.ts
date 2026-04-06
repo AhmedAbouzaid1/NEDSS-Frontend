@@ -1,14 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-patient-visit-history',
     templateUrl: './patient-visit-history.component.html',
     styleUrls: ['./patient-visit-history.component.css']
 })
-export class PatientVisitHistoryComponent {
+export class PatientVisitHistoryComponent implements OnChanges, OnDestroy {
     @Input() visits: FormArray;
     @Output() visitsChanged = new EventEmitter<void>();
+    private visitsSub?: Subscription;
+
+    ngOnDestroy(): void {
+        this.visitsSub?.unsubscribe();
+    }
 
     get visitControls(): FormGroup[] {
         return this.visits?.controls as FormGroup[];
@@ -38,6 +44,15 @@ export class PatientVisitHistoryComponent {
         if (this.visits) {
             this.visits.removeAt(index);
             this.visitsChanged.emit();
+        }
+    }
+
+    ngOnChanges(): void {
+        this.visitsSub?.unsubscribe();
+        if (this.visits) {
+            this.visitsSub = this.visits.valueChanges.subscribe(() => {
+                this.visitsChanged.emit();
+            });
         }
     }
 }

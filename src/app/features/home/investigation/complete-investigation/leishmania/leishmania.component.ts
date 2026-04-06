@@ -107,6 +107,9 @@ export class LeishmaniaComponent implements OnInit {
 
     this.currentId = this.investigationService.currentid
     this.leishmaniaForm.controls['patientID'].setValue(this.currentId)
+    this.leishmaniaForm.controls['leishmaniaTreatmentProtocolImplemented'].valueChanges.subscribe(() => {
+      this.calculateCompletionPercentage();
+    });
     this.investigationService.getByIdleishmania(this.currentId, this.investigationService.diseaseGroupID).subscribe(
       res => {
         console.log(res);
@@ -211,6 +214,11 @@ export class LeishmaniaComponent implements OnInit {
     //Exclude fields you don't want to count (like 'id')
     const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
 
+    // If treatment protocol is not "Yes", exclude the hidden treatment fields.
+    if (!this.isYes('leishmaniaTreatmentProtocolImplemented')) {
+      excludedFields.push('treatmentStartDate', 'typeTreatment', 'numberSessions', 'dose');
+    }
+
     const baseFields = Object.keys(data).filter((key) => !excludedFields.includes(key) && key !== 'patientVisitHistory');
     let totalFields = baseFields.length;
 
@@ -222,27 +230,39 @@ export class LeishmaniaComponent implements OnInit {
       return acc;
     }, 0);
 
-    if (Array.isArray(this.patientVisitHistory?.controls) && this.patientVisitHistory.controls.length > 0) {
-      const caseFields = this.patientVisitHistory.controls.reduce((count, row) => {
-        const rowValue = (row as FormGroup).value;
-        const rowKeys = Object.keys(rowValue);
-        totalFields += rowKeys.length;
-        return (
-          count +
-          rowKeys.reduce((c, key) => {
-            const v = rowValue[key];
-            if (v !== null && v !== '' && v !== 'null') {
-              return c + 1;
-            }
-            return c;
-          }, 0)
-        );
-      }, 0);
-
-      filled += caseFields;
-    }
+    const visitStats = this.countFormArrayCompletion(this.patientVisitHistory);
+    totalFields += visitStats.totalFields;
+    filled += visitStats.filledFields;
 
     this.allControllesCount = totalFields;
     this.allFilledControlsCount = filled;
+  }
+
+  private countFormArrayCompletion(formArray: FormArray | null | undefined): { totalFields: number; filledFields: number } {
+    if (!formArray || !Array.isArray(formArray.controls) || formArray.controls.length === 0) {
+      return { totalFields: 0, filledFields: 0 };
+    }
+
+    let totalFields = 0;
+    let filledFields = 0;
+
+    formArray.controls.forEach((row) => {
+      const rowValue = (row as FormGroup).value;
+      const rowKeys = Object.keys(rowValue).filter((key) => key !== 'id');
+      totalFields += rowKeys.length;
+
+      rowKeys.forEach((key) => {
+        const v = rowValue[key];
+        if (v !== null && v !== '' && v !== 'null') {
+          filledFields += 1;
+        }
+      });
+    });
+
+    return { totalFields, filledFields };
+  }
+
+  isYes(controlName: string): boolean {
+    return this.leishmaniaForm?.get(controlName)?.value == 1;
   }
 }
