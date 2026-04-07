@@ -8,7 +8,7 @@ import {
   HostListener,
   QueryList,
 } from '@angular/core';
-import { PatientModel } from '../models/patient-model';
+import { PatientModel, FeverSymptoms } from '../models/patient-model';
 import { SharedDataService } from '../services/shared-data.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import {
@@ -96,7 +96,7 @@ export class IncidentInfoComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public activeUSerService: ActiveUserService,
-  ) {}
+  ) { }
 
   public get departmentEnum(): typeof DepartmentEnum {
     return DepartmentEnum;
@@ -109,7 +109,7 @@ export class IncidentInfoComponent implements OnInit {
       link.classList.add('active');
       this.currentLang =
         localStorage.getItem('ls.currentLang') !== undefined &&
-        localStorage.getItem('ls.currentLang') !== 'undefined'
+          localStorage.getItem('ls.currentLang') !== 'undefined'
           ? localStorage.getItem('ls.currentLang')
           : 'ar';
       this.getDiseases();
@@ -120,7 +120,7 @@ export class IncidentInfoComponent implements OnInit {
       this.defaultGovernmentId =
         this.selectedGovernmentId =
         this.patient.incidentGovernmentId =
-          userData.user.govenmentId;
+        userData.user.govenmentId;
       this.defaultHealthAdministrationId =
         userData?.user?.healthAdministrationId;
       this.levelId = userData?.user?.levelId;
@@ -132,7 +132,7 @@ export class IncidentInfoComponent implements OnInit {
         case 3:
           this.selectedHealthAdministrationId =
             this.defaultHealthAdministrationId =
-              userData.user.healthAdministrationId;
+            userData.user.healthAdministrationId;
         case 2:
           this.selectedGovernmentId = this.defaultGovernmentId =
             userData.user.govenmentId;
@@ -157,7 +157,6 @@ export class IncidentInfoComponent implements OnInit {
           );
           this.selectedDepartmentId = this.patient.incidentDepartmentId;
         }
-        debugger;
         this.selectedNationality = [];
         if (this.nationalities != null && this.nationalities?.length > 0) {
           this.selectedNationality.push(
@@ -366,8 +365,8 @@ export class IncidentInfoComponent implements OnInit {
 
   getDiseases() {
     this.lookupsService.getAllDiseaseGroups().subscribe(
-      (result: any) => {},
-      (error) => {}
+      (result: any) => { },
+      (error) => { }
     );
     this.lookupsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
@@ -387,8 +386,8 @@ export class IncidentInfoComponent implements OnInit {
     );
   }
 
-  onItemSelect(item: any) {}
-  onSelectAll(items: any) {}
+  onItemSelect(item: any) { }
+  onSelectAll(items: any) { }
   onNationalityChanged() {
     if (this.selectedNationalityId != NationalityEnum.NotSelected) {
       this.patient.nationalityId = this.selectedNationalityId;
@@ -488,6 +487,7 @@ export class IncidentInfoComponent implements OnInit {
       this.generalDataService.checkIncidentDepartmentValid(
         this.patient.incidentDepartmentId
       );
+    this.sharedDataService.setPatientObject({ ...this.patient });
   }
 
   getLookups() {
@@ -815,7 +815,7 @@ export class IncidentInfoComponent implements OnInit {
           this.userMsg.success('المريض موجود مسبقا');
         } else this.userMsg.info('المريض غير موجود مسبقا');
       },
-      (err) => {}
+      (err) => { }
     );
   }
   onRelationShipDegreeIdChange() {
@@ -905,7 +905,7 @@ export class IncidentInfoComponent implements OnInit {
               this.userMsg.success('المريض موجود مسبقا');
             } else this.userMsg.info('المريض غير موجود مسبقا');
           },
-          (err) => {}
+          (err) => { }
         );
     } else {
       this.Allpatients = [];
@@ -956,7 +956,11 @@ export class IncidentInfoComponent implements OnInit {
     patient.homePrincipalityId = data.homePrincipalityId;
     patient.livingAddress = data.livingAddress;
     patient.homeGovernmentId = data.homeGovernmentId;
-    patient.clinicalAsymptoms = {};
+    patient.clinicalSymptomIds =
+      data?.clinicalSymptomIds ?? data?.ClinicalSymptomIds ?? [];
+    if (patient.feverSymptoms == undefined || patient.feverSymptoms == null) {
+      patient.feverSymptoms = new FeverSymptoms();
+    }
     patient.incidentBranchId = data.SelectedbranchId;
     this.sharedDataService.setPatientObject(patient);
 

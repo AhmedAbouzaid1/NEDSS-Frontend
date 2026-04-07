@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { observeOn, asyncScheduler } from 'rxjs';
 import { Router } from '@angular/router';
 import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
@@ -15,6 +16,10 @@ import { PartialLoadingService } from './core/components/partial-loading/partial
 export class AppComponent {
   title = 'app-structure';
   lang: any;
+  // Defer emissions to avoid ExpressionChangedAfterItHasBeenCheckedError
+  isLoading$ = this.partialLoadingService.isCurrentlyLoading$.pipe(
+    observeOn(asyncScheduler)
+  );
 
   idleState = 'Not started.';
   timedOut = false;
@@ -77,10 +82,6 @@ export class AppComponent {
       }
     });
     this.onloadHandler();
-  }
-
-  public get isLoading(): boolean {
-    return this.partialLoadingService.isCurrentlyLoading;
   }
 
   ngOnInit() {

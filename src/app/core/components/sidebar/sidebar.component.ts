@@ -1,7 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { DiseaseFormService } from 'src/app/features/home/dashboard/components/disease-special-symptoms/services/disease-form.service';
-import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,10 +15,29 @@ export class SidebarComponent {
   active: number = 0;
   userImage: any;
   username: any;
+  reportRoutes: string[] = [
+    '/home/reports',
+    '/home/disease-based-on-gender',
+    '/home/disease-based-on-result',
+    '/home/disease-based-on-diagnosis',
+    '/home/disease-based-on-age',
+    '/home/disease-based-on-patient',
+    '/home/user-report',
+    '/home/zero-reporting-report',
+    '/home/immediate-reporting-report',
+    '/home/diseases-rules-report',
+    '/home/roles-report',
+    '/home/notInferring-report',
+    '/home/populations-report',
+    '/home/monitorUnitsPeparations-report',
+    '/home/epidemiologicalThresholds-report',
+    '/home/monitor-units-report',
+    '/home/monitor-units-team-members-report',
+    '/home/monitor-units-team-members-details-report',
+  ];
   constructor(
     private router: Router,
-    private diseaseFormService: DiseaseFormService,
-    private layout: LayoutService
+    private diseaseFormService: DiseaseFormService
   ) {
     this.lang =
       localStorage.getItem('ls.currentLang') != undefined
@@ -71,9 +89,18 @@ export class SidebarComponent {
     );
   }
 
-  changeReport(i) {
-    this.layout.report = i;
+  isReportsActive(): boolean {
+    const currentUrl = this.router.url.split('?')[0];
+    const knownReportRoute = this.reportRoutes.some((route) =>
+      currentUrl.startsWith(route)
+    );
+
+    if (knownReportRoute) {
+      return true;
+    }
+    return /^\/home\/.*report/i.test(currentUrl);
   }
+
   navigateTo() {
     this.router.navigateByUrl('/home/redirect', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/home/investigations'])
