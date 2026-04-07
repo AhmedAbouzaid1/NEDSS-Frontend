@@ -66,7 +66,9 @@ export class PatientModel {
   relationShipDegreeId!: number;
   patientDiseases!: PatientDiseases[];
   finalDiagonisticsData!: FinalDiagonistics[];
-  clinicalAsymptoms?: ClinicalAsymptoms;
+  feverSymptoms?: FeverSymptoms;
+  clinicalSymptomIds?: number[];
+
   fields!: any[];
   questionAnswers!: any[];
   patientDiseaseGroupQuestionAnswers?: any[];
@@ -78,48 +80,17 @@ export class PatientModel {
   haveChronicDisease?: Boolean;
   chronicDiseasesIds?: any = [];
   constructor() {
-    this.clinicalAsymptoms = new ClinicalAsymptoms();
+    this.feverSymptoms = new FeverSymptoms();
     // this.finalDiagonistics = new FinalDiagonistics[];
   }
 }
 
-export class ClinicalAsymptoms {
+export class FeverSymptoms {
   id?: number;
   patientId?: number;
-  hasFever?: string;
   feverDuration?: number;
   feverDurationType?: number;
   feverMaxTemp?: number;
-  skinDisColoration?: string;
-  jerk?: string;
-  headache?: string;
-  overworkStress?: string;
-  nausea?: string;
-  vomit?: string;
-  diarrhea?: string;
-  materyDiarrhea?: string;
-  colic_Intestinal_Distress_Abdominal_Pain?: string;
-  mucusInStool?: string;
-  constipation?: string;
-  lossOfAppetite?: string;
-  jointPain?: string;
-  backPain?: string;
-  musclePain?: string;
-  encephalitis?: string;
-  difficultySwallowing?: string;
-  cramps?: string;
-  impairedMentalState?: string;
-  soreThroat?: string;
-  pneumonia?: string;
-  runnyNose?: string;
-  cough?: string;
-  shortnessOfBreath?: string;
-  dryCough?: string;
-  rapidBreathing?: string;
-  frequentCoughingSpells?: string;
-  coughByVomiting?: string;
-  chestPain?: string;
-  others?: string;
 }
 
 export class PatientDiseases {

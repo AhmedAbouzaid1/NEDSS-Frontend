@@ -6,6 +6,7 @@ import { ChatFilter } from 'src/app/models/chat-filter';
 import { Result } from 'src/app/features/Result';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 import { dispatch } from '../../../../node_modules/@types/d3';
 import { SystemUserMainDataFilter } from 'src/app/features/home/epidemiological-thresholds/epidemiological-thresholds-users/Model/system-user-main-data-filter';
 
@@ -48,6 +49,11 @@ export class LookupsGetterService {
     environment.baseApiUrl + 'DiseaseLabTestResult/';
   private DiseaseRuleControllerURL: string =
     environment.baseApiUrl + 'DiseaseRule/';
+  private DiseaseClinicalSymptomControllerURL: string =
+    environment.baseApiUrl + 'DiseaseClinicalSymptom/';
+
+  private ClinicalSymptomControllerURL: string =
+    environment.baseApiUrl + 'ClinicalSymptom/';
   private HealthOfficeControllerURL: string =
     environment.baseApiUrl + 'HealthOffice/';
   private IncidentSourceHospitalControllerURL: string =
@@ -1131,8 +1137,14 @@ export class LookupsGetterService {
   ///#endregion
 
   ///#region  DiseaseGroupLookup
+  private _diseaseGroupsCache$: Observable<any>;
   getAllDiseaseGroups() {
-    return this.APIs.get(this.DiseaseGroupControllerURL + 'GetAll');
+    if (!this._diseaseGroupsCache$) {
+      this._diseaseGroupsCache$ = this.APIs.get(
+        this.DiseaseGroupControllerURL + 'GetAll'
+      ).pipe(shareReplay(1));
+    }
+    return this._diseaseGroupsCache$;
     if (navigator.onLine) {
       var data = this.APIs.get(this.DiseaseGroupControllerURL + 'GetAll');
       data.subscribe((result: any) => {
@@ -1286,6 +1298,56 @@ export class LookupsGetterService {
     return this.APIs.post(this.DiseaseRuleControllerURL + 'Add', DiseaseRule);
   }
   ///#endregion
+
+  //#region DiseaseClinicalSymptomLookup
+  getDiseaseClinicalSymptomsByDiseaseGroupId(diseaseGroupId: number) {
+    return this.APIs.get(
+      this.DiseaseClinicalSymptomControllerURL +
+      'GetByDiseaseGroupId?diseaseGroupId=' + diseaseGroupId
+    );
+  }
+
+  saveDiseaseClinicalSymptomMappings(diseaseGroupId: number, mappings: any[]) {
+    return this.APIs.post(
+      this.DiseaseClinicalSymptomControllerURL +
+      'SaveMappings?diseaseGroupId=' + diseaseGroupId,
+      mappings || []
+    );
+  }
+  //#endregion
+
+  //#region ClinicalSymptomLookup
+  getAllClinicalSymptoms() {
+    return this.APIs.get(this.ClinicalSymptomControllerURL + 'GetAll');
+  }
+
+  getPageClinicalSymptoms(filter: any) {
+    return this.APIs.create(
+      this.ClinicalSymptomControllerURL + 'GetPage',
+      filter
+    );
+  }
+
+  getClinicalSymptomById(id: number) {
+    return this.APIs.get(
+      this.ClinicalSymptomControllerURL + 'GetById?id=' + id
+    );
+  }
+
+  addClinicalSymptom(symptom: any) {
+    return this.APIs.post(this.ClinicalSymptomControllerURL + 'Add', symptom);
+  }
+
+  updateClinicalSymptom(symptom: any) {
+    return this.APIs.update(this.ClinicalSymptomControllerURL + 'Update', symptom);
+  }
+
+  deleteClinicalSymptom(id: number) {
+    return this.APIs.delete(
+      this.ClinicalSymptomControllerURL + 'Delete?id=' + id
+    );
+  }
+  //#endregion
 
   ///#region  FinalResultLookup
   getAllFinalResults() {

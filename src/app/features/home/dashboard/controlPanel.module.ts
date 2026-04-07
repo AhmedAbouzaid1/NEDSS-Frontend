@@ -53,6 +53,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AddUpdateContainerFieldComponent } from './components/add-update-container-field/add-update-container-field.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { PeriodOfCardsComponent } from './components/period-of-cards/period-of-cards.component';
+import { DiseaseClinicalSymptomsMappingComponent } from './components/controlPanel/disease-clinical-symptoms-mapping/disease-clinical-symptoms-mapping.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -89,6 +90,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     VisitNewReviewComponent,
     AddUpdateContainerFieldComponent,
     PeriodOfCardsComponent,
+    DiseaseClinicalSymptomsMappingComponent,
   ],
   imports: [
     CommonModule,

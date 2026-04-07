@@ -1,0 +1,109 @@
+<h2 class="titles">
+  {{ "NEDSS.HOME.CONTROL_PANEL.ITEM_DISEASE_CLINICAL_SYMPTOMS" | translate }}
+</h2>
+
+<app-loader *ngIf="loading"></app-loader>
+
+<div class="card shadow-sm border-0">
+  <div class="card-body bg-dark-mode">
+    <!-- Disease selector -->
+    <div class="row">
+      <div class="col-lg-6 mt-2">
+        <div class="form-group">
+          <label>
+            {{ "NEDSS.HOME.DASHBOARD.DISEASE" | translate }}
+            <span class="text-danger">*</span>
+          </label>
+          <select
+            class="form-control"
+            [(ngModel)]="selectedDiseaseGroupId"
+            (change)="onDiseaseChanged()"
+          >
+            <option [ngValue]="null">{{ "NEDSS.COMMON.SELECT" | translate }}</option>
+            <option *ngFor="let d of diseases" [ngValue]="d.id">
+              {{ currentLang === "ar" ? d.arabicName : d.englishName }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="col-lg-6 mt-2" *ngIf="selectedDiseaseGroupId">
+        <div class="form-group">
+          <label>
+            {{ "NEDSS.COMMON.SEARCH" | translate }}
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="searchTerm"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Whole-disease: no auto-fill when external -->
+    <div class="row mt-3" *ngIf="selectedDiseaseGroupId">
+      <div class="col-12">
+        <div class="external-autofill-option">
+          <div class="form-check mb-0">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="dg-disable-external-autofill"
+              name="disableClinicalSymptomsAutoFillWhenExternal"
+              [(ngModel)]="disableClinicalSymptomsAutoFillWhenExternal"
+            />
+            <label
+              class="form-check-label"
+              for="dg-disable-external-autofill"
+            >
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.DISEASE_CLINICAL_SYMPTOMS_DISABLE_AUTO_FILL_EXTERNAL"
+                  | translate
+              }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clinical symptoms -->
+    <div class="row mt-4" *ngIf="selectedDiseaseGroupId">
+      <div class="col-12">
+        <section class="my-2 rounded bg-white symptoms-mapping-section">
+          <div class="row px-2 pb-2 pt-2 symptom-grid">
+            <div
+              class="col-xl-3 col-lg-4 col-md-6 col-12 mb-2"
+              *ngFor="let row of filteredRows"
+            >
+              <div class="border rounded h-100 symptom-tile" [class.mapped]="row.mapped">
+                <div class="fwb spaceLable color-d-3 symptom-title">{{ row.label }}</div>
+                <div class="form-check mb-0">
+                  <input
+                    type="checkbox"
+                    class="form-check-input symptom-checkbox"
+                    [id]="'map-' + row.clinicalSymptomId"
+                    [checked]="row.mapped"
+                    (change)="setMapped(row, $any($event.target).checked)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="text-center mt-4" *ngIf="selectedDiseaseGroupId">
+      <button
+        type="button"
+        class="btn bg text-white rounded-pill px-5"
+        (click)="save()"
+        [disabled]="loading"
+      >
+        {{ "NEDSS.COMMON.SAVE" | translate }}
+      </button>
+    </div>
+  </div>
+</div>
