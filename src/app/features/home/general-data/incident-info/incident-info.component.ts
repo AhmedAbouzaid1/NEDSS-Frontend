@@ -739,6 +739,9 @@ export class IncidentInfoComponent implements OnInit {
     );
   }
   onNationalIdChanged(value: any, isManualChange = false) {
+    const isEgyptianNationality =
+      this.patient.nationalityId == NationalityEnum.Egyptian;
+
     if (
       value != null &&
       value.toString().length === 14 &&
@@ -748,10 +751,13 @@ export class IncidentInfoComponent implements OnInit {
       this.getAllByNationalId(parseInt(value.toString()));
     } else {
       this.Allpatients = [];
-      this.patient.age = null;
-      this.patient.birthDate = null;
-      this.patient.genderId = null;
-      this.patient.ageTypeId = null;
+      // Only clear derived demographic fields for Egyptian-ID flow.
+      if (isEgyptianNationality) {
+        this.patient.age = null;
+        this.patient.birthDate = null;
+        this.patient.genderId = null;
+        this.patient.ageTypeId = null;
+      }
     }
     if (isManualChange) {
       this.sharedDataService.setPatientObject({
@@ -777,10 +783,10 @@ export class IncidentInfoComponent implements OnInit {
         newPhoneNo1: this.sharedDataService.isEditMode
           ? this.patient.newPhoneNo1
           : null,
-        genderId: null,
-        birthDate: null,
-        age: null,
-        ageTypeId: null,
+        genderId: isEgyptianNationality ? null : this.patient.genderId,
+        birthDate: isEgyptianNationality ? null : this.patient.birthDate,
+        age: isEgyptianNationality ? null : this.patient.age,
+        ageTypeId: isEgyptianNationality ? null : this.patient.ageTypeId,
         maritalStatusId: this.sharedDataService.isEditMode
           ? this.patient.maritalStatusId
           : null,
