@@ -81,6 +81,7 @@ import { ChatFilterComponent } from './chat/chat-filter/chat-filter.component';
 import { ChatUsersComponent } from './chat/chat-users/chat-users.component';
 import { FilariasisComponent } from './investigation/complete-investigation/filariasis/filariasis.component';
 import { LeishmaniaComponent } from './investigation/complete-investigation/leishmania/leishmania.component';
+import { PatientVisitHistoryComponent } from './investigation/complete-investigation/shared/patient-visit-history/patient-visit-history.component';
 import { ViewUserComponent } from './users/view-user/view-user.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -256,6 +257,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ChatUsersComponent,
     FilariasisComponent,
     LeishmaniaComponent,
+    PatientVisitHistoryComponent,
     HivComponent,
     AriComponent,
     MersComponent,
@@ -362,7 +364,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class HomeModule {}
+export class HomeModule { }
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }

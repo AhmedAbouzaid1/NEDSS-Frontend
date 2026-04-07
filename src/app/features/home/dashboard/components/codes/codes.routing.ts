@@ -32,6 +32,7 @@ import { OrganizationComponent } from './organization/organization.component';
 import { DependencyComponent } from './dependency/dependency.component';
 
 import { DashBoardControlersComponent } from './dashBoard-Controlers/dashBoard-Controlers.component';
+import { ClinicalSymptomsCodesComponent } from './clinical-symptoms/clinical-symptoms.component';
 
 const routes: Routes = [
   { path: '', component: CodesComponent ,children:[
@@ -64,6 +65,7 @@ const routes: Routes = [
     { path: 'user-group', component: UserGroupComponent ,canActivate: [NavigationGuard]},
     { path: 'position', component: PositionComponent },
     { path: 'incident-source-type', component: IncidentSourceTypeComponent ,canActivate: [NavigationGuard]},
+    { path: 'clinical-symptoms', component: ClinicalSymptomsCodesComponent ,canActivate: [NavigationGuard]},
   ]},
 
   // {path:"edit/:id" , component:Edit_governmentComponent }

@@ -1,6 +1,6 @@
 import { InvestigationService } from './../../investigation/services/investigation.service';
 import { GeneralDataService } from './../services/general-data.service';
-import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { SharedDataService } from '../services/shared-data.service';
@@ -19,9 +19,12 @@ import { GeneralDataEnum } from '../models/general-data.eums';
   templateUrl: './general-data.component.html',
   styleUrls: ['./general-data.component.css']
 })
-export class GeneralDataComponent implements OnDestroy {
+export class GeneralDataComponent implements OnDestroy, AfterViewInit {
   @Input() finalTab2: boolean;
+  @ViewChild('saveButtonSentinel') saveButtonSentinel: ElementRef;
   loadingPanel: boolean = false;
+  hasScrolledToButton = false;
+  private saveBarObserver: IntersectionObserver;
   patient: PatientModel = new PatientModel();
   updating: boolean = false;
   dataSource: any;
@@ -61,12 +64,29 @@ export class GeneralDataComponent implements OnDestroy {
         this.sharedDataService.patientId.toString()
       );
       this.activeAllTabs = true;
-      this.sharedDataService.isEditMode = true
+      this.sharedDataService.isEditMode = true;
       this.getById(this.sharedDataService.patientId);
     } else {
       this.isLoadingData = false;
       this.sharedDataService.isEditMode = false;
     }
+  }
+
+  ngAfterViewInit() {
+    this.observeSaveBar();
+  }
+
+  private observeSaveBar() {
+    if (!this.saveButtonSentinel?.nativeElement) return;
+    this.saveBarObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !this.hasScrolledToButton) {
+          this.hasScrolledToButton = true;
+        }
+      },
+      { threshold: 0 },
+    );
+    this.saveBarObserver.observe(this.saveButtonSentinel.nativeElement);
   }
 
   getDiseases() {
@@ -82,7 +102,7 @@ export class GeneralDataComponent implements OnDestroy {
           .subscribe((res: string) => {
             this.userMsg.error(res);
           });
-      }
+      },
     );
   }
 
@@ -105,7 +125,7 @@ export class GeneralDataComponent implements OnDestroy {
       (res: any) => {
         this.patient = res.data;
       },
-      (err) => { }
+      (err) => {},
     );
   }
   getById(id: number) {
@@ -114,23 +134,23 @@ export class GeneralDataComponent implements OnDestroy {
         if (result != null && result != undefined) {
           result.data.caseDiscoveryDate = this.datePipe.transform(
             result.data.caseDiscoveryDate,
-            'yyyy-MM-dd'
+            'yyyy-MM-dd',
           );
           result.data.hospitalEntryDate = this.datePipe.transform(
             result.data.hospitalEntryDate,
-            'yyyy-MM-dd'
+            'yyyy-MM-dd',
           );
           result.data.hospitalLeaveDate = this.datePipe.transform(
             result.data.hospitalLeaveDate,
-            'yyyy-MM-dd'
+            'yyyy-MM-dd',
           );
           result.data.incidentDate = this.datePipe.transform(
             result.data.incidentDate,
-            'yyyy-MM-dd'
+            'yyyy-MM-dd',
           );
           result.data.infectionDate = this.datePipe.transform(
             result.data.infectionDate,
-            'yyyy-MM-dd'
+            'yyyy-MM-dd',
           );
           this.sharedDataService.setPatientObject(result.data);
           this.patient = result.data;
@@ -147,7 +167,7 @@ export class GeneralDataComponent implements OnDestroy {
             this.userMsg.error(res);
           });
         this.isLoadingData = false;
-      }
+      },
     );
   }
   getFields() {
@@ -169,7 +189,7 @@ export class GeneralDataComponent implements OnDestroy {
             });
           }
         },
-        () => { }
+        () => {},
       );
   }
   completedTabs: number = 0;
@@ -191,7 +211,7 @@ export class GeneralDataComponent implements OnDestroy {
       switch (this.activeTab) {
         case this.generalDataEnum.IncidentInfo:
           validationRes = this.generalDataService.validateIncidentInfo(
-            this.patient
+            this.patient,
           );
 
           if (!(validationRes == -1))
@@ -202,7 +222,7 @@ export class GeneralDataComponent implements OnDestroy {
 
         case this.generalDataEnum.DemographicInfo:
           validationRes = this.generalDataService.validateDemographicInfo(
-            this.patient
+            this.patient,
           );
           if (!(validationRes == -1))
             throw 'validation failed ' + validationRes;
@@ -212,7 +232,7 @@ export class GeneralDataComponent implements OnDestroy {
 
         case this.generalDataEnum.ResidenceInfo:
           validationRes = this.generalDataService.validateResidenceInfo(
-            this.patient
+            this.patient,
           );
           if (!(validationRes == -1))
             throw 'validation failed ' + validationRes;
@@ -222,20 +242,13 @@ export class GeneralDataComponent implements OnDestroy {
           break;
 
         case this.generalDataEnum.ClinicalSymptoms:
-          validationRes = this.generalDataService.validateClinicalSymptoms(
-            this.patient
-          );
-
-          if (!(validationRes == -1))
-            throw 'validation failed ' + validationRes;
-
           this.routingBasedOnCurrentPage(4);
           this.activeTab = this.generalDataEnum.DiagnosticInfo;
           break;
 
         case this.generalDataEnum.DiagnosticInfo:
           validationRes = this.generalDataService.validateDiagnostics(
-            this.patient
+            this.patient,
           );
 
           if (!(validationRes == -1))
@@ -389,7 +402,7 @@ export class GeneralDataComponent implements OnDestroy {
                   this.userMsg.error(res);
                 });
               this.loadingPanel = false;
-            }
+            },
           );
         } else {
           this.updating = true;
@@ -404,7 +417,7 @@ export class GeneralDataComponent implements OnDestroy {
                     this.patient.patientDiseases.forEach((element) => {
                       if (
                         this.diseases.filter(
-                          (o) => o.id == element.id && o.isSentinel
+                          (o) => o.id == element.id && o.isSentinel,
                         ).length > 0
                       ) {
                         this.sharedDataService.ShowSentinel = true;
@@ -443,7 +456,7 @@ export class GeneralDataComponent implements OnDestroy {
               this.loadingPanel = false;
               this.sharedDataService.setPatientObject(new PatientModel());
               this.patient = new PatientModel();
-            }
+            },
           );
         }
       }
@@ -458,30 +471,17 @@ export class GeneralDataComponent implements OnDestroy {
   }
   validateAllTabs() {
     let validationRes = this.generalDataService.validateDiagnostics(
-      this.patient
+      this.patient,
     );
-    if (!(validationRes == -1))
-      throw 'validation failed ' + validationRes;
-    validationRes = this.generalDataService.validateClinicalSymptoms(
-      this.patient
-    );
-    if (!(validationRes == -1))
-      throw 'validation failed ' + validationRes;
-    validationRes = this.generalDataService.validateResidenceInfo(
-      this.patient
-    );
-    if (!(validationRes == -1))
-      throw 'validation failed ' + validationRes;
+    if (!(validationRes == -1)) throw 'validation failed ' + validationRes;
+    validationRes = this.generalDataService.validateResidenceInfo(this.patient);
+    if (!(validationRes == -1)) throw 'validation failed ' + validationRes;
     validationRes = this.generalDataService.validateDemographicInfo(
-      this.patient
+      this.patient,
     );
-    if (!(validationRes == -1))
-      throw 'validation failed ' + validationRes;
-    validationRes = this.generalDataService.validateIncidentInfo(
-      this.patient
-    );
-    if (!(validationRes == -1))
-      throw 'validation failed ' + validationRes;
+    if (!(validationRes == -1)) throw 'validation failed ' + validationRes;
+    validationRes = this.generalDataService.validateIncidentInfo(this.patient);
+    if (!(validationRes == -1)) throw 'validation failed ' + validationRes;
   }
   getSentinel(id: number) {
     this.generalDataService.getSentinelByPID(id).subscribe(
@@ -496,7 +496,7 @@ export class GeneralDataComponent implements OnDestroy {
           .subscribe((res: string) => {
             this.userMsg.error(res);
           });
-      }
+      },
     );
   }
   addSentinel(patientId) {
@@ -516,7 +516,7 @@ export class GeneralDataComponent implements OnDestroy {
                 if (!this.updating) {
                   if (this.patient.patientDiseases.length > 0) {
                     var disease = this.patient.patientDiseases.filter(
-                      (s) => s.isSentinel == true
+                      (s) => s.isSentinel == true,
                     );
                     if (disease != null) {
                       this.investigaion.currentid = result.data.id;
@@ -527,11 +527,11 @@ export class GeneralDataComponent implements OnDestroy {
                       let diseaseName = disease[0].router;
                       this.router.navigateByUrl(
                         'home/' +
-                        diseaseName +
-                        '/' +
-                        patientId +
-                        '/diseaseId/' +
-                        disease[0].diseaseGroupId
+                          diseaseName +
+                          '/' +
+                          patientId +
+                          '/diseaseId/' +
+                          disease[0].diseaseGroupId,
                       );
                     }
                   }
@@ -544,7 +544,7 @@ export class GeneralDataComponent implements OnDestroy {
                 .subscribe((res: string) => {
                   this.userMsg.error(res);
                 });
-            }
+            },
           );
         } else {
           this.generalDataService.addSentinel(r).subscribe(
@@ -552,7 +552,7 @@ export class GeneralDataComponent implements OnDestroy {
               if (result.data != null && result.data != undefined) {
                 if (this.patient.patientDiseases.length > 0) {
                   var disease = this.patient.patientDiseases.filter(
-                    (s) => s.isSentinel == true
+                    (s) => s.isSentinel == true,
                   );
                   if (disease != null) {
                     //;
@@ -564,11 +564,11 @@ export class GeneralDataComponent implements OnDestroy {
                     let diseaseName = disease[0].router;
                     this.router.navigateByUrl(
                       'home/' +
-                      diseaseName +
-                      '/' +
-                      patientId +
-                      '/diseaseId/' +
-                      disease[0].diseaseGroupId
+                        diseaseName +
+                        '/' +
+                        patientId +
+                        '/diseaseId/' +
+                        disease[0].diseaseGroupId,
                     );
                   }
                 }
@@ -580,7 +580,7 @@ export class GeneralDataComponent implements OnDestroy {
                 .subscribe((res: string) => {
                   this.userMsg.error(res);
                 });
-            }
+            },
           );
         }
       },
@@ -590,7 +590,7 @@ export class GeneralDataComponent implements OnDestroy {
           .subscribe((res: string) => {
             this.userMsg.error(res);
           });
-      }
+      },
     );
   }
   //TODO
@@ -622,7 +622,7 @@ export class GeneralDataComponent implements OnDestroy {
             });
           retResult = false;
           return false;
-        }
+        },
       );
       return retResult;
     } else {
@@ -636,6 +636,7 @@ export class GeneralDataComponent implements OnDestroy {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
+    this.saveBarObserver?.disconnect();
   }
   public get generalDataEnum(): typeof GeneralDataEnum {
     return GeneralDataEnum;

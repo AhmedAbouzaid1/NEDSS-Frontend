@@ -20,6 +20,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   maxDate = new Date();
 
   patient: PatientModel = new PatientModel();
+  private diseasesInitializedFromPatient = false;
 
   levelId: any;
   currentLang: string = 'ar';
@@ -30,7 +31,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   selectedTransferHealthAdmin: any;
   selectedTransferHealthAdminId: number;
 
-  diseases!: any[];
+  diseases: any[] = [];
   selectedDiseases: any;
 
   finalResuls!: any[];
@@ -126,14 +127,17 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
         this.isPatientTransfered = true;
       }
 
-
-      // if (
-      //   !this.patient.hiddenInsideDepartment &&
-      //   this.patient.incidentDepartmentId &&
-      //   this.patient.incidentDepartmentId != 2
-      // ) {
-      //   this.patient.hiddenInsideDepartment = true;
-      // }
+      if (
+        !this.diseasesInitializedFromPatient &&
+        this.diseases?.length > 0 &&
+        this.patient?.patientDiseases?.length > 0
+      ) {
+        this.selectedDiseases = this.diseases.filter((item) =>
+          this.patient.patientDiseases.map((a) => a.diseaseGroupId).includes(item.id)
+        );
+        this.diseasesInitializedFromPatient = true;
+        this.onDiseasesChanged();
+      }
     });
     this.getLookups();
     this.singleDropdownSettings = SingleDropdownSettings;
@@ -187,9 +191,12 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
         d.isSentinel = des.isSentinel;
         d.router = des.router;
       });
+      this.sharedDataService.setPatientObject(this.patient);
       this.getAllQuestions();
     } else {
       this.patient.patientDiseases = null;
+      this.patient.fields = [];
+      this.sharedDataService.setPatientObject(this.patient);
     }
   }
 
@@ -333,22 +340,24 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   getDiseases() {
     this.lookupsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
-        if (result != null && result != undefined) {
-          this.diseases = result.data;
+        const list = Array.isArray(result?.data)
+          ? result.data
+          : Array.isArray(result)
+            ? result
+            : [];
+        this.diseases = list;
 
-          if (
-            this.patient.patientDiseases != null &&
-            this.patient.patientDiseases.length > 0
-          ) {
-            this.selectedDiseases = this.diseases.filter((item) =>
-              this.patient.patientDiseases
-                .map(function (a) {
-                  return a.diseaseGroupId;
-                })
-                .includes(item.id)
-            );
-            this.onDiseasesChanged();
-          }
+        if (
+          this.patient?.patientDiseases != null &&
+          this.patient.patientDiseases.length > 0 &&
+          this.diseases.length > 0
+        ) {
+          this.selectedDiseases = this.diseases.filter((item) =>
+            this.patient.patientDiseases
+              .map((a) => a.diseaseGroupId)
+              .includes(item.id)
+          );
+          this.onDiseasesChanged();
         }
         this.loadingPanel = false;
       },

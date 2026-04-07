@@ -1,23 +1,28 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PartialLoadingService {
 
-  private isLoading: boolean;
+  private readonly isLoadingSubject = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
   showloader() {
-    this.isLoading = true;
+    this.isLoadingSubject.next(true);
   }
   hideLoader() {
-    this.isLoading = false;
+    this.isLoadingSubject.next(false);
+  }
+
+  public get isCurrentlyLoading$() {
+    return this.isLoadingSubject.asObservable();
   }
 
   public get isCurrentlyLoading(): boolean {
-    return this.isLoading;
+    return this.isLoadingSubject.value;
   }
 
 }

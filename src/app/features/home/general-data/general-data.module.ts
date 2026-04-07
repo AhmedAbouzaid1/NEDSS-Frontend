@@ -10,7 +10,7 @@ import { GeneralDataRoutes } from './general-data.routing';
 import { SharedModule } from 'src/app/core/shared/shared.module';
 import { ResidenceInfoComponent } from './residence-info/residence-info.component';
 import { SpecialSymptomsComponent } from './special-symptoms/special-symptoms.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DiseaseFieldListResolver } from './Resolvers/disease-Field-list.resolver';
@@ -50,6 +50,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     NgSelectModule,
     GeneralDataRoutes,
     FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,

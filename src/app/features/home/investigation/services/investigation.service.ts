@@ -152,9 +152,9 @@ export class InvestigationService {
       ivestigation
     );
   }
-  getByIdSchistosomiasisFasciola(id: any, diseaseGroupId:number) {
+  getByIdSchistosomiasisFasciola(id: any, diseaseGroupId: number) {
     return this.APIs.get(
-      this.controllerURL + 'GetSchistosomiasisFasciolaByPatientId?id=' + id + '&diseaseGroupId=' + diseaseGroupId 
+      this.controllerURL + 'GetSchistosomiasisFasciolaByPatientId?id=' + id + '&diseaseGroupId=' + diseaseGroupId
     );
   }
   //Monkeypox
@@ -327,8 +327,8 @@ export class InvestigationService {
   updateSevereleishmania(ivestigation: any) {
     return this.APIs.update(this.controllerURL + "UpdateLeishmania", ivestigation);
   }
-  getByIdleishmania(id: any) {
-    return this.APIs.get(this.controllerURL + "GetLeishmaniaPatientId?id=" + id);
+  getByIdleishmania(id: any, diseaseGroupId: number) {
+    return this.APIs.get(this.controllerURL + "GetLeishmaniaPatientId?id=" + id + "&diseaseGroupId=" + diseaseGroupId);
   }
   //leper
   addInvestigationleper(ivestigation: any) {

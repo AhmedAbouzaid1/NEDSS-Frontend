@@ -29,6 +29,7 @@ import { PrincipalityComponent } from './principality/principality.component';
 import { FinalResultComponent } from './final-result/final-result.component';
 import { CaseResultCategoryComponent } from './case-result-category/case-result-category.component';
 import { DiseaseSeverityComponent } from './disease-severity/disease-severity.component';
+import { ClinicalSymptomsCodesComponent } from './clinical-symptoms/clinical-symptoms.component';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { SharedModule } from '../../../../../core/shared/shared.module';
@@ -75,6 +76,7 @@ import { InputTextModule } from 'primeng/inputtext';
     FinalResultComponent,
     CaseResultCategoryComponent,
     DiseaseSeverityComponent,
+    ClinicalSymptomsCodesComponent,
     IncidentSourceTypeComponent,
     PositionComponent,
     DashBoardControlersComponent
