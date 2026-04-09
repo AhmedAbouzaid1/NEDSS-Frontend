@@ -145,6 +145,7 @@ export class SevereFoodPoisoningComponent implements OnInit {
   }
 
   save() {
+    this.normalizeOtherFields();
     this.SevereFoodPoisoningData.diseaseGroupId = this.investigationService.diseaseGroupID;
     this.SevereFoodPoisoningData.exposureLocation = this.serializeMultiValue(this.selectedExposureLocations);
     this.SevereFoodPoisoningData.foodTypes = this.serializeMultiValue(this.selectedFoodTypes);
@@ -198,6 +199,7 @@ export class SevereFoodPoisoningComponent implements OnInit {
 
   //BL
   calculateCompletionPercentage() {
+    this.normalizeOtherFields();
     this.allFilledControlsCount = 0;
     const data = this.SevereFoodPoisoningData;
     //Exclude fields you don't want to count (like 'id')
@@ -215,6 +217,24 @@ export class SevereFoodPoisoningComponent implements OnInit {
 
   isChecked(list: any[], value: string): boolean {
     return (list || []).some((item) => item?.id === value);
+  }
+
+  private normalizeOtherFields(): void {
+    if (!this.isChecked(this.selectedExposureLocations, 'OTHER')) {
+      this.SevereFoodPoisoningData.exposureLocationOther = null;
+    }
+    if (!this.isChecked(this.selectedFoodTypes, 'OTHER')) {
+      this.SevereFoodPoisoningData.foodTypeOther = null;
+    }
+    if (!this.isChecked(this.selectedWaterSources, 'OTHER')) {
+      this.SevereFoodPoisoningData.waterSourceOther = null;
+    }
+    if (!this.isChecked(this.selectedHumanSamples, 'OTHER')) {
+      this.SevereFoodPoisoningData.humanSamplesOther = null;
+    }
+    if (!this.isChecked(this.selectedEnvironmentalSamples, 'OTHER')) {
+      this.SevereFoodPoisoningData.environmentalSamplesOther = null;
+    }
   }
 
   private serializeMultiValue(values: any[]): string | null {
