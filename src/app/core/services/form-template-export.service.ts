@@ -37,11 +37,15 @@ export class FormTemplateExportService {
       }
 
       const fc = node.getAttribute('formcontrolname');
-      if (!fc || seen.has(fc) || (node instanceof HTMLInputElement && node.type === 'hidden')) return;
-      seen.add(fc);
+      if (!fc || (node instanceof HTMLInputElement && node.type === 'hidden')) return;
+
+      const key = this.getControlKey(node);
+      if (seen.has(key)) return;
+      seen.add(key);
 
       let label = node.closest('label')?.textContent
         || this.findLabelByFor(root, node)
+        || this.getTableHeaderLabel(node)
         || node.closest('.form-group')?.querySelector('label')?.textContent
         || fc;
 
@@ -49,6 +53,28 @@ export class FormTemplateExportService {
     });
 
     return sections;
+  }
+
+  private getControlKey(node: HTMLElement) {
+    const fc = node.getAttribute('formcontrolname') || '';
+    const row = node.closest('tr');
+    if (row && row.rowIndex >= 0) {
+      return `${fc}|tr:${row.rowIndex}`;
+    }
+
+    const group = node.closest('[formGroup]');
+    if (group) {
+      const parent = group.parentElement;
+      if (parent) {
+        const index = Array.from(parent.children).indexOf(group);
+        if (index >= 0) {
+          return `${fc}|group:${index}`;
+        }
+      }
+      return `${fc}|group:${group.nodeName}`;
+    }
+
+    return fc;
   }
 
   private getHeaderLabels() {
@@ -103,6 +129,20 @@ export class FormTemplateExportService {
   private findLabelByFor(root: HTMLElement, el: HTMLElement) {
     const id = el.getAttribute('id');
     return id ? root.querySelector(`label[for="${id}"]`)?.textContent || null : null;
+  }
+
+  private getTableHeaderLabel(node: HTMLElement) {
+    const cell = node.closest('td, th') as HTMLTableCellElement | null;
+    if (!cell) return null;
+
+    const table = cell.closest('table');
+    if (!table) return null;
+
+    const headerRow = table.querySelector('thead tr') as HTMLTableRowElement | null || table.querySelector('tr') as HTMLTableRowElement | null;
+    if (!headerRow) return null;
+
+    const targetHeader = headerRow.cells[cell.cellIndex] as HTMLElement | undefined;
+    return targetHeader ? this.normalizeLabel(targetHeader.textContent) : null;
   }
 
   private normalizeLabel(label: string | null) {
