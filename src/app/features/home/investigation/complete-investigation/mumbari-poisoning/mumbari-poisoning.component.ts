@@ -220,6 +220,7 @@ export class MumbariPoisoningComponent implements OnInit {
           this.mumbariPoisoningData.history1 = this.datePipe.transform(this.mumbariPoisoningData.history1, 'yyyy-MM-dd');
           this.mumbariPoisoningData.history2 = this.datePipe.transform(this.mumbariPoisoningData.history2, 'yyyy-MM-dd');
           this.mumbariPoisoningData.history3 = this.datePipe.transform(this.mumbariPoisoningData.history3, 'yyyy-MM-dd');
+          this.sanitizeOtherSymptomsFields();
           this.calculateCompletionPercentage();
         }
 
@@ -236,6 +237,8 @@ export class MumbariPoisoningComponent implements OnInit {
 
   save() {
     //console.log(this.rabiesForm.value);
+    this.normalizeNullLikeValues();
+    this.sanitizeOtherSymptomsFields();
     this.calculateCompletionPercentage();
     this.mumbariPoisoningData.diseaseGroupId = this.investigationService.diseaseGroupID;
     this.mumbariPoisoningData.investigationCompletePercentage= parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2));
@@ -278,6 +281,60 @@ export class MumbariPoisoningComponent implements OnInit {
         }
       )
     }
+  }
+
+  isOtherSelected(otherValue: any): boolean {
+    return otherValue === 1 || otherValue === '1' || otherValue === 0 || otherValue === '0';
+  }
+
+  onOtherSelectionChange(day: 1 | 2 | 7 | 14): void {
+    switch (day) {
+      case 1:
+        if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay1)) {
+          this.mumbariPoisoningData.otherSymptomsDay1 = null;
+        }
+        break;
+      case 2:
+        if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay2)) {
+          this.mumbariPoisoningData.otherSymptomsDay2 = null;
+        }
+        break;
+      case 7:
+        if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay7)) {
+          this.mumbariPoisoningData.otherSymptomsDay7 = null;
+        }
+        break;
+      case 14:
+        if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay14)) {
+          this.mumbariPoisoningData.otherSymptomsDay14 = null;
+        }
+        break;
+    }
+    this.calculateCompletionPercentage();
+  }
+
+  private sanitizeOtherSymptomsFields(): void {
+    if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay1)) {
+      this.mumbariPoisoningData.otherSymptomsDay1 = null;
+    }
+    if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay2)) {
+      this.mumbariPoisoningData.otherSymptomsDay2 = null;
+    }
+    if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay7)) {
+      this.mumbariPoisoningData.otherSymptomsDay7 = null;
+    }
+    if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay14)) {
+      this.mumbariPoisoningData.otherSymptomsDay14 = null;
+    }
+  }
+
+  private normalizeNullLikeValues(): void {
+    Object.keys(this.mumbariPoisoningData).forEach((key) => {
+      const value = this.mumbariPoisoningData[key];
+      if (value === 'null' || value === 'undefined' || value === '') {
+        this.mumbariPoisoningData[key] = null;
+      }
+    });
   }
 
 
