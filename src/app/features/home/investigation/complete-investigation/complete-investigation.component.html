@@ -1,11 +1,15 @@
-<button
-  class="mt-4 mx-4 btn form-titles"
-  *ngFor="let item of patientDiseases"
-  routerLink="./{{ item.router }}"
-  (click)="setDesiese(item)"
->
-  {{ item.arabicName }}
-</button>
-<div class="">
+<div class="d-flex align-items-start justify-content-between gap-3 mt-4 mx-4">
+  <div class="d-flex flex-wrap align-items-center gap-3">
+    <button class="btn form-titles" *ngFor="let item of patientDiseases" routerLink="./{{ item.router }}"
+      (click)="setDesiese(item)">
+      {{ item.arabicName }}
+    </button>
+  </div>
+  <button type="button" class="btn btn-sm form-titles" dir="auto" (click)="downloadFile()">
+    {{ "NEDSS.COMMON.DOWNLOAD_EXCEL_TEMPLATE" | translate }}
+    <span class="display-2 bi bi-download"></span>
+  </button>
+</div>
+<div class="" #investigationContainer>
   <router-outlet></router-outlet>
 </div>
