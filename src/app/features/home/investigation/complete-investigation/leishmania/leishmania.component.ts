@@ -1,5 +1,5 @@
 import { virtualExamination } from './../../../../../core/constants';
-import { calculateCompletionStats } from '../shared/investigation-completion.utils';
+import { calculateCompletionStats } from '../shared/investigation-summary.utils';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
@@ -209,13 +209,7 @@ export class LeishmaniaComponent implements OnInit {
   }
 
   calculateCompletionPercentage() {
-    const excludedFields = [
-      'id',
-      'patientID',
-      'investigationCompletePercentage',
-      'diseaseGroupId',
-      'createdDate'
-    ];
+    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
 
     // If treatment protocol is not "Yes", exclude the hidden treatment fields.
     if (!this.isYes('leishmaniaTreatmentProtocolImplemented')) {

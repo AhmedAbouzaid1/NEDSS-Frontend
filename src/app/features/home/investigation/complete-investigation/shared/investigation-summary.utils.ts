@@ -63,7 +63,6 @@ export function calculateCompletionStats(data: any, options: CompletionOptions =
     if (excluded.has(key)) {
       return false;
     }
-    // Avoid double counting arrays that will be handled via formArrays.
     return !isArrayValue(baseData[key]);
   });
   let totalFields = baseKeys.length;

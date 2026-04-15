@@ -330,9 +330,9 @@ export class ChartsDashboardComponent {
   InvestigationsTimingsXLabel: any;
   InvestigationsTimingsYValue: any;
   InvestigationsTimingsSeriesData: any;
-  CardsPeriodDto:CardsPeriodDto = {} as CardsPeriodDto;
-  CardsPeriodTypeEnum=CardsPeriodTypeEnum;
-  CardsPeriodDurationUnitEnum=CardsPeriodDurationUnitEnum;
+  CardsPeriodDto: CardsPeriodDto = {} as CardsPeriodDto;
+  CardsPeriodTypeEnum = CardsPeriodTypeEnum;
+  CardsPeriodDurationUnitEnum = CardsPeriodDurationUnitEnum;
   constructor(
     private lookupsService: LookupsGetterService,
     private translateService: TranslateService,
@@ -345,7 +345,7 @@ export class ChartsDashboardComponent {
     private generalDataCompletionServiceService: GeneralDataCompletionServiceService,
     public exportService: ExportService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
   filteredChart: any = -1;
   Charts = CHARTS;
   chartsList = [
@@ -419,8 +419,8 @@ export class ChartsDashboardComponent {
     sortOrder: '',
     searchText: '',
   };
-  cardsPeriodFromDate:string = '';
-  cardsPeriodToDate:string = '';
+  cardsPeriodFromDate: string = '';
+  cardsPeriodToDate: string = '';
 
   ngOnInit(): void {
     //New By Hatem
@@ -3293,8 +3293,8 @@ export class ChartsDashboardComponent {
                           : null,
                       incidentSourceId:
                         this.levelId != 1 &&
-                        this.levelId != 2 &&
-                        this.levelId != 3
+                          this.levelId != 2 &&
+                          this.levelId != 3
                           ? this.incidentId
                           : null,
                     })
@@ -3303,12 +3303,12 @@ export class ChartsDashboardComponent {
                         element.value =
                           res.data[0].totalCount != 0
                             ? (
-                                (parseFloat(totalCount.toString()) /
-                                  parseFloat(
-                                    res.data[0].totalCount.toString()
-                                  )) *
-                                100
-                              ).toFixed(2) + '%'
+                              (parseFloat(totalCount.toString()) /
+                                parseFloat(
+                                  res.data[0].totalCount.toString()
+                                )) *
+                              100
+                            ).toFixed(2) + '%'
                             : '0%';
                       }
                     });
@@ -3652,7 +3652,7 @@ export class ChartsDashboardComponent {
             this.userMsg.error(res);
           });
       },
-      complete: () => {},
+      complete: () => { },
     });
   }
   ngAfterViewInit() {
@@ -4345,10 +4345,10 @@ export class ChartsDashboardComponent {
                   this.yearsToDraw3.push(element.govName);
                   var calculatedNumber =
                     element.totalPopulation != undefined &&
-                    element.totalPopulation != 0
+                      element.totalPopulation != 0
                       ? ((element.first - element.last) /
-                          element.totalPopulation) *
-                        100000
+                        element.totalPopulation) *
+                      100000
                       : 0;
                   this.calculatedDataGov3.push(Math.round(calculatedNumber));
                 });
@@ -4418,8 +4418,8 @@ export class ChartsDashboardComponent {
             this.levelId != 2 && this.selectedGovernment[0].length > 0
               ? this.selectedGovernment[0][0].id
               : this.levelId == 2
-              ? this.selectedGovernment[0].id
-              : 1;
+                ? this.selectedGovernment[0].id
+                : 1;
           var diseaseId = 0;
           if (this.selectedDiseases > 0) {
             diseaseId = this.selectedDiseases;
@@ -4444,11 +4444,11 @@ export class ChartsDashboardComponent {
                   this.unsureCalculatedData.push(element.numberOfPossibleCases);
                   var calculatedNumber =
                     element.totalPopulation != undefined &&
-                    element.totalPopulation != 0
+                      element.totalPopulation != 0
                       ? ((element.numberOfCertainCases +
-                          element.numberOfPossibleCases) /
-                          element.totalPopulation) *
-                        100000
+                        element.numberOfPossibleCases) /
+                        element.totalPopulation) *
+                      100000
                       : 0;
                   this.injuryDate.push(calculatedNumber);
                 });
@@ -5639,26 +5639,26 @@ export class ChartsDashboardComponent {
       } else {
         let transParam =
           this.filteredChart == 1 &&
-          (this.selectedDiseases.length == 0 || this.selectedyears.length == 0)
+            (this.selectedDiseases.length == 0 || this.selectedyears.length == 0)
             ? 'NEDSS.COMMON.ChartAlertMessageChart13'
             : this.filteredChart == 2 &&
               this.selectedGovernment[0] == null &&
               this.levelId != 2
-            ? 'NEDSS.COMMON.ChartAlertMessageChart2'
-            : this.filteredChart == 3 &&
-              (this.startSelectedyears == -1 ||
-                this.startSelectedyears == null ||
-                this.endSelectedyears == -1 ||
-                this.endSelectedyears == null ||
-                this.startDate == null ||
-                this.endDate == null ||
-                this.selectedDiseases.length == 0)
-            ? 'NEDSS.COMMON.ChartAlertMessageChart13'
-            : this.filteredChart == 4 &&
-              (this.selectedGovernment.length == 0 ||
-                this.selectedyears.length == 0)
-            ? 'NEDSS.COMMON.ChartAlertMessageChart4'
-            : '';
+              ? 'NEDSS.COMMON.ChartAlertMessageChart2'
+              : this.filteredChart == 3 &&
+                (this.startSelectedyears == -1 ||
+                  this.startSelectedyears == null ||
+                  this.endSelectedyears == -1 ||
+                  this.endSelectedyears == null ||
+                  this.startDate == null ||
+                  this.endDate == null ||
+                  this.selectedDiseases.length == 0)
+                ? 'NEDSS.COMMON.ChartAlertMessageChart13'
+                : this.filteredChart == 4 &&
+                  (this.selectedGovernment.length == 0 ||
+                    this.selectedyears.length == 0)
+                  ? 'NEDSS.COMMON.ChartAlertMessageChart4'
+                  : '';
 
         if (transParam) {
           this.translateService.get(transParam).subscribe((res: string) => {
@@ -5683,8 +5683,8 @@ export class ChartsDashboardComponent {
                 ? 'كل الأمراض'
                 : 'All Diseases'
               : this.diseases[this.selectedDiseases - 1][
-                  this.currentLang == 'ar' ? 'arabicName' : 'englishName'
-                ];
+              this.currentLang == 'ar' ? 'arabicName' : 'englishName'
+              ];
 
           document.getElementById(
             `chart_title${this.filteredChart}`
@@ -5694,7 +5694,7 @@ export class ChartsDashboardComponent {
             .scrollIntoView({ behavior: 'smooth' });
 
           this.isLoadingChart = false;
-        } catch (ignored) {}
+        } catch (ignored) { }
       });
     } else {
       document
@@ -5725,23 +5725,22 @@ export class ChartsDashboardComponent {
   }
 
   getDurationUnit(value: CardsPeriodDurationUnitEnum): string {
-    debugger;
-  const units = this.currentLang === 'ar' ? {
-    [CardsPeriodDurationUnitEnum.Hour]: 'ساعات',
-    [CardsPeriodDurationUnitEnum.Day]: 'ايام',
-    [CardsPeriodDurationUnitEnum.Week]: 'أسابيع',
-    [CardsPeriodDurationUnitEnum.Month]: 'شهور',
-    [CardsPeriodDurationUnitEnum.Year]: 'سنين'
-  } : {
-    [CardsPeriodDurationUnitEnum.Hour]: 'Hours',
-    [CardsPeriodDurationUnitEnum.Day]: 'Days',
-    [CardsPeriodDurationUnitEnum.Week]: 'Weeks',
-    [CardsPeriodDurationUnitEnum.Month]: 'Months',
-    [CardsPeriodDurationUnitEnum.Year]: 'Years'
-  };
+    const units = this.currentLang === 'ar' ? {
+      [CardsPeriodDurationUnitEnum.Hour]: 'ساعات',
+      [CardsPeriodDurationUnitEnum.Day]: 'ايام',
+      [CardsPeriodDurationUnitEnum.Week]: 'أسابيع',
+      [CardsPeriodDurationUnitEnum.Month]: 'شهور',
+      [CardsPeriodDurationUnitEnum.Year]: 'سنين'
+    } : {
+      [CardsPeriodDurationUnitEnum.Hour]: 'Hours',
+      [CardsPeriodDurationUnitEnum.Day]: 'Days',
+      [CardsPeriodDurationUnitEnum.Week]: 'Weeks',
+      [CardsPeriodDurationUnitEnum.Month]: 'Months',
+      [CardsPeriodDurationUnitEnum.Year]: 'Years'
+    };
 
-  return units[value] || '';
-}
+    return units[value] || '';
+  }
 
 
 
