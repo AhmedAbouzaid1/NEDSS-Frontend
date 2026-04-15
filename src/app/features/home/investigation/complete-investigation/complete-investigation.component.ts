@@ -50,12 +50,14 @@ export class CompleteInvestigationComponent implements OnInit {
 
   downloadFile() {
     const container = this.investigationContainer?.nativeElement;
-    const form = container?.querySelector('form') as HTMLElement | null;
-    if (!form) return;
+    if (!container) return;
+
+    const form = container.querySelector('form') as HTMLElement | null;
+    const root = form || container;
 
     const diseaseSlug = this.getDiseaseSlug();
     const fileName = `${diseaseSlug}-investigation.xlsx`;
-    this.formTemplateExportService.exportFormTemplate(form, fileName);
+    this.formTemplateExportService.exportFormTemplate(root, fileName);
   }
 
   private getDiseaseSlug(): string {
