@@ -1,11 +1,11 @@
 import { virtualExamination } from './../../../../../core/constants';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { calculateCompletionStats } from '../shared/investigation-completion.utils';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
-import { InvestigationSummaryComponent } from '../shared/investigation-summary/investigation-summary.component';
 @Component({
   selector: 'app-leishmania',
   templateUrl: './leishmania.component.html',
@@ -18,8 +18,9 @@ export class LeishmaniaComponent implements OnInit {
       ? localStorage.getItem('ls.currentLang')
       : 'ar';
   leishmaniaForm: FormGroup;
+  allFilledControlsCount: number = 0;
+  allControllesCount: number = 0;
   patientName: string;
-  @ViewChild(InvestigationSummaryComponent) investigationSummary?: InvestigationSummaryComponent;
 
   get patientVisitHistory(): FormArray {
     return this.leishmaniaForm.get('patientVisitHistory') as FormArray;
@@ -164,6 +165,7 @@ export class LeishmaniaComponent implements OnInit {
         value.setValue(null);
     })
     this.calculateCompletionPercentage();
+    this.leishmaniaForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
     this.leishmaniaForm.controls['diseaseGroupId'].setValue(this.investigationService.diseaseGroupID);
     if (this.leishmaniaForm.value.id != null) {
       this.investigationService.updateSevereleishmania(this.leishmaniaForm.value).subscribe(
@@ -207,6 +209,29 @@ export class LeishmaniaComponent implements OnInit {
   }
 
   calculateCompletionPercentage() {
-    this.investigationSummary?.recalculate();
+    const excludedFields = [
+      'id',
+      'patientID',
+      'investigationCompletePercentage',
+      'diseaseGroupId',
+      'createdDate'
+    ];
+
+    // If treatment protocol is not "Yes", exclude the hidden treatment fields.
+    if (!this.isYes('leishmaniaTreatmentProtocolImplemented')) {
+      excludedFields.push('treatmentStartDate', 'typeTreatment', 'numberSessions', 'dose');
+    }
+
+    const stats = calculateCompletionStats(this.leishmaniaForm.value, {
+      excludedFields,
+      formArrays: [{ value: this.patientVisitHistory, excludedFields: ['id'] }]
+    });
+
+    this.allControllesCount = stats.totalFields;
+    this.allFilledControlsCount = stats.filledFields;
+  }
+
+  isYes(controlName: string): boolean {
+    return this.leishmaniaForm?.get(controlName)?.value == 1;
   }
 }
