@@ -25,10 +25,10 @@ export class MersComponent implements OnInit {
     return this.mersForm.get('patientVisitHistory') as FormArray;
   }
   get localTravelHistory(): FormArray {
-    return this.mersForm.get('mersLocalTravelHistories') as FormArray;
+    return this.mersForm.get('localTravelHistories') as FormArray;
   }
   get internationalTravelHistory(): FormArray {
-    return this.mersForm.get('mersInternationalTravelHistories') as FormArray;
+    return this.mersForm.get('internationalTravelHistories') as FormArray;
   }
 
   createPatientVisitHistoryGroup(data?: any): FormGroup {
@@ -87,8 +87,8 @@ export class MersComponent implements OnInit {
       conditionAssessment: new FormControl(),
       comments: new FormControl(),
       patientVisitHistory: new FormArray([]),
-      mersLocalTravelHistories: new FormArray([]),
-      mersInternationalTravelHistories: new FormArray([]),
+      localTravelHistories: new FormArray([]),
+      internationalTravelHistories: new FormArray([]),
 
       coronaVaccineTaken: new FormControl(),
       numberDoses: new FormControl(),
@@ -235,7 +235,7 @@ export class MersComponent implements OnInit {
     this.mersForm.valueChanges.subscribe(() => this.calculateCompletionPercentage());
     this.currentId = this.investigationService.currentid;
     this.mersForm.controls['patientID'].setValue(this.currentId);
-    this.investigationService.getByIdmers(this.currentId).subscribe(
+    this.investigationService.getByIdmers(this.currentId, this.investigationService.diseaseGroupID).subscribe(
       (res) => {
         console.log(res);
         var v = res.data;
@@ -297,6 +297,30 @@ export class MersComponent implements OnInit {
             'yyyy-MM-dd'
           )
         );
+        this.mersForm.controls['dateOnsetSymptomsDay1'].setValue(
+          this.datePipe.transform(
+            this.mersForm.value.dateOnsetSymptomsDay1,
+            'yyyy-MM-dd'
+          )
+        );
+        this.mersForm.controls['dateOnsetSymptomsDay2'].setValue(
+          this.datePipe.transform(
+            this.mersForm.value.dateOnsetSymptomsDay2,
+            'yyyy-MM-dd'
+          )
+        );
+        this.mersForm.controls['dateOnsetSymptomsDay7'].setValue(
+          this.datePipe.transform(
+            this.mersForm.value.dateOnsetSymptomsDay7,
+            'yyyy-MM-dd'
+          )
+        );
+        this.mersForm.controls['dateOnsetSymptomsDay14'].setValue(
+          this.datePipe.transform(
+            this.mersForm.value.dateOnsetSymptomsDay14,
+            'yyyy-MM-dd'
+          )
+        );
         //ribavirinStartingDate
         this.mersForm.controls['dateDiagnosisPneumonia'].setValue(
           this.datePipe.transform(
@@ -330,7 +354,7 @@ export class MersComponent implements OnInit {
             }));
           });
         }
-        const apiLocalTravels = v?.MersLocalTravelHistories ?? v?.mersLocalTravelHistories ?? v?.localTravelHistory;
+        const apiLocalTravels = v?.LocalTravelHistories ?? v?.localTravelHistories ?? v?.localTravelHistory;
         if (Array.isArray(apiLocalTravels) && apiLocalTravels.length > 0) {
           while (this.localTravelHistory.length > 0) {
             this.localTravelHistory.removeAt(0);
@@ -343,7 +367,7 @@ export class MersComponent implements OnInit {
             }));
           });
         }
-        const apiInternationalTravels = v?.MersInternationalTravelHistories ?? v?.mersInternationalTravelHistories ?? v?.internationalTravelHistory;
+        const apiInternationalTravels = v?.InternationalTravelHistories ?? v?.internationalTravelHistories ?? v?.internationalTravelHistory;
         if (Array.isArray(apiInternationalTravels) && apiInternationalTravels.length > 0) {
           while (this.internationalTravelHistory.length > 0) {
             this.internationalTravelHistory.removeAt(0);
@@ -432,9 +456,14 @@ export class MersComponent implements OnInit {
         : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2))
     );
 
-    console.log(this.mersForm.value);
-    if (this.mersForm.value.id != null) {
-      this.investigationService.updateSeveremers(this.mersForm.value).subscribe(
+    const payload = {
+      ...this.mersForm.value,
+      localTravelHistories: this.mersForm.value.localTravelHistories,
+      internationalTravelHistories: this.mersForm.value.internationalTravelHistories
+    };
+    console.log(payload);
+    if (payload.id != null) {
+      this.investigationService.updateSeveremers(payload).subscribe(
         (response: any) => {
           if (response) {
             this.translateService
@@ -454,7 +483,7 @@ export class MersComponent implements OnInit {
       );
     } else {
       this.investigationService
-        .addInvestigationmers(this.mersForm.value)
+        .addInvestigationmers(payload)
         .subscribe(
           (response: any) => {
             if (response) {
@@ -484,8 +513,8 @@ export class MersComponent implements OnInit {
     const baseFields = Object.keys(data).filter((key) =>
       !excludedFields.includes(key) &&
       key !== 'patientVisitHistory' &&
-      key !== 'mersLocalTravelHistories' &&
-      key !== 'mersInternationalTravelHistories');
+      key !== 'localTravelHistories' &&
+      key !== 'internationalTravelHistories');
     let totalFields = baseFields.length;
     let filled = baseFields.reduce((acc, key) => {
       const value = data[key];
@@ -531,21 +560,5 @@ export class MersComponent implements OnInit {
     });
 
     return { totalFields, filledFields };
-  }
-  addLocalTravelHistoryRow(): void {
-    this.localTravelHistory.push(this.createLocalTravelHistoryGroup());
-  }
-  removeLocalTravelHistoryRow(index: number): void {
-    if (this.localTravelHistory.length > 0) {
-      this.localTravelHistory.removeAt(index);
-    }
-  }
-  addInternationalTravelHistoryRow(): void {
-    this.internationalTravelHistory.push(this.createInternationalTravelHistoryGroup());
-  }
-  removeInternationalTravelHistoryRow(index: number): void {
-    if (this.internationalTravelHistory.length > 0) {
-      this.internationalTravelHistory.removeAt(index);
-    }
   }
 }

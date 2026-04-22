@@ -388,8 +388,11 @@ export class InvestigationService {
   updateSeveremers(ivestigation: any) {
     return this.APIs.update(this.controllerURL + "Updatemers", ivestigation);
   }
-  getByIdmers(id: any) {
-    return this.APIs.get(this.controllerURL + "Getmers?id=" + id);
+  getByIdmers(id: any, diseaseGroupId?: number) {
+    const query = diseaseGroupId != null
+      ? `Getmers?id=${id}&diseaseGroupId=${diseaseGroupId}`
+      : `Getmers?id=${id}`;
+    return this.APIs.get(this.controllerURL + query);
   }
   //mumbs
   addInvestigationmumbs(ivestigation: any) {
