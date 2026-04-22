@@ -216,7 +216,6 @@ export class AdvancedSearchComponent implements OnInit {
     }
   }
   search(firstTime?: boolean) {
-    debugger;
     this.loadingPanel = true;
 
     if (this.isValidPatient()) {
