@@ -1,4 +1,5 @@
 import { virtualExamination } from './../../../../../core/constants';
+import { calculateCompletionStats } from '../shared/investigation-summary.utils';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
@@ -208,10 +209,6 @@ export class LeishmaniaComponent implements OnInit {
   }
 
   calculateCompletionPercentage() {
-    this.allFilledControlsCount = 0;
-    const data = this.leishmaniaForm.value;
-    console.log(data);
-    //Exclude fields you don't want to count (like 'id')
     const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
 
     // If treatment protocol is not "Yes", exclude the hidden treatment fields.
@@ -219,47 +216,13 @@ export class LeishmaniaComponent implements OnInit {
       excludedFields.push('treatmentStartDate', 'typeTreatment', 'numberSessions', 'dose');
     }
 
-    const baseFields = Object.keys(data).filter((key) => !excludedFields.includes(key) && key !== 'patientVisitHistory');
-    let totalFields = baseFields.length;
-
-    let filled = baseFields.reduce((acc, key) => {
-      const value = data[key];
-      if (value !== null && value !== '' && value !== 'null') {
-        return acc + 1;
-      }
-      return acc;
-    }, 0);
-
-    const visitStats = this.countFormArrayCompletion(this.patientVisitHistory);
-    totalFields += visitStats.totalFields;
-    filled += visitStats.filledFields;
-
-    this.allControllesCount = totalFields;
-    this.allFilledControlsCount = filled;
-  }
-
-  private countFormArrayCompletion(formArray: FormArray | null | undefined): { totalFields: number; filledFields: number } {
-    if (!formArray || !Array.isArray(formArray.controls) || formArray.controls.length === 0) {
-      return { totalFields: 0, filledFields: 0 };
-    }
-
-    let totalFields = 0;
-    let filledFields = 0;
-
-    formArray.controls.forEach((row) => {
-      const rowValue = (row as FormGroup).value;
-      const rowKeys = Object.keys(rowValue).filter((key) => key !== 'id');
-      totalFields += rowKeys.length;
-
-      rowKeys.forEach((key) => {
-        const v = rowValue[key];
-        if (v !== null && v !== '' && v !== 'null') {
-          filledFields += 1;
-        }
-      });
+    const stats = calculateCompletionStats(this.leishmaniaForm.value, {
+      excludedFields,
+      formArrays: [{ value: this.patientVisitHistory, excludedFields: ['id'] }]
     });
 
-    return { totalFields, filledFields };
+    this.allControllesCount = stats.totalFields;
+    this.allFilledControlsCount = stats.filledFields;
   }
 
   isYes(controlName: string): boolean {

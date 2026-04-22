@@ -51,7 +51,7 @@ export class PeriodOfCardsComponent {
   getLanguage() {
     this.currentLang =
       localStorage.getItem('ls.currentLang') !== undefined &&
-      localStorage.getItem('ls.currentLang') !== 'undefined'
+        localStorage.getItem('ls.currentLang') !== 'undefined'
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
   }
@@ -125,28 +125,27 @@ export class PeriodOfCardsComponent {
 
         this.periodOfCardsForm.get('fromDate')?.setValue(this.fromDate);
         this.periodOfCardsForm.get('toDate')?.setValue(this.toDate);
-      } 
-      debugger;
-      if(this.periodOfCardsForm.value.periodType ==
-        CardsPeriodTypeEnum.RelativePeriod){
-            const checkMinValue = Number(this.periodOfCardsForm.value.durationValue);
-            if(isNaN(checkMinValue)){
-              this.translateService
-                .get('NEDSS.COMMON.INVALID_NUMBER_TEXT_ENTERED')
-                .subscribe((res: string) => {
-                  this.userMsg.error(res);
-                });
-              return;
-            } 
-            if( checkMinValue < 1) {
-              this.translateService
-                .get('NEDSS.COMMON.INVALID_NUMBER')
-                .subscribe((res: string) => {
-                  this.userMsg.error(res);
-                });
-              return;
-            }
+      }
+      if (this.periodOfCardsForm.value.periodType ==
+        CardsPeriodTypeEnum.RelativePeriod) {
+        const checkMinValue = Number(this.periodOfCardsForm.value.durationValue);
+        if (isNaN(checkMinValue)) {
+          this.translateService
+            .get('NEDSS.COMMON.INVALID_NUMBER_TEXT_ENTERED')
+            .subscribe((res: string) => {
+              this.userMsg.error(res);
+            });
+          return;
         }
+        if (checkMinValue < 1) {
+          this.translateService
+            .get('NEDSS.COMMON.INVALID_NUMBER')
+            .subscribe((res: string) => {
+              this.userMsg.error(res);
+            });
+          return;
+        }
+      }
       this.periodOfCardsForm
         .get('periodType')
         .setValue(Number(this.periodOfCardsForm.get('periodType')?.value));
@@ -168,7 +167,7 @@ export class PeriodOfCardsComponent {
                 this.userMsg.error(res);
               });
           },
-          complete: () => {},
+          complete: () => { },
         });
     } else {
       this.translateService
