@@ -22,8 +22,9 @@ export class InvestigationService {
   update(ivestigation: any) {
     return this.APIs.update(this.controllerURL + 'UpdateBirdFlu', ivestigation);
   }
-  getById(id: any) {
-    return this.APIs.get(this.controllerURL + 'GetBirdFluById?id=' + id);
+  getById(id: any, diseaseGroupId?: any) {
+    const diseaseGroupQuery = diseaseGroupId != null ? '&diseaseGroupId=' + diseaseGroupId : '';
+    return this.APIs.get(this.controllerURL + 'GetBirdFluById?id=' + id + diseaseGroupQuery);
   }
   addInvestigationMalaria(ivestigation: any) {
     return this.APIs.post(this.controllerURL + 'AddMalaria', ivestigation);
