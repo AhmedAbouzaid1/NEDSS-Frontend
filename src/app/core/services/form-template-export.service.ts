@@ -29,25 +29,40 @@ export class FormTemplateExportService {
     const seen = new Set<string>();
     let current = sections[0];
 
-    Array.from(root.querySelectorAll<HTMLElement>('*')).forEach(node => {
+    const nodes = Array.from(root.querySelectorAll<HTMLElement>('*'));
+
+    nodes.forEach((node, idx) => {
       if (this.isSectionTitle(node)) {
         const title = this.normalizeLabel(node.textContent);
         if (title) { current = { title, fields: [] }; sections.push(current); }
         return;
       }
 
-      const fc = node.getAttribute('formcontrolname');
-      if (!fc || (node instanceof HTMLInputElement && node.type === 'hidden')) return;
+      if (!this.isFieldNode(node)) return;
+      if (node instanceof HTMLInputElement && node.type === 'hidden') return;
 
-      const key = this.getControlKey(node);
+      const fc = node.getAttribute('formcontrolname') || '';
+      const name = node.getAttribute('name') || '';
+      const id = node.getAttribute('id') || '';
+      const keyBase = fc || name || id;
+      if (!keyBase) return;
+
+      if (node instanceof HTMLInputElement && node.type.toLowerCase() === 'radio') {
+        const radioField = this.extractRadioField(root, node, keyBase);
+        if (!radioField) return;
+
+        const key = `radio|${keyBase}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+        current.fields.push(radioField);
+        return;
+      }
+
+      const key = this.getControlKey(node, keyBase, idx);
       if (seen.has(key)) return;
       seen.add(key);
 
-      let label = node.closest('label')?.textContent
-        || this.findLabelByFor(root, node)
-        || this.getTableHeaderLabel(node)
-        || node.closest('.form-group')?.querySelector('label')?.textContent
-        || fc;
+      const label = this.getFieldLabel(root, node, fc, name, id);
 
       current.fields.push({ label: this.normalizeLabel(label) || fc, value: this.getValue(node) });
     });
@@ -55,11 +70,17 @@ export class FormTemplateExportService {
     return sections;
   }
 
-  private getControlKey(node: HTMLElement) {
-    const fc = node.getAttribute('formcontrolname') || '';
+  private isFieldNode(node: HTMLElement) {
+    return /^(INPUT|SELECT|TEXTAREA)$/.test(node.tagName)
+      || node.hasAttribute('formcontrolname')
+      || node.hasAttribute('ngModel')
+      || node.hasAttribute('formControl');
+  }
+
+  private getControlKey(node: HTMLElement, keyBase: string, idx: number) {
     const row = node.closest('tr');
     if (row && row.rowIndex >= 0) {
-      return `${fc}|tr:${row.rowIndex}`;
+      return `${keyBase}|tr:${row.rowIndex}`;
     }
 
     const group = node.closest('[formGroup]');
@@ -68,13 +89,76 @@ export class FormTemplateExportService {
       if (parent) {
         const index = Array.from(parent.children).indexOf(group);
         if (index >= 0) {
-          return `${fc}|group:${index}`;
+          return `${keyBase}|group:${index}`;
         }
       }
-      return `${fc}|group:${group.nodeName}`;
+      return `${keyBase}|group:${group.nodeName}`;
     }
 
-    return fc;
+    return `${keyBase}|idx:${idx}`;
+  }
+
+  private extractRadioField(root: HTMLElement, node: HTMLInputElement, keyBase: string) {
+    const group = this.getRadioGroup(root, node, keyBase);
+    const checked = group.find(radio => radio.checked);
+    const label = this.getRadioGroupLabel(root, node, keyBase);
+    const value = checked ? (this.getRadioOptionLabel(checked) || checked.value || '') : '';
+
+    return label ? { label, value } : null;
+  }
+
+  private getRadioGroup(root: HTMLElement, node: HTMLInputElement, keyBase: string) {
+    if (node.name) {
+      return Array.from(root.querySelectorAll<HTMLInputElement>('input[type="radio"]'))
+        .filter(radio => radio.name === node.name);
+    }
+
+    return Array.from(root.querySelectorAll<HTMLInputElement>('input[type="radio"]'))
+      .filter(radio =>
+        (radio.getAttribute('formcontrolname') || radio.getAttribute('name') || radio.getAttribute('id') || '') === keyBase
+      );
+  }
+
+  private getFieldLabel(root: HTMLElement, node: HTMLElement, fc: string, name: string, id: string) {
+    return node.closest('label')?.textContent
+      || this.findLabelByFor(root, node)
+      || this.getTableHeaderLabel(node)
+      || node.closest('.form-group')?.querySelector('label')?.textContent
+      || node.getAttribute('aria-label')
+      || (node as HTMLInputElement).placeholder
+      || this.getPreviousPromptText(node)
+      || name
+      || id
+      || fc;
+  }
+
+  private getRadioGroupLabel(root: HTMLElement, node: HTMLInputElement, keyBase: string) {
+    return this.findLabelByFor(root, node)
+      || node.closest('.form-group')?.querySelector('label')?.textContent
+      || this.getPreviousPromptText(node.closest('.has-labels') as HTMLElement | null || node)
+      || node.getAttribute('aria-label')
+      || node.name
+      || node.id
+      || keyBase;
+  }
+
+  private getPreviousPromptText(node: HTMLElement | null) {
+    let sibling = node?.previousElementSibling as HTMLElement | null;
+    while (sibling) {
+      const text = this.normalizeLabel(sibling.textContent);
+      if (text) return text;
+      sibling = sibling.previousElementSibling as HTMLElement | null;
+    }
+    return null;
+  }
+
+  private getRadioOptionLabel(node: HTMLInputElement) {
+    const wrapperLabel = node.closest('label');
+    if (!wrapperLabel) return '';
+
+    const clone = wrapperLabel.cloneNode(true) as HTMLElement;
+    clone.querySelectorAll('input').forEach(input => input.remove());
+    return this.normalizeLabel(clone.textContent);
   }
 
   private getHeaderLabels() {
