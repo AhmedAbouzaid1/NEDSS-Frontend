@@ -448,35 +448,8 @@
                   </div>
                 </div>
                 <div class="col-lg-12">
-                  <div class="table-responsive" formArrayName="mersLocalTravelHistories">
-                    <table class="table table-bordered mb-2">
-                      <thead>
-                        <tr>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.PLACE_CITY_VILLAGE" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.DEPARTURE_DATE" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.RETURN_DATE" | translate }}</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let row of localTravelHistory.controls; let i = index" [formGroupName]="i">
-                          <td><input formControlName="placeCityVillage" type="text" class="form-control" /></td>
-                          <td><input formControlName="departureDate" type="date" class="form-control datePicker hasDatepicker" /></td>
-                          <td><input formControlName="returnDate" type="date" class="form-control datePicker hasDatepicker" /></td>
-                          <td>
-                            <button type="button" class="btn btn-danger" (click)="removeLocalTravelHistoryRow(i)">
-                              <i class="fa fa-trash"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn fw-bold px-4 text-white"
-                      style="background-color: #0d6efd; border-color: #0d6efd;"
-                      (click)="addLocalTravelHistoryRow()">
-                      {{ "NEDSS.COMMON.ADD" | translate }}
-                    </button>
-                  </div>
+                  <app-local-travel-history [travels]="localTravelHistory"
+                    (travelsChanged)="calculateCompletionPercentage()"></app-local-travel-history>
                 </div>
                 <div class="col-lg-12">
                   <hr />
@@ -492,43 +465,8 @@
                   </div>
                 </div>
                 <div class="col-lg-12">
-                  <div class="table-responsive" formArrayName="mersInternationalTravelHistories">
-                    <table class="table table-bordered mb-2">
-                      <thead>
-                        <tr>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.COUNTRY_NAME" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.DEPARTURE_DATE" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.RETURN_DATE" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.WHO_DEFINED_AFFECTED_AREA" | translate }}</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let row of internationalTravelHistory.controls; let i = index" [formGroupName]="i">
-                          <td><input formControlName="countryName" type="text" class="form-control" /></td>
-                          <td><input formControlName="departureDate" type="date" class="form-control datePicker hasDatepicker" /></td>
-                          <td><input formControlName="returnDate" type="date" class="form-control datePicker hasDatepicker" /></td>
-                          <td>
-                            <select formControlName="affectedArea" class="form-control">
-                              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                              <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                            </select>
-                          </td>
-                          <td>
-                            <button type="button" class="btn btn-danger" (click)="removeInternationalTravelHistoryRow(i)">
-                              <i class="fa fa-trash"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn fw-bold px-4 text-white"
-                      style="background-color: #0d6efd; border-color: #0d6efd;"
-                      (click)="addInternationalTravelHistoryRow()">
-                      {{ "NEDSS.COMMON.ADD" | translate }}
-                    </button>
-                  </div>
+                  <app-international-travel-history [travels]="internationalTravelHistory"
+                    (travelsChanged)="calculateCompletionPercentage()"></app-international-travel-history>
                 </div>
                 <!-- / .col-lg-2 -->
                 <div class="col-lg-6">

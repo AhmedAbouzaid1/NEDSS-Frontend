@@ -1,0 +1,29 @@
+<div class="table-responsive">
+  <table class="table table-bordered mb-2">
+    <thead>
+      <tr>
+        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.PLACE_CITY_VILLAGE" | translate }}</th>
+        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.DEPARTURE_DATE" | translate }}</th>
+        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.RETURN_DATE" | translate }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of travelControls; let i = index" [formGroup]="row">
+        <td><input formControlName="placeCityVillage" type="text" class="form-control" /></td>
+        <td><input formControlName="departureDate" type="date" class="form-control datePicker hasDatepicker" /></td>
+        <td><input formControlName="returnDate" type="date" class="form-control datePicker hasDatepicker" /></td>
+        <td>
+          <button type="button" class="btn btn-danger" (click)="removeTravel(i)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" class="btn fw-bold px-4 text-white"
+    style="background-color: #0d6efd; border-color: #0d6efd;"
+    (click)="addTravel()">
+    {{ "NEDSS.COMMON.ADD" | translate }}
+  </button>
+</div>

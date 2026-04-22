@@ -82,6 +82,8 @@ import { ChatUsersComponent } from './chat/chat-users/chat-users.component';
 import { FilariasisComponent } from './investigation/complete-investigation/filariasis/filariasis.component';
 import { LeishmaniaComponent } from './investigation/complete-investigation/leishmania/leishmania.component';
 import { PatientVisitHistoryComponent } from './investigation/complete-investigation/shared/patient-visit-history/patient-visit-history.component';
+import { LocalTravelHistoryComponent } from './investigation/complete-investigation/shared/local-travel-history/local-travel-history.component';
+import { InternationalTravelHistoryComponent } from './investigation/complete-investigation/shared/international-travel-history/international-travel-history.component';
 import { ViewUserComponent } from './users/view-user/view-user.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -258,6 +260,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     FilariasisComponent,
     LeishmaniaComponent,
     PatientVisitHistoryComponent,
+    LocalTravelHistoryComponent,
+    InternationalTravelHistoryComponent,
     HivComponent,
     AriComponent,
     MersComponent,
