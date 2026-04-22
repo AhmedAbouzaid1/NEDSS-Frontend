@@ -18,6 +18,7 @@ export class MersComponent implements OnInit {
       : 'ar';
   mersForm: FormGroup;
   currentId: any;
+  patientName: string;
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
 
@@ -67,6 +68,10 @@ export class MersComponent implements OnInit {
     private datePipe: DatePipe
   ) { }
   ngOnInit() {
+    this.patientName =
+      (this.investigationService.patient?.firstName || '') + ' ' +
+      (this.investigationService.patient?.secondName || '') + ' ' +
+      (this.investigationService.patient?.thirdName || '');
     this.mersForm = new FormGroup({
       id: new FormControl(),
       patientID: new FormControl(),
