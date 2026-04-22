@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,6 +18,48 @@ export class MersComponent implements OnInit {
       : 'ar';
   mersForm: FormGroup;
   currentId: any;
+  allFilledControlsCount: number = 0;
+  allControllesCount: number = 0;
+
+  get patientVisitHistory(): FormArray {
+    return this.mersForm.get('patientVisitHistory') as FormArray;
+  }
+  get localTravelHistory(): FormArray {
+    return this.mersForm.get('mersLocalTravelHistories') as FormArray;
+  }
+  get internationalTravelHistory(): FormArray {
+    return this.mersForm.get('mersInternationalTravelHistories') as FormArray;
+  }
+
+  createPatientVisitHistoryGroup(data?: any): FormGroup {
+    return new FormGroup({
+      id: new FormControl(data?.id || null),
+      nameHealthFacility: new FormControl(data?.nameHealthFacility || null),
+      healthFacilityBelongs: new FormControl(data?.healthFacilityBelongs || null),
+      dateVisit: new FormControl(data?.dateVisit || null),
+      initialDiagnosis: new FormControl(data?.initialDiagnosis || null),
+      admissionHospital: new FormControl(data?.admissionHospital || null),
+      dateEntry: new FormControl(data?.dateEntry || null),
+      exitDate: new FormControl(data?.exitDate || null),
+    });
+  }
+  createLocalTravelHistoryGroup(data?: any): FormGroup {
+    return new FormGroup({
+      id: new FormControl(data?.id || null),
+      placeCityVillage: new FormControl(data?.placeCityVillage || null),
+      departureDate: new FormControl(data?.departureDate || null),
+      returnDate: new FormControl(data?.returnDate || null),
+    });
+  }
+  createInternationalTravelHistoryGroup(data?: any): FormGroup {
+    return new FormGroup({
+      id: new FormControl(data?.id || null),
+      countryName: new FormControl(data?.countryName || null),
+      departureDate: new FormControl(data?.departureDate || null),
+      returnDate: new FormControl(data?.returnDate || null),
+      affectedArea: new FormControl(data?.affectedArea || null),
+    });
+  }
   constructor(
     private investigationService: InvestigationService,
     private translateService: TranslateService,
@@ -29,28 +71,6 @@ export class MersComponent implements OnInit {
       id: new FormControl(),
       patientID: new FormControl(),
 
-      fever: new FormControl(),
-      feverDurationDay: new FormControl(),
-      maxTemperature: new FormControl(),
-
-      lossSenseSmellTaste: new FormControl(),
-      coughingUpBlood: new FormControl(),
-
-      chronicChestDiseases: new FormControl(),
-      chronicHeartDisease: new FormControl(),
-      highBloodPressure: new FormControl(),
-      excessiveObesity: new FormControl(),
-      immuneDisease: new FormControl(),
-      aids: new FormControl(),
-      pregnantWomen: new FormControl(),
-      diabetes: new FormControl(),
-      liverDiseases: new FormControl(),
-      kidneyDisease: new FormControl(),
-      diseasesNervousMuscular: new FormControl(),
-      bloodBiseases: new FormControl(),
-      other: new FormControl(),
-
-      onsetSymptomsDates: new FormControl(),
       diagnosisPneumonia: new FormControl(),
       dateDiagnosisPneumonia: new FormControl(),
       diagnosisWasMade: new FormControl(),
@@ -65,48 +85,10 @@ export class MersComponent implements OnInit {
       historyDevice: new FormControl(),
       numberDaysPlacementDevice: new FormControl(),
       conditionAssessment: new FormControl(),
-      //
-      nameHealthFacility1: new FormControl(),
-      healthFacilityBelongs1: new FormControl(),
-      dateVisit1: new FormControl(),
-      initialDiagnosis1: new FormControl(),
-      admissionHospital1: new FormControl(),
-      dateEntry1: new FormControl(),
-      exitDate1: new FormControl(),
-
-      nameHealthFacility2: new FormControl(),
-      healthFacilityBelongs2: new FormControl(),
-      dateVisit2: new FormControl(),
-      initialDiagnosis2: new FormControl(),
-      admissionHospital2: new FormControl(),
-      dateEntry2: new FormControl(),
-      exitDate2: new FormControl(),
-
-      nameHealthFacility3: new FormControl(),
-      healthFacilityBelongs3: new FormControl(),
-      dateVisit3: new FormControl(),
-      initialDiagnosis3: new FormControl(),
-      admissionHospital3: new FormControl(),
-      dateEntry3: new FormControl(),
-      exitDate3: new FormControl(),
-
-      nameHealthFacility4: new FormControl(),
-      healthFacilityBelongs4: new FormControl(),
-      dateVisit4: new FormControl(),
-      initialDiagnosis4: new FormControl(),
-      admissionHospital4: new FormControl(),
-      dateEntry4: new FormControl(),
-      exitDate4: new FormControl(),
-
-      nameHealthFacility5: new FormControl(),
-      healthFacilityBelongs5: new FormControl(),
-      dateVisit5: new FormControl(),
-      initialDiagnosis5: new FormControl(),
-      admissionHospital5: new FormControl(),
-      dateEntry5: new FormControl(),
-      exitDate5: new FormControl(),
-
       comments: new FormControl(),
+      patientVisitHistory: new FormArray([]),
+      mersLocalTravelHistories: new FormArray([]),
+      mersInternationalTravelHistories: new FormArray([]),
 
       coronaVaccineTaken: new FormControl(),
       numberDoses: new FormControl(),
@@ -128,18 +110,17 @@ export class MersComponent implements OnInit {
       heartFailure: new FormControl(),
       isAntihypertensiveMedication: new FormControl(),
       ecmoProcessUsed: new FormControl(),
+      ecmoStartDate: new FormControl(),
       durationEcmo: new FormControl(),
       kidneyFailure: new FormControl(),
       havingPregnancy: new FormControl(),
       pregnancyProduct: new FormControl(),
       travelingOutsideEgypt: new FormControl(),
-      nameCountry: new FormControl(),
-      dateTravelOutsideEgypt: new FormControl(),
-      returnDateOutsideEgypt: new FormControl(),
-      affectedArea: new FormControl(),
+      travelingWithinEgypt: new FormControl(),
       dateArrivalRepublic: new FormControl(),
       airportPlaceArrivalFlightNumberPortTrain: new FormControl(),
       closeContact: new FormControl(),
+      contactDataNotes: new FormControl(),
 
       contactSuspectedCase: new FormControl(),
       epidemicOutbreak: new FormControl(),
@@ -147,11 +128,6 @@ export class MersComponent implements OnInit {
       contactDeceasedPersonRespiratory: new FormControl(),
       numberNonDirectContacts: new FormControl(),
       numberDirectContacts: new FormControl(),
-
-      travelingWithinEgypt: new FormControl(),
-      governorateWithinEgypt: new FormControl(),
-      dateTravelWithinEgypt: new FormControl(),
-      returnDateWithinEgypt: new FormControl(),
 
       nameDay1: new FormControl(),
       ageDay1: new FormControl(),
@@ -170,9 +146,9 @@ export class MersComponent implements OnInit {
       diarrheaDay1: new FormControl(),
       otherDay1: new FormControl(),
       otherSymptomsDay1: new FormControl(),
-      isSampleTakenDay1: new FormControl('2'),
+      isSampleTakenDay1: new FormControl(),
       dateSampleTakenDay1: new FormControl(),
-      sampleResultDay1: new FormControl('2'),
+      sampleResultDay1: new FormControl(),
 
       nameDay2: new FormControl(),
       ageDay2: new FormControl(),
@@ -191,9 +167,9 @@ export class MersComponent implements OnInit {
       diarrheaDay2: new FormControl(),
       otherDay2: new FormControl(),
       otherSymptomsDay2: new FormControl(),
-      isSampleTakenDay2: new FormControl('2'),
+      isSampleTakenDay2: new FormControl(),
       dateSampleTakenDay2: new FormControl(),
-      sampleResultDay2: new FormControl('2'),
+      sampleResultDay2: new FormControl(),
 
       nameDay7: new FormControl(),
       ageDay7: new FormControl(),
@@ -212,9 +188,9 @@ export class MersComponent implements OnInit {
       diarrheaDay7: new FormControl(),
       otherDay7: new FormControl(),
       otherSymptomsDay7: new FormControl(),
-      isSampleTakenDay7: new FormControl('2'),
+      isSampleTakenDay7: new FormControl(),
       dateSampleTakenDay7: new FormControl(),
-      sampleResultDay7: new FormControl('2'),
+      sampleResultDay7: new FormControl(),
 
       nameDay14: new FormControl(),
       ageDay14: new FormControl(),
@@ -233,9 +209,9 @@ export class MersComponent implements OnInit {
       diarrheaDay14: new FormControl(),
       otherDay14: new FormControl(),
       otherSymptomsDay14: new FormControl(),
-      isSampleTakenDay14: new FormControl('2'),
+      isSampleTakenDay14: new FormControl(),
       dateSampleTakenDay14: new FormControl(),
-      sampleResultDay14: new FormControl('2'),
+      sampleResultDay14: new FormControl(),
 
       cats: new FormControl(),
       bats: new FormControl(),
@@ -250,8 +226,13 @@ export class MersComponent implements OnInit {
       ribavirinStartingDate: new FormControl(),
       antiviralsOther: new FormControl(),
       otherstartingDate: new FormControl(),
+      investigationCompletePercentage: new FormControl(),
       diseaseGroupId: new FormControl(this.investigationService.diseaseGroupID),
     });
+    this.patientVisitHistory.push(this.createPatientVisitHistoryGroup());
+    this.localTravelHistory.push(this.createLocalTravelHistoryGroup());
+    this.internationalTravelHistory.push(this.createInternationalTravelHistoryGroup());
+    this.mersForm.valueChanges.subscribe(() => this.calculateCompletionPercentage());
     this.currentId = this.investigationService.currentid;
     this.mersForm.controls['patientID'].setValue(this.currentId);
     this.investigationService.getByIdmers(this.currentId).subscribe(
@@ -259,10 +240,6 @@ export class MersComponent implements OnInit {
         console.log(res);
         var v = res.data;
         this.mersForm.patchValue(v);
-        this.mersForm.patchValue({
-          fever: this.mersForm.value.fever + '',
-          tc: true,
-        });
 
         this.mersForm.patchValue({
           isSampleTakenDay1: this.mersForm.value.isSampleTakenDay1 + '',
@@ -321,16 +298,6 @@ export class MersComponent implements OnInit {
           )
         );
         //ribavirinStartingDate
-        //dates onsetSymptomsDates
-        // this.mersForm.value.onsetSymptomsDates=v.onsetSymptomsDates;
-
-        this.mersForm.controls['onsetSymptomsDates'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.onsetSymptomsDates,
-            'yyyy-MM-dd'
-          )
-        );
-
         this.mersForm.controls['dateDiagnosisPneumonia'].setValue(
           this.datePipe.transform(
             this.mersForm.value.dateDiagnosisPneumonia,
@@ -349,51 +316,46 @@ export class MersComponent implements OnInit {
             'yyyy-MM-dd'
           )
         );
-        this.mersForm.controls['dateVisit1'].setValue(
-          this.datePipe.transform(this.mersForm.value.dateVisit1, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateEntry1'].setValue(
-          this.datePipe.transform(this.mersForm.value.dateEntry1, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateVisit2'].setValue(
-          this.datePipe.transform(this.mersForm.value.dateVisit2, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateEntry2'].setValue(
-          this.datePipe.transform(this.mersForm.value.dateEntry2, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateVisit3'].setValue(
-          this.datePipe.transform(this.mersForm.value.dateVisit3, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateEntry3'].setValue(
-          this.datePipe.transform(this.mersForm.value.dateEntry3, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateVisit4'].setValue(
-          this.datePipe.transform(this.mersForm.value.dateVisit4, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateEntry4'].setValue(
-          this.datePipe.transform(this.mersForm.value.dateEntry4, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateVisit5'].setValue(
-          this.datePipe.transform(this.mersForm.value.dateVisit5, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateEntry5'].setValue(
-          this.datePipe.transform(this.mersForm.value.dateEntry5, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['exitDate1'].setValue(
-          this.datePipe.transform(this.mersForm.value.exitDate1, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['exitDate2'].setValue(
-          this.datePipe.transform(this.mersForm.value.exitDate2, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['exitDate3'].setValue(
-          this.datePipe.transform(this.mersForm.value.exitDate3, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['exitDate4'].setValue(
-          this.datePipe.transform(this.mersForm.value.exitDate4, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['exitDate5'].setValue(
-          this.datePipe.transform(this.mersForm.value.exitDate5, 'yyyy-MM-dd')
-        );
+        const apiVisits = v?.PatientVisitHistory ?? v?.patientVisitHistory;
+        if (Array.isArray(apiVisits) && apiVisits.length > 0) {
+          while (this.patientVisitHistory.length > 0) {
+            this.patientVisitHistory.removeAt(0);
+          }
+          apiVisits.forEach((item) => {
+            this.patientVisitHistory.push(this.createPatientVisitHistoryGroup({
+              ...item,
+              dateVisit: this.datePipe.transform(item?.dateVisit, 'yyyy-MM-dd'),
+              dateEntry: this.datePipe.transform(item?.dateEntry, 'yyyy-MM-dd'),
+              exitDate: this.datePipe.transform(item?.exitDate, 'yyyy-MM-dd')
+            }));
+          });
+        }
+        const apiLocalTravels = v?.MersLocalTravelHistories ?? v?.mersLocalTravelHistories ?? v?.localTravelHistory;
+        if (Array.isArray(apiLocalTravels) && apiLocalTravels.length > 0) {
+          while (this.localTravelHistory.length > 0) {
+            this.localTravelHistory.removeAt(0);
+          }
+          apiLocalTravels.forEach((item) => {
+            this.localTravelHistory.push(this.createLocalTravelHistoryGroup({
+              ...item,
+              departureDate: this.datePipe.transform(item?.departureDate, 'yyyy-MM-dd'),
+              returnDate: this.datePipe.transform(item?.returnDate, 'yyyy-MM-dd')
+            }));
+          });
+        }
+        const apiInternationalTravels = v?.MersInternationalTravelHistories ?? v?.mersInternationalTravelHistories ?? v?.internationalTravelHistory;
+        if (Array.isArray(apiInternationalTravels) && apiInternationalTravels.length > 0) {
+          while (this.internationalTravelHistory.length > 0) {
+            this.internationalTravelHistory.removeAt(0);
+          }
+          apiInternationalTravels.forEach((item) => {
+            this.internationalTravelHistory.push(this.createInternationalTravelHistoryGroup({
+              ...item,
+              departureDate: this.datePipe.transform(item?.departureDate, 'yyyy-MM-dd'),
+              returnDate: this.datePipe.transform(item?.returnDate, 'yyyy-MM-dd')
+            }));
+          });
+        }
         //
         this.mersForm.controls['dosageDate1'].setValue(
           this.datePipe.transform(this.mersForm.value.dosageDate1, 'yyyy-MM-dd')
@@ -422,27 +384,12 @@ export class MersComponent implements OnInit {
             'yyyy-MM-dd'
           )
         );
-        this.mersForm.controls['dateTravelOutsideEgypt'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateTravelOutsideEgypt,
-            'yyyy-MM-dd'
-          )
+        this.mersForm.controls['ecmoStartDate'].setValue(
+          this.datePipe.transform(this.mersForm.value.ecmoStartDate, 'yyyy-MM-dd')
         );
-        this.mersForm.controls['returnDateOutsideEgypt'].setValue(
+        this.mersForm.controls['dateArrivalRepublic'].setValue(
           this.datePipe.transform(
-            this.mersForm.value.returnDateOutsideEgypt,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.controls['dateTravelWithinEgypt'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateTravelWithinEgypt,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.controls['returnDateWithinEgypt'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateTravelWithinEgypt,
+            this.mersForm.value.dateArrivalRepublic,
             'yyyy-MM-dd'
           )
         );
@@ -459,7 +406,7 @@ export class MersComponent implements OnInit {
           )
         );
 
-        //
+        this.calculateCompletionPercentage();
       },
       (error) => {
         this.translateService
@@ -477,6 +424,12 @@ export class MersComponent implements OnInit {
     })
     this.mersForm.controls['diseaseGroupId'].setValue(
       this.investigationService.diseaseGroupID
+    );
+    this.calculateCompletionPercentage();
+    this.mersForm.controls['investigationCompletePercentage'].setValue(
+      this.allControllesCount === 0
+        ? 0
+        : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2))
     );
 
     console.log(this.mersForm.value);
@@ -520,6 +473,79 @@ export class MersComponent implements OnInit {
               });
           }
         );
+    }
+  }
+
+  calculateCompletionPercentage(): void {
+    this.allFilledControlsCount = 0;
+    const data = this.mersForm?.value ?? {};
+    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
+
+    const baseFields = Object.keys(data).filter((key) =>
+      !excludedFields.includes(key) &&
+      key !== 'patientVisitHistory' &&
+      key !== 'mersLocalTravelHistories' &&
+      key !== 'mersInternationalTravelHistories');
+    let totalFields = baseFields.length;
+    let filled = baseFields.reduce((acc, key) => {
+      const value = data[key];
+      if (value !== null && value !== '' && value !== 'null') {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+
+    const visitStats = this.countFormArrayCompletion(this.patientVisitHistory);
+    totalFields += visitStats.totalFields;
+    filled += visitStats.filledFields;
+    const localTravelStats = this.countFormArrayCompletion(this.localTravelHistory);
+    totalFields += localTravelStats.totalFields;
+    filled += localTravelStats.filledFields;
+    const internationalTravelStats = this.countFormArrayCompletion(this.internationalTravelHistory);
+    totalFields += internationalTravelStats.totalFields;
+    filled += internationalTravelStats.filledFields;
+
+    this.allControllesCount = totalFields;
+    this.allFilledControlsCount = filled;
+  }
+
+  private countFormArrayCompletion(formArray: FormArray | null | undefined): { totalFields: number; filledFields: number } {
+    if (!formArray || !Array.isArray(formArray.controls) || formArray.controls.length === 0) {
+      return { totalFields: 0, filledFields: 0 };
+    }
+
+    let totalFields = 0;
+    let filledFields = 0;
+
+    formArray.controls.forEach((row) => {
+      const rowValue = (row as FormGroup).value;
+      const rowKeys = Object.keys(rowValue).filter((key) => key !== 'id');
+      totalFields += rowKeys.length;
+
+      rowKeys.forEach((key) => {
+        const v = rowValue[key];
+        if (v !== null && v !== '' && v !== 'null') {
+          filledFields += 1;
+        }
+      });
+    });
+
+    return { totalFields, filledFields };
+  }
+  addLocalTravelHistoryRow(): void {
+    this.localTravelHistory.push(this.createLocalTravelHistoryGroup());
+  }
+  removeLocalTravelHistoryRow(index: number): void {
+    if (this.localTravelHistory.length > 0) {
+      this.localTravelHistory.removeAt(index);
+    }
+  }
+  addInternationalTravelHistoryRow(): void {
+    this.internationalTravelHistory.push(this.createInternationalTravelHistoryGroup());
+  }
+  removeInternationalTravelHistoryRow(index: number): void {
+    if (this.internationalTravelHistory.length > 0) {
+      this.internationalTravelHistory.removeAt(index);
     }
   }
 }
