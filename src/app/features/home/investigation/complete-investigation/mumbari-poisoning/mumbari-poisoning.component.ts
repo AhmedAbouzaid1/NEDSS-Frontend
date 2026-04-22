@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AnswerOptions, Gender, contactType, degreeAwareness } from 'src/app/core/constants';
+import { AnswerOptions, Gender, contactType } from 'src/app/core/constants';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -34,36 +34,9 @@ export class MumbariPoisoningComponent implements OnInit {
   mumbariPoisoningData = {
     patientID: null,
     id: null,
-    // fever: 0,
-    fever: null,
-    feverDurationDay: null,
-    // maxTemperature: 0,
-    maxTemperature: null,
-    conjunctivitisEye: null,
-    shock: null,
-    lymphNodeEnlargement: null,
-    unconsciousness: null,
-    rash: null,
-    pressureDrop: null,
-    blurredVision: null,
-    itching: null,
-    // Other: 0,
-    Other: null,
-    OtherSymptoms: null,
-    degreeAwareness: null,
-    doubleVision: null,
-    drynessMucousMembranesMouth: null,
-    inabilityWalk: null,
-
-    contactSuspectedCase: null,
-    contactConfirmedCase: null,
-    epidemicOutbreak: null,
-    contactDeceasedPersonRespiratory: null,
     numberDirectContacts: null,
-    numberNonDirectContacts: null,
 
     nameDay1: null,
-    // ageDay1: 0,
     ageDay1: null,
     telephoneDay1: null,
     genderDay1: null,
@@ -75,7 +48,6 @@ export class MumbariPoisoningComponent implements OnInit {
     coughingWithSpittingDay1: null,
     soreThroatDay1: null,
     breathingDifficultyDay1: null,
-    jointPainDay1: null,
     vomitDay1: null,
     diarrheaDay1: null,
     otherDay1: null,
@@ -96,7 +68,6 @@ export class MumbariPoisoningComponent implements OnInit {
     coughingWithSpittingDay2: null,
     soreThroatDay2: null,
     breathingDifficultyDay2: null,
-    jointPainDay2: null,
     vomitDay2: null,
     diarrheaDay2: null,
     otherDay2: null,
@@ -117,7 +88,6 @@ export class MumbariPoisoningComponent implements OnInit {
     coughingWithSpittingDay7: null,
     soreThroatDay7: null,
     breathingDifficultyDay7: null,
-    jointPainDay7: null,
     vomitDay7: null,
     diarrheaDay7: null,
     otherDay7: null,
@@ -139,7 +109,6 @@ export class MumbariPoisoningComponent implements OnInit {
     coughingWithSpittingDay14: null,
     soreThroatDay14: null,
     breathingDifficultyDay14: null,
-    jointPainDay14: null,
     vomitDay14: null,
     diarrheaDay14: null,
     otherDay14: null,
@@ -148,51 +117,18 @@ export class MumbariPoisoningComponent implements OnInit {
     dateSampleTakenDay14: null,
     sampleResultDay14: null,
 
-    crab: null,
-    crabSource: null,
-    marineCrustaceans: null,
-    marineCrustaceansSource: null,
-    otherSeafood: null,
-    otherSeafoodSource: null,
-    milk: null,
-    milkSource: null,
-    cheese: null,
-    cheeseSource: null,
-    otherCheese: null,
-    otherCheeseSource: null,
-    iceCream: null,
-    iceCreamSource: null,
-    otherDairyProducts: null,
-    otherDairyProductsSource: null,
-    uncookedFruitsVegetables: null,
-    uncookedFruitsVegetablesSource: null,
-    rawEggs: null,
-    rawEggsSource: null,
-    foodsNotHome: null,
-    foodsNotHomeType: null,
-    foodsNotHomeSource: null,
-    otherFoods: null,
-    otherFoodsSource: null,
-
     patientEatCanned: null,
     foodType: null,
     patientEatsaltedFish: null,
     manufacturingSource: null,
     addressShop: null,
+    honeyForInfants: null,
+    rawMeat: null,
+    bodyWounds: null,
+    bodyBurns: null,
     areOtherCasesInfectedFamily: null,
     numberInfectedMembers: null,
-
     infectedMember1: null,
-    infectedMember2: null,
-    infectedMember3: null,
-    infectedMember4: null,
-    infectedMember5: null,
-    infectedMember6: null,
-    infectedMember7: null,
-    infectedMember8: null,
-    infectedMember9: null,
-    infectedMember10: null,
-
     confinedHospital: null,
     numberCasesBooked: null,
     patientDoseAntiBotulismSerum: null,
@@ -201,14 +137,15 @@ export class MumbariPoisoningComponent implements OnInit {
     history1: null,
     history2: null,
     history3: null,
+    intensiveCareReservation: null,
+    intensiveCareReservationDate: null,
+    therapeuticInjectionPlace: null,
+    productOperationalNumber: null,
+    therapeuticInjectionDate: null,
+    therapeuticDosesCount: null,
     diseaseGroupId: this.investigationService.diseaseGroupID,
     investigationCompletePercentage:null
   }
-  degreeAwareness = degreeAwareness;
-  doubleVisions = AnswerOptions;
-  drynessMucousMembranesMouths = AnswerOptions;
-  inabilityWalks = AnswerOptions;
-
 
   genderDay1s = Gender;
   contactTypeDay1s = contactType;
@@ -217,7 +154,6 @@ export class MumbariPoisoningComponent implements OnInit {
   coughingWithSpittingDay1s = AnswerOptions;
   soreThroatDay1s = AnswerOptions;
   breathingDifficultyDay1s = AnswerOptions;
-  jointPainDay1s = AnswerOptions;
   vomitDay1s = AnswerOptions;
   diarrheaDay1s = AnswerOptions;
   otherDay1s = AnswerOptions;
@@ -229,7 +165,6 @@ export class MumbariPoisoningComponent implements OnInit {
   coughingWithSpittingDay2s = AnswerOptions;
   soreThroatDay2s = AnswerOptions;
   breathingDifficultyDay2s = AnswerOptions;
-  jointPainDay2s = AnswerOptions;
   vomitDay2s = AnswerOptions;
   diarrheaDay2s = AnswerOptions;
   otherDay2s = AnswerOptions;
@@ -241,7 +176,6 @@ export class MumbariPoisoningComponent implements OnInit {
   coughingWithSpittingDay7s = AnswerOptions;
   soreThroatDay7s = AnswerOptions;
   breathingDifficultyDay7s = AnswerOptions;
-  jointPainDay7s = AnswerOptions;
   vomitDay7s = AnswerOptions;
   diarrheaDay7s = AnswerOptions;
   otherDay7s = AnswerOptions;
@@ -253,7 +187,6 @@ export class MumbariPoisoningComponent implements OnInit {
   coughingWithSpittingDay14s = AnswerOptions;
   soreThroatDay14s = AnswerOptions;
   breathingDifficultyDay14s = AnswerOptions;
-  jointPainDay14s = AnswerOptions;
   vomitDay14s = AnswerOptions;
   diarrheaDay14s = AnswerOptions;
   otherDay14s = AnswerOptions;
@@ -264,6 +197,7 @@ export class MumbariPoisoningComponent implements OnInit {
   confinedHospitals = AnswerOptions;
   patientDoseAntiBotulismSerums = AnswerOptions;
   currentId: any;
+
   ngOnInit(): void {
     this.currentId = this.investigationService.currentid
     this.mumbariPoisoningData.patientID = this.currentId;
@@ -286,6 +220,7 @@ export class MumbariPoisoningComponent implements OnInit {
           this.mumbariPoisoningData.history1 = this.datePipe.transform(this.mumbariPoisoningData.history1, 'yyyy-MM-dd');
           this.mumbariPoisoningData.history2 = this.datePipe.transform(this.mumbariPoisoningData.history2, 'yyyy-MM-dd');
           this.mumbariPoisoningData.history3 = this.datePipe.transform(this.mumbariPoisoningData.history3, 'yyyy-MM-dd');
+          this.sanitizeOtherSymptomsFields();
           this.calculateCompletionPercentage();
         }
 
@@ -302,6 +237,8 @@ export class MumbariPoisoningComponent implements OnInit {
 
   save() {
     //console.log(this.rabiesForm.value);
+    this.normalizeNullLikeValues();
+    this.sanitizeOtherSymptomsFields();
     this.calculateCompletionPercentage();
     this.mumbariPoisoningData.diseaseGroupId = this.investigationService.diseaseGroupID;
     this.mumbariPoisoningData.investigationCompletePercentage= parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2));
@@ -344,6 +281,60 @@ export class MumbariPoisoningComponent implements OnInit {
         }
       )
     }
+  }
+
+  isOtherSelected(otherValue: any): boolean {
+    return otherValue === 1 || otherValue === '1' || otherValue === 0 || otherValue === '0';
+  }
+
+  onOtherSelectionChange(day: 1 | 2 | 7 | 14): void {
+    switch (day) {
+      case 1:
+        if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay1)) {
+          this.mumbariPoisoningData.otherSymptomsDay1 = null;
+        }
+        break;
+      case 2:
+        if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay2)) {
+          this.mumbariPoisoningData.otherSymptomsDay2 = null;
+        }
+        break;
+      case 7:
+        if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay7)) {
+          this.mumbariPoisoningData.otherSymptomsDay7 = null;
+        }
+        break;
+      case 14:
+        if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay14)) {
+          this.mumbariPoisoningData.otherSymptomsDay14 = null;
+        }
+        break;
+    }
+    this.calculateCompletionPercentage();
+  }
+
+  private sanitizeOtherSymptomsFields(): void {
+    if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay1)) {
+      this.mumbariPoisoningData.otherSymptomsDay1 = null;
+    }
+    if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay2)) {
+      this.mumbariPoisoningData.otherSymptomsDay2 = null;
+    }
+    if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay7)) {
+      this.mumbariPoisoningData.otherSymptomsDay7 = null;
+    }
+    if (!this.isOtherSelected(this.mumbariPoisoningData.otherDay14)) {
+      this.mumbariPoisoningData.otherSymptomsDay14 = null;
+    }
+  }
+
+  private normalizeNullLikeValues(): void {
+    Object.keys(this.mumbariPoisoningData).forEach((key) => {
+      const value = this.mumbariPoisoningData[key];
+      if (value === 'null' || value === 'undefined' || value === '') {
+        this.mumbariPoisoningData[key] = null;
+      }
+    });
   }
 
 
