@@ -1,0 +1,56 @@
+<div class="row color">
+  <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+    <div class="row">
+      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.LAB_DATA" | translate }}</div>
+      <div class="col-12">
+        <div class="mb-2 text-muted">
+          {{ "NEDSS.COMPLETE_INVESTEGATION.ARI.LAB_NOTE" | translate }}
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="table table-bordered table-sm align-middle">
+            <thead>
+              <tr>
+                <th>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.SAMPLE_TYPE" | translate }}</th>
+                <th>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.SAMPLE_NUMBER" | translate }}</th>
+                <th>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.SAMPLE_COLLECTION_DATE" | translate }}</th>
+                <th>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.SAMPLE_TEST_DATE" | translate }}</th>
+                <th>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.LAB_RESULT" | translate }}</th>
+                <th style="width: 120px"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sampleControl of sampleControls; let i = index" [formGroup]="sampleControl">
+                <td><input type="text" class="form-control" formControlName="sampleType" /></td>
+                <td><input type="text" class="form-control" formControlName="sampleNumber" /></td>
+                <td><input type="date" class="form-control" formControlName="sampleCollectionDate" /></td>
+                <td><input type="date" class="form-control" formControlName="sampleTestDate" /></td>
+                <td><input type="text" class="form-control" formControlName="labResult" /></td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-danger lab-action-btn"
+                    (click)="removeLabSample(i)"
+                    [attr.aria-label]="'NEDSS.COMMON.DELETE' | translate"
+                    [attr.title]="'NEDSS.COMMON.DELETE' | translate"
+                  >
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button
+          type="button"
+          class="btn fw-bold px-4 text-white"
+          style="background-color: #0d6efd; border-color: #0d6efd"
+          (click)="addLabSample()"
+        >
+          {{ "NEDSS.COMMON.ADD" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
