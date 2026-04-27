@@ -1,45 +1,63 @@
 import { Component, OnInit } from '@angular/core';
-import { AnswerOptions, Gender, contactType, distanceWaterSourcesSewage } from 'src/app/core/constants';
+import {
+  AnswerOptions,
+  Gender,
+  contactType,
+  distanceWaterSourcesSewage,
+} from 'src/app/core/constants';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'app-bloody-diarrhea',
   templateUrl: './bloody-diarrhea.component.html',
-  styleUrls: ['./bloody-diarrhea.component.css']
+  styleUrls: ['./bloody-diarrhea.component.css'],
 })
 export class BloodyDiarrheaComponent implements OnInit {
-  
-  currentLang = localStorage.getItem('ls.currentLang') !== undefined && localStorage.getItem('ls.currentLang') !== 'undefined' ? localStorage.getItem('ls.currentLang') : 'ar';
+  private readonly summaryExcludedFields = [
+    'id',
+    'patientID',
+    'investigationCompletePercentage',
+    'diseaseGroupId',
+    'createdDate',
+  ];
+  private readonly dateFields = [
+    'dateOnsetSymptomsDay1',
+    'dateSampleTakenDay1',
+    'dateOnsetSymptomsDay2',
+    'dateSampleTakenDay2',
+    'dateOnsetSymptomsDay7',
+    'dateSampleTakenDay7',
+    'dateOnsetSymptomsDay14',
+    'dateSampleTakenDay14',
+    'dateHealthCertificate',
+    'investigationDate',
+  ];
+
+  currentLang =
+    localStorage.getItem('ls.currentLang') !== 'undefined'
+      ? (localStorage.getItem('ls.currentLang') ?? 'ar')
+      : 'ar';
 
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
-  patientName: string;
+  patientName: string = '';
 
-  constructor(private investigationService: InvestigationService,
+  constructor(
+    private investigationService: InvestigationService,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
-    private datePipe: DatePipe) { 
-      if (this.investigationService.patient.firstName != null && this.investigationService.patient.firstName != undefined) {
-        this.patientName = this.investigationService.patient.firstName + " " + this.investigationService.patient.secondName + " " + this.investigationService.patient.thirdName;
-      }
-    }
+    private datePipe: DatePipe,
+  ) {
+    this.patientName = this.getPatientName();
+  }
 
   bloodyDiarrheaData = {
     diseaseGroupId: this.investigationService.diseaseGroupID,
     patientID: null,
     id: null,
-    // fever: 0,
-    fever: null,
-    // feverDurationDay: 0,
-    feverDurationDay: null,
-    // maxTemperature: 0,
-    maxTemperature: null,
-    // bloodyStools: 0,
-    bloodyStools: null,
-
-    // contactSuspectedCase: 0,
     contactSuspectedCase: null,
     epidemicOutbreak: null,
     contactConfirmedCase: null,
@@ -131,10 +149,6 @@ export class BloodyDiarrheaComponent implements OnInit {
     dateSampleTakenDay14: null,
     sampleResultDay14: null,
 
-    crab: null,
-    crabSource: null,
-    marineCrustaceans: null,
-    marineCrustaceansSource: null,
     otherSeafood: null,
     otherSeafoodSource: null,
     milk: null,
@@ -188,9 +202,12 @@ export class BloodyDiarrheaComponent implements OnInit {
     storedWater: null,
     sampledSewerSystemTaken: null,
     sampleResult: null,
-    investigationCompletePercentage: null
-
-  }
+    investigationDate: null,
+    administrationDirectorName: null,
+    healthObserverName: null,
+    surveillanceOfficerName: null,
+    investigationCompletePercentage: null,
+  };
   genderDay1s = Gender;
   contactTypeDay1s = contactType;
   feverDay1s = AnswerOptions;
@@ -239,106 +256,108 @@ export class BloodyDiarrheaComponent implements OnInit {
   diarrheaDay14s = AnswerOptions;
   otherDay14s = AnswerOptions;
   distanceWaterSourcesSewages = distanceWaterSourcesSewage;
-  currentId: any;
+  currentId: number | null = null;
+
   ngOnInit(): void {
-    this.currentId = this.investigationService.currentid
-    this.bloodyDiarrheaData.patientID = this.currentId
-    this.investigationService.getByIdbLOODYDIARRHEA(this.currentId).subscribe(
-      res => {
-        console.log(res);
-        var v = res.data;
-        if (v != null) {
-          //this.bloodyDiarrheaData = v
-
-          this.bloodyDiarrheaData = v
-          //this.bloodyDiarrheaData.fever = this.bloodyDiarrheaData.fever;
-          //dateOnsetSymptomsDay1
-          this.bloodyDiarrheaData.dateOnsetSymptomsDay1 = this.datePipe.transform(this.bloodyDiarrheaData.dateOnsetSymptomsDay1, 'yyyy-MM-dd');
-          this.bloodyDiarrheaData.dateSampleTakenDay1 = this.datePipe.transform(this.bloodyDiarrheaData.dateSampleTakenDay1, 'yyyy-MM-dd');
-          this.bloodyDiarrheaData.dateOnsetSymptomsDay2 = this.datePipe.transform(this.bloodyDiarrheaData.dateOnsetSymptomsDay2, 'yyyy-MM-dd');
-          this.bloodyDiarrheaData.dateSampleTakenDay2 = this.datePipe.transform(this.bloodyDiarrheaData.dateSampleTakenDay2, 'yyyy-MM-dd');
-          this.bloodyDiarrheaData.dateOnsetSymptomsDay7 = this.datePipe.transform(this.bloodyDiarrheaData.dateOnsetSymptomsDay7, 'yyyy-MM-dd');
-
-          this.bloodyDiarrheaData.dateSampleTakenDay7 = this.datePipe.transform(this.bloodyDiarrheaData.dateSampleTakenDay7, 'yyyy-MM-dd');
-          this.bloodyDiarrheaData.dateOnsetSymptomsDay14 = this.datePipe.transform(this.bloodyDiarrheaData.dateOnsetSymptomsDay14, 'yyyy-MM-dd');
-          this.bloodyDiarrheaData.dateSampleTakenDay14 = this.datePipe.transform(this.bloodyDiarrheaData.dateSampleTakenDay14, 'yyyy-MM-dd');
-
-          this.calculateCompletionPercentage();
-        }
-
-      }
-      , (error) => {
-        this.translateService
-          .get('NEDSS.COMMON.SENT_FAILD')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
-    )
-  }
-  save() {
-    this.bloodyDiarrheaData.diseaseGroupId = this.investigationService.diseaseGroupID
     this.calculateCompletionPercentage();
-    this.bloodyDiarrheaData.investigationCompletePercentage= parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2));
-    //console.log(this.rabiesForm.value);
-    if (this.bloodyDiarrheaData.id != null) {
-      this.investigationService.updateSeverebLOODYDIARRHEA(this.bloodyDiarrheaData).subscribe(
-        (response: any) => {
-          if (response) {
-            this.translateService
-              .get('NEDSS.COMMON.SENT_SUCESSFULLY')
-              .subscribe((res: string) => {
-                this.userMsg.success(res);
-              });
-          }
+    this.currentId = this.investigationService.currentid;
+    this.bloodyDiarrheaData.patientID = this.currentId;
+    this.investigationService.getByIdbLOODYDIARRHEA(this.currentId).subscribe(
+      (res) => {
+        const v = res.data;
+        if (v != null) {
+          this.bloodyDiarrheaData = { ...this.bloodyDiarrheaData, ...v };
+          this.normalizeDateFields();
         }
-        , (error) => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
-      )
-    } else {
 
-      this.investigationService.addInvestigationbLOODYDIARRHEA(this.bloodyDiarrheaData).subscribe(
-        (response: any) => {
-          if (response) {
-            this.translateService
-              .get('NEDSS.COMMON.SENT_SUCESSFULLY')
-              .subscribe((res: string) => {
-                this.userMsg.success(res);
-              });
-          }
-        }
-        , (error) => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
-      )
-    }
+        this.calculateCompletionPercentage();
+      },
+      () => {
+        this.calculateCompletionPercentage();
+        this.showMessage('NEDSS.COMMON.SENT_FAILD', 'error');
+      },
+    );
   }
 
-  //BL
+  save() {
+    this.bloodyDiarrheaData.diseaseGroupId =
+      this.investigationService.diseaseGroupID;
+    this.calculateCompletionPercentage();
+    this.bloodyDiarrheaData.investigationCompletePercentage =
+      this.getCompletionPercentage();
+
+    const request =
+      this.bloodyDiarrheaData.id != null
+        ? this.investigationService.updateSeverebLOODYDIARRHEA(
+            this.bloodyDiarrheaData,
+          )
+        : this.investigationService.addInvestigationbLOODYDIARRHEA(
+            this.bloodyDiarrheaData,
+          );
+
+    request.subscribe(
+      (response: any) => {
+        if (response) {
+          this.showMessage('NEDSS.COMMON.SENT_SUCESSFULLY', 'success');
+        }
+      },
+      () => {
+        this.showMessage('NEDSS.COMMON.SENT_FAILD', 'error');
+      },
+    );
+  }
+
   calculateCompletionPercentage() {
-    this.allFilledControlsCount = 0;
-    const data = this.bloodyDiarrheaData;
-    console.log(data);
-    //Exclude fields you don't want to count (like 'id')
-    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate' , 'initialTreatmentTaken' , 'caseShownDoctor' , 'numberHeartBeats' , 'slowHeartRate'];
-    const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
+    const data = this.bloodyDiarrheaData as Record<string, any>;
+    const trackedFields = Object.keys(data).filter(
+      (key) => !this.summaryExcludedFields.includes(key),
+    );
 
-    this.allControllesCount = totalFields;
+    this.allControllesCount = trackedFields.length;
+    this.allFilledControlsCount = trackedFields.filter((key) =>
+      this.hasValue(data[key]),
+    ).length;
+  }
 
-    Object.keys(data).forEach((key) => {
-      if (!excludedFields.includes(key) && data[key] !== null && data[key] !== '' && data[key] !== 'null') {
-        this.allFilledControlsCount++;
-      }
+  private normalizeDateFields(): void {
+    const data = this.bloodyDiarrheaData as Record<string, any>;
+
+    this.dateFields.forEach((field) => {
+      data[field] = this.datePipe.transform(data[field], 'yyyy-MM-dd');
     });
   }
 
+  private getCompletionPercentage(): number {
+    if (this.allControllesCount === 0) {
+      return 0;
+    }
+
+    return parseFloat(
+      ((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(
+        2,
+      ),
+    );
+  }
+
+  private hasValue(value: any): boolean {
+    return value !== null && value !== '' && value !== 'null';
+  }
+
+  private getPatientName(): string {
+    const patient = this.investigationService.patient;
+
+    if (patient?.firstName == null) {
+      return '';
+    }
+
+    return [patient.firstName, patient.secondName, patient.thirdName]
+      .filter((name) => name != null && name !== '')
+      .join(' ');
+  }
+
+  private showMessage(messageKey: string, type: 'success' | 'error'): void {
+    this.translateService.get(messageKey).subscribe((res: string) => {
+      this.userMsg[type](res);
+    });
+  }
 }
