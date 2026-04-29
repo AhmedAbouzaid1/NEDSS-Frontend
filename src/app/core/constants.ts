@@ -206,14 +206,19 @@ export const Actions = [
   { id: 4, arabicName: 'حذف' },
 ];
 export const place = [
-  { id: null, arabicName: '--' },
-  { id: 1, arabicName: 'المكان' },
-  { id: 2, arabicName: 'أخري' },
+  { id: null, arabicName: '--', englishName: '--' },
+  { id: 1, arabicName: 'المنزل', englishName: 'Home' },
+  { id: 2, arabicName: 'أخرى', englishName: 'Other' },
 ];
 export const placeOrLab = [
-  { id: null, arabicName: '--' },
-  { id: 1, arabicName: 'المكان' },
-  { id: 2, arabicName: 'المعمل' },
+  { id: null, arabicName: '--', englishName: '--' },
+  { id: 1, arabicName: 'المكان', englishName: 'Location' },
+  { id: 2, arabicName: 'المعمل', englishName: 'Laboratory' },
+];
+export const homeOrWork = [
+  { id: null, arabicName: '--', englishName: '--' },
+  { id: 1, arabicName: 'المنزل', englishName: 'Home' },
+  { id: 2, arabicName: 'العمل', englishName: 'Work' },
 ];
 export const contactType = [
   { id: null, arabicName: '--', englishName: '--' },
