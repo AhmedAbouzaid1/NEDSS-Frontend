@@ -24,12 +24,10 @@ export class CompleteInvestigationComponent implements OnInit {
 
   ngOnInit() {
     this.currentId = this.InvestigationService.currentid;
-    //;
     this.patientDiseases = this.InvestigationService.patientDiseases;
     if (this.patientDiseases.length >= 1) {
       this.InvestigationService.diseaseGroupID =
         this.patientDiseases[0].diseaseGroupId;
-      //alert(JSON.stringify(this.patientDiseases));
       this.Router.navigateByUrl(
         '/home/investigations/compelete-investigation/' +
         this.patientDiseases[0].router
