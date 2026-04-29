@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   AnswerOptions2,
   distanceWaterSourcesSewage,
@@ -23,25 +23,22 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./hepatitis-viruses.component.css'],
 })
 export class HepatitisVirusesComponent implements OnInit {
+  private readonly dateFormat = 'yyyy-MM-dd';
+
   currentLang =
     localStorage.getItem('ls.currentLang') !== undefined &&
     localStorage.getItem('ls.currentLang') !== 'undefined'
       ? localStorage.getItem('ls.currentLang')
       : 'ar';
 
-  controlsCount: number = 0;
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
   patientName: string;
-  fev: any;
-
-  diseaseGroupID: any;
   constructor(
     private investigationService: InvestigationService,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
-    private datePipe: DatePipe,
-    private elRef: ElementRef
+    private datePipe: DatePipe
   ) {
     if (
       this.investigationService.patient.firstName != null &&
@@ -59,13 +56,6 @@ export class HepatitisVirusesComponent implements OnInit {
   hepatitisVirusesData = {
     id: null,
     patientID: null,
-    fever: null,
-    feverDurationDay: null,
-    maxTemperature: null,
-
-    darkUrine: null,
-    yellowEyeColor: null,
-    painRightSideAbdomen: null,
     patientHospitalized: null,
     bookedIntensiveCare: null,
     dateAdmissionHospital: null,
@@ -256,9 +246,12 @@ export class HepatitisVirusesComponent implements OnInit {
     infectionHcv: null,
     treatmentTaken: null,
     consecutiveDoses: null,
+    investigationDate: null,
+    healthObserverName: null,
+    surveillanceOfficerName: null,
+    administrationDirectorName: null,
     investigationCompletePercentage:null,
     diseaseGroupId: this.investigationService.diseaseGroupID,
-    //completePercentage: null,
   };
 
   dateOnsetSymptomsDay1s = AnswerOptions;
@@ -316,7 +309,6 @@ export class HepatitisVirusesComponent implements OnInit {
   otherDay14s = AnswerOptions;
 
   childOrEmployees = AnswerOptions;
-  stateNameAddresss = AnswerOptions;
   foodProviders = AnswerOptions;
   similarCasessimilarPlacess = AnswerOptions;
   mealsOutsides = AnswerOptions;
@@ -377,9 +369,6 @@ export class HepatitisVirusesComponent implements OnInit {
   infectionHcvs = AnswerOptions;
   treatmentTakens = AnswerOptions;
   consecutiveDosess = AnswerOptions;
-  darkUrines = AnswerOptions;
-  yellowEyeColors = AnswerOptions;
-  painRightSideAbdomens = AnswerOptions;
   patientHospitalizeds = AnswerOptions;
   bookedIntensiveCares = AnswerOptions;
   currentId: any;
@@ -394,9 +383,6 @@ export class HepatitisVirusesComponent implements OnInit {
     this.hepatitisVirusesData.patientID = this.currentId;
     this.GetById();
   }
-
-
-
   GetById() {
     this.investigationService.getByIdhepatitis(this.currentId).subscribe(
       (res) => {
@@ -411,57 +397,50 @@ export class HepatitisVirusesComponent implements OnInit {
           this.hepatitisVirusesData.dateAdmissionHospital =
             this.datePipe.transform(
               this.hepatitisVirusesData.dateAdmissionHospital,
-              'yyyy-MM-dd'
+              this.dateFormat
             );
           this.hepatitisVirusesData.dateOnsetSymptomsDay1 =
             this.datePipe.transform(
               this.hepatitisVirusesData.dateOnsetSymptomsDay1,
-              'yyyy-MM-dd'
+              this.dateFormat
             );
           this.hepatitisVirusesData.dateSampleTakenDay1 =
             this.datePipe.transform(
               this.hepatitisVirusesData.dateSampleTakenDay1,
-              'yyyy-MM-dd'
+              this.dateFormat
             );
           this.hepatitisVirusesData.dateOnsetSymptomsDay2 =
             this.datePipe.transform(
               this.hepatitisVirusesData.dateOnsetSymptomsDay2,
-              'yyyy-MM-dd'
+              this.dateFormat
             );
           this.hepatitisVirusesData.dateSampleTakenDay2 =
             this.datePipe.transform(
               this.hepatitisVirusesData.dateSampleTakenDay2,
-              'yyyy-MM-dd'
+              this.dateFormat
             );
           this.hepatitisVirusesData.dateOnsetSymptomsDay7 =
             this.datePipe.transform(
               this.hepatitisVirusesData.dateOnsetSymptomsDay7,
-              'yyyy-MM-dd'
+              this.dateFormat
             );
 
           this.hepatitisVirusesData.dateSampleTakenDay7 =
             this.datePipe.transform(
               this.hepatitisVirusesData.dateSampleTakenDay7,
-              'yyyy-MM-dd'
+              this.dateFormat
             );
           this.hepatitisVirusesData.dateOnsetSymptomsDay14 =
             this.datePipe.transform(
               this.hepatitisVirusesData.dateOnsetSymptomsDay14,
-              'yyyy-MM-dd'
+              this.dateFormat
             );
           this.hepatitisVirusesData.dateSampleTakenDay14 =
             this.datePipe.transform(
               this.hepatitisVirusesData.dateSampleTakenDay14,
-              'yyyy-MM-dd'
+              this.dateFormat
             );
         }
-        
-
-        // this.controlsCount = this.calculateCompletePercentage();
-        // this.hepatitisVirusesData.completePercentage = this.controlsCount;
-        // //dateAdmissionHospital
-        // // this.rabiesForm.patchValue(v)
-        // this.fev=this.hepatitisVirusesData.fever.setValue(res.data.fever.toString())
       },
       (error) => {
         this.translateService
@@ -475,49 +454,14 @@ export class HepatitisVirusesComponent implements OnInit {
     );
   }
 
-  /**
-   * Calculate the percentage
-   * @returns
-   */
-  calculateCompletePercentage(): number {
-    var length = 0;
-    for (var key in this.hepatitisVirusesData) {
-      if (this.hepatitisVirusesData.hasOwnProperty(key)) {
-        ++length;
-      }
-    }
-    //this.allControllesCount = length;
-    //if (this.diphtriaForm.value.id != null) {
-    //  this.allFilledControlsCount = this.countFilledControls(this.diphtriaForm);
-    //} else {
-    this.allFilledControlsCount = 0;
-    //}
-    this.controlsCount =
-      this.allControllesCount != 0
-        ? parseInt(
-            (
-              (this.allFilledControlsCount / this.allControllesCount) *
-              100
-            ).toString()
-          )
-        : 0;
-
-    return this.controlsCount;
-  }
-
   save() {
     this.calculateCompletionPercentage();
     this.hepatitisVirusesData.investigationCompletePercentage = parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2));
     this.hepatitisVirusesData.diseaseGroupId = this.investigationService.diseaseGroupID;
-    //this.hepatitisVirusesData.diseaseGroupId =
-      //this.investigationService.diseaseGroupID;
     if (
       this.hepatitisVirusesData != null &&
       this.hepatitisVirusesData.id != null
     ) {
-      // //this.hepatitisVirusesData.diseaseGroupId = this.investigationService.diseaseGroupID
-      // if (this.hepatitisVirusesData.id != null) {
-
       this.investigationService
         .updatehepatitis(this.hepatitisVirusesData)
         .subscribe(
