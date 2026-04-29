@@ -27,14 +27,14 @@
               <label for="">
                 {{"NEDSS.INVESTIGATIONS.percentage"| translate}}
                 <span class="mx-4" style="font-size: larger; color: red">
-                  <!-- {{ precentile.value }} % -->
-                  {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount / allControllesCount) * 100 | number:'1.0-2') }} %
+                  {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount / allControllesCount) * 100 |
+                  number:'1.0-2') }} %
                 </span>
               </label>
-              <input #precentile type="range" class="form-range bg" onkeypress="false" [readonly]="true"
-                      style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
-                     value="{{ (allFilledControlsCount / allControllesCount) * 100 }}" formControlName="completePercentage" />
-                      <!-- value="{{controlsCount}}" formControlName="completePercentage" /> -->
+              <input type="range" class="form-range bg" onkeypress="false" [readonly]="true"
+                style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
+                value="{{ (allFilledControlsCount / allControllesCount) * 100 }}"
+                formControlName="completePercentage" />
             </div>
           </div>
           <div class="col-lg-4">
@@ -47,86 +47,14 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-6">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</div>
-          <div class="col-6 has-labels">
-            <label for="">
-              <input type="radio" class="form-check-input" id="fever" name="fever"
-                      [(ngModel)]="hepatitisVirusesData.fever" #fever="ngModel" [value]="0" (blur)="calculateCompletionPercentage()"/>
-              {{ "NEDSS.COMMON.YES" | translate }}
-            </label>
-            <label for="">
-              <input type="radio" class="form-check-input" id="fever" name="fever"
-                      [(ngModel)]="hepatitisVirusesData.fever" #fever="ngModel" [value]="1" (blur)="calculateCompletionPercentage()" />
-              {{ "NEDSS.COMMON.NO" | translate }}
-            </label>
-            <label for="">
-              <input type="radio" class="form-check-input" id="fever" name="fever"
-                      [(ngModel)]="hepatitisVirusesData.fever" #fever="ngModel" [value]="2" (blur)="calculateCompletionPercentage()" />
-              {{ "NEDSS.REPORTS.UnKnown" | translate }}
-            </label>
-          </div>
-          <div class="col-lg-6">
-            <div class="form-group">
-              <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Duration_Fever_Days" | translate }}</label>
-              <input type="number" class="form-control" name="feverDurationDay"
-                      (blur)="calculateCompletionPercentage()"
-                      [(ngModel)]="hepatitisVirusesData.feverDurationDay" #feverDurationDay="ngModel" />
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="form-group">
-              <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Max_Temp" | translate }}</label>
-              <input type="number" class="form-control" name="maxTemperature"
-                      (blur)="calculateCompletionPercentage()"
-                      [(ngModel)]="hepatitisVirusesData.maxTemperature"/>
-                        <!--  -->
-                        <!-- [(ngModel)]="hepatitisVirusesData.maxTemperature" #maxTemperature="ngModel" /> -->
-            </div>
-          </div>
-
           <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-            <div class="row">
-              <div class="col-12 title fs-6 fwb">
-                {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">بول داكن</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.darkUrine" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of darkUrines" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
+            <div class="row align-items-start">
               <!-- /.col-lg-4 -->
               <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">اصفرار لون العين</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.yellowEyeColor" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of yellowEyeColors" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">ألم أعلى الجانب الأيمن بالبطن</label>
-                  <select name="case" id="" class="form-control"
-                          [(ngModel)]="hepatitisVirusesData.painRightSideAbdomen" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of painRightSideAbdomens" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">هل تم حجز المريض بالمستشفى</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.patientHospitalized" (blur)="calculateCompletionPercentage()"> 
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.patientHospitalized"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of patientHospitalizeds" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -142,9 +70,8 @@
                     <div class="form-group">
                       <label for="">تاريخ دخول المستشفى</label>
                       <input type="date" [class]="'form-control-'+ currentLang" name="dateAdmissionHospital"
-                              (blur)="calculateCompletionPercentage()"
-                              placeholder="dd/mm/yyyy" [(ngModel)]="hepatitisVirusesData.dateAdmissionHospital"
-                              #dateAdmissionHospital="ngModel" />
+                        (blur)="calculateCompletionPercentage()" placeholder="dd/mm/yyyy"
+                        [(ngModel)]="hepatitisVirusesData.dateAdmissionHospital" #dateAdmissionHospital="ngModel" />
                     </div>
                   </div>
                   <!-- /.col-lg-6 -->
@@ -152,8 +79,7 @@
                     <div class="form-group">
                       <label for="">هل تم الحجز بالعناية المركزة</label>
                       <select name="case" id="" class="form-control"
-                              [(ngModel)]="hepatitisVirusesData.bookedIntensiveCare"
-                              (blur)="calculateCompletionPercentage()">
+                        [(ngModel)]="hepatitisVirusesData.bookedIntensiveCare" (blur)="calculateCompletionPercentage()">
                         <option *ngFor="let case of bookedIntensiveCares" [value]="case.id">
                           {{ case.arabicName }}
                         </option>
@@ -178,7 +104,8 @@
             <div class="col-lg-4">
               <div class="form-group">
                 <label for="">مخالط لحالة مشتبهة</label>
-                <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.contactSuspectedCase" (blur)="calculateCompletionPercentage()">
+                <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.contactSuspectedCase"
+                  (blur)="calculateCompletionPercentage()">
                   <option *ngFor="let case of contactSuspectedCases" [value]="case.id">
                     {{ case.arabicName }}
                   </option>
@@ -189,7 +116,8 @@
             <div class="col-lg-4">
               <div class="form-group">
                 <label for="">جزء من تفشي وبائي أو حالات مشابهة</label>
-                <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.epidemicOutbreak" (blur)="calculateCompletionPercentage()">
+                <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.epidemicOutbreak"
+                  (blur)="calculateCompletionPercentage()">
                   <option *ngFor="let case of epidemicOutbreaks" [value]="case.id">
                     {{ case.arabicName }}
                   </option>
@@ -200,7 +128,8 @@
             <div class="col-lg-4">
               <div class="form-group">
                 <label for="">مخالط لحالة مؤكدة</label>
-                <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.contactConfirmedCase" (blur)="calculateCompletionPercentage()">
+                <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.contactConfirmedCase"
+                  (blur)="calculateCompletionPercentage()">
                   <option *ngFor="let case of contactConfirmedCases" [value]="case.id">
                     {{ case.arabicName }}
                   </option>
@@ -211,9 +140,9 @@
             <div class="col-lg-4">
               <div class="form-group">
                 <label for="">مخالط لمتوفي بمرض تنفسي غير معلوم</label>
-                <select name="case" id="" class="form-control" 
-                        [(ngModel)]="hepatitisVirusesData.contactDeceasedPersonRespiratory"
-                        (blur)="calculateCompletionPercentage()">
+                <select name="case" id="" class="form-control"
+                  [(ngModel)]="hepatitisVirusesData.contactDeceasedPersonRespiratory"
+                  (blur)="calculateCompletionPercentage()">
                   <option *ngFor="let case of contactDeceasedPersonRespiratorys" [value]="case.id">
                     {{ case.arabicName }}
                   </option>
@@ -225,15 +154,17 @@
               <div class="form-group">
                 <label for="">عدد المخالطين المباشرين</label>
                 <input type="number" class="form-control" name="numberDirectContacts"
-                        [(ngModel)]="hepatitisVirusesData.numberDirectContacts" (blur)="calculateCompletionPercentage()" #numberDirectContacts="ngModel" />
+                  [(ngModel)]="hepatitisVirusesData.numberDirectContacts" (blur)="calculateCompletionPercentage()"
+                  #numberDirectContacts="ngModel" />
               </div>
             </div>
             <!-- /.col-lg-4 -->
             <div class="col-lg-4">
               <div class="form-group">
                 <label for="">عدد المخالطين غير المباشرين </label>
-                <input type="number" class="form-control" name="numberNonDirectContacts" (blur)="calculateCompletionPercentage()"
-                        [(ngModel)]="hepatitisVirusesData.numberNonDirectContacts" #numberNonDirectContacts="ngModel" />
+                <input type="number" class="form-control" name="numberNonDirectContacts"
+                  (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.numberNonDirectContacts"
+                  #numberNonDirectContacts="ngModel" />
               </div>
             </div>
             <!-- /.col-lg-4 -->
@@ -242,17 +173,133 @@
           <!-- / .row -->
         </div>
 
+        <div class="row color">
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">
+                التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة
+                الإلتهاب الكبدى A أو الإلتهاب الكبدى E
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل المريض طفل أو موظف فى حضانة/ مدرسة للأطفال ؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.childOrEmployee"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of childOrEmployees" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">في حال نعم: اذكر اسم الحضانة أو المدرسة وعنوانها</label>
+                  <input type="text" maxlength="100" class="form-control" name="typeOfAnimal"
+                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.stateNameAddress"
+                    #typeOfAnimal="ngModel" />
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل المريض من مقدمي الأغذية ؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.foodProvider"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of foodProviders" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل هناك حالات أخري مماثلة حدثت فى نفس المكان ؟</label>
+                  <select name="case" id="" class="form-control"
+                    [(ngModel)]="hepatitisVirusesData.similarCasessimilarPlaces"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of similarCasessimilarPlacess" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل عادة ما يتناول المريض وجبات طعام خارج المنزل ؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.mealsOutside"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of mealsOutsides" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">إذا نعم. نوع الطعام</label>
+                  <input type="text" maxlength="100" class="form-control" name="typeFood"
+                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.typeFood"
+                    #typeFood="ngModel" />
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">هل تعرض المريض للحيوانات في الحياة اليومية؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.exposedToAnimals"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of exposedToAnimalss" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">أذكر نوع الحيوان</label>
+                  <input type="text" maxlength="100" class="form-control" name="typeOfAnimal"
+                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.typeOfAnimal"
+                    #typeOfAnimal="ngModel" />
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">
+                    إذا كان نظام الصرف الصحى ترنشات: هل يتعامل المريض بطريقة
+                    مباشرة مع مخلفات الصرف
+                  </label>
+                  <select name="case" id="" class="form-control"
+                    [(ngModel)]="hepatitisVirusesData.dealDirectlySewageWaste" (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of dealDirectlySewageWastes" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-12 -->
+            </div>
+            <!-- / .row -->
+          </div>
+          <!-- / .col-12 -->
+        </div>
+
         <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
           <div class="accordion" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                        aria-expanded="true" aria-controls="collapseOne">
+                  aria-expanded="true" aria-controls="collapseOne">
                   متابعة اليوم الأول
                 </button>
               </h2>
               <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
+                data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <div class="row">
                     <div class="col-12 title fs-6 fwb">
@@ -261,28 +308,32 @@
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                        <input type="text" maxlength="100" class="form-control" name="nameDay1" (blur)="calculateCompletionPercentage()"
-                                [(ngModel)]="hepatitisVirusesData.nameDay1" #nameDay1="ngModel" />
+                        <input type="text" maxlength="100" class="form-control" name="nameDay1"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.nameDay1"
+                          #nameDay1="ngModel" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">العمر</label>
-                        <input type="number" class="form-control" name="ageDay1" (blur)="calculateCompletionPercentage()"
-                                [(ngModel)]="hepatitisVirusesData.ageDay1" #ageDay1="ngModel" />
+                        <input type="number" class="form-control" name="ageDay1"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.ageDay1"
+                          #ageDay1="ngModel" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">رقم التليفون</label>
-                        <input type="text" maxlength="100" class="form-control" name="telephoneDay1" (blur)="calculateCompletionPercentage()"
-                                [(ngModel)]="hepatitisVirusesData.telephoneDay1" #telephoneDay1="ngModel" />
+                        <input type="text" maxlength="100" class="form-control" name="telephoneDay1"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.telephoneDay1"
+                          #telephoneDay1="ngModel" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">النوع</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.genderDay1" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.genderDay1"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of genderDay1s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -293,7 +344,7 @@
                       <div class="form-group">
                         <label for="">نوع المخالطة</label>
                         <select name="case" id="" class="form-control"
-                                [(ngModel)]="hepatitisVirusesData.contactTypeDay1" (blur)="calculateCompletionPercentage()">
+                          [(ngModel)]="hepatitisVirusesData.contactTypeDay1" (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of contactTypeDay1s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -303,8 +354,8 @@
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">علاقته بالحالة</label>
-                        <input type="text" maxlength="100" class="form-control" name="relationshipPatientDay1" (blur)="calculateCompletionPercentage()"
-                                [(ngModel)]="
+                        <input type="text" maxlength="100" class="form-control" name="relationshipPatientDay1"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="
                             hepatitisVirusesData.relationshipPatientDay1
                           " #relationshipPatientDay1="ngModel" />
                       </div>
@@ -313,8 +364,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">تاريخ ظهور الأعراض</label>
-                        <input type="date" [class]="'form-control-'+ currentLang" name="dateOnsetSymptomsDay1" (blur)="calculateCompletionPercentage()"
-                                [(ngModel)]="
+                        <input type="date" [class]="'form-control-'+ currentLang" name="dateOnsetSymptomsDay1"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="
                             hepatitisVirusesData.dateOnsetSymptomsDay1
                           " #dateOnsetSymptomsDay1="ngModel" />
                       </div>
@@ -322,7 +373,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.feverDay1" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.feverDay1"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of feverDay1s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -332,7 +384,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">سعال جاف</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dryCoughDay1" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dryCoughDay1"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of dryCoughDay1s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -342,9 +395,9 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">سعال يصاحبه بصق</label>
-                        <select name="case" id="" class="form-control" 
-                        [(ngModel)]="hepatitisVirusesData.coughingWithSpittingDay1"
-                        (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control"
+                          [(ngModel)]="hepatitisVirusesData.coughingWithSpittingDay1"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of coughingWithSpittingDay1s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -354,8 +407,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">التهاب بالحلق</label>
-                        <select name="case" id="" class="form-control"
-                                [(ngModel)]="hepatitisVirusesData.soreThroatDay1" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.soreThroatDay1"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of soreThroatDay1s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -365,9 +418,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">صعوبة بالتنفس</label>
-                        <select name="case" id="" class="form-control" 
-                        (blur)="calculateCompletionPercentage()"
-                        [(ngModel)]="hepatitisVirusesData.breathingDifficultyDay1">
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="hepatitisVirusesData.breathingDifficultyDay1">
                           <option *ngFor="let case of breathingDifficultyDay1s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -377,7 +429,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">آلام بالمفاصل</label>
-                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.jointPainDay1">
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="hepatitisVirusesData.jointPainDay1">
                           <option *ngFor="let case of jointPainDay1s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -387,7 +440,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">قئ</label>
-                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.vomitDay1">
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="hepatitisVirusesData.vomitDay1">
                           <option *ngFor="let case of vomitDay1s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -397,7 +451,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">إسهال</label>
-                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.diarrheaDay1">
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="hepatitisVirusesData.diarrheaDay1">
                           <option *ngFor="let case of diarrheaDay1s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -407,7 +462,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">أخرى</label>
-                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.otherDay1">
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="hepatitisVirusesData.otherDay1">
                           <option *ngFor="let case of otherDay1s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -416,9 +472,11 @@
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group">
-                        <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                        <input type="text" maxlength="100" class="form-control" name="otherSymptomsDay1" (blur)="calculateCompletionPercentage()"
-                                [(ngModel)]="hepatitisVirusesData.otherSymptomsDay1" #otherSymptomsDay1="ngModel" />
+                        <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MENTION_OTHER_SYMPTOM" | translate
+                          }}</label>
+                        <input type="text" maxlength="100" class="form-control" name="otherSymptomsDay1"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.otherSymptomsDay1"
+                          #otherSymptomsDay1="ngModel" />
                       </div>
                     </div>
                     <div class="col-12 title fs-6 fwb">المعمل</div>
@@ -427,15 +485,15 @@
                         <div class="col-6">تم اخذ العينة؟</div>
                         <div class="col-6 has-labels">
                           <label for="">
-                            <input type="radio" class="form-check-input" id="isSampleTakenDay1" (blur)="calculateCompletionPercentage()"
-                                    name="isSampleTakenDay1" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="isSampleTakenDay1"
+                              (blur)="calculateCompletionPercentage()" name="isSampleTakenDay1" [(ngModel)]="
                                 hepatitisVirusesData.isSampleTakenDay1
                               " #isSampleTakenDay1="ngModel" [value]="0" />
                             {{ "NEDSS.COMMON.YES" | translate }}
                           </label>
                           <label for="">
-                            <input type="radio" class="form-check-input" id="isSampleTakenDay1" (blur)="calculateCompletionPercentage()"
-                                    name="isSampleTakenDay1" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="isSampleTakenDay1"
+                              (blur)="calculateCompletionPercentage()" name="isSampleTakenDay1" [(ngModel)]="
                                 hepatitisVirusesData.isSampleTakenDay1
                               " #isSampleTakenDay1="ngModel" [value]="1" />
                             {{ "NEDSS.COMMON.NO" | translate }}
@@ -449,8 +507,8 @@
                           <label class="mt-2" for="">تاريخ أخذ العينة</label>
                         </div>
                         <div class="col-lg-8">
-                          <input type="date" [class]="'form-control-'+ currentLang" name="dateSampleTakenDay1" (blur)="calculateCompletionPercentage()"
-                                  [(ngModel)]="
+                          <input type="date" [class]="'form-control-'+ currentLang" name="dateSampleTakenDay1"
+                            (blur)="calculateCompletionPercentage()" [(ngModel)]="
                               hepatitisVirusesData.dateSampleTakenDay1
                             " #dateSampleTakenDay1="ngModel" />
                         </div>
@@ -461,22 +519,22 @@
                         <div class="col-4">نتيجة العينة</div>
                         <div class="col-8 has-labels">
                           <label for="">
-                            <input type="radio" class="form-check-input" id="sampleResultDay1" (blur)="calculateCompletionPercentage()"
-                                    name="sampleResultDay1" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="sampleResultDay1"
+                              (blur)="calculateCompletionPercentage()" name="sampleResultDay1" [(ngModel)]="
                                 hepatitisVirusesData.sampleResultDay1
                               " #sampleResultDay1="ngModel" [value]="0" />
-                            {{ "NEDSS.COMMON.YES" | translate }}
+                            {{ "NEDSS.COMMON.POSITIVE" | translate }}
                           </label>
                           <label for="">
-                            <input type="radio" class="form-check-input" id="sampleResultDay1" (blur)="calculateCompletionPercentage()"
-                                    name="sampleResultDay1" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="sampleResultDay1"
+                              (blur)="calculateCompletionPercentage()" name="sampleResultDay1" [(ngModel)]="
                                 hepatitisVirusesData.sampleResultDay1
                               " #sampleResultDay1="ngModel" [value]="1" />
-                            {{ "NEDSS.COMMON.NO" | translate }}
+                            {{ "NEDSS.COMMON.NEGATIVE" | translate }}
                           </label>
                           <label for="">
-                            <input type="radio" class="form-check-input" id="sampleResultDay1" (blur)="calculateCompletionPercentage()"
-                                    name="sampleResultDay1" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="sampleResultDay1"
+                              (blur)="calculateCompletionPercentage()" name="sampleResultDay1" [(ngModel)]="
                                 hepatitisVirusesData.sampleResultDay1
                               " #sampleResultDay1="ngModel" [value]="2" />
                             لم ترد
@@ -491,12 +549,12 @@
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingTwo">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                        aria-expanded="true" aria-controls="collapseOne">
+                  aria-expanded="true" aria-controls="collapseOne">
                   متابعة اليوم الثاني
                 </button>
               </h2>
               <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="collapseTwo"
-                    data-bs-parent="#accordionExample">
+                data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <div class="row">
                     <div class="col-12 title fs-6 fwb">
@@ -505,28 +563,32 @@
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                        <input type="text" maxlength="100" class="form-control" name="nameDay2" (blur)="calculateCompletionPercentage()"
-                                [(ngModel)]="hepatitisVirusesData.nameDay2" #nameDay2="ngModel" />
+                        <input type="text" maxlength="100" class="form-control" name="nameDay2"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.nameDay2"
+                          #nameDay2="ngModel" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">العمر</label>
                         <input type="number" class="form-control" name="ageDay2"
-                                [(ngModel)]="hepatitisVirusesData.ageDay2" #ageDay2="ngModel" (blur)="calculateCompletionPercentage()" />
+                          [(ngModel)]="hepatitisVirusesData.ageDay2" #ageDay2="ngModel"
+                          (blur)="calculateCompletionPercentage()" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">رقم التليفون</label>
-                        <input type="text" maxlength="100" class="form-control" name="telephoneDay2" (blur)="calculateCompletionPercentage()"
-                                [(ngModel)]="hepatitisVirusesData.telephoneDay2" #telephoneDay2="ngModel" />
+                        <input type="text" maxlength="100" class="form-control" name="telephoneDay2"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.telephoneDay2"
+                          #telephoneDay2="ngModel" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">النوع</label>
-                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.genderDay2">
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="hepatitisVirusesData.genderDay2">
                           <option *ngFor="let case of genderDay2s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -537,7 +599,7 @@
                       <div class="form-group">
                         <label for="">نوع المخالطة</label>
                         <select name="case" id="" class="form-control"
-                                [(ngModel)]="hepatitisVirusesData.contactTypeDay2" (blur)="calculateCompletionPercentage()">
+                          [(ngModel)]="hepatitisVirusesData.contactTypeDay2" (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of contactTypeDay2s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -547,8 +609,8 @@
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">علاقته بالحالة</label>
-                        <input type="text" maxlength="100" class="form-control" name="relationshipPatientDay2" (blur)="calculateCompletionPercentage()"
-                                [(ngModel)]="
+                        <input type="text" maxlength="100" class="form-control" name="relationshipPatientDay2"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="
                             hepatitisVirusesData.relationshipPatientDay2
                           " #relationshipPatientDay2="ngModel" />
                       </div>
@@ -557,8 +619,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">تاريخ ظهور الأعراض</label>
-                        <input type="date" [class]="'form-control-'+ currentLang" name="dateOnsetSymptomsDay2" (blur)="calculateCompletionPercentage()"
-                                [(ngModel)]="
+                        <input type="date" [class]="'form-control-'+ currentLang" name="dateOnsetSymptomsDay2"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="
                             hepatitisVirusesData.dateOnsetSymptomsDay2
                           " #dateOnsetSymptomsDay2="ngModel" />
                       </div>
@@ -566,7 +628,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.feverDay2" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.feverDay2"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of feverDay2s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -576,7 +639,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">سعال جاف</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dryCoughDay2" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dryCoughDay2"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of dryCoughDay2s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -586,7 +650,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">سعال يصاحبه بصق</label>
-                        <select name="case" id="" class="form-control"  (blur)="calculateCompletionPercentage()" [(ngModel)]="
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="
                             hepatitisVirusesData.coughingWithSpittingDay2
                           ">
                           <option *ngFor="let case of coughingWithSpittingDay2s" [value]="case.id">
@@ -598,8 +663,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">التهاب بالحلق</label>
-                        <select name="case" id="" class="form-control"
-                                [(ngModel)]="hepatitisVirusesData.soreThroatDay2" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.soreThroatDay2"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of soreThroatDay2s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -609,7 +674,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">صعوبة بالتنفس</label>
-                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="
                             hepatitisVirusesData.breathingDifficultyDay2
                           ">
                           <option *ngFor="let case of breathingDifficultyDay2s" [value]="case.id">
@@ -621,7 +687,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">آلام بالمفاصل</label>
-                        <select name="case" id="" class="form-control"  (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.jointPainDay2">
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="hepatitisVirusesData.jointPainDay2">
                           <option *ngFor="let case of jointPainDay2s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -631,7 +698,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">قئ</label>
-                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.vomitDay2">
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="hepatitisVirusesData.vomitDay2">
                           <option *ngFor="let case of vomitDay2s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -641,7 +709,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">إسهال</label>
-                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.diarrheaDay2">
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="hepatitisVirusesData.diarrheaDay2">
                           <option *ngFor="let case of diarrheaDay2s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -651,7 +720,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">أخرى</label>
-                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.otherDay2">
+                        <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                          [(ngModel)]="hepatitisVirusesData.otherDay2">
                           <option *ngFor="let case of otherDay2s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -660,9 +730,11 @@
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group">
-                        <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
+                        <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MENTION_OTHER_SYMPTOM" | translate
+                          }}</label>
                         <input type="text" maxlength="100" class="form-control" name="otherSymptomsDay2"
-                        (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.otherSymptomsDay2" #otherSymptomsDay2="ngModel" />
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.otherSymptomsDay2"
+                          #otherSymptomsDay2="ngModel" />
                       </div>
                     </div>
                     <div class="col-12 title fs-6 fwb">المعمل</div>
@@ -709,18 +781,18 @@
                               (blur)="calculateCompletionPercentage()" name="sampleResultDay2" [(ngModel)]="
                                 hepatitisVirusesData.sampleResultDay2
                               " #sampleResultDay2="ngModel" [value]="0" />
-                            {{ "NEDSS.COMMON.YES" | translate }}
+                            {{ "NEDSS.COMMON.POSITIVE" | translate }}
                           </label>
                           <label for="">
                             <input type="radio" class="form-check-input" id="sampleResultDay2"
-                                (blur)="calculateCompletionPercentage()"  name="sampleResultDay2" [(ngModel)]="
+                              (blur)="calculateCompletionPercentage()" name="sampleResultDay2" [(ngModel)]="
                                 hepatitisVirusesData.sampleResultDay2
                               " #sampleResultDay2="ngModel" [value]="1" />
-                            {{ "NEDSS.COMMON.NO" | translate }}
+                            {{ "NEDSS.COMMON.NEGATIVE" | translate }}
                           </label>
                           <label for="">
                             <input type="radio" class="form-check-input" id="sampleResultDay2"
-                                (blur)="calculateCompletionPercentage()"  name="sampleResultDay2" [(ngModel)]="
+                              (blur)="calculateCompletionPercentage()" name="sampleResultDay2" [(ngModel)]="
                                 hepatitisVirusesData.sampleResultDay2
                               " #sampleResultDay2="ngModel" [value]="2" />
                             لم ترد
@@ -735,7 +807,7 @@
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingSeven">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven"
-                        aria-expanded="true" aria-controls="collapseSeven">
+                  aria-expanded="true" aria-controls="collapseSeven">
                   متابعة بعد 7 ايام
                 </button>
               </h2>
@@ -750,27 +822,31 @@
                       <div class="form-group">
                         <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
                         <input type="text" maxlength="100" class="form-control" name="nameDay7"
-                        (blur)="calculateCompletionPercentage()"  [(ngModel)]="hepatitisVirusesData.nameDay7" #nameDay7="ngModel" />
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.nameDay7"
+                          #nameDay7="ngModel" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">العمر</label>
                         <input type="number" class="form-control" name="ageDay7"
-                        (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.ageDay7" #ageDay7="ngModel" />
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.ageDay7"
+                          #ageDay7="ngModel" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">رقم التليفون</label>
                         <input type="text" maxlength="100" class="form-control" name="telephoneDay7"
-                               [(ngModel)]="hepatitisVirusesData.telephoneDay7" (blur)="calculateCompletionPercentage()" #telephoneDay7="ngModel" />
+                          [(ngModel)]="hepatitisVirusesData.telephoneDay7" (blur)="calculateCompletionPercentage()"
+                          #telephoneDay7="ngModel" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">النوع</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.genderDay7" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.genderDay7"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of genderDay7s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -781,8 +857,8 @@
                       <div class="form-group">
                         <label for="">نوع المخالطة</label>
                         <select name="case" id="" class="form-control"
-                                [(ngModel)]="hepatitisVirusesData.contactTypeDay7" (blur)="calculateCompletionPercentage()">
-                          <option *ngFor="let case of contactTypeDay7s" [value]="case.id" >
+                          [(ngModel)]="hepatitisVirusesData.contactTypeDay7" (blur)="calculateCompletionPercentage()">
+                          <option *ngFor="let case of contactTypeDay7s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
                         </select>
@@ -791,8 +867,8 @@
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">علاقته بالحالة</label>
-                        <input type="text" maxlength="100" class="form-control" name="relationshipPatientDay7" (blur)="calculateCompletionPercentage()"
-                               [(ngModel)]="
+                        <input type="text" maxlength="100" class="form-control" name="relationshipPatientDay7"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="
                             hepatitisVirusesData.relationshipPatientDay7
                           " #relationshipPatientDay7="ngModel" />
                       </div>
@@ -801,8 +877,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">تاريخ ظهور الأعراض</label>
-                        <input type="date" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" (blur)="calculateCompletionPercentage()"
-                               name="dateOnsetSymptomsDay7" [(ngModel)]="
+                        <input type="date" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
+                          (blur)="calculateCompletionPercentage()" name="dateOnsetSymptomsDay7" [(ngModel)]="
                             hepatitisVirusesData.dateOnsetSymptomsDay7
                           " #dateOnsetSymptomsDay7="ngModel" />
                       </div>
@@ -810,7 +886,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.feverDay7" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.feverDay7"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of feverDay7s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -820,7 +897,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">سعال جاف</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dryCoughDay7" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dryCoughDay7"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of dryCoughDay7s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -830,8 +908,9 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">سعال يصاحبه بصق</label>
-                        <select name="case" id="" class="form-control" 
-                        [(ngModel)]="hepatitisVirusesData.coughingWithSpittingDay7" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control"
+                          [(ngModel)]="hepatitisVirusesData.coughingWithSpittingDay7"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of coughingWithSpittingDay7s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -841,8 +920,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">التهاب بالحلق</label>
-                        <select name="case" id="" class="form-control"
-                                [(ngModel)]="hepatitisVirusesData.soreThroatDay7" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.soreThroatDay7"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of soreThroatDay7s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -852,7 +931,9 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">صعوبة بالتنفس</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.breathingDifficultyDay7" (blur)="calculateCompletionPercentage()"> 
+                        <select name="case" id="" class="form-control"
+                          [(ngModel)]="hepatitisVirusesData.breathingDifficultyDay7"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of breathingDifficultyDay7s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -862,7 +943,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">آلام بالمفاصل</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.jointPainDay7" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.jointPainDay7"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of jointPainDay7s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -872,7 +954,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">قئ</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.vomitDay7" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.vomitDay7"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of vomitDay7s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -882,7 +965,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">إسهال</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.diarrheaDay7" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.diarrheaDay7"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of diarrheaDay7s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -892,7 +976,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">أخرى</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.otherDay7" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.otherDay7"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of otherDay7s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -901,9 +986,11 @@
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group">
-                        <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
+                        <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MENTION_OTHER_SYMPTOM" | translate
+                          }}</label>
                         <input type="text" maxlength="100" class="form-control" name="otherSymptomsDay7"
-                                [(ngModel)]="hepatitisVirusesData.otherSymptomsDay7" #otherSymptomsDay7="ngModel" (blur)="calculateCompletionPercentage()" />
+                          [(ngModel)]="hepatitisVirusesData.otherSymptomsDay7" #otherSymptomsDay7="ngModel"
+                          (blur)="calculateCompletionPercentage()" />
                       </div>
                     </div>
                     <div class="col-12 title fs-6 fwb">المعمل</div>
@@ -912,14 +999,15 @@
                         <div class="col-6">تم اخذ العينة؟</div>
                         <div class="col-6 has-labels">
                           <label for="">
-                            <input type="radio" class="form-check-input" id="isSampleTakenDay7"
-                                    name="isSampleTakenDay7" [(ngModel)]="hepatitisVirusesData.isSampleTakenDay7"
-                                    (blur)="calculateCompletionPercentage()" #isSampleTakenDay7="ngModel" [value]="0" />
+                            <input type="radio" class="form-check-input" id="isSampleTakenDay7" name="isSampleTakenDay7"
+                              [(ngModel)]="hepatitisVirusesData.isSampleTakenDay7"
+                              (blur)="calculateCompletionPercentage()" #isSampleTakenDay7="ngModel" [value]="0" />
                             {{ "NEDSS.COMMON.YES" | translate }}
                           </label>
                           <label for="">
-                            <input type="radio" class="form-check-input" id="isSampleTakenDay7"
-                                    name="isSampleTakenDay7" [(ngModel)]="hepatitisVirusesData.isSampleTakenDay7" (blur)="calculateCompletionPercentage()" #v="ngModel" [value]="1" />
+                            <input type="radio" class="form-check-input" id="isSampleTakenDay7" name="isSampleTakenDay7"
+                              [(ngModel)]="hepatitisVirusesData.isSampleTakenDay7"
+                              (blur)="calculateCompletionPercentage()" #v="ngModel" [value]="1" />
                             {{ "NEDSS.COMMON.NO" | translate }}
                           </label>
                         </div>
@@ -931,8 +1019,8 @@
                           <label class="mt-2" for="">تاريخ أخذ العينة</label>
                         </div>
                         <div class="col-lg-8">
-                          <input type="date" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" (blur)="calculateCompletionPercentage()"
-                                 name="dateSampleTakenDay7" [(ngModel)]="
+                          <input type="date" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
+                            (blur)="calculateCompletionPercentage()" name="dateSampleTakenDay7" [(ngModel)]="
                               hepatitisVirusesData.dateSampleTakenDay7
                             " #dateSampleTakenDay7="ngModel" />
                         </div>
@@ -943,22 +1031,22 @@
                         <div class="col-4">نتيجة العينة</div>
                         <div class="col-8 has-labels">
                           <label for="">
-                            <input type="radio" class="form-check-input" id="sampleResultDay7" (blur)="calculateCompletionPercentage()"
-                                   name="sampleResultDay7" [(ngModel)]=" 
+                            <input type="radio" class="form-check-input" id="sampleResultDay7"
+                              (blur)="calculateCompletionPercentage()" name="sampleResultDay7" [(ngModel)]=" 
                                 hepatitisVirusesData.sampleResultDay7
                               " #sampleResultDay7="ngModel" [value]="0" />
-                            {{ "NEDSS.COMMON.YES" | translate }}
+                            {{ "NEDSS.COMMON.POSITIVE" | translate }}
                           </label>
                           <label for="">
-                            <input type="radio" class="form-check-input" id="sampleResultDay7" (blur)="calculateCompletionPercentage()"
-                                   name="sampleResultDay7" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="sampleResultDay7"
+                              (blur)="calculateCompletionPercentage()" name="sampleResultDay7" [(ngModel)]="
                                 hepatitisVirusesData.sampleResultDay7
                               " #sampleResultDay7="ngModel" [value]="1" />
-                            {{ "NEDSS.COMMON.NO" | translate }}
+                            {{ "NEDSS.COMMON.NEGATIVE" | translate }}
                           </label>
                           <label for="">
-                            <input type="radio" class="form-check-input" id="sampleResultDay7" (blur)="calculateCompletionPercentage()"
-                                   name="sampleResultDay7" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="sampleResultDay7"
+                              (blur)="calculateCompletionPercentage()" name="sampleResultDay7" [(ngModel)]="
                                 hepatitisVirusesData.sampleResultDay7
                               " #sampleResultDay7="ngModel" [value]="2" />
                             لم ترد
@@ -974,12 +1062,12 @@
             <div class="accordion-item">
               <h2 class="accordion-header" id="headingSevenTeen">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseSevenTeen" aria-expanded="true" aria-controls="collapseSevenTeen">
+                  data-bs-target="#collapseSevenTeen" aria-expanded="true" aria-controls="collapseSevenTeen">
                   متابعة بعد 14 يوم
                 </button>
               </h2>
               <div id="collapseSevenTeen" class="accordion-collapse collapse" aria-labelledby="collapseSevenTeen"
-                   data-bs-parent="#accordionExample">
+                data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                   <div class="row">
                     <div class="col-12 title fs-6 fwb">
@@ -988,28 +1076,32 @@
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                        <input type="text" maxlength="100" class="form-control" name="nameDay14" (blur)="calculateCompletionPercentage()"
-                               [(ngModel)]="hepatitisVirusesData.nameDay14" #nameDay14="ngModel"  />
+                        <input type="text" maxlength="100" class="form-control" name="nameDay14"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.nameDay14"
+                          #nameDay14="ngModel" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">العمر</label>
-                        <input type="number" class="form-control" name="ageDay14" (blur)="calculateCompletionPercentage()"
-                               [(ngModel)]="hepatitisVirusesData.ageDay14" #ageDay14="ngModel" />
+                        <input type="number" class="form-control" name="ageDay14"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.ageDay14"
+                          #ageDay14="ngModel" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">رقم التليفون</label>
-                        <input type="text" maxlength="100" class="form-control" name="telephoneDay14" (blur)="calculateCompletionPercentage()"
-                               [(ngModel)]="hepatitisVirusesData.telephoneDay14" #telephoneDay14="ngModel" />
+                        <input type="text" maxlength="100" class="form-control" name="telephoneDay14"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.telephoneDay14"
+                          #telephoneDay14="ngModel" />
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
                         <label for="">النوع</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.genderDay14" (blur)="calculateCompletionPercentage()"> 
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.genderDay14"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of genderDay14s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -1020,7 +1112,7 @@
                       <div class="form-group">
                         <label for="">نوع المخالطة</label>
                         <select name="case" id="" class="form-control"
-                                [(ngModel)]="hepatitisVirusesData.contactTypeDay14" (blur)="calculateCompletionPercentage()">
+                          [(ngModel)]="hepatitisVirusesData.contactTypeDay14" (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of contactTypeDay14s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -1031,15 +1123,16 @@
                       <div class="form-group">
                         <label for="">علاقته بالحالة</label>
                         <input type="text" maxlength="100" class="form-control" name="relationshipPatientDay14"
-                                [(ngModel)]="hepatitisVirusesData.relationshipPatientDay14" (blur)="calculateCompletionPercentage()" #relationshipPatientDay14="ngModel" />
+                          [(ngModel)]="hepatitisVirusesData.relationshipPatientDay14"
+                          (blur)="calculateCompletionPercentage()" #relationshipPatientDay14="ngModel" />
                       </div>
                     </div>
                     <div class="col-12 title fs-6 fwb">في حالة ظهور أعراض</div>
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">تاريخ ظهور الأعراض</label>
-                        <input type="date" [class]="'form-control-'+ currentLang"  placeholder="dd/mm/yyyy" (blur)="calculateCompletionPercentage()"
-                                name="dateOnsetSymptomsDay14" [(ngModel)]="
+                        <input type="date" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
+                          (blur)="calculateCompletionPercentage()" name="dateOnsetSymptomsDay14" [(ngModel)]="
                             hepatitisVirusesData.dateOnsetSymptomsDay14
                           " #dateOnsetSymptomsDay14="ngModel" />
                       </div>
@@ -1047,7 +1140,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.feverDay14" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.feverDay14"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of feverDay14s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -1057,7 +1151,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">سعال جاف</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dryCoughDay14" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dryCoughDay14"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of dryCoughDay14s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -1067,7 +1162,9 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">سعال يصاحبه بصق</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.coughingWithSpittingDay14" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control"
+                          [(ngModel)]="hepatitisVirusesData.coughingWithSpittingDay14"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of coughingWithSpittingDay14s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -1078,7 +1175,7 @@
                       <div class="form-group">
                         <label for="">التهاب بالحلق</label>
                         <select name="case" id="" class="form-control"
-                                [(ngModel)]="hepatitisVirusesData.soreThroatDay14" (blur)="calculateCompletionPercentage()">
+                          [(ngModel)]="hepatitisVirusesData.soreThroatDay14" (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of soreThroatDay14s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -1088,7 +1185,9 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">صعوبة بالتنفس</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.breathingDifficultyDay14" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control"
+                          [(ngModel)]="hepatitisVirusesData.breathingDifficultyDay14"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of breathingDifficultyDay14s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -1098,8 +1197,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">آلام بالمفاصل</label>
-                        <select name="case" id="" class="form-control"
-                                [(ngModel)]="hepatitisVirusesData.jointPainDay14" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.jointPainDay14"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of jointPainDay14s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -1109,7 +1208,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">قئ</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.vomitDay14" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.vomitDay14"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of vomitDay14s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -1119,7 +1219,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">إسهال</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.diarrheaDay14" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.diarrheaDay14"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of diarrheaDay14s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -1129,7 +1230,8 @@
                     <div class="col-lg-3">
                       <div class="form-group">
                         <label for="">أخرى</label>
-                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.otherDay14" (blur)="calculateCompletionPercentage()">
+                        <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.otherDay14"
+                          (blur)="calculateCompletionPercentage()">
                           <option *ngFor="let case of otherDay14s" [value]="case.id">
                             {{ case.arabicName }}
                           </option>
@@ -1138,9 +1240,11 @@
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group">
-                        <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                        <input type="text" maxlength="100" class="form-control" name="otherSymptomsDay14" (blur)="calculateCompletionPercentage()"
-                               [(ngModel)]="hepatitisVirusesData.otherSymptomsDay14" #otherSymptomsDay14="ngModel" />
+                        <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MENTION_OTHER_SYMPTOM" | translate
+                          }}</label>
+                        <input type="text" maxlength="100" class="form-control" name="otherSymptomsDay14"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.otherSymptomsDay14"
+                          #otherSymptomsDay14="ngModel" />
                       </div>
                     </div>
                     <div class="col-12 title fs-6 fwb">المعمل</div>
@@ -1149,15 +1253,15 @@
                         <div class="col-6">تم اخذ العينة؟</div>
                         <div class="col-6 has-labels">
                           <label for="">
-                            <input type="radio" class="form-check-input" id="isSampleTakenDay14" (blur)="calculateCompletionPercentage()"
-                                   name="isSampleTakenDay14" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="isSampleTakenDay14"
+                              (blur)="calculateCompletionPercentage()" name="isSampleTakenDay14" [(ngModel)]="
                                 hepatitisVirusesData.isSampleTakenDay14
                               " #isSampleTakenDay14="ngModel" [value]="0" />
                             {{ "NEDSS.COMMON.YES" | translate }}
                           </label>
                           <label for="">
-                            <input type="radio" class="form-check-input" id="isSampleTakenDay14" (blur)="calculateCompletionPercentage()"
-                                   name="isSampleTakenDay14" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="isSampleTakenDay14"
+                              (blur)="calculateCompletionPercentage()" name="isSampleTakenDay14" [(ngModel)]="
                                 hepatitisVirusesData.isSampleTakenDay14
                               " #isSampleTakenDay14="ngModel" [value]="1" />
                             {{ "NEDSS.COMMON.NO" | translate }}
@@ -1171,8 +1275,8 @@
                           <label class="mt-2" for="">تاريخ أخذ العينة</label>
                         </div>
                         <div class="col-lg-8">
-                          <input type="date" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" (blur)="calculateCompletionPercentage()"
-                                 name="dateSampleTakenDay14" [(ngModel)]="
+                          <input type="date" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
+                            (blur)="calculateCompletionPercentage()" name="dateSampleTakenDay14" [(ngModel)]="
                               hepatitisVirusesData.dateSampleTakenDay14
                             " #dateSampleTakenDay14="ngModel" />
                         </div>
@@ -1183,22 +1287,22 @@
                         <div class="col-4">نتيجة العينة</div>
                         <div class="col-8 has-labels">
                           <label for="">
-                            <input type="radio" class="form-check-input" id="sampleResultDay14" (blur)="calculateCompletionPercentage()"
-                                   name="sampleResultDay14" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="sampleResultDay14"
+                              (blur)="calculateCompletionPercentage()" name="sampleResultDay14" [(ngModel)]="
                                 hepatitisVirusesData.sampleResultDay14
                               " #sampleResultDay14="ngModel" [value]="0" />
-                            {{ "NEDSS.COMMON.YES" | translate }}
+                            {{ "NEDSS.COMMON.POSITIVE" | translate }}
                           </label>
                           <label for="">
-                            <input type="radio" class="form-check-input" id="sampleResultDay14" (blur)="calculateCompletionPercentage()"
-                                   name="sampleResultDay14" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="sampleResultDay14"
+                              (blur)="calculateCompletionPercentage()" name="sampleResultDay14" [(ngModel)]="
                                 hepatitisVirusesData.sampleResultDay14
                               " #sampleResultDay14="ngModel" [value]="1" />
-                            {{ "NEDSS.COMMON.NO" | translate }}
+                            {{ "NEDSS.COMMON.NEGATIVE" | translate }}
                           </label>
                           <label for="">
-                            <input type="radio" class="form-check-input" id="sampleResultDay14" (blur)="calculateCompletionPercentage()"
-                                   name="sampleResultDay14" [(ngModel)]="
+                            <input type="radio" class="form-check-input" id="sampleResultDay14"
+                              (blur)="calculateCompletionPercentage()" name="sampleResultDay14" [(ngModel)]="
                                 hepatitisVirusesData.sampleResultDay14
                               " #sampleResultDay14="ngModel" [value]="2" />
                             لم ترد
@@ -1213,116 +1317,6 @@
           </div>
         </div>
 
-        <div class="row color">
-          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-            <div class="row">
-              <div class="col-12 title fs-6 fwb">
-                التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة
-                الإلتهاب الكبدى A أو الإلتهاب الكبدى E
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">هل المريض طفل أو موظف فى حضانة/ مدرسة للأطفال ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.childOrEmployee" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of childOrEmployees" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">في حال نعم: اذكر اسم الحضانة أو المدرسة وعنوانها</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.stateNameAddress" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of stateNameAddresss" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">هل المريض من مقدمي الأغذية ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.foodProvider" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of foodProviders" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">هل هناك حالات أخري مماثلة حدثت فى نفس المكان ؟</label>
-                  <select name="case" id="" class="form-control"
-                          [(ngModel)]="hepatitisVirusesData.similarCasessimilarPlaces" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of similarCasessimilarPlacess" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">هل عادة ما يتناول المريض وجبات طعام خارج المنزل ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.mealsOutside" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of mealsOutsides" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">إذا نعم. نوع الطعام</label>
-                  <input type="text" maxlength="100" class="form-control" name="typeFood" (blur)="calculateCompletionPercentage()"
-                          [(ngModel)]="hepatitisVirusesData.typeFood" #typeFood="ngModel" />
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">هل تعرض المريض للحيوانات في الحياة اليومية؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.exposedToAnimals" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of exposedToAnimalss" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">أذكر نوع الحيوان</label>
-                  <input type="text" maxlength="100" class="form-control" name="typeOfAnimal" (blur)="calculateCompletionPercentage()"
-                          [(ngModel)]="hepatitisVirusesData.typeOfAnimal" #typeOfAnimal="ngModel" />
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-12">
-                <div class="form-group">
-                  <label for="">
-                    إذا كان نظام الصرف الصحى ترنشات: هل يتعامل المريض بطريقة
-                    مباشرة مع مخلفات الصرف
-                  </label>
-                  <select name="case" id="" class="form-control"
-                          [(ngModel)]="hepatitisVirusesData.dealDirectlySewageWaste" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of dealDirectlySewageWastes" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-12 -->
-            </div>
-            <!-- / .row -->
-          </div>
-          <!-- / .col-12 -->
-        </div>
         <!-- / .row -->
 
         <div class="row color">
@@ -1332,7 +1326,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">نوع مصدر المياه بالمنزل</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.waterSourceHouse" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.waterSourceHouse"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of waterSourceHouses" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1343,15 +1338,17 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">في حالة أخرى</label>
-                  <input type="text" maxlength="100" class="form-control" name="anotherCase" (blur)="calculateCompletionPercentage()"
-                         [(ngModel)]="hepatitisVirusesData.anotherCase" #anotherCase="ngModel" />
+                  <input type="text" maxlength="100" class="form-control" name="anotherCase"
+                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.anotherCase"
+                    #anotherCase="ngModel" />
                 </div>
               </div>
               <!-- /.col-lg-6 -->
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">هل يتم تخزين المياه</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.waterStored" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.waterStored"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of waterStoreds" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1362,15 +1359,17 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">في حالة نعم. نوع الخزان</label>
-                  <input type="text" maxlength="100" class="form-control" name="tankType" (blur)="calculateCompletionPercentage()"
-                         [(ngModel)]="hepatitisVirusesData.tankType" #tankType="ngModel" />
+                  <input type="text" maxlength="100" class="form-control" name="tankType"
+                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.tankType"
+                    #tankType="ngModel" />
                 </div>
               </div>
               <!-- /.col-lg-6 -->
               <div class="col-lg-12">
                 <div class="form-group">
                   <label for="">نوع نظام المجارى المستخدم بمنزل المريض</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.sewageSystem" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.sewageSystem"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of sewageSystems" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1381,7 +1380,9 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">ما هى المسافه بين مصادر المياه والمجارى؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.distanceWaterSourcesSewage" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control"
+                    [(ngModel)]="hepatitisVirusesData.distanceWaterSourcesSewage"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of distanceWaterSourcesSewages" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1393,7 +1394,7 @@
                 <div class="form-group">
                   <label for="">هل توجد صيانه جيده لنظام المجارى الموجود؟</label>
                   <select name="case" id="" class="form-control"
-                          [(ngModel)]="hepatitisVirusesData.maintenanceSewerSystem" (blur)="calculateCompletionPercentage()">
+                    [(ngModel)]="hepatitisVirusesData.maintenanceSewerSystem" (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of maintenanceSewerSystems" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1408,7 +1409,7 @@
                     أسابيع الماضية ؟
                   </label>
                   <select name="case" id="" class="form-control"
-                          [(ngModel)]="hepatitisVirusesData.breakPipesDrinkingWater" (blur)="calculateCompletionPercentage()">
+                    [(ngModel)]="hepatitisVirusesData.breakPipesDrinkingWater" (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of breakPipesDrinkingWaters" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1422,7 +1423,8 @@
                     هل تعلم بوجود طفح من شبكه المجارى خلال الثلاث أسابيع
                     الماضية ؟
                   </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.overflowSewerSystem" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.overflowSewerSystem"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of overflowSewerSystems" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1436,7 +1438,9 @@
                     هل لوحظ تغير في طعم أو لون أو رائحة في مياه الشرب خلال
                     أسبوع من ظهور الأعراض؟
                   </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.changeTasteColorSmellwater" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control"
+                    [(ngModel)]="hepatitisVirusesData.changeTasteColorSmellwater"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of changeTasteColorSmellwaters" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1451,7 +1455,8 @@
                     المنطقة؟
                   </label>
                   <select name="case" id="" class="form-control"
-                          [(ngModel)]="hepatitisVirusesData.reportsContaminationWater" (blur)="calculateCompletionPercentage()">
+                    [(ngModel)]="hepatitisVirusesData.reportsContaminationWater"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of reportsContaminationWaters" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1466,7 +1471,7 @@
                     المنطقة؟
                   </label>
                   <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                          [(ngModel)]="hepatitisVirusesData.samplesAnalysisPatienhome">
+                    [(ngModel)]="hepatitisVirusesData.samplesAnalysisPatienhome">
                     <option *ngFor="let case of samplesAnalysisPatienhomes" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1482,22 +1487,22 @@
                       <div class="col-6">Entamoeba Histolytica</div>
                       <div class="col-6 has-labels">
                         <label for="">
-                          <input type="radio" class="form-check-input" id="entamoebaHistolytica" (blur)="calculateCompletionPercentage()"
-                                 name="entamoebaHistolytica" [(ngModel)]="
+                          <input type="radio" class="form-check-input" id="entamoebaHistolytica"
+                            (blur)="calculateCompletionPercentage()" name="entamoebaHistolytica" [(ngModel)]="
                               hepatitisVirusesData.entamoebaHistolytica
                             " #entamoebaHistolytica="ngModel" [value]="0" />
                           {{ "NEDSS.COMMON.YES" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="entamoebaHistolytica" (blur)="calculateCompletionPercentage()"
-                                 name="entamoebaHistolytica" [(ngModel)]="
+                          <input type="radio" class="form-check-input" id="entamoebaHistolytica"
+                            (blur)="calculateCompletionPercentage()" name="entamoebaHistolytica" [(ngModel)]="
                               hepatitisVirusesData.entamoebaHistolytica
                             " #entamoebaHistolytica="ngModel" [value]="1" />
                           {{ "NEDSS.COMMON.NO" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="entamoebaHistolytica" (blur)="calculateCompletionPercentage()"
-                                 name="entamoebaHistolytica" [(ngModel)]="
+                          <input type="radio" class="form-check-input" id="entamoebaHistolytica"
+                            (blur)="calculateCompletionPercentage()" name="entamoebaHistolytica" [(ngModel)]="
                               hepatitisVirusesData.entamoebaHistolytica
                             " #entamoebaHistolytica="ngModel" [value]="2" />
                           {{ "NEDSS.REPORTS.UnKnown" | translate }}
@@ -1510,21 +1515,21 @@
                       <div class="col-6">Shigella species</div>
                       <div class="col-6 has-labels">
                         <label for="">
-                          <input type="radio" class="form-check-input" id="shigellaSpecies"
-                                 name="shigellaSpecies" [(ngModel)]="hepatitisVirusesData.shigellaSpecies" (blur)="calculateCompletionPercentage()"
-                                 #shigellaSpecies="ngModel" [value]="0" />
+                          <input type="radio" class="form-check-input" id="shigellaSpecies" name="shigellaSpecies"
+                            [(ngModel)]="hepatitisVirusesData.shigellaSpecies" (blur)="calculateCompletionPercentage()"
+                            #shigellaSpecies="ngModel" [value]="0" />
                           {{ "NEDSS.COMMON.YES" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="shigellaSpecies"
-                                 name="shigellaSpecies" [(ngModel)]="hepatitisVirusesData.shigellaSpecies" (blur)="calculateCompletionPercentage()"
-                                 #shigellaSpecies="ngModel" [value]="1" />
+                          <input type="radio" class="form-check-input" id="shigellaSpecies" name="shigellaSpecies"
+                            [(ngModel)]="hepatitisVirusesData.shigellaSpecies" (blur)="calculateCompletionPercentage()"
+                            #shigellaSpecies="ngModel" [value]="1" />
                           {{ "NEDSS.COMMON.NO" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="shigellaSpecies"
-                                 name="shigellaSpecies" [(ngModel)]="hepatitisVirusesData.shigellaSpecies" (blur)="calculateCompletionPercentage()"
-                                 #shigellaSpecies="ngModel" [value]="2" />
+                          <input type="radio" class="form-check-input" id="shigellaSpecies" name="shigellaSpecies"
+                            [(ngModel)]="hepatitisVirusesData.shigellaSpecies" (blur)="calculateCompletionPercentage()"
+                            #shigellaSpecies="ngModel" [value]="2" />
                           {{ "NEDSS.REPORTS.UnKnown" | translate }}
                         </label>
                       </div>
@@ -1535,21 +1540,21 @@
                       <div class="col-6">Campylobacter</div>
                       <div class="col-6 has-labels">
                         <label for="">
-                          <input type="radio" class="form-check-input" id="campylobacter"
-                                 name="campylobacter" [(ngModel)]="hepatitisVirusesData.campylobacter" (blur)="calculateCompletionPercentage()"
-                                 #campylobacter="ngModel" [value]="0" />
+                          <input type="radio" class="form-check-input" id="campylobacter" name="campylobacter"
+                            [(ngModel)]="hepatitisVirusesData.campylobacter" (blur)="calculateCompletionPercentage()"
+                            #campylobacter="ngModel" [value]="0" />
                           {{ "NEDSS.COMMON.YES" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="campylobacter"
-                                 name="campylobacter" [(ngModel)]="hepatitisVirusesData.campylobacter" (blur)="calculateCompletionPercentage()"
-                                 #campylobacter="ngModel" [value]="1" />
+                          <input type="radio" class="form-check-input" id="campylobacter" name="campylobacter"
+                            [(ngModel)]="hepatitisVirusesData.campylobacter" (blur)="calculateCompletionPercentage()"
+                            #campylobacter="ngModel" [value]="1" />
                           {{ "NEDSS.COMMON.NO" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="campylobacter"
-                                 name="campylobacter" [(ngModel)]="hepatitisVirusesData.campylobacter" (blur)="calculateCompletionPercentage()"
-                                 #campylobacter="ngModel" [value]="2" />
+                          <input type="radio" class="form-check-input" id="campylobacter" name="campylobacter"
+                            [(ngModel)]="hepatitisVirusesData.campylobacter" (blur)="calculateCompletionPercentage()"
+                            #campylobacter="ngModel" [value]="2" />
                           {{ "NEDSS.REPORTS.UnKnown" | translate }}
                         </label>
                       </div>
@@ -1560,21 +1565,21 @@
                       <div class="col-6">Salmonella species</div>
                       <div class="col-6 has-labels">
                         <label for="">
-                          <input type="radio" class="form-check-input" id="salmonellaSpecies"
-                                 name="salmonellaSpecies" [(ngModel)]="hepatitisVirusesData.salmonellaSpecies" (blur)="calculateCompletionPercentage()"
-                                 #salmonellaSpecies="ngModel" [value]="0" />
+                          <input type="radio" class="form-check-input" id="salmonellaSpecies" name="salmonellaSpecies"
+                            [(ngModel)]="hepatitisVirusesData.salmonellaSpecies"
+                            (blur)="calculateCompletionPercentage()" #salmonellaSpecies="ngModel" [value]="0" />
                           {{ "NEDSS.COMMON.YES" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="salmonellaSpecies"
-                                 name="salmonellaSpecies" [(ngModel)]="hepatitisVirusesData.salmonellaSpecies" (blur)="calculateCompletionPercentage()"
-                                 #salmonellaSpecies="ngModel" [value]="1" />
+                          <input type="radio" class="form-check-input" id="salmonellaSpecies" name="salmonellaSpecies"
+                            [(ngModel)]="hepatitisVirusesData.salmonellaSpecies"
+                            (blur)="calculateCompletionPercentage()" #salmonellaSpecies="ngModel" [value]="1" />
                           {{ "NEDSS.COMMON.NO" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="salmonellaSpecies"
-                                 name="salmonellaSpecies" [(ngModel)]="hepatitisVirusesData.salmonellaSpecies" (blur)="calculateCompletionPercentage()"
-                                 #salmonellaSpecies="ngModel" [value]="2" />
+                          <input type="radio" class="form-check-input" id="salmonellaSpecies" name="salmonellaSpecies"
+                            [(ngModel)]="hepatitisVirusesData.salmonellaSpecies"
+                            (blur)="calculateCompletionPercentage()" #salmonellaSpecies="ngModel" [value]="2" />
                           {{ "NEDSS.REPORTS.UnKnown" | translate }}
                         </label>
                       </div>
@@ -1585,21 +1590,21 @@
                       <div class="col-6">Pathogenic E. coli</div>
                       <div class="col-6 has-labels">
                         <label for="">
-                          <input type="radio" class="form-check-input" id="pathogenicColi"
-                                 name="pathogenicColi" [(ngModel)]="hepatitisVirusesData.pathogenicColi" (blur)="calculateCompletionPercentage()"
-                                 #pathogenicColi="ngModel" [value]="0" />
+                          <input type="radio" class="form-check-input" id="pathogenicColi" name="pathogenicColi"
+                            [(ngModel)]="hepatitisVirusesData.pathogenicColi" (blur)="calculateCompletionPercentage()"
+                            #pathogenicColi="ngModel" [value]="0" />
                           {{ "NEDSS.COMMON.YES" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="pathogenicColi"
-                                 name="pathogenicColi" [(ngModel)]="hepatitisVirusesData.pathogenicColi" (blur)="calculateCompletionPercentage()"
-                                 #pathogenicColi="ngModel" [value]="1" />
+                          <input type="radio" class="form-check-input" id="pathogenicColi" name="pathogenicColi"
+                            [(ngModel)]="hepatitisVirusesData.pathogenicColi" (blur)="calculateCompletionPercentage()"
+                            #pathogenicColi="ngModel" [value]="1" />
                           {{ "NEDSS.COMMON.NO" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="pathogenicColi"
-                                 name="pathogenicColi" [(ngModel)]="hepatitisVirusesData.pathogenicColi" (blur)="calculateCompletionPercentage()"
-                                 #pathogenicColi="ngModel" [value]="2" />
+                          <input type="radio" class="form-check-input" id="pathogenicColi" name="pathogenicColi"
+                            [(ngModel)]="hepatitisVirusesData.pathogenicColi" (blur)="calculateCompletionPercentage()"
+                            #pathogenicColi="ngModel" [value]="2" />
                           {{ "NEDSS.REPORTS.UnKnown" | translate }}
                         </label>
                       </div>
@@ -1610,21 +1615,21 @@
                       <div class="col-6">Salmonella Typhi</div>
                       <div class="col-6 has-labels">
                         <label for="">
-                          <input type="radio" class="form-check-input" id="salmonellaTyphi"
-                                 name="salmonellaTyphi" [(ngModel)]="hepatitisVirusesData.salmonellaTyphi" (blur)="calculateCompletionPercentage()"
-                                 #salmonellaTyphi="ngModel" [value]="0" />
+                          <input type="radio" class="form-check-input" id="salmonellaTyphi" name="salmonellaTyphi"
+                            [(ngModel)]="hepatitisVirusesData.salmonellaTyphi" (blur)="calculateCompletionPercentage()"
+                            #salmonellaTyphi="ngModel" [value]="0" />
                           {{ "NEDSS.COMMON.YES" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="salmonellaTyphi"
-                                 name="salmonellaTyphi" [(ngModel)]="hepatitisVirusesData.salmonellaTyphi" (blur)="calculateCompletionPercentage()"
-                                 #salmonellaTyphi="ngModel" [value]="1" />
+                          <input type="radio" class="form-check-input" id="salmonellaTyphi" name="salmonellaTyphi"
+                            [(ngModel)]="hepatitisVirusesData.salmonellaTyphi" (blur)="calculateCompletionPercentage()"
+                            #salmonellaTyphi="ngModel" [value]="1" />
                           {{ "NEDSS.COMMON.NO" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="salmonellaTyphi"
-                                 name="salmonellaTyphi" [(ngModel)]="hepatitisVirusesData.salmonellaTyphi" (blur)="calculateCompletionPercentage()"
-                                 #salmonellaTyphi="ngModel" [value]="2" />
+                          <input type="radio" class="form-check-input" id="salmonellaTyphi" name="salmonellaTyphi"
+                            [(ngModel)]="hepatitisVirusesData.salmonellaTyphi" (blur)="calculateCompletionPercentage()"
+                            #salmonellaTyphi="ngModel" [value]="2" />
                           {{ "NEDSS.REPORTS.UnKnown" | translate }}
                         </label>
                       </div>
@@ -1635,29 +1640,30 @@
                       <div class="col-6">Vibrio Cholera</div>
                       <div class="col-6 has-labels">
                         <label for="">
-                          <input type="radio" class="form-check-input" id="vibrioCholera"
-                                 name="vibrioCholera" [(ngModel)]="hepatitisVirusesData.vibrioCholera" (blur)="calculateCompletionPercentage()"
-                                 #vibrioCholera="ngModel" [value]="0" />
+                          <input type="radio" class="form-check-input" id="vibrioCholera" name="vibrioCholera"
+                            [(ngModel)]="hepatitisVirusesData.vibrioCholera" (blur)="calculateCompletionPercentage()"
+                            #vibrioCholera="ngModel" [value]="0" />
                           {{ "NEDSS.COMMON.YES" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="vibrioCholera"
-                                 name="vibrioCholera" [(ngModel)]="hepatitisVirusesData.vibrioCholera" (blur)="calculateCompletionPercentage()"
-                                 #vibrioCholera="ngModel" [value]="1" />
+                          <input type="radio" class="form-check-input" id="vibrioCholera" name="vibrioCholera"
+                            [(ngModel)]="hepatitisVirusesData.vibrioCholera" (blur)="calculateCompletionPercentage()"
+                            #vibrioCholera="ngModel" [value]="1" />
                           {{ "NEDSS.COMMON.NO" | translate }}
                         </label>
                         <label for="">
-                          <input type="radio" class="form-check-input" id="vibrioCholera" 
-                                 name="vibrioCholera" [(ngModel)]="hepatitisVirusesData.vibrioCholera" (blur)="calculateCompletionPercentage()"
-                                 #vibrioCholera="ngModel" [value]="2" />
+                          <input type="radio" class="form-check-input" id="vibrioCholera" name="vibrioCholera"
+                            [(ngModel)]="hepatitisVirusesData.vibrioCholera" (blur)="calculateCompletionPercentage()"
+                            #vibrioCholera="ngModel" [value]="2" />
                           {{ "NEDSS.REPORTS.UnKnown" | translate }}
                         </label>
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-12">
-                    <input type="text" maxlength="100" class="form-control" name="otherSamplesAnalysisPatienhome" (blur)="calculateCompletionPercentage()"
-                           [(ngModel)]="
+                    <label>أخرى</label>
+                    <input type="text" maxlength="100" class="form-control" name="otherSamplesAnalysisPatienhome"
+                      (blur)="calculateCompletionPercentage()" [(ngModel)]="
                         hepatitisVirusesData.otherSamplesAnalysisPatienhome
                       " #otherSamplesAnalysisPatienhome="ngModel" />
                   </div>
@@ -1677,17 +1683,20 @@
                     <div class="col-8 has-labels">
                       <label for="">
                         <input type="radio" class="form-check-input" id="filteredWater" name="filteredWater"
-                               [(ngModel)]="hepatitisVirusesData.filteredWater" #filteredWater="ngModel" [value]="0"  (blur)="calculateCompletionPercentage()"/>
+                          [(ngModel)]="hepatitisVirusesData.filteredWater" #filteredWater="ngModel" [value]="0"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.COMMON.YES" | translate }}
                       </label>
                       <label for="">
                         <input type="radio" class="form-check-input" id="filteredWater" name="filteredWater"
-                               [(ngModel)]="hepatitisVirusesData.filteredWater" #filteredWater="ngModel" [value]="1" (blur)="calculateCompletionPercentage()"/>
+                          [(ngModel)]="hepatitisVirusesData.filteredWater" #filteredWater="ngModel" [value]="1"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.COMMON.NO" | translate }}
                       </label>
                       <label for="">
                         <input type="radio" class="form-check-input" id="filteredWater" name="filteredWater"
-                               [(ngModel)]="hepatitisVirusesData.filteredWater" #filteredWater="ngModel" [value]="2" (blur)="calculateCompletionPercentage()"/>
+                          [(ngModel)]="hepatitisVirusesData.filteredWater" #filteredWater="ngModel" [value]="2"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.REPORTS.UnKnown" | translate }}
                       </label>
                     </div>
@@ -1697,17 +1706,20 @@
                     <div class="col-8 has-labels">
                       <label for="">
                         <input type="radio" class="form-check-input" id="wells" name="wells"
-                               [(ngModel)]="hepatitisVirusesData.wells" #wells="ngModel" [value]="0" (blur)="calculateCompletionPercentage()" />
+                          [(ngModel)]="hepatitisVirusesData.wells" #wells="ngModel" [value]="0"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.COMMON.YES" | translate }}
                       </label>
                       <label for="">
                         <input type="radio" class="form-check-input" id="wells" name="wells"
-                               [(ngModel)]="hepatitisVirusesData.wells" #wells="ngModel" [value]="1" (blur)="calculateCompletionPercentage()" />
+                          [(ngModel)]="hepatitisVirusesData.wells" #wells="ngModel" [value]="1"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.COMMON.NO" | translate }}
                       </label>
                       <label for="">
                         <input type="radio" class="form-check-input" id="wells" name="wells"
-                               [(ngModel)]="hepatitisVirusesData.wells" #wells="ngModel" [value]="2"  (blur)="calculateCompletionPercentage()"/>
+                          [(ngModel)]="hepatitisVirusesData.wells" #wells="ngModel" [value]="2"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.REPORTS.UnKnown" | translate }}
                       </label>
                     </div>
@@ -1717,17 +1729,20 @@
                     <div class="col-8 has-labels">
                       <label for="">
                         <input type="radio" class="form-check-input" id="ethiopianPump" name="ethiopianPump"
-                               [(ngModel)]="hepatitisVirusesData.ethiopianPump" #ethiopianPump="ngModel" [value]="0" (blur)="calculateCompletionPercentage()" />
+                          [(ngModel)]="hepatitisVirusesData.ethiopianPump" #ethiopianPump="ngModel" [value]="0"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.COMMON.YES" | translate }}
                       </label>
                       <label for="">
                         <input type="radio" class="form-check-input" id="ethiopianPump" name="ethiopianPump"
-                               [(ngModel)]="hepatitisVirusesData.ethiopianPump" #ethiopianPump="ngModel" [value]="1" (blur)="calculateCompletionPercentage()" />
+                          [(ngModel)]="hepatitisVirusesData.ethiopianPump" #ethiopianPump="ngModel" [value]="1"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.COMMON.NO" | translate }}
                       </label>
                       <label for="">
                         <input type="radio" class="form-check-input" id="ethiopianPump" name="ethiopianPump"
-                               [(ngModel)]="hepatitisVirusesData.ethiopianPump" #ethiopianPump="ngModel" [value]="2" (blur)="calculateCompletionPercentage()" />
+                          [(ngModel)]="hepatitisVirusesData.ethiopianPump" #ethiopianPump="ngModel" [value]="2"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.REPORTS.UnKnown" | translate }}
                       </label>
                     </div>
@@ -1737,17 +1752,20 @@
                     <div class="col-8 has-labels">
                       <label for="">
                         <input type="radio" class="form-check-input" id="canal" name="canal"
-                               [(ngModel)]="hepatitisVirusesData.canal" #canal="ngModel" [value]="0" (blur)="calculateCompletionPercentage()" />
+                          [(ngModel)]="hepatitisVirusesData.canal" #canal="ngModel" [value]="0"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.COMMON.YES" | translate }}
                       </label>
                       <label for="">
                         <input type="radio" class="form-check-input" id="canal" name="canal"
-                               [(ngModel)]="hepatitisVirusesData.canal" #canal="ngModel" [value]="1" (blur)="calculateCompletionPercentage()" />
+                          [(ngModel)]="hepatitisVirusesData.canal" #canal="ngModel" [value]="1"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.COMMON.NO" | translate }}
                       </label>
                       <label for="">
                         <input type="radio" class="form-check-input" id="canal" name="canal"
-                               [(ngModel)]="hepatitisVirusesData.canal" #canal="ngModel" [value]="2"  (blur)="calculateCompletionPercentage()"/>
+                          [(ngModel)]="hepatitisVirusesData.canal" #canal="ngModel" [value]="2"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.REPORTS.UnKnown" | translate }}
                       </label>
                     </div>
@@ -1757,17 +1775,20 @@
                     <div class="col-8 has-labels">
                       <label for="">
                         <input type="radio" class="form-check-input" id="storedWater" name="storedWater"
-                               [(ngModel)]="hepatitisVirusesData.storedWater" #storedWater="ngModel" [value]="0"  (blur)="calculateCompletionPercentage()"/>
+                          [(ngModel)]="hepatitisVirusesData.storedWater" #storedWater="ngModel" [value]="0"
+                          (blur)="calculateCompletionPercentage()" />
                         {{ "NEDSS.COMMON.YES" | translate }}
                       </label>
-                      <label for=""> 
-                        <input type="radio" class="form-check-input" id="storedWater" name="storedWater" (blur)="calculateCompletionPercentage()"
-                               [(ngModel)]="hepatitisVirusesData.storedWater" #storedWater="ngModel" [value]="1" />
+                      <label for="">
+                        <input type="radio" class="form-check-input" id="storedWater" name="storedWater"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.storedWater"
+                          #storedWater="ngModel" [value]="1" />
                         {{ "NEDSS.COMMON.NO" | translate }}
                       </label>
                       <label for="">
-                        <input type="radio" class="form-check-input" id="storedWater" name="storedWater" (blur)="calculateCompletionPercentage()"
-                               [(ngModel)]="hepatitisVirusesData.storedWater" #storedWater="ngModel" [value]="2" />
+                        <input type="radio" class="form-check-input" id="storedWater" name="storedWater"
+                          (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.storedWater"
+                          #storedWater="ngModel" [value]="2" />
                         {{ "NEDSS.REPORTS.UnKnown" | translate }}
                       </label>
                     </div>
@@ -1782,22 +1803,22 @@
                   <div class="col-5">هل تم أخذ عينه من نظام المجارى؟</div>
                   <div class="col-7 has-labels">
                     <label for="">
-                      <input type="radio" class="form-check-input" id="sampledSewerSystemTaken" (blur)="calculateCompletionPercentage()"
-                             name="sampledSewerSystemTaken" [(ngModel)]="
+                      <input type="radio" class="form-check-input" id="sampledSewerSystemTaken"
+                        (blur)="calculateCompletionPercentage()" name="sampledSewerSystemTaken" [(ngModel)]="
                           hepatitisVirusesData.sampledSewerSystemTaken
                         " #sampledSewerSystemTaken="ngModel" [value]="0" />
                       {{ "NEDSS.COMMON.YES" | translate }}
                     </label>
                     <label for="">
-                      <input type="radio" class="form-check-input" id="sampledSewerSystemTaken" (blur)="calculateCompletionPercentage()"
-                             name="sampledSewerSystemTaken" [(ngModel)]="
+                      <input type="radio" class="form-check-input" id="sampledSewerSystemTaken"
+                        (blur)="calculateCompletionPercentage()" name="sampledSewerSystemTaken" [(ngModel)]="
                           hepatitisVirusesData.sampledSewerSystemTaken
                         " #sampledSewerSystemTaken="ngModel" [value]="1" />
                       {{ "NEDSS.COMMON.NO" | translate }}
                     </label>
                     <label for="">
-                      <input type="radio" class="form-check-input" id="sampledSewerSystemTaken" (blur)="calculateCompletionPercentage()"
-                             name="sampledSewerSystemTaken" [(ngModel)]="
+                      <input type="radio" class="form-check-input" id="sampledSewerSystemTaken"
+                        (blur)="calculateCompletionPercentage()" name="sampledSewerSystemTaken" [(ngModel)]="
                           hepatitisVirusesData.sampledSewerSystemTaken
                         " #sampledSewerSystemTaken="ngModel" [value]="2" />
                       {{ "NEDSS.REPORTS.UnKnown" | translate }}
@@ -1809,7 +1830,8 @@
                 <div class="form-group">
                   <label for="">فى حاله نعم، ماذا كانت نتيجة العينة ؟</label>
                   <input type="text" maxlength="100" class="form-control" name="sampleResult"
-                         [(ngModel)]="hepatitisVirusesData.sampleResult" #sampleResult="ngModel" (blur)="calculateCompletionPercentage()" />
+                    [(ngModel)]="hepatitisVirusesData.sampleResult" #sampleResult="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
                 </div>
               </div>
             </div>
@@ -1841,7 +1863,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">دخول مستشفى</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.enteringHospital" (blur)="calculateCompletionPercentage()" >
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.enteringHospital"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of enteringHospitals" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1852,7 +1875,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentH" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentH"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeEstablishmentHs" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1864,7 +1888,8 @@
                 <div class="form-group">
                   <label for="">اسم المنشأة</label>
                   <input type="text" maxlength="100" class="form-control" name="facilityNameH"
-                          [(ngModel)]="hepatitisVirusesData.facilityNameH" #facilityNameH="ngModel" (blur)="calculateCompletionPercentage()" />
+                    [(ngModel)]="hepatitisVirusesData.facilityNameH" #facilityNameH="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
                 </div>
               </div>
               <!-- /.col-lg-4 -->
@@ -1872,7 +1897,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">زيارة عيادة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.visitClinic" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.visitClinic"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of visitClinics" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1883,7 +1909,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentC" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentC"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeEstablishmentCs" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1894,8 +1921,9 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameC" (blur)="calculateCompletionPercentage()"
-                          [(ngModel)]="hepatitisVirusesData.facilityNameC" #facilityNameC="ngModel" />
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameC"
+                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.facilityNameC"
+                    #facilityNameC="ngModel" />
                 </div>
               </div>
               <!-- /.col-lg-4 -->
@@ -1903,7 +1931,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">نقل دم</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.bloodTransfusion" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.bloodTransfusion"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of bloodTransfusions" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1914,7 +1943,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentB" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentB"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeEstablishmentBs" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1926,7 +1956,8 @@
                 <div class="form-group">
                   <label for="">اسم المنشأة</label>
                   <input type="text" maxlength="100" class="form-control" name="facilityNameB"
-                         [(ngModel)]="hepatitisVirusesData.facilityNameB" #facilityNameB="ngModel" (blur)="calculateCompletionPercentage()" />
+                    [(ngModel)]="hepatitisVirusesData.facilityNameB" #facilityNameB="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
                 </div>
               </div>
               <!-- /.col-lg-4 -->
@@ -1934,7 +1965,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">جراحة/خياطة جراحية</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.surgerySutures" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.surgerySutures"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of surgerySuturess" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1945,7 +1977,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentS" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentS"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeEstablishmentSs" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1957,7 +1990,8 @@
                 <div class="form-group">
                   <label for="">اسم المنشأة</label>
                   <input type="text" maxlength="100" class="form-control" name="facilityNameS"
-                         [(ngModel)]="hepatitisVirusesData.facilityNameS" #facilityNameS="ngModel" (blur)="calculateCompletionPercentage()"  />
+                    [(ngModel)]="hepatitisVirusesData.facilityNameS" #facilityNameS="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
                 </div>
               </div>
               <!-- /.col-lg-4 -->
@@ -1965,7 +1999,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">مناظير</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.binoculars" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.binoculars"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of binocularss" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1976,8 +2011,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control"
-                          [(ngModel)]="hepatitisVirusesData.typeEstablishmentBin" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentBin"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeEstablishmentBins" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -1989,7 +2024,8 @@
                 <div class="form-group">
                   <label for="">اسم المنشأة</label>
                   <input type="text" maxlength="100" class="form-control" name="facilityNameBin"
-                          [(ngModel)]="hepatitisVirusesData.facilityNameBin" #facilityNameBin="ngModel" (blur)="calculateCompletionPercentage()" />
+                    [(ngModel)]="hepatitisVirusesData.facilityNameBin" #facilityNameBin="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
                 </div>
               </div>
               <!-- /.col-lg-4 -->
@@ -1998,7 +2034,7 @@
                 <div class="form-group">
                   <label for="">قسطرة بولية</label>
                   <select name="case" id="" class="form-control"
-                          [(ngModel)]="hepatitisVirusesData.urinaryCatheterization" (blur)="calculateCompletionPercentage()">
+                    [(ngModel)]="hepatitisVirusesData.urinaryCatheterization" (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of urinaryCatheterizations" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2009,7 +2045,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentU" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentU"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeEstablishmentUs" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2021,14 +2058,16 @@
                 <div class="form-group">
                   <label for="">اسم المنشأة</label>
                   <input type="text" maxlength="100" class="form-control" name="facilityNameU"
-                         [(ngModel)]="hepatitisVirusesData.facilityNameU" #facilityNameU="ngModel" (blur)="calculateCompletionPercentage()" />
+                    [(ngModel)]="hepatitisVirusesData.facilityNameU" #facilityNameU="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
                 </div>
               </div>
               <!-- /.col-lg-4 -->
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">تقطير وريدي</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.ivDrip" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.ivDrip"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of ivDrips" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2039,7 +2078,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentIv" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentIv"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeEstablishmentIvs" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2051,14 +2091,16 @@
                 <div class="form-group">
                   <label for="">اسم المنشأة</label>
                   <input type="text" maxlength="100" class="form-control" name="facilityNameIv"
-                         [(ngModel)]="hepatitisVirusesData.facilityNameIv" #facilityNameIv="ngModel" (blur)="calculateCompletionPercentage()" />
+                    [(ngModel)]="hepatitisVirusesData.facilityNameIv" #facilityNameIv="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
                 </div>
               </div>
               <!-- /.col-lg-4 -->
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">غسيل كلوي</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dialysis" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dialysis"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of dialysiss" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2069,7 +2111,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentD" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentD"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeEstablishmentDs" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2081,14 +2124,16 @@
                 <div class="form-group">
                   <label for="">اسم المنشأة</label>
                   <input type="text" maxlength="100" class="form-control" name="facilityNameD"
-                         [(ngModel)]="hepatitisVirusesData.facilityNameD" #facilityNameD="ngModel" (blur)="calculateCompletionPercentage()" />
+                    [(ngModel)]="hepatitisVirusesData.facilityNameD" #facilityNameD="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
                 </div>
               </div>
               <!-- /.col-lg-4 -->
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">إجراء طبي في الأسنان (حشو، خلع، تنظيف، عمليات)</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dentalProcedures" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dentalProcedures"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of dentalProceduress" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2099,8 +2144,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control"
-                          [(ngModel)]="hepatitisVirusesData.typeEstablishmentDen" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentDen"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeEstablishmentDens" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2112,7 +2157,8 @@
                 <div class="form-group">
                   <label for="">اسم المنشأة</label>
                   <input type="text" maxlength="100" class="form-control" name="facilityNameDen"
-                         [(ngModel)]="hepatitisVirusesData.facilityNameDen" #facilityNameDen="ngModel" (blur)="calculateCompletionPercentage()"/>
+                    [(ngModel)]="hepatitisVirusesData.facilityNameDen" #facilityNameDen="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
                 </div>
               </div>
               <!-- /.col-lg-4 -->
@@ -2125,7 +2171,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">الإبر الصينية</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.chineseNeedles" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.chineseNeedles"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of ChineseNeedless" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2136,7 +2183,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">طهارة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.purity" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.purity"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of puritys" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2147,7 +2195,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">الوشم</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.tattoo" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.tattoo"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of tattoos" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2158,7 +2207,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">حجامة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.cupping" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.cupping"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of cuppings" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2169,7 +2219,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">للسيدات : خرم الأذن</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.earPiercing" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.earPiercing"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of earPiercings" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2180,7 +2231,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">زيارة مركز تجميل /حلاقة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.visitBeautyShop" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.visitBeautyShop"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of visitBeautyShops" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2195,7 +2247,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">هل تشارك في استخدام فرشاة أسنان مع آخرين ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.shareToothbrush" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.shareToothbrush"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of shareToothbrushs" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2209,7 +2262,8 @@
                     هل تشارك في استخدام أدوات حادة مع آخرين مثل (المقص،
                     القصافة، الملقاط،، شفرة حلاقة......الخ) ؟
                   </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.shareSharpTools" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.shareSharpTools"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of shareSharpToolss" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2220,7 +2274,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">هل أنت مخالط لحالة التهاب كبدى ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.contactHepatitis" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.contactHepatitis"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of contactHepatitiss" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2231,7 +2286,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">إذا نعم ما نوع الالتهاب الكبدى؟ </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeHepatitis" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeHepatitis"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeHepatitiss" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2245,7 +2301,8 @@
                     هل تعرضت للدم خارج أماكن تقديم الخدمة الصحية خلال آخر 6
                     شهور؟
                   </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.exposedBloodOutside" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.exposedBloodOutside"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of exposedBloodOutsides" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2259,7 +2316,8 @@
               <div class="col-lg-12">
                 <div class="form-group">
                   <label for="">هل كنت فى الخدمة العسكرية خلال آخر 6 شهور ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.inMilitaryService" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.inMilitaryService"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of inMilitaryServices" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2273,7 +2331,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">هل يوجد حمل</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.pregnancy" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.pregnancy"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of pregnancys" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2284,8 +2343,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">هل تعرضت ولادة / إجهاض في خلال آخر 6 شهور ؟</label>
-                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" 
-                          [(ngModel)]="hepatitisVirusesData.experiencedChildbirth">
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                    [(ngModel)]="hepatitisVirusesData.experiencedChildbirth">
                     <option *ngFor="let case of experiencedChildbirths" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2296,7 +2355,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">إذا نعم حدد نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeFacility" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeFacility"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeFacilitys" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2307,8 +2367,9 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameW" (blur)="calculateCompletionPercentage()"
-                          [(ngModel)]="hepatitisVirusesData.facilityNameW" #facilityNameW="ngModel" />
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameW"
+                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.facilityNameW"
+                    #facilityNameW="ngModel" />
                 </div>
               </div>
               <!-- /.col-lg-6 -->
@@ -2316,7 +2377,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">هل كنت فى السجن خلال آخر 6 شهور ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.inPrison" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.inPrison"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of inPrisons" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2327,7 +2389,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">حالياً ، هل تتعاطى أى مواد مخدرة عن طريق الحقن ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.injectDrugs" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.injectDrugs"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of injectDrugss" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2341,7 +2404,8 @@
                     إذا نعم، هل شاركت نفس السرنجة أو السن مع آخرين خلال آخر 6
                     شهور؟
                   </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.sharedSameSyringe" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.sharedSameSyringe"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of sharedSameSyringes" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2355,7 +2419,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">هل المريض يعانى من أمراض مزمنة؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.chronicDiseases" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.chronicDiseases"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of chronicDiseasess" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2366,7 +2431,8 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">إذا نعم ما هو ؟ </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeChronicDiseases" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeChronicDiseases"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of typeChronicDiseasess" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2377,15 +2443,17 @@
               <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">في حالة أخرى. ماهي؟</label>
-                  <input type="text" maxlength="100" class="form-control" name="anotherCaseChronicDiseases" [(ngModel)]="hepatitisVirusesData.anotherCaseChronicDiseases" 
-                                      (blur)="calculateCompletionPercentage()" #anotherCaseChronicDiseases="ngModel" />
+                  <input type="text" maxlength="100" class="form-control" name="anotherCaseChronicDiseases"
+                    [(ngModel)]="hepatitisVirusesData.anotherCaseChronicDiseases"
+                    (blur)="calculateCompletionPercentage()" #anotherCaseChronicDiseases="ngModel" />
                 </div>
               </div>
               <!-- /.col-lg-4 -->
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">عل توجد إصابة سابقة لفيروس HCV ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.infectionHcv" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.infectionHcv"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of infectionHcvs" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2396,7 +2464,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">إذا نعم عل تم أخذ علاج بالكامل؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.treatmentTaken" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.treatmentTaken"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of treatmentTakens" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2407,7 +2476,8 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">هل تم أخذ 3 جرعات متتالية ضد الالتهاب الكبدى B؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.consecutiveDoses" (blur)="calculateCompletionPercentage()">
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.consecutiveDoses"
+                    (blur)="calculateCompletionPercentage()">
                     <option *ngFor="let case of consecutiveDosess" [value]="case.id">
                       {{ case.arabicName }}
                     </option>
@@ -2415,6 +2485,36 @@
                 </div>
               </div>
               <!-- /.col-lg-6 -->
+            </div>
+            <div class="row">
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.INVESTIGATION_DATE" | translate }}</label>
+                  <input type="date" [class]="'form-control-'+ currentLang" (blur)="calculateCompletionPercentage()"
+                    name="investigationDate" [(ngModel)]="hepatitisVirusesData.investigationDate" />
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.HEALTH_OBSERVER_NAME" | translate }}</label>
+                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
+                    name="healthObserverName" [(ngModel)]="hepatitisVirusesData.healthObserverName" />
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SURVEILLANCE_OFFICER" | translate }}</label>
+                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
+                    name="surveillanceOfficerName" [(ngModel)]="hepatitisVirusesData.surveillanceOfficerName" />
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.ADMINISTRATION_DIRECTOR" | translate }}</label>
+                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
+                    name="administrationDirectorName" [(ngModel)]="hepatitisVirusesData.administrationDirectorName" />
+                </div>
+              </div>
             </div>
             <!-- / .row -->
           </div>
