@@ -1,6 +1,6 @@
 <!-- <div class="row">
   <div class="col-lg-6">
-    <h2 class="titles">حمى تيفودية</h2>
+    <h2 class="titles">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.PAGE_TITLE" | translate }}</h2>
   </div>
 </div> -->
 
@@ -9,144 +9,23 @@
     <div class="card shadow mt-4 color">
       <div class="card-body">
         <h5 style="text-align: center; border: 1px solid; padding: 1%">
-          حمى تيفودية
+          {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.PAGE_TITLE" | translate }}
         </h5>
-        <div class="row mt-3">
-          <div class="col-lg-12">
-            <div class="form-group">
-              <label for="">
-                {{"NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME"| translate}}: {{ patientName }}
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="form-group">
-              <label for="">
-                {{"NEDSS.INVESTIGATIONS.percentage"| translate}}
-                <span class="mx-4" style="font-size: larger; color: red">
-                  <!-- {{ precentile.value }} % -->
-                  {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount / allControllesCount) * 100 |
-                  number:'1.0-2') }} %
-                </span>
-              </label>
-              <input #precentile type="range" class="form-range bg" onkeypress="false" [readonly]="true"
-                style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
-                value="{{ (allFilledControlsCount / allControllesCount) * 100 }}"
-                formControlName="investigationCompletePercentage" />
-              <!-- value="{{controlsCount}}" formControlName="completePercentage" /> -->
-            </div>
-          </div>
-          <div class="col-lg-4">
-            {{"NEDSS.INVESTIGATIONS.Filled"| translate}}
-            {{allFilledControlsCount}}
-            {{"NEDSS.INVESTIGATIONS.Field"| translate}}
-            {{"NEDSS.INVESTIGATIONS.From"| translate}}
-            {{allControllesCount}}
-            {{"NEDSS.INVESTIGATIONS.Field"| translate}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-2 mt-3">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</div>
-          <div class="col-5 has-labels">
-            <label for="">
-              <input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input" id="fever"
-                name="fever" [(ngModel)]="typhoidData.fever" #fever="ngModel" [value]="0" />
-              {{ "NEDSS.COMMON.YES" | translate }}
-            </label>
-            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                id="fever" name="fever" [(ngModel)]="typhoidData.fever" #fever="ngModel" [value]="1" />
-              {{ "NEDSS.COMMON.NO" | translate }}
-            </label>
-            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                id="fever" name="fever" [(ngModel)]="typhoidData.fever" #fever="ngModel" [value]="2" />
-              {{ "NEDSS.REPORTS.UnKnown" | translate }}
-            </label>
-          </div>
-          <div class="col-lg-6">
-            <div class="form-group">
-              <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Duration_Fever_Days" | translate }}</label>
-              <input type="number" class="form-control" (blur)="calculateCompletionPercentage()" name="feverDurationDay"
-                [(ngModel)]="typhoidData.feverDurationDay" #feverDurationDay="ngModel" />
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="form-group">
-              <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Max_Temp" | translate }}</label>
-              <input type="number" class="form-control" (blur)="calculateCompletionPercentage()" name="maxTemperature"
-                [(ngModel)]="typhoidData.maxTemperature" #maxTemperature="ngModel" />
-            </div>
-          </div>
+        <br />
+        <app-investigation-summary [patientName]="patientName" [allFilledControlsCount]="allFilledControlsCount"
+          [allControllesCount]="allControllesCount">
+        </app-investigation-summary>
 
-          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-            <div class="row">
-              <div class="col-12 title fs-6 fwb">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}
-              </div>
-              <div class="col-6">
-                <div class="row mt-4">
-                  <div class="col-4">بطئ نسبي بضربات القلب</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="slowHeartRate" name="slowHeartRate" [(ngModel)]="typhoidData.slowHeartRate"
-                        #slowHeartRate="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="slowHeartRate" name="slowHeartRate" [(ngModel)]="typhoidData.slowHeartRate"
-                        #slowHeartRate="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="slowHeartRate" name="slowHeartRate" [(ngModel)]="typhoidData.slowHeartRate"
-                        #slowHeartRate="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">عدد ضربات القلب في الدقيقة</label>
-                  <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
-                    name="numberHeartBeats" [(ngModel)]="typhoidData.numberHeartBeats" #numberHeartBeats="ngModel" />
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">هل تم عرض الحالة على الطبيب؟</label>
-                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                    [(ngModel)]="typhoidData.caseShownDoctor">
-                    <option *ngFor="let case of caseShownDoctors" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">هل تم أخذ علاج مبدئى؟</label>
-                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                    [(ngModel)]="typhoidData.initialTreatmentTaken">
-                    <option *ngFor="let case of initialTreatmentTakens" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-
+        <div class="row">
           <div class="col-12">
-            <h3 class="fs-5 text-success fwb">التقصي الوبائي</h3>
+            <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.EPIDEMIOLOGICAL_INVESTIGATION" | translate }}</h3>
           </div>
-
           <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-12 title fs-6 fwb">المخالطة البشرية</div>
+              <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HUMAN_CONTACT" | translate }}</div>
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">مخالط لحالة مشتبهة</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_SUSPECTED_CASE" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="contactSuspectedCase" name="contactSuspectedCase"
@@ -169,7 +48,7 @@
 
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">جزء من تفشي وبائي أو حالات مشابهة</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.EPIDEMIC_OUTBREAK_OR_SIMILAR_CASES" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="epidemicOutbreak" name="epidemicOutbreak" [(ngModel)]="typhoidData.epidemicOutbreak"
@@ -191,7 +70,7 @@
               </div>
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">مخالط لحالة مؤكدة</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_CONFIRMED_CASE" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="contactConfirmedCase" name="contactConfirmedCase"
@@ -213,7 +92,7 @@
               </div>
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">مخالط لمتوفي بمرض تنفسي غير معلوم</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_DECEASED_RESPIRATORY_CASE" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="contactDeceasedPersonRespiratory" name="contactDeceasedPersonRespiratory" [(ngModel)]="
@@ -240,7 +119,7 @@
                 <div class="form-group">
                   <div class="row">
                     <div class="col-lg-5">
-                      <label for="">عدد المخالطين المباشرين</label>
+                      <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.NUMBER_DIRECT_CONTACTS" | translate }}</label>
                     </div>
                     <div class="col-lg-7">
                       <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
@@ -254,7 +133,7 @@
                 <div class="form-group">
                   <div class="row">
                     <div class="col-lg-5">
-                      <label for="">عدد المخالطين غير المباشرين </label>
+                      <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.NUMBER_NON_DIRECT_CONTACTS" | translate }}</label>
                     </div>
                     <div class="col-lg-7">
                       <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
@@ -273,7 +152,7 @@
                 <h2 class="accordion-header" id="headingOne">
                   <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                     aria-expanded="true" aria-controls="collapseOne">
-                    متابعة اليوم الأول
+                    {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP" | translate }}
                   </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
@@ -281,7 +160,7 @@
                   <div class="accordion-body">
                     <div class="row">
                       <div class="col-12 title fs-6 fwb">
-                        بيانات الحالة المخالطة
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_CASE_DATA" | translate }}
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
@@ -293,14 +172,14 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">العمر</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.AGE" | translate }}</label>
                           <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
                             name="ageDay1" [(ngModel)]="typhoidData.ageDay1" #ageDay1="ngModel" />
                         </div>
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">رقم التليفون</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.PHONE_NUMBER" | translate }}</label>
                           <input type="text" maxlength="100" class="form-control"
                             (blur)="calculateCompletionPercentage()" name="telephoneDay1"
                             [(ngModel)]="typhoidData.telephoneDay1" #telephoneDay1="ngModel" />
@@ -308,7 +187,7 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">النوع</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.GENDER" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.genderDay1">
                             <option *ngFor="let case of genderDay1s" [value]="case.id">
@@ -319,7 +198,7 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">نوع المخالطة</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_TYPE" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.contactTypeDay1">
                             <option *ngFor="let case of contactTypeDay1s" [value]="case.id">
@@ -330,18 +209,18 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">علاقته بالحالة</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.RELATIONSHIP_TO_CASE" | translate }}</label>
                           <input type="text" maxlength="100" class="form-control"
                             (blur)="calculateCompletionPercentage()" name="relationshipPatientDay1"
                             [(ngModel)]="typhoidData.relationshipPatientDay1" #relationshipPatientDay1="ngModel" />
                         </div>
                       </div>
                       <div class="col-12 title fs-6 fwb">
-                        في حالة ظهور أعراض
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR" | translate }}
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">تاريخ ظهور الأعراض</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SYMPTOM_ONSET_DATE" | translate }}</label>
                           <input type="date" (blur)="calculateCompletionPercentage()"
                             [class]="'form-control-'+ currentLang" name="dateOnsetSymptomsDay1" placeholder="dd/mm/yyyy"
                             [(ngModel)]="typhoidData.dateOnsetSymptomsDay1" #dateOnsetSymptomsDay1="ngModel" />
@@ -360,7 +239,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">سعال جاف</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.dryCoughDay1">
                             <option *ngFor="let case of dryCoughDay1s" [value]="case.id">
@@ -371,7 +250,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">سعال يصاحبه بصق</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.coughingWithSpittingDay1">
                             <option *ngFor="let case of coughingWithSpittingDay1s" [value]="case.id">
@@ -382,7 +261,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">التهاب بالحلق</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.soreThroatDay1">
                             <option *ngFor="let case of soreThroatDay1s" [value]="case.id">
@@ -393,7 +272,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">صعوبة بالتنفس</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.breathingDifficultyDay1">
                             <option *ngFor="let case of breathingDifficultyDay1s" [value]="case.id">
@@ -404,7 +283,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">آلام بالمفاصل</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.jointPainDay1">
                             <option *ngFor="let case of jointPainDay1s" [value]="case.id">
@@ -415,7 +294,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">قئ</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.vomitDay1">
                             <option *ngFor="let case of vomitDay1s" [value]="case.id">
@@ -426,7 +305,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">إسهال</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.diarrheaDay1">
                             <option *ngFor="let case of diarrheaDay1s" [value]="case.id">
@@ -437,7 +316,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">أخرى</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.otherDay1">
                             <option *ngFor="let case of otherDay1s" [value]="case.id">
@@ -454,10 +333,10 @@
                             [(ngModel)]="typhoidData.otherSymptomsDay1" #otherSymptomsDay1="ngModel" />
                         </div>
                       </div>
-                      <div class="col-12 title fs-6 fwb">المعمل</div>
+                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LAB" | translate }}</div>
                       <div class="col-4">
                         <div class="row">
-                          <div class="col-6">تم اخذ العينة؟</div>
+                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_TAKEN" | translate }}</div>
                           <div class="col-6 has-labels">
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="isSampleTakenDay1" name="isSampleTakenDay1"
@@ -475,7 +354,7 @@
                       <div class="col-lg-4">
                         <div class="form-group row">
                           <div class="col-lg-4">
-                            <label class="mt-2" for="">تاريخ أخذ العينة</label>
+                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_DATE" | translate }}</label>
                           </div>
                           <div class="col-lg-8">
                             <input type="date" (blur)="calculateCompletionPercentage()"
@@ -486,7 +365,7 @@
                       </div>
                       <div class="col-4">
                         <div class="row">
-                          <div class="col-4">نتيجة العينة</div>
+                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_RESULT" | translate }}</div>
                           <div class="col-8 has-labels">
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="sampleResultDay1" name="sampleResultDay1"
@@ -501,7 +380,7 @@
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="sampleResultDay1" name="sampleResultDay1"
                                 [(ngModel)]="typhoidData.sampleResultDay1" #sampleResultDay1="ngModel" [value]="2" />
-                              لم ترد
+                              {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.NO_RESULT_YET" | translate }}
                             </label>
                           </div>
                         </div>
@@ -514,7 +393,7 @@
                 <h2 class="accordion-header" id="headingTwo">
                   <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseOne">
-                    متابعة اليوم الثاني
+                    {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP" | translate }}
                   </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="collapseTwo"
@@ -522,7 +401,7 @@
                   <div class="accordion-body">
                     <div class="row">
                       <div class="col-12 title fs-6 fwb">
-                        بيانات الحالة المخالطة
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_CASE_DATA" | translate }}
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
@@ -534,14 +413,14 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">العمر</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.AGE" | translate }}</label>
                           <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
                             name="ageDay2" [(ngModel)]="typhoidData.ageDay2" #ageDay2="ngModel" />
                         </div>
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">رقم التليفون</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.PHONE_NUMBER" | translate }}</label>
                           <input type="text" maxlength="100" class="form-control"
                             (blur)="calculateCompletionPercentage()" name="telephoneDay2"
                             [(ngModel)]="typhoidData.telephoneDay2" #telephoneDay2="ngModel" />
@@ -549,7 +428,7 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">النوع</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.GENDER" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.genderDay2">
                             <option *ngFor="let case of genderDay2s" [value]="case.id">
@@ -560,7 +439,7 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">نوع المخالطة</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_TYPE" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.contactTypeDay2">
                             <option *ngFor="let case of contactTypeDay2s" [value]="case.id">
@@ -571,18 +450,18 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">علاقته بالحالة</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.RELATIONSHIP_TO_CASE" | translate }}</label>
                           <input type="text" maxlength="100" class="form-control"
                             (blur)="calculateCompletionPercentage()" name="relationshipPatientDay2"
                             [(ngModel)]="typhoidData.relationshipPatientDay2" #relationshipPatientDay2="ngModel" />
                         </div>
                       </div>
                       <div class="col-12 title fs-6 fwb">
-                        في حالة ظهور أعراض
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR" | translate }}
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">تاريخ ظهور الأعراض</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SYMPTOM_ONSET_DATE" | translate }}</label>
                           <input type="date" (blur)="calculateCompletionPercentage()"
                             [class]="'form-control-'+ currentLang" name="dateOnsetSymptomsDay2" placeholder="dd/mm/yyyy"
                             [(ngModel)]="typhoidData.dateOnsetSymptomsDay2" #dateOnsetSymptomsDay2="ngModel" />
@@ -601,7 +480,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">سعال جاف</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.dryCoughDay2">
                             <option *ngFor="let case of dryCoughDay2s" [value]="case.id">
@@ -612,7 +491,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">سعال يصاحبه بصق</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.coughingWithSpittingDay2">
                             <option *ngFor="let case of coughingWithSpittingDay2s" [value]="case.id">
@@ -623,7 +502,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">التهاب بالحلق</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.soreThroatDay2">
                             <option *ngFor="let case of soreThroatDay2s" [value]="case.id">
@@ -634,7 +513,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">صعوبة بالتنفس</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.breathingDifficultyDay2">
                             <option *ngFor="let case of breathingDifficultyDay2s" [value]="case.id">
@@ -645,7 +524,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">آلام بالمفاصل</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.jointPainDay2">
                             <option *ngFor="let case of jointPainDay2s" [value]="case.id">
@@ -656,7 +535,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">قئ</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.vomitDay2">
                             <option *ngFor="let case of vomitDay2s" [value]="case.id">
@@ -667,7 +546,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">إسهال</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.diarrheaDay2">
                             <option *ngFor="let case of diarrheaDay2s" [value]="case.id">
@@ -678,7 +557,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">أخرى</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.otherDay2">
                             <option *ngFor="let case of otherDay2s" [value]="case.id">
@@ -695,10 +574,10 @@
                             [(ngModel)]="typhoidData.otherSymptomsDay2" #otherSymptomsDay2="ngModel" />
                         </div>
                       </div>
-                      <div class="col-12 title fs-6 fwb">المعمل</div>
+                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LAB" | translate }}</div>
                       <div class="col-4">
                         <div class="row">
-                          <div class="col-6">تم اخذ العينة؟</div>
+                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_TAKEN" | translate }}</div>
                           <div class="col-6 has-labels">
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="isSampleTakenDay2" name="isSampleTakenDay2"
@@ -716,7 +595,7 @@
                       <div class="col-lg-4">
                         <div class="form-group row">
                           <div class="col-lg-4">
-                            <label class="mt-2" for="">تاريخ أخذ العينة</label>
+                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_DATE" | translate }}</label>
                           </div>
                           <div class="col-lg-8">
                             <input type="date" (blur)="calculateCompletionPercentage()"
@@ -727,7 +606,7 @@
                       </div>
                       <div class="col-4">
                         <div class="row">
-                          <div class="col-4">نتيجة العينة</div>
+                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_RESULT" | translate }}</div>
                           <div class="col-8 has-labels">
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="sampleResultDay2" name="sampleResultDay2"
@@ -742,7 +621,7 @@
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="sampleResultDay2" name="sampleResultDay2"
                                 [(ngModel)]="typhoidData.sampleResultDay2" #sampleResultDay2="ngModel" [value]="2" />
-                              لم ترد
+                              {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.NO_RESULT_YET" | translate }}
                             </label>
                           </div>
                         </div>
@@ -755,7 +634,7 @@
                 <h2 class="accordion-header" id="headingSeven">
                   <button class="accordion-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-                    متابعة بعد 7 ايام
+                    {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP" | translate }}
                   </button>
                 </h2>
                 <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="collapseSeven"
@@ -763,7 +642,7 @@
                   <div class="accordion-body">
                     <div class="row">
                       <div class="col-12 title fs-6 fwb">
-                        بيانات الحالة المخالطة
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_CASE_DATA" | translate }}
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
@@ -775,14 +654,14 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">العمر</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.AGE" | translate }}</label>
                           <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
                             name="ageDay7" [(ngModel)]="typhoidData.ageDay7" #ageDay7="ngModel" />
                         </div>
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">رقم التليفون</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.PHONE_NUMBER" | translate }}</label>
                           <input type="text" maxlength="100" class="form-control"
                             (blur)="calculateCompletionPercentage()" name="telephoneDay7"
                             [(ngModel)]="typhoidData.telephoneDay7" #telephoneDay7="ngModel" />
@@ -790,7 +669,7 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">النوع</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.GENDER" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.genderDay7">
                             <option *ngFor="let case of genderDay7s" [value]="case.id">
@@ -801,7 +680,7 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">نوع المخالطة</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_TYPE" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.contactTypeDay7">
                             <option *ngFor="let case of contactTypeDay7s" [value]="case.id">
@@ -812,18 +691,18 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">علاقته بالحالة</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.RELATIONSHIP_TO_CASE" | translate }}</label>
                           <input type="text" maxlength="100" class="form-control"
                             (blur)="calculateCompletionPercentage()" name="relationshipPatientDay7"
                             [(ngModel)]="typhoidData.relationshipPatientDay7" #relationshipPatientDay7="ngModel" />
                         </div>
                       </div>
                       <div class="col-12 title fs-6 fwb">
-                        في حالة ظهور أعراض
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR" | translate }}
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">تاريخ ظهور الأعراض</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SYMPTOM_ONSET_DATE" | translate }}</label>
                           <input type="date" (blur)="calculateCompletionPercentage()"
                             [class]="'form-control-'+ currentLang" name="dateOnsetSymptomsDay7" placeholder="dd/mm/yyyy"
                             [(ngModel)]="typhoidData.dateOnsetSymptomsDay7" #dateOnsetSymptomsDay7="ngModel" />
@@ -842,7 +721,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">سعال جاف</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.dryCoughDay7">
                             <option *ngFor="let case of dryCoughDay7s" [value]="case.id">
@@ -853,7 +732,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">سعال يصاحبه بصق</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.coughingWithSpittingDay7">
                             <option *ngFor="let case of coughingWithSpittingDay7s" [value]="case.id">
@@ -864,7 +743,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">التهاب بالحلق</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.soreThroatDay7">
                             <option *ngFor="let case of soreThroatDay7s" [value]="case.id">
@@ -875,7 +754,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">صعوبة بالتنفس</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.breathingDifficultyDay7">
                             <option *ngFor="let case of breathingDifficultyDay7s" [value]="case.id">
@@ -886,7 +765,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">آلام بالمفاصل</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.jointPainDay7">
                             <option *ngFor="let case of jointPainDay7s" [value]="case.id">
@@ -897,7 +776,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">قئ</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.vomitDay7">
                             <option *ngFor="let case of vomitDay7s" [value]="case.id">
@@ -908,7 +787,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">إسهال</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.diarrheaDay7">
                             <option *ngFor="let case of diarrheaDay7s" [value]="case.id">
@@ -919,7 +798,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">أخرى</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.otherDay7">
                             <option *ngFor="let case of otherDay7s" [value]="case.id">
@@ -936,10 +815,10 @@
                             [(ngModel)]="typhoidData.otherSymptomsDay7" #otherSymptomsDay7="ngModel" />
                         </div>
                       </div>
-                      <div class="col-12 title fs-6 fwb">المعمل</div>
+                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LAB" | translate }}</div>
                       <div class="col-4">
                         <div class="row">
-                          <div class="col-6">تم اخذ العينة؟</div>
+                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_TAKEN" | translate }}</div>
                           <div class="col-6 has-labels">
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="isSampleTakenDay7" name="isSampleTakenDay7"
@@ -957,7 +836,7 @@
                       <div class="col-lg-4">
                         <div class="form-group row">
                           <div class="col-lg-4">
-                            <label class="mt-2" for="">تاريخ أخذ العينة</label>
+                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_DATE" | translate }}</label>
                           </div>
                           <div class="col-lg-8">
                             <input type="date" (blur)="calculateCompletionPercentage()"
@@ -968,7 +847,7 @@
                       </div>
                       <div class="col-4">
                         <div class="row">
-                          <div class="col-4">نتيجة العينة</div>
+                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_RESULT" | translate }}</div>
                           <div class="col-8 has-labels">
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="sampleResultDay7" name="fesampleResultDay7ver"
@@ -983,7 +862,7 @@
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="sampleResultDay7" name="sampleResultDay7"
                                 [(ngModel)]="typhoidData.sampleResultDay7" #sampleResultDay7="ngModel" [value]="2" />
-                              لم ترد
+                              {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.NO_RESULT_YET" | translate }}
                             </label>
                           </div>
                         </div>
@@ -997,7 +876,7 @@
                 <h2 class="accordion-header" id="headingSevenTeen">
                   <button class="accordion-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapseSevenTeen" aria-expanded="true" aria-controls="collapseSevenTeen">
-                    متابعة بعد 14 يوم
+                    {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP" | translate }}
                   </button>
                 </h2>
                 <div id="collapseSevenTeen" class="accordion-collapse collapse" aria-labelledby="collapseSevenTeen"
@@ -1005,7 +884,7 @@
                   <div class="accordion-body">
                     <div class="row">
                       <div class="col-12 title fs-6 fwb">
-                        بيانات الحالة المخالطة
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_CASE_DATA" | translate }}
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
@@ -1017,14 +896,14 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">العمر</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.AGE" | translate }}</label>
                           <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
                             name="ageDay14" [(ngModel)]="typhoidData.ageDay14" #ageDay14="ngModel" />
                         </div>
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">رقم التليفون</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.PHONE_NUMBER" | translate }}</label>
                           <input type="text" maxlength="100" class="form-control"
                             (blur)="calculateCompletionPercentage()" name="telephoneDay14"
                             [(ngModel)]="typhoidData.telephoneDay14" #telephoneDay14="ngModel" />
@@ -1032,7 +911,7 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">النوع</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.GENDER" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.genderDay14">
                             <option *ngFor="let case of genderDay14s" [value]="case.id">
@@ -1043,7 +922,7 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">نوع المخالطة</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_TYPE" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.contactTypeDay14">
                             <option *ngFor="let case of contactTypeDay14s" [value]="case.id">
@@ -1054,18 +933,18 @@
                       </div>
                       <div class="col-lg-4">
                         <div class="form-group">
-                          <label for="">علاقته بالحالة</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.RELATIONSHIP_TO_CASE" | translate }}</label>
                           <input type="text" maxlength="100" class="form-control"
                             (blur)="calculateCompletionPercentage()" name="relationshipPatientDay14"
                             [(ngModel)]="typhoidData.relationshipPatientDay14" #relationshipPatientDay14="ngModel" />
                         </div>
                       </div>
                       <div class="col-12 title fs-6 fwb">
-                        في حالة ظهور أعراض
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR" | translate }}
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">تاريخ ظهور الأعراض</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SYMPTOM_ONSET_DATE" | translate }}</label>
                           <input type="date" (blur)="calculateCompletionPercentage()"
                             [class]="'form-control-'+ currentLang" name="dateOnsetSymptomsDay14"
                             placeholder="dd/mm/yyyy" [(ngModel)]="typhoidData.dateOnsetSymptomsDay14"
@@ -1085,7 +964,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">سعال جاف</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.dryCoughDay14">
                             <option *ngFor="let case of dryCoughDay14s" [value]="case.id">
@@ -1096,7 +975,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">سعال يصاحبه بصق</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.coughingWithSpittingDay14">
                             <option *ngFor="let case of coughingWithSpittingDay14s" [value]="case.id">
@@ -1107,7 +986,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">التهاب بالحلق</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.soreThroatDay14">
                             <option *ngFor="let case of soreThroatDay14s" [value]="case.id">
@@ -1118,7 +997,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">صعوبة بالتنفس</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.breathingDifficultyDay14">
                             <option *ngFor="let case of breathingDifficultyDay14s" [value]="case.id">
@@ -1129,7 +1008,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">آلام بالمفاصل</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.jointPainDay14">
                             <option *ngFor="let case of jointPainDay14s" [value]="case.id">
@@ -1140,7 +1019,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">قئ</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.vomitDay14">
                             <option *ngFor="let case of vomitDay14s" [value]="case.id">
@@ -1151,7 +1030,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">إسهال</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.diarrheaDay14">
                             <option *ngFor="let case of diarrheaDay14s" [value]="case.id">
@@ -1162,7 +1041,7 @@
                       </div>
                       <div class="col-lg-3">
                         <div class="form-group">
-                          <label for="">أخرى</label>
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER" | translate }}</label>
                           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                             [(ngModel)]="typhoidData.otherDay14">
                             <option *ngFor="let case of otherDay14s" [value]="case.id">
@@ -1179,10 +1058,10 @@
                             [(ngModel)]="typhoidData.otherSymptomsDay14" #otherSymptomsDay14="ngModel" />
                         </div>
                       </div>
-                      <div class="col-12 title fs-6 fwb">المعمل</div>
+                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LAB" | translate }}</div>
                       <div class="col-4">
                         <div class="row">
-                          <div class="col-6">تم اخذ العينة؟</div>
+                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_TAKEN" | translate }}</div>
                           <div class="col-6 has-labels">
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="isSampleTakenDay14" name="isSampleTakenDay14"
@@ -1202,7 +1081,7 @@
                       <div class="col-lg-4">
                         <div class="form-group row">
                           <div class="col-lg-4">
-                            <label class="mt-2" for="">تاريخ أخذ العينة</label>
+                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_DATE" | translate }}</label>
                           </div>
                           <div class="col-lg-8">
                             <input type="date" (blur)="calculateCompletionPercentage()"
@@ -1214,7 +1093,7 @@
                       </div>
                       <div class="col-4">
                         <div class="row">
-                          <div class="col-4">نتيجة العينة</div>
+                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_RESULT" | translate }}</div>
                           <div class="col-8 has-labels">
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="sampleResultDay14" name="sampleResultDay14"
@@ -1229,7 +1108,7 @@
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="sampleResultDay14" name="sampleResultDay14"
                                 [(ngModel)]="typhoidData.sampleResultDay14" #sampleResultDay14="ngModel" [value]="2" />
-                              لم ترد
+                              {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.NO_RESULT_YET" | translate }}
                             </label>
                           </div>
                         </div>
@@ -1243,16 +1122,15 @@
 
           <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-12 title fs-6 fwb">التعرضات للاغذية</div>
+              <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.FOOD_EXPOSURES" | translate }}</div>
               <div class="col-12">
                 <p>
-                  خلال الأسبوعين السابقين لبدء المرض، هل تناول المريض اى من
-                  الأغذيه المذكورة:
+                  {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.FOOD_EXPOSURES_QUESTION" | translate }}
                 </p>
               </div>
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">كابوريا</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CRAB" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="crab" name="crab" [(ngModel)]="typhoidData.crab" #crab="ngModel" [value]="0" />
@@ -1271,7 +1149,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="crabSource" [(ngModel)]="typhoidData.crabSource" #crabSource="ngModel" />
@@ -1283,7 +1161,7 @@
 
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">قشريات بحرية</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.MARINE_CRUSTACEANS" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="marineCrustaceans" name="marineCrustaceans" [(ngModel)]="typhoidData.marineCrustaceans"
@@ -1305,7 +1183,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="marineCrustaceansSource" [(ngModel)]="typhoidData.marineCrustaceansSource"
@@ -1315,10 +1193,10 @@
               </div>
 
 
-              
+
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">مأكولات بحريه أخرى</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER_SEAFOOD" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="otherSeafood" name="otherSeafood" [(ngModel)]="typhoidData.otherSeafood"
@@ -1340,7 +1218,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="otherSeafoodSource" [(ngModel)]="typhoidData.otherSeafoodSource"
@@ -1350,11 +1228,11 @@
               </div>
 
 
-              
+
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">
-                    لبن حليب ( غير معقم / غير معالج حراريا)
+                    {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.UNPASTEURIZED_MILK" | translate }}
                   </div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
@@ -1374,7 +1252,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="milkSource" [(ngModel)]="typhoidData.milkSource" #milkSource="ngModel" />
@@ -1383,10 +1261,10 @@
               </div>
 
 
-              
+
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">جبن بيضاء</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.WHITE_CHEESE" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="cheese" name="cheese" [(ngModel)]="typhoidData.cheese" #cheese="ngModel" [value]="0" />
@@ -1405,7 +1283,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="cheeseSource" [(ngModel)]="typhoidData.cheeseSource" #cheeseSource="ngModel" />
@@ -1414,10 +1292,10 @@
               </div>
 
 
-              
+
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">أنواع أخرى من الجبن</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER_CHEESE_TYPES" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="otherCheese" name="otherCheese" [(ngModel)]="typhoidData.otherCheese" #otherCheese="ngModel"
@@ -1439,7 +1317,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="otherCheeseSource" [(ngModel)]="typhoidData.otherCheeseSource"
@@ -1449,10 +1327,10 @@
               </div>
 
 
-              
+
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">أيس كريم</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ICE_CREAM" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="iceCream" name="iceCream" [(ngModel)]="typhoidData.iceCream" #iceCream="ngModel"
@@ -1474,7 +1352,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="iceCreamSource" [(ngModel)]="typhoidData.iceCreamSource" #iceCreamSource="ngModel" />
@@ -1483,10 +1361,10 @@
               </div>
 
 
-              
+
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">أنواع أخرى من منتجات الألبان</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER_DAIRY_PRODUCTS" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="otherDairyProducts" name="otherDairyProducts" [(ngModel)]="typhoidData.otherDairyProducts"
@@ -1508,7 +1386,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="otherDairyProductsSource" [(ngModel)]="typhoidData.otherDairyProductsSource"
@@ -1518,10 +1396,10 @@
               </div>
 
 
-              
+
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">فواكه أو خضروات غير مطهيه (طازجة)</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.UNCOOKED_FRUITS_VEGETABLES" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="UncookedFruitsVegetables" name="UncookedFruitsVegetables"
@@ -1546,7 +1424,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="uncookedFruitsVegetablesSource" [(ngModel)]="typhoidData.uncookedFruitsVegetablesSource"
@@ -1556,10 +1434,10 @@
               </div>
 
 
-              
+
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">بـيض نىء</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.RAW_EGGS" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="rawEggs" name="rawEggs" [(ngModel)]="typhoidData.rawEggs" #rawEggs="ngModel" [value]="0" />
@@ -1578,7 +1456,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="rawEggsSource" [(ngModel)]="typhoidData.rawEggsSource" #rawEggsSource="ngModel" />
@@ -1587,10 +1465,10 @@
               </div>
 
 
-              
+
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">أي أطعمة غير معدة بالمنزل</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.FOODS_NOT_PREPARED_AT_HOME" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="foodsNotHome" name="foodsNotHome" [(ngModel)]="typhoidData.foodsNotHome"
@@ -1612,7 +1490,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">نوع الطعام</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.FOOD_TYPE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="foodsNotHomeType" [(ngModel)]="typhoidData.foodsNotHomeType" #foodsNotHomeType="ngModel" />
@@ -1621,11 +1499,11 @@
               </div>
 
 
-              
+
               <div class="col-lg-6"></div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="foodsNotHomeSource" [(ngModel)]="typhoidData.foodsNotHomeSource"
@@ -1636,7 +1514,7 @@
 
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">أطعمة أخرى</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER_FOODS" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="otherFoods" name="otherFoods" [(ngModel)]="typhoidData.otherFoods" #otherFoods="ngModel"
@@ -1658,7 +1536,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">المصدر</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SOURCE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
                       name="otherFoodsSource" [(ngModel)]="typhoidData.otherFoodsSource" #otherFoodsSource="ngModel" />
@@ -1667,10 +1545,10 @@
               </div>
 
 
-              
+
               <div class="col-6">
                 <div class="row">
-                  <div class="col-4">هل المريض من متداولى الأغذية؟</div>
+                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IS_FOOD_HANDLER" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="isFoodHandler" name="isFoodHandler" [(ngModel)]="typhoidData.isFoodHandler"
@@ -1701,11 +1579,11 @@
               </div>
 
 
-              
+
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">
-                    فى حاله نعم، هل لدى المريض شهاده صحية؟
+                    {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HAS_HEALTH_CERTIFICATE" | translate }}
                   </div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
@@ -1728,7 +1606,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group row">
-                  <label for="" class="col-lg-3 mt-2">تاريخ آخر شهادة</label>
+                  <label for="" class="col-lg-3 mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LAST_CERTIFICATE_DATE" | translate }}</label>
                   <div class="col-lg-9">
                     <input type="date" (blur)="calculateCompletionPercentage()" [class]="'form-control-'+ currentLang"
                       name="dateHealthCertificate" placeholder="dd/mm/yyyy"
@@ -1742,34 +1620,34 @@
 
           <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-12 title fs-6 fwb">التقصي البيئي</div>
+              <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ENVIRONMENTAL_INVESTIGATION" | translate }}</div>
               <div class="col-12">
                 <div class="row">
-                  <div class="col-2">نوع مصدر المياه بالمنزل</div>
-                  <div class="col-8 has-labels">
+                  <div class="col-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HOUSE_WATER_SOURCE_TYPE" | translate }}</div>
+                  <div class="col-6 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="waterSourceHouse" name="waterSourceHouse" [(ngModel)]="typhoidData.waterSourceHouse"
                         #waterSourceHouse="ngModel" [value]="0" />
-                      شبكة عمومية
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.PUBLIC_NETWORK" | translate }}
                     </label>
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="waterSourceHouse" name="waterSourceHouse" [(ngModel)]="typhoidData.waterSourceHouse"
                         #waterSourceHouse="ngModel" [value]="1" />
-                      قنوات/ترع
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CANALS" | translate }}
                     </label>
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="waterSourceHouse" name="waterSourceHouse" [(ngModel)]="typhoidData.waterSourceHouse"
                         #waterSourceHouse="ngModel" [value]="2" />
-                      طلمبات حبشية
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ETHIOPIAN_PUMPS" | translate }}
                     </label>
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="waterSourceHouse" name="waterSourceHouse" [(ngModel)]="typhoidData.waterSourceHouse"
                         #waterSourceHouse="ngModel" [value]="3" />
-                      أخرى
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER" | translate }}
                     </label>
                   </div>
                   <div class="col-lg-2">
-                    <input type="text" maxlength="100" placeholder="مصدر آخر" class="form-control"
+                    <input type="text" maxlength="100" [placeholder]="'NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER_SOURCE' | translate" class="form-control"
                       (blur)="calculateCompletionPercentage()" name="otherWaterSource"
                       [(ngModel)]="typhoidData.otherWaterSource" #otherWaterSource="ngModel" />
                   </div>
@@ -1777,7 +1655,7 @@
               </div>
               <div class="col-12">
                 <div class="row">
-                  <div class="col-2">هل يتم تخزين المياه</div>
+                  <div class="col-2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IS_WATER_STORED" | translate }}</div>
                   <div class="col-8 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="isWaterStored" name="isWaterStored" [(ngModel)]="typhoidData.isWaterStored"
@@ -1791,7 +1669,7 @@
                     </label>
                   </div>
                   <div class="col-lg-2">
-                    <input type="text" maxlength="100" placeholder="نوع الخزان" class="form-control"
+                    <input type="text" maxlength="100" [placeholder]="'NEDSS.COMPLETE_INVESTEGATION.TYPHOID.TANK_TYPE' | translate" class="form-control"
                       (blur)="calculateCompletionPercentage()" name="tankType" [(ngModel)]="typhoidData.tankType"
                       #tankType="ngModel" />
                   </div>
@@ -1800,30 +1678,30 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-6">
-                    نوع نظام المجارى المستخدم بمنزل المريض
+                    {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SEWAGE_SYSTEM_TYPE" | translate }}
                   </div>
                   <div class="col-6 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="sewageSystemHome" name="sewageSystemHome" [(ngModel)]="typhoidData.sewageSystemHome"
                         #sewageSystemHome="ngModel" [value]="0" />
-                      شبكة مجاري
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SEWAGE_NETWORK" | translate }}
                     </label>
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="sewageSystemHome" name="sewageSystemHome" [(ngModel)]="typhoidData.sewageSystemHome"
                         #sewageSystemHome="ngModel" [value]="1" />
-                      ترانش
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.TRENCH" | translate }}
                     </label>
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="sewageSystemHome" name="sewageSystemHome" [(ngModel)]="typhoidData.sewageSystemHome"
                         #sewageSystemHome="ngModel" [value]="2" />
-                      بيارة
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CESSPOOL" | translate }}
                     </label>
                   </div>
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label for="">ما هى المسافه بين مصادر المياه والمجارى؟</label>
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DISTANCE_BETWEEN_WATER_AND_SEWAGE" | translate }}</label>
                   <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
                     [(ngModel)]="typhoidData.distanceWaterSourcesSewage">
                     <option *ngFor="let case of distanceWaterSourcesSewages" [value]="case.id">
@@ -1835,7 +1713,7 @@
 
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label for="">هل توجد صيانه جيده لنظام المجارى الموجود؟</label>
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.GOOD_SEWAGE_MAINTENANCE" | translate }}</label>
                   <div class="col-12 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="maintenanceSewerSystem" name="maintenanceSewerSystem"
@@ -1860,8 +1738,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label for="">هل تعلم بوجود كسر فى مواسير شبكه مياه الشرب خلال الثلاث
-                    أسابيع الماضية ؟</label>
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BROKEN_DRINKING_WATER_PIPES" | translate }}</label>
                   <div class="col-12 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="breakPipesDrinkingWater" name="breakPipesDrinkingWater"
@@ -1886,8 +1763,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label for="">هل تعلم بوجود طفح من شبكه المجارى خلال الثلاث أسابيع
-                    الماضية ؟</label>
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SEWAGE_OVERFLOW" | translate }}</label>
                   <div class="col-12 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="overflowSewerSystem" name="overflowSewerSystem"
@@ -1909,8 +1785,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label for="">هل لوحظ تغير في طعم أو لون أو رائحة في مياه الشرب خلال
-                    أسبوع من ظهور الأعراض؟</label>
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CHANGE_IN_WATER_TASTE_COLOR_SMELL" | translate }}</label>
                   <div class="col-12 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="changeTasteColorSmellwater" name="changeTasteColorSmellwater"
@@ -1935,9 +1810,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label for="">هل توجد تقارير عن تلوث مصادر المياه بالمجارى فى هذه
-                    المنطقة؟
-                  </label>
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.REPORTS_OF_WATER_CONTAMINATION" | translate }}</label>
                   <div class="col-12 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="reportsContaminationWater" name="reportsContaminationWater"
@@ -1965,8 +1838,7 @@
               </div>
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label for="">هل تم أخذ عينات مياه للتحليل من منزل المريض / من
-                    المنطقة؟</label>
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.WATER_SAMPLES_TAKEN" | translate }}</label>
                   <div class="col-12 has-labels">
                     <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
                         id="samplesAnalysisPatienhome1" name="samplesAnalysisPatienhome1"
@@ -1989,183 +1861,16 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-6">
-                <p>فى حاله نعم ، هل كانت العينه إيجابيه لأى من :</p>
-                <div class="row">
-                  <div class="col-12">
-                    <div class="row">
-                      <div class="col-6">Entamoeba Histolytica</div>
-                      <div class="col-6 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="samplesAnalysisPatienhome" name="samplesAnalysisPatienhome"
-                            [(ngModel)]="typhoidData.samplesAnalysisPatienhome" #samplesAnalysisPatienhome="ngModel"
-                            [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="samplesAnalysisPatienhome" name="samplesAnalysisPatienhome"
-                            [(ngModel)]="typhoidData.samplesAnalysisPatienhome" #samplesAnalysisPatienhome="ngModel"
-                            [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="samplesAnalysisPatienhome" name="samplesAnalysisPatienhome"
-                            [(ngModel)]="typhoidData.samplesAnalysisPatienhome" #samplesAnalysisPatienhome="ngModel"
-                            [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="row">
-                      <div class="col-6">Shigella species</div>
-                      <div class="col-6 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="shigellaSpecies" name="shigellaSpecies"
-                            [(ngModel)]="typhoidData.shigellaSpecies" #shigellaSpecies="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="shigellaSpecies" name="shigellaSpecies"
-                            [(ngModel)]="typhoidData.shigellaSpecies" #shigellaSpecies="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="shigellaSpecies" name="shigellaSpecies"
-                            [(ngModel)]="typhoidData.shigellaSpecies" #shigellaSpecies="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="row">
-                      <div class="col-6">Campylobacter</div>
-                      <div class="col-6 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="campylobacter" name="campylobacter"
-                            [(ngModel)]="typhoidData.campylobacter" #campylobacter="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="campylobacter" name="campylobacter"
-                            [(ngModel)]="typhoidData.campylobacter" #campylobacter="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="campylobacter" name="campylobacter"
-                            [(ngModel)]="typhoidData.campylobacter" #campylobacter="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="row">
-                      <div class="col-6">Salmonella species</div>
-                      <div class="col-6 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaSpecies" name="salmonellaSpecies"
-                            [(ngModel)]="typhoidData.salmonellaSpecies" #salmonellaSpecies="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaSpecies" name="salmonellaSpecies"
-                            [(ngModel)]="typhoidData.salmonellaSpecies" #salmonellaSpecies="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaSpecies" name="salmonellaSpecies"
-                            [(ngModel)]="typhoidData.salmonellaSpecies" #salmonellaSpecies="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="row">
-                      <div class="col-6">Pathogenic E. coli</div>
-                      <div class="col-6 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="pathogenicColi" name="pathogenicColi"
-                            [(ngModel)]="typhoidData.pathogenicColi" #pathogenicColi="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="pathogenicColi" name="pathogenicColi"
-                            [(ngModel)]="typhoidData.pathogenicColi" #pathogenicColi="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="pathogenicColi" name="pathogenicColi"
-                            [(ngModel)]="typhoidData.pathogenicColi" #pathogenicColi="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="row">
-                      <div class="col-6">Salmonella Typhi</div>
-                      <div class="col-6 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaTyphi" name="salmonellaTyphi"
-                            [(ngModel)]="typhoidData.salmonellaTyphi" #salmonellaTyphi="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaTyphi" name="salmonellaTyphi"
-                            [(ngModel)]="typhoidData.salmonellaTyphi" #salmonellaTyphi="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaTyphi" name="salmonellaTyphi"
-                            [(ngModel)]="typhoidData.salmonellaTyphi" #salmonellaTyphi="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="row">
-                      <div class="col-6">Vibrio Cholera</div>
-                      <div class="col-6 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="vibrioCholera" name="vibrioCholera"
-                            [(ngModel)]="typhoidData.vibrioCholera" #vibrioCholera="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="vibrioCholera" name="vibrioCholera"
-                            [(ngModel)]="typhoidData.vibrioCholera" #vibrioCholera="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="vibrioCholera" name="vibrioCholera"
-                            [(ngModel)]="typhoidData.vibrioCholera" #vibrioCholera="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-12">
-                    <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
-                      name="otherSamplesAnalysisPatienhome" [(ngModel)]="typhoidData.otherSamplesAnalysisPatienhome"
-                      #otherSamplesAnalysisPatienhome="ngModel" />
-                  </div>
-                </div>
-              </div>
               <div class="col-lg-12">
                 <hr />
               </div>
               <div class="col-lg-6">
-                ما هى أنواع عينات المياه التى ثبت تلوثها؟
+                {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTAMINATED_WATER_SAMPLE_TYPES" | translate }}
               </div>
               <div class="col-lg-6">
                 <div class="col-12">
                   <div class="row">
-                    <div class="col-4">مياة مرشحة</div>
+                    <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.FILTERED_WATER" | translate }}</div>
                     <div class="col-8 has-labels">
                       <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                           class="form-check-input" id="filteredWater" name="filteredWater"
@@ -2185,7 +1890,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-4">أبار</div>
+                    <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.WELLS" | translate }}</div>
                     <div class="col-8 has-labels">
                       <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                           class="form-check-input" id="wells" name="wells" [(ngModel)]="typhoidData.wells"
@@ -2205,7 +1910,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-4">طلمبة حبشى</div>
+                    <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ETHIOPIAN_PUMP" | translate }}</div>
                     <div class="col-8 has-labels">
                       <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                           class="form-check-input" id="ethiopianPump" name="ethiopianPump"
@@ -2224,81 +1929,6 @@
                       </label>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-4">قناة / ترعة</div>
-                    <div class="col-8 has-labels">
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="canal" name="canal" [(ngModel)]="typhoidData.canal"
-                          #canal="ngModel" [value]="0" />
-                        {{ "NEDSS.COMMON.YES" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="canal" name="canal" [(ngModel)]="typhoidData.canal"
-                          #canal="ngModel" [value]="1" />
-                        {{ "NEDSS.COMMON.NO" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="canal" name="canal" [(ngModel)]="typhoidData.canal"
-                          #canal="ngModel" [value]="2" />
-                        {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                      </label>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-4">مياه مخزنة</div>
-                    <div class="col-8 has-labels">
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="storedWater" name="storedWater"
-                          [(ngModel)]="typhoidData.storedWater" #storedWater="ngModel" [value]="0" />
-                        {{ "NEDSS.COMMON.YES" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="storedWater" name="storedWater"
-                          [(ngModel)]="typhoidData.storedWater" #storedWater="ngModel" [value]="1" />
-                        {{ "NEDSS.COMMON.NO" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="storedWater" name="storedWater"
-                          [(ngModel)]="typhoidData.storedWater" #storedWater="ngModel" [value]="2" />
-                        {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <hr />
-              </div>
-              <div class="col-6">
-                <div class="row">
-                  <div class="col-6">هل تم أخذ عينه من نظام المجارى؟</div>
-                  <div class="col-6 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="sampledSewerSystemTaken" name="sampledSewerSystemTaken"
-                        [(ngModel)]="typhoidData.sampledSewerSystemTaken" #sampledSewerSystemTaken="ngModel"
-                        [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="sampledSewerSystemTaken" name="sampledSewerSystemTaken"
-                        [(ngModel)]="typhoidData.sampledSewerSystemTaken" #sampledSewerSystemTaken="ngModel"
-                        [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="sampledSewerSystemTaken" name="sampledSewerSystemTaken"
-                        [(ngModel)]="typhoidData.sampledSewerSystemTaken" #sampledSewerSystemTaken="ngModel"
-                        [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">فى حاله نعم، ماذا كانت نتيجة العينة ؟</label>
-                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
-                    name="sampleResult" [(ngModel)]="typhoidData.sampleResult" #sampleResult="ngModel" />
                 </div>
               </div>
             </div>
@@ -2307,7 +1937,7 @@
       </div>
       <div class="card-footer text-start">
         <button type="submit" class="btn bg rounded-2 text-light" (click)="save()">
-          حفظ
+          {{ "NEDSS.COMMON.SAVE" | translate }}
         </button>
       </div>
     </div>
