@@ -31,23 +31,6 @@ export class SchistosomiasisFasciolaComponent implements OnInit {
         : 'ar';
 
     this.belharisyaForm = new FormGroup({
-      fever: new FormControl(),
-      feverDays: new FormControl(),
-      maxTemperature: new FormControl(),
-      bloodyStools: new FormControl(),
-      bloodyUrine: new FormControl(),
-      painUrinating: new FormControl(),
-      frequentUrinate: new FormControl(),
-      obstructionducts: new FormControl(),
-      esophagealVarices: new FormControl(),
-      severeAirway: new FormControl(),
-      enlargedliver: new FormControl(),
-      enlargedSpleen: new FormControl(),
-      painAbdomen: new FormControl(),
-      acuteFailure: new FormControl(),
-      bileColic: new FormControl(),
-      portalHypertension: new FormControl(),
-      difficultySwallowing: new FormControl(),
       bathingSwimming: new FormControl(),
       swimmingPlace: new FormControl(),
       drinkingCanalWater: new FormControl(),
@@ -61,6 +44,7 @@ export class SchistosomiasisFasciolaComponent implements OnInit {
       drinkingCanalHome: new FormControl(),
       drinkingCanalHomePlace: new FormControl(),
       livestockToHouse: new FormControl(),
+      livestockAnimalType: new FormControl(),
       canalsNearLivestockHouse: new FormControl(),
       animalsSlaughteredOutside: new FormControl(),
       animalsSlaughteredOutsidePlace: new FormControl(),
@@ -101,7 +85,6 @@ export class SchistosomiasisFasciolaComponent implements OnInit {
         console.log(res);
         var v = res.data;
         this.belharisyaForm.patchValue(v)
-        this.belharisyaForm.patchValue({ fever: this.belharisyaForm.value.fever + "", tc: true });
         //hadSchistosomiasisDate
         this.belharisyaForm.controls['hadSchistosomiasisDate'].setValue(this.datePipe.transform(this.belharisyaForm.value.hadSchistosomiasisDate, 'yyyy-MM-dd'));
         this.belharisyaForm.controls['dateDose'].setValue(this.datePipe.transform(this.belharisyaForm.value.dateDose, 'yyyy-MM-dd'));
