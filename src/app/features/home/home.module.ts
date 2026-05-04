@@ -143,8 +143,6 @@ import { AccumelateDiseaseByAgePipe } from './reports/pipes/accumelate-disease-b
 import { DiseaseBasedOnPatientComponent } from './reports/disease-based-on-patient/disease-based-on-patient.component';
 import { DiseaseBasedOnPatientPdfComponent } from './reports/disease-based-on-patient/disease-based-on-patient-pdf/disease-based-on-patient-pdf.component';
 import { HighchartsChartModule } from 'highcharts-angular';
-import { FasciolaComponent } from './investigation/complete-investigation/fasciola/fasciola.component';
-import { SchistosomiasisComponent } from './investigation/complete-investigation/schistosomiasis/schistosomiasis.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MergeRepeatedRecordsComponent } from './repeated-records/merge-repeated-records/merge-repeated-records.component';
 import { MergeRecordsPerAttributeComponent } from './repeated-records/merge-records-per-attribute/merge-records-per-attribute.component';
@@ -290,8 +288,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AccumelateDiseaseByAgePipe,
     DiseaseBasedOnPatientComponent,
     DiseaseBasedOnPatientPdfComponent,
-    FasciolaComponent,
-    SchistosomiasisComponent,
     MergeRepeatedRecordsComponent,
     MergeRecordsPerAttributeComponent,
     EpidemiologicalThresholdsUsersComponent,

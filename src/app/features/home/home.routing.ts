@@ -96,8 +96,6 @@ import { DiseaseBasedOnResultComponent } from './reports/disease-based-on-result
 import { DiseaseBasedOnDiagnosisComponent } from './reports/disease-based-on-diagnosis/disease-based-on-diagnosis.component';
 import { DiseaseBasedOnAgeComponent } from './reports/disease-based-on-age/disease-based-on-age.component';
 import { DiseaseBasedOnPatientComponent } from './reports/disease-based-on-patient/disease-based-on-patient.component';
-import { SchistosomiasisComponent } from './investigation/complete-investigation/schistosomiasis/schistosomiasis.component';
-import { FasciolaComponent } from './investigation/complete-investigation/fasciola/fasciola.component';
 import { MergeRepeatedRecordsComponent } from './repeated-records/merge-repeated-records/merge-repeated-records.component';
 import { UserReportComponent } from './reports/user-report/user-report.component';
 import { DiseasesRulesReportComponent } from './reports/diseases-rules-report/diseases-rules-report.component';
@@ -483,16 +481,8 @@ const routes: Routes = [
               },
               { path: 'malaria', component: MalariaComponent },
               {
-                path: 'schistosomiasis',
-                component: SchistosomiasisComponent,
-              },
-              {
-                path: 'schistosomiasis',
-                component: SchistosomiasisComponent,
-              },
-              {
-                path: 'fasciola',
-                component: FasciolaComponent,
+                path: 'schistosomiasis-fasciola',
+                component: SchistosomiasisFasciolaComponent,
               },
               { path: 'typhoid', component: TyphoidComponent },
               { path: 'cholera', component: CholeraComponent },
