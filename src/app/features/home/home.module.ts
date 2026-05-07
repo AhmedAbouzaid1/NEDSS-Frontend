@@ -147,6 +147,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MergeRepeatedRecordsComponent } from './repeated-records/merge-repeated-records/merge-repeated-records.component';
 import { MergeRecordsPerAttributeComponent } from './repeated-records/merge-records-per-attribute/merge-records-per-attribute.component';
 import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { EpidemiologicalThresholdsUsersComponent } from './epidemiological-thresholds/epidemiological-thresholds-users/epidemiological-thresholds-users.component';
 import { UserReportComponent } from './reports/user-report/user-report.component';
@@ -358,6 +359,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     HighchartsChartModule,
     CardModule,
     CalendarModule,
+    DropdownModule,
   ],
   exports: [
     NavbarComponent,
