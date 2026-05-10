@@ -20,7 +20,6 @@ export class WhoopingCoughComponent implements OnInit {
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
   patientName: string;
-  diseaseGroupId: number;
   constructor(
     private investigationService: InvestigationService,
     private translateService: TranslateService,
@@ -33,35 +32,13 @@ export class WhoopingCoughComponent implements OnInit {
   currentId: any;
   ngOnInit() {
     this.whoopingForm = new FormGroup({
-      fever: new FormControl(),
-      feverDays: new FormControl(),
-      maxTemperature: new FormControl(),
       investigationCompletePercentage: new FormControl(),
-      // conjunctivalCongestion: new FormControl('5'),
-      // shock: new FormControl('5'),
-      // enlargedNodes: new FormControl('5'),
-      // lossConsciousness: new FormControl('5'),
-      // skinRash: new FormControl('5'),
-      // pressureDrop: new FormControl('5'),
-      // blurredVision: new FormControl('5'),
-      // itching: new FormControl('5'),
-      // other: new FormControl('5'),
-      otherSymptoms: new FormControl(),
-      conjunctivalCongestion: new FormControl(),
-      shock: new FormControl(),
-      enlargedNodes: new FormControl(),
-      lossConsciousness: new FormControl(),
-      skinRash: new FormControl(),
-      pressureDrop: new FormControl(),
-      blurredVision: new FormControl(),
-      itching: new FormControl(),
-      other: new FormControl(),
-      //pertussis: new FormControl('5'),
-      pertussis: new FormControl(),
-      //stopBreathing: new FormControl('5'),
-      stopBreathing: new FormControl(),
-      dateInception: new FormControl(),
-      duration: new FormControl(),
+      contactSuspectedCase: new FormControl(),
+      epidemicOutbreak: new FormControl(),
+      contactConfirmedCase: new FormControl(),
+      contactDeceasedPersonRespiratory: new FormControl(),
+      numberDirectContacts: new FormControl(),
+      numberNonDirectContacts: new FormControl(),
 
       followD1Name: new FormControl(),
       followD1Age: new FormControl(),
@@ -152,80 +129,31 @@ export class WhoopingCoughComponent implements OnInit {
       boosterDose: new FormControl(),
       boosterDoseDate: new FormControl(),
       patientID: new FormControl(),
-      //incidentGovernmentName: new FormControl(),
       id: new FormControl(),
     });
     this.currentId = this.investigationService.currentid;
     this.whoopingForm.controls['patientID'].setValue(this.currentId);
-    // if (this.diseaseGroupId == null || this.diseaseGroupId == undefined) {
-    //   this.diseaseGroupId = this.investigationService.diseaseGroupID;
-    // }
     this.investigationService.getByIdWhoopingCough(this.currentId).subscribe(
       (res) => {
-        console.log(res);
-
-        var v = res.data;
-        // if (v.followD1SampleTaken == null) { v.followD1SampleTaken = 5; }
-        // if (v.followD2SampleTaken == null) { v.followD2SampleTaken = 5; }
-        // if (v.followD7SampleTaken == null) { v.followD7SampleTaken = 5; }
-        // if (v.followD14SampleTaken == null) { v.followD14SampleTaken = 5; }
-        // //followD1SampleResult
-        // if (v.followD1SampleResult == null) { v.followD1SampleResult = 5; }
-        // if (v.followD2SampleResult == null) { v.followD2SampleResult = 5; }
-        // if (v.followD7SampleResult == null) { v.followD7SampleResult = 5; }
-        // if (v.followD14SampleResult == null) { v.followD14SampleResult = 5; }
-        this.whoopingForm.patchValue(v);
+        const data = res.data;
+        this.whoopingForm.patchValue(data);
         this.whoopingForm.patchValue({
-          fever: this.whoopingForm.value.fever + '', tc: true,
-        });
-        //
-        this.whoopingForm.patchValue({
-          conjunctivalCongestion:
-            this.whoopingForm.value.conjunctivalCongestion + '', tc: true,
-        });
-        this.whoopingForm.patchValue({
-          enlargedNodes: this.whoopingForm.value.enlargedNodes + '', tc: true,
-        });
-        this.whoopingForm.patchValue({
-          skinRash: this.whoopingForm.value.skinRash + '',
+          contactSuspectedCase: this.whoopingForm.value.contactSuspectedCase + '',
           tc: true,
         });
         this.whoopingForm.patchValue({
-          blurredVision: this.whoopingForm.value.blurredVision + '',
+          epidemicOutbreak: this.whoopingForm.value.epidemicOutbreak + '',
           tc: true,
         });
         this.whoopingForm.patchValue({
-          other: this.whoopingForm.value.other + '',
-          tc: true,
-        });
-        /* this.whoopingForm.patchValue({
-          shock: this.whoopingForm.value.shock + '',
-          tc: true,
-        });*/
-        this.whoopingForm.patchValue({
-          lossConsciousness: this.whoopingForm.value.lossConsciousness + '',
+          contactConfirmedCase: this.whoopingForm.value.contactConfirmedCase + '',
           tc: true,
         });
         this.whoopingForm.patchValue({
-          pressureDrop: this.whoopingForm.value.pressureDrop + '',
+          contactDeceasedPersonRespiratory:
+            this.whoopingForm.value.contactDeceasedPersonRespiratory + '',
           tc: true,
         });
-        this.whoopingForm.patchValue({
-          itching: this.whoopingForm.value.itching + '',
-          tc: true,
-        });
-        //pertussis
-        this.whoopingForm.patchValue({
-          pertussis: this.whoopingForm.value.pertussis + '',
-          tc: true,
-        });
-        //stopBreathing
-        this.whoopingForm.patchValue({
-          stopBreathing: this.whoopingForm.value.stopBreathing + '',
-          tc: true,
-        });
-        //dateInception
-        this.whoopingForm.controls['dateInception'].setValue(this.datePipe.transform(this.whoopingForm.value.dateInception, 'yyyy-MM-dd'));
 
         this.whoopingForm.controls['followD1DateOfSymptoms'].setValue(this.datePipe.transform(this.whoopingForm.value.followD1DateOfSymptoms, 'yyyy-MM-dd'));
         this.whoopingForm.patchValue({ followD1SampleTaken: this.whoopingForm.value.followD1SampleTaken + "", tc: true });
@@ -272,12 +200,12 @@ export class WhoopingCoughComponent implements OnInit {
     );
   }
   save() {
-    Object.entries(this.whoopingForm.controls).map(([key, value], index) => {
-      if (value.value == 'null')
-        value.setValue(null);
-    })
+    Object.values(this.whoopingForm.controls).forEach((control) => {
+      if (control.value == 'null') {
+        control.setValue(null);
+      }
+    });
     this.whoopingForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
-    //this.whoopingForm.controls['diseaseGroupId'].setValue(this.diseaseGroupId);
     this.calculateCompletionPercentage();
     if (this.whoopingForm.value.id != null) {
       this.investigationService
@@ -328,8 +256,7 @@ export class WhoopingCoughComponent implements OnInit {
   calculateCompletionPercentage() {
     this.allFilledControlsCount = 0;
     const data = this.whoopingForm.value;
-    //Exclude fields you don't want to count (like 'id')
-    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
+    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'createdDate'];
     const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
 
     this.allControllesCount = totalFields;
