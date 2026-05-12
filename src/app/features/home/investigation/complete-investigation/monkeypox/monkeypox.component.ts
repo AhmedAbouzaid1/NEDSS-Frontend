@@ -40,6 +40,22 @@ export class MonkeypoxComponent implements OnInit {
     'symptom_muscle_pain',
     'symptom_sensitivity'
   ];
+
+  private readonly dateControlNames: string[] = [
+    'symptomsOnsetDate',
+    'skinRashOnsetDate',
+    'feverOnsetDate',
+    'contactDate',
+    'deadAnimalContactDate',
+    'travelDate',
+    'returnDate',
+    'sampleCollectionDate',
+    'admissionDate',
+    'dischargeDate',
+    'deathDate',
+    'deathDateConfirmed'
+  ];
+
   constructor(private investigationService: InvestigationService, private translateService: TranslateService,
     private lookupsService: LookupsGetterService,
     private userMsg: UserMessageService,
@@ -95,7 +111,7 @@ export class MonkeypoxComponent implements OnInit {
       touchedDeadAnimal: new FormControl(),
       deadAnimalType: new FormControl(),
       deadAnimalContactDate: new FormControl(),
-      contactType: new FormControl([]),
+      contactType: new FormControl(''),
       liveSnakeAtHome: new FormControl(),
       deadAnimalInForest: new FormControl(),
       wildAnimalInArea: new FormControl(),
@@ -152,25 +168,28 @@ export class MonkeypoxComponent implements OnInit {
     this.investigationService.getByIdMonkeypox(this.currentId).subscribe(
 
       res => {
-        var v = res.data;
-        this.monkeypoxForm.patchValue(v);
-        this.patchDate('symptomsOnsetDate');
-        this.patchDate('skinRashOnsetDate');
-        this.patchDate('feverOnsetDate');
-        this.patchDate('contactDate');
-        this.patchDate('deadAnimalContactDate');
-        this.patchDate('travelDate');
-        this.patchDate('returnDate');
-        this.patchDate('sampleCollectionDate');
-        this.patchDate('admissionDate');
-        this.patchDate('dischargeDate');
-        this.patchDate('deathDate');
-        this.patchDate('deathDateConfirmed');
+        const v = res.data as Record<string, unknown>;
+        const omitKeys = new Set([
+          'symptomChecklist',
+          'contactType',
+          'sampleType',
+          'domesticTravelLocations',
+          'duringIllnessTravelLocations'
+        ]);
+        const patch: Record<string, unknown> = Object.fromEntries(
+          Object.entries(v).filter(([k]) => !omitKeys.has(k))
+        );
+        const rowId = v['id'] ?? v['Id'];
+        if (rowId != null && rowId !== '') {
+          patch['id'] = typeof rowId === 'string' ? parseInt(rowId as string, 10) : rowId;
+        }
+        this.monkeypoxForm.patchValue(patch as any);
+        this.patchAllDateControls();
 
         this.monkeypoxForm.controls['symptomChecklist'].setValue(
-          this.normalizeSymptomChecklist(this.parseJsonArray(v.symptomChecklist))
+          this.normalizeSymptomChecklist(v.symptomChecklist)
         );
-        this.monkeypoxForm.controls['contactType'].setValue(this.parseJsonArray(v.contactType));
+        this.monkeypoxForm.controls['contactType'].setValue(this.contactTypeFromApi(v.contactType));
         this.monkeypoxForm.controls['sampleType'].setValue(this.parseJsonArray(v.sampleType));
         this.setArrayValues('domesticTravelLocations', this.parseJsonArray(v.domesticTravelLocations));
         this.setArrayValues('duringIllnessTravelLocations', this.parseJsonArray(v.duringIllnessTravelLocations));
@@ -233,7 +252,8 @@ export class MonkeypoxComponent implements OnInit {
   }
 
   onMultiCheckboxChange(controlName: string, value: string, isChecked: boolean) {
-    const selected = [...(this.monkeypoxForm.get(controlName)?.value || [])];
+    const raw = this.monkeypoxForm.get(controlName)?.value;
+    const selected = [...this.coerceCheckboxArray(raw)];
     if (isChecked && !selected.includes(value)) {
       selected.push(value);
     } else if (!isChecked) {
@@ -247,70 +267,93 @@ export class MonkeypoxComponent implements OnInit {
   }
 
   isSelected(controlName: string, value: string): boolean {
-    return (this.monkeypoxForm.get(controlName)?.value || []).includes(value);
+    return this.coerceCheckboxArray(this.monkeypoxForm.get(controlName)?.value).includes(value);
   }
 
   save() {
-    Object.entries(this.monkeypoxForm.controls).map(([key, value], index) => {
-      if (value.value == 'null')
+    Object.entries(this.monkeypoxForm.controls).forEach(([, value]) => {
+      if (value.value === 'null') {
         value.setValue(null);
+      }
     });
-    this.calculateCompletionPercentage();
-    this.monkeypoxForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
     this.monkeypoxForm.controls['diseaseGroupId'].setValue(this.diseaseGroupID);
+    this.calculateCompletionPercentage();
+    const pct =
+      this.allControllesCount === 0
+        ? 0
+        : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2));
+    this.monkeypoxForm.controls['investigationCompletePercentage'].setValue(pct);
 
-    const payload = {
-      ...this.monkeypoxForm.value,
-      symptomChecklist: JSON.stringify(this.normalizeSymptomChecklist(this.monkeypoxForm.value.symptomChecklist || [])),
-      contactType: JSON.stringify(this.monkeypoxForm.value.contactType || []),
-      sampleType: JSON.stringify(this.monkeypoxForm.value.sampleType || []),
-      domesticTravelLocations: JSON.stringify((this.monkeypoxForm.value.domesticTravelLocations || []).filter((x: string) => x)),
-      duringIllnessTravelLocations: JSON.stringify((this.monkeypoxForm.value.duringIllnessTravelLocations || []).filter((x: string) => x))
-    };
+    const raw = this.monkeypoxForm.value;
+    const patientIdNum = raw.patientID != null && raw.patientID !== '' ? Number(raw.patientID) : raw.patientID;
+    const diseaseGroupNum =
+      raw.diseaseGroupId != null && raw.diseaseGroupId !== '' ? Number(raw.diseaseGroupId) : raw.diseaseGroupId;
+    const idVal = raw.id != null && raw.id !== '' ? Number(raw.id) : raw.id;
 
-    if (this.monkeypoxForm.value.id != null) {
+    const payload = this.normalizePayloadDates({
+      ...raw,
+      id: idVal,
+      patientID: patientIdNum,
+      diseaseGroupId: diseaseGroupNum,
+      symptomChecklist: JSON.stringify(this.normalizeSymptomChecklist(raw.symptomChecklist)),
+      contactType: (() => {
+        const t = String(raw.contactType ?? '').trim();
+        return t.length > 0 ? t : null;
+      })(),
+      sampleType: JSON.stringify(this.coerceCheckboxArray(raw.sampleType)),
+      domesticTravelLocations: JSON.stringify(
+        (Array.isArray(raw.domesticTravelLocations) ? raw.domesticTravelLocations : []).filter(
+          (x: string) => !!x && String(x).trim() !== ''
+        )
+      ),
+      duringIllnessTravelLocations: JSON.stringify(
+        (Array.isArray(raw.duringIllnessTravelLocations) ? raw.duringIllnessTravelLocations : []).filter(
+          (x: string) => !!x && String(x).trim() !== ''
+        )
+      )
+    } as Record<string, unknown>) as any;
+
+    if (payload.id != null && payload.id !== '' && !Number.isNaN(Number(payload.id))) {
       this.investigationService.updateMonkeypox(payload).subscribe(
-        (response: any) => {
-          if (response) {
-            document.getElementById("jump_to_this_location").scrollIntoView({ behavior: 'smooth' });
-            this.translateService
-              .get('NEDSS.COMMON.SENT_SUCESSFULLY')
-              .subscribe((res: string) => {
-                this.userMsg.success(res);
-              });
-          }
-        }
-        , (error) => {
+        () => {
+          document.getElementById('jump_to_this_location')?.scrollIntoView({ behavior: 'smooth' });
+          this.translateService
+            .get('NEDSS.COMMON.SENT_SUCESSFULLY')
+            .subscribe((res: string) => {
+              this.userMsg.success(res);
+            });
+        },
+        () => {
           this.translateService
             .get('NEDSS.COMMON.SENT_FAILD')
             .subscribe((res: string) => {
               this.userMsg.error(res);
             });
         }
-      )
-    } else {
-      this.investigationService.addInvestigationMonkeypox(payload).subscribe(
-        (response: any) => {
-          if (response) {
-            document.getElementById("jump_to_this_location").scrollIntoView({ behavior: 'smooth' });
-            this.monkeypoxForm.value.id = response.data.id;
-            this.currentId = response.data.patientID;
-            this.getById();
-            this.translateService.get('NEDSS.COMMON.SENT_SUCESSFULLY')
-              .subscribe((res: string) => {
-                this.userMsg.success(res);
-              });
-          }
-        }
-        , (error) => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
-      )
+      );
+      return;
     }
+
+    this.investigationService.addInvestigationMonkeypox(payload).subscribe(
+      (response: any) => {
+        document.getElementById('jump_to_this_location')?.scrollIntoView({ behavior: 'smooth' });
+        if (response?.data?.id != null) {
+          this.monkeypoxForm.controls['id'].setValue(response.data.id);
+          this.getById();
+        }
+        this.translateService.get('NEDSS.COMMON.SENT_SUCESSFULLY')
+          .subscribe((res: string) => {
+            this.userMsg.success(res);
+          });
+      },
+      () => {
+        this.translateService
+          .get('NEDSS.COMMON.SENT_FAILD')
+          .subscribe((res: string) => {
+            this.userMsg.error(res);
+          });
+      }
+    );
   }
 
   calculateCompletionPercentage() {
@@ -331,8 +374,59 @@ export class MonkeypoxComponent implements OnInit {
   }
 
   private patchDate(controlName: string) {
-    const dateValue = this.monkeypoxForm.get(controlName)?.value;
-    this.monkeypoxForm.get(controlName)?.setValue(this.datePipe.transform(dateValue, 'yyyy-MM-dd'));
+    const ctrl = this.monkeypoxForm.get(controlName);
+    if (!ctrl) {
+      return;
+    }
+    ctrl.setValue(this.toDateInputString(ctrl.value));
+  }
+
+  private patchAllDateControls(): void {
+    for (const name of this.dateControlNames) {
+      this.patchDate(name);
+    }
+  }
+
+  private toDateInputString(value: unknown): string | null {
+    if (value == null || value === '' || value === 'null') {
+      return null;
+    }
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      const isoDate = /^(\d{4}-\d{2}-\d{2})/.exec(trimmed);
+      if (isoDate) {
+        return isoDate[1];
+      }
+    }
+    const d = value instanceof Date ? value : new Date(value as string | number);
+    if (Number.isNaN(d.getTime())) {
+      return null;
+    }
+    return this.datePipe.transform(d, 'yyyy-MM-dd');
+  }
+
+  private normalizePayloadDates<T extends Record<string, unknown>>(payload: T): T {
+    const next = { ...payload };
+    for (const name of this.dateControlNames) {
+      const v = next[name];
+      if (v === '' || v === undefined) {
+        (next as any)[name] = null;
+      } else if (v != null) {
+        (next as any)[name] = this.toDateInputString(v);
+      }
+    }
+    return next;
+  }
+
+  private contactTypeFromApi(value: unknown): string {
+    if (value == null || value === '' || value === 'null') {
+      return '';
+    }
+    return String(value).trim();
+  }
+
+  private coerceCheckboxArray(value: unknown): string[] {
+    return this.parseJsonArray(value);
   }
 
   private parseJsonArray(value: any): string[] {
@@ -343,7 +437,8 @@ export class MonkeypoxComponent implements OnInit {
       return value;
     }
     try {
-      return JSON.parse(value);
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
       return [];
     }
@@ -361,7 +456,11 @@ export class MonkeypoxComponent implements OnInit {
     values.forEach((item) => formArray.push(new FormControl(item)));
   }
 
-  private normalizeSymptomChecklist(values: string[]): string[] {
-    return (values || []).filter((x) => this.allowedSymptomChecklistKeys.includes(x));
+  private normalizeSymptomChecklist(values: any): string[] {
+    const parsed = this.parseJsonArray(values);
+    const arr = Array.isArray(parsed) ? parsed : [];
+    return arr.filter(
+      (x): x is string => typeof x === 'string' && this.allowedSymptomChecklistKeys.includes(x)
+    );
   }
 }

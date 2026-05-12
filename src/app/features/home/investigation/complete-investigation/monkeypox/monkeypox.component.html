@@ -1,10 +1,10 @@
 <form [formGroup]="monkeypoxForm" (ngSubmit)="save()">
-  <br />
-  <div class="row color">
-    <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt">
-      <div id="jump_to_this_location"></div>
-      <h5 style="text-align: center; border: 1px solid; padding: 1%">
-        {{ "NEDSS.INVESTIGATIONS.PAGES.MonkeyPox" | translate }}
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow mt-4 color mb-4">
+        <div class="card-body rounded-2 mx-2 mb-4 card-alt">
+          <div id="jump_to_this_location"></div>
+          <h5 style="text-align: center; border: 1px solid; padding: 1%">        {{ "NEDSS.INVESTIGATIONS.PAGES.MonkeyPox" | translate }}
       </h5>
       <div class="row mt-2">
         <div class="col-lg-12">
@@ -28,7 +28,7 @@
             min="0"
             max="100"
             step="1"
-            [value]="(allFilledControlsCount / allControllesCount) * 100"
+            [value]="allControllesCount === 0 ? 0 : (allFilledControlsCount / allControllesCount) * 100"
             formControlName="investigationCompletePercentage" />
         </div>
       </div>
@@ -165,16 +165,13 @@
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.TOUCHED_DEAD_ANIMAL" | translate }}</label><select formControlName="touchedDeadAnimal" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></div>
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.DEAD_ANIMAL_TYPE" | translate }}</label><input formControlName="deadAnimalType" class="form-control" (blur)="calculateCompletionPercentage()" /></div>
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.DEAD_ANIMAL_CONTACT_DATE" | translate }}</label><input type="date" formControlName="deadAnimalContactDate" [class]="'form-control-' + currentLang" (blur)="calculateCompletionPercentage()" /></div>
-          <div class="col-lg-12">
+          <div class="col-lg-12 form-group">
             <label>{{ "NEDSS.MONKEYPOX.CONTACT_TYPE" | translate }}</label>
-            <div class="row">
-              <div class="col-lg-3" *ngFor="let item of ['contact_type_direct_touch','contact_type_secretions','contact_type_belongings','contact_type_other']">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" [checked]="isSelected('contactType', item)" (change)="onMultiCheckboxChange('contactType', item, $any($event.target).checked)" />
-                  <label class="form-check-label">{{ ('NEDSS.MONKEYPOX.' + item.toUpperCase()) | translate }}</label>
-                </div>
-              </div>
-            </div>
+            <textarea
+              formControlName="contactType"
+              class="form-control"
+              rows="4"
+              (blur)="calculateCompletionPercentage()"></textarea>
           </div>
         </ng-container>
         <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.LIVE_SNAKE_AT_HOME" | translate }}</label><select formControlName="liveSnakeAtHome" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></div>
@@ -250,14 +247,12 @@
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.BURIAL_PLACE_GOVERNORATE" | translate }}</label><input formControlName="burialPlaceGovernorate" class="form-control" (blur)="calculateCompletionPercentage()" /></div>
         </ng-container>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-9"></div>
-      <div class="col-lg-3">
-        <button type="submit" class="btn d-block w-100 bg rounded-2 text-light">
-          {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
-        </button>
+        </div>
+        <div class="card-footer text-start">
+          <button type="submit" class="btn bg rounded-2 text-light">
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
