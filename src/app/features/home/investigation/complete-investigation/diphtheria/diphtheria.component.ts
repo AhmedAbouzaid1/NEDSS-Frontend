@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { InvestigationService } from '../../services/investigation.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
+import { calculateCompletionStats } from '../shared/investigation-summary.utils';
 @Component({
   selector: 'app-diphtheria',
   templateUrl: './diphtheria.component.html',
@@ -17,8 +18,6 @@ export class DiphtheriaComponent implements OnInit {
       : 'ar';
   diphtriaForm: FormGroup;
   currentId: any;
-  fev: any;
-  controlsCount: number = 0;
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
   patientName: string;
@@ -50,22 +49,7 @@ export class DiphtheriaComponent implements OnInit {
 
   ngOnInit() {
     this.diphtriaForm = new FormGroup({
-      // fever: new FormControl('1'),
-      fever: new FormControl(),
-      //completePercentage: new FormControl(),
       investigationCompletePercentage: new FormControl(),
-      feverDays: new FormControl(),
-      maxTemperature: new FormControl(),
-      grayMembrane: new FormControl(),
-      tonsillitis: new FormControl(),
-      pharyngitis: new FormControl(),
-      laryngitis: new FormControl(),
-      kinUlcers: new FormControl(),
-      hoarseness: new FormControl(),
-      stuffyThroatChoking: new FormControl(),
-      endomembranousRhinitis: new FormControl(),
-      septicemia: new FormControl(),
-      statusCode: new FormControl(),
       contactSuspectedCase: new FormControl(),
       contactConfirmedCase: new FormControl(),
       numberDirectContacts: new FormControl(),
@@ -172,7 +156,7 @@ export class DiphtheriaComponent implements OnInit {
     });
     this.currentId = this.investigationService.currentid;
     this.diphtriaForm.controls['patientID'].setValue(this.currentId);
-    this.diphtriaForm.controls['patientID'].setValue(this.currentId);
+    this.diphtriaForm.valueChanges.subscribe(() => this.calculateCompletionPercentage());
     this.GetById();
   }
   GetById() {
@@ -181,149 +165,82 @@ export class DiphtheriaComponent implements OnInit {
         console.log(res);
         var v = res.data;
 
-        // if (v.followD1SampleTaken == null) {
-        //   v.followD1SampleTaken = 3;
-        // }
-        // if (v.followD2SampleTaken == null) {
-        //   v.followD2SampleTaken = 3;
-        // }
-        // if (v.followD7SampleTaken == null) {
-        //   v.followD7SampleTaken = 3;
-        // }
-        // if (v.followD14SampleTaken == null) {
-        //   v.followD14SampleTaken = 3;
-        // }
-        // //followD1SampleResult
-        // if (v.followD1SampleResult == null) {
-        //   v.followD1SampleResult = 3;
-        // }
-        // if (v.followD2SampleResult == null) {
-        //   v.followD2SampleResult = 3;
-        // }
-        // if (v.followD7SampleResult == null) {
-        //   v.followD7SampleResult = 3;
-        // }
-        // if (v.followD14SampleResult == null) {
-        //   v.followD14SampleResult = 3;
-        // }
+        if (!v) {
+          this.calculateCompletionPercentage();
+          return;
+        }
 
         this.diphtriaForm.patchValue(v);
         console.log(v);
-        this.fev = this.diphtriaForm.controls['fever'].setValue(
-          res.data.fever.toString()
-        );
-        // this.diphtriaForm.patchValue({
-
-        // //fever: this.diphtriaForm.value.fever+'',
-
-        //   tc: true,
-        // });
-
-        //followD1DateOfSymptoms
         this.diphtriaForm.controls['followD1DateOfSymptoms'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD1DateOfSymptoms,
             'yyyy-MM-dd'
           )
         );
-        this.diphtriaForm.patchValue({
-          followD1SampleTaken: this.diphtriaForm.value.followD1SampleTaken + '',
-          tc: true,
-        });
+        this.diphtriaForm.controls['followD1SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD1SampleTaken));
         this.diphtriaForm.controls['followD1DateSampleTaken'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD1DateSampleTaken,
             'yyyy-MM-dd'
           )
         );
-        this.diphtriaForm.patchValue({
-          followD1SampleResult:
-            this.diphtriaForm.value.followD1SampleResult + '',
-          tc: true,
-        });
-        //
+        this.diphtriaForm.controls['followD1SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD1SampleResult));
         this.diphtriaForm.controls['followD2DateOfSymptoms'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD2DateOfSymptoms,
             'yyyy-MM-dd'
           )
         );
-        this.diphtriaForm.patchValue({
-          followD2SampleTaken: this.diphtriaForm.value.followD2SampleTaken + '',
-          tc: true,
-        });
+        this.diphtriaForm.controls['followD2SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD2SampleTaken));
         this.diphtriaForm.controls['followD2DateSampleTaken'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD2DateSampleTaken,
             'yyyy-MM-dd'
           )
         );
-        this.diphtriaForm.patchValue({
-          followD2SampleResult:
-            this.diphtriaForm.value.followD2SampleResult + '',
-          tc: true,
-        });
+        this.diphtriaForm.controls['followD2SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD2SampleResult));
 
-        //
         this.diphtriaForm.controls['followD7DateOfSymptoms'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD7DateOfSymptoms,
             'yyyy-MM-dd'
           )
         );
-        this.diphtriaForm.patchValue({
-          followD7SampleTaken: this.diphtriaForm.value.followD7SampleTaken + '',
-          tc: true,
-        });
+        this.diphtriaForm.controls['followD7SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD7SampleTaken));
         this.diphtriaForm.controls['followD7DateSampleTaken'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD7DateSampleTaken,
             'yyyy-MM-dd'
           )
         );
-        this.diphtriaForm.patchValue({
-          followD7SampleResult:
-            this.diphtriaForm.value.followD7SampleResult + '',
-          tc: true,
-        });
-        //
+        this.diphtriaForm.controls['followD7SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD7SampleResult));
         this.diphtriaForm.controls['followD14DateOfSymptoms'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD14DateOfSymptoms,
             'yyyy-MM-dd'
           )
         );
-        this.diphtriaForm.patchValue({
-          followD14SampleTaken:
-            this.diphtriaForm.value.followD14SampleTaken + '',
-          tc: true,
-        });
+        this.diphtriaForm.controls['followD14SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD14SampleTaken));
         this.diphtriaForm.controls['followD14DateSampleTaken'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD14DateSampleTaken,
             'yyyy-MM-dd'
           )
         );
-        this.diphtriaForm.patchValue({
-          followD14SampleResult:
-            this.diphtriaForm.value.followD14SampleResult + '',
-          tc: true,
-        });
-        //firstDoseDate
+        this.diphtriaForm.controls['followD14SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD14SampleResult));
         this.diphtriaForm.controls['firstDoseDate'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.firstDoseDate,
             'yyyy-MM-dd'
           )
         );
-        //secondDoseDate
         this.diphtriaForm.controls['secondDoseDate'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.secondDoseDate,
             'yyyy-MM-dd'
           )
         );
-        //secondDoseDate
         this.diphtriaForm.controls['otherDoseDate'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.otherDoseDate,
@@ -348,23 +265,21 @@ export class DiphtheriaComponent implements OnInit {
             'yyyy-MM-dd'
           )
         );
-        //this.controlsCount = this.calculateCompletePercentage();
-        //this.diphtriaForm.value.completePercentage = this.controlsCount;
 
         Object.entries(this.diphtriaForm.controls).map(
-          ([key, value], index) => {
+          ([key, value]) => {
             if (value.value == 'null') value.setValue(null);
           }
         );
 
-        //this.controlsCount = this.calculateCompletePercentage();
-        //this.diphtriaForm.value.completePercentage = this.controlsCount;
-        this.fev = this.diphtriaForm.controls['fever'].setValue(
-          res.data.fever.toString()
-        );
         this.calculateCompletionPercentage();
       },
       (error) => {
+        if (error?.status === 404) {
+          this.calculateCompletionPercentage();
+          return;
+        }
+
         this.translateService
           .get('NEDSS.COMMON.SENT_FAILD')
           .subscribe((res: string) => {
@@ -373,112 +288,27 @@ export class DiphtheriaComponent implements OnInit {
       }
     );
   }
-  // /**
-  //  * Calculate the percentage
-  //  * @returns
-  //  */
-  // calculateCompletePercentage(): number {
-  //   Object.entries(this.diphtriaForm.controls).map(([key, value], index) => {
-  //     if (value.value == 'null') value.setValue(null);
-  //     else if (value.value != null && !isNaN(+value.value)) {
-  //       value.setValue(parseInt(value.value.toString()));
-  //     }
-  //   });
-
-  //   // this.allControllesCount = this.countAllControls(this.diphtriaForm);
-  //   // if (this.diphtriaForm.value.id != null) {
-  //   //   this.allFilledControlsCount = this.countFilledControls(this.diphtriaForm);
-  //   // } else {
-  //   //   this.allFilledControlsCount = 0;
-  //   // }
-  //   // this.controlsCount =
-  //   //   this.allControllesCount != 0
-  //   //     ? parseInt(
-  //   //         (
-  //   //           (this.allFilledControlsCount / this.allControllesCount) *
-  //   //           100
-  //   //         ).toString()
-  //   //       )
-  //   //     : 0;
-  //   this.fev = this.diphtriaForm.controls['fever'].setValue(
-  //     this.diphtriaForm.value.fever.toString()
-  //   );
-  //   return this.controlsCount;
-  // }
-  // /**
-  //  * Count all fields
-  //  * @param control
-  //  * @returns
-  //  */
-  // countFilledControls(control: any): number {
-  //   if (control instanceof FormControl) {
-  //     if (control.value != null) return 1;
-  //     else return 0;
-  //   }
-
-  //   if (control instanceof FormArray) {
-  //     return control.controls.reduce(
-  //       (acc, curr) => acc + this.countFilledControls(curr),
-  //       1
-  //     );
-  //   }
-
-  //   if (control instanceof FormGroup) {
-  //     return Object.keys(control.controls)
-  //       .map((key) => control.controls[key])
-  //       .reduce((acc, curr) => acc + this.countFilledControls(curr), 1);
-  //   }
-  //   return 0;
-  // }
-  // /**
-  //  * Count all filled fields
-  //  * @param control
-  //  * @returns
-  //  */
-  // countAllControls(control: any): number {
-  //   if (control instanceof FormControl) {
-  //     return 1;
-  //   }
-
-  //   if (control instanceof FormArray) {
-  //     return control.controls.reduce(
-  //       (acc, curr) => acc + this.countAllControls(curr),
-  //       1
-  //     );
-  //   }
-
-  //   if (control instanceof FormGroup) {
-  //     return Object.keys(control.controls)
-  //       .map((key) => control.controls[key])
-  //       .reduce((acc, curr) => acc + this.countAllControls(curr), 1);
-  //   }
-  //   return 0;
-  // }
   save() {
-    //this.controlsCount = this.calculateCompletePercentage();
-
-    Object.entries(this.diphtriaForm.controls).map(([key, value], index) => {
+    Object.entries(this.diphtriaForm.controls).map(([key, value]) => {
       if (value.value == 'null') value.setValue(null);
     });
 
-    //this.diphtriaForm.controls['completePercentage'].enable();
     this.diphtriaForm.controls['diseaseGroupId'].setValue(this.diseaseGroupID);
     this.calculateCompletionPercentage();
-    this.diphtriaForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
+    this.diphtriaForm.controls['investigationCompletePercentage'].setValue(
+      this.allControllesCount === 0
+        ? 0
+        : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2))
+    );
     if (this.diphtriaForm.value.id != null) {
       this.investigationService
         .updateDiphtheria(this.diphtriaForm.value)
         .subscribe(
           (response: any) => {
             if (response) {
-              //this.diphtriaForm.controls['completePercentage'].disable();
               document
                 .getElementById('jump_to_this_location')
                 .scrollIntoView({ behavior: 'smooth' });
-
-              //this.controlsCount = this.calculateCompletePercentage();
-              //this.diphtriaForm.value.completePercentage = this.controlsCount;
-              //this.diphtriaForm.controls['fever'].setValue(response.data.fever.toString())
               this.translateService
                 .get('NEDSS.COMMON.SENT_SUCESSFULLY')
                 .subscribe((res: string) => {
@@ -500,21 +330,15 @@ export class DiphtheriaComponent implements OnInit {
         .subscribe(
           (response: any) => {
             if (response) {
-              //this.diphtriaForm.controls['completePercentage'].disable();
               document.getElementById('jump_to_this_location').scrollIntoView({ behavior: 'smooth' });
               this.diphtriaForm.value.id = response.data.id;
               this.currentId = response.data.patientID;
               this.GetById();
-              //this.controlsCount = this.calculateCompletePercentage();
-              // this.diphtriaForm.value.completePercentage = this.controlsCount;
               this.translateService
                 .get('NEDSS.COMMON.SENT_SUCESSFULLY')
                 .subscribe((res: string) => {
                   this.userMsg.success(res);
                 });
-              this.fev = this.diphtriaForm.controls['fever'].setValue(
-                response.data.fever.toString()
-              );
             }
           },
           (error) => {
@@ -524,26 +348,20 @@ export class DiphtheriaComponent implements OnInit {
                 this.userMsg.error(res);
               });
           }
-        );
+      );
     }
   }
 
-  
-      //BL
-      calculateCompletionPercentage() {
-        this.allFilledControlsCount = 0;
-        const data = this.diphtriaForm.value;
-        
-        //Exclude fields you don't want to count (like 'id')
-        const excludedFields = ['id','patientID','investigationCompletePercentage' , 'diseaseGroupId' , 'createdDate'];
-        const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
-        
-        this.allControllesCount = totalFields;
-    
-        Object.keys(data).forEach((key) => {
-            if (!excludedFields.includes(key) && data[key] !== null && data[key] !== '') {
-                this.allFilledControlsCount++;
-            }
-        });
-      }
+  private toStringOrNull(value: any): string | null {
+    return value == null ? null : value + '';
+  }
+
+  calculateCompletionPercentage() {
+    const stats = calculateCompletionStats(this.diphtriaForm.value, {
+      excludedFields: ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate']
+    });
+
+    this.allControllesCount = stats.totalFields;
+    this.allFilledControlsCount = stats.filledFields;
+  }
 }
