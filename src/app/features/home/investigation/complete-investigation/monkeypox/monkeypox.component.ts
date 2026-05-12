@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { SharedDataService } from '../../../general-data/services/shared-data.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
-import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,19 +18,32 @@ export class MonkeypoxComponent implements OnInit {
       localStorage.getItem('ls.currentLang') !== 'undefined'
       ? localStorage.getItem('ls.currentLang')
       : 'ar';
-  monkeypoxForm: FormGroup
-  loadingPanel: boolean;
-  cities: any;
-  governments: any;
-  principalities: any; controlsCount: number = 0;
+  monkeypoxForm: FormGroup;
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
+  governorates: any[] = [];
+  countries: any[] = [];
   patientName: string;
   currentId: any;
   diseaseGroupID: any;
-  constructor(private investigationService: InvestigationService, private sharedDataService: SharedDataService, private lookupsService: LookupsGetterService, private translateService: TranslateService,
+  private readonly allowedSymptomChecklistKeys = [
+    'symptom_fatigue_nausea',
+    'symptom_itchy_lesions',
+    'symptom_lymph_node_swelling_armpit',
+    'symptom_conjunctivitis',
+    'symptom_pharyngitis',
+    'symptom_headache',
+    'symptom_mouth_ulcers',
+    'symptom_fatigue',
+    'symptom_chills_sweating',
+    'symptom_cough',
+    'symptom_muscle_pain',
+    'symptom_sensitivity'
+  ];
+  constructor(private investigationService: InvestigationService, private translateService: TranslateService,
+    private lookupsService: LookupsGetterService,
     private userMsg: UserMessageService,
-    private route: ActivatedRoute ,private Router: Router, 
+    private route: ActivatedRoute, private Router: Router,
     private datePipe: DatePipe
   ) {
     this.currentId = this.route.snapshot.paramMap.get('id');
@@ -46,81 +58,90 @@ export class MonkeypoxComponent implements OnInit {
       this.patientName = this.investigationService.patient.firstName + " " + this.investigationService.patient.secondName + " " + this.investigationService.patient.thirdName;
     }
     this.monkeypoxForm = new FormGroup({
-      patientName: new FormControl(),
-      //completePercentage: new FormControl(),
-      investigationCompletePercentage:new FormControl(),
-      relationshipWithPatient: new FormControl(),
-      dateOfContact: new FormControl(),
-      touchingPatient: new FormControl(),
-      touchingTheBelongings: new FormControl(),
-      patientName2: new FormControl(),
-      relationshipWithPatient2: new FormControl(),
-      dateOfContact2: new FormControl(),
-      touchingPatient2: new FormControl(),
-      touchingTheBelongings2: new FormControl(),
-      patientName3: new FormControl(),
-      relationshipWithPatient3: new FormControl(),
-      dateOfContact3: new FormControl(),
-      touchingPatient3: new FormControl(),
-      touchingTheBelongings3: new FormControl(),
-      patientTouchWildAnimal: new FormControl(),
-      animal: new FormControl(),
-      animalWasNormal: new FormControl(),
-      rashOrUlcers: new FormControl(),
+      investigationCompletePercentage: new FormControl(),
+      illnessGovernorateArea: new FormControl(),
+      comingFromAbroadCountry: new FormControl(),
+      symptomsOnsetDate: new FormControl(),
+      hasSkinRash: new FormControl(),
+      skinRashOnsetDate: new FormControl(),
+      skinRashType: new FormControl(),
+      hasFever: new FormControl(),
+      feverOnsetDate: new FormControl(),
+      rashStillPresentVariousForms: new FormControl(),
+      lesionsSameSize: new FormControl(),
+      lesionsDeepAndMany: new FormControl(),
+      rashOnPalmsAndSoles: new FormControl(),
+      rashOtherAreas: new FormControl(),
+      eyeUlcer: new FormControl(),
+      lymphNodeSwelling: new FormControl(),
+      swellingOtherLocation: new FormControl(),
+      symptomChecklist: new FormControl([]),
+      symptomBedridden: new FormControl(),
+      hivStatus: new FormControl(),
+      pregnancyStatus: new FormControl(),
+      otherMedicalConditions: new FormControl(),
+      hasSmallpoxVaccineScar: new FormControl(),
+      preliminaryDiagnosis: new FormControl(),
+      preliminaryDiagnosisOther: new FormControl(),
+      contactWithSymptomaticPerson: new FormControl(),
+      contactPersonName: new FormControl(),
+      contactRelationship: new FormControl(),
+      contactDate: new FormControl(),
+      touchedPatientBodyOrBelongings: new FormControl(),
+      animalContact: new FormControl(),
+      animalType: new FormControl(),
+      animalAppearedNormal: new FormControl(),
+      animalSkinRashOrUlcers: new FormControl(),
       touchedDeadAnimal: new FormControl(),
-      nameAnimal: new FormControl(),
-      mixingDate: new FormControl(),
-      mixingType: new FormControl(),
-      animalsForSlaughter: new FormControl(),
-      kind: new FormControl(),
-      placePurchase: new FormControl(),
-      travelOutsideCountry: new FormControl(),
-      nameCountry: new FormControl(),
-      dateTravel: new FormControl(),
-      arrivalDate: new FormControl(),
-      threeWeeksPreceding: new FormControl(),
-      places: new FormControl(),
-      places2: new FormControl(),
-      places3: new FormControl(),
-      ravelDuringIllness: new FormControl(),
-      duringIllnessPlaces: new FormControl(),
-      duringIllnessPlaces2: new FormControl(),
-      duringIllnessPlaces3: new FormControl(),
+      deadAnimalType: new FormControl(),
+      deadAnimalContactDate: new FormControl(),
+      contactType: new FormControl([]),
+      liveSnakeAtHome: new FormControl(),
+      deadAnimalInForest: new FormControl(),
+      wildAnimalInArea: new FormControl(),
+      otherAnimalExposure: new FormControl(),
+      purchasedAnimalsForSlaughter: new FormControl(),
+      slaughterLocation: new FormControl(),
+      animalTypePurchased: new FormControl(),
+      traveledAbroad3weeks: new FormControl(),
+      travelDestinationCountry: new FormControl(),
+      travelDate: new FormControl(),
+      returnDate: new FormControl(),
+      traveledDomesticallyDuringIllness: new FormControl(),
+      domesticTravelLocations: new FormArray([new FormControl('')]),
+      traveledDuringIllness: new FormControl(),
+      duringIllnessTravelLocations: new FormArray([new FormControl('')]),
       sampleCollected: new FormControl(),
-      sampleDate: new FormControl(),
-      sampleType: new FormControl(),
-      admittedHospital: new FormControl(),
-      nameHospital: new FormControl(),
-      isolationSection: new FormControl(),
-      dateHospitalization: new FormControl(),
-      patientCondition: new FormControl(),
-      dateDepartureDeath: new FormControl(),
-      dateDeath: new FormControl(),
+      sampleCollectionDate: new FormControl(),
+      sampleType: new FormControl([]),
+      healthFacilityName: new FormControl(),
+      patientAdmitted: new FormControl(),
+      hospitalType: new FormControl(),
+      admittedToWard: new FormControl(),
+      wardHospitalName: new FormControl(),
+      admissionDate: new FormControl(),
+      dischargeDate: new FormControl(),
+      deathDate: new FormControl(),
+      patientStatus: new FormControl(),
+      deathDateConfirmed: new FormControl(),
       deathPlace: new FormControl(),
-      village: new FormControl(),
-      city: new FormControl(),
-      governorate: new FormControl(),
+      burialPlaceVillage: new FormControl(),
+      burialPlaceCity: new FormControl(),
+      burialPlaceGovernorate: new FormControl(),
       patientID: new FormControl(),
       id: new FormControl(),
-      diseaseGroupId: new FormControl(this.diseaseGroupID),
+      diseaseGroupId: new FormControl(this.diseaseGroupID)
     });
-
-    //this.monkeypoxForm.controls['completePercentage'].disable();
-    //this.controlsCount = this.calculateCompletePercentage();
   }
 
 
   ngOnInit() {
-    this.getGovernments();
-
-    // this.monkeypoxForm.controls['completePercentage'].setValue(
-    //   this.controlsCount
-    // );
+    this.loadGovernorates();
+    this.loadCountries();
     if (this.currentId != null) {
-    this.monkeypoxForm.controls['patientID'].setValue(this.currentId)
-    this.getById();
-    this.calculateCompletionPercentage();
-
+      this.monkeypoxForm.controls['patientID'].setValue(this.currentId);
+      this.getById();
+      this.calculateCompletionPercentage();
     } else {
       this.Router.navigateByUrl("/home/investigations");
     }
@@ -131,33 +152,35 @@ export class MonkeypoxComponent implements OnInit {
     this.investigationService.getByIdMonkeypox(this.currentId).subscribe(
 
       res => {
-        console.log(res);
         var v = res.data;
-        this.monkeypoxForm.patchValue(v)
-        this.monkeypoxForm.controls['dateOfContact'].setValue(this.datePipe.transform(this.monkeypoxForm.value.dateOfContact, 'yyyy-MM-dd'));
-        this.monkeypoxForm.controls['dateOfContact2'].setValue(this.datePipe.transform(this.monkeypoxForm.value.dateOfContact2, 'yyyy-MM-dd'));
-        this.monkeypoxForm.controls['dateOfContact3'].setValue(this.datePipe.transform(this.monkeypoxForm.value.dateOfContact3, 'yyyy-MM-dd'));
-        this.monkeypoxForm.controls['mixingDate'].setValue(this.datePipe.transform(this.monkeypoxForm.value.mixingDate, 'yyyy-MM-dd'));
-        this.monkeypoxForm.controls['dateTravel'].setValue(this.datePipe.transform(this.monkeypoxForm.value.dateTravel, 'yyyy-MM-dd'));
-        this.monkeypoxForm.controls['arrivalDate'].setValue(this.datePipe.transform(this.monkeypoxForm.value.arrivalDate, 'yyyy-MM-dd'));
-        this.monkeypoxForm.controls['sampleDate'].setValue(this.datePipe.transform(this.monkeypoxForm.value.sampleDate, 'yyyy-MM-dd'));
-        this.monkeypoxForm.controls['dateHospitalization'].setValue(this.datePipe.transform(this.monkeypoxForm.value.dateHospitalization, 'yyyy-MM-dd'));
-        this.monkeypoxForm.controls['dateDepartureDeath'].setValue(this.datePipe.transform(this.monkeypoxForm.value.dateDepartureDeath, 'yyyy-MM-dd'));
-        this.monkeypoxForm.controls['dateDeath'].setValue(this.datePipe.transform(this.monkeypoxForm.value.dateDeath, 'yyyy-MM-dd'));
-        this.ChangGovernorate();
-        //this.controlsCount = this.calculateCompletePercentage();
-        //this.monkeypoxForm.value.completePercentage = this.controlsCount;
+        this.monkeypoxForm.patchValue(v);
+        this.patchDate('symptomsOnsetDate');
+        this.patchDate('skinRashOnsetDate');
+        this.patchDate('feverOnsetDate');
+        this.patchDate('contactDate');
+        this.patchDate('deadAnimalContactDate');
+        this.patchDate('travelDate');
+        this.patchDate('returnDate');
+        this.patchDate('sampleCollectionDate');
+        this.patchDate('admissionDate');
+        this.patchDate('dischargeDate');
+        this.patchDate('deathDate');
+        this.patchDate('deathDateConfirmed');
 
-        Object.entries(this.monkeypoxForm.controls).map(
-          ([key, value], index) => {
-            if (value.value == 'null')
-              value.setValue(null);
-          });
+        this.monkeypoxForm.controls['symptomChecklist'].setValue(
+          this.normalizeSymptomChecklist(this.parseJsonArray(v.symptomChecklist))
+        );
+        this.monkeypoxForm.controls['contactType'].setValue(this.parseJsonArray(v.contactType));
+        this.monkeypoxForm.controls['sampleType'].setValue(this.parseJsonArray(v.sampleType));
+        this.setArrayValues('domesticTravelLocations', this.parseJsonArray(v.domesticTravelLocations));
+        this.setArrayValues('duringIllnessTravelLocations', this.parseJsonArray(v.duringIllnessTravelLocations));
 
-        //this.controlsCount = this.calculateCompletePercentage();
-        //this.monkeypoxForm.value.completePercentage = this.controlsCount;
-
-          this.calculateCompletionPercentage();
+        Object.entries(this.monkeypoxForm.controls).forEach(([_, value]) => {
+          if (value.value == 'null') {
+            value.setValue(null);
+          }
+        });
+        this.calculateCompletionPercentage();
       }
       , (error) => {
         this.translateService
@@ -169,153 +192,87 @@ export class MonkeypoxComponent implements OnInit {
     );
   }
 
-
-
-  // /**
-  //  * Calculate the percentage
-  //  * @returns
-  //  */
-  // calculateCompletePercentage(): number {
-  //   Object.entries(this.monkeypoxForm.controls).map(([key, value], index) => {
-  //     if (value.value == 'null')
-  //       value.setValue(null);
-  //     else if (value.value != null && !isNaN(+value.value)) {
-  //       value.setValue(parseInt(value.value.toString()));
-  //     }
-  //   });
-  //   this.allControllesCount = this.countAllControls(this.monkeypoxForm);
-  //   if (this.monkeypoxForm.value.id != null) {
-  //     this.allFilledControlsCount = this.countFilledControls(this.monkeypoxForm);
-  //   } else {
-  //     this.allFilledControlsCount = 0;
-  //   }
-  //   this.controlsCount = this.allControllesCount != 0 ? parseInt(((this.allFilledControlsCount / this.allControllesCount) * 100).toString()) : 0;
-
-  //   return this.controlsCount;
-  // }
-  // /**
-  //  * Count all fields
-  //  * @param control
-  //  * @returns
-  //  */
-  // countFilledControls(control: any): number {
-  //   if (control instanceof FormControl) {
-  //     if (control.value != null)
-  //       return 1;
-  //     else return 0;
-  //   }
-
-  //   if (control instanceof FormArray) {
-  //     return control.controls.reduce((acc, curr) => acc + this.countFilledControls(curr), 1)
-  //   }
-
-  //   if (control instanceof FormGroup) {
-  //     return Object.keys(control.controls)
-  //       .map(key => control.controls[key])
-  //       .reduce((acc, curr) => acc + this.countFilledControls(curr), 1);
-  //   }
-  //   return 0;
-  // }
-  // /**
-  //  * Count all filled fields
-  //  * @param control
-  //  * @returns
-  //  */
-  // countAllControls(control: any): number {
-  //   if (control instanceof FormControl) {
-  //     return 1;
-  //   }
-
-  //   if (control instanceof FormArray) {
-  //     return control.controls.reduce((acc, curr) => acc + this.countAllControls(curr), 1)
-  //   }
-
-  //   if (control instanceof FormGroup) {
-  //     return Object.keys(control.controls)
-  //       .map(key => control.controls[key])
-  //       .reduce((acc, curr) => acc + this.countAllControls(curr), 1);
-  //   }
-  //   return 0;
-  // }
-
-  ChangGovernorate() {
-
-    //this.getCities(this.monkeypoxForm.value.governorate);
-  }
-
-  
-  ChanghomeCity() {
-    this.getPrincipalities(this.monkeypoxForm.value.city);
-  }
-
-
-
-  getGovernments() {
+  private loadGovernorates(): void {
     this.lookupsService.getAllGovernments().subscribe((result: any) => {
-      if (result != null && result != undefined) {
-        this.governments = result.data;
-
-      }
-      this.loadingPanel = false;
-    }, error => {
-      this.loadingPanel = false;
-      this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
-        this.userMsg.error(res);
-      });
-    });
-  }
-  getCities(healthAdministrationID: any) {
-    this.lookupsService.getPageCitys({ healthAdministrationID: healthAdministrationID }).subscribe((result: any) => {
-      if (result != null && result != undefined) {
-        this.cities = result.data;
-
-      }
-      this.loadingPanel = false;
-    }, error => {
-      this.loadingPanel = false;
-      this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
-        this.userMsg.error(res);
-      });
-    });
-  }
-  getPrincipalities(healthOfficeID: any) {
-    this.lookupsService.getPagePrincipalitys({ healthOfficeID: healthOfficeID }).subscribe((result: any) => {
-      if (result != null && result != undefined) {
-        this.principalities = result.data;
-
-      }
-      this.loadingPanel = false;
-    }, error => {
-      this.loadingPanel = false;
-      this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
-        this.userMsg.error(res);
-      });
+      this.governorates = result?.data ?? [];
     });
   }
 
+  private loadCountries(): void {
+    this.lookupsService.getAllNationalitys().subscribe((result: any) => {
+      this.countries = result?.data ?? [];
+    });
+  }
+
+  get domesticTravelLocations(): FormArray {
+    return this.monkeypoxForm.get('domesticTravelLocations') as FormArray;
+  }
+
+  get duringIllnessTravelLocations(): FormArray {
+    return this.monkeypoxForm.get('duringIllnessTravelLocations') as FormArray;
+  }
+
+  addDomesticTravelLocation() {
+    this.domesticTravelLocations.push(new FormControl(''));
+  }
+
+  removeDomesticTravelLocation(index: number) {
+    if (this.domesticTravelLocations.length > 1) {
+      this.domesticTravelLocations.removeAt(index);
+    }
+  }
+
+  addDuringIllnessTravelLocation() {
+    this.duringIllnessTravelLocations.push(new FormControl(''));
+  }
+
+  removeDuringIllnessTravelLocation(index: number) {
+    if (this.duringIllnessTravelLocations.length > 1) {
+      this.duringIllnessTravelLocations.removeAt(index);
+    }
+  }
+
+  onMultiCheckboxChange(controlName: string, value: string, isChecked: boolean) {
+    const selected = [...(this.monkeypoxForm.get(controlName)?.value || [])];
+    if (isChecked && !selected.includes(value)) {
+      selected.push(value);
+    } else if (!isChecked) {
+      const idx = selected.indexOf(value);
+      if (idx > -1) {
+        selected.splice(idx, 1);
+      }
+    }
+    this.monkeypoxForm.get(controlName)?.setValue(selected);
+    this.calculateCompletionPercentage();
+  }
+
+  isSelected(controlName: string, value: string): boolean {
+    return (this.monkeypoxForm.get(controlName)?.value || []).includes(value);
+  }
 
   save() {
-    //this.monkeypoxForm.controls['completePercentage'].enable();
-    //this.controlsCount = this.calculateCompletePercentage();
     Object.entries(this.monkeypoxForm.controls).map(([key, value], index) => {
       if (value.value == 'null')
         value.setValue(null);
     });
     this.calculateCompletionPercentage();
     this.monkeypoxForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
-
-    //this.monkeypoxForm.controls['completePercentage'].setValue(this.controlsCount);
     this.monkeypoxForm.controls['diseaseGroupId'].setValue(this.diseaseGroupID);
-    //console.log(this.monkeypoxForm.value);
-    //console.log(this.rabiesForm.value);
+
+    const payload = {
+      ...this.monkeypoxForm.value,
+      symptomChecklist: JSON.stringify(this.normalizeSymptomChecklist(this.monkeypoxForm.value.symptomChecklist || [])),
+      contactType: JSON.stringify(this.monkeypoxForm.value.contactType || []),
+      sampleType: JSON.stringify(this.monkeypoxForm.value.sampleType || []),
+      domesticTravelLocations: JSON.stringify((this.monkeypoxForm.value.domesticTravelLocations || []).filter((x: string) => x)),
+      duringIllnessTravelLocations: JSON.stringify((this.monkeypoxForm.value.duringIllnessTravelLocations || []).filter((x: string) => x))
+    };
+
     if (this.monkeypoxForm.value.id != null) {
-      this.investigationService.updateMonkeypox(this.monkeypoxForm.value).subscribe(
+      this.investigationService.updateMonkeypox(payload).subscribe(
         (response: any) => {
           if (response) {
-            //this.monkeypoxForm.controls['completePercentage'].disable();
             document.getElementById("jump_to_this_location").scrollIntoView({ behavior: 'smooth' });
-            //this.controlsCount = this.calculateCompletePercentage();
-            // this.monkeypoxForm.value.completePercentage = this.controlsCount;
             this.translateService
               .get('NEDSS.COMMON.SENT_SUCESSFULLY')
               .subscribe((res: string) => {
@@ -332,17 +289,13 @@ export class MonkeypoxComponent implements OnInit {
         }
       )
     } else {
-      this.investigationService.addInvestigationMonkeypox(this.monkeypoxForm.value).subscribe(
+      this.investigationService.addInvestigationMonkeypox(payload).subscribe(
         (response: any) => {
           if (response) {
-            //this.monkeypoxForm.controls['completePercentage'].disable();
             document.getElementById("jump_to_this_location").scrollIntoView({ behavior: 'smooth' });
-
             this.monkeypoxForm.value.id = response.data.id;
             this.currentId = response.data.patientID;
             this.getById();
-            //this.controlsCount = this.calculateCompletePercentage();
-            //this.monkeypoxForm.value.completePercentage = this.controlsCount;            
             this.translateService.get('NEDSS.COMMON.SENT_SUCESSFULLY')
               .subscribe((res: string) => {
                 this.userMsg.success(res);
@@ -363,17 +316,52 @@ export class MonkeypoxComponent implements OnInit {
   calculateCompletionPercentage() {
     this.allFilledControlsCount = 0;
     const data = this.monkeypoxForm.value;
-    console.log(data);
-    //Exclude fields you don't want to count (like 'id')
     const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
     const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
 
     this.allControllesCount = totalFields;
 
     Object.keys(data).forEach((key) => {
-      if (!excludedFields.includes(key) && data[key] !== null && data[key] !== '' && data[key] !== 'null') {
+      const value = data[key];
+      const hasValue = Array.isArray(value) ? value.length > 0 : value !== null && value !== '' && value !== 'null';
+      if (!excludedFields.includes(key) && hasValue) {
         this.allFilledControlsCount++;
       }
     });
+  }
+
+  private patchDate(controlName: string) {
+    const dateValue = this.monkeypoxForm.get(controlName)?.value;
+    this.monkeypoxForm.get(controlName)?.setValue(this.datePipe.transform(dateValue, 'yyyy-MM-dd'));
+  }
+
+  private parseJsonArray(value: any): string[] {
+    if (!value) {
+      return [];
+    }
+    if (Array.isArray(value)) {
+      return value;
+    }
+    try {
+      return JSON.parse(value);
+    } catch {
+      return [];
+    }
+  }
+
+  private setArrayValues(controlName: string, values: string[]) {
+    const formArray = this.monkeypoxForm.get(controlName) as FormArray;
+    while (formArray.length > 0) {
+      formArray.removeAt(0);
+    }
+    if (!values.length) {
+      formArray.push(new FormControl(''));
+      return;
+    }
+    values.forEach((item) => formArray.push(new FormControl(item)));
+  }
+
+  private normalizeSymptomChecklist(values: string[]): string[] {
+    return (values || []).filter((x) => this.allowedSymptomChecklistKeys.includes(x));
   }
 }
