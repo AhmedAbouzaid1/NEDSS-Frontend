@@ -52,7 +52,6 @@ export class MonkeypoxComponent implements OnInit {
     'sampleCollectionDate',
     'admissionDate',
     'dischargeDate',
-    'deathDate',
     'deathDateConfirmed'
   ];
 
@@ -130,14 +129,12 @@ export class MonkeypoxComponent implements OnInit {
       sampleCollected: new FormControl(),
       sampleCollectionDate: new FormControl(),
       sampleType: new FormControl([]),
-      healthFacilityName: new FormControl(),
       patientAdmitted: new FormControl(),
       hospitalType: new FormControl(),
       admittedToWard: new FormControl(),
       wardHospitalName: new FormControl(),
       admissionDate: new FormControl(),
       dischargeDate: new FormControl(),
-      deathDate: new FormControl(),
       patientStatus: new FormControl(),
       deathDateConfirmed: new FormControl(),
       deathPlace: new FormControl(),
@@ -366,11 +363,27 @@ export class MonkeypoxComponent implements OnInit {
 
     Object.keys(data).forEach((key) => {
       const value = data[key];
-      const hasValue = Array.isArray(value) ? value.length > 0 : value !== null && value !== '' && value !== 'null';
-      if (!excludedFields.includes(key) && hasValue) {
+      if (!excludedFields.includes(key) && this.isFieldFilledForCompletion(value)) {
         this.allFilledControlsCount++;
       }
     });
+  }
+
+  private isFieldFilledForCompletion(value: unknown): boolean {
+    if (value === null || value === undefined || value === 'null') {
+      return false;
+    }
+    if (Array.isArray(value)) {
+      return value.some(
+        (item) =>
+          item !== null &&
+          item !== undefined &&
+          item !== '' &&
+          String(item).trim() !== '' &&
+          item !== 'null'
+      );
+    }
+    return value !== '';
   }
 
   private patchDate(controlName: string) {
