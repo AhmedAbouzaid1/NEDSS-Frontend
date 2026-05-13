@@ -50,6 +50,7 @@ export class SharedDataService {
 
   ShowSentinel = false;
   inSential = false;
+  duplicateNationalIdMatchCount = 0;
   private sentinelData = new BehaviorSubject<SentinelData>({
     id: 0,
     patientName: '',
@@ -167,8 +168,17 @@ export class SharedDataService {
   });
 
   getPatientObject() {
-    this.inSential = false;
     return this.patientObject.asObservable();
+  }
+
+  /** Current patient snapshot (synchronous); use for validation without async subscribe bugs. */
+  getPatientSnapshot(): PatientModel {
+    return this.patientObject.getValue();
+  }
+
+  /** Current sentinel form snapshot. */
+  getSentinelSnapshot(): SentinelData {
+    return this.sentinelData.getValue();
   }
 
   setPatientObject(value: PatientModel) {
