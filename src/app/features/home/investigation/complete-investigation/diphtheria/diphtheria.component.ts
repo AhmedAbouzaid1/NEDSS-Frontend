@@ -11,6 +11,7 @@ import { calculateCompletionStats } from '../shared/investigation-summary.utils'
   styleUrls: ['./diphtheria.component.css'],
 })
 export class DiphtheriaComponent implements OnInit {
+  private static readonly DATE_FORMAT = 'yyyy-MM-dd';
   currentLang =
     localStorage.getItem('ls.currentLang') !== undefined &&
     localStorage.getItem('ls.currentLang') !== 'undefined'
@@ -150,6 +151,10 @@ export class DiphtheriaComponent implements OnInit {
       secondBoosterDoseDate: new FormControl(),
       otherBoosterDose: new FormControl(),
       otherBoosterDoseDate: new FormControl(),
+      investigationDate: new FormControl(),
+      healthObserverName: new FormControl(),
+      surveillanceOfficerName: new FormControl(),
+      administrationDirectorName: new FormControl(),
       diseaseGroupId: new FormControl(this.diseaseGroupID),
       id: new FormControl(),
       patientID: new FormControl(),
@@ -175,28 +180,28 @@ export class DiphtheriaComponent implements OnInit {
         this.diphtriaForm.controls['followD1DateOfSymptoms'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD1DateOfSymptoms,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['followD1SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD1SampleTaken));
         this.diphtriaForm.controls['followD1DateSampleTaken'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD1DateSampleTaken,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['followD1SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD1SampleResult));
         this.diphtriaForm.controls['followD2DateOfSymptoms'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD2DateOfSymptoms,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['followD2SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD2SampleTaken));
         this.diphtriaForm.controls['followD2DateSampleTaken'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD2DateSampleTaken,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['followD2SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD2SampleResult));
@@ -204,65 +209,71 @@ export class DiphtheriaComponent implements OnInit {
         this.diphtriaForm.controls['followD7DateOfSymptoms'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD7DateOfSymptoms,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['followD7SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD7SampleTaken));
         this.diphtriaForm.controls['followD7DateSampleTaken'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD7DateSampleTaken,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['followD7SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD7SampleResult));
         this.diphtriaForm.controls['followD14DateOfSymptoms'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD14DateOfSymptoms,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['followD14SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD14SampleTaken));
         this.diphtriaForm.controls['followD14DateSampleTaken'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.followD14DateSampleTaken,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['followD14SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD14SampleResult));
         this.diphtriaForm.controls['firstDoseDate'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.firstDoseDate,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['secondDoseDate'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.secondDoseDate,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['otherDoseDate'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.otherDoseDate,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['firstBoosterDoseDate'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.firstBoosterDoseDate,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['secondBoosterDoseDate'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.secondBoosterDoseDate,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
         this.diphtriaForm.controls['otherBoosterDoseDate'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.otherBoosterDoseDate,
-            'yyyy-MM-dd'
+            DiphtheriaComponent.DATE_FORMAT
+          )
+        );
+        this.diphtriaForm.controls['investigationDate'].setValue(
+          this.datePipe.transform(
+            this.diphtriaForm.value.investigationDate,
+            DiphtheriaComponent.DATE_FORMAT
           )
         );
 
