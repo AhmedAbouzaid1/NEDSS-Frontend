@@ -1,4 +1,4 @@
-<div class="card shadow mb-4 small-screen-card">
+<div class="card shadow mb-4">
   <div class="card-body bg-dark-mode">
     <div class="row">
       <div class="col-lg-4" *ngIf="activeUSerService.getAccessibleParts?.showGovernments">
@@ -354,40 +354,31 @@
             <span *ngIf="patient.incidentDepartmentId == departmentEnum.Internal"
               class="text-danger mess-color">*</span>
           </label>
-          <div class="row">
-            <input type="text" name="nationalId" [(ngModel)]="patient.nationalId"
-              (ngModelChange)="onNationalIdChanged($event,true)" #nationalId="ngModel" class="w-100" maxlength="14"
-              (keypress)="generalDataService.onIdentityCardKeyPress($event)" pInputText
-              (blur)="
-                generalDataService.isCardIdValid =
-                  generalDataService.checkCardIdValid(
-                    patient.incidentDepartmentId,
-                    patient.nationalityId,
-                    patient.nationalId
-                  )
-              " />
-            <!-- <input
-              type="text"
-              (ngModelChange)="onNationalIdChanged($event)"
-              tabindex="7"
-              maxlength="14"
-              (keypress)="generalDataService.onIdentityCardKeyPress($event)"
-              [(ngModel)]="patient.nationalId"
-              [class]="'form-control-' + currentLang"
-              class="d-inline national"
-              (blur)="
-                generalDataService.isCardIdValid =
-                  generalDataService.checkCardIdValid(
-                    patient.incidentDepartmentId,
-                    patient.nationalityId,
-                    patient.nationalId
-                  )
-              "
-            /> -->
-            <div *ngIf="!generalDataService.isCardIdValid" class="form-text text-danger mess-color">
-              {{ generalDataService.cardIdValidationMessage | translate }}
-            </div>
-          </div>
+          <input
+            type="text"
+            name="nationalId"
+            [(ngModel)]="patient.nationalId"
+            (ngModelChange)="onNationalIdChanged($event, true)"
+            #nationalId="ngModel"
+            class="w-100"
+            maxlength="14"
+            (keypress)="generalDataService.onIdentityCardKeyPress($event)"
+            pInputText
+            (blur)="
+              generalDataService.isCardIdValid =
+                generalDataService.checkCardIdValid(
+                  patient.incidentDepartmentId,
+                  patient.nationalityId,
+                  patient.nationalId
+                )
+            "
+          />
+          <small
+            *ngIf="!generalDataService.isCardIdValid"
+            class="form-text text-danger mess-color"
+          >
+            {{ generalDataService.cardIdValidationMessage | translate }}
+          </small>
         </div>
       </div>
 

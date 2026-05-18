@@ -1,6 +1,6 @@
 import { InvestigationService } from './../../investigation/services/investigation.service';
 import { GeneralDataService } from './../services/general-data.service';
-import { Component, ElementRef, Input, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { SharedDataService } from '../services/shared-data.service';
@@ -19,12 +19,13 @@ import { GeneralDataEnum } from '../models/general-data.eums';
   templateUrl: './general-data.component.html',
   styleUrls: ['./general-data.component.css']
 })
-export class GeneralDataComponent implements OnDestroy, AfterViewInit {
+export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
   @Input() finalTab2: boolean;
   @ViewChild('saveButtonSentinel') saveButtonSentinel: ElementRef;
   loadingPanel: boolean = false;
   hasScrolledToButton = false;
   private saveBarObserver: IntersectionObserver;
+  private saveBarObserverAttached = false;
   patient: PatientModel = new PatientModel();
   updating: boolean = false;
   dataSource: any;
@@ -74,7 +75,22 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.tryAttachSaveBarObserver();
+  }
+
+  ngAfterViewChecked() {
+    this.tryAttachSaveBarObserver();
+  }
+
+  private tryAttachSaveBarObserver() {
+    if (this.saveBarObserverAttached || this.isLoadingData) {
+      return;
+    }
+    if (!this.saveButtonSentinel?.nativeElement) {
+      return;
+    }
     this.observeSaveBar();
+    this.saveBarObserverAttached = true;
   }
 
   private observeSaveBar() {
