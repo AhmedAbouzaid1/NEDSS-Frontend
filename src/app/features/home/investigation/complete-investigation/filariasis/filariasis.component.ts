@@ -1,109 +1,195 @@
+import { calculateCompletionStats } from '../shared/investigation-summary.utils';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { UserMessageService } from 'src/app/core/services/user.message.service';
-import { InvestigationService } from '../../services/investigation.service'; import { TranslateService } from '@ngx-translate/core';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
+import { UserMessageService } from 'src/app/core/services/user.message.service';
+import { InvestigationService } from '../../services/investigation.service';
+
 @Component({
   selector: 'app-filariasis',
   templateUrl: './filariasis.component.html',
   styleUrls: ['./filariasis.component.css']
 })
 export class FilariasisComponent implements OnInit {
+  private readonly dateFields = [
+    'treatmentStartDate',
+    'dateSampleTakenDay1',
+    'dateSampleTakenDay2',
+    'dateSampleTakenDay7',
+    'dateSampleTakenDay14',
+    'dateOnsetSymptomsDay1',
+    'dateOnsetSymptomsDay2',
+    'dateOnsetSymptomsDay7',
+    'dateOnsetSymptomsDay14',
+    'historyTravel',
+    'historyTravelInsideEgypt',
+    'dateEntryEgypt',
+    'investigationDate'
+  ];
+  private readonly stringifiedFields = [
+    'isSampleTakenDay1',
+    'sampleResultDay1',
+    'isSampleTakenDay2',
+    'sampleResultDay2',
+    'isSampleTakenDay7',
+    'sampleResultDay7',
+    'isSampleTakenDay14',
+    'sampleResultDay14'
+  ];
+
   currentLang =
     localStorage.getItem('ls.currentLang') !== undefined &&
       localStorage.getItem('ls.currentLang') !== 'undefined'
       ? localStorage.getItem('ls.currentLang')
       : 'ar';
 
-
-  diseaseGroupId: any;
-  filariasisForm: FormGroup
+  filariasisForm: FormGroup;
   currentId: any;
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
   patientName: string;
+
+  get patientVisitHistory(): FormArray {
+    return this.filariasisForm.get('patientVisitHistory') as FormArray;
+  }
+
+  createPatientVisitHistoryGroup(data?: any): FormGroup {
+    return new FormGroup({
+      id: new FormControl(data?.id || null),
+      nameHealthFacility: new FormControl(data?.nameHealthFacility || null),
+      healthFacilityBelongs: new FormControl(data?.healthFacilityBelongs || null),
+      dateVisit: new FormControl(data?.dateVisit || null),
+      initialDiagnosis: new FormControl(data?.initialDiagnosis || null),
+      admissionHospital: new FormControl(data?.admissionHospital || null),
+      dateEntry: new FormControl(data?.dateEntry || null),
+      exitDate: new FormControl(data?.exitDate || null)
+    });
+  }
+
+  private syncPatientVisitHistoryFromApi(data: any): void {
+    const apiVisits = data?.PatientVisitHistory ?? data?.patientVisitHistory;
+    const visits = Array.isArray(apiVisits) && apiVisits.length > 0
+      ? apiVisits
+      : this.mapLegacyPatientVisits(data);
+
+    while (this.patientVisitHistory.length > 0) {
+      this.patientVisitHistory.removeAt(0);
+    }
+
+    visits.forEach((item: any) => {
+      this.patientVisitHistory.push(this.createPatientVisitHistoryGroup({
+        ...item,
+        dateVisit: this.datePipe.transform(item?.dateVisit, 'yyyy-MM-dd'),
+        dateEntry: this.datePipe.transform(item?.dateEntry, 'yyyy-MM-dd'),
+        exitDate: this.datePipe.transform(item?.exitDate, 'yyyy-MM-dd')
+      }));
+    });
+  }
+
+  private mapLegacyPatientVisits(data: any): any[] {
+    return Array.from({ length: 5 }, (_, index) => index + 1)
+      .map((visitIndex) => ({
+        nameHealthFacility: data?.[`nameHealthFacility${visitIndex}`] ?? null,
+        healthFacilityBelongs: data?.[`healthFacilityBelongs${visitIndex}`] ?? null,
+        dateVisit: data?.[`dateVisit${visitIndex}`] ?? null,
+        initialDiagnosis: data?.[`initialDiagnosis${visitIndex}`] ?? null,
+        admissionHospital: data?.[`admissionHospital${visitIndex}`] ?? null,
+        dateEntry: data?.[`dateEntry${visitIndex}`] ?? null,
+        exitDate: data?.[`exitDate${visitIndex}`] ?? null
+      }))
+      .filter((visit) => Object.values(visit).some((value) => value !== null && value !== '' && value !== 'null'));
+  }
+
   constructor(private investigationService: InvestigationService,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
     private datePipe: DatePipe) {
-      if (this.investigationService.patient.firstName != null && this.investigationService.patient.firstName != undefined) {
-        this.patientName = this.investigationService.patient.firstName + " " + this.investigationService.patient.secondName + " " + this.investigationService.patient.thirdName;
-      }
+    if (this.investigationService.patient.firstName != null && this.investigationService.patient.firstName != undefined) {
+      this.patientName = this.investigationService.patient.firstName + " " + this.investigationService.patient.secondName + " " + this.investigationService.patient.thirdName;
+    }
   }
+
+  private normalizeNullishValue(value: any): any {
+    return value === '' || value === 'null' || value === undefined ? null : value;
+  }
+
+  private normalizeDateField(controlName: string): void {
+    const control = this.filariasisForm.get(controlName);
+    if (!control) {
+      return;
+    }
+
+    control.setValue(this.datePipe.transform(control.value, 'yyyy-MM-dd'));
+  }
+
+  private stringifyField(controlName: string): void {
+    const control = this.filariasisForm.get(controlName);
+    if (!control || control.value === null || control.value === undefined) {
+      return;
+    }
+
+    control.setValue(`${control.value}`);
+  }
+
+  private normalizePatientVisitPayload(visit: any): any {
+    return {
+      id: this.normalizeNullishValue(visit?.id),
+      patientID: this.normalizeNullishValue(this.currentId),
+      nameHealthFacility: this.normalizeNullishValue(visit?.nameHealthFacility),
+      healthFacilityBelongs: this.normalizeNullishValue(visit?.healthFacilityBelongs),
+      dateVisit: this.normalizeNullishValue(visit?.dateVisit),
+      initialDiagnosis: this.normalizeNullishValue(visit?.initialDiagnosis),
+      admissionHospital: this.normalizeNullishValue(visit?.admissionHospital),
+      dateEntry: this.normalizeNullishValue(visit?.dateEntry),
+      exitDate: this.normalizeNullishValue(visit?.exitDate)
+    };
+  }
+
+  private buildSavePayload(): any {
+    const payload = { ...this.filariasisForm.getRawValue() };
+
+    Object.keys(payload).forEach((key) => {
+      if (key === 'patientVisitHistory') {
+        payload.PatientVisitHistory = Array.isArray(payload[key])
+          ? payload[key].map((item: any) => this.normalizePatientVisitPayload(item))
+          : [];
+        delete payload[key];
+        return;
+      }
+
+      payload[key] = this.normalizeNullishValue(payload[key]);
+    });
+
+    payload.diseaseGroupId = this.investigationService.diseaseGroupID;
+    payload.patientID = this.currentId;
+    payload.investigationCompletePercentage = parseFloat(
+      ((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)
+    );
+
+    return payload;
+  }
+
   ngOnInit() {
     this.filariasisForm = new FormGroup({
       id: new FormControl(),
       patientID: new FormControl(),
-      // fever: new FormControl(0),
-      fever: new FormControl(),
-      feverDurationDay: new FormControl(),
-      maxTemperature: new FormControl(),
-      lymphaticEnlargement: new FormControl(),
-      hydrocele: new FormControl(),
-      milkyUrine: new FormControl(),
-      elephantiasis: new FormControl(),
-      dateOnsetSymptoms: new FormControl(),
       filariasisTreatmentProtocolImplemented: new FormControl(),
       treatmentStartDate: new FormControl(),
       typeTreatment: new FormControl(),
       dose: new FormControl(),
       conditionAssessment: new FormControl(),
       result: new FormControl(),
-
-      nameHealthFacility1: new FormControl(),
-      healthFacilityBelongs1: new FormControl(),
-      dateVisit1: new FormControl(),
-      initialDiagnosis1: new FormControl(),
-      admissionHospital1: new FormControl(),
-      dateEntry1: new FormControl(),
-      exitDate1: new FormControl(),
-
-      nameHealthFacility2: new FormControl(),
-      healthFacilityBelongs2: new FormControl(),
-      dateVisit2: new FormControl(),
-      initialDiagnosis2: new FormControl(),
-      admissionHospital2: new FormControl(),
-      dateEntry2: new FormControl(),
-      exitDate2: new FormControl(),
-
-      nameHealthFacility3: new FormControl(),
-      healthFacilityBelongs3: new FormControl(),
-      dateVisit3: new FormControl(),
-      initialDiagnosis3: new FormControl(),
-      admissionHospital3: new FormControl(),
-      dateEntry3: new FormControl(),
-      exitDate3: new FormControl(),
-
-      nameHealthFacility4: new FormControl(),
-      healthFacilityBelongs4: new FormControl(),
-      dateVisit4: new FormControl(),
-      initialDiagnosis4: new FormControl(),
-      admissionHospital4: new FormControl(),
-      dateEntry4: new FormControl(),
-      exitDate4: new FormControl(),
-
-      nameHealthFacility5: new FormControl(),
-      healthFacilityBelongs5: new FormControl(),
-      dateVisit5: new FormControl(),
-      initialDiagnosis5: new FormControl(),
-      admissionHospital5: new FormControl(),
-      dateEntry5: new FormControl(),
-      exitDate5: new FormControl(),
-
-      comments: new FormControl(),
-
+      patientVisitHistory: new FormArray([]),
       routineMonitoring: new FormControl(),
       followUpContacts: new FormControl(),
-      // historyTravelOutsideEgypt: new FormControl(2),
       historyTravelOutsideEgypt: new FormControl(),
-      // medicalTeam: new FormControl(2),
       medicalTeam: new FormControl(),
       placeconfirmedCases: new FormControl(),
 
       contactSuspectedCase: new FormControl(),
       epidemicOutbreak: new FormControl(),
       contactConfirmedCase: new FormControl(),
-      contactDeceasedPersonRespiratory: new FormControl(),
       numberNonDirectContacts: new FormControl(),
       numberDirectContacts: new FormControl(),
 
@@ -200,10 +286,14 @@ export class FilariasisComponent implements OnInit {
       traveledAbroad: new FormControl(),
       whereToTravel: new FormControl(),
       historyTravel: new FormControl(),
+      traveledInsideEgypt: new FormControl(),
+      whereToTravelInsideEgypt: new FormControl(),
+      historyTravelInsideEgypt: new FormControl(),
       dateEntryEgypt: new FormControl(),
-      getNecessaryDose: new FormControl(),
-      typeProperty: new FormControl(),
-      history: new FormControl(),
+      investigationDate: new FormControl(),
+      healthObserverName: new FormControl(),
+      surveillanceOfficerName: new FormControl(),
+      administrationDirectorName: new FormControl(),
       diseaseGroupId: new FormControl(this.investigationService.diseaseGroupID),
       investigationCompletePercentage: new FormControl(),
     })
@@ -211,71 +301,12 @@ export class FilariasisComponent implements OnInit {
     this.filariasisForm.controls['patientID'].setValue(this.currentId)
     this.investigationService.getByIdfilarisis(this.currentId).subscribe(
       res => {
-        console.log(res);
-        var v = res.data;
-        // if (v.fever == null) { v.fever = 0; }
-        // if (v.isSampleTakenDay1 == null) { v.isSampleTakenDay1 = 2; }
-        // if (v.isSampleTakenDay2 == null) { v.isSampleTakenDay2 = 2; }
-        // if (v.isSampleTakenDay7 == null) { v.isSampleTakenDay7 = 2; }
-        // if (v.isSampleTakenDay14 == null) { v.isSampleTakenDay14 = 2; }
-        // //followD1SampleResult
-        // if (v.sampleResultDay1 == null) { v.sampleResultDay1 = 2; }
-        // if (v.sampleResultDay2 == null) { v.sampleResultDay2 = 2; }
-        // if (v.sampleResultDay7 == null) { v.sampleResultDay7 = 2; }
-        // if (v.sampleResultDay14 == null) { v.sampleResultDay14 = 2; }
-        this.filariasisForm.patchValue(v)
-        this.filariasisForm.patchValue({ fever: this.filariasisForm.value.fever + "", tc: true });
-        //dateOnsetSymptoms
-        this.filariasisForm.controls['dateOnsetSymptoms'].setValue(this.datePipe.transform(this.filariasisForm.value.dateOnsetSymptoms, 'yyyy-MM-dd'));
-        //treatmentStartDate
-        this.filariasisForm.controls['treatmentStartDate'].setValue(this.datePipe.transform(this.filariasisForm.value.treatmentStartDate, 'yyyy-MM-dd'));
-        //
-        this.filariasisForm.patchValue({ isSampleTakenDay1: this.filariasisForm.value.isSampleTakenDay1 + "", tc: true });
-        this.filariasisForm.patchValue({ sampleResultDay1: this.filariasisForm.value.sampleResultDay1 + "", tc: true });
-        this.filariasisForm.controls['dateSampleTakenDay1'].setValue(this.datePipe.transform(this.filariasisForm.value.dateSampleTakenDay1, 'yyyy-MM-dd'));
-        this.filariasisForm.patchValue({ isSampleTakenDay2: this.filariasisForm.value.isSampleTakenDay2 + "", tc: true });
-        this.filariasisForm.patchValue({ sampleResultDay2: this.filariasisForm.value.sampleResultDay2 + "", tc: true });
-        this.filariasisForm.controls['dateSampleTakenDay2'].setValue(this.datePipe.transform(this.filariasisForm.value.dateSampleTakenDay2, 'yyyy-MM-dd'));
-        this.filariasisForm.patchValue({ isSampleTakenDay7: this.filariasisForm.value.isSampleTakenDay7 + "", tc: true });
-        this.filariasisForm.patchValue({ sampleResultDay7: this.filariasisForm.value.sampleResultDay7 + "", tc: true });
-        this.filariasisForm.controls['dateSampleTakenDay7'].setValue(this.datePipe.transform(this.filariasisForm.value.dateSampleTakenDay7, 'yyyy-MM-dd'));
-        this.filariasisForm.patchValue({ isSampleTakenDay14: this.filariasisForm.value.isSampleTakenDay14 + "", tc: true });
-        this.filariasisForm.patchValue({ sampleResultDay14: this.filariasisForm.value.sampleResultDay14 + "", tc: true });
-        this.filariasisForm.controls['dateSampleTakenDay14'].setValue(this.datePipe.transform(this.filariasisForm.value.dateSampleTakenDay14, 'yyyy-MM-dd'));
-        //dateOnsetSymptomsDay1
-        this.filariasisForm.controls['dateOnsetSymptomsDay1'].setValue(this.datePipe.transform(this.filariasisForm.value.dateOnsetSymptomsDay1, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateOnsetSymptomsDay2'].setValue(this.datePipe.transform(this.filariasisForm.value.dateOnsetSymptomsDay2, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateOnsetSymptomsDay7'].setValue(this.datePipe.transform(this.filariasisForm.value.dateOnsetSymptomsDay7, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateOnsetSymptomsDay14'].setValue(this.datePipe.transform(this.filariasisForm.value.dateOnsetSymptomsDay14, 'yyyy-MM-dd'));
-
-
-
-
-        this.filariasisForm.controls['dateVisit1'].setValue(this.datePipe.transform(this.filariasisForm.value.dateVisit1, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateEntry1'].setValue(this.datePipe.transform(this.filariasisForm.value.dateEntry1, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateVisit2'].setValue(this.datePipe.transform(this.filariasisForm.value.dateVisit2, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateEntry2'].setValue(this.datePipe.transform(this.filariasisForm.value.dateEntry2, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateVisit3'].setValue(this.datePipe.transform(this.filariasisForm.value.dateVisit3, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateEntry3'].setValue(this.datePipe.transform(this.filariasisForm.value.dateEntry3, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateVisit4'].setValue(this.datePipe.transform(this.filariasisForm.value.dateVisit4, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateEntry4'].setValue(this.datePipe.transform(this.filariasisForm.value.dateEntry4, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateVisit5'].setValue(this.datePipe.transform(this.filariasisForm.value.dateVisit5, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['dateEntry5'].setValue(this.datePipe.transform(this.filariasisForm.value.dateEntry5, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['exitDate1'].setValue(this.datePipe.transform(this.filariasisForm.value.exitDate1, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['exitDate2'].setValue(this.datePipe.transform(this.filariasisForm.value.exitDate2, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['exitDate3'].setValue(this.datePipe.transform(this.filariasisForm.value.exitDate3, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['exitDate4'].setValue(this.datePipe.transform(this.filariasisForm.value.exitDate4, 'yyyy-MM-dd'));
-        this.filariasisForm.controls['exitDate5'].setValue(this.datePipe.transform(this.filariasisForm.value.exitDate5, 'yyyy-MM-dd'));
-
-        //HistoryTravel
-        this.filariasisForm.controls['historyTravel'].setValue(this.datePipe.transform(this.filariasisForm.value.historyTravel, 'yyyy-MM-dd'));
-        //DateEntryEgypt
-        this.filariasisForm.controls['dateEntryEgypt'].setValue(this.datePipe.transform(this.filariasisForm.value.dateEntryEgypt, 'yyyy-MM-dd'));
-        //history
-        this.filariasisForm.controls['history'].setValue(this.datePipe.transform(this.filariasisForm.value.history, 'yyyy-MM-dd'));
-
+        const v = res.data ?? {};
+        this.filariasisForm.patchValue(v);
+        this.stringifiedFields.forEach((field) => this.stringifyField(field));
+        this.dateFields.forEach((field) => this.normalizeDateField(field));
+        this.syncPatientVisitHistoryFromApi(v);
         this.calculateCompletionPercentage();
-
       }
       , (error) => {
         this.translateService
@@ -287,15 +318,11 @@ export class FilariasisComponent implements OnInit {
     )
   }
   save() {
-    Object.entries(this.filariasisForm.controls).map(([key, value], index) => {
-      if (value.value == 'null')
-        value.setValue(null);
-    })
-    this.filariasisForm.controls['diseaseGroupId'].setValue(this.investigationService.diseaseGroupID);
     this.calculateCompletionPercentage();
-    this.filariasisForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
+    const payload = this.buildSavePayload();
+
     if (this.filariasisForm.value.id != null) {
-      this.investigationService.updateSeverefilarisis(this.filariasisForm.value).subscribe(
+      this.investigationService.updateSeverefilarisis(payload).subscribe(
         (response: any) => {
           if (response) {
             this.translateService
@@ -314,7 +341,7 @@ export class FilariasisComponent implements OnInit {
         }
       )
     } else {
-      this.investigationService.addInvestigationfilarisis(this.filariasisForm.value).subscribe(
+      this.investigationService.addInvestigationfilarisis(payload).subscribe(
         (response: any) => {
           if (response) {
             this.translateService
@@ -337,19 +364,16 @@ export class FilariasisComponent implements OnInit {
 
   //BL
   calculateCompletionPercentage() {
-    this.allFilledControlsCount = 0;
-    const data = this.filariasisForm.value;
-    console.log(data);
-    //Exclude fields you don't want to count (like 'id')
-    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
-    const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
-
-    this.allControllesCount = totalFields;
-
-    Object.keys(data).forEach((key) => {
-      if (!excludedFields.includes(key) && data[key] !== null && data[key] !== '' && data[key] !== 'null') {
-        this.allFilledControlsCount++;
-      }
+    const stats = calculateCompletionStats(this.filariasisForm.value, {
+      excludedFields: ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'],
+      formArrays: [{ value: this.patientVisitHistory, excludedFields: ['id'] }]
     });
+
+    this.allControllesCount = stats.totalFields;
+    this.allFilledControlsCount = stats.filledFields;
+  }
+
+  calculateCompletePercentage() {
+    this.calculateCompletionPercentage();
   }
 }
