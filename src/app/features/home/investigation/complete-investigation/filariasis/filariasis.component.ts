@@ -185,7 +185,7 @@ export class FilariasisComponent implements OnInit {
       followUpContacts: new FormControl(),
       historyTravelOutsideEgypt: new FormControl(),
       medicalTeam: new FormControl(),
-      placeconfirmedCases: new FormControl(),
+      placeConfirmedCases: new FormControl(),
 
       contactSuspectedCase: new FormControl(),
       epidemicOutbreak: new FormControl(),
@@ -299,7 +299,7 @@ export class FilariasisComponent implements OnInit {
     })
     this.currentId = this.investigationService.currentid
     this.filariasisForm.controls['patientID'].setValue(this.currentId)
-    this.investigationService.getByIdfilarisis(this.currentId).subscribe(
+    this.investigationService.getByIdfilarisis(this.currentId, this.investigationService.diseaseGroupID).subscribe(
       res => {
         const v = res.data ?? {};
         this.filariasisForm.patchValue(v);
