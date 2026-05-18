@@ -9,13 +9,25 @@
   <h2 class="titles h5 fw-bold">
     {{ "NEDSS.HOME.USERS.ADD_USER.Edit_USER" | translate }}
   </h2>
-  <a
-    (click)="exportPatientsAsPdf()"
-    class="btn bg pr-2 pl-2 rounded-1 fwb mt-6 text-white bg"
-  >
-    <span class="pi pi-file-pdf"></span>
-    {{ "NEDSS.COMMON.EXPORT_PDF" | translate }}
-  </a>
+  <div class="d-flex align-items-center gap-2 flex-wrap">
+    <button
+      type="button"
+      class="btn bg pr-2 pl-2 rounded-1 fwb mt-6 text-white bg"
+      [disabled]="resettingPassword"
+      data-bs-toggle="modal"
+      data-bs-target="#resetPasswordModal"
+    >
+      <span class="pi pi-key"></span>
+      {{ "NEDSS.HOME.USERS.ADD_USER.RESET_PASSWORD" | translate }}
+    </button>
+    <a
+      (click)="exportPatientsAsPdf()"
+      class="btn bg pr-2 pl-2 rounded-1 fwb mt-6 text-white bg"
+    >
+      <span class="pi pi-file-pdf"></span>
+      {{ "NEDSS.COMMON.EXPORT_PDF" | translate }}
+    </a>
+  </div>
 </div>
 
 <form (ngSubmit)="save()" #userForm="ngForm" novalidate>
@@ -1210,3 +1222,45 @@
     </div>
   </div>
 </form>
+
+<div
+  class="modal fade"
+  id="resetPasswordModal"
+  tabindex="-1"
+  aria-labelledby="resetPasswordModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resetPasswordModalLabel">
+          {{ "NEDSS.HOME.USERS.ADD_USER.RESET_PASSWORD_TITLE" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ "NEDSS.HOME.USERS.ADD_USER.RESET_PASSWORD_CONFIRM" | translate }}
+        <strong class="text-danger"> {{ user.fullName }} </strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          [disabled]="resettingPassword"
+          (click)="confirmResetPassword()"
+          data-bs-dismiss="modal"
+        >
+          {{ "NEDSS.HOME.USERS.ADD_USER.RESET_PASSWORD" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

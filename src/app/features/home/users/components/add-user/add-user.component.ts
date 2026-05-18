@@ -22,6 +22,7 @@ export class AddUserComponent {
   IsPrivateLab = false;
   isNew: boolean = true;
   loaded: boolean = false;
+  resettingPassword = false;
   overlayColor: string = 'rgba(255,255,255,0.5)';
   imageSrc: string = 'assets/upload-image.webp';
   adminBool: any;
@@ -1142,5 +1143,31 @@ export class AddUserComponent {
 
   exportPatientsAsPdf() {
     this.exportService.exportTableAsPdf(this.tableElement, this.user.fullName);
+  }
+
+  confirmResetPassword() {
+    if (!this.user?.id) {
+      return;
+    }
+
+    this.resettingPassword = true;
+    this.userService.resetUserPassword(this.user.id).subscribe({
+      next: () => {
+        this.resettingPassword = false;
+        this.translateService
+          .get('NEDSS.HOME.USERS.ADD_USER.RESET_PASSWORD_SUCCESS')
+          .subscribe((res: string) => {
+            this.userMsg.success(res);
+          });
+      },
+      error: () => {
+        this.resettingPassword = false;
+        this.translateService
+          .get('NEDSS.HOME.USERS.ADD_USER.RESET_PASSWORD_FAILED')
+          .subscribe((res: string) => {
+            this.userMsg.error(res);
+          });
+      },
+    });
   }
 }
