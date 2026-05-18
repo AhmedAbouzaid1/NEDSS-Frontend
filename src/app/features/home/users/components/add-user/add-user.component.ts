@@ -994,7 +994,7 @@ export class AddUserComponent {
                 notActiveReason: null,
               };
 
-              this.router.navigateByUrl('home/control-panel/users');
+              this.router.navigateByUrl('/home/control-panel/users');
             }
           },
           (error) => {
@@ -1055,7 +1055,7 @@ export class AddUserComponent {
             notActiveReason: null,
           };
 
-          this.router.navigateByUrl('home/control-panel/users');
+          this.router.navigateByUrl('/home/control-panel/users');
         }
       },
       (error) => {
