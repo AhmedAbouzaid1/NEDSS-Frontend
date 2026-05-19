@@ -1,12 +1,12 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { Gender, MaritalStatus } from 'src/app/core/constants';
+import { FormControl, FormGroup } from '@angular/forms';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
+import { calculateCompletionStats } from '../shared/investigation-summary.utils';
 @Component({
   selector: 'app-hiv',
   templateUrl: './hiv.component.html',
@@ -20,6 +20,31 @@ export class HivComponent implements OnInit {
   allControllesCount: number = 0;
   patientName: string;
   diseaseGroupID: any;
+  private readonly medicalExaminationReasonFields = [
+    'suspectedSymptoms',
+    'injectionDrugAddict',
+    'bloodDonation',
+    'tuberculosisPatient',
+    'affectedSpousePartner',
+    'dialysis',
+    'venerealDisease',
+    'injuredMother',
+    'travelAbroad',
+    'FollowUpPregnancy',
+    'voluntaryExamination',
+    'otherReasons'
+  ];
+  private readonly exposureModeFields = [
+    'sexualRelationshipWithAnotherGender',
+    'commercialSex',
+    'motherOfInjuredChild',
+    'sexualRelationshipWithSpouse',
+    'drugInjection',
+    'undefined',
+    'sameSexSexualRelationship',
+    'injuredMotherExposure'
+  ];
+
   constructor(private investigationService: InvestigationService, public generalDataService: GeneralDataService,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
@@ -40,35 +65,18 @@ export class HivComponent implements OnInit {
     this.hivForm = new FormGroup({
       id: new FormControl(),
       patientID: new FormControl(this.currentId),
-      completePercentage: new FormControl(),
-      fever: new FormControl(),
-      feverDurationDay: new FormControl(),
-      maxTemperature: new FormControl(),
+      investigationCompletePercentage: new FormControl(),
 
       name: new FormControl(),
       laboratoryName: new FormControl(),
       positiveCaseHistory: new FormControl(),
       dateEpidemiologicalInvestigation: new FormControl(),
 
-
-      fourName: new FormControl(),
-      age: new FormControl(),
-      gender: new FormControl(),
-      job: new FormControl(),
-      maritalStatus: new FormControl(),
       husbandName: new FormControl(),
       aidsTest: new FormControl(),
       dateIfYes: new FormControl(),
-      nationalIdNumber: new FormControl(),
-      telephoneNumber: new FormControl(),
-      mobileNumber: new FormControl(),
       kidsNumber: new FormControl(),
       pregnancy: new FormControl(),
-      homeNumber: new FormControl(),
-      streetName: new FormControl(),
-      city: new FormControl(),
-      district: new FormControl(),
-      otherData: new FormControl(),
 
       suspectedSymptoms: new FormControl(),
       injectionDrugAddict: new FormControl(),
@@ -92,16 +100,15 @@ export class HivComponent implements OnInit {
       sameSexSexualRelationship: new FormControl(),
       injuredMotherExposure: new FormControl(),
       motherName: new FormControl(),
+      investigationDate: new FormControl(),
+      healthObserverName: new FormControl(),
+      administrationDirectorName: new FormControl(),
       diseaseGroupId: new FormControl(this.diseaseGroupID),
     });
 
-    this.hivForm.controls['completePercentage'].disable();
-    this.controlsCount = this.calculateCompletePercentage();
+    this.calculateCompletionPercentage();
   }
   ngOnInit() {
-    this.hivForm.controls['completePercentage'].setValue(
-      this.controlsCount
-    );
     if (this.currentId != null) {
       this.hivForm.controls['patientID'].setValue(this.currentId);
       this.getById();
@@ -117,14 +124,12 @@ export class HivComponent implements OnInit {
         console.log(res);
         var v = res.data;
         this.hivForm.patchValue(v)
-        //dateEpidemiologicalInvestigation
-        this.hivForm.patchValue({ fever: this.hivForm.value.fever + "", tc: true });
         this.hivForm.controls['positiveCaseHistory'].setValue(this.datePipe.transform(this.hivForm.value.positiveCaseHistory, 'yyyy-MM-dd'));
         this.hivForm.controls['dateEpidemiologicalInvestigation'].setValue(this.datePipe.transform(this.hivForm.value.dateEpidemiologicalInvestigation, 'yyyy-MM-dd'));
-        //
         this.hivForm.controls['dateIfYes'].setValue(this.datePipe.transform(this.hivForm.value.dateIfYes, 'yyyy-MM-dd'));
-        this.controlsCount = this.calculateCompletePercentage();
-        this.hivForm.value.completePercentage = this.controlsCount;
+        this.hivForm.controls['investigationDate'].setValue(this.datePipe.transform(this.hivForm.value.investigationDate, 'yyyy-MM-dd'));
+        this.calculateCompletionPercentage();
+        this.hivForm.controls['investigationCompletePercentage'].setValue(this.controlsCount);
 
         Object.entries(this.hivForm.controls).map(
           ([key, value], index) => {
@@ -132,8 +137,8 @@ export class HivComponent implements OnInit {
               value.setValue(null);
           });
 
-        this.controlsCount = this.calculateCompletePercentage();
-        this.hivForm.value.completePercentage = this.controlsCount;
+        this.calculateCompletionPercentage();
+        this.hivForm.controls['investigationCompletePercentage'].setValue(this.controlsCount);
       }
       , (error) => {
         this.translateService
@@ -149,88 +154,90 @@ export class HivComponent implements OnInit {
    * @returns
    */
 
-  calculateCompletePercentage(): number {
-    Object.entries(this.hivForm.controls).map(([key, value], index) => {
-      if (value.value == 'null')
-        value.setValue(null);
-      else if (value.value != null && !isNaN(+value.value)) {
-        value.setValue(parseInt(value.value.toString()));
+  calculateCompletionPercentage() {
+    const groupedCheckboxFields = [
+      ...this.medicalExaminationReasonFields,
+      ...this.exposureModeFields
+    ];
+    const excludedFields = [
+      'id',
+      'patientID',
+      'investigationCompletePercentage',
+      'diseaseGroupId',
+      'createdDate',
+      ...groupedCheckboxFields
+    ];
+
+    if (!this.isAnswered(this.hivForm.get('injuredMotherExposure')?.value)) {
+      excludedFields.push('motherName');
+    }
+
+    const stats = calculateCompletionStats(this.hivForm.getRawValue(), {
+      excludedFields
+    });
+
+    const medicalExaminationReasonAnswered = this.isAnyAnswered(this.medicalExaminationReasonFields) ? 1 : 0;
+    const exposureModeAnswered = this.isAnyAnswered(this.exposureModeFields) ? 1 : 0;
+
+    this.allControllesCount = stats.totalFields + 2;
+    this.allFilledControlsCount = stats.filledFields + medicalExaminationReasonAnswered + exposureModeAnswered;
+    this.controlsCount = this.allControllesCount
+      ? parseInt(((this.allFilledControlsCount / this.allControllesCount) * 100).toString())
+      : 0;
+  }
+
+  calculateCompletePercentage() {
+    this.calculateCompletionPercentage();
+  }
+
+  private buildSavePayload(): any {
+    this.calculateCompletionPercentage();
+
+    const payload = { ...this.hivForm.getRawValue() };
+
+    Object.keys(payload).forEach((key) => {
+      if (payload[key] === 'null' || payload[key] === undefined) {
+        payload[key] = null;
       }
     });
-    this.allControllesCount = this.countAllControls(this.hivForm);
-    if (this.hivForm.value.id != null) {
-      this.allFilledControlsCount = this.countFilledControls(this.hivForm);
-    } else {
-      this.allFilledControlsCount = 0;
-    }
-    this.controlsCount = this.allControllesCount != 0 ? parseInt(((this.allFilledControlsCount / this.allControllesCount) * 100).toString()) : 0;
 
-    return this.controlsCount;
+    payload.patientID = this.currentId;
+    payload.diseaseGroupId = this.diseaseGroupID;
+    payload.investigationCompletePercentage = parseFloat(
+      ((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)
+    );
+
+    return payload;
   }
-  /**
-   * Count all fields
-   * @param control
-   * @returns
-   */
-  countFilledControls(control: any): number {
-    if (control instanceof FormControl) {
-      if (control.value != null)
-        return 1;
-      else return 0;
-    }
 
-    if (control instanceof FormArray) {
-      return control.controls.reduce((acc, curr) => acc + this.countFilledControls(curr), 1)
-    }
-
-    if (control instanceof FormGroup) {
-      return Object.keys(control.controls)
-        .map(key => control.controls[key])
-        .reduce((acc, curr) => acc + this.countFilledControls(curr), 1);
-    }
-    return 0;
+  private isAnyAnswered(controlNames: string[]): boolean {
+    return controlNames.some((controlName) => this.isAnswered(this.hivForm.get(controlName)?.value));
   }
-  /**
-   * Count all filled fields
-   * @param control
-   * @returns
-   */
-  countAllControls(control: any): number {
-    if (control instanceof FormControl) {
-      return 1;
+
+  private isAnswered(value: any): boolean {
+    if (value === true || value === 1 || value === '1' || value === 'true') {
+      return true;
     }
 
-    if (control instanceof FormArray) {
-      return control.controls.reduce((acc, curr) => acc + this.countAllControls(curr), 1)
+    if (typeof value === 'string') {
+      const trimmedValue = value.trim();
+      return trimmedValue !== '' && trimmedValue !== 'null' && trimmedValue !== 'false';
     }
 
-    if (control instanceof FormGroup) {
-      return Object.keys(control.controls)
-        .map(key => control.controls[key])
-        .reduce((acc, curr) => acc + this.countAllControls(curr), 1);
-    }
-    return 0;
+    return false;
   }
+
   save() {
-    this.hivForm.controls['completePercentage'].enable();
-    this.controlsCount = this.calculateCompletePercentage();
-    Object.entries(this.hivForm.controls).map(([key, value], index) => {
-      if (value.value == 'null')
-        value.setValue(null);
-    });
+    const payload = this.buildSavePayload();
 
-    this.hivForm.controls['completePercentage'].setValue(this.controlsCount);
-    this.hivForm.controls['diseaseGroupId'].setValue(this.diseaseGroupID);
-
-    if (this.hivForm.value.id != null) {
-      this.investigationService.updateSeverehiv(this.hivForm.value).subscribe(
+    if (payload.id != null) {
+      this.investigationService.updateSeverehiv(payload).subscribe(
         (response: any) => {
           if (response) {
-            this.hivForm.controls['completePercentage'].disable();
             document.getElementById("jump_to_this_location").scrollIntoView({ behavior: 'smooth' });;
 
-            this.controlsCount = this.calculateCompletePercentage();
-            this.hivForm.value.completePercentage = this.controlsCount;
+            this.calculateCompletionPercentage();
+            this.hivForm.controls['investigationCompletePercentage'].setValue(this.controlsCount);
             this.translateService
               .get('NEDSS.COMMON.SENT_SUCESSFULLY')
               .subscribe((res: string) => {
@@ -247,17 +254,16 @@ export class HivComponent implements OnInit {
         }
       )
     } else {
-      this.investigationService.addInvestigationhiv(this.hivForm.value).subscribe(
+      this.investigationService.addInvestigationhiv(payload).subscribe(
         (response: any) => {
           if (response) {
-            this.hivForm.controls['completePercentage'].disable();
             document.getElementById("jump_to_this_location").scrollIntoView({ behavior: 'smooth' });;
 
-            this.hivForm.value.id = response.data.id;
+            this.hivForm.controls['id'].setValue(response.data.id);
             this.currentId = response.data.patientID;
             this.getById();
-            this.controlsCount = this.calculateCompletePercentage();
-            this.hivForm.value.completePercentage = this.controlsCount;
+            this.calculateCompletionPercentage();
+            this.hivForm.controls['investigationCompletePercentage'].setValue(this.controlsCount);
             this.translateService
               .get('NEDSS.COMMON.SENT_SUCESSFULLY')
               .subscribe((res: string) => {
