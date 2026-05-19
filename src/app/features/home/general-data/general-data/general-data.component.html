@@ -68,8 +68,8 @@
     3
   </div>
 </div> -->
-<div class="row" *ngIf="!isLoadingData">
-  <div class="col-12">
+<div class="general-data-form w-100" *ngIf="!isLoadingData">
+  <div class="general-data-form__sections w-100">
     <h5 class="fw-bold mt-3 mb-2">
       {{ "NEDSS.GENERAL_DATA_SIDEMENU.INCIDENTINFO0" | translate }}
     </h5>
@@ -117,19 +117,24 @@
       <app-sentinel></app-sentinel>
     </ng-container>
   </div>
-  <div class="save-button-bar d-flex justify-content-end gap-3"
-       [class.floating]="hasScrolledToButton">
-    <button
-      type="submit"
-      tabindex="0"
-      class="btn btn-lg bg text-light"
-      (click)="save()"
-      [disabled]="loadingPanel"
-    >
-      <span class="bi bg bi-check2-circle"></span>
-      {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.SAVE" | translate }}
-    </button>
+  <div
+    class="save-button-bar w-100"
+    [class.save-button-bar--elevated]="hasScrolledToButton"
+  >
+    <div class="save-button-bar__inner">
+      <button
+        type="submit"
+        tabindex="0"
+        class="save-button-bar__btn"
+        (click)="save()"
+        [disabled]="loadingPanel"
+      >
+        <i class="bi bi-check2-circle" aria-hidden="true"></i>
+        <span>{{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.SAVE" | translate }}</span>
+      </button>
+    </div>
   </div>
+  <div class="save-button-bar-spacer d-md-none" aria-hidden="true"></div>
   <div #saveButtonSentinel style="height: 1px;"></div>
 </div>
 
