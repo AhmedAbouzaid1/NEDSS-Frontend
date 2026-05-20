@@ -80,6 +80,7 @@ import { FalseChickenpoxComponent } from './investigation/complete-investigation
 import { ChatFilterComponent } from './chat/chat-filter/chat-filter.component';
 import { ChatUsersComponent } from './chat/chat-users/chat-users.component';
 import { FilariasisComponent } from './investigation/complete-investigation/filariasis/filariasis.component';
+import { TrachomaComponent } from './investigation/complete-investigation/trachoma/trachoma.component';
 import { LeishmaniaComponent } from './investigation/complete-investigation/leishmania/leishmania.component';
 import { PatientVisitHistoryComponent } from './investigation/complete-investigation/shared/patient-visit-history/patient-visit-history.component';
 import { LocalTravelHistoryComponent } from './investigation/complete-investigation/shared/local-travel-history/local-travel-history.component';
@@ -259,6 +260,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ChatFilterComponent,
     ChatUsersComponent,
     FilariasisComponent,
+    TrachomaComponent,
     LeishmaniaComponent,
     PatientVisitHistoryComponent,
     LocalTravelHistoryComponent,

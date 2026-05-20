@@ -126,6 +126,7 @@ export class NavigationGuard {
     { Comingroute: 'severeFoodPoisoning', id: 77 },
     { Comingroute: 'bloodyDiarrhea', id: 78 },
     { Comingroute: 'filariasis', id: 79 },
+    { Comingroute: 'trachoma', id: 95 },
     { Comingroute: 'leishmania', id: 80 },
     { Comingroute: 'tuberculosis', id: 81 },
     { Comingroute: 'diarrhea', id: 82 },

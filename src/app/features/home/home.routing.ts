@@ -58,6 +58,7 @@ import { CholeraComponent } from './investigation/complete-investigation/cholera
 import { DiarrheaComponent } from './investigation/complete-investigation/diarrhea/diarrhea.component';
 import { FalseChickenpoxComponent } from './investigation/complete-investigation/false-chickenpox/false-chickenpox.component';
 import { FilariasisComponent } from './investigation/complete-investigation/filariasis/filariasis.component';
+import { TrachomaComponent } from './investigation/complete-investigation/trachoma/trachoma.component';
 import { HepatitisVirusesComponent } from './investigation/complete-investigation/hepatitis-viruses/hepatitis-viruses.component';
 import { HivComponent } from './investigation/complete-investigation/hiv/hiv.component';
 import { LeishmaniaComponent } from './investigation/complete-investigation/leishmania/leishmania.component';
@@ -354,6 +355,12 @@ const routes: Routes = [
         data: { types: [3] },
       },
       {
+        path: 'trachoma/:id/diseaseId/:diseaseId',
+        component: TrachomaComponent,
+        canActivate: [AuthGuard, NavigationGuard],
+        data: { types: [3] },
+      },
+      {
         path: 'leishmania/:id/diseaseId/:diseaseId',
         component: LeishmaniaComponent,
         canActivate: [AuthGuard, NavigationGuard],
@@ -497,6 +504,7 @@ const routes: Routes = [
               { path: 'bloodyDiarrhea', component: BloodyDiarrheaComponent },
               //bloodyDiarrhea
               { path: 'filariasis', component: FilariasisComponent },
+              { path: 'trachoma', component: TrachomaComponent },
               { path: 'leishmania', component: LeishmaniaComponent },
               { path: 'tuberculosis', component: TuberculosisComponent },
               { path: 'bloodyDiarrhea', component: BloodyDiarrheaComponent },

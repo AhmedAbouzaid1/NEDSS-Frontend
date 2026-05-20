@@ -1,0 +1,203 @@
+<form [formGroup]="trachomaForm" (ngSubmit)="save()">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow mt-4 color mb-4">
+        <div class="card-body">
+          <h5 style="text-align: center; border: 1px solid; padding: 1%">
+            {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.PAGE_TITLE" | translate }}
+          </h5>
+          <p class="text-center text-muted mb-4">
+            {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.SUBTITLE" | translate }}
+          </p>
+
+          <app-investigation-summary
+            [patientName]="patientName"
+            [allFilledControlsCount]="allFilledControlsCount"
+            [allControllesCount]="allControllesCount">
+          </app-investigation-summary>
+
+          <div class="row color">
+            <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-12 title fs-6 fwb mb-3">
+                  {{ "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data" | translate }}
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="folliclesPresenceTf">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.FOLLICLES_PRESENCE_TF" | translate }}
+                    </label>
+                    <select
+                      formControlName="folliclesPresenceTf"
+                      id="folliclesPresenceTf"
+                      class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="folliclesCount">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.FOLLICLES_COUNT" | translate }}
+                    </label>
+                    <select
+                      formControlName="folliclesCount"
+                      id="folliclesCount"
+                      class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.FOLLICLES_LESS_THAN_FIVE" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.FOLLICLES_FIVE_OR_MORE" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label for="trachomatousTrichiasisTt">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.TRACHOMATOUS_TRICHIASIS_TT" | translate }}
+                    </label>
+                    <small class="d-block text-muted mb-2">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.TRACHOMATOUS_TRICHIASIS_TT_DESC" | translate }}
+                    </small>
+                    <select
+                      formControlName="trachomatousTrichiasisTt"
+                      id="trachomatousTrichiasisTt"
+                      class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="infectionLocation">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.INFECTION_LOCATION" | translate }}
+                    </label>
+                    <select
+                      formControlName="infectionLocation"
+                      id="infectionLocation"
+                      class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.LOCATION_BOTH_EYES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.LOCATION_RIGHT_EYE" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.LOCATION_LEFT_EYE" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="infectionClassification">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.INFECTION_CLASSIFICATION" | translate }}
+                    </label>
+                    <select
+                      formControlName="infectionClassification"
+                      id="infectionClassification"
+                      class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.CLASSIFICATION_TF" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.CLASSIFICATION_TT" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.CLASSIFICATION_TI" | translate }}</option>
+                      <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.CLASSIFICATION_TS" | translate }}</option>
+                      <option value="5">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.CLASSIFICATION_CO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="actionTaken">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.ACTION_TAKEN" | translate }}
+                    </label>
+                    <select
+                      formControlName="actionTaken"
+                      id="actionTaken"
+                      class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.ACTION_MEDICAL" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.ACTION_SURGICAL" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.ACTION_EPILATION" | translate }}</option>
+                      <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.ACTION_OTHER" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6" *ngIf="trachomaForm.get('actionTaken')?.value == 4">
+                  <div class="form-group">
+                    <label for="actionTakenOther">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.ACTION_OTHER_SPECIFY" | translate }}
+                    </label>
+                    <input
+                      formControlName="actionTakenOther"
+                      id="actionTakenOther"
+                      type="text"
+                      class="form-control"
+                      (blur)="calculateCompletionPercentage()" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row color">
+            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="examiningDoctorName">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.EXAMINING_DOCTOR_NAME" | translate }}
+                    </label>
+                    <input
+                      formControlName="examiningDoctorName"
+                      id="examiningDoctorName"
+                      type="text"
+                      class="form-control"
+                      (blur)="calculateCompletionPercentage()" />
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="surveillanceOfficerName">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.SURVEILLANCE_OFFICER" | translate }}
+                    </label>
+                    <input
+                      formControlName="surveillanceOfficerName"
+                      id="surveillanceOfficerName"
+                      type="text"
+                      class="form-control"
+                      (blur)="calculateCompletionPercentage()" />
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="approvedBy">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.TRACHOMA.APPROVED_BY" | translate }}
+                    </label>
+                    <input
+                      formControlName="approvedBy"
+                      id="approvedBy"
+                      type="text"
+                      class="form-control"
+                      (blur)="calculateCompletionPercentage()" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer text-start">
+          <button type="submit" class="btn bg rounded-2 text-light">
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
