@@ -321,6 +321,18 @@ export class InvestigationService {
   getByIdfilarisis(id: any, diseaseGroupId: number) {
     return this.APIs.get(this.controllerURL + "GetFilariasisPatientId?id=" + id + "&diseaseGroupId=" + diseaseGroupId);
   }
+  //trachoma
+  addInvestigationTrachoma(ivestigation: any) {
+    return this.APIs.post(this.controllerURL + 'AddTrachoma', ivestigation);
+  }
+  updateTrachoma(ivestigation: any) {
+    return this.APIs.update(this.controllerURL + 'UpdateTrachoma', ivestigation);
+  }
+  getByIdTrachoma(id: any, diseaseGroupId: number) {
+    return this.APIs.get(
+      this.controllerURL + 'GetTrachomaPatientId?id=' + id + '&diseaseGroupId=' + diseaseGroupId
+    );
+  }
   //leishmania
   addInvestigationleishmania(ivestigation: any) {
     return this.APIs.post(this.controllerURL + "AddLeishmania", ivestigation);
