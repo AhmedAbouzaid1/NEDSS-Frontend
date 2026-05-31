@@ -51,9 +51,6 @@ export class CholeraComponent implements OnInit {
     // epidemicOutbreak: 0,
     // contactDeceasedPersonRespiratory: 0,
     // numberDirectContacts: 0,
-    fever: null,
-    feverDurationDay: null,
-    maxTemperature: null,
 
     // darkUrine: null,
     // yellowEyeColor: null,
@@ -154,8 +151,8 @@ export class CholeraComponent implements OnInit {
     dateSampleTakenDay14: null,
     sampleResultDay14: null,
 
-    crab: null,
-    crabSource: null,
+    contaminated: null,
+    contaminatedSource: null,
     marineCrustaceans: null,
     marineCrustaceansSource: null,
     otherSeafood: null,
@@ -170,8 +167,8 @@ export class CholeraComponent implements OnInit {
     iceCreamSource: null,
     otherDairyProducts: null,
     otherDairyProductsSource: null,
-    UncookedFruitsVegetables: null,
-    UncookedFruitsVegetablesSource: null,
+    uncookedFruitsVegetables: null,
+    uncookedFruitsVegetablesSource: null,
     rawEggs: null,
     rawEggsSource: null,
     foodsNotHome: null,
@@ -219,6 +216,10 @@ export class CholeraComponent implements OnInit {
     storedWater: null,
     sampledSewerSystemTaken: null,
     sampleResult: null,
+    investigationDate: null,
+    healthObserverName: null,
+    surveillanceOfficerName: null,
+    administrationDirectorName: null,
     diseaseGroupId: this.investigationService.diseaseGroupID,
     investigationCompletePercentage: null,
 
@@ -298,7 +299,8 @@ export class CholeraComponent implements OnInit {
           //travelDate
           this.choleraData.travelDate = this.datePipe.transform(this.choleraData.travelDate, 'yyyy-MM-dd');
           this.choleraData.travelBackDate = this.datePipe.transform(this.choleraData.travelBackDate, 'yyyy-MM-dd');
-          
+          this.choleraData.investigationDate = this.datePipe.transform(this.choleraData.investigationDate, 'yyyy-MM-dd');
+
           this.calculateCompletionPercentage();
 
         }
@@ -318,7 +320,7 @@ export class CholeraComponent implements OnInit {
     //console.log(this.rabiesForm.value);
     this.calculateCompletionPercentage();
     this.choleraData.diseaseGroupId = this.investigationService.diseaseGroupID;
-    this.choleraData.investigationCompletePercentage= parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2));
+    this.choleraData.investigationCompletePercentage = parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2));
     if (this.choleraData != null && this.choleraData.id != null) {
       this.investigationService.updatecholera(this.choleraData).subscribe(
         (response: any) => {
