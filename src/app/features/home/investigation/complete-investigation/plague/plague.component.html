@@ -4,7 +4,7 @@
             <div class="card shadow mt-4 color">
                 <div class="card-body">
                     <h5 style="text-align: center; border: 1px solid; padding: 1%">
-                        الطاعون
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.TITLE" | translate }}
                     </h5>
 
 
@@ -48,132 +48,16 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-6">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</div>
-                        <div class="col-6 has-labels">
-                            <label for=""><input formControlName="fever" type="radio"
-                                    (blur)="calculateCompletionPercentage()" name="fever" id="" value="1"> {{
-                                "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input formControlName="fever" type="radio"
-                                    (blur)="calculateCompletionPercentage()" name="fever" id="" value="2"> {{
-                                "NEDSS.COMMON.NO" | translate }}
-                            </label>
-                            <label for=""><input formControlName="fever" type="radio"
-                                    (blur)="calculateCompletionPercentage()" name="fever" id="" value="3"> غير
-                                معروف </label>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Duration_Fever_Days" | translate
-                                    }}</label>
-                                <input formControlName="feverDays" type="number" name="" id="" class="form-control"
-                                    (blur)="calculateCompletionPercentage()">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Max_Temp" | translate }}</label>
-                                <input formControlName="maxTemperature" type="number" name="" id="" class="form-control"
-                                    (blur)="calculateCompletionPercentage()">
-                            </div>
-                        </div>
-
-
-                        <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-                            <div class="row">
-                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-                                    | translate }}</div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="">فقدان بالتوازن</label>
-                                        <select formControlName="lossOfBalance" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="">قروح بالجلد</label>
-                                        <select formControlName="soresOnTheSkin" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Coughing_Up_Blood" | translate
-                                            }}</label>
-                                        <select formControlName="coughingUpBlood" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="">خفقان</label>
-                                        <select formControlName="palpitation" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="">طفح نزفى / نزيف تحت الجلد</label>
-                                        <select formControlName="hemorrhagicUnderTheSkin" name="" id=""
-                                            class="form-control" (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="">اعراض للدغ البراغيث</label>
-                                        <select formControlName="symptomsFleaBite" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="">تعرق</label>
-                                        <select formControlName="sweating" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="col-12">
-                            <h3 class="fs-5 text-success fwb">التقصي الوبائي</h3>
+                            <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.EPIDEMIOLOGICAL_INVESTIGATION" | translate }}</h3>
                         </div>
 
                         <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                             <div class="row">
-                                <div class="col-12 title fs-6 fwb">المخالطة البشرية</div>
+                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.HUMAN_CONTACT" | translate }}</div>
                                 <div class="col-6">
                                     <div class='row'>
-                                        <div class="col-4">مخالط لحالة مشتبهة</div>
+                                        <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_WITH_SUSPECTED_CASE" | translate }}</div>
                                         <div class="col-8 has-labels">
                                             <label for=""><input formControlName="contactWithSuspectedCase" type="radio"
                                                     (blur)="calculateCompletionPercentage()"
@@ -193,7 +77,7 @@
 
                                 <div class="col-6">
                                     <div class='row'>
-                                        <div class="col-4">جزء من تفشي وبائي أو حالات مشابهة</div>
+                                        <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.PART_EPIDEMIC_OUTBREAK_OR_SIMILAR_SITUATION" | translate }}</div>
                                         <div class="col-8 has-labels">
                                             <label for=""><input
                                                     formControlName="partEpidemicOutbreakOrSimilarSituation"
@@ -215,7 +99,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class='row'>
-                                        <div class="col-4">مخالط لحالة مؤكدة</div>
+                                        <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_WITH_CONFIRMED_CASE" | translate }}</div>
                                         <div class="col-8 has-labels">
                                             <label for=""><input formControlName="contactWithConfirmedCase" type="radio"
                                                     (blur)="calculateCompletionPercentage()"
@@ -234,7 +118,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class='row'>
-                                        <div class="col-4">مخالط لمتوفي بمرض تنفسي غير معلوم</div>
+                                        <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_DECEASED_PERSON_UNKNOWN_RESPIRATORY_DISEASE" | translate }}</div>
                                         <div class="col-8 has-labels">
                                             <label for=""><input
                                                     formControlName="contactDeceasedPersonUnknownRespiratoryDisease"
@@ -257,8 +141,8 @@
                                 <div class="col-lg-6 mt-4">
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-lg-5"><label for="">عدد المخالطين المباشرين</label></div>
-                                            <div class="col-lg-7"><input formControlName="theNumberDirectContacts"
+                                            <div class="col-lg-4"><label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DIRECT_CONTACTS_COUNT" | translate }}</label></div>
+                                            <div class="col-lg-8"><input formControlName="theNumberDirectContacts"
                                                     type="number" name="" id="" class="form-control"
                                                     (blur)="calculateCompletionPercentage()"></div>
                                         </div>
@@ -267,10 +151,10 @@
                                 <div class="col-lg-6 mt-4">
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-lg-5">
-                                                <label for="">عدد المخالطين غير المباشرين </label>
+                                            <div class="col-lg-4">
+                                                <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.INDIRECT_CONTACTS_COUNT" | translate }}</label>
                                             </div>
-                                            <div class="col-lg-7">
+                                            <div class="col-lg-8">
                                                 <input formControlName="theNumberIndirectContacts" type="number" name=""
                                                     id="" class="form-control" (blur)="calculateCompletionPercentage()">
                                             </div>
@@ -289,14 +173,14 @@
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseOne" aria-expanded="true"
                                             aria-controls="collapseOne">
-                                            متابعة اليوم الأول
+                                            {{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.FOLLOW_UP_DAY_1" | translate }}
                                         </button>
                                     </h2>
                                     <div id="collapseOne" class="accordion-collapse collapse show"
                                         aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="row">
-                                                <div class="col-12 title fs-6 fwb">بيانات الحالة المخالطة</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_CASE_DATA" | translate }}</div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" |
@@ -308,7 +192,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">العمر</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.AGE" | translate }}</label>
                                                         <input formControlName="followD1Age" type="number" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -316,7 +200,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">رقم التليفون</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.PHONE_NUMBER" | translate }}</label>
                                                         <input formControlName="followD1Phone" type="text" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -324,40 +208,40 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">النوع</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.GENDER" | translate }}</label>
                                                         <select formControlName="followD1Type" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
-                                                            <option value="1">ذكر</option>
-                                                            <option value="2">انثى</option>
+                                                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.MALE" | translate }}</option>
+                                                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.FEMALE" | translate }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">نوع المخالطة</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE" | translate }}</label>
                                                         <select formControlName="followD1MixingType" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
-                                                            <option value="1">إقامة بالمنزل</option>
-                                                            <option value="2">مخالطة بالعمل</option>
-                                                            <option value="3">شخص قام بزيارة المريض أو العكس</option>
-                                                            <option value="4">طرق مخالطة أخري</option>
+                                                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_HOME" | translate }}</option>
+                                                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_WORK" | translate }}</option>
+                                                            <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_VISIT" | translate }}</option>
+                                                            <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_OTHER" | translate }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">علاقته بالحالة</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.RELATIONSHIP_TO_CASE" | translate }}</label>
                                                         <input formControlName="followD1RelationshipSituation"
                                                             type="text" name="" id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
                                                     </div>
                                                 </div>
-                                                <div class="col-12 title fs-6 fwb">في حالة ظهور أعراض</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.IF_SYMPTOMS_APPEAR" | translate }}</div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">تاريخ ظهور الأعراض</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SYMPTOMS_ONSET_DATE" | translate }}</label>
                                                         <input formControlName="followD1DateOfSymptoms" type="date"
                                                             (blur)="calculateCompletionPercentage()" name="" id=""
                                                             [class]="'form-control-'+ currentLang"
@@ -383,7 +267,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">سعال جاف</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DRY_COUGH" | translate }}</label>
                                                         <select formControlName="followD1DryCough" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -398,7 +282,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">سعال يصاحبه بصق</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.COUGHING_WITH_SPITTING" | translate }}</label>
                                                         <select formControlName="followD1CoughingWithSpitting" name=""
                                                             id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -413,7 +297,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">التهاب بالحلق</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SORE_THROAT" | translate }}</label>
                                                         <select formControlName="followD1SoreThroat" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -428,7 +312,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">صعوبة بالتنفس</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DIFFICULTY_BREATHING" | translate }}</label>
                                                         <select formControlName="followD1DifficultyBreathing" name=""
                                                             id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -443,7 +327,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">آلام بالمفاصل</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.JOINT_PAIN" | translate }}</label>
                                                         <select formControlName="followD1JointPain" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -458,7 +342,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">قئ</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.VOMITING" | translate }}</label>
                                                         <select formControlName="followD1vomit" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -473,7 +357,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">إسهال</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DIARRHEA" | translate }}</label>
                                                         <select formControlName="followD1Diarrhea" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -488,7 +372,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">أخرى</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.OTHER" | translate }}</label>
                                                         <select formControlName="followD1Other" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -512,10 +396,10 @@
                                                             (blur)="calculateCompletionPercentage()">
                                                     </div>
                                                 </div>
-                                                <div class="col-12 title fs-6 fwb">المعمل</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.LAB" | translate }}</div>
                                                 <div class="col-4">
                                                     <div class='row'>
-                                                        <div class="col-6">تم اخذ العينة؟</div>
+                                                        <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_TAKEN" | translate }}</div>
                                                         <div class="col-6 has-labels">
                                                             <label for=""><input formControlName="followD1SampleTaken"
                                                                     type="radio"
@@ -534,8 +418,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group row">
-                                                        <div class="col-lg-4"><label class="mt-2" for="">تاريخ أخذ
-                                                                العينة</label></div>
+                                                        <div class="col-lg-4"><label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_TAKEN_DATE" | translate }}</label></div>
                                                         <div class="col-lg-8">
                                                             <input formControlName="followD1DateSampleTaken" type="date"
                                                                 (blur)="calculateCompletionPercentage()" name="" id=""
@@ -546,24 +429,24 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <div class='row'>
-                                                        <div class="col-4">نتيجة العينة</div>
+                                                        <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_RESULT" | translate }}</div>
                                                         <div class="col-8 has-labels">
                                                             <label for=""><input formControlName="followD1SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
                                                                     name="followD1SampleResult" id="" value="1"> {{
-                                                                "NEDSS.COMMON.YES" | translate }}
+                                                                "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.NEGATIVE" | translate }}
                                                             </label>
                                                             <label for=""><input formControlName="followD1SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
                                                                     name="followD1SampleResult" id="" value="2"> {{
-                                                                "NEDSS.COMMON.NO" | translate }}
+                                                                "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.POSITIVE" | translate }}
                                                             </label>
                                                             <label for=""><input formControlName="followD1SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
-                                                                    name="followD1SampleResult" id="" value="3"> لم ترد
+                                                                    name="followD1SampleResult" id="" value="3"> {{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.NOT_RECEIVED" | translate }}
                                                             </label>
                                                         </div>
                                                     </div>
@@ -577,14 +460,14 @@
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseTwo" aria-expanded="true"
                                             aria-controls="collapseOne">
-                                            متابعة اليوم الثاني
+                                            {{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.FOLLOW_UP_DAY_2" | translate }}
                                         </button>
                                     </h2>
                                     <div id="collapseTwo" class="accordion-collapse collapse"
                                         aria-labelledby="collapseTwo" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="row">
-                                                <div class="col-12 title fs-6 fwb">بيانات الحالة المخالطة</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_CASE_DATA" | translate }}</div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" |
@@ -596,7 +479,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">العمر</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.AGE" | translate }}</label>
                                                         <input formControlName="followD2Age" type="number" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -604,7 +487,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">رقم التليفون</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.PHONE_NUMBER" | translate }}</label>
                                                         <input formControlName="followD2Phone" type="text" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -612,40 +495,40 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">النوع</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.GENDER" | translate }}</label>
                                                         <select formControlName="followD2Type" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
-                                                            <option value="1">ذكر</option>
-                                                            <option value="2">انثى</option>
+                                                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.MALE" | translate }}</option>
+                                                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.FEMALE" | translate }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">نوع المخالطة</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE" | translate }}</label>
                                                         <select formControlName="followD2MixingType" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
-                                                            <option value="1">إقامة بالمنزل</option>
-                                                            <option value="2">مخالطة بالعمل</option>
-                                                            <option value="3">شخص قام بزيارة المريض أو العكس</option>
-                                                            <option value="4">طرق مخالطة أخري</option>
+                                                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_HOME" | translate }}</option>
+                                                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_WORK" | translate }}</option>
+                                                            <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_VISIT" | translate }}</option>
+                                                            <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_OTHER" | translate }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">علاقته بالحالة</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.RELATIONSHIP_TO_CASE" | translate }}</label>
                                                         <input formControlName="followD2RelationshipSituation"
                                                             type="text" name="" id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
                                                     </div>
                                                 </div>
-                                                <div class="col-12 title fs-6 fwb">في حالة ظهور أعراض</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.IF_SYMPTOMS_APPEAR" | translate }}</div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">تاريخ ظهور الأعراض</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SYMPTOMS_ONSET_DATE" | translate }}</label>
                                                         <input formControlName="followD2DateOfSymptoms" type="date"
                                                             (blur)="calculateCompletionPercentage()" name="" id=""
                                                             [class]="'form-control-'+ currentLang"
@@ -672,7 +555,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">سعال جاف</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DRY_COUGH" | translate }}</label>
                                                         <select formControlName="followD2DryCough" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -687,7 +570,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">سعال يصاحبه بصق</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.COUGHING_WITH_SPITTING" | translate }}</label>
                                                         <select formControlName="followD2CoughingWithSpitting" name=""
                                                             id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -702,7 +585,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">التهاب بالحلق</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SORE_THROAT" | translate }}</label>
                                                         <select formControlName="followD2SoreThroat" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -717,7 +600,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">صعوبة بالتنفس</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DIFFICULTY_BREATHING" | translate }}</label>
                                                         <select formControlName="followD2DifficultyBreathing" name=""
                                                             id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -732,7 +615,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">آلام بالمفاصل</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.JOINT_PAIN" | translate }}</label>
                                                         <select formControlName="followD2JointPain" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -747,7 +630,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">قئ</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.VOMITING" | translate }}</label>
                                                         <select formControlName="followD2vomit" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -762,7 +645,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">إسهال</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DIARRHEA" | translate }}</label>
                                                         <select formControlName="followD2Diarrhea" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -777,7 +660,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">أخرى</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.OTHER" | translate }}</label>
                                                         <select formControlName="followD2Other" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -801,10 +684,10 @@
                                                             (blur)="calculateCompletionPercentage()">
                                                     </div>
                                                 </div>
-                                                <div class="col-12 title fs-6 fwb">المعمل</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.LAB" | translate }}</div>
                                                 <div class="col-4">
                                                     <div class='row'>
-                                                        <div class="col-6">تم اخذ العينة؟</div>
+                                                        <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_TAKEN" | translate }}</div>
                                                         <div class="col-6 has-labels">
                                                             <label for=""><input formControlName="followD2SampleTaken"
                                                                     type="radio"
@@ -823,8 +706,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group row">
-                                                        <div class="col-lg-4"><label class="mt-2" for="">تاريخ أخذ
-                                                                العينة</label></div>
+                                                        <div class="col-lg-4"><label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_TAKEN_DATE" | translate }}</label></div>
                                                         <div class="col-lg-8">
                                                             <input formControlName="followD2DateSampleTaken" type="date"
                                                                 (blur)="calculateCompletionPercentage()" name="" id=""
@@ -835,24 +717,24 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <div class='row'>
-                                                        <div class="col-4">نتيجة العينة</div>
+                                                        <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_RESULT" | translate }}</div>
                                                         <div class="col-8 has-labels">
                                                             <label for=""><input formControlName="followD2SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
                                                                     name="followD2SampleResult" id="" value="1"> {{
-                                                                "NEDSS.COMMON.YES" | translate }}
+                                                                "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.NEGATIVE" | translate }}
                                                             </label>
                                                             <label for=""><input formControlName="followD2SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
                                                                     name="followD2SampleResult" id="" value="2"> {{
-                                                                "NEDSS.COMMON.NO" | translate }}
+                                                                "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.POSITIVE" | translate }}
                                                             </label>
                                                             <label for=""><input formControlName="followD2SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
-                                                                    name="followD2SampleResult" id="" value="3"> لم ترد
+                                                                    name="followD2SampleResult" id="" value="3"> {{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.NOT_RECEIVED" | translate }}
                                                             </label>
                                                         </div>
                                                     </div>
@@ -866,14 +748,14 @@
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseSeven" aria-expanded="true"
                                             aria-controls="collapseSeven">
-                                            متابعة بعد 7 ايام
+                                            {{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.FOLLOW_UP_DAY_7" | translate }}
                                         </button>
                                     </h2>
                                     <div id="collapseSeven" class="accordion-collapse collapse"
                                         aria-labelledby="collapseSeven" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="row">
-                                                <div class="col-12 title fs-6 fwb">بيانات الحالة المخالطة</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_CASE_DATA" | translate }}</div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" |
@@ -885,7 +767,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">العمر</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.AGE" | translate }}</label>
                                                         <input formControlName="followD7Age" type="number" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -893,7 +775,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">رقم التليفون</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.PHONE_NUMBER" | translate }}</label>
                                                         <input formControlName="followD7Phone" type="text" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -901,40 +783,40 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">النوع</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.GENDER" | translate }}</label>
                                                         <select formControlName="followD7Type" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
-                                                            <option value="1">ذكر</option>
-                                                            <option value="2">انثى</option>
+                                                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.MALE" | translate }}</option>
+                                                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.FEMALE" | translate }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">نوع المخالطة</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE" | translate }}</label>
                                                         <select formControlName="followD7MixingType" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
-                                                            <option value="1">إقامة بالمنزل</option>
-                                                            <option value="2">مخالطة بالعمل</option>
-                                                            <option value="3">شخص قام بزيارة المريض أو العكس</option>
-                                                            <option value="4">طرق مخالطة أخري</option>
+                                                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_HOME" | translate }}</option>
+                                                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_WORK" | translate }}</option>
+                                                            <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_VISIT" | translate }}</option>
+                                                            <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_OTHER" | translate }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">علاقته بالحالة</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.RELATIONSHIP_TO_CASE" | translate }}</label>
                                                         <input formControlName="followD7RelationshipSituation"
                                                             type="text" name="" id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
                                                     </div>
                                                 </div>
-                                                <div class="col-12 title fs-6 fwb">في حالة ظهور أعراض</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.IF_SYMPTOMS_APPEAR" | translate }}</div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">تاريخ ظهور الأعراض</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SYMPTOMS_ONSET_DATE" | translate }}</label>
                                                         <input formControlName="followD7DateOfSymptoms" type="date"
                                                             (blur)="calculateCompletionPercentage()" name="" id=""
                                                             [class]="'form-control-'+ currentLang"
@@ -960,7 +842,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">سعال جاف</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DRY_COUGH" | translate }}</label>
                                                         <select formControlName="followD7DryCough" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -975,7 +857,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">سعال يصاحبه بصق</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.COUGHING_WITH_SPITTING" | translate }}</label>
                                                         <select formControlName="followD7CoughingWithSpitting" name=""
                                                             id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -990,7 +872,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">التهاب بالحلق</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SORE_THROAT" | translate }}</label>
                                                         <select formControlName="followD7SoreThroat" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1005,7 +887,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">صعوبة بالتنفس</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DIFFICULTY_BREATHING" | translate }}</label>
                                                         <select formControlName="followD7DifficultyBreathing" name=""
                                                             id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1020,8 +902,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">آ{{ "NEDSS.COMMON.NO" | translate }}م
-                                                            بالمفاصل</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.JOINT_PAIN" | translate }}</label>
                                                         <select formControlName="followD7JointPain" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1036,7 +917,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">قئ</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.VOMITING" | translate }}</label>
                                                         <select formControlName="followD7vomit" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1051,7 +932,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">إسهال</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DIARRHEA" | translate }}</label>
                                                         <select formControlName="followD7Diarrhea" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1066,7 +947,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">أخرى</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.OTHER" | translate }}</label>
                                                         <select formControlName="followD7Other" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1090,10 +971,10 @@
                                                             (blur)="calculateCompletionPercentage()">
                                                     </div>
                                                 </div>
-                                                <div class="col-12 title fs-6 fwb">المعمل</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.LAB" | translate }}</div>
                                                 <div class="col-4">
                                                     <div class='row'>
-                                                        <div class="col-6">تم اخذ العينة؟</div>
+                                                        <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_TAKEN" | translate }}</div>
                                                         <div class="col-6 has-labels">
                                                             <label for=""><input formControlName="followD7SampleTaken"
                                                                     type="radio"
@@ -1112,8 +993,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group row">
-                                                        <div class="col-lg-4"><label class="mt-2" for="">تاريخ أخذ
-                                                                العينة</label></div>
+                                                        <div class="col-lg-4"><label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_TAKEN_DATE" | translate }}</label></div>
                                                         <div class="col-lg-8">
                                                             <input formControlName="followD7DateSampleTaken" type="date"
                                                                 (blur)="calculateCompletionPercentage()" name="" id=""
@@ -1124,24 +1004,24 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <div class='row'>
-                                                        <div class="col-4">نتيجة العينة</div>
+                                                        <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_RESULT" | translate }}</div>
                                                         <div class="col-8 has-labels">
                                                             <label for=""><input formControlName="followD7SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
                                                                     name="followD7SampleResult" id="" value="1"> {{
-                                                                "NEDSS.COMMON.YES" | translate }}
+                                                                "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.NEGATIVE" | translate }}
                                                             </label>
                                                             <label for=""><input formControlName="followD7SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
                                                                     name="followD7SampleResult" id="" value="2"> {{
-                                                                "NEDSS.COMMON.NO" | translate }}
+                                                                "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.POSITIVE" | translate }}
                                                             </label>
                                                             <label for=""><input formControlName="followD7SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
-                                                                    name="followD7SampleResult" id="" value="3"> لم ترد
+                                                                    name="followD7SampleResult" id="" value="3"> {{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.NOT_RECEIVED" | translate }}
                                                             </label>
                                                         </div>
                                                     </div>
@@ -1157,14 +1037,14 @@
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseSevenTeen" aria-expanded="true"
                                             aria-controls="collapseSevenTeen">
-                                            متابعة بعد 14 يوم
+                                            {{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.FOLLOW_UP_DAY_14" | translate }}
                                         </button>
                                     </h2>
                                     <div id="collapseSevenTeen" class="accordion-collapse collapse"
                                         aria-labelledby="collapseSevenTeen" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="row">
-                                                <div class="col-12 title fs-6 fwb">بيانات الحالة المخالطة</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_CASE_DATA" | translate }}</div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                         <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" |
@@ -1176,7 +1056,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">العمر</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.AGE" | translate }}</label>
                                                         <input formControlName="followD14Age" type="number" name=""
                                                             id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1184,7 +1064,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">رقم التليفون</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.PHONE_NUMBER" | translate }}</label>
                                                         <input formControlName="followD14Phone" type="text" name=""
                                                             id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1192,40 +1072,40 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">النوع</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.GENDER" | translate }}</label>
                                                         <select formControlName="followD14Type" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
-                                                            <option value="1">ذكر</option>
-                                                            <option value="2">انثى</option>
+                                                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.MALE" | translate }}</option>
+                                                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.FEMALE" | translate }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">نوع المخالطة</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE" | translate }}</label>
                                                         <select formControlName="followD14MixingType" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
-                                                            <option value="1">إقامة بالمنزل</option>
-                                                            <option value="2">مخالطة بالعمل</option>
-                                                            <option value="3">شخص قام بزيارة المريض أو العكس</option>
-                                                            <option value="4">طرق مخالطة أخري</option>
+                                                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_HOME" | translate }}</option>
+                                                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_WORK" | translate }}</option>
+                                                            <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_VISIT" | translate }}</option>
+                                                            <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.CONTACT_TYPE_OTHER" | translate }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label for="">علاقته بالحالة</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.RELATIONSHIP_TO_CASE" | translate }}</label>
                                                         <input formControlName="followD14RelationshipSituation"
                                                             type="text" name="" id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
                                                     </div>
                                                 </div>
-                                                <div class="col-12 title fs-6 fwb">في حالة ظهور أعراض</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.IF_SYMPTOMS_APPEAR" | translate }}</div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">تاريخ ظهور الأعراض</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SYMPTOMS_ONSET_DATE" | translate }}</label>
                                                         <input formControlName="followD14DateOfSymptoms" type="date"
                                                             (blur)="calculateCompletionPercentage()" name="" id=""
                                                             [class]="'form-control-'+ currentLang"
@@ -1251,7 +1131,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">سعال جاف</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DRY_COUGH" | translate }}</label>
                                                         <select formControlName="followD14DryCough" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1266,7 +1146,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">سعال يصاحبه بصق</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.COUGHING_WITH_SPITTING" | translate }}</label>
                                                         <select formControlName="followD14CoughingWithSpitting" name=""
                                                             id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1281,7 +1161,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">التهاب بالحلق</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SORE_THROAT" | translate }}</label>
                                                         <select formControlName="followD14SoreThroat" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1296,7 +1176,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">صعوبة بالتنفس</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DIFFICULTY_BREATHING" | translate }}</label>
                                                         <select formControlName="followD14DifficultyBreathing" name=""
                                                             id="" class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1311,7 +1191,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">آلام بالمفاصل</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.JOINT_PAIN" | translate }}</label>
                                                         <select formControlName="followD14JointPain" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1326,7 +1206,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">قئ</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.VOMITING" | translate }}</label>
                                                         <select formControlName="followD14vomit" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1341,7 +1221,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">إسهال</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DIARRHEA" | translate }}</label>
                                                         <select formControlName="followD14Diarrhea" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1356,7 +1236,7 @@
                                                 </div>
                                                 <div class="col-lg-3">
                                                     <div class="form-group">
-                                                        <label for="">أخرى</label>
+                                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.OTHER" | translate }}</label>
                                                         <select formControlName="followD14Other" name="" id=""
                                                             class="form-control"
                                                             (blur)="calculateCompletionPercentage()">
@@ -1380,10 +1260,10 @@
                                                             (blur)="calculateCompletionPercentage()">
                                                     </div>
                                                 </div>
-                                                <div class="col-12 title fs-6 fwb">المعمل</div>
+                                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.LAB" | translate }}</div>
                                                 <div class="col-4">
                                                     <div class='row'>
-                                                        <div class="col-6">تم اخذ العينة؟</div>
+                                                        <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_TAKEN" | translate }}</div>
                                                         <div class="col-6 has-labels">
                                                             <label for=""><input formControlName="followD14SampleTaken"
                                                                     type="radio"
@@ -1402,8 +1282,7 @@
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group row">
-                                                        <div class="col-lg-4"><label class="mt-2" for="">تاريخ أخذ
-                                                                العينة</label></div>
+                                                        <div class="col-lg-4"><label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_TAKEN_DATE" | translate }}</label></div>
                                                         <div class="col-lg-8">
                                                             <input formControlName="followD14DateSampleTaken"
                                                                 type="date" (blur)="calculateCompletionPercentage()"
@@ -1414,24 +1293,24 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <div class='row'>
-                                                        <div class="col-4">نتيجة العينة</div>
+                                                        <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SAMPLE_RESULT" | translate }}</div>
                                                         <div class="col-8 has-labels">
                                                             <label for=""><input formControlName="followD14SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
                                                                     name="followD14SampleResult" id="" value="1"> {{
-                                                                "NEDSS.COMMON.YES" | translate }}
+                                                                "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.NEGATIVE" | translate }}
                                                             </label>
                                                             <label for=""><input formControlName="followD14SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
                                                                     name="followD14SampleResult" id="" value="2"> {{
-                                                                "NEDSS.COMMON.NO" | translate }}
+                                                                "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.POSITIVE" | translate }}
                                                             </label>
                                                             <label for=""><input formControlName="followD14SampleResult"
                                                                     type="radio"
                                                                     (blur)="calculateCompletionPercentage()"
-                                                                    name="followD14SampleResult" id="" value="3"> لم ترد
+                                                                    name="followD14SampleResult" id="" value="3"> {{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.NOT_RECEIVED" | translate }}
                                                             </label>
                                                         </div>
                                                     </div>
@@ -1448,11 +1327,55 @@
 
                         <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                             <div class="row">
-                                <div class="col-12 title fs-6 fwb">التعرض للحيوانات</div>
+                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.ANIMAL_EXPOSURE" | translate }}</div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label for="">هل المريض يقطن منطقة بها تكائر للفئران؟</label>
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.PATIENT_LIVES_WITH_RATS" | translate }}</label>
                                         <select formControlName="patientLiveWithRat" name="" id="" class="form-control"
+                                            (blur)="calculateCompletionPercentage()">
+                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.INFECTED_RABBITS" | translate }}</label>
+                                        <select formControlName="infectedRabbits" name="" id="" class="form-control"
+                                            (blur)="calculateCompletionPercentage()">
+                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.DEAD_RATS_IN_LARGE_NUMBERS" | translate }}</label>
+                                        <select formControlName="deadRatsInLargeNumbers" name="" id="" class="form-control"
+                                            (blur)="calculateCompletionPercentage()">
+                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.INFECTED_OR_DEAD_DOGS" | translate }}</label>
+                                        <select formControlName="infectedOrDeadDogs" name="" id="" class="form-control"
+                                            (blur)="calculateCompletionPercentage()">
+                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.FLEAS_PRESENCE" | translate }}</label>
+                                        <select formControlName="fleasPresence" name="" id="" class="form-control"
                                             (blur)="calculateCompletionPercentage()">
                                             <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
                                             <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
@@ -1465,10 +1388,10 @@
 
                         <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                             <div class="row">
-                                <div class="col-12 title fs-6 fwb">السفر والانتقالات</div>
+                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.TRAVEL_AND_MOVEMENTS" | translate }}</div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label for="">هل كان المريض خارج البلاد خلال 21 يوما من بداية الأعراض؟ </label>
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.PATIENT_OUTSIDE_COUNTRY" | translate }}</label>
                                         <select formControlName="patientOutsideCountry" name="" id=""
                                             class="form-control" (blur)="calculateCompletionPercentage()">
                                             <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
@@ -1479,21 +1402,21 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label for="">في حالة نعم اذكر البلد</label>
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.IF_YES_STATE_COUNTRY" | translate }}</label>
                                         <input formControlName="stateTheCountry" type="text" name="" id=""
                                             class="form-control" (blur)="calculateCompletionPercentage()">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label for="">سبب السفر</label>
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.TRAVEL_REASON" | translate }}</label>
                                         <input formControlName="reasonForTravel" type="text" name="" id=""
                                             class="form-control" (blur)="calculateCompletionPercentage()">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="">تاريخ الذهاب</label>
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.GO_DATE" | translate }}</label>
                                         <input formControlName="goDate" type="date"
                                             (blur)="calculateCompletionPercentage()" name="" id=""
                                             [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy">
@@ -1501,10 +1424,44 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="">تاريخ العودة</label>
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.RETURN_DATE" | translate }}</label>
                                         <input formControlName="returnDate" type="date"
                                             (blur)="calculateCompletionPercentage()" name="" id=""
                                             [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.INVESTIGATION_DATE" | translate }}</label>
+                                        <input formControlName="investigationDate" type="date"
+                                            (blur)="calculateCompletionPercentage()" name="" id=""
+                                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.SURVEILLANCE_OFFICER" | translate }}</label>
+                                        <input formControlName="surveillanceOfficer" type="text" name="" id=""
+                                            class="form-control" (blur)="calculateCompletionPercentage()">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.HEALTH_MONITOR_NAME" | translate }}</label>
+                                        <input formControlName="healthMonitorName" type="text" name="" id=""
+                                            class="form-control" (blur)="calculateCompletionPercentage()">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PLAGUE.ADMINISTRATION_DIRECTOR" | translate }}</label>
+                                        <input formControlName="administrationDirector" type="text" name="" id=""
+                                            class="form-control" (blur)="calculateCompletionPercentage()">
                                     </div>
                                 </div>
                             </div>
