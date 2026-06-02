@@ -76,6 +76,9 @@ export class MersComponent implements OnInit {
       id: new FormControl(),
       patientID: new FormControl(),
 
+      // Clinical Data
+      caseClassification: new FormControl(),
+      conditionAssessment: new FormControl(),
       diagnosisPneumonia: new FormControl(),
       dateDiagnosisPneumonia: new FormControl(),
       diagnosisWasMade: new FormControl(),
@@ -83,154 +86,59 @@ export class MersComponent implements OnInit {
       intensiveCareUnit: new FormControl(),
       dateReservation: new FormControl(),
       numberDaysCustody: new FormControl(),
-      oxygenUse: new FormControl(),
-      oxygenType: new FormControl(),
-      useRespirator: new FormControl(),
-      respiratorType: new FormControl(),
+      needsRespiratoryDevice: new FormControl(),
+      respiratoryDeviceType: new FormControl(),
       historyDevice: new FormControl(),
       numberDaysPlacementDevice: new FormControl(),
-      conditionAssessment: new FormControl(),
-      comments: new FormControl(),
+
+      // Patient Visit History
       patientVisitHistory: new FormArray([]),
+      comments: new FormControl(),
+
+      // Lab Tests
+      sampleType: new FormControl(),
+      sampleTypeOther: new FormControl(),
+      sampleCollectionDate: new FormControl(),
+      sampleSendDate: new FormControl(),
+
+      // Exposure Data - Travel
       localTravelHistories: new FormArray([]),
       internationalTravelHistories: new FormArray([]),
-
-      coronaVaccineTaken: new FormControl(),
-      numberDoses: new FormControl(),
-      dosageDate1: new FormControl(),
-      vaccine1: new FormControl(),
-      dosageDate2: new FormControl(),
-      vaccine2: new FormControl(),
-      dosageDate3: new FormControl(),
-      vaccine3: new FormControl(),
-      dosageDate4: new FormControl(),
-      vaccine4: new FormControl(),
-
-      isSeasonalFluVaccine: new FormControl(),
-      dateFluVaccination: new FormControl(),
-      pneumococcalVaccineTaken: new FormControl(),
-      startDate: new FormControl(),
-      respiratoryDistressSyndrome: new FormControl(),
-      dateonsetSyndrome: new FormControl(),
-      heartFailure: new FormControl(),
-      isAntihypertensiveMedication: new FormControl(),
-      ecmoProcessUsed: new FormControl(),
-      ecmoStartDate: new FormControl(),
-      durationEcmo: new FormControl(),
-      kidneyFailure: new FormControl(),
-      havingPregnancy: new FormControl(),
-      pregnancyProduct: new FormControl(),
-      travelingOutsideEgypt: new FormControl(),
       travelingWithinEgypt: new FormControl(),
+      travelingOutsideEgypt: new FormControl(),
+      entryPointType: new FormControl(),
+      entryPointName: new FormControl(),
       dateArrivalRepublic: new FormControl(),
-      airportPlaceArrivalFlightNumberPortTrain: new FormControl(),
-      closeContact: new FormControl(),
-      contactDataNotes: new FormControl(),
 
+      // Exposure Data - Human Contact
       contactSuspectedCase: new FormControl(),
-      epidemicOutbreak: new FormControl(),
       contactConfirmedCase: new FormControl(),
+      epidemicOutbreak: new FormControl(),
       contactDeceasedPersonRespiratory: new FormControl(),
-      numberNonDirectContacts: new FormControl(),
-      numberDirectContacts: new FormControl(),
+      contactHumanGatherings: new FormControl(),
 
-      nameDay1: new FormControl(),
-      ageDay1: new FormControl(),
-      telephoneDay1: new FormControl(),
-      genderDay1: new FormControl(),
-      contactTypeDay1: new FormControl(),
-      relationshipPatientDay1: new FormControl(),
-      dateOnsetSymptomsDay1: new FormControl(),
-      feverDay1: new FormControl(),
-      dryCoughDay1: new FormControl(),
-      coughingWithSpittingDay1: new FormControl(),
-      soreThroatDay1: new FormControl(),
-      breathingDifficultyDay1: new FormControl(),
-      jointPainDay1: new FormControl(),
-      vomitDay1: new FormControl(),
-      diarrheaDay1: new FormControl(),
-      otherDay1: new FormControl(),
-      otherSymptomsDay1: new FormControl(),
-      isSampleTakenDay1: new FormControl(),
-      dateSampleTakenDay1: new FormControl(),
-      sampleResultDay1: new FormControl(),
-
-      nameDay2: new FormControl(),
-      ageDay2: new FormControl(),
-      telephoneDay2: new FormControl(),
-      genderDay2: new FormControl(),
-      contactTypeDay2: new FormControl(),
-      relationshipPatientDay2: new FormControl(),
-      dateOnsetSymptomsDay2: new FormControl(),
-      feverDay2: new FormControl(),
-      dryCoughDay2: new FormControl(),
-      coughingWithSpittingDay2: new FormControl(),
-      soreThroatDay2: new FormControl(),
-      breathingDifficultyDay2: new FormControl(),
-      jointPainDay2: new FormControl(),
-      vomitDay2: new FormControl(),
-      diarrheaDay2: new FormControl(),
-      otherDay2: new FormControl(),
-      otherSymptomsDay2: new FormControl(),
-      isSampleTakenDay2: new FormControl(),
-      dateSampleTakenDay2: new FormControl(),
-      sampleResultDay2: new FormControl(),
-
-      nameDay7: new FormControl(),
-      ageDay7: new FormControl(),
-      telephoneDay7: new FormControl(),
-      genderDay7: new FormControl(),
-      contactTypeDay7: new FormControl(),
-      relationshipPatientDay7: new FormControl(),
-      dateOnsetSymptomsDay7: new FormControl(),
-      feverDay7: new FormControl(),
-      dryCoughDay7: new FormControl(),
-      coughingWithSpittingDay7: new FormControl(),
-      soreThroatDay7: new FormControl(),
-      breathingDifficultyDay7: new FormControl(),
-      jointPainDay7: new FormControl(),
-      vomitDay7: new FormControl(),
-      diarrheaDay7: new FormControl(),
-      otherDay7: new FormControl(),
-      otherSymptomsDay7: new FormControl(),
-      isSampleTakenDay7: new FormControl(),
-      dateSampleTakenDay7: new FormControl(),
-      sampleResultDay7: new FormControl(),
-
-      nameDay14: new FormControl(),
-      ageDay14: new FormControl(),
-      telephoneDay14: new FormControl(),
-      genderDay14: new FormControl(),
-      contactTypeDay14: new FormControl(),
-      relationshipPatientDay14: new FormControl(),
-      dateOnsetSymptomsDay14: new FormControl(),
-      feverDay14: new FormControl(),
-      dryCoughDay14: new FormControl(),
-      coughingWithSpittingDay14: new FormControl(),
-      soreThroatDay14: new FormControl(),
-      breathingDifficultyDay14: new FormControl(),
-      jointPainDay14: new FormControl(),
-      vomitDay14: new FormControl(),
-      diarrheaDay14: new FormControl(),
-      otherDay14: new FormControl(),
-      otherSymptomsDay14: new FormControl(),
-      isSampleTakenDay14: new FormControl(),
-      dateSampleTakenDay14: new FormControl(),
-      sampleResultDay14: new FormControl(),
-
-      cats: new FormControl(),
-      bats: new FormControl(),
-      dog: new FormControl(),
-      camal: new FormControl(),
-      sheep: new FormControl(),
-      civetCats: new FormControl(),
-      otherAnimals: new FormControl(),
+      // Exposure Data - Animal Exposure
+      animalExposure: new FormControl(),
+      camal: new FormControl(false),
+      cattle: new FormControl(false),
+      sheep: new FormControl(false),
+      dog: new FormControl(false),
+      cats: new FormControl(false),
+      bats: new FormControl(false),
       mentionName: new FormControl(),
-      caseTakeAntivirals: new FormControl(),
-      ribavirin: new FormControl(),
-      ribavirinStartingDate: new FormControl(),
-      antiviralsOther: new FormControl(),
-      otherstartingDate: new FormControl(),
+      camelExposureType: new FormControl(),
+      camelUnpasteurizedMilk: new FormControl(),
+      camelBlood: new FormControl(),
+      camelUrine: new FormControl(),
+      camelUndercookedMeat: new FormControl(),
+      otherCamelProducts: new FormControl(),
+
+      // Investigation Footer
+      investigationDate: new FormControl(),
+      healthInspectorName: new FormControl(),
+      surveillanceOfficer: new FormControl(),
+      directorName: new FormControl(),
+
       investigationCompletePercentage: new FormControl(),
       diseaseGroupId: new FormControl(this.investigationService.diseaseGroupID),
     });
@@ -246,87 +154,11 @@ export class MersComponent implements OnInit {
         var v = res.data;
         this.mersForm.patchValue(v);
 
-        this.mersForm.patchValue({
-          isSampleTakenDay1: this.mersForm.value.isSampleTakenDay1 + '',
-          tc: true,
+        // Convert int (1/0) from API to boolean for checkboxes
+        ['camal', 'cattle', 'sheep', 'dog', 'cats', 'bats'].forEach(field => {
+          this.mersForm.controls[field].setValue(!!v[field]);
         });
-        this.mersForm.patchValue({
-          sampleResultDay1: this.mersForm.value.sampleResultDay1 + '',
-          tc: true,
-        });
-        this.mersForm.controls['dateSampleTakenDay1'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateSampleTakenDay1,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.patchValue({
-          isSampleTakenDay2: this.mersForm.value.isSampleTakenDay2 + '',
-          tc: true,
-        });
-        this.mersForm.patchValue({
-          sampleResultDay2: this.mersForm.value.sampleResultDay2 + '',
-          tc: true,
-        });
-        this.mersForm.controls['dateSampleTakenDay2'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateSampleTakenDay2,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.patchValue({
-          isSampleTakenDay7: this.mersForm.value.isSampleTakenDay7 + '',
-          tc: true,
-        });
-        this.mersForm.patchValue({
-          sampleResultDay7: this.mersForm.value.sampleResultDay7 + '',
-          tc: true,
-        });
-        this.mersForm.controls['dateSampleTakenDay7'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateSampleTakenDay7,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.patchValue({
-          isSampleTakenDay14: this.mersForm.value.isSampleTakenDay14 + '',
-          tc: true,
-        });
-        this.mersForm.patchValue({
-          sampleResultDay14: this.mersForm.value.sampleResultDay14 + '',
-          tc: true,
-        });
-        this.mersForm.controls['dateSampleTakenDay14'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateSampleTakenDay14,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.controls['dateOnsetSymptomsDay1'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateOnsetSymptomsDay1,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.controls['dateOnsetSymptomsDay2'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateOnsetSymptomsDay2,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.controls['dateOnsetSymptomsDay7'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateOnsetSymptomsDay7,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.controls['dateOnsetSymptomsDay14'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateOnsetSymptomsDay14,
-            'yyyy-MM-dd'
-          )
-        );
-        //ribavirinStartingDate
+
         this.mersForm.controls['dateDiagnosisPneumonia'].setValue(
           this.datePipe.transform(
             this.mersForm.value.dateDiagnosisPneumonia,
@@ -345,6 +177,31 @@ export class MersComponent implements OnInit {
             'yyyy-MM-dd'
           )
         );
+        this.mersForm.controls['sampleCollectionDate'].setValue(
+          this.datePipe.transform(
+            this.mersForm.value.sampleCollectionDate,
+            'yyyy-MM-dd'
+          )
+        );
+        this.mersForm.controls['sampleSendDate'].setValue(
+          this.datePipe.transform(
+            this.mersForm.value.sampleSendDate,
+            'yyyy-MM-dd'
+          )
+        );
+        this.mersForm.controls['dateArrivalRepublic'].setValue(
+          this.datePipe.transform(
+            this.mersForm.value.dateArrivalRepublic,
+            'yyyy-MM-dd'
+          )
+        );
+        this.mersForm.controls['investigationDate'].setValue(
+          this.datePipe.transform(
+            this.mersForm.value.investigationDate,
+            'yyyy-MM-dd'
+          )
+        );
+
         const apiVisits = v?.PatientVisitHistory ?? v?.patientVisitHistory;
         if (Array.isArray(apiVisits) && apiVisits.length > 0) {
           while (this.patientVisitHistory.length > 0) {
@@ -385,55 +242,6 @@ export class MersComponent implements OnInit {
             }));
           });
         }
-        //
-        this.mersForm.controls['dosageDate1'].setValue(
-          this.datePipe.transform(this.mersForm.value.dosageDate1, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dosageDate2'].setValue(
-          this.datePipe.transform(this.mersForm.value.dosageDate2, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dosageDate3'].setValue(
-          this.datePipe.transform(this.mersForm.value.dosageDate3, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dosageDate4'].setValue(
-          this.datePipe.transform(this.mersForm.value.dosageDate4, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateFluVaccination'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateFluVaccination,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.controls['startDate'].setValue(
-          this.datePipe.transform(this.mersForm.value.startDate, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateonsetSyndrome'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateonsetSyndrome,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.controls['ecmoStartDate'].setValue(
-          this.datePipe.transform(this.mersForm.value.ecmoStartDate, 'yyyy-MM-dd')
-        );
-        this.mersForm.controls['dateArrivalRepublic'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.dateArrivalRepublic,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.controls['ribavirinStartingDate'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.ribavirinStartingDate,
-            'yyyy-MM-dd'
-          )
-        );
-        this.mersForm.controls['otherstartingDate'].setValue(
-          this.datePipe.transform(
-            this.mersForm.value.otherstartingDate,
-            'yyyy-MM-dd'
-          )
-        );
 
         this.calculateCompletionPercentage();
       },
@@ -461,11 +269,15 @@ export class MersComponent implements OnInit {
         : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2))
     );
 
+    const animalFields = ['camal', 'cattle', 'sheep', 'dog', 'cats', 'bats'];
     const payload = {
       ...this.mersForm.value,
       localTravelHistories: this.mersForm.value.localTravelHistories,
       internationalTravelHistories: this.mersForm.value.internationalTravelHistories
     };
+    animalFields.forEach(field => {
+      payload[field] = payload[field] ? 1 : 0;
+    });
     console.log(payload);
     if (payload.id != null) {
       this.investigationService.updateSeveremers(payload).subscribe(

@@ -1,15 +1,10 @@
-<!-- <div class="row">
-  <div class="col-lg-6">
-    <h2 class="titles">MERS</h2>
-  </div>
-</div> -->
 <form [formGroup]="mersForm" (ngSubmit)="save()">
   <div class="row">
     <div class="col-12">
       <div class="card shadow mt-4 color mb-4">
         <div class="card-body">
           <h5 style="text-align: center; border: 1px solid; padding: 1%">
-            MERS
+            متلازمة الشرق الأوسط التنفسية MERS-COV
           </h5>
           <br />
           <div class="row">
@@ -47,139 +42,27 @@
               {{"NEDSS.INVESTIGATIONS.Field"| translate}}
             </div>
           </div>
+
+          <!-- ==================== CLINICAL DATA ==================== -->
           <div class="row color">
             <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
               <div class="row">
-                <div class="col-12 title fs-6 fwb"> {{ "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data" | translate }}</div>
+                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data" | translate }}</div>
+
                 <div class="col-lg-6">
                   <div class="form-group">
-                    <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.Diagnosis_Pneumonia" | translate }} </label>
-                    <select formControlName="diagnosisPneumonia" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CASE_CLASSIFICATION" | translate }}</label>
+                    <select formControlName="caseClassification" class="form-control">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SUSPECTED" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CONFIRMED" | translate }}</option>
                     </select>
                   </div>
                 </div>
-                <!-- /.col-lg-6 -->
+
                 <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes_Date_Diagnosis_Pneumonia" | translate
-                      }}</label>
-                    <input formControlName="dateDiagnosisPneumonia" type="date" name=""
-                      class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes_Diagnosis_Made" | translate }} </label>
-                    <select formControlName="diagnosisWasMade" name="" id="" class="form-control">
-                      <option value="1"> {{ "NEDSS.COMPLETE_INVESTEGATION.X_Ray" | translate }}</option>
-                      <option value="2"> {{ "NEDSS.COMPLETE_INVESTEGATION.CT_Scan" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.Pneumonia" | translate }}</label>
-                    <select formControlName="pneumonia" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.Single" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.Double" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.ICU_ADMISSION" | translate }}</label>
-                    <select formControlName="intensiveCareUnit" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes__Date_Reservation" | translate }}</label>
-                    <input formControlName="dateReservation" type="date" name=""
-                      class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Number_DaysCustody" | translate }}</label>
-                    <input formControlName="numberDaysCustody" type="text" name="" id="" class="form-control" />
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Oxygen_Use" | translate }}</label>
-                    <select formControlName="oxygenUse" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.In_Case_Yes_Type" | translate }}</label>
-                    <select formControlName="oxygenType" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.Nose_Mask" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.Face_Mask" | translate }}</option>
-                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.Reservoir_Mask" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Use_Respirator" | translate }}</label>
-                    <select formControlName="useRespirator" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.In_Case_Yes_Type" | translate }}</label>
-                    <select formControlName="respiratorType" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.Penetration" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.Non_Penetration" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Date_Placed_On_Device" | translate }}</label>
-                    <input formControlName="historyDevice" type="date" name="" id="dp1684613530008"
-                      class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Number_Days_Placement_Device" | translate }}</label>
-                    <input formControlName="numberDaysPlacementDevice" type="number" name="" id=""
-                      class="form-control" />
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
-                <div class="col-lg-12">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Condition_Assessment" | translate }}</label>
-                    <select formControlName="conditionAssessment" name="" id="" class="form-control">
+                    <select formControlName="conditionAssessment" class="form-control">
                       <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.Simple" | translate }}</option>
                       <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.Medium" | translate }}</option>
                       <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.Severe" | translate }}</option>
@@ -187,268 +70,184 @@
                     </select>
                   </div>
                 </div>
-                <!-- /.col-lg-12 -->
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Diagnosis_Pneumonia" | translate }}</label>
+                    <select formControlName="diagnosisPneumonia" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes_Date_Diagnosis_Pneumonia" | translate }}</label>
+                    <input formControlName="dateDiagnosisPneumonia" type="date"
+                      class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes_Diagnosis_Made" | translate }}</label>
+                    <select formControlName="diagnosisWasMade" class="form-control">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.X_Ray" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CT_Scan" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Pneumonia" | translate }}</label>
+                    <select formControlName="pneumonia" class="form-control">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.Single" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.Double" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.ICU_ADMISSION" | translate }}</label>
+                    <select formControlName="intensiveCareUnit" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes__Date_Reservation" | translate }}</label>
+                    <input formControlName="dateReservation" type="date"
+                      class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                  </div>
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Number_DaysCustody" | translate }}</label>
+                    <input formControlName="numberDaysCustody" type="number" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.NEEDS_RESPIRATORY_DEVICE" | translate }}</label>
+                    <select formControlName="needsRespiratoryDevice" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.DEVICE_TYPE" | translate }}</label>
+                    <select formControlName="respiratoryDeviceType" class="form-control">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.OXYGEN_MASK" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.MECHANICAL_VENTILATION" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.ECMO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Date_Placed_On_Device" | translate }}</label>
+                    <input formControlName="historyDevice" type="date"
+                      class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                  </div>
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Number_Days_Placement_Device" | translate }}</label>
+                    <input formControlName="numberDaysPlacementDevice" type="number" class="form-control" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== PATIENT VISIT HISTORY ==================== -->
+          <div class="row color">
+            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
                 <app-patient-visit-history [visits]="patientVisitHistory"
                   (visitsChanged)="calculateCompletionPercentage()"></app-patient-visit-history>
                 <div class="col-lg-12">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Comments" | translate }}</label>
-                    <input formControlName="comments" type="text" name="" id="" class="form-control" />
+                    <input formControlName="comments" type="text" class="form-control" />
                   </div>
                 </div>
               </div>
-              <!-- / .row -->
             </div>
-            <!-- / .col-12 -->
           </div>
-          <!-- / .row -->
 
+          <!-- ==================== LAB TESTS ==================== -->
           <div class="row color">
             <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
               <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.vaccination_Data" | translate }}</div>
-                <div class="col-lg-4">
+                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.LAB_TESTS" | translate }}</div>
+
+                <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Was_Corona_Vaccine_Taken?" | translate }}</label>
-                    <select formControlName="coronaVaccineTaken" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.COMMON.Not Applicable" | translate }}</option>
-                      <option value="4">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE" | translate }}</label>
+                    <select formControlName="sampleType" class="form-control">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.NASOPHARYNGEAL_SWAB" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SPUTUM" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.BRONCHIAL_LAVAGE" | translate }}</option>
+                      <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE_OTHER" | translate }}</option>
                     </select>
                   </div>
                 </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes_State_Number_Doses" | translate }}</label>
-                    <input formControlName="numberDoses" type="number" name="" id="" class="form-control" />
-                  </div>
-                </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Dosage_Date" | translate }}</label>
-                        <input formControlName="dosageDate1" type="date" name="" id="dp1684613530024"
-                          class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.the_Vaccine" | translate }}</label>
-                        <input formControlName="vaccine1" type="text" name="" id="" class="form-control" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Dosage_Date" | translate }}</label>
-                        <input formControlName="dosageDate2" type="date" name="" id="dp1684613530025"
-                          class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.the_Vaccine" | translate }}</label>
-                        <input formControlName="vaccine2" type="text" name="" id="" class="form-control" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Dosage_Date" | translate }}</label>
-                        <input formControlName="dosageDate3" type="date" name=""
-                          class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.the_Vaccine" | translate }}</label>
-                        <input formControlName="vaccine3" type="text" name="" id="" class="form-control" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Dosage_Date" | translate }}</label>
-                        <input formControlName="dosageDate4" type="date" name=""
-                          class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.the_Vaccine" | translate }}</label>
-                        <input formControlName="vaccine4" type="text" name="" id="" class="form-control" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                  </div>
-                </div>
+
                 <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Have_you _Had_Seasonal_Flu_Vaccine ?" | translate }}</label>
-                    <select formControlName="isSeasonalFluVaccine" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE_OTHER" | translate }}</label>
+                    <input formControlName="sampleTypeOther" type="text" class="form-control" />
                   </div>
                 </div>
-                <!-- /.col-lg-6 -->
+
                 <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes_Date_Vaccination" | translate }}</label>
-                    <input formControlName="dateFluVaccination" type="date" name=""
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_COLLECTION_DATE" | translate }}</label>
+                    <input formControlName="sampleCollectionDate" type="date"
                       class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
                   </div>
                 </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Has_Pneumococcal_Vaccine_Taken?" | translate }}</label>
-                    <select formControlName="pneumococcalVaccineTaken" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes_Start_Date" | translate }}</label>
-                    <input formControlName="startDate" type="date" name="" class="form-control datePicker hasDatepicker"
-                      placeholder="dd/mm/yyyy" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-              </div>
-              <!-- / .row -->
-            </div>
-            <!-- / .col-12 -->
-          </div>
-          <!-- / .row -->
 
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_SEND_DATE" | translate }}</label>
+                    <input formControlName="sampleSendDate" type="date"
+                      class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== EXPOSURE DATA ==================== -->
           <div class="col-12">
-            <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.Epidemiological_Investigation" | translate }}</h3>
+            <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.EXPOSURE_DATA" | translate }}</h3>
           </div>
 
-          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-            <div class="row">
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Respiratory_Distress_Syndrome" | translate }}</label>
-                  <select formControlName="respiratoryDistressSyndrome" name="" id="" class="form-control">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Date_Onset_Syndrome" | translate }}</label>
-                  <input formControlName="dateonsetSyndrome" type="date" name=""
-                    class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Heart_Failure" | translate }}</label>
-                  <select formControlName="heartFailure" name="" id="" class="form-control">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Antihypertensive_Medication" | translate }}</label>
-                  <select formControlName="isAntihypertensiveMedication" name="" id="" class="form-control">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.ECMO_Process_Used" | translate }}</label>
-                  <select formControlName="ecmoProcessUsed" name="" id="" class="form-control">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.ECMO_Start_Date" | translate }}</label>
-                  <input formControlName="ecmoStartDate" type="date" name="" class="form-control datePicker hasDatepicker"
-                    placeholder="dd/mm/yyyy" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Duration_ECMO" | translate }}</label>
-                  <input formControlName="durationEcmo" type="number" name="" id="" class="form-control" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Kidney_Failure" | translate }}</label>
-                  <select formControlName="kidneyFailure" name="" id="" class="form-control">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Having_Pregnancy" | translate }}</label>
-                  <select formControlName="havingPregnancy" name="" id="" class="form-control">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Pregnancy_Product" | translate }}</label>
-                  <input formControlName="pregnancyProduct" type="text" name="" id="" class="form-control" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-            </div>
-            <!-- / .row -->
-          </div>
-
+          <!-- ===== TRAVEL ===== -->
           <div class="row color">
             <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
               <div class="row">
-                <div class="col-12 title fs-6 fwb">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.CLINICAL_COURSE_COMPLICATIONS" | translate }}
-                </div>
+                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.TRAVEL" | translate }}</div>
+
                 <div class="col-lg-12">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TRAVEL_WITHIN_EGYPT_14_DAYS" | translate }}</label>
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.TRAVEL_WITHIN_EGYPT_14_DAYS" | translate }}</label>
                     <select formControlName="travelingWithinEgypt" class="form-control">
                       <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
                       <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
@@ -460,12 +259,12 @@
                   <app-local-travel-history [travels]="localTravelHistory"
                     (travelsChanged)="calculateCompletionPercentage()"></app-local-travel-history>
                 </div>
-                <div class="col-lg-12">
-                  <hr />
-                </div>
+
+                <div class="col-lg-12"><hr /></div>
+
                 <div class="col-lg-12">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TRAVEL_OUTSIDE_EGYPT_AFFECTED_COUNTRY_14_DAYS" | translate }}</label>
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.TRAVEL_OUTSIDE_EGYPT_14_DAYS" | translate }}</label>
                     <select formControlName="travelingOutsideEgypt" class="form-control">
                       <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
                       <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
@@ -477,1158 +276,261 @@
                   <app-international-travel-history [travels]="internationalTravelHistory"
                     (travelsChanged)="calculateCompletionPercentage()"></app-international-travel-history>
                 </div>
-                <!-- / .col-lg-2 -->
-                <div class="col-lg-6">
+
+                <div class="col-lg-12"><hr /></div>
+
+                <div class="col-lg-4">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DATE_ARRIVAL_REPUBLIC_14_DAYS" | translate }}</label>
-                    <input formControlName="dateArrivalRepublic" type="date" name=""
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.ENTRY_POINT_TO_EGYPT" | translate }}</label>
+                    <select formControlName="entryPointType" class="form-control">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.AIRPORT" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.PORT" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.LAND_CROSSING" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.ENTRY_POINT_NAME" | translate }}</label>
+                    <input formControlName="entryPointName" type="text" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.ARRIVAL_DATE" | translate }}</label>
+                    <input formControlName="dateArrivalRepublic" type="date"
                       class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
                   </div>
                 </div>
-                <!-- /.col-lg-12 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.ARRIVAL_PORT_FLIGHT_TRAIN_DETAILS" | translate }}</label>
-                    <input formControlName="airportPlaceArrivalFlightNumberPortTrain" type="text" name="" id=""
-                      class="form-control" />
-                  </div>
-                </div>
-                <!-- /.col-lg-12 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CLOSE_CONTACT_CONFIRMED_OR_PROBABLE_14_DAYS" | translate }}</label>
-                    <select formControlName="closeContact" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-12 -->
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_DATA_IF_ANY" | translate }}</label>
-                    <textarea formControlName="contactDataNotes" rows="3" class="form-control"></textarea>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WITH_SUSPECTED_CASE" | translate }}</label>
-                    <select formControlName="contactSuspectedCase" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PART_OF_EPIDEMIC_OUTBREAK_OR_SIMILAR_SITUATION" | translate }}</label>
-                    <select formControlName="epidemicOutbreak" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WITH_CONFIRMED_CASE" | translate }}</label>
-                    <select formControlName="contactConfirmedCase" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_DECEASED_PERSON_UNKNOWN_RESPIRATORY_DISEASE" | translate }}</label>
-                    <select formControlName="contactDeceasedPersonRespiratory" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.NUMBER_DIRECT_CONTACTS" | translate }}</label>
-                    <input formControlName="numberDirectContacts" type="number" name="" id="" class="form-control" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.NUMBER_INDIRECT_CONTACTS" | translate }}</label>
-                    <input formControlName="numberNonDirectContacts" type="number" name="" id="" class="form-control" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <!-- /.col-lg-3 -->
-              </div>
-              <!-- / .row -->
-            </div>
-            <!-- / .col-12 -->
-          </div>
-          <!-- / .row -->
-
-          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-            <div class="accordion" id="accordionExample">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                    aria-expanded="true" aria-controls="collapseOne">
-                    {{ "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1" | translate }}
-                  </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input formControlName="nameDay1" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.AGE" | translate }}</label>
-                          <input formControlName="ageDay1" type="number" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PHONE" | translate }}</label>
-                          <input formControlName="telephoneDay1" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.GENDER" | translate }}</label>
-                          <select formControlName="genderDay1" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MALE" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEMALE" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE" | translate }}</label>
-                          <select formControlName="contactTypeDay1" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK" | translate }}</option>
-                            <option value="3">
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT" | translate }}
-                            </option>
-                            <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE" | translate }}</label>
-                          <input formControlName="relationshipPatientDay1" type="text" name="" id=""
-                            class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE" | translate }}</label>
-                          <input formControlName="dateOnsetSymptomsDay1" type="date" name="" id=""
-                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select formControlName="feverDay1" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH" | translate }}</label>
-                          <select formControlName="dryCoughDay1" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM" | translate }}</label>
-                          <select formControlName="coughingWithSpittingDay1" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT" | translate }}</label>
-                          <select formControlName="soreThroatDay1" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING" | translate }}</label>
-                          <select formControlName="breathingDifficultyDay1" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN" | translate }}</label>
-                          <select formControlName="jointPainDay1" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.VOMITING" | translate }}</label>
-                          <select formControlName="vomitDay1" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA" | translate }}</label>
-                          <select formControlName="diarrheaDay1" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.OTHER" | translate }}</label>
-                          <select formControlName="otherDay1" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                          <input formControlName="otherSymptomsDay1" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.LAB" | translate }}</div>
-                      <div class="col-4">
-                        <div class="row">
-                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6 has-labels d-flex gap-3 flex-wrap align-items-center">
-                            <label for=""><input formControlName="isSampleTakenDay1" type="radio"
-                                name="isSampleTakenDay1" id="" value="1" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input formControlName="isSampleTakenDay1" type="radio"
-                                name="isSampleTakenDay1" id="" value="2" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group row">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE" | translate }}</label>
-                          </div>
-                          <div class="col-lg-8">
-                            <input formControlName="dateSampleTakenDay1" type="date" name="" id=""
-                              [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="row">
-                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8 has-labels d-flex gap-3 flex-wrap align-items-center">
-                            <label for=""><input formControlName="sampleResultDay1" type="radio" name="sampleResultDay1"
-                                id="" value="1" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.POSITIVE" | translate }}
-                            </label>
-                            <label for=""><input formControlName="sampleResultDay1" type="radio" name="sampleResultDay1"
-                                id="" value="2" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.NEGATIVE" | translate }}
-                            </label>
-                            <label for=""><input formControlName="sampleResultDay1" type="radio" name="sampleResultDay1"
-                                id="" value="3" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED" | translate }}
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseOne">
-                    <font style="vertical-align: inherit">
-                      <font style="vertical-align: inherit">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2" | translate }}
-                      </font>
-                    </font>
-                  </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="collapseTwo"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input formControlName="nameDay2" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.AGE" | translate }}</label>
-                          <input formControlName="ageDay2" type="number" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PHONE" | translate }}</label>
-                          <input formControlName="telephoneDay2" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.GENDER" | translate }}</label>
-                          <select formControlName="genderDay2" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MALE" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEMALE" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE" | translate }}</label>
-                          <select formControlName="contactTypeDay2" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK" | translate }}</option>
-                            <option value="3">
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT" | translate }}
-                            </option>
-                            <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE" | translate }}</label>
-                          <input formControlName="relationshipPatientDay2" type="text" name="" id=""
-                            class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE" | translate }}</label>
-                          <input formControlName="dateOnsetSymptomsDay2" type="date" name="" id=""
-                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select formControlName="feverDay2" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH" | translate }}</label>
-                          <select formControlName="dryCoughDay2" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM" | translate }}</label>
-                          <select formControlName="coughingWithSpittingDay2" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT" | translate }}</label>
-                          <select formControlName="soreThroatDay2" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING" | translate }}</label>
-                          <select formControlName="breathingDifficultyDay2" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN" | translate }}</label>
-                          <select formControlName="jointPainDay2" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.VOMITING" | translate }}</label>
-                          <select formControlName="vomitDay2" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA" | translate }}</label>
-                          <select formControlName="diarrheaDay2" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.OTHER" | translate }}</label>
-                          <select formControlName="otherDay2" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                          <input formControlName="otherSymptomsDay2" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.LAB" | translate }}</div>
-                      <div class="col-4">
-                        <div class="row">
-                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6 has-labels d-flex gap-3 flex-wrap align-items-center">
-                            <label for=""><input formControlName="isSampleTakenDay2" type="radio"
-                                name="isSampleTakenDay2" id="" value="1" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input formControlName="isSampleTakenDay2" type="radio"
-                                name="isSampleTakenDay2" id="" value="2" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group row">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE" | translate }}</label>
-                          </div>
-                          <div class="col-lg-8">
-                            <input formControlName="dateSampleTakenDay2" type="date" name="" id=""
-                              [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="row">
-                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8 has-labels d-flex gap-3 flex-wrap align-items-center">
-                            <label for=""><input formControlName="sampleResultDay2" type="radio" name="sampleResultDay2"
-                                id="" value="1" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.POSITIVE" | translate }}
-                            </label>
-                            <label for=""><input formControlName="sampleResultDay2" type="radio" name="sampleResultDay2"
-                                id="" value="2" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.NEGATIVE" | translate }}
-                            </label>
-                            <label for=""><input formControlName="sampleResultDay2" type="radio" name="sampleResultDay2"
-                                id="" value="3" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED" | translate }}
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSeven">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-                    <font style="vertical-align: inherit">
-                      <font style="vertical-align: inherit">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7" | translate }}
-                      </font>
-                    </font>
-                  </button>
-                </h2>
-                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="collapseSeven"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input formControlName="nameDay7" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.AGE" | translate }}</label>
-                          <input formControlName="ageDay7" type="number" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PHONE" | translate }}</label>
-                          <input formControlName="telephoneDay7" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.GENDER" | translate }}</label>
-                          <select formControlName="genderDay7" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MALE" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEMALE" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE" | translate }}</label>
-                          <select formControlName="contactTypeDay7" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK" | translate }}</option>
-                            <option value="3">
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT" | translate }}
-                            </option>
-                            <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE" | translate }}</label>
-                          <input formControlName="relationshipPatientDay7" type="text" name="" id=""
-                            class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE" | translate }}</label>
-                          <input formControlName="dateOnsetSymptomsDay7" type="date" name="" id=""
-                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select formControlName="feverDay7" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH" | translate }}</label>
-                          <select formControlName="dryCoughDay7" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM" | translate }}</label>
-                          <select formControlName="coughingWithSpittingDay7" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT" | translate }}</label>
-                          <select formControlName="soreThroatDay7" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING" | translate }}</label>
-                          <select formControlName="breathingDifficultyDay7" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN" | translate }}</label>
-                          <select formControlName="jointPainDay7" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.VOMITING" | translate }}</label>
-                          <select formControlName="vomitDay7" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA" | translate }}</label>
-                          <select formControlName="diarrheaDay7" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.OTHER" | translate }}</label>
-                          <select formControlName="otherDay7" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                          <input formControlName="otherSymptomsDay7" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.LAB" | translate }}</div>
-                      <div class="col-4">
-                        <div class="row">
-                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6 has-labels d-flex gap-3 flex-wrap align-items-center">
-                            <label for=""><input formControlName="isSampleTakenDay7" type="radio"
-                                name="isSampleTakenDay7" id="" value="1" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input formControlName="isSampleTakenDay7" type="radio"
-                                name="isSampleTakenDay7" id="" value="2" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group row">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE" | translate }}</label>
-                          </div>
-                          <div class="col-lg-8">
-                            <input formControlName="dateSampleTakenDay7" type="date" name="" id=""
-                              [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="row">
-                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8 has-labels d-flex gap-3 flex-wrap align-items-center">
-                            <label for=""><input formControlName="sampleResultDay7" type="radio" name="sampleResultDay7"
-                                id="" value="1" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.POSITIVE" | translate }}
-                            </label>
-                            <label for=""><input formControlName="sampleResultDay7" type="radio" name="sampleResultDay7"
-                                id="" value="2" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.NEGATIVE" | translate }}
-                            </label>
-                            <label for=""><input formControlName="sampleResultDay7" type="radio" name="sampleResultDay7"
-                                id="" value="3" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED" | translate }}
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSevenTeen">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseSevenTeen" aria-expanded="true" aria-controls="collapseSevenTeen">
-                    <font style="vertical-align: inherit">
-                      <font style="vertical-align: inherit">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14" | translate }}
-                      </font>
-                    </font>
-                  </button>
-                </h2>
-                <div id="collapseSevenTeen" class="accordion-collapse collapse" aria-labelledby="collapseSevenTeen"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input formControlName="nameDay14" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.AGE" | translate }}</label>
-                          <input formControlName="ageDay14" type="number" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PHONE" | translate }}</label>
-                          <input formControlName="telephoneDay14" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.GENDER" | translate }}</label>
-                          <select formControlName="genderDay14" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MALE" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEMALE" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE" | translate }}</label>
-                          <select formControlName="contactTypeDay14" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK" | translate }}</option>
-                            <option value="3">
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT" | translate }}
-                            </option>
-                            <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE" | translate }}</label>
-                          <input formControlName="relationshipPatientDay14" type="text" name="" id=""
-                            class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE" | translate }}</label>
-                          <input formControlName="dateOnsetSymptomsDay14" type="date" name="" id=""
-                            [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select formControlName="feverDay14" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH" | translate }}</label>
-                          <select formControlName="dryCoughDay14" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM" | translate }}</label>
-                          <select formControlName="coughingWithSpittingDay14" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT" | translate }}</label>
-                          <select formControlName="soreThroatDay14" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING" | translate }}</label>
-                          <select formControlName="breathingDifficultyDay14" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN" | translate }}</label>
-                          <select formControlName="jointPainDay14" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.VOMITING" | translate }}</label>
-                          <select formControlName="vomitDay14" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA" | translate }}</label>
-                          <select formControlName="diarrheaDay14" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.OTHER" | translate }}</label>
-                          <select formControlName="otherDay14" name="" id="" class="form-control">
-                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                          <input formControlName="otherSymptomsDay14" type="text" name="" id="" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.LAB" | translate }}</div>
-                      <div class="col-4">
-                        <div class="row">
-                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6 has-labels d-flex gap-3 flex-wrap align-items-center">
-                            <label for=""><input formControlName="isSampleTakenDay14" type="radio"
-                                name="isSampleTakenDay14" id="" value="1" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input formControlName="isSampleTakenDay14" type="radio"
-                                name="isSampleTakenDay14" id="" value="2" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="form-group row">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE" | translate }}</label>
-                          </div>
-                          <div class="col-lg-8">
-                            <input formControlName="dateSampleTakenDay14" type="date" name="" id=""
-                              [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="row">
-                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8 has-labels d-flex gap-3 flex-wrap align-items-center">
-                            <label for=""><input formControlName="sampleResultDay14" type="radio"
-                                name="sampleResultDay14" id="" value="1" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.POSITIVE" | translate }}
-                            </label>
-                            <label for=""><input formControlName="sampleResultDay14" type="radio"
-                                name="sampleResultDay14" id="" value="2" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.NEGATIVE" | translate }}
-                            </label>
-                            <label for=""><input formControlName="sampleResultDay14" type="radio"
-                                name="sampleResultDay14" id="" value="3" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED" | translate }}
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
 
+          <!-- ===== HUMAN CONTACT ===== -->
           <div class="row color">
             <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
               <div class="row">
-                <div class="col-12 title fs-6 fwb">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.CLOSE_CONTACT_WITH_ANY_OF_THE_FOLLOWING_14_DAYS" | translate }}
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CATS" | translate }}</label>
-                    <select formControlName="cats" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BATS" | translate }}</label>
-                    <select formControlName="bats" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DOGS" | translate }}</label>
-                    <select formControlName="dog" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-4 -->
+                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.HUMAN_CONTACT" | translate }}</div>
 
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CAMELS" | translate }}</label>
-                    <select formControlName="camal" name="" id="" class="form-control">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CONTACT_SUSPECTED_MERS" | translate }}</label>
+                    <select formControlName="contactSuspectedCase" class="form-control">
                       <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
                       <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
                       <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                     </select>
                   </div>
                 </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
+
+                <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SHEEP" | translate }}</label>
-                    <select formControlName="sheep" name="" id="" class="form-control">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CONTACT_CONFIRMED_MERS" | translate }}</label>
+                    <select formControlName="contactConfirmedCase" class="form-control">
                       <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
                       <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
                       <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                     </select>
                   </div>
                 </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
+
+                <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CIVET_CATS" | translate }}</label>
-                    <select formControlName="civetCats" name="" id="" class="form-control">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.PART_OF_EPIDEMIC_OUTBREAK" | translate }}</label>
+                    <select formControlName="epidemicOutbreak" class="form-control">
                       <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
                       <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
                       <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                     </select>
                   </div>
                 </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
+
+                <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.OTHER_ANIMALS" | translate }}</label>
-                    <select formControlName="otherAnimals" name="" id="" class="form-control">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CONTACT_DECEASED_RESPIRATORY" | translate }}</label>
+                    <select formControlName="contactDeceasedPersonRespiratory" class="form-control">
                       <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
                       <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
                       <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                     </select>
                   </div>
                 </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
+
+                <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.IF_YES_MENTION_NAME" | translate }}</label>
-                    <input formControlName="mentionName" type="text" name="" id="" class="form-control" />
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CONTACT_HUMAN_GATHERINGS" | translate }}</label>
+                    <select formControlName="contactHumanGatherings" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
-                <!-- /.col-lg-4 -->
               </div>
-              <!-- / .row -->
             </div>
-            <!-- / .col-12 -->
           </div>
-          <!-- / .row -->
 
+          <!-- ===== SHARED/ANIMAL CONTACT ===== -->
           <div class="row color">
             <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
               <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TREATMENT_AND_ANTIVIRALS" | translate }}</div>
-                <div class="col-lg-6">
+                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SHARED_CONTACT" | translate }}</div>
+
+                <div class="col-lg-12">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CASE_TAKE_ANTIVIRALS_LAST_14_DAYS" | translate }}
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.ANIMAL_EXPOSURE_14_DAYS" | translate }}</label>
+                    <select formControlName="animalExposure" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.ANIMAL_TYPE" | translate }}</div>
+
+                <div class="col-lg-12">
+                  <div class="form-group d-flex gap-4 flex-wrap align-items-center">
+                    <label class="d-flex align-items-center gap-1">
+                      <input type="checkbox" formControlName="camal" />
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMELS" | translate }}
                     </label>
-                    <select formControlName="caseTakeAntivirals" name="" id="" class="form-control">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    <label class="d-flex align-items-center gap-1">
+                      <input type="checkbox" formControlName="cattle" />
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CATTLE" | translate }}
+                    </label>
+                    <label class="d-flex align-items-center gap-1">
+                      <input type="checkbox" formControlName="sheep" />
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SHEEP" | translate }}
+                    </label>
+                    <label class="d-flex align-items-center gap-1">
+                      <input type="checkbox" formControlName="dog" />
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.MERS.DOGS" | translate }}
+                    </label>
+                    <label class="d-flex align-items-center gap-1">
+                      <input type="checkbox" formControlName="cats" />
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CATS" | translate }}
+                    </label>
+                    <label class="d-flex align-items-center gap-1">
+                      <input type="checkbox" formControlName="bats" />
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.MERS.BATS" | translate }}
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.OTHER" | translate }}</label>
+                    <input formControlName="mentionName" type="text" class="form-control" />
+                  </div>
+                </div>
+
+                <!-- Camel-specific exposure details -->
+                <div class="col-lg-12"><hr /></div>
+                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_TYPE_LABEL" | translate }}</div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <select formControlName="camelExposureType" class="form-control">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.RAISING" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SLAUGHTER" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.MARKET_VISIT" | translate }}</option>
+                      <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.FARM_VISIT" | translate }}</option>
+                      <option value="5">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.RACING" | translate }}</option>
                     </select>
                   </div>
                 </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6 border-right">
-                  <strong>{{ "NEDSS.COMPLETE_INVESTEGATION.IN_CASE_YES" | translate }}</strong>
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.RIBAVIRIN" | translate }}</label>
-                        <select formControlName="ribavirin" name="" id="" class="form-control">
-                          <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                          <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                          <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                        </select>
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.START_DATE" | translate }}</label>
-                        <input formControlName="ribavirinStartingDate" type="date" name="" id=""
-                          [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.OTHER" | translate }}</label>
-                        <select formControlName="antiviralsOther" name="" id="" class="form-control">
-                          <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                          <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                          <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                        </select>
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.START_DATE" | translate }}</label>
-                        <input formControlName="otherstartingDate" type="date" name="" id=""
-                          [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
+
+                <div class="col-12"><label class="form-label fw-bold">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_PRODUCTS" | translate }}</label></div>
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.UNPASTEURIZED_MILK" | translate }}</label>
+                    <select formControlName="camelUnpasteurizedMilk" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
                   </div>
-                  <!-- / .row -->
                 </div>
-                <!-- /.col-lg-6 -->
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_BLOOD" | translate }}</label>
+                    <select formControlName="camelBlood" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_URINE" | translate }}</label>
+                    <select formControlName="camelUrine" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.UNDERCOOKED_MEAT" | translate }}</label>
+                    <select formControlName="camelUndercookedMeat" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.OTHER_CAMEL_PRODUCTS" | translate }}</label>
+                    <input formControlName="otherCamelProducts" type="text" class="form-control" />
+                  </div>
+                </div>
               </div>
-              <!-- / .row -->
             </div>
-            <!-- / .col-12 -->
           </div>
-          <!-- / .row -->
+
+          <!-- ==================== INVESTIGATION FOOTER ==================== -->
+          <div class="row color">
+            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.INVESTIGATION_DATE" | translate }}</label>
+                    <input formControlName="investigationDate" type="date"
+                      class="form-control datePicker hasDatepicker" placeholder="dd/mm/yyyy" />
+                  </div>
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.HEALTH_INSPECTOR_NAME" | translate }}</label>
+                    <input formControlName="healthInspectorName" type="text" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SURVEILLANCE_OFFICER" | translate }}</label>
+                    <input formControlName="surveillanceOfficer" type="text" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.DIRECTOR_NAME" | translate }}</label>
+                    <input formControlName="directorName" type="text" class="form-control" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
         <div class="card-footer text-start">
           <button type="submit" class="btn bg rounded-2 text-light">
