@@ -1,4 +1,4 @@
-import { AnswerOptions } from './../../../../../core/constants';
+import { AnswerOptions, AnswerOptions2 } from './../../../../../core/constants';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { InvestigationService } from '../../services/investigation.service';
@@ -15,51 +15,38 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./h5n1.component.css'],
 })
 export class H5n1Component implements OnInit {
+  private readonly DATE_FORMAT = 'yyyy-MM-dd';
   private readonly summaryMetaFields = ['id', 'patientID', 'completePercentage', 'diseaseGroupId', 'createdDate'];
   private readonly datePayloadFields = new Set([
     'dateOfDiagnosisOfPneumonia',
     'dateOfReservation',
     'statusHistoryOnDevice',
+    'dateOfTakingOseltamivir',
     'dateOfTraveloutside',
+    'dateOfTraveloutsideTo',
+    'dateOfTraveloutside2',
+    'dateOfTraveloutsideTo2',
     'dateOfTravelInside',
-    'theStartDateOfTheDeath',
+    'dateOfTravelInsideTo',
+    'dateOfTravelInside2',
+    'dateOfTravelInsideTo2',
+    'dateOfTravelInside3',
+    'dateOfTravelInsideTo3',
+    'arrivalDateToEgypt',
     'investigationDate',
-    'treatmentStartDate1',
-    'treatmentStartDate2',
-    'treatmentStartDate3',
-    'treatmentStartDate4',
-    'treatmentStartDate5',
-    'treatmentStartDate6'
   ]);
   private readonly stringPayloadFields = new Set([
     'nameOfCountry',
+    'nameOfCountry2',
     'governorate',
-    'protectiveEquipmentDetails',
-    'stateFollowingCaseName',
-    'relativeRelation',
-    'address',
-    'otherExposure',
-    'anotherWallsCase',
-    'anotherRoofsCase',
-    'environmentalFactorsComments',
-    'whoIsPerson',
-    'placeImmunization',
-    'otherAnimal',
+    'governorate2',
+    'governorate3',
+    'entryPointPlaceName',
     'healthObserverName',
     'surveillanceOfficerName',
     'administrationDirectorName',
-    'typeOfTreatment1',
-    'dose1',
-    'typeOfTreatment2',
-    'dose2',
-    'typeOfTreatment3',
-    'dose3',
-    'typeOfTreatment4',
-    'dose4',
-    'typeOfTreatment5',
-    'dose5',
-    'typeOfTreatment6',
-    'dose6'
+    'nameOfAntiviral',
+    'notes'
   ]);
   private readonly visitFieldBases = [
     'healthCareFacilityName',
@@ -80,7 +67,16 @@ export class H5n1Component implements OnInit {
     'migratoryBird'
   ];
   private readonly exposureCheckboxPatterns = ['ExposureMethod', 'PlaceExposure', 'AnimalCondition'];
-  private readonly explicitExposureCheckboxFields = ['otherEquipMethodSlaughter'];
+  private readonly explicitExposureCheckboxFields = [
+    'protectiveEquipmentPersonal',
+    'protectiveEquipmentDisinfectants',
+    'protectiveEquipmentPlasticBags'
+  ];
+  private readonly protectiveEquipmentCheckboxes = [
+    'protectiveEquipmentPersonal',
+    'protectiveEquipmentDisinfectants',
+    'protectiveEquipmentPlasticBags'
+  ];
 
   currentLang =
     localStorage.getItem('ls.currentLang') !== undefined &&
@@ -89,6 +85,7 @@ export class H5n1Component implements OnInit {
       : 'ar';
   birdFluForm: FormGroup;
   answerOptions = AnswerOptions;
+  answerOptions2 = AnswerOptions2;
   currentId: any;
   controlsCount: number = 0;
   allFilledControlsCount: number = 0;
@@ -134,39 +131,11 @@ export class H5n1Component implements OnInit {
         id: item?.id ?? null,
         nameHealthFacility: item?.nameHealthFacility ?? null,
         healthFacilityBelongs: item?.healthFacilityBelongs ?? null,
-        dateVisit: this.datePipe.transform(item?.dateVisit, 'yyyy-MM-dd') ?? null,
+        dateVisit: this.datePipe.transform(item?.dateVisit, this.DATE_FORMAT) ?? null,
         initialDiagnosis: item?.initialDiagnosis ?? null,
         admissionHospital: item?.admissionHospital ?? null,
-        dateEntry: this.datePipe.transform(item?.dateEntry, 'yyyy-MM-dd') ?? null,
-        exitDate: this.datePipe.transform(item?.exitDate, 'yyyy-MM-dd') ?? null,
-      }));
-    });
-  }
-
-  private syncDataContactsFromApi(data: any): void {
-    const apiContacts = data?.DataContactsAvianInfluenzas ?? data?.dataContactsAvianInfluenzas;
-
-    while (this.employees().length > 0) {
-      this.employees().removeAt(0);
-    }
-
-    if (!Array.isArray(apiContacts) || apiContacts.length === 0) {
-      return;
-    }
-
-    apiContacts.forEach((item: any) => {
-      this.employees().push(this.formBuilder.group({
-        id: item?.id ?? null,
-        birdFluID: item?.birdFluID ?? null,
-        name: item?.name ?? '',
-        type: item?.type ?? '',
-        age: item?.age ?? '',
-        address: item?.address ?? '',
-        phoneNumber: item?.phoneNumber ?? '',
-        mixingType: item?.mixingType ?? '',
-        dateLastContact: this.datePipe.transform(item?.dateLastContact, 'yyyy-MM-dd') ?? '',
-        fluSymptoms: item?.fluSymptoms ?? '',
-        dateSymptoms: this.datePipe.transform(item?.dateSymptoms, 'yyyy-MM-dd') ?? '',
+        dateEntry: this.datePipe.transform(item?.dateEntry, this.DATE_FORMAT) ?? null,
+        exitDate: this.datePipe.transform(item?.exitDate, this.DATE_FORMAT) ?? null,
       }));
     });
   }
@@ -177,12 +146,11 @@ export class H5n1Component implements OnInit {
   }
 
   private getCompletionExcludedFields(): string[] {
-    const exactFields = [
+    return [
       ...this.summaryMetaFields,
-      ...this.getFlatVisitFieldNames()
+      ...this.getFlatVisitFieldNames(),
+      ...this.protectiveEquipmentCheckboxes
     ];
-
-    return exactFields;
   }
 
   private getExposureCheckboxFields(): string[] {
@@ -242,25 +210,6 @@ export class H5n1Component implements OnInit {
     return Number.isNaN(numericValue) ? normalizedValue : numericValue;
   }
 
-  private normalizeContactPayload(contact: any): any {
-    const normalizedPhoneNumber = this.normalizeNullishValue(contact?.phoneNumber);
-
-    return {
-      ...contact,
-      id: this.normalizeNumericValue(contact?.id),
-      birdFluID: this.normalizeNumericValue(contact?.birdFluID),
-      name: this.normalizeNullishValue(contact?.name),
-      type: this.normalizeNumericValue(contact?.type),
-      age: this.normalizeNumericValue(contact?.age),
-      address: this.normalizeNullishValue(contact?.address),
-      phoneNumber: normalizedPhoneNumber == null ? null : String(normalizedPhoneNumber),
-      mixingType: this.normalizeNumericValue(contact?.mixingType),
-      dateLastContact: this.normalizeNullishValue(contact?.dateLastContact),
-      fluSymptoms: this.normalizeNumericValue(contact?.fluSymptoms),
-      dateSymptoms: this.normalizeNullishValue(contact?.dateSymptoms)
-    };
-  }
-
   private normalizePatientVisitPayload(visit: any): any {
     return {
       id: this.normalizeNumericValue(visit?.id),
@@ -286,14 +235,6 @@ export class H5n1Component implements OnInit {
       if (key === 'patientVisitHistory') {
         payload.PatientVisitHistory = Array.isArray(payload[key])
           ? payload[key].map((item: any) => this.normalizePatientVisitPayload(item))
-          : [];
-        delete payload[key];
-        return;
-      }
-
-      if (key === 'dataContactsAvianInfluenza') {
-        payload.DataContactsAvianInfluenzas = Array.isArray(payload[key])
-          ? payload[key].map((item: any) => this.normalizeContactPayload(item))
           : [];
         delete payload[key];
         return;
@@ -347,6 +288,7 @@ export class H5n1Component implements OnInit {
     this.birdFluForm = new FormGroup({
       completePercentage: new FormControl(),
       patientID: new FormControl(this.currentId),
+      conditionClassification: new FormControl(),
       diagnosisOfPneumonia: new FormControl(),
       dateOfDiagnosisOfPneumonia: new FormControl(),
       diagnosisWasMade: new FormControl(),
@@ -354,22 +296,45 @@ export class H5n1Component implements OnInit {
       reservationintheintensiveCareUnit: new FormControl(),
       dateOfReservation: new FormControl(),
       numberOfDaysOfCustody: new FormControl(),
-      oxygenUse: new FormControl(),
       maskType: new FormControl(),
       useOfARespirator: new FormControl(),
-      useOfARespiratorIsTrue: new FormControl(),
       statusHistoryOnDevice: new FormControl(),
       numberOfDaysOfPlacementOnDevice: new FormControl(),
       conditionAssessment: new FormControl(),
       patientVisitHistory: this.formBuilder.array([]),
+      notes: new FormControl(),
+      diagnoseOseltamivir: new FormControl(),
+      dateOfTakingOseltamivir: new FormControl(),
+      repeatedOseltamivir: new FormControl(),
+      diagnoseAntiviral: new FormControl(),
+      nameOfAntiviral: new FormControl(),
       travelingOutsideEgypt: new FormControl(),
       nameOfCountry: new FormControl(),
       dateOfTraveloutside: new FormControl(),
+      dateOfTraveloutsideTo: new FormControl(),
+      nameOfCountry2: new FormControl(),
+      dateOfTraveloutside2: new FormControl(),
+      dateOfTraveloutsideTo2: new FormControl(),
       travelingwithinEgypt: new FormControl(),
       governorate: new FormControl(),
       dateOfTravelInside: new FormControl(),
+      dateOfTravelInsideTo: new FormControl(),
+      governorate2: new FormControl(),
+      dateOfTravelInside2: new FormControl(),
+      dateOfTravelInsideTo2: new FormControl(),
+      governorate3: new FormControl(),
+      dateOfTravelInside3: new FormControl(),
+      dateOfTravelInsideTo3: new FormControl(),
+      countryReportedBirdFlu: new FormControl(),
+      countryReportedBirdFlu2: new FormControl(),
+      entryPointToEgypt: new FormControl(),
+      entryPointPlaceName: new FormControl(),
+      arrivalDateToEgypt: new FormControl(),
       usedProtectiveEquipmentWithBirds: new FormControl(),
-      protectiveEquipmentDetails: new FormControl(),
+      birdWasteExposure: new FormControl(),
+      protectiveEquipmentPersonal: new FormControl('0'),
+      protectiveEquipmentDisinfectants: new FormControl('0'),
+      protectiveEquipmentPlasticBags: new FormControl('0'),
       chicken: new FormControl('0'),
       chickensExposureMethodSlaughter: new FormControl('0'),
       chickensExposureMethodEquip: new FormControl('0'),
@@ -461,94 +426,21 @@ export class H5n1Component implements OnInit {
       migratoryBirdsSickAnimalCondition: new FormControl('0'),
       migratoryBirdsCantAnimalCondition: new FormControl('0'),
 
-      otherAnimal: new FormControl(),
-      otherExposureMethodEquip: new FormControl('0'),
-      otherEquipMethodSlaughter: new FormControl('0'),
-      otherExposureMethodExistence: new FormControl('0'),
-      otherExposureMethodHunt: new FormControl('0'),
-      otherHomePlaceExposure: new FormControl('0'),
-      otherMarketPlaceExposure: new FormControl('0'),
-      otherShopPlaceExposure: new FormControl('0'),
-      otherFarmPlaceExposure: new FormControl('0'),
-      otherGoodAnimalCondition: new FormControl('0'),
-      otherSickAnimalCondition: new FormControl('0'),
-      otherCantAnimalCondition: new FormControl('0'),
-
       // inAnotherCase : new FormControl(null),
+      occupationalExposureWorkplace: new FormControl(),
       workIsInFieldOfHealthServices: new FormControl(),
       exposureToAConfirmedCaseOfH5N1AvianInfluenza: new FormControl(),
+      contactSevereRespiratorySymptoms: new FormControl(),
       patientInContactWithACaseThatDiedOfSevereRespiratoryDisease:
         new FormControl(),
-      stateFollowingCaseName: new FormControl(),
-      relativeRelation: new FormControl(),
-      address: new FormControl(),
       caseAmongAGroupOfOtherSimilarCases: new FormControl(),
-      groupLocated: new FormControl(),
-      otherExposure: new FormControl(),
-      descriptionProperty: new FormControl(),
-      walls: new FormControl(),
-      anotherWallsCase: new FormControl(),
-      roof: new FormControl(),
-      anotherRoofsCase: new FormControl(),
-      birdskeptAtHome: new FormControl(),
-      placeWhereBirdsAreRaisedInHouse: new FormControl(),
-      specificationsPlaceEducation: new FormControl(),
-      environmentalFactorsComments: new FormControl(),
-      chickensCountHistory: new FormControl(),
-      chickensStatusHistory: new FormControl(),
-      duckCountHistory: new FormControl(),
-      duckStatusHistory: new FormControl(),
-      geesesCountHistory: new FormControl(),
-      geeseStatusHistory: new FormControl(),
-      rummyCountHistory: new FormControl(),
-      rummytatusHistory: new FormControl(),
-      bathroomCountHistory: new FormControl(),
-      bathroomStatusHistory: new FormControl(),
-      quailCountHistory: new FormControl(),
-      quailStatusHistory: new FormControl(),
-      otherCountHistory: new FormControl(),
-      otherStatusHistory: new FormControl(),
-      thereABirdMortality: new FormControl(),
-      deadBirdsCount: new FormControl(),
-      theStartDateOfTheDeath: new FormControl(),
-      samplesVet: new FormControl(),
-      disposalDeadBirds: new FormControl(),
-      otherDeadBirds: new FormControl(),
-      thereASpecificPersonWhoTakesCareBirds: new FormControl(),
-      whoIsPerson: new FormControl(),
-      birdsVaccinated: new FormControl(),
-      placeImmunization: new FormControl(),
-      thereSlaughteredBirdsInHomeRefrigerator: new FormControl(),
-      numberHomesVisite: new FormControl(),
-      numberHousesWithBirds: new FormControl(),
-      ratioBirds: new FormControl(),
-      numberHousesWithDeadBirds: new FormControl(),
-      ratioDeadBirds: new FormControl(),
+      contactHumanGatherings: new FormControl(),
       investigationDate: new FormControl(),
       healthObserverName: new FormControl(),
       surveillanceOfficerName: new FormControl(),
       administrationDirectorName: new FormControl(),
       id: new FormControl(),
       diseaseGroupId: new FormControl(this.diseaseGroupID),
-      dataContactsAvianInfluenza: this.formBuilder.array([]),
-      typeOfTreatment1: new FormControl(),
-      treatmentStartDate1: new FormControl(),
-      dose1: new FormControl(),
-      typeOfTreatment2: new FormControl(),
-      treatmentStartDate2: new FormControl(),
-      dose2: new FormControl(),
-      typeOfTreatment3: new FormControl(),
-      treatmentStartDate3: new FormControl(),
-      dose3: new FormControl(),
-      typeOfTreatment4: new FormControl(),
-      treatmentStartDate4: new FormControl(),
-      dose4: new FormControl(),
-      typeOfTreatment5: new FormControl(),
-      treatmentStartDate5: new FormControl(),
-      dose5: new FormControl(),
-      typeOfTreatment6: new FormControl(),
-      treatmentStartDate6: new FormControl(),
-      dose6: new FormControl(),
       fieldOfWorkBirdsAnimals: new FormControl(),
     });
     this.setupExposureCheckboxNormalization();
@@ -582,100 +474,116 @@ export class H5n1Component implements OnInit {
 
         this.birdFluForm.patchValue(v);
         this.normalizeExposureCheckboxValues();
-        this.syncDataContactsFromApi(v);
 
         this.birdFluForm.controls['dateOfDiagnosisOfPneumonia'].setValue(
           this.datePipe.transform(
             this.birdFluForm.value.dateOfDiagnosisOfPneumonia,
-            'yyyy-MM-dd'
+            this.DATE_FORMAT
           )
         );
         this.birdFluForm.controls['dateOfReservation'].setValue(
           this.datePipe.transform(
             this.birdFluForm.value.dateOfReservation,
-            'yyyy-MM-dd'
+            this.DATE_FORMAT
+          )
+        );
+        this.birdFluForm.controls['dateOfTakingOseltamivir'].setValue(
+          this.datePipe.transform(
+            this.birdFluForm.value.dateOfTakingOseltamivir,
+            this.DATE_FORMAT
           )
         );
         this.birdFluForm.controls['dateOfTraveloutside'].setValue(
           this.datePipe.transform(
             this.birdFluForm.value.dateOfTraveloutside,
-            'yyyy-MM-dd'
+            this.DATE_FORMAT
+          )
+        );
+        this.birdFluForm.controls['dateOfTraveloutsideTo'].setValue(
+          this.datePipe.transform(
+            this.birdFluForm.value.dateOfTraveloutsideTo,
+            this.DATE_FORMAT
+          )
+        );
+        this.birdFluForm.controls['dateOfTraveloutside2'].setValue(
+          this.datePipe.transform(
+            this.birdFluForm.value.dateOfTraveloutside2,
+            this.DATE_FORMAT
+          )
+        );
+        this.birdFluForm.controls['dateOfTraveloutsideTo2'].setValue(
+          this.datePipe.transform(
+            this.birdFluForm.value.dateOfTraveloutsideTo2,
+            this.DATE_FORMAT
           )
         );
         this.birdFluForm.controls['dateOfTravelInside'].setValue(
           this.datePipe.transform(
             this.birdFluForm.value.dateOfTravelInside,
-            'yyyy-MM-dd'
+            this.DATE_FORMAT
           )
         );
-        this.birdFluForm.controls['theStartDateOfTheDeath'].setValue(
+        this.birdFluForm.controls['dateOfTravelInsideTo'].setValue(
           this.datePipe.transform(
-            this.birdFluForm.value.theStartDateOfTheDeath,
-            'yyyy-MM-dd'
+            this.birdFluForm.value.dateOfTravelInsideTo,
+            this.DATE_FORMAT
+          )
+        );
+        this.birdFluForm.controls['dateOfTravelInside2'].setValue(
+          this.datePipe.transform(
+            this.birdFluForm.value.dateOfTravelInside2,
+            this.DATE_FORMAT
+          )
+        );
+        this.birdFluForm.controls['dateOfTravelInsideTo2'].setValue(
+          this.datePipe.transform(
+            this.birdFluForm.value.dateOfTravelInsideTo2,
+            this.DATE_FORMAT
+          )
+        );
+        this.birdFluForm.controls['dateOfTravelInside3'].setValue(
+          this.datePipe.transform(
+            this.birdFluForm.value.dateOfTravelInside3,
+            this.DATE_FORMAT
+          )
+        );
+        this.birdFluForm.controls['dateOfTravelInsideTo3'].setValue(
+          this.datePipe.transform(
+            this.birdFluForm.value.dateOfTravelInsideTo3,
+            this.DATE_FORMAT
+          )
+        );
+        this.birdFluForm.controls['arrivalDateToEgypt'].setValue(
+          this.datePipe.transform(
+            this.birdFluForm.value.arrivalDateToEgypt,
+            this.DATE_FORMAT
           )
         );
         //this.birdFluForm.controls['dateOfVisit'].setValue(
         //  this.datePipe.transform(
         //    this.birdFluForm.value.dateOfVisit,
-        //    'yyyy-MM-dd'
+        //    this.DATE_FORMAT
         //  )
         //);
         //this.birdFluForm.controls['dateOfEntry'].setValue(
         //  this.datePipe.transform(
         //    this.birdFluForm.value.dateOfEntry,
-        //    'yyyy-MM-dd'
+        //    this.DATE_FORMAT
         //  )
         //);
         //this.birdFluForm.controls['exitDate'].setValue(
-        //  this.datePipe.transform(this.birdFluForm.value.exitDate, 'yyyy-MM-dd')
+        //  this.datePipe.transform(this.birdFluForm.value.exitDate, this.DATE_FORMAT)
         //);
-        this.birdFluForm.controls['treatmentStartDate1'].setValue(
-          this.datePipe.transform(
-            this.birdFluForm.value.treatmentStartDate1,
-            'yyyy-MM-dd'
-          )
-        );
-        this.birdFluForm.controls['treatmentStartDate2'].setValue(
-          this.datePipe.transform(
-            this.birdFluForm.value.treatmentStartDate2,
-            'yyyy-MM-dd'
-          )
-        );
-        this.birdFluForm.controls['treatmentStartDate3'].setValue(
-          this.datePipe.transform(
-            this.birdFluForm.value.treatmentStartDate3,
-            'yyyy-MM-dd'
-          )
-        );
-        this.birdFluForm.controls['treatmentStartDate4'].setValue(
-          this.datePipe.transform(
-            this.birdFluForm.value.treatmentStartDate4,
-            'yyyy-MM-dd'
-          )
-        );
-        this.birdFluForm.controls['treatmentStartDate5'].setValue(
-          this.datePipe.transform(
-            this.birdFluForm.value.treatmentStartDate5,
-            'yyyy-MM-dd'
-          )
-        );
-        this.birdFluForm.controls['treatmentStartDate6'].setValue(
-          this.datePipe.transform(
-            this.birdFluForm.value.treatmentStartDate6,
-            'yyyy-MM-dd'
-          )
-        );
-
         this.birdFluForm.controls['investigationDate'].setValue(
           this.datePipe.transform(
             this.birdFluForm.value.investigationDate,
-            'yyyy-MM-dd'
+            this.DATE_FORMAT
           )
         );
         this.birdFluForm.controls['statusHistoryOnDevice'].setValue(
           this.datePipe.transform(
             this.birdFluForm.value.statusHistoryOnDevice,
-            'yyyy-MM-dd'
+            this.DATE_FORMAT
           )
         );
         this.syncPatientVisitHistoryFromApi(v);
@@ -708,52 +616,22 @@ export class H5n1Component implements OnInit {
     const stats = calculateCompletionStats(this.birdFluForm.value, {
       excludedFields,
       formArrays: [
-        { value: this.patientVisitHistory, excludedFields: ['id'] },
-        { value: this.employees(), excludedFields: ['id', 'birdFluID'] }
+        { value: this.patientVisitHistory, excludedFields: ['id'] }
       ]
     });
 
-    this.allControllesCount = stats.totalFields;
-    this.allFilledControlsCount = stats.filledFields;
-    this.controlsCount = parseFloat(stats.percentage.toFixed(2));
+    const anyProtectiveChecked = this.protectiveEquipmentCheckboxes
+      .some(f => this.birdFluForm.get(f)?.value === true);
+    const totalFields = stats.totalFields + 1;
+    const filledFields = stats.filledFields + (anyProtectiveChecked ? 1 : 0);
+    const percentage = totalFields > 0 ? (filledFields / totalFields) * 100 : 0;
+
+    this.allControllesCount = totalFields;
+    this.allFilledControlsCount = filledFields;
+    this.controlsCount = parseFloat(percentage.toFixed(2));
     this.birdFluForm.get('completePercentage')?.setValue(this.controlsCount, { emitEvent: false });
     return this.controlsCount;
   }
-  /**
-   * Count all fields
-   * @param control
-   * @returns
-   */
-  employees(): FormArray {
-    return this.birdFluForm.get('dataContactsAvianInfluenza') as FormArray;
-  }
-
-  newEmployee(): FormGroup {
-    return this.formBuilder.group({
-      id: null,
-      birdFluID: null,
-      name: '',
-      type: '',
-      age: '',
-      address: '',
-      phoneNumber: '',
-      mixingType: '',
-      dateLastContact: '',
-      fluSymptoms: '',
-      dateSymptoms: '',
-    });
-  }
-
-  addEmployee() {
-    console.log('Adding an employee');
-
-    this.employees().push(this.newEmployee());
-  }
-
-  removeEmployee(empIndex: number) {
-    this.employees().removeAt(empIndex);
-  }
-
   save() {
     if (this.isSaving) {
       return;
@@ -826,7 +704,7 @@ export class H5n1Component implements OnInit {
             this.translateService
               .get('NEDSS.COMMON.SENT_SUCESSFULLY')
               .subscribe((res: string) => {
-              this.userMsg.success(res);
+                this.userMsg.success(res);
               });
           },
           (err) => {
