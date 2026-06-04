@@ -100,20 +100,32 @@ export class AppComponent {
   }
 
   onloadHandler() {
+    const navEntry = performance.getEntriesByType(
+      'navigation'
+    )[0] as PerformanceNavigationTiming | undefined;
     const pageAccessedByReload =
+      navEntry?.type === 'reload' ||
       (window.performance.navigation &&
-        window.performance.navigation.type === 1) ||
-      window.performance
-        .getEntriesByType('navigation')
-        .map((nav) => nav.entryType)
-        .includes('reload');
+        window.performance.navigation.type === 1);
+
     if (pageAccessedByReload) {
       localStorage.removeItem('unloadTime');
       return;
     }
-    let t0 = Number(localStorage['unloadTime']);
-    if (isNaN(t0)) return;
+
+    const unloadTime = Number(localStorage['unloadTime']);
+    if (isNaN(unloadTime)) {
+      return;
+    }
+
     localStorage.removeItem('unloadTime');
+    if (
+      navEntry?.type === 'navigate' &&
+      Date.now() - unloadTime < 5000
+    ) {
+      return;
+    }
+
     localStorage.removeItem('ls.authorizationData');
     this.router.navigateByUrl('');
   }

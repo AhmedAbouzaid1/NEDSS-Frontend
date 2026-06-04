@@ -81,7 +81,9 @@ export class PatientModel {
   chronicDiseasesIds?: any = [];
   constructor() {
     this.feverSymptoms = new FeverSymptoms();
-    // this.finalDiagonistics = new FinalDiagonistics[];
+    this.clinicalSymptomIds = [];
+    this.patientDiseases = [];
+    this.chronicDiseasesIds = [];
   }
 }
 

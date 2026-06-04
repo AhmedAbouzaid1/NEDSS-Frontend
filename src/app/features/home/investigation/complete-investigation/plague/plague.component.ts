@@ -30,16 +30,6 @@ export class PlagueComponent implements OnInit {
   currentId: any;
   ngOnInit() {
     this.plagueForm = new FormGroup({
-      fever: new FormControl(),
-      feverDays: new FormControl(),
-      maxTemperature: new FormControl(),
-      lossOfBalance: new FormControl(),
-      soresOnTheSkin: new FormControl(),
-      coughingUpBlood: new FormControl(),
-      palpitation: new FormControl(),
-      hemorrhagicUnderTheSkin: new FormControl(),
-      symptomsFleaBite: new FormControl(),
-      sweating: new FormControl(),
       contactWithSuspectedCase: new FormControl(),
       partEpidemicOutbreakOrSimilarSituation: new FormControl(),
       contactWithConfirmedCase: new FormControl(),
@@ -128,11 +118,19 @@ export class PlagueComponent implements OnInit {
       followD14SampleResult: new FormControl(),
 
       patientLiveWithRat: new FormControl(),
+      infectedRabbits: new FormControl(),
+      deadRatsInLargeNumbers: new FormControl(),
+      infectedOrDeadDogs: new FormControl(),
+      fleasPresence: new FormControl(),
       patientOutsideCountry: new FormControl(),
       stateTheCountry: new FormControl(),
       reasonForTravel: new FormControl(),
       goDate: new FormControl(),
       returnDate: new FormControl(),
+      investigationDate: new FormControl(),
+      surveillanceOfficer: new FormControl(),
+      healthMonitorName: new FormControl(),
+      administrationDirector: new FormControl(),
       patientID: new FormControl(),
       id: new FormControl(),
       investigationCompletePercentage: new FormControl(),
@@ -145,7 +143,6 @@ export class PlagueComponent implements OnInit {
         console.log(res);
         var v = res.data;
         this.plagueForm.patchValue(v)
-        this.plagueForm.patchValue({ fever: this.plagueForm.value.fever + "", tc: true });
         this.plagueForm.patchValue({ contactWithSuspectedCase: this.plagueForm.value.contactWithSuspectedCase + "", tc: true });
         this.plagueForm.patchValue({ partEpidemicOutbreakOrSimilarSituation: this.plagueForm.value.partEpidemicOutbreakOrSimilarSituation + "", tc: true });
         this.plagueForm.patchValue({ contactWithConfirmedCase: this.plagueForm.value.contactWithConfirmedCase + "", tc: true });
@@ -177,6 +174,7 @@ export class PlagueComponent implements OnInit {
         this.plagueForm.controls['goDate'].setValue(this.datePipe.transform(this.plagueForm.value.goDate, 'yyyy-MM-dd'));
         //returnDate
         this.plagueForm.controls['returnDate'].setValue(this.datePipe.transform(this.plagueForm.value.returnDate, 'yyyy-MM-dd'));
+        this.plagueForm.controls['investigationDate'].setValue(this.datePipe.transform(this.plagueForm.value.investigationDate, 'yyyy-MM-dd'));
 
 
         this.calculateCompletionPercentage();

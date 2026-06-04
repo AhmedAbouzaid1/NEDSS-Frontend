@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SingleDropdownSettings } from 'src/app/core/constants';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
@@ -7,8 +7,10 @@ import { PatientModel } from '../models/patient-model';
 import { SharedDataService } from '../services/shared-data.service';
 import { DiseaseSpecialSymptomsService } from '../../dashboard/components/disease-special-symptoms/services/disease-special-symptoms.service';
 import { GeneralDataService } from '../services/general-data.service';
-import { map } from 'rxjs';
+import { map, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { DepartmentEnum } from '../models/department-enum';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-diagonistics',
@@ -21,15 +23,16 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
 
   patient: PatientModel = new PatientModel();
   private diseasesInitializedFromPatient = false;
+  private lastSyncedPatientId: number | null = null;
 
   levelId: any;
   currentLang: string = 'ar';
-  governments!: any[];
+  governments: any[] = [];
   selectedTransferGovernment: any;
-  selectedTransferGovernmentId: number;
+  selectedTransferGovernmentId: number = -1;
 
   selectedTransferHealthAdmin: any;
-  selectedTransferHealthAdminId: number;
+  selectedTransferHealthAdminId: number = -1;
 
   diseases: any[] = [];
   selectedDiseases: any;
@@ -38,9 +41,9 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   selectedFinalResult: any;
   selectedFinalResultId: number;
 
-  incidentSources!: any[];
+  incidentSources: any[] = [];
   selectedTransferIncidentSource: any;
-  selectedTransferIncidentSourceId: number;
+  selectedTransferIncidentSourceId: number = -1;
 
   selectedResultCategory: any;
   selectedFinalDigonistics: any;
@@ -56,15 +59,20 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
 
   specialGovernment!: any[];
   selectedSpecialGovernment!: any[];
-  selectedSpecialGovernmentId: number;
+  selectedSpecialGovernmentId: number = -1;
   specialHealthAdmin!: any[];
   selectedSpecialHealthAdmin!: any[];
-  selectedSpecialHealthAdminId: number;
+  selectedSpecialHealthAdminId: number = -1;
   specialLabs!: any[];
   selectedSpecialLab: any;
-  selectedSpecialLabId: number;
+  selectedSpecialLabId: number = -1;
 
   loadingPanel: boolean = false;
+  /** Inline loading for special-lab cascade (new patient has no id — full-screen loader is not tied to these calls). */
+  loadingSpecialGovernments = false;
+  loadingSpecialHealthAdmins = false;
+  loadingSpecialLabs = false;
+  private specialGovListFetchRetries = 0;
 
   singleDropdownSettings = {};
   diagnosticsMultipleDropdownSettings = {
@@ -97,35 +105,57 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   };
   DepartmentEnum = DepartmentEnum;
   HealthAdmins:any[] = [];
+  private govListFetchRetries = 0;
+  private governorateUserScopeFallbackDone = false;
+  private destroy$ = new Subject<void>();
   constructor(
     private sharedDataService: SharedDataService,
     private lookupsService: LookupsGetterService,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
     private diseaseSpecialSymptomsService: DiseaseSpecialSymptomsService,
-    public generalDataService: GeneralDataService
+    public generalDataService: GeneralDataService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   ngOnInit() {
     this.loadingPanel = true;
+    const savedLang = localStorage.getItem('ls.currentLang');
     this.currentLang =
-      localStorage.getItem('ls.currentLang') !== undefined &&
-        localStorage.getItem('ls.currentLang') !== 'undefined'
-        ? localStorage.getItem('ls.currentLang')
+      savedLang && savedLang !== 'undefined'
+        ? savedLang
         : 'ar';
 
     this.levelId = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     )?.user?.levelId;
 
-    this.sharedDataService.getPatientObject().subscribe((patientObject) => {
+    this.sharedDataService.getPatientObject().pipe(takeUntil(this.destroy$)).subscribe((patientObject) => {
+      const pid =
+        patientObject?.id != null &&
+        String(patientObject.id).trim() !== '' &&
+        !Number.isNaN(Number(patientObject.id))
+          ? Number(patientObject.id)
+          : null;
+      if (pid !== this.lastSyncedPatientId) {
+        this.lastSyncedPatientId = pid;
+        this.diseasesInitializedFromPatient = false;
+        this.specialLabHydratedForPatientId = null;
+      }
+
       this.patient = patientObject;
+      this.generalDataService.normalizePatientApiPayload(this.patient);
       this.selectedFinalResultId = this.patient.finalResultId;
       if (this.selectedFinalResultId == 1) {
         this.isPatientTransfered = true;
       }
+      this.tryHydrateTransferLocationFromPatient();
+      this.tryHydrateSpecialLabFromPatient();
 
       if (
         !this.diseasesInitializedFromPatient &&
@@ -142,7 +172,6 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     this.getLookups();
     this.singleDropdownSettings = SingleDropdownSettings;
     this.loadingPanel = false;
-    this.populateTransferLocation();
  
   }
 
@@ -152,18 +181,239 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     this.getFinalResults();
   }
 
-  populateTransferLocation(){
-    if(this.patient.transferGovernmentId){
-      this.selectedTransferGovernmentId = this.patient.transferGovernmentId;
-      this.selectedTransferIncidentSourceId = this.patient.transferIncidentSourceId;
-      this.selectedTransferHealthAdminId = this.patient.transferHealthAdministrationId;
+  private toPositiveId(value: unknown): number | null {
+    if (value == null || value === '') return null;
+    const n = Number(value);
+    return Number.isFinite(n) && n > 0 ? n : null;
+  }
 
-      this.getHealthAdminUpdate();
-      // this.onGovernmentChanged();
-      // this.selectedTransferHealthAdminId = this.patient.transferHealthAdministrationId;
-      this.onHealthAdminChange();
-      // await this.getIncidentSourcesAsync();
+  private extractList(result: any): any[] {
+    if (Array.isArray(result?.data)) return result.data;
+    if (Array.isArray(result?.Data)) return result.Data;
+    if (Array.isArray(result)) return result;
+    return [];
+  }
+
+  /** Governorate API rows (handles camelCase / PascalCase and paged shapes). */
+  private extractGovernanceRows(result: any): any[] {
+    if (!result) return [];
+    if (result.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+      return [];
     }
+    const tryArray = (d: any): any[] | null => {
+      if (Array.isArray(d)) return d;
+      if (d && typeof d === 'object') {
+        if (Array.isArray((d as any).items)) return (d as any).items;
+        if (Array.isArray((d as any).data)) return (d as any).data;
+        if (Array.isArray((d as any).Data)) return (d as any).Data;
+        if (Array.isArray((d as any).records)) return (d as any).records;
+      }
+      return null;
+    };
+    for (const d of [result.data, result.Data, result.result, result.items]) {
+      const arr = tryArray(d);
+      if (arr) return arr;
+    }
+    if (Array.isArray(result)) return result;
+    return [];
+  }
+
+  private normalizeGovernmentRow(row: any): { id: number; arabicName: string; englishName: string } | null {
+    const id =
+      row?.id ??
+      row?.Id ??
+      row?.governmentId ??
+      row?.GovernmentId ??
+      row?.governmentID ??
+      row?.GovernmentID;
+    const n = Number(id);
+    if (!Number.isFinite(n) || n <= 0) return null;
+    return {
+      id: n,
+      arabicName: (row?.arabicName ?? row?.ArabicName ?? '').toString(),
+      englishName: (row?.englishName ?? row?.EnglishName ?? '').toString(),
+    };
+  }
+
+  private realGovernorateOptionCount(): number {
+    return (this.governments ?? []).filter((g) => this.toPositiveId(g?.id) != null).length;
+  }
+
+  /** When "transferred" result is chosen, ensure governorate + district lists load and defaults apply. */
+  private refreshTransferLookupsAfterFinalResult(): void {
+    queueMicrotask(() => {
+      if (this.realGovernorateOptionCount() <= 1) {
+        this.getGovernments();
+        return;
+      }
+      this.applyDefaultTransferGovernmentSelection();
+      this.cdr.detectChanges();
+    });
+  }
+
+  private applyDefaultTransferGovernmentSelection(): void {
+    const savedGov = this.transferGovIdFromPatient();
+    if (savedGov) {
+      this.selectedTransferGovernmentId = savedGov;
+      this.patient.transferGovernmentId = savedGov;
+      // Do not use onGovernmentChanged() here: it clears transferHealthAdministrationId
+      // before reloading, which breaks restoring existing transfer district + source.
+      this.getHealthAdmin(this.transferHealthAdminIdFromPatient() != null);
+      return;
+    }
+    if (this.levelId != 1) {
+      const userGov = this.toPositiveId(
+        JSON.parse(localStorage.getItem('ls.authorizationData') ?? '{}')?.user?.govenmentId,
+      );
+      if (userGov) {
+        this.selectedTransferGovernmentId = userGov;
+        this.onGovernmentChanged();
+      }
+      return;
+    }
+    const incidentGov = this.toPositiveId(this.patient?.incidentGovernmentId);
+    if (incidentGov) {
+      this.selectedTransferGovernmentId = incidentGov;
+      this.onGovernmentChanged();
+    } else {
+      this.selectedTransferGovernmentId = -1;
+      this.HealthAdmins = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
+      this.incidentSources = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
+    }
+  }
+
+  /** Read transfer governorate id from patient (camelCase or PascalCase API). */
+  private transferGovIdFromPatient(): number | null {
+    const p = this.patient as any;
+    return this.toPositiveId(
+      p?.transferGovernmentId ?? p?.TransferGovernmentId,
+    );
+  }
+
+  private transferHealthAdminIdFromPatient(): number | null {
+    const p = this.patient as any;
+    return this.toPositiveId(
+      p?.transferHealthAdministrationId ?? p?.TransferHealthAdministrationId,
+    );
+  }
+
+  private transferIncidentSourceIdFromPatient(): number | null {
+    const p = this.patient as any;
+    return this.toPositiveId(
+      p?.transferIncidentSourceId ?? p?.TransferIncidentSourceId,
+    );
+  }
+
+  /**
+   * After patient load or when governorate list is ready: restore transfer governorate,
+   * district (health admin), and incident source from saved patient fields.
+   */
+  private tryHydrateTransferLocationFromPatient(): void {
+    if (!this.patient) return;
+    this.generalDataService.normalizePatientApiPayload(this.patient);
+
+    const fr = Number(
+      this.patient.finalResultId ?? (this.patient as any).FinalResultId,
+    );
+    if (fr === 1) {
+      this.isPatientTransfered = true;
+      this.selectedFinalResultId = 1;
+    }
+
+    if (!this.isPatientTransfered) {
+      return;
+    }
+
+    const govId = this.transferGovIdFromPatient();
+    const healthId = this.transferHealthAdminIdFromPatient();
+    const srcId = this.transferIncidentSourceIdFromPatient();
+
+    if (govId) {
+      this.patient.transferGovernmentId = govId;
+    }
+    if (healthId) {
+      this.patient.transferHealthAdministrationId = healthId;
+    }
+    if (srcId) {
+      this.patient.transferIncidentSourceId = srcId;
+    }
+
+    if (!govId) {
+      return;
+    }
+
+    if (!this.governments?.length || this.governments.length <= 1) {
+      return;
+    }
+
+    this.selectedTransferGovernmentId = govId;
+    this.getHealthAdmin(healthId != null);
+  }
+
+  private specialLabHydratedForPatientId: number | null = null;
+  private resolvedSpecialLabGovId: number | null = null;
+  private resolvedSpecialLabHaId: number | null = null;
+
+  private tryHydrateSpecialLabFromPatient(): void {
+    if (!this.patient?.isSpecialLabLab) {
+      this.isSpecialLabSelected = false;
+      return;
+    }
+
+    this.isSpecialLabSelected = true;
+    const pid = this.toPositiveId(this.patient.id);
+
+    const sourceId = this.toPositiveId(this.patient.specialLabSourceId);
+
+    // New registration: patient id is not assigned yet — still load governorate / district / lab lookups.
+    if (!pid) {
+      if (!(this.specialGovernment?.length > 1)) {
+        this.getSpecialGovernments(false);
+      }
+      return;
+    }
+
+    if (!sourceId) {
+      if (!(this.specialGovernment?.length > 1)) {
+        this.getSpecialGovernments(false);
+      }
+      return;
+    }
+
+    if (this.specialLabHydratedForPatientId === pid) return;
+    this.specialLabHydratedForPatientId = pid;
+
+    this.lookupsService.getIncidentSourceHospitalById(sourceId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result: any) => {
+        const source = result?.data ?? result?.Data ?? result;
+        if (!source || typeof source !== 'object') return;
+
+        const govId = this.toPositiveId(
+          source.governmentID ??
+            source.GovernmentID ??
+            source.governmentId ??
+            source.GovernmentId,
+        );
+        const haId = this.toPositiveId(
+          source.healthAdministrationID ??
+            source.HealthAdministrationID ??
+            source.healthAdministrationId ??
+            source.HealthAdministrationId,
+        );
+
+        if (!govId) return;
+
+        this.resolvedSpecialLabGovId = govId;
+        this.resolvedSpecialLabHaId = haId;
+
+        if (this.specialGovernment?.length > 1) {
+          this.selectedSpecialGovernmentId = govId;
+          this.getSpecialHealthAdmins(true);
+        } else {
+          this.getSpecialGovernments(true);
+        }
+      });
   }
 
   onItemSelect(item: any) { }
@@ -218,27 +468,40 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   onGovernmentChanged() {
     if (this.selectedTransferGovernmentId != -1) {
       this.patient.transferGovernmentId = this.selectedTransferGovernmentId;
+      this.HealthAdmins = [];
+      this.selectedTransferHealthAdminId = -1;
+      this.patient.transferHealthAdministrationId = null;
       this.incidentSources = [];
       this.selectedTransferIncidentSourceId = -1;
       this.patient.transferIncidentSourceId = null;
-      this.getHealthAdmin();
+      this.getHealthAdmin(false);
     } else {
       this.patient.transferGovernmentId = null;
       this.HealthAdmins = [];
+      this.selectedTransferHealthAdminId = -1;
+      this.patient.transferHealthAdministrationId = null;
       this.incidentSources = [];
       this.selectedTransferIncidentSourceId = -1;
       this.patient.transferIncidentSourceId = null;
     }
   }
 
-  onHealthAdminChange(){
+  onHealthAdminChange(preserveIncidentSelection = false) {
     if (this.selectedTransferHealthAdminId != -1) {
       this.patient.transferHealthAdministrationId = this.selectedTransferHealthAdminId;
-      this.getIncidentSources(this.patient.transferHealthAdministrationId);
+      if (!preserveIncidentSelection) {
+        this.selectedTransferIncidentSourceId = -1;
+        this.patient.transferIncidentSourceId = null;
+      }
+      this.getIncidentSources(
+        this.patient.transferHealthAdministrationId,
+        preserveIncidentSelection
+      );
     } else {
       this.patient.transferHealthAdministrationId = null;
       this.incidentSources = [];
       this.selectedTransferIncidentSourceId = -1;
+      this.patient.transferIncidentSourceId = null;
     }
   }
 
@@ -254,6 +517,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       this.patient.finalResultId = this.selectedFinalResultId;
       if (this.selectedFinalResultId == 1) {
         this.isPatientTransfered = true;
+        this.refreshTransferLookupsAfterFinalResult();
       } else {
         this.isPatientTransfered = false;
         this.HealthAdmins=[];
@@ -261,9 +525,9 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
         this.patient.transferGovernmentId = null;
         this.patient.transferHealthAdministrationId = null;
         this.patient.transferIncidentSourceId = null;
-        this.selectedTransferGovernmentId = null;
-        this.selectedTransferHealthAdminId = null;
-        this.selectedTransferIncidentSourceId = null;
+        this.selectedTransferGovernmentId = -1;
+        this.selectedTransferHealthAdminId = -1;
+        this.selectedTransferIncidentSourceId = -1;
       }
     } else {
       this.isPatientTransfered = false;
@@ -272,9 +536,9 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
         this.patient.transferGovernmentId = null;
         this.patient.transferHealthAdministrationId = null;
         this.patient.transferIncidentSourceId = null;
-        this.selectedTransferGovernmentId = null;
-        this.selectedTransferHealthAdminId = null;
-        this.selectedTransferIncidentSourceId = null;
+        this.selectedTransferGovernmentId = -1;
+        this.selectedTransferHealthAdminId = -1;
+        this.selectedTransferIncidentSourceId = -1;
     }
   }
 
@@ -301,31 +565,91 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     if (!this.patient.isSpecialLabLab) {
       this.isSpecialLabSelected = false;
       this.patient.specialLabSourceId = null;
+      this.resolvedSpecialLabGovId = null;
+      this.resolvedSpecialLabHaId = null;
+      this.selectedSpecialGovernmentId = -1;
+      this.selectedSpecialHealthAdminId = -1;
+      this.selectedSpecialLabId = -1;
+      this.loadingSpecialGovernments = false;
+      this.loadingSpecialHealthAdmins = false;
+      this.loadingSpecialLabs = false;
     } else {
       this.isSpecialLabSelected = true;
-      this.getSpecialGovernments();
+      this.specialLabHydratedForPatientId = null;
+      this.tryHydrateSpecialLabFromPatient();
     }
   }
 
   getGovernments() {
-    this.lookupsService.getAllGovernments().subscribe(
+    this.governorateUserScopeFallbackDone = false;
+    this.fetchGovernorateOptionsForTransfer('primary');
+  }
+
+  /**
+   * Loads transfer governorate list using a URL distinct from `Government/GetAll`
+   * (used by incident-info on the same page) so pending-request de-dupe does not
+   * swallow this subscription. Falls back to user-scoped list if the full list is empty.
+   */
+  private fetchGovernorateOptionsForTransfer(phase: 'primary' | 'userScoped'): void {
+    const request$ =
+      phase === 'primary'
+        ? this.lookupsService.getAllGovernmentsExplicit(false, 'diag-transfer')
+        : this.lookupsService.getAllGovernmentsForUser(true);
+
+    request$.subscribe(
       (result: any) => {
+        if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+          if (this.govListFetchRetries < 3) {
+            this.govListFetchRetries++;
+            setTimeout(() => this.fetchGovernorateOptionsForTransfer(phase), 250);
+          }
+          this.loadingPanel = false;
+          return;
+        }
+        this.govListFetchRetries = 0;
+
         if (result != null && result != undefined) {
+          const raw = this.extractGovernanceRows(result);
+          const normalized = raw
+            .map((r) => this.normalizeGovernmentRow(r))
+            .filter((r): r is { id: number; arabicName: string; englishName: string } => r != null);
+
+          if (
+            normalized.length === 0 &&
+            phase === 'primary' &&
+            !this.governorateUserScopeFallbackDone
+          ) {
+            this.governorateUserScopeFallbackDone = true;
+            this.fetchGovernorateOptionsForTransfer('userScoped');
+            return;
+          }
+
           this.governments = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
+            ...normalized,
           ];
-          result.data.forEach((gov) => {
-            this.governments.push(gov);
-          });
 
-          if (this.levelId != 1) {
-            this.selectedTransferGovernmentId = JSON.parse(
-              localStorage.getItem('ls.authorizationData')
-            ).user.govenmentId;
-            this.onGovernmentChanged();
+          if (this.transferGovIdFromPatient()) {
+            this.tryHydrateTransferLocationFromPatient();
+          } else {
+            const openingExistingPatient =
+              this.sharedDataService.isEditMode &&
+              (this.toPositiveId((this.patient as any)?.id) != null ||
+                this.toPositiveId(this.sharedDataService.patientId) != null);
+            if (openingExistingPatient) {
+              this.tryHydrateTransferLocationFromPatient();
+            } else if (this.levelId != 1) {
+              this.selectedTransferGovernmentId = JSON.parse(
+                localStorage.getItem('ls.authorizationData')
+              ).user.govenmentId;
+              this.onGovernmentChanged();
+            } else if (this.isPatientTransfered) {
+              this.applyDefaultTransferGovernmentSelection();
+            }
           }
         }
         this.loadingPanel = false;
+        this.cdr.detectChanges();
       },
       (error) => {
         this.loadingPanel = false;
@@ -357,6 +681,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
               .map((a) => a.diseaseGroupId)
               .includes(item.id)
           );
+          this.diseasesInitializedFromPatient = true;
           this.onDiseasesChanged();
         }
         this.loadingPanel = false;
@@ -381,13 +706,11 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
           result.data.forEach((gov) => {
             this.finalResuls.push(gov);
           });
-          setTimeout(() => {
-            if (this.patient.finalResultId > 0) {
-              this.selectedFinalResultId = this.patient.finalResultId;
-            } else {
-              this.selectedFinalResultId = -1;
-            }
-          }, 500);
+          if (this.patient.finalResultId > 0) {
+            this.selectedFinalResultId = this.patient.finalResultId;
+          } else {
+            this.selectedFinalResultId = -1;
+          }
         }
         this.loadingPanel = false;
       },
@@ -401,23 +724,50 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       }
     );
   }
-  getHealthAdmin() {
+  getHealthAdmin(restoreSelection = false) {
+    const govId = this.toPositiveId(
+      this.selectedTransferGovernmentId ?? this.patient.transferGovernmentId
+    );
+    if (!govId) {
+      this.HealthAdmins = [];
+      return;
+    }
     this.lookupsService
       .getPageHealthAdministrations({
-        governmentID: this.patient.transferGovernmentId,
-        forSystemUser:false,
+        governmentID: govId,
+        forSystemUser: false,
       })
       .subscribe(
         (result: any) => {
+          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+            this.loadingPanel = false;
+            return;
+          }
           if (result != null && result != undefined) {
             this.HealthAdmins = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
             ];
-            result.data.forEach((healthAdmin) => {
-              this.HealthAdmins.push(healthAdmin);
+            this.extractList(result).forEach((h) => {
+              const id = h?.id ?? h?.Id;
+              const pid = this.toPositiveId(id);
+              if (!pid) return;
+              this.HealthAdmins.push({
+                id: pid,
+                arabicName: (h?.arabicName ?? h?.ArabicName ?? '').toString(),
+                englishName: (h?.englishName ?? h?.EnglishName ?? '').toString(),
+              });
             });
+            if (restoreSelection) {
+              const savedHealthAdminId = this.transferHealthAdminIdFromPatient();
+              if (savedHealthAdminId) {
+                this.selectedTransferHealthAdminId = savedHealthAdminId;
+                this.patient.transferHealthAdministrationId = savedHealthAdminId;
+                this.onHealthAdminChange(true);
+              }
+            }
           }
           this.loadingPanel = false;
+          this.cdr.detectChanges();
         },
         (error) => {
           this.loadingPanel = false;
@@ -429,18 +779,20 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
           })
   }
   
-  getIncidentSources(governmentID: any) {
+  getIncidentSources(healthAdministrationID: any, preserveSelection = false) {
     (!this.isPatientTransfered ?
       this.lookupsService
-        .getPageIncidentSourceHospitals({ governmentID: governmentID }) :
+        .getPageIncidentSourceHospitals({
+          healthAdministrationID: healthAdministrationID,
+        }) :
       this.lookupsService
-        .GetTransferedIncidentSources(governmentID).pipe(map((res: any) => {
+        .GetTransferedIncidentSources(healthAdministrationID).pipe(map((res: any) => {
           if (res?.data?.length) {
             res.data = res.data.map(x => {
               return {
-                id: x.id,
-                arabicName: x.name,
-                englishName: x.name
+                id: x.id ?? x.Id,
+                arabicName: x.name ?? x.Name ?? x.arabicName ?? '',
+                englishName: x.name ?? x.Name ?? x.englishName ?? '',
               }
             })
           }
@@ -449,15 +801,32 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     )
       .subscribe(
         (result: any) => {
+          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+            this.loadingPanel = false;
+            return;
+          }
           if (result != null && result != undefined) {
             this.incidentSources = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
             ];
-            result.data.forEach((gov) => {
-              this.incidentSources.push(gov);
+            this.extractList(result).forEach((row) => {
+              const id = row?.id ?? row?.Id;
+              const pid = this.toPositiveId(id);
+              if (!pid) return;
+              this.incidentSources.push({
+                id: pid,
+                arabicName: (row?.arabicName ?? row?.ArabicName ?? '').toString(),
+                englishName: (row?.englishName ?? row?.EnglishName ?? '').toString(),
+              });
             });
 
-            if (this.levelId != 1 && this.levelId != 2 && this.levelId != 3) {
+            if (preserveSelection) {
+              const savedIncidentSourceId = this.transferIncidentSourceIdFromPatient();
+              if (savedIncidentSourceId) {
+                this.selectedTransferIncidentSourceId = savedIncidentSourceId;
+                this.patient.transferIncidentSourceId = savedIncidentSourceId;
+              }
+            } else if (this.levelId != 1 && this.levelId != 2 && this.levelId != 3) {
               this.selectedTransferIncidentSourceId = JSON.parse(
                 localStorage.getItem('ls.authorizationData')
               ).user.incidentSourceId;
@@ -465,6 +834,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
             }
           }
           this.loadingPanel = false;
+          this.cdr.detectChanges();
         },
         (error) => {
           this.loadingPanel = false;
@@ -505,20 +875,52 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       );
   }
 
-  getSpecialGovernments() {
-    this.lookupsService.getAllGovernments().subscribe(
+  getSpecialGovernments(restoreSelection = false) {
+    this.loadingSpecialGovernments = true;
+    this.specialGovListFetchRetries = 0;
+    this.fetchSpecialGovernorateList(restoreSelection);
+  }
+
+  private fetchSpecialGovernorateList(restoreSelection: boolean): void {
+    this.lookupsService.getAllGovernmentsExplicit(false, 'diag-special').subscribe(
       (result: any) => {
+        if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+          if (this.specialGovListFetchRetries < 3) {
+            this.specialGovListFetchRetries++;
+            setTimeout(() => this.fetchSpecialGovernorateList(restoreSelection), 250);
+            return;
+          }
+          this.specialGovListFetchRetries = 0;
+          this.loadingSpecialGovernments = false;
+          this.loadingPanel = false;
+          this.cdr.detectChanges();
+          return;
+        }
+        this.specialGovListFetchRetries = 0;
+
         if (result != null && result != undefined) {
+          const raw = this.extractGovernanceRows(result);
+          const normalized = raw
+            .map((r) => this.normalizeGovernmentRow(r))
+            .filter((r): r is { id: number; arabicName: string; englishName: string } => r != null);
           this.specialGovernment = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
+            ...normalized,
           ];
-          result.data.forEach((gov) => {
-            this.specialGovernment.push(gov);
-          });
+          if (restoreSelection) {
+            const savedGov = this.resolvedSpecialLabGovId;
+            if (savedGov) {
+              this.selectedSpecialGovernmentId = savedGov;
+              this.getSpecialHealthAdmins(true);
+            }
+          }
         }
+        this.loadingSpecialGovernments = false;
         this.loadingPanel = false;
+        this.cdr.detectChanges();
       },
       (error) => {
+        this.loadingSpecialGovernments = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -529,31 +931,59 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     );
   }
 
-  getSpecialHealthAdmins() {
-    this.specialHealthAdmin = [];
-    this.specialLabs = [];
-    this.selectedSpecialLab = null;
-    this.selectedSpecialLabId = -1;
-    this.selectedSpecialHealthAdmin = null;
-    this.selectedSpecialHealthAdminId = -1;
-    if (this.selectedSpecialGovernmentId != -1) {
+  getSpecialHealthAdmins(restoreSelection = false) {
+    if (!restoreSelection) {
+      this.specialHealthAdmin = [];
+      this.specialLabs = [];
+      this.selectedSpecialLab = null;
+      this.selectedSpecialLabId = -1;
+      this.selectedSpecialHealthAdmin = null;
+      this.selectedSpecialHealthAdminId = -1;
+      this.patient.specialLabSourceId = null;
+    }
+    const specialGovId = this.toPositiveId(this.selectedSpecialGovernmentId);
+    if (specialGovId != null) {
+      this.loadingSpecialHealthAdmins = true;
       this.lookupsService
         .getPageHealthAdministrations({
-          governmentID: this.selectedSpecialGovernmentId,
+          governmentID: specialGovId,
         })
         .subscribe(
           (result: any) => {
+            if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+              this.loadingSpecialHealthAdmins = false;
+              this.loadingPanel = false;
+              this.cdr.detectChanges();
+              return;
+            }
             if (result != null && result != undefined) {
               this.specialHealthAdmin = [
                 { id: -1, arabicName: 'إختر', englishName: 'Select' },
               ];
-              result.data.forEach((gov) => {
-                this.specialHealthAdmin.push(gov);
+              this.extractList(result).forEach((h) => {
+                const id = h?.id ?? h?.Id;
+                const hid = this.toPositiveId(id);
+                if (!hid) return;
+                this.specialHealthAdmin.push({
+                  id: hid,
+                  arabicName: (h?.arabicName ?? h?.ArabicName ?? '').toString(),
+                  englishName: (h?.englishName ?? h?.EnglishName ?? '').toString(),
+                });
               });
+              if (restoreSelection) {
+                const savedHA = this.resolvedSpecialLabHaId;
+                if (savedHA) {
+                  this.selectedSpecialHealthAdminId = savedHA;
+                }
+                this.getSpecialLabs(true);
+              }
             }
+            this.loadingSpecialHealthAdmins = false;
             this.loadingPanel = false;
+            this.cdr.detectChanges();
           },
           (error) => {
+            this.loadingSpecialHealthAdmins = false;
             this.loadingPanel = false;
             this.translateService
               .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -562,32 +992,70 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
               });
           }
         );
+    } else {
+      this.loadingSpecialHealthAdmins = false;
     }
   }
 
-  getSpecialLabs() {
-    this.specialLabs = [];
-    this.selectedSpecialLab = null;
-    this.selectedSpecialLabId = -1;
+  getSpecialLabs(restoreSelection = false) {
+    if (!restoreSelection) {
+      this.specialLabs = [];
+      this.selectedSpecialLab = null;
+      this.selectedSpecialLabId = -1;
+      this.patient.specialLabSourceId = null;
+    }
+    const labGov = this.toPositiveId(this.selectedSpecialGovernmentId);
+    if (labGov == null) {
+      this.loadingSpecialLabs = false;
+      this.loadingPanel = false;
+      return;
+    }
+    const labHa = this.toPositiveId(this.selectedSpecialHealthAdminId);
+    const filter: Record<string, unknown> = {
+      reportingOrResidence: 1,
+      governmentID: labGov,
+    };
+    if (labHa != null) {
+      filter.healthAdministrationID = labHa;
+    }
+    this.loadingSpecialLabs = true;
     this.lookupsService
-      .getPageIncidentSourceHospitals({
-        reportingOrResidence: 1,
-        governmentID: this.selectedSpecialGovernmentId,
-        healthAdministrationID: this.selectedSpecialHealthAdminId,
-      })
+      .getPageIncidentSourceHospitals(filter)
       .subscribe(
         (result: any) => {
+          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+            this.loadingSpecialLabs = false;
+            this.loadingPanel = false;
+            this.cdr.detectChanges();
+            return;
+          }
           if (result != null && result != undefined) {
             this.specialLabs = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
             ];
-            result.data.forEach((gov) => {
-              this.specialLabs.push(gov);
+            this.extractList(result).forEach((row) => {
+              const id = row?.id ?? row?.Id;
+              const lid = this.toPositiveId(id);
+              if (!lid) return;
+              this.specialLabs.push({
+                id: lid,
+                arabicName: (row?.arabicName ?? row?.ArabicName ?? row?.name ?? row?.Name ?? '').toString(),
+                englishName: (row?.englishName ?? row?.EnglishName ?? row?.name ?? row?.Name ?? '').toString(),
+              });
             });
+            if (restoreSelection) {
+              const savedLab = this.toPositiveId(this.patient.specialLabSourceId);
+              if (savedLab) {
+                this.selectedSpecialLabId = savedLab;
+              }
+            }
           }
+          this.loadingSpecialLabs = false;
           this.loadingPanel = false;
+          this.cdr.detectChanges();
         },
         (error) => {
+          this.loadingSpecialLabs = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -615,31 +1083,4 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       );
   }
 
-  getHealthAdminUpdate(){
-    this.lookupsService
-      .getPageHealthAdministrations({
-        governmentID: this.patient.transferGovernmentId,
-        forSystemUser:false,
-      })
-      .subscribe(
-        (result: any) => {
-          if (result != null && result != undefined) {
-            this.HealthAdmins = [
-              { id: -1, arabicName: 'إختر', englishName: 'Select' },
-            ];
-            result.data.forEach((healthAdmin) => {
-              this.HealthAdmins.push(healthAdmin);
-            });
-          }
-          this.loadingPanel = false;
-        },
-        (error) => {
-          this.loadingPanel = false;
-          this.translateService
-            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        })
-  }
 }
