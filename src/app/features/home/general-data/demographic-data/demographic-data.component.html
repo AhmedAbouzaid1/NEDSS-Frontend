@@ -85,11 +85,12 @@
         <div class="form-group">
           <label for="" class="form-label">
             {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO1" | translate }}
+            <span *ngIf="isPhoneRequired" class="text-danger">*</span>
           </label>
           <input type="text" name="phoneNo1" [(ngModel)]="patient.phoneNo1" #phoneNo1="ngModel" pInputText class="w-100"
             (keypress)="generalDataService.onPhoneNumberKeyPress($event)" (blur)="
               generalDataService.isPhoneNumber1Valid =
-                generalDataService.validatePhoneNumber1(patient.phoneNo1, false)
+                generalDataService.validatePhoneNumber1(patient.phoneNo1, isPhoneRequired)
             " />
         </div>
         <small *ngIf="!generalDataService.isPhoneNumber1Valid" class="form-text text-danger mess-color">

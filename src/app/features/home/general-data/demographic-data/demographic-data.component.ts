@@ -24,6 +24,7 @@ import { SharedDataService } from '../services/shared-data.service';
 import { GeneralDataService } from '../services/general-data.service';
 import { RelativeEnum } from '../models/relative-enum';
 import { NationalityEnum } from '../models/nationality-enum';
+import { DepartmentEnum } from '../models/department-enum';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -83,6 +84,15 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
 
   public get nationalityEnum(): typeof NationalityEnum {
     return NationalityEnum
+  }
+
+  public get departmentEnum(): typeof DepartmentEnum {
+    return DepartmentEnum;
+  }
+
+  get isPhoneRequired(): boolean {
+    return this.patient?.incidentDepartmentId == DepartmentEnum.Internal
+      || this.patient?.incidentDepartmentId == DepartmentEnum.ICU;
   }
 
 

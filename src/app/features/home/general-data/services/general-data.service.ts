@@ -659,9 +659,10 @@ export class GeneralDataService {
       patient.familyName,
       false
     );
+    const phoneRequired = patient.incidentDepartmentId == DepartmentEnum.Internal || patient.incidentDepartmentId == DepartmentEnum.ICU;
     this.isPhoneNumber1Valid = this.validatePhoneNumber1(
       patient.phoneNo1,
-      false
+      phoneRequired
     );
     this.livingAddressValid = this.validatePhoneNumber1(
       patient.livingAddress,
