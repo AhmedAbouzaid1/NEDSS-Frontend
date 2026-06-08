@@ -25,6 +25,12 @@ export class AriComponent implements OnInit {
   allFilledControlsCount = 0;
   allControllesCount = 0;
 
+  private checkboxFields = [
+    'worksWithPoultry', 'worksInLab', 'worksInHealthcare', 'worksAsVet',
+    'directContactBirds', 'directContactPigs', 'directContactBats',
+    'directContactCamels', 'directContactNone', 'directContactOther'
+  ];
+
   constructor(
     private investigationService: InvestigationService,
     private translateService: TranslateService,
@@ -32,19 +38,68 @@ export class AriComponent implements OnInit {
     private datePipe: DatePipe
   ) {}
 
-  get labSamples(): FormArray {
-    return this.ariForm.get('labSamples') as FormArray;
+  get healthFacilityTimeline(): FormArray {
+    return this.ariForm.get('healthFacilityTimeline') as FormArray;
   }
 
-  createLabSampleGroup(data?: any): FormGroup {
+  get domesticTravelEntries(): FormArray {
+    return this.ariForm.get('domesticTravelEntries') as FormArray;
+  }
+
+  get internationalTravelEntries(): FormArray {
+    return this.ariForm.get('internationalTravelEntries') as FormArray;
+  }
+
+  createHealthFacilityRow(data?: any): FormGroup {
     return new FormGroup({
-      id: new FormControl(data?.id || null),
-      sampleType: new FormControl(data?.sampleType || null),
-      sampleNumber: new FormControl(data?.sampleNumber || null),
-      sampleCollectionDate: new FormControl(data?.sampleCollectionDate || null),
-      sampleTestDate: new FormControl(data?.sampleTestDate || null),
-      labResult: new FormControl(data?.labResult || null),
+      facilityName: new FormControl(data?.facilityName || null),
+      administration: new FormControl(data?.administration || null),
+      visitDate: new FormControl(data?.visitDate || null),
+      initialDiagnosis: new FormControl(data?.initialDiagnosis || null),
+      hospitalAdmission: new FormControl(data?.hospitalAdmission || null),
+      entryDate: new FormControl(data?.entryDate || null),
+      exitDate: new FormControl(data?.exitDate || null),
     });
+  }
+
+  createDomesticTravelRow(data?: any): FormGroup {
+    return new FormGroup({
+      dateFrom: new FormControl(data?.dateFrom || null),
+      dateTo: new FormControl(data?.dateTo || null),
+      place: new FormControl(data?.place || null),
+    });
+  }
+
+  createInternationalTravelRow(data?: any): FormGroup {
+    return new FormGroup({
+      dateFrom: new FormControl(data?.dateFrom || null),
+      dateTo: new FormControl(data?.dateTo || null),
+      country: new FormControl(data?.country || null),
+    });
+  }
+
+  addHealthFacilityRow(): void {
+    this.healthFacilityTimeline.push(this.createHealthFacilityRow());
+  }
+
+  removeHealthFacilityRow(index: number): void {
+    this.healthFacilityTimeline.removeAt(index);
+  }
+
+  addDomesticTravelRow(): void {
+    this.domesticTravelEntries.push(this.createDomesticTravelRow());
+  }
+
+  removeDomesticTravelRow(index: number): void {
+    this.domesticTravelEntries.removeAt(index);
+  }
+
+  addInternationalTravelRow(): void {
+    this.internationalTravelEntries.push(this.createInternationalTravelRow());
+  }
+
+  removeInternationalTravelRow(index: number): void {
+    this.internationalTravelEntries.removeAt(index);
   }
 
   ngOnInit(): void {
@@ -64,47 +119,87 @@ export class AriComponent implements OnInit {
       diseaseGroupId: new FormControl(this.diseaseGroupID),
       investigationCompletePercentage: new FormControl(),
 
-      seasonalInfluenza: new FormControl(false),
-      avianInfluenza: new FormControl(false),
-      mersCov: new FormControl(false),
-      ncov: new FormControl(false),
-
+      // Clinical Data
+      virusType: new FormControl(),
+      virusTypeOther: new FormControl(),
+      caseAssessment: new FormControl(),
+      pneumoniaDiagnosis: new FormControl(),
+      pneumoniaDiagnosisMethod: new FormControl(),
+      pneumoniaDiagnosisDate: new FormControl(),
+      pneumoniaType: new FormControl(),
+      hospitalizationDate: new FormControl(),
       icuAdmission: new FormControl(),
-      mechanicalVentilatorUse: new FormControl(),
+      needsRespiratoryDevice: new FormControl(),
       icuAdmissionDate: new FormControl(),
-      icuDischargeDate: new FormControl(),
+      icuDaysCount: new FormControl(),
+      respiratoryDeviceType: new FormControl(),
+      respiratoryDeviceDate: new FormControl(),
 
-      travelOutsideEgypt: new FormControl(),
-      travelCountryName: new FormControl(),
-      travelReason: new FormControl(),
-      travelReturnDate: new FormControl(),
+      // Health Facility Timeline (FormArray, serialized to JSON)
+      healthFacilityTimeline: new FormArray([]),
+      healthFacilityNotes: new FormControl(),
 
-      directContactPositiveCase: new FormControl(),
-      positiveCaseDiagnosis: new FormControl(),
-      positiveCaseName: new FormControl(),
+      // Vaccination Data
+      seasonalFluVaccineTaken: new FormControl(),
+      seasonalFluVaccineDate: new FormControl(),
+      pneumococcalVaccineTaken: new FormControl(),
+      pneumococcalVaccineDate: new FormControl(),
 
+      // Treatment
+      oseltamivirGiven: new FormControl(),
+      oseltamivirFirstDoseDate: new FormControl(),
+      oseltamivirRepeatedOver5Days: new FormControl(),
+      otherAntiviralGiven: new FormControl(),
+      otherAntiviralName: new FormControl(),
+
+      // Exposure - Occupational
+      occupationalContact: new FormControl(),
+      worksWithPoultry: new FormControl(false),
+      worksInLab: new FormControl(false),
+      worksInHealthcare: new FormControl(false),
+      worksAsVet: new FormControl(false),
+      occupationalOther: new FormControl(),
+      healthcareDirectCare: new FormControl(),
+
+      // Exposure - Animal Contact
       directContactBirds: new FormControl(false),
       directContactPigs: new FormControl(false),
       directContactBats: new FormControl(false),
       directContactCamels: new FormControl(false),
+      directContactNone: new FormControl(false),
       directContactOther: new FormControl(false),
       directContactOtherText: new FormControl(),
-
       visitedAnimalMarkets: new FormControl(),
-      visitedHealthcareFacility: new FormControl(),
-      healthcareVisitReason: new FormControl(),
-      caseOutcome: new FormControl(),
 
-      covid19VaccineTaken: new FormControl(),
-      covid19DoseCount: new FormControl(),
-      covid19LastDoseDate: new FormControl(),
-      seasonalFluVaccineTaken: new FormControl(),
-      seasonalFluVaccineDate: new FormControl(),
+      // Exposure - Human Contact
+      contactSevereRespiratoryCase: new FormControl(),
+      partOfOutbreak: new FormControl(),
+      contactDeceasedRespiratoryCase: new FormControl(),
+      contactCrowds: new FormControl(),
 
-      labSamples: new FormArray([]),
+      // Travel
+      domesticTravel: new FormControl(),
+      domesticTravelEntries: new FormArray([]),
+      internationalTravel: new FormControl(),
+      internationalTravelEntries: new FormArray([]),
+      arrivalPointType: new FormControl(),
+      arrivalPointName: new FormControl(),
+      arrivalDate: new FormControl(),
+
+      // Footer
+      investigationDate: new FormControl(),
+      healthInspectorName: new FormControl(),
+      surveillanceOfficer: new FormControl(),
+      directorName: new FormControl(),
+
     });
 
-    this.labSamples.push(this.createLabSampleGroup());
+    // Initialize 1 health facility row
+    this.healthFacilityTimeline.push(this.createHealthFacilityRow());
+
+    this.domesticTravelEntries.push(this.createDomesticTravelRow());
+    this.internationalTravelEntries.push(this.createInternationalTravelRow());
+
     this.ariForm.valueChanges.subscribe(() => this.calculateCompletionPercentage());
 
     this.investigationService.getByIdari(this.currentId).subscribe(
@@ -115,30 +210,65 @@ export class AriComponent implements OnInit {
           return;
         }
 
-        this.ariForm.patchValue({
-          ...v,
-          travelCountryName: v.travelCountryName ?? v.countryName ?? null,
-          icuAdmissionDate: this.datePipe.transform(v.icuAdmissionDate, 'yyyy-MM-dd'),
-          icuDischargeDate: this.datePipe.transform(v.icuDischargeDate, 'yyyy-MM-dd'),
-          travelReturnDate: this.datePipe.transform(v.travelReturnDate, 'yyyy-MM-dd'),
-          covid19LastDoseDate: this.datePipe.transform(v.covid19LastDoseDate, 'yyyy-MM-dd'),
-          seasonalFluVaccineDate: this.datePipe.transform(v.seasonalFluVaccineDate, 'yyyy-MM-dd'),
+        // Convert checkbox int→bool for patching
+        const patchData: any = { ...v };
+        this.checkboxFields.forEach(field => {
+          if (patchData[field] !== undefined && patchData[field] !== null) {
+            patchData[field] = !!patchData[field];
+          }
         });
 
-        const samples = v.labSamples || v.LabSamples || v.investigationLabSamples || v.InvestigationLabSamples || [];
-        if (Array.isArray(samples) && samples.length > 0) {
-          while (this.labSamples.length > 0) {
-            this.labSamples.removeAt(0);
+        // Format dates
+        const dateFields = [
+          'pneumoniaDiagnosisDate', 'hospitalizationDate', 'icuAdmissionDate',
+          'respiratoryDeviceDate', 'seasonalFluVaccineDate', 'pneumococcalVaccineDate',
+          'oseltamivirFirstDoseDate', 'arrivalDate', 'investigationDate'
+        ];
+        dateFields.forEach(field => {
+          if (patchData[field]) {
+            patchData[field] = this.datePipe.transform(patchData[field], 'yyyy-MM-dd');
           }
-          samples.forEach((item: any) =>
-            this.labSamples.push(
-              this.createLabSampleGroup({
-                ...item,
-                sampleCollectionDate: this.datePipe.transform(item?.sampleCollectionDate, 'yyyy-MM-dd'),
-                sampleTestDate: this.datePipe.transform(item?.sampleTestDate, 'yyyy-MM-dd'),
-              })
-            )
-          );
+        });
+
+        this.ariForm.patchValue(patchData);
+
+        // Deserialize health facility timeline
+        if (v.healthFacilityTimelineJson) {
+          try {
+            const items = JSON.parse(v.healthFacilityTimelineJson);
+            if (Array.isArray(items) && items.length > 0) {
+              while (this.healthFacilityTimeline.length > 0) {
+                this.healthFacilityTimeline.removeAt(0);
+              }
+              items.forEach((item: any) => this.healthFacilityTimeline.push(this.createHealthFacilityRow(item)));
+            }
+          } catch (e) {}
+        }
+
+        // Deserialize domestic travel
+        if (v.domesticTravelJson) {
+          try {
+            const items = JSON.parse(v.domesticTravelJson);
+            if (Array.isArray(items) && items.length > 0) {
+              while (this.domesticTravelEntries.length > 0) {
+                this.domesticTravelEntries.removeAt(0);
+              }
+              items.forEach((item: any) => this.domesticTravelEntries.push(this.createDomesticTravelRow(item)));
+            }
+          } catch (e) {}
+        }
+
+        // Deserialize international travel
+        if (v.internationalTravelJson) {
+          try {
+            const items = JSON.parse(v.internationalTravelJson);
+            if (Array.isArray(items) && items.length > 0) {
+              while (this.internationalTravelEntries.length > 0) {
+                this.internationalTravelEntries.removeAt(0);
+              }
+              items.forEach((item: any) => this.internationalTravelEntries.push(this.createInternationalTravelRow(item)));
+            }
+          } catch (e) {}
         }
 
         this.calculateCompletionPercentage();
@@ -158,7 +288,17 @@ export class AriComponent implements OnInit {
         : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2))
     );
 
-    const payload = { ...this.ariForm.value };
+    const payload: any = { ...this.ariForm.value };
+
+    // Serialize FormArrays to JSON
+    payload.healthFacilityTimelineJson = JSON.stringify(this.healthFacilityTimeline.value);
+    payload.domesticTravelJson = JSON.stringify(this.domesticTravelEntries.value);
+    payload.internationalTravelJson = JSON.stringify(this.internationalTravelEntries.value);
+
+    // Remove FormArray fields that don't exist on backend
+    delete payload.healthFacilityTimeline;
+    delete payload.domesticTravelEntries;
+    delete payload.internationalTravelEntries;
 
     if (payload.id != null) {
       this.investigationService.updateSevereari(payload).subscribe(
@@ -175,12 +315,12 @@ export class AriComponent implements OnInit {
     }
 
     this.investigationService.addInvestigationari(payload).subscribe(
-          (response: any) => {
+      (response: any) => {
         if (response?.data?.id != null) {
           this.ariForm.controls['id'].setValue(response.data.id);
         }
-              this.translateService
-                .get('NEDSS.COMMON.SENT_SUCESSFULLY')
+        this.translateService
+          .get('NEDSS.COMMON.SENT_SUCESSFULLY')
           .subscribe((resMsg: string) => this.userMsg.success(resMsg));
       },
       () => {
@@ -191,8 +331,11 @@ export class AriComponent implements OnInit {
 
   calculateCompletionPercentage(): void {
     const data = this.ariForm?.value ?? {};
-    const excludedFields = ['id', 'patientID', 'diseaseGroupId', 'investigationCompletePercentage', 'createdDate'];
-    const baseFields = Object.keys(data).filter((key) => !excludedFields.includes(key) && key !== 'labSamples');
+    const excludedFields = [
+      'id', 'patientID', 'diseaseGroupId', 'investigationCompletePercentage', 'createdDate',
+      'healthFacilityTimeline', 'domesticTravelEntries', 'internationalTravelEntries'
+    ];
+    const baseFields = Object.keys(data).filter((key) => !excludedFields.includes(key));
 
     let totalFields = baseFields.length;
     let filledFields = baseFields.reduce((acc, key) => {
@@ -203,11 +346,14 @@ export class AriComponent implements OnInit {
       return acc;
     }, 0);
 
-    const samplesStats = this.countFormArrayCompletion(this.labSamples);
-    totalFields += samplesStats.totalFields;
-    filledFields += samplesStats.filledFields;
-      
-      this.allControllesCount = totalFields;
+    const arrays = [this.healthFacilityTimeline, this.domesticTravelEntries, this.internationalTravelEntries];
+    arrays.forEach(arr => {
+      const stats = this.countFormArrayCompletion(arr);
+      totalFields += stats.totalFields;
+      filledFields += stats.filledFields;
+    });
+
+    this.allControllesCount = totalFields;
     this.allFilledControlsCount = filledFields;
   }
 
@@ -226,8 +372,7 @@ export class AriComponent implements OnInit {
       const rowKeys = Object.keys(rowValue).filter((key) => key !== 'id');
       totalFields += rowKeys.length;
       rowKeys.forEach((key) => {
-        const value = rowValue[key];
-        if (this.isFieldFilled(value)) {
+        if (this.isFieldFilled(rowValue[key])) {
           filledFields += 1;
         }
       });
@@ -240,11 +385,9 @@ export class AriComponent implements OnInit {
     if (value === null || value === undefined || value === '' || value === 'null') {
       return false;
     }
-
     if (typeof value === 'boolean') {
       return value;
     }
-
     return true;
   }
 }
