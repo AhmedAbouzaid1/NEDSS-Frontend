@@ -4,12 +4,53 @@
       <div class="card shadow mt-4 color mb-4">
         <div class="card-body">
           <h5 style="text-align: center; border: 1px solid; padding: 1%">
-            {{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.TITLE" | translate }}
+            {{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS.TITLE" | translate }}
           </h5>
           <br />
+
+          <!-- Patient Name -->
           <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>
+                  {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME" | translate }}: {{ patientName }}
+                </label>
+              </div>
+            </div>
           </div>
 
+          <!-- Progress Bar -->
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label>
+                  {{ "NEDSS.INVESTIGATIONS.percentage" | translate }}
+                  <span class="mx-4" style="font-size: larger; color: red">
+                    {{ allControllesCount === 0 ? "0.00" : ((allFilledControlsCount / allControllesCount) * 100 | number: "1.0-2") }} %
+                  </span>
+                </label>
+                <input
+                  type="range"
+                  class="form-range bg"
+                  [readonly]="true"
+                  style="border-radius: 11.7px; border: 5.5px solid white"
+                  min="0"
+                  max="100"
+                  step="1"
+                  [value]="allControllesCount === 0 ? 0 : (allFilledControlsCount / allControllesCount) * 100"
+                  formControlName="investigationCompletePercentage"
+                />
+              </div>
+            </div>
+            <div class="col-lg-4">
+              {{ "NEDSS.INVESTIGATIONS.Filled" | translate }}
+              {{ allFilledControlsCount }}
+              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
+              {{ "NEDSS.INVESTIGATIONS.From" | translate }}
+              {{ allControllesCount }}
+              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
+            </div>
+          </div>
 
           <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
@@ -340,19 +381,19 @@
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_POLYNESQUE" | translate }}</label>
-                        <input formControlName="numberPolynesque" type="text" name="" id="" class="form-control">
+                        <input formControlName="numberPolynesque" type="number" name="" id="" class="form-control">
                       </div>
                     </div><!-- /.col-lg-6 -->
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_BIOMFLARIA" | translate }}</label>
-                        <input formControlName="numberBiomflaria" type="text" name="" id="" class="form-control">
+                        <input formControlName="numberBiomflaria" type="number" name="" id="" class="form-control">
                       </div>
                     </div><!-- /.col-lg-6 -->
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_YEMENI" | translate }}</label>
-                        <input formControlName="numberYemeni" type="text" name="" id="" class="form-control">
+                        <input formControlName="numberYemeni" type="number" name="" id="" class="form-control">
                       </div>
                     </div><!-- /.col-lg-6 -->
                   </div><!-- / .row -->
@@ -380,7 +421,7 @@
                 <div class="col-lg-4">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PESTICIDE_CONCENTRATION" | translate }}</label>
-                    <input formControlName="pesticideConcentration" type="text" name="" id="" class="form-control">
+                    <input formControlName="pesticideConcentration" type="number" step="any" name="" id="" class="form-control">
                   </div>
                 </div><!-- /.col-lg-3 -->
               </div><!-- / .row -->

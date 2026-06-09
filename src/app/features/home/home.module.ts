@@ -62,7 +62,8 @@ import { WhoopingCoughComponent } from './investigation/complete-investigation/w
 import { DiphtheriaComponent } from './investigation/complete-investigation/diphtheria/diphtheria.component';
 import { HemorrhagicFeversComponent } from './investigation/complete-investigation/hemorrhagic-fevers/hemorrhagic-fevers.component';
 import { MalariaComponent } from './investigation/complete-investigation/malaria/malaria.component';
-import { SchistosomiasisFasciolaComponent } from './investigation/complete-investigation/schistosomiasis-fasciola/schistosomiasis-fasciola.component';
+import { SchistosomiasisComponent } from './investigation/complete-investigation/schistosomiasis/schistosomiasis.component';
+import { FasciolaComponent } from './investigation/complete-investigation/fasciola/fasciola.component';
 import { BrucellaComponent } from './investigation/complete-investigation/brucella/brucella.component';
 import { H5n1Component } from './investigation/complete-investigation/h5n1/h5n1.component';
 import { MeningealComponent } from './investigation/complete-investigation/meningeal/meningeal.component';
@@ -219,7 +220,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     FinalResultToIncedentComponent,
     AgeCategoriesReportComponent,
     WithJobTitleReportComponent,
-    SchistosomiasisFasciolaComponent,
+    SchistosomiasisComponent,
+    FasciolaComponent,
     HemorrhagicFeversComponent,
     HomeComponent,
     NavbarComponent,
