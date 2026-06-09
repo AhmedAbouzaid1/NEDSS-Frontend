@@ -92,6 +92,7 @@ export class FalseChickenpoxComponent implements OnInit {
             const row = this.createContactRow();
             row.patchValue({
               ...contact,
+              hasSymptoms: contact?.hasSymptoms == null ? null : contact.hasSymptoms + '',
               symptomsDate: this.datePipe.transform(contact?.symptomsDate, 'yyyy-MM-dd'),
             });
             this.contacts.push(row);
@@ -107,10 +108,16 @@ export class FalseChickenpoxComponent implements OnInit {
         this.falseChickenpoxForm.controls['dateEscelatedToHigherAuthority'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateEscelatedToHigherAuthority, 'yyyy-MM-dd'));
         this.falseChickenpoxForm.controls['onsetRash'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.onsetRash, 'yyyy-MM-dd'));
         this.falseChickenpoxForm.controls['investigationDate'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.investigationDate, 'yyyy-MM-dd'));
-        this.falseChickenpoxForm.patchValue({ epidemicOutbreak: this.falseChickenpoxForm.value.epidemicOutbreak + "", tc: true });
-        this.falseChickenpoxForm.patchValue({ contactConfirmedCase: this.falseChickenpoxForm.value.contactConfirmedCase + "", tc: true });
-        this.falseChickenpoxForm.patchValue({ contactsContacted: this.falseChickenpoxForm.value.contactsContacted + "", tc: true });
-        this.falseChickenpoxForm.patchValue({ hasContactStudentOrEducationalStaff: this.falseChickenpoxForm.value.hasContactStudentOrEducationalStaff + "", tc: true });
+        [
+          'caseDiagnosis',
+          'epidemicOutbreak',
+          'contactConfirmedCase',
+          'contactsContacted',
+          'hasContactStudentOrEducationalStaff',
+          'presenceRash',
+          'hasOtherSymptoms',
+          'hasOtherComplications',
+        ].forEach((controlName) => this.setSelectValue(controlName));
 
         this.calculateCompletionPercentage();
       }
@@ -172,6 +179,11 @@ export class FalseChickenpoxComponent implements OnInit {
     }
   }
 
+  private setSelectValue(controlName: string): void {
+    const value = this.falseChickenpoxForm.get(controlName)?.value;
+    this.falseChickenpoxForm.get(controlName)?.setValue(value == null ? null : value + '');
+  }
+
   save() {
     Object.entries(this.falseChickenpoxForm.controls).map(([key, value], index) => {
       if (value.value == 'null')
@@ -229,8 +241,6 @@ export class FalseChickenpoxComponent implements OnInit {
 
 
   calculateCompletionPercentage() {
-    // 'contacts' (قائمة المخالطين) is walked recursively below so each contact row's fields
-    // count toward the total/filled tallies, and the count grows as rows are added/removed.
     const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate', 'directContactsJson'];
     const value = this.falseChickenpoxForm.value;
     let total = 0;
@@ -248,7 +258,7 @@ export class FalseChickenpoxComponent implements OnInit {
             const fieldValue = v[k];
             const hasValue = Array.isArray(fieldValue)
               ? fieldValue.length > 0
-              : fieldValue !== null && fieldValue !== '';
+              : fieldValue !== null && fieldValue !== '' && fieldValue !== 'null';
             if (hasValue) {
               filled++;
             }
