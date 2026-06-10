@@ -41,7 +41,8 @@ import { WhoopingCoughComponent } from './investigation/complete-investigation/w
 import { DiphtheriaComponent } from './investigation/complete-investigation/diphtheria/diphtheria.component';
 import { HemorrhagicFeversComponent } from './investigation/complete-investigation/hemorrhagic-fevers/hemorrhagic-fevers.component';
 import { MalariaComponent } from './investigation/complete-investigation/malaria/malaria.component';
-import { SchistosomiasisFasciolaComponent } from './investigation/complete-investigation/schistosomiasis-fasciola/schistosomiasis-fasciola.component';
+import { SchistosomiasisComponent } from './investigation/complete-investigation/schistosomiasis/schistosomiasis.component';
+import { FasciolaComponent } from './investigation/complete-investigation/fasciola/fasciola.component';
 
 import { BrucellaComponent } from './investigation/complete-investigation/brucella/brucella.component';
 import { MeningealComponent } from './investigation/complete-investigation/meningeal/meningeal.component';
@@ -307,8 +308,14 @@ const routes: Routes = [
         data: { types: [3] },
       },
       {
-        path: 'schistosomiasis-fasciola/:id/diseaseId/:diseaseId',
-        component: SchistosomiasisFasciolaComponent,
+        path: 'schistosomiasis/:id/diseaseId/:diseaseId',
+        component: SchistosomiasisComponent,
+        canActivate: [AuthGuard, NavigationGuard],
+        data: { types: [3] },
+      },
+      {
+        path: 'fasciola/:id/diseaseId/:diseaseId',
+        component: FasciolaComponent,
         canActivate: [AuthGuard, NavigationGuard],
         data: { types: [3] },
       },
@@ -488,8 +495,12 @@ const routes: Routes = [
               },
               { path: 'malaria', component: MalariaComponent },
               {
-                path: 'schistosomiasis-fasciola',
-                component: SchistosomiasisFasciolaComponent,
+                path: 'schistosomiasis',
+                component: SchistosomiasisComponent,
+              },
+              {
+                path: 'fasciola',
+                component: FasciolaComponent,
               },
               { path: 'typhoid', component: TyphoidComponent },
               { path: 'cholera', component: CholeraComponent },

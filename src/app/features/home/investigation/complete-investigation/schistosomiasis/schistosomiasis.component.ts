@@ -6,16 +6,19 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-schistosomiasis-fasciola',
-  templateUrl: './schistosomiasis-fasciola.component.html',
-  styleUrls: ['./schistosomiasis-fasciola.component.css']
+  selector: 'app-schistosomiasis',
+  templateUrl: './schistosomiasis.component.html',
+  styleUrls: ['./schistosomiasis.component.css']
 })
-export class SchistosomiasisFasciolaComponent implements OnInit {
+export class SchistosomiasisComponent implements OnInit {
   belharisyaForm: FormGroup;
   currentLang: string;
   dir: string;
   delay: boolean = false;
   timer: any;
+  patientName: string = '';
+  allControllesCount: number = 0;
+  allFilledControlsCount: number = 0;
 
   constructor(private investigationService: InvestigationService,
     private translateService: TranslateService,
@@ -24,6 +27,13 @@ export class SchistosomiasisFasciolaComponent implements OnInit {
   ) { }
   currentId: any;
   ngOnInit() {
+    this.patientName =
+      (this.investigationService.patient?.firstName || '') +
+      ' ' +
+      (this.investigationService.patient?.secondName || '') +
+      ' ' +
+      (this.investigationService.patient?.thirdName || '');
+
     this.currentLang =
       localStorage.getItem('ls.currentLang') !== undefined &&
         localStorage.getItem('ls.currentLang') !== 'undefined'
@@ -76,11 +86,16 @@ export class SchistosomiasisFasciolaComponent implements OnInit {
       patientID: new FormControl(),
       id: new FormControl(),
       diseaseGroupId: new FormControl(this.investigationService.diseaseGroupID),
+      investigationCompletePercentage: new FormControl(),
     })
 
     this.currentId = this.investigationService.currentid
     this.belharisyaForm.controls['patientID'].setValue(this.currentId)
-    this.investigationService.getByIdSchistosomiasisFasciola(this.currentId,this.investigationService.diseaseGroupID).subscribe(
+    this.calculateCompletionPercentage();
+    this.belharisyaForm.valueChanges.subscribe(() => {
+      this.calculateCompletionPercentage();
+    });
+    this.investigationService.getByIdSchistosomiasis(this.currentId,this.investigationService.diseaseGroupID).subscribe(
       res => {
         console.log(res);
         var v = res.data;
@@ -103,13 +118,19 @@ export class SchistosomiasisFasciolaComponent implements OnInit {
   }
   save() {
     Object.entries(this.belharisyaForm.controls).map(([key, value], index) => {
-      if (value.value == 'null')
+      if (value.value == 'null' || value.value === '')
         value.setValue(null);
     })
     this.belharisyaForm.controls['diseaseGroupId'].setValue(this.investigationService.diseaseGroupID);
+    this.calculateCompletionPercentage();
+    this.belharisyaForm.controls['investigationCompletePercentage'].setValue(
+      this.allControllesCount === 0
+        ? 0
+        : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2))
+    );
 
     if (this.belharisyaForm.value.id != null) {
-      this.investigationService.updateSchistosomiasisFasciola(this.belharisyaForm.value).subscribe(
+      this.investigationService.updateSchistosomiasis(this.belharisyaForm.value).subscribe(
         (response: any) => {
           if (response) {
             this.translateService
@@ -128,7 +149,7 @@ export class SchistosomiasisFasciolaComponent implements OnInit {
         }
       )
     } else {
-      this.investigationService.addInvestigationSchistosomiasisFasciola(this.belharisyaForm.value).subscribe(
+      this.investigationService.addInvestigationSchistosomiasis(this.belharisyaForm.value).subscribe(
         (response: any) => {
 
           if (response) {
@@ -148,5 +169,28 @@ export class SchistosomiasisFasciolaComponent implements OnInit {
         }
       )
     }
+  }
+
+  calculateCompletionPercentage(): void {
+    const data = this.belharisyaForm?.value ?? {};
+    const excludedFields = [
+      'id', 'patientID', 'diseaseGroupId', 'investigationCompletePercentage', 'createdDate'
+    ];
+    const fields = Object.keys(data).filter((key) => !excludedFields.includes(key));
+
+    this.allControllesCount = fields.length;
+    this.allFilledControlsCount = fields.reduce((acc, key) => {
+      return this.isFieldFilled(data[key]) ? acc + 1 : acc;
+    }, 0);
+  }
+
+  private isFieldFilled(value: any): boolean {
+    if (value === null || value === undefined || value === '' || value === 'null') {
+      return false;
+    }
+    if (typeof value === 'boolean') {
+      return value;
+    }
+    return true;
   }
 }
