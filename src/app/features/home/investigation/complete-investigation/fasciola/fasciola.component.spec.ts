@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { SchistosomiasisFasciolaComponent } from './schistosomiasis-fasciola.component';
+import { FasciolaComponent } from './fasciola.component';
 
-describe('SchistosomiasisFasciolaComponent', () => {
-  let component: SchistosomiasisFasciolaComponent;
-  let fixture: ComponentFixture<SchistosomiasisFasciolaComponent>;
+describe('FasciolaComponent', () => {
+  let component: FasciolaComponent;
+  let fixture: ComponentFixture<FasciolaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SchistosomiasisFasciolaComponent ]
+      declarations: [ FasciolaComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SchistosomiasisFasciolaComponent);
+    fixture = TestBed.createComponent(FasciolaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

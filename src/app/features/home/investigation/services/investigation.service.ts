@@ -140,22 +140,40 @@ export class InvestigationService {
       this.controllerURL + 'GetHemorrhagicFeverByPatientId?id=' + id
     );
   }
-  //SchistosomiasisFasciola
-  addInvestigationSchistosomiasisFasciola(ivestigation: any) {
+  //Schistosomiasis
+  addInvestigationSchistosomiasis(ivestigation: any) {
     return this.APIs.post(
-      this.controllerURL + 'AddSchistosomiasisFasciola',
+      this.controllerURL + 'AddSchistosomiasis',
       ivestigation
     );
   }
-  updateSchistosomiasisFasciola(ivestigation: any) {
+  updateSchistosomiasis(ivestigation: any) {
     return this.APIs.update(
-      this.controllerURL + 'UpdateSchistosomiasisFasciola',
+      this.controllerURL + 'UpdateSchistosomiasis',
       ivestigation
     );
   }
-  getByIdSchistosomiasisFasciola(id: any, diseaseGroupId: number) {
+  getByIdSchistosomiasis(id: any, diseaseGroupId: number) {
     return this.APIs.get(
-      this.controllerURL + 'GetSchistosomiasisFasciolaByPatientId?id=' + id + '&diseaseGroupId=' + diseaseGroupId
+      this.controllerURL + 'GetSchistosomiasisByPatientId?id=' + id + '&diseaseGroupId=' + diseaseGroupId
+    );
+  }
+  //Fasciola
+  addInvestigationFasciola(ivestigation: any) {
+    return this.APIs.post(
+      this.controllerURL + 'AddFasciola',
+      ivestigation
+    );
+  }
+  updateFasciola(ivestigation: any) {
+    return this.APIs.update(
+      this.controllerURL + 'UpdateFasciola',
+      ivestigation
+    );
+  }
+  getByIdFasciola(id: any, diseaseGroupId: number) {
+    return this.APIs.get(
+      this.controllerURL + 'GetFasciolaByPatientId?id=' + id + '&diseaseGroupId=' + diseaseGroupId
     );
   }
   //Monkeypox
