@@ -1258,6 +1258,23 @@ export class GeneralDataService {
     let namePattern = /^[A-Za-z\u0600-\u06FF ]$/;
     if (!namePattern.test(inputKey)) {
       event.preventDefault();
+      return;
+    }
+    const input = event.target as HTMLInputElement;
+    if (inputKey === ' ' && (input.selectionStart === 0 || !input.value)) {
+      event.preventDefault();
+    }
+  }
+
+  normalizeNameInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+    value = value.replace(/[\u0623\u0625]/g, '\u0627');
+    value = value.replace(/\u0649/g, '\u064A');
+    value = value.replace(/^\s+/, '');
+    if (value !== input.value) {
+      input.value = value;
+      input.dispatchEvent(new Event('input'));
     }
   }
   //#endregion "Common Validations"
