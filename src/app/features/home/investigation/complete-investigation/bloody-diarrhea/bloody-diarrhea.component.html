@@ -1,6 +1,6 @@
-<!-- <div class="row">
+﻿<!-- <div class="row">
   <div class="col-lg-6">
-    <h2 class="titles">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FORM_TITLE" | translate }}</h2>
+    <h2 class="titles">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA" | translate }}</h2>
   </div>
 </div> -->
 <div class="row">
@@ -375,7 +375,9 @@
                       </div>
                       <div class="col-4">
                         <div class="row">
-                          <div class="col-6">تم اخذ العينة؟</div>
+                          <div class="col-6">
+                            {{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.SAMPLE_TAKEN_QUESTION" | translate }}
+                          </div>
                           <div class="col-6 has-labels">
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="isSampleTakenDay1" name="isSampleTakenDay1" [(ngModel)]="
@@ -644,7 +646,9 @@
                       </div>
                       <div class="col-4">
                         <div class="row">
-                          <div class="col-6">تم اخذ العينة؟</div>
+                          <div class="col-6">
+                            {{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.SAMPLE_TAKEN_QUESTION" | translate }}
+                          </div>
                           <div class="col-6 has-labels">
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="isSampleTakenDay2" name="isSampleTakenDay2" [(ngModel)]="
@@ -913,7 +917,9 @@
                       </div>
                       <div class="col-4">
                         <div class="row">
-                          <div class="col-6">تم اخذ العينة؟</div>
+                          <div class="col-6">
+                            {{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.SAMPLE_TAKEN_QUESTION" | translate }}
+                          </div>
                           <div class="col-6 has-labels">
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="isSampleTakenDay7" name="isSampleTakenDay7" [(ngModel)]="
@@ -1196,7 +1202,7 @@
                             <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
                                 class="form-check-input" id="isSampleTakenDay14" name="isSampleTakenDay14" [(ngModel)]="
                                   bloodyDiarrheaData.isSampleTakenDay14
-                                " #isSampleTakenDay14="ngModel" [value]="0" />
+                                " #isSampleTakenDay14="ngModel" [value]="1" />
                               {{ "NEDSS.COMMON.NO" | translate }}
                             </label>
                           </div>
@@ -2293,38 +2299,157 @@
                     name="sampleResult" [(ngModel)]="bloodyDiarrheaData.sampleResult" #sampleResult="ngModel" />
                 </div>
               </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.INVESTIGATION_DATE" | translate
-                    }}</label>
-                  <input type="date" [class]="'form-control-'+ currentLang" (blur)="calculateCompletionPercentage()"
-                    name="investigationDate" [(ngModel)]="bloodyDiarrheaData.investigationDate" />
+            </div>
+          </div>
+
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row color primary mt-4 mb-2">
+              <div class="row">
+                <div class="col-12 title fs-6 fwb">
+                  {{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD" | translate }}
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.CHILD_OR_EMPLOYEE_NURSERY_SCHOOL" |
+                      translate }}</label>
+                    <select name="hepatitisExposureChildOrEmployee" id="" class="form-control"
+                      [(ngModel)]="bloodyDiarrheaData.hepatitisExposureChildOrEmployee"
+                      (blur)="calculateCompletionPercentage()">
+                      <option *ngFor="let case of hepatitisExposureChildOrEmployees" [value]="case.id">
+                        {{ case.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.IF_YES_NURSERY_SCHOOL_NAME_ADDRESS" |
+                      translate }}</label>
+                    <input type="text" maxlength="100" class="form-control" name="hepatitisExposureStateNameAddress"
+                      (blur)="calculateCompletionPercentage()"
+                      [(ngModel)]="bloodyDiarrheaData.hepatitisExposureStateNameAddress"
+                      #hepatitisExposureStateNameAddress="ngModel" />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.IS_FOOD_PROVIDER" | translate
+                      }}</label>
+                    <select name="hepatitisExposureFoodProvider" id="" class="form-control"
+                      [(ngModel)]="bloodyDiarrheaData.hepatitisExposureFoodProvider"
+                      (blur)="calculateCompletionPercentage()">
+                      <option *ngFor="let case of hepatitisExposureFoodProviders" [value]="case.id">
+                        {{ case.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.SIMILAR_CASES_SAME_PLACE" | translate
+                      }}</label>
+                    <select name="hepatitisExposureSimilarCasesSimilarPlaces" id="" class="form-control"
+                      [(ngModel)]="bloodyDiarrheaData.hepatitisExposureSimilarCasesSimilarPlaces"
+                      (blur)="calculateCompletionPercentage()">
+                      <option *ngFor="let case of hepatitisExposureSimilarCasesSimilarPlacesOptions" [value]="case.id">
+                        {{ case.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.USUALLY_EATS_OUTSIDE_HOME" |
+                      translate }}</label>
+                    <select name="hepatitisExposureMealsOutside" id="" class="form-control"
+                      [(ngModel)]="bloodyDiarrheaData.hepatitisExposureMealsOutside"
+                      (blur)="calculateCompletionPercentage()">
+                      <option *ngFor="let case of hepatitisExposureMealsOutsides" [value]="case.id">
+                        {{ case.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.IF_YES_FOOD_TYPE" | translate
+                      }}</label>
+                    <input type="text" maxlength="100" class="form-control" name="hepatitisExposureTypeFood"
+                      (blur)="calculateCompletionPercentage()"
+                      [(ngModel)]="bloodyDiarrheaData.hepatitisExposureTypeFood" #hepatitisExposureTypeFood="ngModel" />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.EXPOSED_TO_ANIMALS_DAILY_LIFE" |
+                      translate }}</label>
+                    <select name="hepatitisExposureExposedToAnimals" id="" class="form-control"
+                      [(ngModel)]="bloodyDiarrheaData.hepatitisExposureExposedToAnimals"
+                      (blur)="calculateCompletionPercentage()">
+                      <option *ngFor="let case of hepatitisExposureExposedToAnimalOptions" [value]="case.id">
+                        {{ case.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.MENTION_ANIMAL_TYPE" | translate
+                      }}</label>
+                    <input type="text" maxlength="100" class="form-control" name="hepatitisExposureTypeOfAnimal"
+                      (blur)="calculateCompletionPercentage()"
+                      [(ngModel)]="bloodyDiarrheaData.hepatitisExposureTypeOfAnimal"
+                      #hepatitisExposureTypeOfAnimal="ngModel" />
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label for="">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.DEAL_DIRECTLY_WITH_SEWAGE_WASTE" | translate }}
+                    </label>
+                    <select name="hepatitisExposureDealDirectlySewageWaste" id="" class="form-control"
+                      [(ngModel)]="bloodyDiarrheaData.hepatitisExposureDealDirectlySewageWaste"
+                      (blur)="calculateCompletionPercentage()">
+                      <option *ngFor="let case of hepatitisExposureDealDirectlySewageWasteOptions" [value]="case.id">
+                        {{ case.arabicName }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEALTH_OBSERVER_NAME" | translate
-                    }}</label>
-                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
-                    name="healthObserverName" [(ngModel)]="bloodyDiarrheaData.healthObserverName" />
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.SURVEILLANCE_OFFICER" | translate
-                    }}</label>
-                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
-                    name="surveillanceOfficerName" [(ngModel)]="bloodyDiarrheaData.surveillanceOfficerName" />
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.ADMINISTRATION_DIRECTOR" | translate
-                    }}</label>
-                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
-                    name="administrationDirectorName" [(ngModel)]="bloodyDiarrheaData.administrationDirectorName" />
-                </div>
-              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.INVESTIGATION_DATE" | translate
+                }}</label>
+              <input type="date" [class]="'form-control-'+ currentLang" (blur)="calculateCompletionPercentage()"
+                name="investigationDate" [(ngModel)]="bloodyDiarrheaData.investigationDate" />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEALTH_OBSERVER_NAME" | translate
+                }}</label>
+              <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
+                name="healthObserverName" [(ngModel)]="bloodyDiarrheaData.healthObserverName" />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.SURVEILLANCE_OFFICER" | translate
+                }}</label>
+              <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
+                name="surveillanceOfficerName" [(ngModel)]="bloodyDiarrheaData.surveillanceOfficerName" />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.ADMINISTRATION_DIRECTOR" | translate
+                }}</label>
+              <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
+                name="administrationDirectorName" [(ngModel)]="bloodyDiarrheaData.administrationDirectorName" />
             </div>
           </div>
         </div>

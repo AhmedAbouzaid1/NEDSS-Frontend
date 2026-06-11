@@ -9,6 +9,7 @@ import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-bloody-diarrhea',
@@ -50,7 +51,19 @@ export class BloodyDiarrheaComponent implements OnInit {
     private translateService: TranslateService,
     private userMsg: UserMessageService,
     private datePipe: DatePipe,
+    private route: ActivatedRoute,
   ) {
+    this.currentId = this.route.snapshot.paramMap.get('id');
+    this.diseaseGroupID = this.route.snapshot.paramMap.get('diseaseId');
+
+    if (this.currentId == null || this.currentId == undefined) {
+      this.currentId = this.investigationService.currentid;
+    }
+
+    if (this.diseaseGroupID == null || this.diseaseGroupID == undefined) {
+      this.diseaseGroupID = this.investigationService.diseaseGroupID;
+    }
+
     this.patientName = this.getPatientName();
   }
 
@@ -175,6 +188,16 @@ export class BloodyDiarrheaComponent implements OnInit {
     isHealthCertificate: null,
     dateHealthCertificate: null,
 
+    hepatitisExposureChildOrEmployee: null,
+    hepatitisExposureStateNameAddress: null,
+    hepatitisExposureFoodProvider: null,
+    hepatitisExposureSimilarCasesSimilarPlaces: null,
+    hepatitisExposureMealsOutside: null,
+    hepatitisExposureTypeFood: null,
+    hepatitisExposureExposedToAnimals: null,
+    hepatitisExposureTypeOfAnimal: null,
+    hepatitisExposureDealDirectlySewageWaste: null,
+
     waterSourceHouse: null,
     otherWaterSource: null,
     isWaterStored: null,
@@ -255,13 +278,22 @@ export class BloodyDiarrheaComponent implements OnInit {
   vomitDay14s = AnswerOptions;
   diarrheaDay14s = AnswerOptions;
   otherDay14s = AnswerOptions;
+
+  hepatitisExposureChildOrEmployees = AnswerOptions;
+  hepatitisExposureFoodProviders = AnswerOptions;
+  hepatitisExposureSimilarCasesSimilarPlacesOptions = AnswerOptions;
+  hepatitisExposureMealsOutsides = AnswerOptions;
+  hepatitisExposureExposedToAnimalOptions = AnswerOptions;
+  hepatitisExposureDealDirectlySewageWasteOptions = AnswerOptions;
+
   distanceWaterSourcesSewages = distanceWaterSourcesSewage;
-  currentId: number | null = null;
+  currentId: any;
+  diseaseGroupID: any;
 
   ngOnInit(): void {
     this.calculateCompletionPercentage();
-    this.currentId = this.investigationService.currentid;
     this.bloodyDiarrheaData.patientID = this.currentId;
+    this.bloodyDiarrheaData.diseaseGroupId = this.diseaseGroupID;
     this.investigationService.getByIdbLOODYDIARRHEA(this.currentId).subscribe(
       (res) => {
         const v = res.data;
@@ -280,8 +312,22 @@ export class BloodyDiarrheaComponent implements OnInit {
   }
 
   save() {
-    this.bloodyDiarrheaData.diseaseGroupId =
-      this.investigationService.diseaseGroupID;
+    if (this.currentId == null || this.currentId == undefined) {
+      this.currentId = this.investigationService.currentid;
+    }
+
+    if (this.diseaseGroupID == null || this.diseaseGroupID == undefined) {
+      this.diseaseGroupID = this.investigationService.diseaseGroupID;
+    }
+
+    this.bloodyDiarrheaData.patientID = this.currentId;
+    this.bloodyDiarrheaData.diseaseGroupId = this.diseaseGroupID;
+
+    if (this.bloodyDiarrheaData.patientID == null) {
+      this.showMessage('NEDSS.COMMON.SENT_FAILD', 'error');
+      return;
+    }
+
     this.calculateCompletionPercentage();
     this.bloodyDiarrheaData.investigationCompletePercentage =
       this.getCompletionPercentage();
