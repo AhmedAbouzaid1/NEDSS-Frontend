@@ -1,8 +1,10 @@
 import { TranslateService } from '@ngx-translate/core';
 import { LookupsGetterService } from './../../../../core/services/lookups-getter.service';
 import {
+  ChangeDetectorRef,
   Component,
   OnInit,
+  OnDestroy,
   ViewEncapsulation,
   ContentChildren,
   HostListener,
@@ -21,16 +23,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgControl } from '@angular/forms';
 import { ActiveUserService } from 'src/app/core/services/active-user.service';
 import { NationalityEnum } from '../models/nationality-enum';
-import { take } from 'rxjs';
 import { DepartmentEnum } from '../models/department-enum';
 import { RelativeEnum } from '../models/relative-enum';
+import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-incident-info',
   templateUrl: './incident-info.component.html',
   styleUrls: ['./incident-info.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class IncidentInfoComponent implements OnInit {
+export class IncidentInfoComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @ContentChildren(NgControl) formControls: QueryList<NgControl>;
 
   @HostListener('submit')
@@ -57,15 +62,22 @@ export class IncidentInfoComponent implements OnInit {
   selectedGovernment: any;
   selectedGovernmentId: number = -1;
 
-  healthAdministration!: any[];
+  healthAdministration: any[] = [
+    { id: -1, arabicName: 'إختر', englishName: 'Select' },
+  ];
   selectedHealthAdministration: any;
   selectedHealthAdministrationId: number;
 
-  incidentSources!: any[];
+  incidentSources: any[] = [
+    { id: -1, arabicName: 'إختر', englishName: 'Select' },
+  ];
   selectedIncidentSource: any;
   selectedIncidentSourceId: number;
 
-  departments!: any[];
+  /** Prevents p-dropdown from receiving undefined options before GetAll returns. */
+  departments: any[] = [
+    { id: -1, arabicName: 'إختر', englishName: 'Select' },
+  ];
   selectedDepartment: any;
   selectedDepartmentId: number;
 
@@ -96,35 +108,144 @@ export class IncidentInfoComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public activeUSerService: ActiveUserService,
+    private cdr: ChangeDetectorRef,
   ) { }
+
+  private incidentGovFetchRetries = 0;
+  private healthAdminFetchRetries = 0;
+  private incidentSourceFetchRetries = 0;
+  private departmentFetchRetries = 0;
+  /** Avoid re-running governorate cascade on every patient emission for the same record. */
+  private incidentLocationHydratedForPatientId: number | null = null;
+  private lastSeenPatientIdForIncidentHydrate: number | null = null;
+  private isSettingPatientLocally = false;
+
+  private toPositiveInt(v: unknown): number | null {
+    if (v === null || v === undefined || v === '') {
+      return null;
+    }
+    const n = Number(v);
+    return Number.isFinite(n) && n > 0 ? n : null;
+  }
+
+  private extractApiDataArray(result: any): any[] {
+    if (!result || result.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+      return [];
+    }
+    const tryArray = (d: any): any[] | null => {
+      if (Array.isArray(d)) return d;
+      if (d && typeof d === 'object') {
+        if (Array.isArray((d as any).items)) return (d as any).items;
+        if (Array.isArray((d as any).data)) return (d as any).data;
+        if (Array.isArray((d as any).Data)) return (d as any).Data;
+        if (Array.isArray((d as any).records)) return (d as any).records;
+      }
+      return null;
+    };
+    for (const d of [result.data, result.Data, result.result, result.items]) {
+      const arr = tryArray(d);
+      if (arr) return arr;
+    }
+    if (Array.isArray(result)) return result;
+    return [];
+  }
+
+  private mapLookupRowToOption(row: any): { id: number; arabicName: string; englishName: string } | null {
+    const id = row?.id ?? row?.Id;
+    const n = Number(id);
+    if (!Number.isFinite(n) || n <= 0) return null;
+    return {
+      id: n,
+      arabicName: String(row?.arabicName ?? row?.ArabicName ?? ''),
+      englishName: String(row?.englishName ?? row?.EnglishName ?? ''),
+    };
+  }
+
+  private mapIncidentSourceRow(row: any): { id: number; arabicName: string; englishName: string } | null {
+    const id = row?.id ?? row?.Id;
+    const n = Number(id);
+    if (!Number.isFinite(n) || n <= 0) return null;
+    const ar = String(
+      row?.arabicName ?? row?.ArabicName ?? row?.name ?? row?.Name ?? '',
+    );
+    const en = String(
+      row?.englishName ?? row?.EnglishName ?? row?.name ?? row?.Name ?? '',
+    );
+    return { id: n, arabicName: ar, englishName: en };
+  }
+
+  private scheduleIncidentBind(fn: () => void): void {
+    queueMicrotask(() => {
+      fn();
+      this.cdr.detectChanges();
+    });
+  }
+
+  /**
+   * When opening an existing patient (e.g. from fast search), governorate HTTP may finish
+   * before getById populates the shared patient — applyIncidentGovernmentsFromApi then runs
+   * with empty incident ids. Call this after patient load and after governorate list load.
+   */
+  private maybeHydrateIncidentLocationFromPatient(): void {
+    if (!this.sharedDataService.isEditMode) {
+      return;
+    }
+    const pid =
+      this.toPositiveInt(this.patient?.id) ??
+      this.toPositiveInt(this.sharedDataService.patientId);
+    if (pid !== this.lastSeenPatientIdForIncidentHydrate) {
+      this.lastSeenPatientIdForIncidentHydrate = pid;
+      this.incidentLocationHydratedForPatientId = null;
+    }
+    if (pid == null) {
+      return;
+    }
+    if (!(this.governments?.length > 1)) {
+      return;
+    }
+    const g = this.toPositiveInt(this.patient.incidentGovernmentId);
+    if (g == null) {
+      return;
+    }
+    if (this.incidentLocationHydratedForPatientId === pid) {
+      return;
+    }
+    this.incidentLocationHydratedForPatientId = pid;
+    this.scheduleIncidentBind(() => {
+      this.selectedGovernmentId = g;
+      this.onGovernmentChanged();
+    });
+  }
 
   public get departmentEnum(): typeof DepartmentEnum {
     return DepartmentEnum;
   }
 
   ngOnInit() {
-    setTimeout(() => {
-      let link = document.getElementById('incidentInfo') as HTMLElement;
+    queueMicrotask(() => {
+      const link = document.getElementById('incidentInfo') as HTMLElement;
+      if (link) {
+        link.classList.add('active');
+      }
+    });
+    const savedLang = localStorage.getItem('ls.currentLang');
+    this.currentLang =
+      savedLang && savedLang !== 'undefined' ? savedLang : 'ar';
+    this.getDiseases();
 
-      link.classList.add('active');
-      this.currentLang =
-        localStorage.getItem('ls.currentLang') !== undefined &&
-          localStorage.getItem('ls.currentLang') !== 'undefined'
-          ? localStorage.getItem('ls.currentLang')
-          : 'ar';
-      this.getDiseases();
+    const userData =
+      JSON.parse(localStorage.getItem('ls.authorizationData')) ??
+      JSON.parse(localStorage.getItem('lsOffline.authorizationData'));
+    this.defaultGovernmentId = userData.user.govenmentId;
+    this.defaultHealthAdministrationId =
+      userData?.user?.healthAdministrationId;
+    this.levelId = userData?.user?.levelId;
+    this.defaultIncidentSourceId = userData?.user?.incidentSourceId;
 
-      let userData =
-        JSON.parse(localStorage.getItem('ls.authorizationData')) ??
-        JSON.parse(localStorage.getItem('lsOffline.authorizationData'));
-      this.defaultGovernmentId =
-        this.selectedGovernmentId =
+    if (!this.sharedDataService.isEditMode) {
+      this.selectedGovernmentId =
         this.patient.incidentGovernmentId =
         userData.user.govenmentId;
-      this.defaultHealthAdministrationId =
-        userData?.user?.healthAdministrationId;
-      this.levelId = userData?.user?.levelId;
-      this.defaultIncidentSourceId = userData?.user?.incidentSourceId;
       switch (userData.user.levelId) {
         case 4:
           this.selectedIncidentSourceId = this.defaultIncidentSourceId =
@@ -132,7 +253,7 @@ export class IncidentInfoComponent implements OnInit {
         case 3:
           this.selectedHealthAdministrationId =
             this.defaultHealthAdministrationId =
-            userData.user.healthAdministrationId;
+              userData.user.healthAdministrationId;
         case 2:
           this.selectedGovernmentId = this.defaultGovernmentId =
             userData.user.govenmentId;
@@ -140,23 +261,22 @@ export class IncidentInfoComponent implements OnInit {
         default:
           break;
       }
+    } else {
+      this.selectedGovernmentId = -1;
+      this.selectedHealthAdministrationId = -1;
+      this.selectedIncidentSourceId = -1;
+    }
 
-      this.getLookups();
+    this.getLookups();
 
-      this.sharedDataService.getPatientObject().subscribe((patientObject) => {
+    this.sharedDataService.getPatientObject().pipe(takeUntil(this.destroy$)).subscribe((patientObject) => {
+        if (this.isSettingPatientLocally) return;
         this.patient = patientObject;
+        this.generalDataService.normalizePatientApiPayload(this.patient);
         this.ogPatient = patientObject;
         this.patient.caseDiscoveryDate;
 
-        this.selectedDepartment = [];
-        if (this.departments != null && this.departments?.length > 0) {
-          this.selectedDepartment.push(
-            this.departments.filter(
-              (o) => o.id == this.patient.incidentDepartmentId
-            )[0]
-          );
-          this.selectedDepartmentId = this.patient.incidentDepartmentId;
-        }
+        this.syncDepartmentSelectionFromPatient();
         this.selectedNationality = [];
         if (this.nationalities != null && this.nationalities?.length > 0) {
           this.selectedNationality.push(
@@ -184,18 +304,20 @@ export class IncidentInfoComponent implements OnInit {
 
         let incidentSourceId;
 
-        if (patientObject.incidentGovernmentId) {
-          govenmentId = this.selectedGovernmentId =
-            patientObject.incidentGovernmentId;
+        const incidentGov = this.toPositiveInt(this.patient.incidentGovernmentId);
+        if (incidentGov != null) {
+          govenmentId = incidentGov;
+          this.selectedGovernmentId = incidentGov;
         } else {
           incidentSourceId = JSON.parse(
             localStorage.getItem('ls.authorizationData')
           ).user.incidentSourceId;
         }
 
-        if (patientObject.incidentSourceId) {
-          incidentSourceId = this.selectedIncidentSourceId =
-            patientObject.incidentSourceId;
+        const incidentSrc = this.toPositiveInt(this.patient.incidentSourceId);
+        if (incidentSrc != null) {
+          incidentSourceId = incidentSrc;
+          this.selectedIncidentSourceId = incidentSrc;
         } else {
           incidentSourceId = JSON.parse(
             localStorage.getItem('ls.authorizationData')
@@ -203,10 +325,11 @@ export class IncidentInfoComponent implements OnInit {
         }
 
         if (
-          this.patient.incidentGovernmentId == undefined ||
-          this.patient.incidentGovernmentId == null
+          (this.patient.incidentGovernmentId == undefined ||
+            this.patient.incidentGovernmentId == null) &&
+          !this.sharedDataService.isEditMode
         ) {
-          //alert("10-patiet gov id set to " + govenmentId + " from " + this.patient.incidentGovernmentId);
+          // New record only: default incident location from logged-in user.
           this.patient.incidentGovernmentId = govenmentId;
           this.patient.incidentHealthAdministrationId = healthAdministrationId;
           this.patient.incidentSourceId = incidentSourceId;
@@ -232,56 +355,63 @@ export class IncidentInfoComponent implements OnInit {
             localStorage.getItem('ls.authorizationData')
           ).user?.areaId;
         }
+        this.maybeHydrateIncidentLocationFromPatient();
       });
 
-      const routeParams = this.route.snapshot.paramMap;
-      var tokenText = routeParams.get('clear');
-      this.router.routerState.root.queryParams.subscribe((params) => {
-        if (params.clear == 1) {
-          this.patient = new PatientModel();
-          this.sharedDataService.setPatientObject(new PatientModel());
-          this.sharedDataService.ShowSentinel = false;
-          this.selectedDepartment = [];
-          this.selectedNationality = [];
-          this.patient.relationShipDegreeId = 0;
-          let healthAdministrationId = JSON.parse(
-            localStorage.getItem('ls.authorizationData')
-          ).user.healthAdministrationId;
-          let govenmentId = JSON.parse(
-            localStorage.getItem('ls.authorizationData')
-          ).user.govenmentId;
-          let incidentSourceId = JSON.parse(
-            localStorage.getItem('ls.authorizationData')
-          ).user.incidentSourceId;
+    const routeParams = this.route.snapshot.paramMap;
+    var tokenText = routeParams.get('clear');
+    this.router.routerState.root.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      if (params.clear == 1) {
+        this.incidentLocationHydratedForPatientId = null;
+        this.lastSeenPatientIdForIncidentHydrate = null;
+        this.patient = new PatientModel();
+        this.sharedDataService.setPatientObject(new PatientModel());
+        this.sharedDataService.ShowSentinel = false;
+        this.selectedDepartment = [];
+        this.selectedNationality = [];
+        this.patient.relationShipDegreeId = 0;
+        let healthAdministrationId = JSON.parse(
+          localStorage.getItem('ls.authorizationData')
+        ).user.healthAdministrationId;
+        let govenmentId = JSON.parse(
+          localStorage.getItem('ls.authorizationData')
+        ).user.govenmentId;
+        let incidentSourceId = JSON.parse(
+          localStorage.getItem('ls.authorizationData')
+        ).user.incidentSourceId;
 
-          if (this.governments?.length > 0)
-            this.selectedGovernmentId = govenmentId != null ? govenmentId : -1;
-          this.patient.incidentGovernmentId = govenmentId;
-          if (this.healthAdministration?.length > 0)
-            this.selectedHealthAdministration =
-              this.healthAdministration?.filter(
-                (o) => o.id == healthAdministrationId
-              );
-          this.patient.incidentHealthAdministrationId = healthAdministrationId;
-          if (this.incidentSources?.length > 0)
-            this.selectedIncidentSource = this.incidentSources?.filter(
-              (o) => o.id == incidentSourceId
+        if (this.governments?.length > 0)
+          this.selectedGovernmentId = govenmentId != null ? govenmentId : -1;
+        this.patient.incidentGovernmentId = govenmentId;
+        if (this.healthAdministration?.length > 0)
+          this.selectedHealthAdministration =
+            this.healthAdministration?.filter(
+              (o) => o.id == healthAdministrationId
             );
-          this.patient.incidentSourceId = incidentSourceId;
-          this.onGovernmentChanged();
-        }
-      });
+        this.patient.incidentHealthAdministrationId = healthAdministrationId;
+        if (this.incidentSources?.length > 0)
+          this.selectedIncidentSource = this.incidentSources?.filter(
+            (o) => o.id == incidentSourceId
+          );
+        this.patient.incidentSourceId = incidentSourceId;
+        this.onGovernmentChanged();
+      }
+    });
 
-      this.singleDropdownSettings = SingleDropdownSettings;
-      this.multipleDropdownSettings = MultipleDropdownSettings;
-      this.loadingPanel = false;
+    this.singleDropdownSettings = SingleDropdownSettings;
+    this.multipleDropdownSettings = MultipleDropdownSettings;
+    this.loadingPanel = false;
+    queueMicrotask(() => {
       this.checkInitNationality();
-      if (this.patient.nationalityId != NationalityEnum.Egyptian) {
+      if (
+        this.patient?.nationalityId != null &&
+        this.patient.nationalityId != NationalityEnum.Egyptian
+      ) {
         this.onNationalIdChanged(this.patient.nationalityId);
       }
+    });
 
-      this.generalDataService.cardIdValidationMessage = '';
-    }, 600);
+    this.generalDataService.cardIdValidationMessage = '';
   }
 
   getBranches() {
@@ -365,10 +495,6 @@ export class IncidentInfoComponent implements OnInit {
 
   getDiseases() {
     this.lookupsService.getAllDiseaseGroups().subscribe(
-      (result: any) => { },
-      (error) => { }
-    );
-    this.lookupsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.diseases = result.data;
@@ -415,7 +541,7 @@ export class IncidentInfoComponent implements OnInit {
     }
   }
   onGovernmentChanged() {
-    setTimeout(() => {
+    queueMicrotask(() => {
       if (
         this.selectedGovernmentId != null &&
         this.selectedGovernmentId != -1
@@ -427,21 +553,26 @@ export class IncidentInfoComponent implements OnInit {
         } else {
           this.getIncidentSources(
             this.patient.incidentHealthAdministrationId,
-            this.selectedGovernmentId
+            this.selectedGovernmentId,
           );
         }
       } else {
         this.patient.incidentGovernmentId = null;
-        this.healthAdministration = [];
+        this.healthAdministration = [
+          { id: -1, arabicName: 'إختر', englishName: 'Select' },
+        ];
         this.selectedHealthAdministration = null;
         this.selectedHealthAdministrationId = -1;
         this.patient.incidentHealthAdministrationId = null;
-        this.incidentSources = [];
+        this.incidentSources = [
+          { id: -1, arabicName: 'إختر', englishName: 'Select' },
+        ];
         this.patient.incidentSourceId = null;
         this.selectedIncidentSource = null;
         this.selectedIncidentSourceId = -1;
       }
-    }, 1000);
+      this.cdr.detectChanges();
+    });
   }
   onHealthAdministrationChanged() {
     if (this.selectedHealthAdministrationId != -1) {
@@ -450,12 +581,13 @@ export class IncidentInfoComponent implements OnInit {
       this.getIncidentSources(this.patient.incidentHealthAdministrationId);
     } else {
       this.patient.incidentHealthAdministrationId = null;
-      this.incidentSources = [];
+      this.incidentSources = [
+        { id: -1, arabicName: 'إختر', englishName: 'Select' },
+      ];
       this.patient.incidentSourceId = null;
       this.selectedIncidentSource = null;
       this.selectedIncidentSourceId = -1;
       this.getIncidentSources(-1);
-      this.incidentSources = [];
     }
   }
   onIncidentSourceChanged() {
@@ -507,17 +639,10 @@ export class IncidentInfoComponent implements OnInit {
             this.nationalities.push(nat);
           });
           if (this.patient.nationalityId > 0) {
-            let filteredNationality = this.nationalities.filter(
-              (item) => item.id === this.patient.nationalityId
-            );
-            setTimeout(() => {
-              this.selectedNationalityId = this.patient.nationalityId;
-            }, 500);
+            this.selectedNationalityId = this.patient.nationalityId;
           } else {
-            setTimeout(() => {
-              this.selectedNationalityId = NationalityEnum.Egyptian;
-              this.onNationalityChanged();
-            }, 500);
+            this.selectedNationalityId = NationalityEnum.Egyptian;
+            this.onNationalityChanged();
           }
         }
         this.loadingPanel = false;
@@ -532,52 +657,84 @@ export class IncidentInfoComponent implements OnInit {
       }
     );
   }
-  getGovernments() {
-    this.lookupsService.getAllGovernments().subscribe(
-      (result: any) => {
-        if (result != null && result != undefined) {
-          this.governments = [
-            { id: -1, arabicName: 'إختر', englishName: 'Select' },
-          ];
-          result.data.forEach((gov) => {
-            this.governments.push(gov);
-          });
-          //;
-          //here if there is no patient , incidentGovernmentId will be null or indefined so we need to get incidentGovernmentId from localStorage
-          if (this.patient.incidentGovernmentId > 0) {
-            // alert("1-selected gov set to " + this.patient.incidentGovernmentId);
-            setTimeout(() => {
-              this.selectedGovernmentId = this.patient.incidentGovernmentId;
-              if (this.activeUSerService.getAccessibleParts?.showDepartments) {
-                this.getHealthAdministration(this.patient.incidentGovernmentId);
-              } else {
-                this.getIncidentSources(
-                  this.patient.incidentHealthAdministrationId,
-                  this.selectedGovernmentId
-                );
-              }
-            }, 100);
-          } else {
-            // alert("2-selected gov set to " + JSON.parse(localStorage.getItem('ls.authorizationData')).user.govenmentId);
-            this.selectedGovernment = this.governments.filter(
-              (item) => item.id === this.selectedGovernmentId
-            );
-            if (this.activeUSerService.getAccessibleParts?.showDepartments) {
-              this.getHealthAdministration(this.selectedGovernmentId);
-            } else {
-              this.getIncidentSources(
-                this.patient.incidentHealthAdministrationId,
-                this.selectedGovernmentId
-              );
-            }
-            if (this.selectedGovernmentId == null)
-              this.selectedGovernmentId = -1;
-          }
-          if (this.selectedGovernmentId != -1) {
-            this.onGovernmentChanged();
-          }
+  private applyIncidentGovernmentsFromApi(
+    result: any,
+    allowUserScopeFallback: boolean,
+  ): void {
+    if (result == null || result === undefined) {
+      this.loadingPanel = false;
+      return;
+    }
+    const raw = this.extractApiDataArray(result);
+    const mapped = raw
+      .map((r) => this.mapLookupRowToOption(r))
+      .filter(
+        (r): r is { id: number; arabicName: string; englishName: string } =>
+          r != null,
+      );
+    if (mapped.length === 0 && allowUserScopeFallback) {
+      this.lookupsService.getAllGovernmentsForUser(true).subscribe(
+        (r2) => this.applyIncidentGovernmentsFromApi(r2, false),
+        () => {
+          this.loadingPanel = false;
+          this.translateService
+            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+            .subscribe((res: string) => {
+              this.userMsg.error(res);
+            });
+        },
+      );
+      return;
+    }
+    this.governments = [
+      { id: -1, arabicName: 'إختر', englishName: 'Select' },
+      ...mapped,
+    ];
+    this.scheduleIncidentBind(() => {
+      const persistedPatientId =
+        this.toPositiveInt(this.patient?.id) ??
+        this.toPositiveInt(this.sharedDataService.patientId);
+      const openingExisting =
+        this.sharedDataService.isEditMode && persistedPatientId != null;
+      const govFromPatient = this.toPositiveInt(this.patient.incidentGovernmentId);
+      if (govFromPatient != null) {
+        this.selectedGovernmentId = govFromPatient;
+      } else if (!openingExisting) {
+        this.selectedGovernment = this.governments.filter(
+          (item) => item.id === this.selectedGovernmentId,
+        );
+        if (this.selectedGovernmentId == null) {
+          this.selectedGovernmentId = -1;
         }
-        this.loadingPanel = false;
+      }
+      if (
+        this.selectedGovernmentId != -1 &&
+        (!openingExisting || govFromPatient != null)
+      ) {
+        if (openingExisting && govFromPatient != null) {
+          this.lastSeenPatientIdForIncidentHydrate = persistedPatientId;
+          this.incidentLocationHydratedForPatientId = persistedPatientId;
+        }
+        this.onGovernmentChanged();
+      }
+    });
+    this.loadingPanel = false;
+    this.maybeHydrateIncidentLocationFromPatient();
+  }
+
+  getGovernments() {
+    this.lookupsService.getAllGovernmentsExplicit(false, 'incident-gov').subscribe(
+      (result: any) => {
+        if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+          if (this.incidentGovFetchRetries < 3) {
+            this.incidentGovFetchRetries++;
+            setTimeout(() => this.getGovernments(), 250);
+          }
+          this.loadingPanel = false;
+          return;
+        }
+        this.incidentGovFetchRetries = 0;
+        this.applyIncidentGovernmentsFromApi(result, true);
       },
       (error) => {
         this.loadingPanel = false;
@@ -586,7 +743,7 @@ export class IncidentInfoComponent implements OnInit {
           .subscribe((res: string) => {
             this.userMsg.error(res);
           });
-      }
+      },
     );
   }
   getHealthAdministration(governmentID: any) {
@@ -594,36 +751,47 @@ export class IncidentInfoComponent implements OnInit {
       // this.Delay();
       this.loadingPanel = true;
       this.lookupsService
-        .getPageHealthAdministrations({ governmentID: governmentID })
+        .getPageHealthAdministrations({
+          governmentID: governmentID,
+          /** PendingRequestsService dedupes url+body; residence uses same shape — avoid starving this tab. */
+          _clientScope: 'incident-info-ha',
+        })
         .subscribe(
           (result: any) => {
+            if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+              if (this.healthAdminFetchRetries < 4) {
+                this.healthAdminFetchRetries++;
+                setTimeout(() => this.getHealthAdministration(governmentID), 280);
+              }
+              this.loadingPanel = false;
+              return;
+            }
+            this.healthAdminFetchRetries = 0;
             if (result != null && result != undefined) {
+              const raw = this.extractApiDataArray(result);
+              const mapped = raw
+                .map((r) => this.mapLookupRowToOption(r))
+                .filter(
+                  (r): r is { id: number; arabicName: string; englishName: string } =>
+                    r != null,
+                );
               this.healthAdministration = [
                 { id: -1, arabicName: 'إختر', englishName: 'Select' },
+                ...mapped,
               ];
-              // this.RemoveDelay();
-              result.data.forEach((he) => {
-                this.healthAdministration.push(he);
-              });
-              //;
-              setTimeout(() => {
-                if (this.patient.incidentHealthAdministrationId > 0) {
-                  this.selectedHealthAdministrationId =
-                    this.patient.incidentHealthAdministrationId;
-                  this.getIncidentSources(
-                    this.patient.incidentHealthAdministrationId
-                  );
-                } else {
-                  // this.getIncidentSources(this.selectedHealthAdministrationId);
-
-                  if (this.selectedHealthAdministrationId == null)
-                    this.selectedHealthAdministrationId = -1;
+              this.scheduleIncidentBind(() => {
+                const hid = this.toPositiveInt(
+                  this.patient.incidentHealthAdministrationId,
+                );
+                if (hid != null) {
+                  this.selectedHealthAdministrationId = hid;
+                } else if (this.selectedHealthAdministrationId == null) {
+                  this.selectedHealthAdministrationId = -1;
                 }
                 if (this.selectedHealthAdministrationId != -1) {
-                  // ;
                   this.onHealthAdministrationChanged();
                 }
-              }, 500);
+              });
             }
             this.loadingPanel = false;
           },
@@ -640,61 +808,77 @@ export class IncidentInfoComponent implements OnInit {
   }
 
   getIncidentSources(healthAdministrationID: any, governmentID = null) {
+    const resolvedHealthAdminId =
+      this.toPositiveInt(healthAdministrationID) ??
+      this.toPositiveInt(this.selectedHealthAdministrationId) ??
+      -1;
     this.lookupsService
       .getPageIncidentSourceHospitals({
-        // healthAdministrationID: healthAdministrationID,
-        healthAdministrationID: this.selectedHealthAdministrationId,
+        healthAdministrationID: resolvedHealthAdminId,
         branchId: this.activeUSerService.getAccessibleParts?.showAreas
           ? null
           : this.SelectedbranchId,
         areaId: this.SelectedareaId,
         governmentID: governmentID,
         forSystemUser: governmentID ? true : null,
+        _clientScope: 'incident-info-is',
       })
       .subscribe(
         (result: any) => {
+          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+            if (this.incidentSourceFetchRetries < 4) {
+              this.incidentSourceFetchRetries++;
+              setTimeout(
+                () =>
+                  this.getIncidentSources(healthAdministrationID, governmentID),
+                280,
+              );
+            }
+            this.loadingPanel = false;
+            return;
+          }
+          this.incidentSourceFetchRetries = 0;
           if (result != null && result != undefined) {
+            const raw = this.extractApiDataArray(result);
+            const mapped = raw
+              .map((r) => this.mapIncidentSourceRow(r))
+              .filter(
+                (r): r is { id: number; arabicName: string; englishName: string } =>
+                  r != null,
+              );
             this.incidentSources = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
+              ...mapped,
             ];
-            result.data.forEach((nat) => {
-              this.incidentSources.push(nat);
-            });
 
-            // this.lookupsService.getPageIncidentSourceHospitals({ healthAdministrationID: healthAdministrationID, reportingOrResidence: 1 }).subscribe((result: any) => {
-            //   if (result != null && result != undefined) {
-            //
-            //     this.incidentSources = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
-            //     result.data.forEach(inc => {
-            //       this.incidentSources.push(inc);
-            //     });
-
-            if (this.patient.incidentSourceId > 0) {
+            const patientSourceId = this.toPositiveInt(
+              this.patient.incidentSourceId,
+            );
+            if (patientSourceId != null) {
               this.selectedIncidentSource = this.incidentSources.filter(
-                (item) => item.id === this.patient.incidentSourceId
+                (item) => item.id === patientSourceId,
               );
-              this.selectedIncidentSourceId = this.patient.incidentSourceId;
+              this.selectedIncidentSourceId = patientSourceId;
             } else {
-              this.selectedIncidentSource = this.incidentSources.filter(
-                (item) =>
-                  item.id ===
+              let defaultSource: number | null = null;
+              try {
+                defaultSource = this.toPositiveInt(
                   JSON.parse(localStorage.getItem('ls.authorizationData')).user
-                    .incidentSourceId
+                    .incidentSourceId,
+                );
+              } catch {
+                defaultSource = null;
+              }
+              this.selectedIncidentSource = this.incidentSources.filter(
+                (item) => item.id === defaultSource,
               );
-              this.selectedIncidentSourceId = JSON.parse(
-                localStorage.getItem('ls.authorizationData')
-              ).user.incidentSourceId;
-              if (this.selectedIncidentSourceId == null)
-                this.selectedIncidentSourceId = -1;
+              this.selectedIncidentSourceId =
+                defaultSource != null ? defaultSource : -1;
             }
             if (this.selectedIncidentSourceId != -1) {
               this.onIncidentSourceChanged();
             }
-            //this.selectedIncidentSourceId = JSON.parse(localStorage.getItem('ls.authorizationData')).user.incidentSourceId;
-            //if (this.selectedIncidentSourceId != null && this.levelId != 1 && this.levelId != 2 && this.levelId!=3) {
-            //  this.onIncidentSourceChanged();
-            //}
-            //else { this.selectedIncidentSourceId = -1; }
+            this.cdr.detectChanges();
           }
           this.loadingPanel = false;
         },
@@ -711,22 +895,32 @@ export class IncidentInfoComponent implements OnInit {
   getDepartments() {
     this.lookupsService.getAllDepartments().subscribe(
       (result: any) => {
+        if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+          if (this.departmentFetchRetries < 3) {
+            this.departmentFetchRetries++;
+            setTimeout(() => this.getDepartments(), 250);
+            return;
+          }
+          this.departmentFetchRetries = 0;
+          this.loadingPanel = false;
+          return;
+        }
+        this.departmentFetchRetries = 0;
         if (result != null && result != undefined) {
+          const raw = this.extractApiDataArray(result);
           this.departments = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
           ];
-          result.data.forEach((dep) => {
-            this.departments.push(dep);
-          });
-          if (this.patient.incidentDepartmentId > 0) {
-            setTimeout(() => {
-              this.selectedDepartmentId = this.patient.incidentDepartmentId;
-            }, 800);
-          } else {
-            this.selectedDepartmentId = -1;
+          for (const row of raw) {
+            const opt = this.mapLookupRowToOption(row);
+            if (opt) {
+              this.departments.push(opt);
+            }
           }
+          this.syncDepartmentSelectionFromPatient();
         }
         this.loadingPanel = false;
+        this.cdr.detectChanges();
       },
       (error) => {
         this.loadingPanel = false;
@@ -738,6 +932,39 @@ export class IncidentInfoComponent implements OnInit {
       }
     );
   }
+
+  private syncDepartmentSelectionFromPatient(): void {
+    if (!this.departments?.length) {
+      return;
+    }
+    const deptId = this.toPositiveInt(this.patient?.incidentDepartmentId);
+    if (deptId == null) {
+      this.selectedDepartmentId = -1;
+      this.selectedDepartment = [];
+      this.generalDataService.isIncidentDepartmentValid =
+        this.generalDataService.checkIncidentDepartmentValid(
+          this.patient?.incidentDepartmentId,
+        );
+      this.cdr.markForCheck();
+      return;
+    }
+    const found = this.departments.find(
+      (d) => this.toPositiveInt(d?.id ?? d?.Id) === deptId,
+    );
+    if (found) {
+      const resolvedId = this.toPositiveInt(found.id ?? found.Id) ?? -1;
+      this.selectedDepartmentId = resolvedId;
+      this.selectedDepartment = [found];
+    } else {
+      this.selectedDepartmentId = deptId;
+      this.selectedDepartment = [];
+    }
+    this.generalDataService.isIncidentDepartmentValid =
+      this.generalDataService.checkIncidentDepartmentValid(
+        this.patient?.incidentDepartmentId,
+      );
+    this.cdr.markForCheck();
+  }
   onNationalIdChanged(value: any, isManualChange = false) {
     const isEgyptianNationality =
       this.patient.nationalityId == NationalityEnum.Egyptian;
@@ -748,9 +975,10 @@ export class IncidentInfoComponent implements OnInit {
       this.generalDataService.validateEgyptNational(value)
     ) {
       this.getGender(value);
-      this.getAllByNationalId(parseInt(value.toString()));
+      this.getAllByNationalId(value.toString());
     } else {
       this.Allpatients = [];
+      this.sharedDataService.duplicateNationalIdMatchCount = 0;
       // Only clear derived demographic fields for Egyptian-ID flow.
       if (isEgyptianNationality) {
         this.patient.age = null;
@@ -760,69 +988,42 @@ export class IncidentInfoComponent implements OnInit {
       }
     }
     if (isManualChange) {
-      this.sharedDataService.setPatientObject({
-        ...this.patient,
-        firstName: this.sharedDataService.isEditMode
-          ? this.patient.firstName
-          : null,
-        secondName: this.sharedDataService.isEditMode
-          ? this.patient.secondName
-          : null,
-        thirdName: this.sharedDataService.isEditMode
-          ? this.patient.thirdName
-          : null,
-        familyName: this.sharedDataService.isEditMode
-          ? this.patient.familyName
-          : null,
-        phoneNo1: this.sharedDataService.isEditMode
-          ? this.patient.phoneNo1
-          : null,
-        phoneNo2: this.sharedDataService.isEditMode
-          ? this.patient.phoneNo2
-          : null,
-        newPhoneNo1: this.sharedDataService.isEditMode
-          ? this.patient.newPhoneNo1
-          : null,
-        genderId: isEgyptianNationality ? null : this.patient.genderId,
-        birthDate: isEgyptianNationality ? null : this.patient.birthDate,
-        age: isEgyptianNationality ? null : this.patient.age,
-        ageTypeId: isEgyptianNationality ? null : this.patient.ageTypeId,
-        maritalStatusId: this.sharedDataService.isEditMode
-          ? this.patient.maritalStatusId
-          : null,
-        patientJobCategoryId: this.sharedDataService.isEditMode
-          ? this.patient.patientJobCategoryId
-          : null,
-        patientJobId: this.sharedDataService.isEditMode
-          ? this.patient.patientJobId
-          : null,
-        educationPhaseId: this.sharedDataService.isEditMode
-          ? this.patient.educationPhaseId
-          : null,
-        schoolCategoryId: this.sharedDataService.isEditMode
-          ? this.patient.schoolCategoryId
-          : null,
-        workAddress: this.sharedDataService.isEditMode
-          ? this.patient.workAddress
-          : null,
-        patientJobName: this.sharedDataService.isEditMode
-          ? this.patient.patientJobName
-          : null,
-      });
+      this.sharedDataService.setPatientObject(this.patient);
     }
   }
 
-  getAllByNationalId(nationalId) {
-    this.generalDataService.getAllByNationalId(nationalId.toString()).subscribe(
-      (res) => {
-        let date = res?.data;
-        this.Allpatients = date;
-        if (date?.length > 0) {
-          this.userMsg.success('المريض موجود مسبقا');
-        } else this.userMsg.info('المريض غير موجود مسبقا');
+  getAllByNationalId(nationalId: string) {
+    this.generalDataService.getAllByNationalId(nationalId).subscribe({
+      next: (res) => this.applyExistingPatientRecordsFromLookup(res?.data),
+      error: () => {
+        this.Allpatients = [];
+        this.sharedDataService.duplicateNationalIdMatchCount = 0;
+        this.translateService
+          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+          .subscribe((res: string) => {
+            this.userMsg.error(res);
+          });
       },
-      (err) => { }
-    );
+    });
+  }
+
+  private applyExistingPatientRecordsFromLookup(list: unknown): void {
+    const arr = Array.isArray(list) ? list : [];
+    this.Allpatients = arr;
+    this.sharedDataService.duplicateNationalIdMatchCount = arr.length;
+    if (arr.length > 0) {
+      this.translateService
+        .get(
+          'NEDSS.HOME.GENERAL_DATA_COMPLETION.EXISTING_PATIENT_RECORDS_FOUND',
+        )
+        .subscribe((msg: string) => this.userMsg.success(msg));
+    } else {
+      this.translateService
+        .get(
+          'NEDSS.HOME.GENERAL_DATA_COMPLETION.NO_PRIOR_PATIENT_WITH_NATIONAL_ID',
+        )
+        .subscribe((msg: string) => this.userMsg.info(msg));
+    }
   }
   onRelationShipDegreeIdChange() {
     if (this.patient.nationalId != null) {
@@ -899,90 +1100,123 @@ export class IncidentInfoComponent implements OnInit {
     }
     if (
       this.patient.passportNo != null &&
-      this.patient.passportNo?.length >= 20
+      String(this.patient.passportNo).trim().length >= 8
     ) {
       this.generalDataService
-        .getAllByPassportNo(parseInt(this.patient.passportNo))
-        .subscribe(
-          (res) => {
-            let date = res?.data;
-            this.Allpatients = date;
-            if (date?.length > 0) {
-              this.userMsg.success('المريض موجود مسبقا');
-            } else this.userMsg.info('المريض غير موجود مسبقا');
+        .getAllByPassportNo(String(this.patient.passportNo).trim())
+        .subscribe({
+          next: (res) => this.applyExistingPatientRecordsFromLookup(res?.data),
+          error: () => {
+            this.Allpatients = [];
+            this.sharedDataService.duplicateNationalIdMatchCount = 0;
+            this.translateService
+              .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+              .subscribe((res: string) => {
+                this.userMsg.error(res);
+              });
           },
-          (err) => { }
-        );
+        });
     } else {
       this.Allpatients = [];
+      this.sharedDataService.duplicateNationalIdMatchCount = 0;
     }
   }
-  editPationt(op) {
-    this.setPatient(op);
+
+  formatPatientName(op: any): string {
+    const parts = [
+      op?.firstName,
+      op?.secondName,
+      op?.thirdName,
+      op?.familyName,
+    ]
+      .map((p) => (p == null ? '' : String(p).trim()))
+      .filter((p) => p.length > 0);
+    return parts.length > 0 ? parts.join(' ') : '-';
   }
+
+  editPationt(op) {
+    if (op?.id == null) {
+      return;
+    }
+    this.loadingPanel = true;
+    this.generalDataService.getBy(op.id).subscribe(
+      (result: any) => {
+        this.loadingPanel = false;
+        if (result?.data) {
+          this.generalDataService.normalizePatientApiPayload(result.data);
+          this.setPatient(this.normalizePatientDates(result.data));
+          this.sharedDataService.duplicateNationalIdMatchCount = 0;
+        }
+      },
+      () => {
+        this.loadingPanel = false;
+        this.translateService
+          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+          .subscribe((res: string) => {
+            this.userMsg.error(res);
+          });
+      },
+    );
+  }
+
+  private normalizePatientDates(data: any): any {
+    const toYmd = (value: any): string | null => {
+      if (value == null || value === '') return null;
+      const d = new Date(value);
+      if (isNaN(d.getTime())) return null;
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    };
+    data.caseDiscoveryDate = toYmd(data.caseDiscoveryDate);
+    data.hospitalEntryDate = toYmd(data.hospitalEntryDate);
+    data.hospitalLeaveDate = toYmd(data.hospitalLeaveDate);
+    data.incidentDate = toYmd(data.incidentDate);
+    data.infectionDate = toYmd(data.infectionDate);
+    return data;
+  }
+
   setPatient(data: any) {
-    let patient = new PatientModel();
-
-    patient.incidentGovernmentId = data.incidentGovernmentId;
-
-    patient.incidentHealthAdministrationId =
-      data.incidentHealthAdministrationId;
-    patient.incidentSourceId = data.incidentSourceId;
-    patient.nationalityId = data.nationalityId;
-    patient.incidentDepartmentId = data.incidentDepartmentId;
-
-    patient.nationalId = data.nationalId;
-    patient.nationalityId = data.nationalityId;
-
-    patient.relationShipDegreeId = data.relationShipDegreeId;
-    patient.caseDiscoveryDate = data.caseDiscoveryDate;
-    patient.caseDiscoveryTime = data.caseDiscoveryTime;
-
-    patient.passportNo = data.passportNo;
-    patient.firstName = data.firstName;
-    patient.secondName = data.secondName;
-    patient.thirdName = data.thirdName;
-    patient.familyName = data.familyName;
-    patient.phoneNo1 = data.phoneNo1;
-    patient.phoneNo2 = data.phoneNo2;
-    patient.newPhoneNo1 = data.newPhoneNo1;
-    patient.genderId = data.genderId;
-    patient.birthDate = data.birthDate;
-    patient.age = data.age;
-    patient.patientJobCategoryId = data.patientJobCategoryId;
-
-    patient.maritalStatusId = data.maritalStatusId;
-    patient.educationPhaseId = data.educationPhaseId;
-    patient.schoolCategoryId = data.schoolCategoryId;
-    patient.workAddress = data.workAddress;
-    patient.homeGovernmentId = data.homeGovernmentId;
-    patient.homeHealthAdministrationId = data.homeHealthAdministrationId;
-    patient.homeCityId = data.homeCityId;
-    patient.homeHealthOfficeId = data.homeHealthOfficeId;
-    patient.homePrincipalityId = data.homePrincipalityId;
-    patient.livingAddress = data.livingAddress;
-    patient.homeGovernmentId = data.homeGovernmentId;
+    this.generalDataService.normalizePatientApiPayload(data);
+    const patient: PatientModel = Object.assign(new PatientModel(), data);
     patient.clinicalSymptomIds =
       data?.clinicalSymptomIds ?? data?.ClinicalSymptomIds ?? [];
+
     if (patient.feverSymptoms == undefined || patient.feverSymptoms == null) {
       patient.feverSymptoms = new FeverSymptoms();
     }
-    patient.incidentBranchId = data.SelectedbranchId;
-    this.sharedDataService.setPatientObject(patient);
 
-    this.selectedGovernment = this.governments.filter(
-      (x) => x.id == patient.incidentGovernmentId
-    );
-    this.selectedGovernmentId = patient.incidentGovernmentId;
-    this.onGovernmentChanged();
-    this.selectedDepartment = this.departments.filter(
-      (x) => x.id == patient.incidentDepartmentId
-    );
-    this.selectedDepartmentId = patient.incidentDepartmentId;
-    this.selectedNationality = this.nationalities.filter(
-      (x) => x.id == patient.nationalityId
-    );
-    this.selectedNationalityId = patient.nationalityId;
+    this.sharedDataService.isEditMode = true;
+    if (patient.id != null) {
+      this.sharedDataService.patientId = patient.id;
+      localStorage.setItem('patientId', patient.id.toString());
+    }
+
+    this.incidentLocationHydratedForPatientId = null;
+    this.lastSeenPatientIdForIncidentHydrate = null;
+
+    this.isSettingPatientLocally = true;
+    this.patient = patient;
+    this.sharedDataService.setPatientObject(patient);
+    this.isSettingPatientLocally = false;
+
+    if (this.governments?.length > 0) {
+      this.selectedGovernment = this.governments.filter(
+        (x) => x.id == patient.incidentGovernmentId,
+      );
+      this.selectedGovernmentId = patient.incidentGovernmentId;
+      this.incidentLocationHydratedForPatientId = patient.id;
+      this.lastSeenPatientIdForIncidentHydrate = patient.id;
+      this.onGovernmentChanged();
+    }
+    this.syncDepartmentSelectionFromPatient();
+    if (this.nationalities?.length > 0) {
+      this.selectedNationality = this.nationalities.filter(
+        (x) => x.id == patient.nationalityId,
+      );
+      this.selectedNationalityId = patient.nationalityId;
+    }
   }
 
   isDiscoveryTimeValid(): boolean {
@@ -1023,5 +1257,10 @@ export class IncidentInfoComponent implements OnInit {
       this.delay = false;
       clearTimeout(this.timer);
     }, 0);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

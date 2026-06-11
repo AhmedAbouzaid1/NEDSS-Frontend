@@ -41,7 +41,8 @@ import { WhoopingCoughComponent } from './investigation/complete-investigation/w
 import { DiphtheriaComponent } from './investigation/complete-investigation/diphtheria/diphtheria.component';
 import { HemorrhagicFeversComponent } from './investigation/complete-investigation/hemorrhagic-fevers/hemorrhagic-fevers.component';
 import { MalariaComponent } from './investigation/complete-investigation/malaria/malaria.component';
-import { SchistosomiasisFasciolaComponent } from './investigation/complete-investigation/schistosomiasis-fasciola/schistosomiasis-fasciola.component';
+import { SchistosomiasisComponent } from './investigation/complete-investigation/schistosomiasis/schistosomiasis.component';
+import { FasciolaComponent } from './investigation/complete-investigation/fasciola/fasciola.component';
 
 import { BrucellaComponent } from './investigation/complete-investigation/brucella/brucella.component';
 import { MeningealComponent } from './investigation/complete-investigation/meningeal/meningeal.component';
@@ -58,6 +59,7 @@ import { CholeraComponent } from './investigation/complete-investigation/cholera
 import { DiarrheaComponent } from './investigation/complete-investigation/diarrhea/diarrhea.component';
 import { FalseChickenpoxComponent } from './investigation/complete-investigation/false-chickenpox/false-chickenpox.component';
 import { FilariasisComponent } from './investigation/complete-investigation/filariasis/filariasis.component';
+import { TrachomaComponent } from './investigation/complete-investigation/trachoma/trachoma.component';
 import { HepatitisVirusesComponent } from './investigation/complete-investigation/hepatitis-viruses/hepatitis-viruses.component';
 import { HivComponent } from './investigation/complete-investigation/hiv/hiv.component';
 import { LeishmaniaComponent } from './investigation/complete-investigation/leishmania/leishmania.component';
@@ -96,8 +98,6 @@ import { DiseaseBasedOnResultComponent } from './reports/disease-based-on-result
 import { DiseaseBasedOnDiagnosisComponent } from './reports/disease-based-on-diagnosis/disease-based-on-diagnosis.component';
 import { DiseaseBasedOnAgeComponent } from './reports/disease-based-on-age/disease-based-on-age.component';
 import { DiseaseBasedOnPatientComponent } from './reports/disease-based-on-patient/disease-based-on-patient.component';
-import { SchistosomiasisComponent } from './investigation/complete-investigation/schistosomiasis/schistosomiasis.component';
-import { FasciolaComponent } from './investigation/complete-investigation/fasciola/fasciola.component';
 import { MergeRepeatedRecordsComponent } from './repeated-records/merge-repeated-records/merge-repeated-records.component';
 import { UserReportComponent } from './reports/user-report/user-report.component';
 import { DiseasesRulesReportComponent } from './reports/diseases-rules-report/diseases-rules-report.component';
@@ -308,8 +308,14 @@ const routes: Routes = [
         data: { types: [3] },
       },
       {
-        path: 'schistosomiasis-fasciola/:id/diseaseId/:diseaseId',
-        component: SchistosomiasisFasciolaComponent,
+        path: 'schistosomiasis/:id/diseaseId/:diseaseId',
+        component: SchistosomiasisComponent,
+        canActivate: [AuthGuard, NavigationGuard],
+        data: { types: [3] },
+      },
+      {
+        path: 'fasciola/:id/diseaseId/:diseaseId',
+        component: FasciolaComponent,
         canActivate: [AuthGuard, NavigationGuard],
         data: { types: [3] },
       },
@@ -352,6 +358,12 @@ const routes: Routes = [
       {
         path: 'filariasis/:id/diseaseId/:diseaseId',
         component: FilariasisComponent,
+        canActivate: [AuthGuard, NavigationGuard],
+        data: { types: [3] },
+      },
+      {
+        path: 'trachoma/:id/diseaseId/:diseaseId',
+        component: TrachomaComponent,
         canActivate: [AuthGuard, NavigationGuard],
         data: { types: [3] },
       },
@@ -487,10 +499,6 @@ const routes: Routes = [
                 component: SchistosomiasisComponent,
               },
               {
-                path: 'schistosomiasis',
-                component: SchistosomiasisComponent,
-              },
-              {
                 path: 'fasciola',
                 component: FasciolaComponent,
               },
@@ -507,6 +515,7 @@ const routes: Routes = [
               { path: 'bloodyDiarrhea', component: BloodyDiarrheaComponent },
               //bloodyDiarrhea
               { path: 'filariasis', component: FilariasisComponent },
+              { path: 'trachoma', component: TrachomaComponent },
               { path: 'leishmania', component: LeishmaniaComponent },
               { path: 'tuberculosis', component: TuberculosisComponent },
               { path: 'bloodyDiarrhea', component: BloodyDiarrheaComponent },

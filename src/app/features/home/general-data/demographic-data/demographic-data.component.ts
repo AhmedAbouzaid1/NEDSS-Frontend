@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   ViewChildren,
   QueryList,
   ElementRef,
@@ -23,13 +24,17 @@ import { SharedDataService } from '../services/shared-data.service';
 import { GeneralDataService } from '../services/general-data.service';
 import { RelativeEnum } from '../models/relative-enum';
 import { NationalityEnum } from '../models/nationality-enum';
+import { DepartmentEnum } from '../models/department-enum';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-demographic-data',
   templateUrl: './demographic-data.component.html',
   styleUrls: ['./demographic-data.component.css'],
 })
-export class DemographicDataComponent implements OnInit {
+export class DemographicDataComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   showPatientJobName: boolean = false;
   patient: PatientModel = new PatientModel();
   jobCategories!: any[];
@@ -81,6 +86,15 @@ export class DemographicDataComponent implements OnInit {
     return NationalityEnum
   }
 
+  public get departmentEnum(): typeof DepartmentEnum {
+    return DepartmentEnum;
+  }
+
+  get isPhoneRequired(): boolean {
+    return this.patient?.incidentDepartmentId == DepartmentEnum.Internal
+      || this.patient?.incidentDepartmentId == DepartmentEnum.ICU;
+  }
+
 
 
   ngOnInit() {
@@ -97,8 +111,10 @@ export class DemographicDataComponent implements OnInit {
         localStorage.getItem('ls.currentLang') !== 'undefined'
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
-    this.sharedDataService.getPatientObject().subscribe((patientObject) => {
-      this.patient = this.normalizePatientForDisplay(patientObject);
+    this.sharedDataService.getPatientObject().pipe(takeUntil(this.destroy$)).subscribe((patientObject) => {
+      this.normalizePatientForDisplay(patientObject);
+      this.patient = patientObject;
+      this.syncJobCategoryFromPatient();
     });
     this.getJobCategories();
 
@@ -107,8 +123,8 @@ export class DemographicDataComponent implements OnInit {
     this.loadingPanel = false;
   }
 
-  private normalizePatientForDisplay(patientObject: PatientModel): PatientModel {
-    const patient = { ...patientObject };
+  private normalizePatientForDisplay(patient: PatientModel): void {
+    if (!patient) return;
 
     patient.genderId = this.toNumberOrNull(patient.genderId);
     patient.age = this.toNumberOrNull(patient.age);
@@ -120,8 +136,6 @@ export class DemographicDataComponent implements OnInit {
         patient.birthDate = parsedDate as any;
       }
     }
-
-    return patient;
   }
 
   private toNumberOrNull(value: any): number | null {
@@ -186,16 +200,7 @@ export class DemographicDataComponent implements OnInit {
           result.data.forEach((job) => {
             this.jobCategories.push(job);
           });
-          setTimeout(() => {
-            if (this.patient.patientJobCategoryId > 0) {
-              this.selectedJobCategoryId = this.patient.patientJobCategoryId;
-            } else {
-              this.selectedJobCategoryId = -1;
-            }
-            this.onJobCategoryChanged();
-          }, 200);
-
-          // this.getJobs(this.patient.patientJobCategoryId);
+          this.syncJobCategoryFromPatient();
         }
         this.loadingPanel = false;
       },
@@ -208,6 +213,16 @@ export class DemographicDataComponent implements OnInit {
           });
       }
     );
+  }
+
+  private syncJobCategoryFromPatient(): void {
+    if (!this.jobCategories?.length) return;
+    if (this.patient.patientJobCategoryId > 0) {
+      this.selectedJobCategoryId = this.patient.patientJobCategoryId;
+    } else {
+      this.selectedJobCategoryId = -1;
+    }
+    this.onJobCategoryChanged();
   }
 
   getJobs(jobCategoryId: any) {
@@ -280,9 +295,8 @@ export class DemographicDataComponent implements OnInit {
       this.patient.ageTypeId = 1;
     }
   }
-  // checkInput(inputElement:HTMLInputElement){
-  //   if(inputElement.value){
-  //     inputElement.focus();
-  //   }else{}
-  // }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

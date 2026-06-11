@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { AnswerOptions, contactsBeenDosed, typeLeprosy } from 'src/app/core/constants';
+import { AnswerOptions, contactsBeenDosed } from 'src/app/core/constants';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
+import { calculateCompletionStats } from '../shared/investigation-summary.utils';
 @Component({
   selector: 'app-leper',
   templateUrl: './leper.component.html',
@@ -15,56 +16,35 @@ export class LeperComponent implements OnInit {
       localStorage.getItem('ls.currentLang') !== 'undefined'
       ? localStorage.getItem('ls.currentLang')
       : 'ar';
+  allFilledControlsCount: number = 0;
+  allControllesCount: number = 0;
+  patientName: string;
   constructor(private investigationService: InvestigationService,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
     private datePipe: DatePipe
   ) {
-
+    if (this.investigationService.patient.firstName != null && this.investigationService.patient.firstName != undefined) {
+      this.patientName = this.investigationService.patient.firstName + " " + this.investigationService.patient.secondName + " " + this.investigationService.patient.thirdName;
+    }
   }
 
   leperData = {
     diseaseGroupId: this.investigationService.diseaseGroupID,
     patientID: null,
     id: null,
-    fever: 0,
-    feverDurationDay: 0,
-    maxTemperature: 0,
-    skinLesion: null,
-    typeInjury: null,
-    patchesSkin: null,
-    leatherNecklace: null,
-    leak: 0,
-    nerveEnlargement: null,
-    lossFeeling: null,
-    muscleWeakness: null,
-    typeLeprosy: null,
-    patientCoexistingLongTime: null,
-    relationshipWithPatient: null,
-    closeContactMedicalCondition: null,
-    isTreatmentCompleted: null,
-    infectedWithDisease: null,
-    dateInjury: null,
-    numberContacts: 0,
-    contactsBeenDosed: 1,
+    investigationCompletePercentage: null,
+    numberContacts: null,
+    contactsBeenDosed: null,
     dateDoseContacts: null,
     vaccinatedBcgVaccine: null,
   }
 
-  skinLesions = AnswerOptions;
-  patchesSkins = AnswerOptions;
-  leatherNecklaces = AnswerOptions;
-  leaks = AnswerOptions;
-  typeLeprosys = typeLeprosy;
-  nerveEnlargements = AnswerOptions;
-  lossFeelings = AnswerOptions;
-  muscleWeaknesss = AnswerOptions;
-  patientCoexistingLongTimes = AnswerOptions;
-  closeContactMedicalConditions = AnswerOptions;
-  isTreatmentCompleteds = AnswerOptions;
-  infectedWithDiseases = AnswerOptions;
   vaccinatedBcgVaccines = AnswerOptions;
-  contactsBeenDoseds = contactsBeenDosed;
+  contactsBeenDoseds = contactsBeenDosed.map((item) => ({
+    ...item,
+    englishName: item.arabicName,
+  }));
   currentId: any;
   ngOnInit(): void {
     this.currentId = this.investigationService.currentid
@@ -74,11 +54,19 @@ export class LeperComponent implements OnInit {
         console.log(res);
         var v = res.data;
         if (v != null) {
-          this.leperData = v
-          this.leperData.dateDoseContacts = this.datePipe.transform(this.leperData.dateDoseContacts, 'yyyy-MM-dd');
-          this.leperData.dateInjury = this.datePipe.transform(this.leperData.dateInjury, 'yyyy-MM-dd');
-          
+          this.leperData = {
+            diseaseGroupId: v.diseaseGroupId ?? this.investigationService.diseaseGroupID,
+            patientID: v.patientID ?? this.currentId,
+            id: v.id ?? null,
+            investigationCompletePercentage: v.investigationCompletePercentage ?? null,
+            numberContacts: v.numberContacts ?? 0,
+            contactsBeenDosed: v.contactsBeenDosed ?? 1,
+            dateDoseContacts: this.datePipe.transform(v.dateDoseContacts, 'yyyy-MM-dd'),
+            vaccinatedBcgVaccine: v.vaccinatedBcgVaccine ?? null,
+          };
         }
+
+        this.calculateCompletionPercentage();
 
       }
       , (error) => {
@@ -91,19 +79,37 @@ export class LeperComponent implements OnInit {
     )
   }
   save() {
-    //console.log(this.rabiesForm.value);
+    this.calculateCompletionPercentage();
 
-    this.leperData.diseaseGroupId = this.investigationService.diseaseGroupID
-    if (this.leperData != null && this.leperData.id != null) {
-      this.investigationService.updateSevereleper(this.leperData).subscribe(
-        (response: any) => {
-          if (response) {
-            this.translateService
-              .get('NEDSS.COMMON.SENT_SUCESSFULLY')
-              .subscribe((res: string) => {
-                this.userMsg.success(res);
-              });
-          }
+    const payload = {
+      diseaseGroupId: this.investigationService.diseaseGroupID,
+      patientID: this.leperData.patientID,
+      id: this.leperData.id,
+      investigationCompletePercentage: this.allControllesCount === 0
+        ? 0
+        : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)),
+      numberContacts: this.leperData.numberContacts,
+      contactsBeenDosed: this.leperData.contactsBeenDosed,
+      dateDoseContacts: this.leperData.dateDoseContacts,
+      vaccinatedBcgVaccine: this.leperData.vaccinatedBcgVaccine,
+    };
+
+    (Object.keys(payload) as Array<keyof typeof payload>).forEach((key) => {
+      if (payload[key] === 'null') {
+        payload[key] = null;
+      }
+    });
+
+    this.leperData.investigationCompletePercentage = payload.investigationCompletePercentage;
+    this.leperData.diseaseGroupId = payload.diseaseGroupId
+    if (payload.id != null) {
+      this.investigationService.updateSevereleper(payload).subscribe(
+        () => {
+          this.translateService
+            .get('NEDSS.COMMON.SENT_SUCESSFULLY')
+            .subscribe((res: string) => {
+              this.userMsg.success(res);
+            });
         }
         , (error) => {
           this.translateService
@@ -114,9 +120,13 @@ export class LeperComponent implements OnInit {
         }
       )
     } else {
-      this.investigationService.addInvestigationleper(this.leperData).subscribe(
+      this.investigationService.addInvestigationleper(payload).subscribe(
         (response: any) => {
           if (response) {
+            if (response?.data?.id != null) {
+              this.leperData.id = response.data.id;
+              this.currentId = response.data.patientID ?? this.currentId;
+            }
             this.translateService
               .get('NEDSS.COMMON.SENT_SUCESSFULLY')
               .subscribe((res: string) => {
@@ -133,6 +143,15 @@ export class LeperComponent implements OnInit {
         }
       )
     }
+  }
+
+  calculateCompletionPercentage() {
+    const stats = calculateCompletionStats(this.leperData, {
+      excludedFields: ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate']
+    });
+
+    this.allControllesCount = stats.totalFields;
+    this.allFilledControlsCount = stats.filledFields;
   }
 
 }

@@ -1,3 +1,33 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.general-data-form,
+.general-data-form__sections {
+  width: 100%;
+  max-width: 100%;
+}
+
+:host ::ng-deep app-incident-info,
+:host ::ng-deep app-demographic-data,
+:host ::ng-deep app-residence-info,
+:host ::ng-deep app-diagonistics,
+:host ::ng-deep app-clinical-symptoms,
+:host ::ng-deep app-special-symptoms,
+:host ::ng-deep app-sentinel {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+:host ::ng-deep .card,
+:host ::ng-deep .small-screen-card {
+  width: 100% !important;
+  max-width: 100%;
+}
+
 .content-center button {
   position: relative;
   top: -30px;
@@ -5,8 +35,139 @@
   margin-top: 17px;
 }
 
-.save-button-bar.floating {
+.save-button-bar {
+  --save-bar-accent: #007bff;
+  --save-bar-accent-hover: #0069d9;
+  --save-bar-border: rgba(15, 23, 42, 0.08);
+  --save-bar-sidebar-collapsed: 75px;
+  --save-bar-sidebar-expanded: 260px;
+
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  background: transparent;
+  border-top: 1px solid var(--save-bar-border);
+  transition: padding 0.2s ease;
+}
+
+.save-button-bar__inner {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.save-button-bar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  min-width: 9.5rem;
+  padding: 0.625rem 1.375rem;
+  border: none;
+  border-radius: 0.625rem;
+  background-color: var(--save-bar-accent);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.save-button-bar__btn:hover:not(:disabled) {
+  background-color: var(--save-bar-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.save-button-bar__btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.save-button-bar__btn:focus-visible {
+  outline: 2px solid rgba(0, 123, 255, 0.45);
+  outline-offset: 2px;
+}
+
+.save-button-bar__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.save-button-bar__btn .bi {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.save-button-bar--elevated {
   position: sticky;
   bottom: 0;
   z-index: 100;
+  margin-top: 1.5rem;
+  padding: 0.875rem 0;
+  padding-bottom: calc(0.875rem + env(safe-area-inset-bottom, 0px));
+  border-top-color: transparent;
+  background: transparent;
+}
+
+body.dark-mode .save-button-bar {
+  --save-bar-border: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 767.98px) {
+  .save-button-bar {
+    position: fixed;
+    left: calc(var(--save-bar-sidebar-collapsed) + 0.875rem);
+    right: 0.875rem;
+    bottom: calc(0.875rem + env(safe-area-inset-bottom, 0px));
+    z-index: 100;
+    display: flex;
+    justify-content: flex-start;
+    direction: ltr;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+  }
+
+  :host-context(.main-container:not(.nav-collapsed)) .save-button-bar {
+    left: calc(var(--save-bar-sidebar-expanded) + 0.875rem);
+  }
+
+  :host-context(.ar) .save-button-bar {
+    left: 0.875rem;
+    right: calc(var(--save-bar-sidebar-collapsed) + 0.875rem);
+  }
+
+  :host-context(.ar .main-container:not(.nav-collapsed)) .save-button-bar {
+    right: calc(var(--save-bar-sidebar-expanded) + 0.875rem);
+  }
+
+  .save-button-bar__inner {
+    justify-content: flex-start;
+    width: auto;
+  }
+
+  .save-button-bar__btn {
+    width: auto;
+    min-width: 9.5rem;
+    min-height: 3rem;
+    border-radius: 0.625rem;
+  }
+
+  .save-button-bar-spacer {
+    height: calc(5rem + env(safe-area-inset-bottom, 0px));
+  }
 }

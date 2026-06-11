@@ -661,6 +661,20 @@ export class LookupsGetterService {
       return data;
     }
   }
+
+  getAllGovernmentsExplicit(forSystemUser: boolean = false, dedupeKey?: string) {
+    const k =
+      dedupeKey != null && dedupeKey !== ''
+        ? '&_k=' + encodeURIComponent(dedupeKey)
+        : '';
+    return this.APIs.get(
+      this.GovernmentControllerURL +
+        'GetAll?forSystemUser=' +
+        (forSystemUser ? 'true' : 'false') +
+        k,
+    );
+  }
+
   getAllGovernmentsForUser(forSystemUser: boolean) {
     return this.APIs.get(
       this.GovernmentControllerURL + 'GetAll?forSystemUser=' + true

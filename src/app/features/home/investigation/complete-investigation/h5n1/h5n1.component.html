@@ -17,6 +17,26 @@
                 <div class="col-12 title fs-6 fwb"> {{ "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data" | translate }}</div>
                 <div class="col-lg-6">
                   <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Condition_Classification" | translate }}</label>
+                    <select name="" id="" class="form-control" formControlName="conditionClassification">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.Suspected" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.Confirmed" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Condition_Assessment" | translate }}</label>
+                    <select name="" id="" class="form-control" formControlName="conditionAssessment">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.Simple" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.Medium" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.Severe" | translate }}</option>
+                      <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.Critical" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
                     <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.Diagnosis_Pneumonia" | translate }} </label>
                     <select name="" id="" class="form-control" formControlName="diagnosisOfPneumonia">
                       <option *ngFor="let item of answerOptions" value="{{ item.id }}">
@@ -60,7 +80,7 @@
                     <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.Reservation_Intensive_Care_Unit" | translate
                       }}</label>
                     <select name="" id="" class="form-control" formControlName="reservationintheintensiveCareUnit">
-                      <option *ngFor="let item of answerOptions" value="{{ item.id }}">
+                      <option *ngFor="let item of answerOptions2" value="{{ item.id }}">
                         {{ item.arabicName }}
                       </option>
                     </select>
@@ -78,29 +98,8 @@
                 <div class="col-lg-3">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Number_DaysCustody" | translate }}</label>
-                    <input type="number" name="" id="" class="form-control" formControlName="numberOfDaysOfCustody" />
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Oxygen_Use" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="oxygenUse">
-                      <option *ngFor="let item of answerOptions" value="{{ item.id }}">
-                        {{ item.arabicName }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.In_Case_Yes_Type" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="maskType">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.Nose_Mask" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.Face_Mask" | translate }}</option>
-                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.Reservoir_Mask" | translate }}</option>
-                    </select>
+                    <input type="number" name="" id="" min="0" class="form-control"
+                      formControlName="numberOfDaysOfCustody" />
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
@@ -118,9 +117,10 @@
                 <div class="col-lg-3">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.In_Case_Yes_Type" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="useOfARespiratorIsTrue">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.Penetration" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.Non_Penetration" | translate }}</option>
+                    <select name="" id="" class="form-control" formControlName="maskType">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.Mask_Oxygen" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.Artificial_Respiration" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.Ecmo" | translate }}</option>
                     </select>
                   </div>
                 </div>
@@ -136,153 +136,109 @@
                 <div class="col-lg-3">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Number_Days_Placement_Device" | translate }}</label>
-                    <input type="number" name="" id="" class="form-control"
+                    <input type="number" name="" id="" class="form-control" min="0"
                       formControlName="numberOfDaysOfPlacementOnDevice" />
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Condition_Assessment" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="conditionAssessment">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.Simple" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.Medium" | translate }}</option>
-                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.Severe" | translate }}</option>
-                      <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.Critical" | translate }}</option>
-                    </select>
                   </div>
                 </div>
                 <!-- /.col-lg-12 -->
                 <app-patient-visit-history [visits]="patientVisitHistory"
                   (visitsChanged)="calculateCompletePercentage()">
                 </app-patient-visit-history>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Notes" | translate }}</label>
+                    <input class="form-control" name="" id="" type="text" formControlName="notes" />
+                  </div>
+                </div>
               </div>
               <!-- / .row -->
             </div>
             <!-- / .col-12 -->
           </div>
           <!-- / .row -->
-          <div class=" color">
-            <div class=" card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+          <div class="row color">
+            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
               <div class="row">
-                <div class="col-12 title fs-6 fwb">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.HEALTH_ADMIN_EPIDEMIOLOGY" | translate }}
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.Oseltamivir" | translate }}</label>
+                    <select name="" id="" class="form-control" formControlName="diagnoseOseltamivir">
+                      <option *ngFor="let item of answerOptions" value="{{ item.id }}">
+                        {{ item.arabicName }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
-                <div class="col-lg-12 mb-4 color-d-2">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CURRENT_TREATMENT_AND_DOSES" | translate }}
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES" | translate }}</label>
+                    <input type="date" name="" id="" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
+                      formControlName="dateOfTakingOseltamivir" />
+                  </div>
                 </div>
-                <div class="table-responsive table-none-scroll">
-                  <table class="table table-bordered table-hover table-striped">
-                    <thead>
-                      <tr>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TREATMENT_TYPE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TREATMENT_START_DATE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.DOSE" | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="typeOfTreatment1" />
-                        </td>
-                        <td>
-                          <input type="date" placeholder="dd/mm/yyyy" [class]="'form-control-'+ currentLang" name=""
-                            formControlName="treatmentStartDate1" />
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="dose1" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="typeOfTreatment2" />
-                        </td>
-                        <td>
-                          <input type="date" placeholder="dd/mm/yyyy" [class]="'form-control-'+ currentLang" name=""
-                            formControlName="treatmentStartDate2" />
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="dose2" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="typeOfTreatment3" />
-                        </td>
-                        <td>
-                          <input type="date" placeholder="dd/mm/yyyy" [class]="'form-control-'+ currentLang" name=""
-                            formControlName="treatmentStartDate3" />
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="dose3" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="typeOfTreatment4" />
-                        </td>
-                        <td>
-                          <input type="date" placeholder="dd/mm/yyyy" [class]="'form-control-'+ currentLang" name=""
-                            formControlName="treatmentStartDate4" />
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="dose4" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="typeOfTreatment5" />
-                        </td>
-                        <td>
-                          <input type="date" placeholder="dd/mm/yyyy" [class]="'form-control-'+ currentLang" name=""
-                            formControlName="treatmentStartDate5" />
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="dose5" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="typeOfTreatment6" />
-                        </td>
-                        <td>
-                          <input type="date" placeholder="dd/mm/yyyy" [class]="'form-control-'+ currentLang" name=""
-                            formControlName="treatmentStartDate6" />
-                        </td>
-                        <td>
-                          <input type="text" class="form-control" name="" formControlName="dose6" />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.WAS_IT_REPEATED" | translate }}</label>
+                    <select name="" id="" class="form-control" formControlName="repeatedOseltamivir">
+                      <option *ngFor="let item of answerOptions2" value="{{ item.id }}">
+                        {{ item.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.ANTIVIRAL_TAKEN" | translate }}</label>
+                    <select name="" id="" class="form-control" formControlName="diagnoseAntiviral">
+                      <option *ngFor="let item of answerOptions" value="{{ item.id }}">
+                        {{ item.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES_ANTIVIRAL" | translate }}</label>
+                    <input type="text" name="" id="" [class]="'form-control-'+ currentLang"
+                      formControlName="nameOfAntiviral" />
+                  </div>
                 </div>
               </div>
-              <!-- / .row -->
             </div>
-            <!-- / .col-12 -->
           </div>
-          <!-- / .row -->
-          <!-- / .row -->
 
           <div class="row color">
             <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
               <div class="row align-items-center">
                 <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.exposure_Data" | translate }}</div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.EXPOSURE_TO_BIRDS" | translate }}</label>
+                    <select name="" id="" class="form-control" formControlName="fieldOfWorkBirdsAnimals">
+                      <option *ngFor="let item of answerOptions2" value="{{ item.id }}">
+                        {{ item.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 color-d-2 mb-3">
+                  {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES_EXPOSURE_TYPE" | translate }}
+                </div>
                 <div class="col-lg-12">
                   <div class="table-responsive table-none-scroll">
                     <table class="table table-bordered table-hover table-striped">
                       <thead>
                         <tr>
-                          <th row="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ANIMAL_BIRD_TYPE" | translate }}</th>
-                          <th colspan="5">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.EXPOSURE_METHOD" | translate }}</th>
-                          <th colspan="5">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.EXPOSURE_PLACE" | translate }}</th>
+                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ANIMAL_BIRD_TYPE" | translate }}</th>
+                          <th colspan="4">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.EXPOSURE_METHOD" | translate }}</th>
+                          <th colspan="4">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.EXPOSURE_PLACE" | translate }}</th>
                           <th colspan="3">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ANIMAL_CONDITION" | translate }}</th>
                         </tr>
                         <tr>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.BREEDING" | translate }}</th>
                           <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.SLAUGHTER" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PREPARATION" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PRESENCE" | translate }}</th>
+                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CLEANING_OR_PREPARATION" | translate }}</th>
+                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.BREEDING" | translate }}</th>
                           <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.HUNTING" | translate }}</th>
                           <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.HOME" | translate }}</th>
                           <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.MARKET" | translate }}</th>
@@ -644,86 +600,63 @@
                               formControlName="migratoryBirdsCantAnimalCondition" />
                           </td>
                         </tr>
-                        <tr>
-                          <td>
-                            <input type="text" formControlName="otherAnimal"
-                              [placeholder]="'NEDSS.COMPLETE_INVESTEGATION.Other' | translate" name="otherAnimal" id=""
-                              class="form-control-plaintext border-top" />
-                          </td>
-                          <td>
-                            <input name="otherExposureMethodEquip" type="checkbox"
-                              formControlName="otherExposureMethodEquip" />
-                          </td>
-                          <td>
-                            <input name="otherEquipMethodSlaughter" type="checkbox"
-                              formControlName="otherEquipMethodSlaughter" />
-                          </td>
-                          <td>
-                            <input name="otherExposureMethodExistence" type="checkbox"
-                              formControlName="otherExposureMethodExistence" />
-                          </td>
-                          <td>
-                            <input name="otherExposureMethodHunt" type="checkbox"
-                              formControlName="otherExposureMethodHunt" />
-                          </td>
-                          <td>
-                            <input name="otherHomePlaceExposure" type="checkbox"
-                              formControlName="otherHomePlaceExposure" />
-                          </td>
-                          <td>
-                            <input name="otherMarketPlaceExposure" type="checkbox"
-                              formControlName="otherMarketPlaceExposure" />
-                          </td>
-                          <td>
-                            <input name="otherShopPlaceExposure" type="checkbox"
-                              formControlName="otherShopPlaceExposure" />
-                          </td>
-                          <td>
-                            <input name="otherFarmPlaceExposure" type="checkbox"
-                              formControlName="otherFarmPlaceExposure" />
-                          </td>
-                          <td>
-                            <input name="otherGoodAnimalCondition" type="checkbox"
-                              formControlName="otherGoodAnimalCondition" />
-                          </td>
-                          <td>
-                            <input name="otherSickAnimalCondition" type="checkbox"
-                              formControlName="otherSickAnimalCondition" />
-                          </td>
-                          <td>
-                            <input name="otherCantAnimalCondition" type="checkbox"
-                              formControlName="otherCantAnimalCondition" />
-                          </td>
-                        </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.USED_PROTECTIVE_EQUIPMENT_WITH_BIRDS" |
-                      translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="usedProtectiveEquipmentWithBirds">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION1" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION2" | translate }}</option>
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.BIRD_WASTE_EXPOSURE_14_DAYS" | translate
+                      }}</label>
+                    <select name="" id="" class="form-control" formControlName="birdWasteExposure">
+                      <option *ngFor="let item of answerOptions" value="{{ item.id }}">
+                        {{ item.arabicName }}
+                      </option>
                     </select>
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.USED_PROTECTIVE_EQUIPMENT_DURING_EXPOSURE" |
+                      translate }}</label>
+                    <select name="" id="" class="form-control" formControlName="usedProtectiveEquipmentWithBirds">
+                      <option *ngFor="let item of answerOptions2" value="{{ item.id }}">
+                        {{ item.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-12 my-4">
+                  <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PROTECTIVE_EQUIPMENT_DETAILS" | translate
                       }}</label>
-                    <input type="text" name="" id="" class="form-control"
-                      formControlName="protectiveEquipmentDetails" />
+                    <div class="d-flex flex-wrap gap-4 mt-2">
+                      <label>
+                        <input name="protectiveEquipmentPersonal" type="checkbox"
+                          formControlName="protectiveEquipmentPersonal" />
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PERSONAL_PROTECTIVE_EQUIPMENT" | translate }}
+                      </label>
+                      <label>
+                        <input name="protectiveEquipmentDisinfectants" type="checkbox"
+                          formControlName="protectiveEquipmentDisinfectants" />
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CLEANERS_AND_DISINFECTANTS" | translate }}
+                      </label>
+                      <label>
+                        <input name="protectiveEquipmentPlasticBags" type="checkbox"
+                          formControlName="protectiveEquipmentPlasticBags" />
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PLASTIC_BAGS" | translate }}
+                      </label>
+                    </div>
                   </div>
                 </div>
                 <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.OCCUPATIONAL_EXPOSURE" |
                   translate }}</div>
                 <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.WORK_WITH_BIRDS_ANIMALS_QUESTION" | translate
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PATIENT_WORKS_IN_ANY_OF_THESE_PLACES" |
+                      translate
                       }}</label>
-                    <select name="" id="" class="form-control" formControlName="fieldOfWorkBirdsAnimals">
+                    <select name="" id="" class="form-control" formControlName="occupationalExposureWorkplace">
                       <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.POULTRY_FARM" | translate }}</option>
                       <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.BIRD_SHOP" | translate }}</option>
                       <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.BIRD_MARKET" | translate }}</option>
@@ -734,6 +667,7 @@
                       </option>
                       <option value="7">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.HEALTH_SERVICES_WORK" | translate }}
                       </option>
+                      <option value="8">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.VETERINARIAN" | translate }}</option>
                     </select>
                   </div>
                 </div>
@@ -760,67 +694,11 @@
             <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
               <div class="row">
                 <div class="col-12 title fs-6 fwb">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_HISTORY_14_DAYS" | translate }}
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_OUTSIDE_EGYPT" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="travelingOutsideEgypt">
-                      <option *ngFor="let item of answerOptions" value="{{ item.id }}">
-                        {{ item.arabicName }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.COUNTRY_NAME" | translate }}</label>
-                    <input type="text" name="" id="" class="form-control" formControlName="nameOfCountry" />
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_DATE" | translate }}</label>
-                    <input type="date" name="" id="" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
-                      formControlName="dateOfTraveloutside" />
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_WITHIN_EGYPT" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="travelingwithinEgypt">
-                      <option *ngFor="let item of answerOptions" value="{{ item.id }}">
-                        {{ item.arabicName }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES_TRAVEL_DETAILS" | translate }}</label>
-                    <input type="text" name="" id="" class="form-control" formControlName="governorate" />
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_DATE" | translate }}</label>
-                    <input type="date" name="" id="" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
-                      formControlName="dateOfTravelInside" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">
                   {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.HUMAN_EXPOSURE_14_DAYS" | translate }}
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.EXPOSURE_CONFIRMED_CASE" | translate
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CONTACT_SUSPECTED_CASE" | translate
                       }}</label>
                     <select name="" id="" class="form-control"
                       formControlName="exposureToAConfirmedCaseOfH5N1AvianInfluenza">
@@ -830,6 +708,31 @@
                     </select>
                   </div>
                 </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CONTACT_SEVERE_RESPIRATORY_SYMPTOMS" | translate
+                      }}</label>
+                    <select name="" id="" class="form-control" formControlName="contactSevereRespiratorySymptoms">
+                      <option *ngFor="let item of answerOptions" value="{{ item.id }}">
+                        {{ item.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PART_OF_SIMILAR_CASES_GROUP" | translate
+                      }}</label>
+                    <select name="" id="" class="form-control" formControlName="caseAmongAGroupOfOtherSimilarCases">
+                      <option *ngFor="let item of answerOptions" value="{{ item.id }}">
+                        {{ item.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
                 <!-- /.col-lg-6 -->
                 <div class="col-lg-6">
                   <div class="form-group">
@@ -844,435 +747,19 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES_SPECIFY_FOLLOWING" | translate }}
 
-                  <div class="row border-right">
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CASE_NAME" | translate }}</label>
-                        <input type="text" name="" id="" class="form-control"
-                          formControlName="stateFollowingCaseName" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.RELATIONSHIP" | translate }}</label>
-                        <input type="text" name="" id="" class="form-control" formControlName="relativeRelation" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-12">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ADDRESS" | translate }}</label>
-                        <input type="text" name="" id="" class="form-control" formControlName="address" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                  </div>
-                  <!-- /.row -->
-                </div>
-
+                <!-- /.col-lg-6 -->
                 <div class="col-lg-6">
                   <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PART_OF_SIMILAR_CASES_GROUP" | translate
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CONTACT_HUMAN_GATHERINGS_14_DAYS" | translate
                       }}</label>
-                    <select name="" id="" class="form-control" formControlName="caseAmongAGroupOfOtherSimilarCases">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION1" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION2" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.WHERE_IS_GROUP_LOCATED" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="groupLocated">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.HOME" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.EXTENDED_FAMILY" | translate }}</option>
-                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.HOSPITAL" | translate }}</option>
-                      <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.Other" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_OTHER_SPECIFY_IT" | translate }}</label>
-                    <input type="text" name="" id="" class="form-control" formControlName="otherExposure" />
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
-              </div>
-              <!-- / .row -->
-            </div>
-            <!-- / .col-12 -->
-          </div>
-          <!-- / .row -->
-
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ENVIRONMENTAL_FACTORS" |
-                  translate }}</div>
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.RESIDENCE_DESCRIPTION" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="descriptionProperty">
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TILES" | translate }}</option>
-                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.DIRT" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.WALLS" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="walls">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.MUD_BRICK" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.RED_BRICK" | translate }}</option>
-                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.Other" | translate }}</option>
-
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_OTHER_MENTION_IT" | translate }}</label>
-                    <input type="text" name="" id="" class="form-control" formControlName="anotherWallsCase" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ROOF" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="roof">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CONCRETE" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.WOOD" | translate }}</option>
-                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PALM_FRONDS" | translate }}</option>
-                      <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.Other" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_OTHER_MENTION_IT" | translate }}</label>
-                    <input type="text" name="" id="" class="form-control" formControlName="anotherRoofsCase" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ARE_BIRDS_RAISED_AT_HOME" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="birdskeptAtHome">
+                    <select name="" id="" class="form-control" formControlName="contactHumanGatherings">
                       <option *ngFor="let item of answerOptions" value="{{ item.id }}">
                         {{ item.arabicName }}
                       </option>
                     </select>
                   </div>
                 </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES_WHERE_RAISED" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="placeWhereBirdsAreRaisedInHouse">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.INSIDE_HOME" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ATTACHED_PLACE" | translate }}</option>
-                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.SEPARATE_FROM_LIVING_AREA" | translate }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PLACE_SPECIFICATIONS" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="specificationsPlaceEducation">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.OPEN" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CLOSED" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Comments" | translate }}</label>
-                    <input type="text" name="" id="" class="form-control"
-                      formControlName="environmentalFactorsComments" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-              </div>
-              <!-- / .row -->
-            </div>
-            <!-- / .col-12 -->
-          </div>
-          <!-- / .row -->
-
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.BIRD_DISEASE_HISTORY" |
-                  translate }}</div>
-                <label for="">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.BIRD_TYPE_AND_COUNT" | translate }}
-                </label>
-                <div class="col-lg-12">
-                  <div class="table-responsive table-none-scroll">
-                    <table class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TYPE" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CHICKEN" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.DUCK" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.GEESE" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TURKEY" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PIGEON" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.QUAIL" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.Other" | translate }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.COUNT" | translate }}</td>
-                          <td>
-                            <input type="text" name="" id="" class="form-control"
-                              formControlName="chickensCountHistory" />
-                          </td>
-                          <td>
-                            <input type="text" name="" id="" class="form-control" formControlName="duckCountHistory" />
-                          </td>
-                          <td>
-                            <input type="text" name="" id="" class="form-control"
-                              formControlName="geesesCountHistory" />
-                          </td>
-                          <td>
-                            <input type="text" name="" id="" class="form-control" formControlName="rummyCountHistory" />
-                          </td>
-                          <td>
-                            <input type="text" name="" id="" class="form-control"
-                              formControlName="bathroomCountHistory" />
-                          </td>
-                          <td>
-                            <input type="text" name="" id="" class="form-control" formControlName="quailCountHistory" />
-                          </td>
-                          <td>
-                            <input type="text" name="" id="" class="form-control" formControlName="otherCountHistory" />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.DISEASE_STATUS" | translate }}</td>
-                          <td>
-                            <select name="" id="" class="form-control" formControlName="chickensStatusHistory">
-                              <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.GOOD" | translate }}</option>
-                              <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.SICK_FEMININE" | translate }}
-                              </option>
-                            </select>
-                          </td>
-                          <td>
-                            <select name="" id="" class="form-control" formControlName="duckStatusHistory">
-                              <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.GOOD" | translate }}</option>
-                              <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.SICK_FEMININE" | translate }}
-                              </option>
-                            </select>
-                          </td>
-                          <td>
-                            <select name="" id="" class="form-control" formControlName="geeseStatusHistory">
-                              <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.GOOD" | translate }}</option>
-                              <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.SICK_FEMININE" | translate }}
-                              </option>
-                            </select>
-                          </td>
-                          <td>
-                            <select name="" id="" class="form-control" formControlName="rummytatusHistory">
-                              <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.GOOD" | translate }}</option>
-                              <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.SICK_FEMININE" | translate }}
-                              </option>
-                            </select>
-                          </td>
-                          <td>
-                            <select name="" id="" class="form-control" formControlName="bathroomStatusHistory">
-                              <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.GOOD" | translate }}</option>
-                              <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.SICK_FEMININE" | translate }}
-                              </option>
-                            </select>
-                          </td>
-                          <td>
-                            <select name="" id="" class="form-control" formControlName="quailStatusHistory">
-                              <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.GOOD" | translate }}</option>
-                              <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.SICK_FEMININE" | translate }}
-                              </option>
-                            </select>
-                          </td>
-                          <td>
-                            <select name="" id="" class="form-control" formControlName="otherStatusHistory">
-                              <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.GOOD" | translate }}</option>
-                              <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.SICK_FEMININE" | translate }}
-                              </option>
-                            </select>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IS_THERE_BIRD_MORTALITY" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="thereABirdMortality">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION1" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION2" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6 border-right">
-                  <div class="row">
-                    <div class="col-lg-12 color-d-2 fwb">
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_ANSWER_YES" | translate }}
-                    </div>
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.DEAD_BIRDS_COUNT" | translate }}</label>
-                        <input type="number" name="" id="" class="form-control" formControlName="deadBirdsCount" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.START_DATE_OF_MORTALITY" | translate
-                          }}</label>
-                        <input type="date" name="" id="" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
-                          formControlName="theStartDateOfTheDeath" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-12">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.WERE_VET_SAMPLES_TAKEN" | translate
-                          }}</label>
-                        <select name="" id="" class="form-control" formControlName="samplesVet">
-                          <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION1" | translate }}</option>
-                          <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION2" | translate }}</option>
-                        </select>
-                      </div>
-                    </div>
-                    <!-- /.col-lg-12 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.HOW_DISPOSED_DEAD_BIRDS" | translate
-                          }}</label>
-                        <select name="" id="" class="form-control" formControlName="disposalDeadBirds">
-                          <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CANAL" | translate }}</option>
-                          <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.DRAIN" | translate }}</option>
-                          <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.GARBAGE_COLLECTION" | translate }}
-                          </option>
-                          <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.MAiNSTREET" | translate }}</option>
-                          <option value="5">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.LANDSCAPSE" | translate }}</option>
-                          <option value="6">{{ "NEDSS.COMPLETE_INVESTEGATION.Other" | translate }}</option>
-                        </select>
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Other" | translate }}</label>
-                        <input type="number" name="" id="" class="form-control" formControlName="otherDeadBirds" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IS_THERE_SPECIFIC_CARETAKER" | translate
-                      }}</label>
-                    <select name="" id="" class="form-control" formControlName="thereASpecificPersonWhoTakesCareBirds">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION1" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION2" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES_WHO_PERSON" | translate }}</label>
-                    <input type="text" name="" id="" class="form-control" formControlName="whoIsPerson" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.WERE_BIRDS_VACCINATED" | translate }}</label>
-                    <select name="" id="" class="form-control" formControlName="birdsVaccinated">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION1" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION2" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES_WHERE_VACCINATED" | translate }}</label>
-                    <input type="text" name="" id="" class="form-control" formControlName="placeImmunization" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ARE_THERE_SLAUGHTERED_BIRDS_IN_FRIDGE" |
-                      translate }}</label>
-                    <select name="" id="" class="form-control"
-                      formControlName="thereSlaughteredBirdsInHomeRefrigerator">
-                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION1" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION2" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-12 -->
-                <div class="col-lg-12 color-d-2 mb-4">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.BIRDS_STATUS_AROUND_HOME" | translate }}
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.NUMBER_HOMES_VISITED" | translate }}</label>
-                    <input type="number" name="" id="" class="form-control" formControlName="numberHomesVisite" />
-                  </div>
-                </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.NUMBER_HOMES_WITH_BIRDS" | translate }}</label>
-                    <input type="number" name="" id="" class="form-control" formControlName="numberHousesWithBirds" />
-                  </div>
-                </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PERCENTAGE" | translate }}</label>
-                    <input type="number" name="" id="" class="form-control" formControlName="ratioBirds" />
-                  </div>
-                </div>
-                <!-- /.col-lg-4 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.NUMBER_HOMES_WITH_DEAD_BIRDS" | translate
-                      }}</label>
-                    <input type="number" name="" id="" class="form-control"
-                      formControlName="numberHousesWithDeadBirds" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PERCENTAGE" | translate }}</label>
-                    <input type="text" name="" id="" class="form-control" formControlName="ratioDeadBirds" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
               </div>
               <!-- / .row -->
             </div>
@@ -1284,100 +771,176 @@
             <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
               <div class="row">
                 <div class="col-12 title fs-6 fwb">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CONTACTS_DATA" | translate }}
+                  {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_HISTORY_14_DAYS" | translate }}
                 </div>
-                <div class="col-lg-12 text-muted mb-4 mt-4">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CONTACT_DEFINITION" | translate }}
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_WITHIN_EGYPT" | translate }}</label>
+                    <select name="" id="" class="form-control" formControlName="travelingwithinEgypt">
+                      <option *ngFor="let item of answerOptions2" value="{{ item.id }}">
+                        {{ item.arabicName }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div class="col-lg-12">
-                  <div class="table-responsive table-none-scroll">
-                    <table class="table table-bordered table-striped">
-                      <thead>
-                        <tr>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.SERIAL" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CONTACT_NAME" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.Gender" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.the_Age" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ADDRESS" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.telephone_Number" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.CONTACT_TYPE" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.DATE_OF_LAST_CONTACT" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.FLU_SYMPTOMS_PRESENT" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.the_Date_Of_Onset_Of_Symptoms" | translate }}</th>
-                        </tr>
-                      </thead>
-                      <tbody formArrayName="dataContactsAvianInfluenza">
-                        <tr *ngFor="
-                            let employee of employees().controls != null
-                              ? employees().controls
-                              : [];
-                            let empIndex = index
-                          ">
-                          <ng-container [formGroupName]="empIndex">
+                  <div class="form-group">
+                    <div class="color-d-2 mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_ANSWER_YES" | translate }}
+                    </div>
+                    <div class="table-responsive table-none-scroll">
+                      <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                          <tr>
+                            <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_DATE_FROM" | translate }}</th>
+                            <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_DATE_TO" | translate }}</th>
+                            <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES_TRAVEL_DETAILS" | translate }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
                             <td>
-                              <button class="btn bg" (click)="removeEmployee(empIndex)">
-                                {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.DELETE" | translate }}
-                              </button>
+                              <input type="date" name="" id="" [class]="'form-control-'+ currentLang"
+                                placeholder="dd/mm/yyyy" formControlName="dateOfTravelInside" />
                             </td>
                             <td>
-                              <input type="text" name="" class="form-control" formControlName="name" />
+                              <input type="date" name="" id="" [class]="'form-control-'+ currentLang"
+                                placeholder="dd/mm/yyyy" formControlName="dateOfTravelInsideTo" />
                             </td>
                             <td>
-                              <select class="form-control" name="" formControlName="type">
-                                <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.MALE" | translate }}</option>
-                                <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.FEMALE" | translate }}</option>
-                              </select>
+                              <input type="text" name="" id="" class="form-control" formControlName="governorate" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="date" name="" id="" [class]="'form-control-'+ currentLang"
+                                placeholder="dd/mm/yyyy" formControlName="dateOfTravelInside2" />
                             </td>
                             <td>
-                              <input type="number" name="" class="form-control" formControlName="age" />
+                              <input type="date" name="" id="" [class]="'form-control-'+ currentLang"
+                                placeholder="dd/mm/yyyy" formControlName="dateOfTravelInsideTo2" />
                             </td>
                             <td>
-                              <input type="text" name="" class="form-control" formControlName="address" />
+                              <input type="text" name="" id="" class="form-control" formControlName="governorate2" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="date" name="" id="" [class]="'form-control-'+ currentLang"
+                                placeholder="dd/mm/yyyy" formControlName="dateOfTravelInside3" />
                             </td>
                             <td>
-                              <input type="text" inputmode="numeric" name="" class="form-control"
-                                formControlName="phoneNumber" />
+                              <input type="date" name="" id="" [class]="'form-control-'+ currentLang"
+                                placeholder="dd/mm/yyyy" formControlName="dateOfTravelInsideTo3" />
                             </td>
                             <td>
-                              <select class="form-control" name="" formControlName="mixingType">
-                                <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.HOUSEHOLD_STAY" | translate }}
-                                </option>
-                                <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.WORK_CONTACT" | translate }}
-                                </option>
-                                <option value="3">
-                                  {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.VISITED_PATIENT_OR_VICE_VERSA" | translate }}
-                                </option>
-                                <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.OTHER_CONTACT_METHODS" |
-                                  translate }}</option>
-                              </select>
+                              <input type="text" name="" id="" class="form-control" formControlName="governorate3" />
                             </td>
-                            <td>
-                              <input type="date" name="" placeholder="dd/mm/yyyy" [class]="'form-control-'+ currentLang"
-                                formControlName="dateLastContact" />
-                            </td>
-                            <td>
-                              <select class="form-control" name="" formControlName="fluSymptoms">
-                                <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION1" | translate }}
-                                </option>
-                                <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.ANSWER_OPTION2" | translate }}
-                                </option>
-                              </select>
-                            </td>
-                            <td>
-                              <input type="date" placeholder="dd/mm/yyyy" [class]="'form-control-'+ currentLang" name=""
-                                formControlName="dateSymptoms" />
-                            </td>
-                          </ng-container>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div class="mt-2 mb-4">
-                      <button type="button" class="bg btn" (click)="addEmployee()">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ADD_CONTACT_PERSON" | translate }}
-                      </button>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_OUTSIDE_EGYPT" | translate }}</label>
+                    <select name="" id="" class="form-control" formControlName="travelingOutsideEgypt">
+                      <option *ngFor="let item of answerOptions" value="{{ item.id }}">
+                        {{ item.arabicName }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <div class="color-d-2 mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_ANSWER_YES" | translate }}
+                    </div>
+                    <div class="table-responsive table-none-scroll">
+                      <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                          <tr>
+                            <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_DATE_FROM" | translate }}</th>
+                            <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.TRAVEL_DATE_TO" | translate }}</th>
+                            <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.COUNTRY_NAME" | translate }}</th>
+                            <th>{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.COUNTRY_REPORTED_BIRD_FLU" | translate }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <input type="date" name="" id="" [class]="'form-control-'+ currentLang"
+                                placeholder="dd/mm/yyyy" formControlName="dateOfTraveloutside" />
+                            </td>
+                            <td>
+                              <input type="date" name="" id="" [class]="'form-control-'+ currentLang"
+                                placeholder="dd/mm/yyyy" formControlName="dateOfTraveloutsideTo" />
+                            </td>
+                            <td>
+                              <input type="text" name="" id="" class="form-control" formControlName="nameOfCountry" />
+                            </td>
+                            <td>
+                              <select name="" id="" class="form-control" formControlName="countryReportedBirdFlu">
+                                <option *ngFor="let item of answerOptions" value="{{ item.id }}">
+                                  {{ item.arabicName }}
+                                </option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="date" name="" id="" [class]="'form-control-'+ currentLang"
+                                placeholder="dd/mm/yyyy" formControlName="dateOfTraveloutside2" />
+                            </td>
+                            <td>
+                              <input type="date" name="" id="" [class]="'form-control-'+ currentLang"
+                                placeholder="dd/mm/yyyy" formControlName="dateOfTraveloutsideTo2" />
+                            </td>
+                            <td>
+                              <input type="text" name="" id="" class="form-control" formControlName="nameOfCountry2" />
+                            </td>
+                            <td>
+                              <select name="" id="" class="form-control" formControlName="countryReportedBirdFlu2">
+                                <option *ngFor="let item of answerOptions" value="{{ item.id }}">
+                                  {{ item.arabicName }}
+                                </option>
+                              </select>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ENTRY_POINT_TO_EGYPT" | translate }}</label>
+                    <select name="" id="" class="form-control" formControlName="entryPointToEgypt">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.AIRPORT" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.SEAPORT" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.LAND_PORT" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PLACE_NAME" | translate }}</label>
+                    <input type="text" name="" id="" class="form-control" formControlName="entryPointPlaceName" />
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ARRIVAL_DATE" | translate }}</label>
+                    <input type="date" name="" id="" [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy"
+                      formControlName="arrivalDateToEgypt" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row color">
+            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
                 <div class="col-lg-3">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.INVESTIGATION_DATE" | translate }}</label>
@@ -1408,6 +971,7 @@
               </div>
             </div>
           </div>
+
         </div>
         <div class="card-footer text-start">
           <button type="submit" class="btn bg rounded-2 text-light">

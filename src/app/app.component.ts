@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { observeOn, asyncScheduler } from 'rxjs';
+import { observeOn, asyncScheduler, combineLatest, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from './core/services/auth.service';
 import { CloseSeatioService } from './close-seatio.service';
 import { PartialLoadingService } from './core/components/partial-loading/partial-loading.service';
+import { UiLoadingService } from './core/services/ui-loading.service';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +17,12 @@ import { PartialLoadingService } from './core/components/partial-loading/partial
 export class AppComponent {
   title = 'app-structure';
   lang: any;
-  // Defer emissions to avoid ExpressionChangedAfterItHasBeenCheckedError
-  isLoading$ = this.partialLoadingService.isCurrentlyLoading$.pipe(
+  // Hide the request banner while the full-page infinity loader is active.
+  showTopLoader$ = combineLatest([
+    this.partialLoadingService.isCurrentlyLoading$,
+    this.uiLoadingService.isLoading$
+  ]).pipe(
+    map(([isRequestLoading, isPageLoading]) => isRequestLoading && !isPageLoading),
     observeOn(asyncScheduler)
   );
 
@@ -32,7 +37,8 @@ export class AppComponent {
     private router: Router,
     private authService: AuthService,
     private closeSeatioService: CloseSeatioService,
-    private partialLoadingService: PartialLoadingService
+    private partialLoadingService: PartialLoadingService,
+    private uiLoadingService: UiLoadingService
   ) {
     this.lang =
       localStorage.getItem('ls.currentLang') != undefined
@@ -94,20 +100,32 @@ export class AppComponent {
   }
 
   onloadHandler() {
+    const navEntry = performance.getEntriesByType(
+      'navigation'
+    )[0] as PerformanceNavigationTiming | undefined;
     const pageAccessedByReload =
+      navEntry?.type === 'reload' ||
       (window.performance.navigation &&
-        window.performance.navigation.type === 1) ||
-      window.performance
-        .getEntriesByType('navigation')
-        .map((nav) => nav.entryType)
-        .includes('reload');
+        window.performance.navigation.type === 1);
+
     if (pageAccessedByReload) {
       localStorage.removeItem('unloadTime');
       return;
     }
-    let t0 = Number(localStorage['unloadTime']);
-    if (isNaN(t0)) return;
+
+    const unloadTime = Number(localStorage['unloadTime']);
+    if (isNaN(unloadTime)) {
+      return;
+    }
+
     localStorage.removeItem('unloadTime');
+    if (
+      navEntry?.type === 'navigate' &&
+      Date.now() - unloadTime < 5000
+    ) {
+      return;
+    }
+
     localStorage.removeItem('ls.authorizationData');
     this.router.navigateByUrl('');
   }

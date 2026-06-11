@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
+import { AnswerOptions } from './../../../../../core/constants';
 
 @Component({
   selector: 'app-false-chickenpox',
@@ -17,6 +18,7 @@ export class FalseChickenpoxComponent implements OnInit {
       ? localStorage.getItem('ls.currentLang')
       : 'ar';
 
+  answerOptions = AnswerOptions;
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
   patientName: string;
@@ -34,107 +36,46 @@ export class FalseChickenpoxComponent implements OnInit {
   ngOnInit() {
 
     this.falseChickenpoxForm = new FormGroup({
-      fever: new FormControl(),
-      feverDays: new FormControl(),
-      maxTemperature: new FormControl(),
-      presenceVesicularRash: new FormControl(),
+      dateOnsetSymptoms: new FormControl(),
+      sampleTypeSample1: new FormControl(),
+      dateSampleTakenSample1: new FormControl(),
+      labTestTypeSample1: new FormControl(),
+      resultSample1: new FormControl(),
+
+      sampleTypeSample2: new FormControl(),
+      dateSampleTakenSample2: new FormControl(),
+      labTestTypeSample2: new FormControl(),
+      resultSample2: new FormControl(),
+      caseDiagnosis: new FormControl(),
+      dateEscelatedToHigherAuthority: new FormControl(),
+      treatingPhysicianName: new FormControl(),
+      presenceRash: new FormControl(),
+      hasOtherSymptoms: new FormControl(),
+      otherSymptomsDetails: new FormControl(),
+      hasOtherComplications: new FormControl(),
+      otherComplicationsDetails: new FormControl(),
+
       onsetRash: new FormControl(),
 
-      contactSuspectedCase: new FormControl(),
-      epidemicOutbreak: new FormControl(),
       contactConfirmedCase: new FormControl(),
-      contactDeceasedPersonRespiratory: new FormControl(),
+      epidemicOutbreak: new FormControl(),
+      contactsContacted: new FormControl(),
+      hasContactStudentOrEducationalStaff: new FormControl(),
+      educationalFacilityName: new FormControl(),
+      mandatoryLeaveDuration: new FormControl(),
       numberNonDirectContacts: new FormControl(),
       numberDirectContacts: new FormControl(),
 
-      nameDay1: new FormControl(),
-      ageDay1: new FormControl(),
-      telephoneDay1: new FormControl(),
-      genderDay1: new FormControl(),
-      contactTypeDay1: new FormControl(),
-      relationshipPatientDay1: new FormControl(),
-      dateOnsetSymptomsDay1: new FormControl(),
-      feverDay1: new FormControl(),
-      dryCoughDay1: new FormControl(),
-      coughingWithSpittingDay1: new FormControl(),
-      soreThroatDay1: new FormControl(),
-      breathingDifficultyDay1: new FormControl(),
-      jointPainDay1: new FormControl(),
-      vomitDay1: new FormControl(),
-      diarrheaDay1: new FormControl(),
-      otherDay1: new FormControl(),
-      otherSymptomsDay1: new FormControl(),
-      isSampleTakenDay1: new FormControl(),
-      dateSampleTakenDay1: new FormControl(),
-      sampleResultDay1: new FormControl(),
-
-      nameDay2: new FormControl(),
-      ageDay2: new FormControl(),
-      telephoneDay2: new FormControl(),
-      genderDay2: new FormControl(),
-      contactTypeDay2: new FormControl(),
-      relationshipPatientDay2: new FormControl(),
-      dateOnsetSymptomsDay2: new FormControl(),
-      feverDay2: new FormControl(),
-      dryCoughDay2: new FormControl(),
-      coughingWithSpittingDay2: new FormControl(),
-      soreThroatDay2: new FormControl(),
-      breathingDifficultyDay2: new FormControl(),
-      jointPainDay2: new FormControl(),
-      vomitDay2: new FormControl(),
-      diarrheaDay2: new FormControl(),
-      otherDay2: new FormControl(),
-      otherSymptomsDay2: new FormControl(),
-      isSampleTakenDay2: new FormControl(),
-      dateSampleTakenDay2: new FormControl(),
-      sampleResultDay2: new FormControl(),
-
-      nameDay7: new FormControl(),
-      ageDay7: new FormControl(),
-      telephoneDay7: new FormControl(),
-      genderDay7: new FormControl(),
-      contactTypeDay7: new FormControl(),
-      relationshipPatientDay7: new FormControl(),
-      dateOnsetSymptomsDay7: new FormControl(),
-      feverDay7: new FormControl(),
-      dryCoughDay7: new FormControl(),
-      coughingWithSpittingDay7: new FormControl(),
-      soreThroatDay7: new FormControl(),
-      breathingDifficultyDay7: new FormControl(),
-      jointPainDay7: new FormControl(),
-      vomitDay7: new FormControl(),
-      diarrheaDay7: new FormControl(),
-      otherDay7: new FormControl(),
-      otherSymptomsDay7: new FormControl(),
-      isSampleTakenDay7: new FormControl(),
-      dateSampleTakenDay7: new FormControl(),
-      sampleResultDay7: new FormControl(),
-
-
-      nameDay14: new FormControl(),
-      ageDay14: new FormControl(),
-      telephoneDay14: new FormControl(),
-      genderDay14: new FormControl(),
-      contactTypeDay14: new FormControl(),
-      relationshipPatientDay14: new FormControl(),
-      dateOnsetSymptomsDay14: new FormControl(),
-      feverDay14: new FormControl(),
-      dryCoughDay14: new FormControl(),
-      coughingWithSpittingDay14: new FormControl(),
-      soreThroatDay14: new FormControl(),
-      breathingDifficultyDay14: new FormControl(),
-      jointPainDay14: new FormControl(),
-      vomitDay14: new FormControl(),
-      diarrheaDay14: new FormControl(),
-      otherDay14: new FormControl(),
-      otherSymptomsDay14: new FormControl(),
-      isSampleTakenDay14: new FormControl(),
-      dateSampleTakenDay14: new FormControl(),
-      sampleResultDay14: new FormControl(),
       patientID: new FormControl(),
       id: new FormControl(),
       diseaseGroupId: new FormControl(this.investigationService.diseaseGroupID),
       investigationCompletePercentage: new FormControl(),
+      directContactsJson: new FormControl(),
+      contacts: new FormArray([]),
+      investigationDate: new FormControl(),
+      healthObserverName: new FormControl(),
+      surveillanceOfficerName: new FormControl(),
+      administrationDirectorName: new FormControl(),
     })
     this.currentId = this.investigationService.currentid
     this.falseChickenpoxForm.controls['patientID'].setValue(this.currentId)
@@ -142,50 +83,41 @@ export class FalseChickenpoxComponent implements OnInit {
       res => {
         console.log(res);
         var v = res.data;
-        // if (v.isSampleTakenDay1 == null) { v.isSampleTakenDay1 = 2; }
-        // if (v.isSampleTakenDay2 == null) { v.isSampleTakenDay2 = 2; }
-        // if (v.isSampleTakenDay7 == null) { v.isSampleTakenDay7 = 2; }
-        // if (v.isSampleTakenDay14 == null) { v.isSampleTakenDay14 = 2; }
-        // //followD1SampleResult
-        // if (v.sampleResultDay1 == null) { v.sampleResultDay1 = 2; }
-        // if (v.sampleResultDay2 == null) { v.sampleResultDay2 = 2; }
-        // if (v.sampleResultDay7 == null) { v.sampleResultDay7 = 2; }
-        // if (v.sampleResultDay14 == null) { v.sampleResultDay14 = 2; }
         this.falseChickenpoxForm.patchValue(v)
-        this.falseChickenpoxForm.patchValue({ fever: this.falseChickenpoxForm.value.fever + "", tc: true });
-        this.falseChickenpoxForm.patchValue({ presenceVesicularRash: this.falseChickenpoxForm.value.presenceVesicularRash + "", tc: true });
 
+        const directContacts = this.safeParseArray(v?.directContactsJson);
+        this.contacts.clear();
+        if (directContacts.length > 0) {
+          directContacts.forEach((contact: any) => {
+            const row = this.createContactRow();
+            row.patchValue({
+              ...contact,
+              hasSymptoms: contact?.hasSymptoms == null ? null : contact.hasSymptoms + '',
+              symptomsDate: this.datePipe.transform(contact?.symptomsDate, 'yyyy-MM-dd'),
+            });
+            this.contacts.push(row);
+          });
+          this.reSequenceContacts();
+        } else {
+          this.addContact();
+        }
+
+        this.falseChickenpoxForm.controls['dateOnsetSymptoms'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateOnsetSymptoms, 'yyyy-MM-dd'));
+        this.falseChickenpoxForm.controls['dateSampleTakenSample1'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateSampleTakenSample1, 'yyyy-MM-dd'));
+        this.falseChickenpoxForm.controls['dateSampleTakenSample2'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateSampleTakenSample2, 'yyyy-MM-dd'));
+        this.falseChickenpoxForm.controls['dateEscelatedToHigherAuthority'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateEscelatedToHigherAuthority, 'yyyy-MM-dd'));
         this.falseChickenpoxForm.controls['onsetRash'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.onsetRash, 'yyyy-MM-dd'));
-        this.falseChickenpoxForm.patchValue({ contactSuspectedCase: this.falseChickenpoxForm.value.presenceVesicularRash + "", tc: true });
-        this.falseChickenpoxForm.patchValue({ epidemicOutbreak: this.falseChickenpoxForm.value.epidemicOutbreak + "", tc: true });
-        this.falseChickenpoxForm.patchValue({ contactConfirmedCase: this.falseChickenpoxForm.value.contactConfirmedCase + "", tc: true });
-        this.falseChickenpoxForm.patchValue({ contactDeceasedPersonRespiratory: this.falseChickenpoxForm.value.contactDeceasedPersonRespiratory + "", tc: true });
-        //d1
-
-        this.falseChickenpoxForm.controls['dateOnsetSymptomsDay1'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateOnsetSymptomsDay1, 'yyyy-MM-dd'));
-        this.falseChickenpoxForm.patchValue({ isSampleTakenDay1: this.falseChickenpoxForm.value.isSampleTakenDay1 + "", tc: true });
-        this.falseChickenpoxForm.controls['dateSampleTakenDay1'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateSampleTakenDay1, 'yyyy-MM-dd'));
-        this.falseChickenpoxForm.patchValue({ sampleResultDay1: this.falseChickenpoxForm.value.sampleResultDay1 + "", tc: true });
-        //
-        //d2
-
-        this.falseChickenpoxForm.controls['dateOnsetSymptomsDay2'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateOnsetSymptomsDay2, 'yyyy-MM-dd'));
-        this.falseChickenpoxForm.patchValue({ isSampleTakenDay2: this.falseChickenpoxForm.value.isSampleTakenDay2 + "", tc: true });
-        this.falseChickenpoxForm.controls['dateSampleTakenDay2'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateSampleTakenDay2, 'yyyy-MM-dd'));
-        this.falseChickenpoxForm.patchValue({ sampleResultDay2: this.falseChickenpoxForm.value.sampleResultDay2 + "", tc: true });
-        //d3
-
-        this.falseChickenpoxForm.controls['dateOnsetSymptomsDay7'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateOnsetSymptomsDay7, 'yyyy-MM-dd'));
-        this.falseChickenpoxForm.patchValue({ isSampleTakenDay7: this.falseChickenpoxForm.value.isSampleTakenDay7 + "", tc: true });
-        this.falseChickenpoxForm.controls['dateSampleTakenDay7'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateSampleTakenDay7, 'yyyy-MM-dd'));
-        this.falseChickenpoxForm.patchValue({ sampleResultDay7: this.falseChickenpoxForm.value.sampleResultDay7 + "", tc: true });
-        // this.falseChickenpoxForm.patchValue({sampleResultDay7:this.falseChickenpoxForm.value.sampleResultDay3+"", tc:true});
-        //d3
-
-        this.falseChickenpoxForm.controls['dateOnsetSymptomsDay14'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateOnsetSymptomsDay14, 'yyyy-MM-dd'));
-        this.falseChickenpoxForm.patchValue({ isSampleTakenDay14: this.falseChickenpoxForm.value.isSampleTakenDay14 + "", tc: true });
-        this.falseChickenpoxForm.controls['dateSampleTakenDay14'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.dateSampleTakenDay14, 'yyyy-MM-dd'));
-        this.falseChickenpoxForm.patchValue({ sampleResultDay14: this.falseChickenpoxForm.value.sampleResultDay14 + "", tc: true });
+        this.falseChickenpoxForm.controls['investigationDate'].setValue(this.datePipe.transform(this.falseChickenpoxForm.value.investigationDate, 'yyyy-MM-dd'));
+        [
+          'caseDiagnosis',
+          'epidemicOutbreak',
+          'contactConfirmedCase',
+          'contactsContacted',
+          'hasContactStudentOrEducationalStaff',
+          'presenceRash',
+          'hasOtherSymptoms',
+          'hasOtherComplications',
+        ].forEach((controlName) => this.setSelectValue(controlName));
 
         this.calculateCompletionPercentage();
       }
@@ -202,6 +134,56 @@ export class FalseChickenpoxComponent implements OnInit {
 
 
   }
+
+  get contacts(): FormArray {
+    return this.falseChickenpoxForm.get('contacts') as FormArray;
+  }
+
+  createContactRow(): FormGroup {
+    return new FormGroup({
+      contactSeq: new FormControl(this.contacts.length + 1),
+      contactName: new FormControl(),
+      contactAge: new FormControl(),
+      hasSymptoms: new FormControl(),
+      symptomsDate: new FormControl(),
+    });
+  }
+
+  addContact(): void {
+    this.contacts.push(this.createContactRow());
+    this.reSequenceContacts();
+    this.calculateCompletionPercentage();
+  }
+
+  removeContact(index: number): void {
+    this.contacts.removeAt(index);
+    this.reSequenceContacts();
+    this.calculateCompletionPercentage();
+  }
+
+  private reSequenceContacts(): void {
+    this.contacts.controls.forEach((control, i) => {
+      control.get('contactSeq')?.setValue(i + 1, { emitEvent: false });
+    });
+  }
+
+  private safeParseArray(value: any): any[] {
+    if (!value || typeof value !== 'string') {
+      return [];
+    }
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private setSelectValue(controlName: string): void {
+    const value = this.falseChickenpoxForm.get(controlName)?.value;
+    this.falseChickenpoxForm.get(controlName)?.setValue(value == null ? null : value + '');
+  }
+
   save() {
     Object.entries(this.falseChickenpoxForm.controls).map(([key, value], index) => {
       if (value.value == 'null')
@@ -212,8 +194,12 @@ export class FalseChickenpoxComponent implements OnInit {
     this.falseChickenpoxForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
 
     //console.log(this.rabiesForm.value);
-    if (this.falseChickenpoxForm.value.id != null) {
-      this.investigationService.updateFalseChickenpox(this.falseChickenpoxForm.value).subscribe(
+    const payload = { ...this.falseChickenpoxForm.value };
+    payload.directContactsJson = JSON.stringify(payload.contacts ?? []);
+    delete payload.contacts;
+
+    if (payload.id != null) {
+      this.investigationService.updateFalseChickenpox(payload).subscribe(
         (response: any) => {
           if (response) {
             this.translateService
@@ -232,7 +218,7 @@ export class FalseChickenpoxComponent implements OnInit {
         }
       )
     } else {
-      this.investigationService.addInvestigationFalseChickenpox(this.falseChickenpoxForm.value).subscribe(
+      this.investigationService.addInvestigationFalseChickenpox(payload).subscribe(
         (response: any) => {
           if (response) {
             this.translateService
@@ -255,19 +241,41 @@ export class FalseChickenpoxComponent implements OnInit {
 
 
   calculateCompletionPercentage() {
-    this.allFilledControlsCount = 0;
-    const data = this.falseChickenpoxForm.value;
-    console.log(data);
-    //Exclude fields you don't want to count (like 'id')
-    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
-    const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
+    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate', 'directContactsJson'];
+    const value = this.falseChickenpoxForm.value;
+    let total = 0;
+    let filled = 0;
 
-    this.allControllesCount = totalFields;
-
-    Object.keys(data).forEach((key) => {
-      if (!excludedFields.includes(key) && data[key] !== null && data[key] !== '' && data[key] !== 'null') {
-        this.allFilledControlsCount++;
+    const count = (v: any): void => {
+      if (Array.isArray(v)) {
+        v.forEach((x) => count(x));
+        return;
       }
-    });
+      if (v !== null && typeof v === 'object') {
+        Object.keys(v).forEach((k) => {
+          if (!excludedFields.includes(k)) {
+            total++;
+            const fieldValue = v[k];
+            const hasValue = Array.isArray(fieldValue)
+              ? fieldValue.length > 0
+              : fieldValue !== null && fieldValue !== '' && fieldValue !== 'null';
+            if (hasValue) {
+              filled++;
+            }
+            if (typeof fieldValue === 'object' && fieldValue !== null) {
+              total--;
+              if (hasValue) {
+                filled--;
+              }
+              count(fieldValue);
+            }
+          }
+        });
+      }
+    };
+
+    count(value);
+    this.allControllesCount = total;
+    this.allFilledControlsCount = filled;
   }
 }
