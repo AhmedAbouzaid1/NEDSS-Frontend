@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ChildrenOutletContexts } from '@angular/router';
-import { Gender } from 'src/app/core/constants';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,54 +11,185 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./acute-flaccid-paralysis.component.css'],
 })
 export class AcuteFlaccidParalysisComponent implements OnInit {
-  currentLang =
-    localStorage.getItem('ls.currentLang') !== undefined &&
-      localStorage.getItem('ls.currentLang') !== 'undefined'
-      ? localStorage.getItem('ls.currentLang')
-      : 'ar';
+  currentLang: string;
   AcuteFlaccidParalysisForm: FormGroup;
   currentId: any;
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
-  patientName: string;
+  patientName: string = '';
   diseaseGroupId: any;
+
   constructor(
     private investigationService: InvestigationService,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
     private datePipe: DatePipe
-  ) { 
-    if (this.investigationService.patient.firstName != null && this.investigationService.patient.firstName != undefined) {
-      this.patientName = this.investigationService.patient.firstName + " " + this.investigationService.patient.secondName + " " + this.investigationService.patient.thirdName;
-    }
-    
-    if (this.diseaseGroupId == null || this.diseaseGroupId == undefined) {
-      this.diseaseGroupId = this.investigationService.diseaseGroupID;
-    }
+  ) {}
+
+  // #region FormArray Getters
+  get caseMovements(): FormArray { return this.AcuteFlaccidParalysisForm.get('caseMovements') as FormArray; }
+  get visitorsToArea(): FormArray { return this.AcuteFlaccidParalysisForm.get('visitorsToArea') as FormArray; }
+  get afpCasesResidenceArea(): FormArray { return this.AcuteFlaccidParalysisForm.get('afpCasesResidenceArea') as FormArray; }
+  get healthAuthoritiesVisited(): FormArray { return this.AcuteFlaccidParalysisForm.get('healthAuthoritiesVisited') as FormArray; }
+  get healthFacilityActions(): FormArray { return this.AcuteFlaccidParalysisForm.get('healthFacilityActions') as FormArray; }
+  get campaignDoses(): FormArray { return this.AcuteFlaccidParalysisForm.get('campaignDoses') as FormArray; }
+  get salkInitiative(): FormArray { return this.AcuteFlaccidParalysisForm.get('salkInitiative') as FormArray; }
+  get contacts(): FormArray { return this.AcuteFlaccidParalysisForm.get('contacts') as FormArray; }
+  get fieldCoverageChildren(): FormArray { return this.AcuteFlaccidParalysisForm.get('fieldCoverageChildren') as FormArray; }
+  get doctorsFollowUpCommittee(): FormArray { return this.AcuteFlaccidParalysisForm.get('doctorsFollowUpCommittee') as FormArray; }
+  // #endregion
+
+  // #region CreateRow Methods
+  createCaseMovementRow(data?: any): FormGroup {
+    return new FormGroup({
+      address: new FormControl(data?.address || null),
+      areaName: new FormControl(data?.areaName || null),
+      fromDate: new FormControl(data?.fromDate || null),
+      toDate: new FormControl(data?.toDate || null),
+    });
   }
+
+  createAfpCaseRow(data?: any): FormGroup {
+    return new FormGroup({
+      name: new FormControl(data?.name || null),
+      address: new FormControl(data?.address || null),
+      dateOnsetParalysis: new FormControl(data?.dateOnsetParalysis || null),
+    });
+  }
+
+  createVisitorRow(data?: any): FormGroup {
+    return new FormGroup({
+      visitorName: new FormControl(data?.visitorName || null),
+      relevance: new FormControl(data?.relevance || null),
+      address: new FormControl(data?.address || null),
+      fromDate: new FormControl(data?.fromDate || null),
+      toDate: new FormControl(data?.toDate || null),
+    });
+  }
+
+  createHealthAuthorityVisitedRow(data?: any): FormGroup {
+    return new FormGroup({
+      healthAuthorityName: new FormControl(data?.healthAuthorityName || null),
+      attendingPhysicianName: new FormControl(data?.attendingPhysicianName || null),
+      healthFacilityAddress: new FormControl(data?.healthFacilityAddress || null),
+      fromDate: new FormControl(data?.fromDate || null),
+      toDate: new FormControl(data?.toDate || null),
+      immediatelyReported: new FormControl(data?.immediatelyReported || null),
+    });
+  }
+
+  createHealthFacilityActionRow(data?: any): FormGroup {
+    return new FormGroup({
+      healthFacility: new FormControl(data?.healthFacility || null),
+      actionsTaken: new FormControl(data?.actionsTaken || null),
+      date: new FormControl(data?.date || null),
+    });
+  }
+
+  createCampaignDoseRow(data?: any): FormGroup {
+    return new FormGroup({
+      date: new FormControl(data?.date || null),
+      source: new FormControl(data?.source || null),
+    });
+  }
+
+  createSalkInitiativeRow(data?: any): FormGroup {
+    return new FormGroup({
+      date: new FormControl(data?.date || null),
+      source: new FormControl(data?.source || null),
+    });
+  }
+
+  createContactRow(data?: any): FormGroup {
+    return new FormGroup({
+      contactName: new FormControl(data?.contactName || null),
+      ageMonths: new FormControl(data?.ageMonths || null),
+      kinship: new FormControl(data?.kinship || null),
+      dateSampleTaken: new FormControl(data?.dateSampleTaken || null),
+      dateSent: new FormControl(data?.dateSent || null),
+    });
+  }
+
+  createFieldCoverageChildRow(data?: any): FormGroup {
+    return new FormGroup({
+      childName: new FormControl(data?.childName || null),
+      dateOfBirth: new FormControl(data?.dateOfBirth || null),
+      registrationNumber: new FormControl(data?.registrationNumber || null),
+      zeroDose: new FormControl(data?.zeroDose || null),
+      sabin1: new FormControl(data?.sabin1 || null),
+      salk1: new FormControl(data?.salk1 || null),
+      sabin2: new FormControl(data?.sabin2 || null),
+      salk2: new FormControl(data?.salk2 || null),
+      sabin3: new FormControl(data?.sabin3 || null),
+      salk3: new FormControl(data?.salk3 || null),
+      dose4: new FormControl(data?.dose4 || null),
+      dose5: new FormControl(data?.dose5 || null),
+      booster: new FormControl(data?.booster || null),
+    });
+  }
+
+  createDoctorCommitteeRow(data?: any): FormGroup {
+    return new FormGroup({
+      name: new FormControl(data?.name || null),
+      specialization: new FormControl(data?.specialization || null),
+      date: new FormControl(data?.date || null),
+    });
+  }
+  // #endregion
+
+  // #region Add/Remove Row Methods
+  addCaseMovementRow(): void { this.caseMovements.push(this.createCaseMovementRow()); }
+  removeCaseMovementRow(i: number): void { this.caseMovements.removeAt(i); }
+
+  addVisitorRow(): void { this.visitorsToArea.push(this.createVisitorRow()); }
+  removeVisitorRow(i: number): void { this.visitorsToArea.removeAt(i); }
+
+  addAfpCaseResidenceAreaRow(): void { this.afpCasesResidenceArea.push(this.createAfpCaseRow()); }
+  removeAfpCaseResidenceAreaRow(i: number): void { this.afpCasesResidenceArea.removeAt(i); }
+
+  addHealthAuthorityVisitedRow(): void { this.healthAuthoritiesVisited.push(this.createHealthAuthorityVisitedRow()); }
+  removeHealthAuthorityVisitedRow(i: number): void { this.healthAuthoritiesVisited.removeAt(i); }
+
+  addHealthFacilityActionRow(): void { this.healthFacilityActions.push(this.createHealthFacilityActionRow()); }
+  removeHealthFacilityActionRow(i: number): void { this.healthFacilityActions.removeAt(i); }
+
+  addCampaignDoseRow(): void { this.campaignDoses.push(this.createCampaignDoseRow()); }
+  removeCampaignDoseRow(i: number): void { this.campaignDoses.removeAt(i); }
+
+  addSalkInitiativeRow(): void { this.salkInitiative.push(this.createSalkInitiativeRow()); }
+  removeSalkInitiativeRow(i: number): void { this.salkInitiative.removeAt(i); }
+
+  addContactRow(): void { this.contacts.push(this.createContactRow()); }
+  removeContactRow(i: number): void { this.contacts.removeAt(i); }
+
+  addFieldCoverageChildRow(): void { this.fieldCoverageChildren.push(this.createFieldCoverageChildRow()); }
+  removeFieldCoverageChildRow(i: number): void { this.fieldCoverageChildren.removeAt(i); }
+
+  addDoctorCommitteeRow(): void { this.doctorsFollowUpCommittee.push(this.createDoctorCommitteeRow()); }
+  removeDoctorCommitteeRow(i: number): void { this.doctorsFollowUpCommittee.removeAt(i); }
+  // #endregion
+
   ngOnInit() {
+    this.currentLang =
+      localStorage.getItem('ls.currentLang') !== undefined &&
+        localStorage.getItem('ls.currentLang') !== 'undefined'
+        ? localStorage.getItem('ls.currentLang')
+        : 'ar';
+
+    this.patientName =
+      (this.investigationService.patient?.firstName || '') + ' ' +
+      (this.investigationService.patient?.secondName || '') + ' ' +
+      (this.investigationService.patient?.thirdName || '');
+
+    this.diseaseGroupId = this.investigationService.diseaseGroupID;
+
     this.AcuteFlaccidParalysisForm = new FormGroup({
       id: new FormControl(),
       patientID: new FormControl(),
       diseaseGroupId: new FormControl(),
-      investigationCompletePercentage:new FormControl(),
-      suddenRelaxationAffectedOrgans: new FormControl(),
-      babinskiSign1: new FormControl(),
-      mentionParalyzedOrgans: new FormControl(),
-      symmetryAffectedOrgans1: new FormControl(),
-      completeParalysisWithinFourDays: new FormControl(),
-      feelingAffectedOrgans1: new FormControl(),
-      isConditionDangerous: new FormControl(),
-      childLessFiveYears: new FormControl(),
-      memberAsymmetry: new FormControl(),
-      speedCompleteParalysis: new FormControl(),
-      feelingSafeAffectedOrgans: new FormControl(),
-      isChildReceiveInjections3DaysBeforeOnsetParalysis: new FormControl(),
-      mentionInjectionSiteMechanism: new FormControl(),
-      geographicalLocationInjectionMade: new FormControl(),
-      isSiteAware1: new FormControl(),
-      nationalityMentioned: new FormControl(),
-      dateEntryIntoCountry: new FormControl(),
+      investigationCompletePercentage: new FormControl(),
+
+      // Form 1 — Fax Notification
       directorateReportingCase: new FormControl(),
       administration: new FormControl(),
       nameInformant: new FormControl(),
@@ -75,22 +204,8 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       completeParalysisWithinFourDays1: new FormControl(),
       feelingAffectedOrgans: new FormControl(),
       isCaseDangerous: new FormControl(),
-      //genderDay1: new FormControl(), //تمت الاضافة
-      administrationMonitoringOfficerName1: new FormControl(),
-      administrationMonitoringOfficerSignature1: new FormControl(),
-      administrationMonitoringOfficerDate1: new FormControl(),
-      monitoringOfficerDirectorateName1: new FormControl(),
-      monitoringOfficerDirectorateSignature1: new FormControl(),
-      monitoringOfficerDirectorateDate1: new FormControl(),
-      preventiveDirectorDirectorateName1: new FormControl(),
-      preventiveDirectorDirectorateSignature1: new FormControl(),
-      preventiveDirectorDirectorateDate1: new FormControl(),
 
-      clinicalExaminationCaseName: new FormControl(),
-      clinicalExaminationCaseNationaId: new FormControl(),
-      clinicalExaminationCaseDateBirth: new FormControl(),
-      clinicalExaminationCaseAgeMonths: new FormControl(),
-      clinicalExaminationCaseGender: new FormControl(),
+      // Form 2 — Clinical Examination
       clinicalExaminationCaseNameExaminingDoctor: new FormControl(),
       clinicalExaminationCaseSpecialty: new FormControl(),
       clinicalExaminationCaseWhereExaminePatient: new FormControl(),
@@ -101,14 +216,19 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       clinicalExaminationCaseIsParalysisPresentBirth: new FormControl(),
       clinicalExaminationCaseIsParalysisAccidentFracture: new FormControl(),
       clinicalExaminationCaseStateReason: new FormControl(),
-
       childReceiveInjections3Days: new FormControl(),
       mentionPlaceInjectionBody: new FormControl(),
       injectionSite: new FormControl(),
       isSiteAware: new FormControl(),
+      rightArmParalysis: new FormControl(),
+      leftArmParalysis: new FormControl(),
+      rightLegParalysis: new FormControl(),
+      leftLegParalysis: new FormControl(),
+      otherParalysisSite: new FormControl(),
       asymmetry: new FormControl(),
       paralyzedPartFlaccid: new FormControl(),
       soundSensationParalyzedParts: new FormControl(),
+      musclePain: new FormControl(),
       fever: new FormControl(),
       feverDate: new FormControl(),
       diarrhea: new FormControl(),
@@ -117,7 +237,6 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       vomitDate: new FormControl(),
       coryza: new FormControl(),
       coryzaDate: new FormControl(),
-
       sphincterControl: new FormControl(),
       stiffNeck: new FormControl(),
       convulsions: new FormControl(),
@@ -127,147 +246,37 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       otherClinicalSigns: new FormControl(),
       initialDiagnosisCondition: new FormControl(),
 
-      administrationMonitoringOfficerName2: new FormControl(),
-      administrationMonitoringOfficerSignature2: new FormControl(),
-      administrationMonitoringOfficerDate2: new FormControl(),
-
-      monitoringOfficerDirectorateName2: new FormControl(),
-      monitoringOfficerDirectorateSignature2: new FormControl(),
-      monitoringOfficerDirectorateDate2: new FormControl(),
-
-      preventiveDirectorDirectorateName2: new FormControl(),
-      preventiveDirectorDirectorateSignature2: new FormControl(),
-      preventiveDirectorDirectorateDate2: new FormControl(),
-
-      epidemiologicalInvestigationCaseName: new FormControl(),
-      epidemiologicalInvestigationNationalId: new FormControl(),
-      epidemiologicalInvestigationDateBirth: new FormControl(),
-      epidemiologicalInvestigationAgeMonths: new FormControl(),
-      epidemiologicalInvestigationGender: new FormControl(),
-
-      epidemiologicalInvestigationAddressBirthCertificate: new FormControl(),
+      // Form 3 — Epidemiological Investigation
       epidemiologicalInvestigationStreetBirthCertificate: new FormControl(),
       epidemiologicalInvestigationHealthUnitBirthCertificate: new FormControl(),
-      epidemiologicalInvestigationAdministratioBirthCertificaten:
-        new FormControl(),
-      epidemiologicalInvestigationGovernorateBirthCertificate:
-        new FormControl(),
-
-      epidemiologicalInvestigationAddress: new FormControl(),
+      epidemiologicalInvestigationAdministratioBirthCertificaten: new FormControl(),
+      epidemiologicalInvestigationGovernorateBirthCertificate: new FormControl(),
       epidemiologicalInvestigationStreet: new FormControl(),
       epidemiologicalInvestigationHealthUnit: new FormControl(),
       epidemiologicalInvestigationAdministratio: new FormControl(),
       epidemiologicalInvestigationGovernorate: new FormControl(),
-
       epidemiologicalInvestigationCurrentlyResidingArea: new FormControl(),
-      epidemiologicalInvestigationphoneNumber: new FormControl(),
-
       epidemiologicalInvestigationNationality: new FormControl(),
-
       epidemiologicalInvestigationDateEntryIntoCountry: new FormControl(),
-      epidemiologicalInvestigationNameInformant: new FormControl(),
-      epidemiologicalInvestigationReportingDate: new FormControl(),
       epidemiologicalInvestigationNameAttendingPhysician: new FormControl(),
       epidemiologicalInvestigationDate: new FormControl(),
-      epidemiologicalInvestigationDateOnsetParalysis: new FormControl(),
 
-      movesAdress1: new FormControl(),
-      movesAreaName1: new FormControl(),
-      movesFromDate1: new FormControl(),
-      movesToDate1: new FormControl(),
-      movesAdress2: new FormControl(),
-      movesAreaName2: new FormControl(),
-      movesFromDate2: new FormControl(),
-      movesToDate2: new FormControl(),
-      movesAdress3: new FormControl(),
-      movesAreaName3: new FormControl(),
-      movesFromDate3: new FormControl(),
-      movesToDate3: new FormControl(),
-      movesAdress4: new FormControl(),
-      movesAreaName4: new FormControl(),
-      movesFromDate4: new FormControl(),
-      movesToDate4: new FormControl(),
+      // Dynamic tables
+      caseMovements: new FormArray([]),
+      visitorsToArea: new FormArray([]),
+      afpCasesResidenceArea: new FormArray([]),
+      healthAuthoritiesVisited: new FormArray([]),
+      healthFacilityActions: new FormArray([]),
 
-      casesName1: new FormControl(),
-      casesAdress1: new FormControl(),
-      casesDateOnsetParalysis1: new FormControl(),
-      casesName2: new FormControl(),
-      casesAdress2: new FormControl(),
-      casesDateOnsetParalysis2: new FormControl(),
-      casesName3: new FormControl(),
-      casesAdress3: new FormControl(),
-      casesDateOnsetParalysis3: new FormControl(),
-      casesName4: new FormControl(),
-      casesAdress4: new FormControl(),
-      casesDateOnsetParalysis4: new FormControl(),
-
-      visitsName1: new FormControl(),
-      visitsRelevance1: new FormControl(),
-      visitsAddress1: new FormControl(),
-      visitsFromDate1: new FormControl(),
-      visitsToDate1: new FormControl(),
-
-      visitsName2: new FormControl(),
-      visitsRelevance2: new FormControl(),
-      visitsAddress2: new FormControl(),
-      visitsFromDate2: new FormControl(),
-      visitsToDate2: new FormControl(),
-
-      visitsName3: new FormControl(),
-      visitsRelevance3: new FormControl(),
-      visitsAddress3: new FormControl(),
-      visitsFromDate3: new FormControl(),
-      visitsToDate3: new FormControl(),
-
-      before60daysName: new FormControl(),
-      before60daysAdress: new FormControl(),
-      before60daysDateOnsetParalysis: new FormControl(),
-
-      nameHealthAuthority1: new FormControl(),
-      nameAttendingPhysician1: new FormControl(),
-      addressHealthFacility1: new FormControl(),
-      healthAuthorityFromDate1: new FormControl(),
-      healthAuthorityToDate1: new FormControl(),
-      // immediatelyReportedSituation1: new FormControl('2'),
-      immediatelyReportedSituation1: new FormControl(),
-
-      nameHealthAuthority2: new FormControl(),
-      nameAttendingPhysician2: new FormControl(),
-      addressHealthFacility2: new FormControl(),
-      healthAuthorityFromDate2: new FormControl(),
-      healthAuthorityToDate2: new FormControl(),
-      // immediatelyReportedSituation2: new FormControl('2'),
-      immediatelyReportedSituation2: new FormControl(),
-
-      nameHealthAuthority3: new FormControl(),
-      nameAttendingPhysician3: new FormControl(),
-      addressHealthFacility3: new FormControl(),
-      healthAuthorityFromDate3: new FormControl(),
-      healthAuthorityToDate3: new FormControl(),
-      // immediatelyReportedSituation3: new FormControl('2'),
-      immediatelyReportedSituation3: new FormControl(),
-
-      nameHealthAuthority4: new FormControl(),
-      nameAttendingPhysician4: new FormControl(),
-      addressHealthFacility4: new FormControl(),
-      healthAuthorityFromDate4: new FormControl(),
-      healthAuthorityToDate4: new FormControl(),
-      // immediatelyReportedSituation4: new FormControl('2'),
-      immediatelyReportedSituation4: new FormControl(),
-
-      healthAuthority: new FormControl(),
-      actionsTaken: new FormControl(),
-      differentReportingMethods: new FormControl(),
-      specialProceduresDate: new FormControl(),
-
+      // Vaccination info
       numberDosesBeforeTotal: new FormControl(),
       numberDosesBeforeRoutine: new FormControl(),
       numberDosesBeforeCampaigns: new FormControl(),
       numberDosesBeforeBehaviorInitiative: new FormControl(),
 
+      // Routine doses (fixed)
       routineDosesZeroDate: new FormControl(),
       routineDosesZeroSource: new FormControl(),
-
       routineSabine1Date: new FormControl(),
       routineSabine1Source: new FormControl(),
       routineSalk1Date: new FormControl(),
@@ -287,154 +296,129 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       routineStimulantDate: new FormControl(),
       routineStimulantSource: new FormControl(),
 
-      campaignDosesZeroDate: new FormControl(),
-      campaignDosesZeroSource: new FormControl(),
+      // Campaign doses + Salk initiative (dynamic)
+      campaignDoses: new FormArray([]),
+      salkInitiative: new FormArray([]),
+      validDosesCount: new FormControl(),
 
-      campaignSabine1Date: new FormControl(),
-      campaignSabine1Source: new FormControl(),
-      campaignSalk1Date: new FormControl(),
-      campaignSalk1Source: new FormControl(),
-      campaignSabine2Date: new FormControl(),
-      campaignSabine2Source: new FormControl(),
-      campaignSalk2Date: new FormControl(),
-      campaignSalk2Source: new FormControl(),
-      campaignSabine3Date: new FormControl(),
-      campaignSabine3Source: new FormControl(),
-      campaignSalk3Date: new FormControl(),
-      campaignSalk3Source: new FormControl(),
-      campaign4Date: new FormControl(),
-      campaign4Source: new FormControl(),
-      campaign5Date: new FormControl(),
-      campaign5Source: new FormControl(),
-      campaignStimulantDate: new FormControl(),
-      campaignStimulantSource: new FormControl(),
-
+      // Coverage ratio (fixed 3×9)
       monthPriorOnsetParalysisnumberChildren3: new FormControl(),
       monthPriorOnsetParalysisNumberVaccinators3: new FormControl(),
       monthPriorOnsetParalysisPercentege3: new FormControl(),
-
       fieldNumberChildren3: new FormControl(),
       fieldNumberVaccinators3: new FormControl(),
       fieldPercentege3: new FormControl(),
-
       monthPriorOccurrenceParalysisNumberChildren3: new FormControl(),
       monthPriorOccurrenceParalysisNumberVaccinators3: new FormControl(),
       monthPriorOccurrenceParalysisPercentege3: new FormControl(),
-
       monthPriorOnsetParalysisnumberChildren4: new FormControl(),
       monthPriorOnsetParalysisNumberVaccinators4: new FormControl(),
       monthPriorOnsetParalysisPercentege4: new FormControl(),
-
       fieldNumberChildren4: new FormControl(),
       fieldNumberVaccinators4: new FormControl(),
       fieldPercentege4: new FormControl(),
-
       monthPriorOccurrenceParalysisNumberChildren4: new FormControl(),
       monthPriorOccurrenceParalysisNumberVaccinators4: new FormControl(),
       monthPriorOccurrenceParalysisPercentege4: new FormControl(),
-
       monthPriorOnsetParalysisnumberChildrenStimulant: new FormControl(),
       monthPriorOnsetParalysisNumberVaccinatorsStimulant: new FormControl(),
       monthPriorOnsetParalysisPercentegeStimulant: new FormControl(),
-
       fieldNumberChildrenStimulant: new FormControl(),
       fieldNumberVaccinatorsStimulant: new FormControl(),
       fieldPercentegeStimulant: new FormControl(),
-
       monthPriorOccurrenceParalysisNumberChildrenStimulant: new FormControl(),
-      monthPriorOccurrenceParalysisNumberVaccinatorsStimulant:
-        new FormControl(),
+      monthPriorOccurrenceParalysisNumberVaccinatorsStimulant: new FormControl(),
       monthPriorOccurrenceParalysisPercentegeStimulant: new FormControl(),
 
-      dangerousCases1NameContact: new FormControl(),
-      dangerousCases1AgeMonths: new FormControl(),
-      dangerousCases1Kinship: new FormControl(),
-      dangerousCases1DateSampleTaken: new FormControl(),
-      dangerousCases1DateSent: new FormControl(),
+      // Contacts (dynamic)
+      contacts: new FormArray([]),
 
-      dangerousCases2NameContact: new FormControl(),
-      dangerousCases2AgeMonths: new FormControl(),
-      dangerousCases2Kinship: new FormControl(),
-      dangerousCases2DateSampleTaken: new FormControl(),
-      dangerousCases2DateSent: new FormControl(),
+      // Contacts Sample Form (fixed 3 contacts)
+      csfReason: new FormControl(),
+      csf1Name: new FormControl(), csf1Age: new FormControl(), csf1Gender: new FormControl(), csf1Relation: new FormControl(),
+      csf1WeekBefore: new FormControl(),      csf1RoutineDoses: new FormControl(), csf1CampaignDoses: new FormControl(), csf1SalkDoses: new FormControl(),
+      csf1LastDoseDate: new FormControl(), csf1SampleCollectionDate: new FormControl(), csf1SampleSendDate: new FormControl(),
+      csf2Name: new FormControl(), csf2Age: new FormControl(), csf2Gender: new FormControl(), csf2Relation: new FormControl(),
+      csf2WeekBefore: new FormControl(),      csf2RoutineDoses: new FormControl(), csf2CampaignDoses: new FormControl(), csf2SalkDoses: new FormControl(),
+      csf2LastDoseDate: new FormControl(), csf2SampleCollectionDate: new FormControl(), csf2SampleSendDate: new FormControl(),
+      csf3Name: new FormControl(), csf3Age: new FormControl(), csf3Gender: new FormControl(), csf3Relation: new FormControl(),
+      csf3WeekBefore: new FormControl(),      csf3RoutineDoses: new FormControl(), csf3CampaignDoses: new FormControl(), csf3SalkDoses: new FormControl(),
+      csf3LastDoseDate: new FormControl(), csf3SampleCollectionDate: new FormControl(), csf3SampleSendDate: new FormControl(),
+      csfCollectorName: new FormControl(), csfSenderName: new FormControl(),
+      csfReceiverName: new FormControl(), csfReceiptDate: new FormControl(), csfReceiptTime: new FormControl(), csfNotes: new FormControl(),
+      csfQuantity8g: new FormControl(), csfTemp4to8: new FormControl(), csfNoLeakage: new FormControl(),
+      csfDesignatedCooler: new FormControl(), csfDesignatedTubes: new FormControl(), csfTempMonitor: new FormControl(), csfSamplesValid: new FormControl(),
 
-      dangerousCases3NameContact: new FormControl(),
-      dangerousCases3AgeMonths: new FormControl(),
-      dangerousCases3Kinship: new FormControl(),
-      dangerousCases3DateSampleTaken: new FormControl(),
-      dangerousCases3DateSent: new FormControl(),
+      // Cluster Investigation (fixed 3 cases)
+      clusterGovernorate: new FormControl(), clusterAdministration: new FormControl(),
+      cluster1Name: new FormControl(), cluster1Unit: new FormControl(), cluster1Age: new FormControl(),
+      cluster1ParalysisDate: new FormControl(), cluster1SampleAdequacy: new FormControl(), cluster1Vaccination: new FormControl(),
+      cluster1UnitCoverage: new FormControl(), cluster1FieldCoverage: new FormControl(), cluster1EndemicVisit: new FormControl(),
+      cluster1Fever: new FormControl(), cluster1Symmetry: new FormControl(), cluster1Complete4Days: new FormControl(),
+      cluster1OtherTests: new FormControl(), cluster1InitialDiagnosis: new FormControl(),
+      cluster1ZeroReporting: new FormControl(), cluster1PositiveSurveillance: new FormControl(),
+      cluster1SilentSites: new FormControl(), cluster1UnreportedCases: new FormControl(),
+      cluster2Name: new FormControl(), cluster2Unit: new FormControl(), cluster2Age: new FormControl(),
+      cluster2ParalysisDate: new FormControl(), cluster2SampleAdequacy: new FormControl(), cluster2Vaccination: new FormControl(),
+      cluster2UnitCoverage: new FormControl(), cluster2FieldCoverage: new FormControl(), cluster2EndemicVisit: new FormControl(),
+      cluster2Fever: new FormControl(), cluster2Symmetry: new FormControl(), cluster2Complete4Days: new FormControl(),
+      cluster2OtherTests: new FormControl(), cluster2InitialDiagnosis: new FormControl(),
+      cluster2ZeroReporting: new FormControl(), cluster2PositiveSurveillance: new FormControl(),
+      cluster2SilentSites: new FormControl(), cluster2UnreportedCases: new FormControl(),
+      cluster3Name: new FormControl(), cluster3Unit: new FormControl(), cluster3Age: new FormControl(),
+      cluster3ParalysisDate: new FormControl(), cluster3SampleAdequacy: new FormControl(), cluster3Vaccination: new FormControl(),
+      cluster3UnitCoverage: new FormControl(), cluster3FieldCoverage: new FormControl(), cluster3EndemicVisit: new FormControl(),
+      cluster3Fever: new FormControl(), cluster3Symmetry: new FormControl(), cluster3Complete4Days: new FormControl(),
+      cluster3OtherTests: new FormControl(), cluster3InitialDiagnosis: new FormControl(),
+      cluster3ZeroReporting: new FormControl(), cluster3PositiveSurveillance: new FormControl(),
+      cluster3SilentSites: new FormControl(), cluster3UnreportedCases: new FormControl(),
+      clusterConclusion: new FormControl(),
 
-      casesNotHaveSamples1NameContact: new FormControl(),
-      casesNotHaveSamples1AgeMonts: new FormControl(),
-      casesNotHaveSamples1Kinship: new FormControl(),
-      casesNotHaveSamples1DateSampleTaken: new FormControl(),
-      casesNotHaveSamples1DateSent: new FormControl(),
-
-      casesNotHaveSamples2NameContact: new FormControl(),
-      casesNotHaveSamples2AgeMonts: new FormControl(),
-      casesNotHaveSamples2Kinship: new FormControl(),
-      casesNotHaveSamples2DateSampleTaken: new FormControl(),
-      casesNotHaveSamples2DateSent: new FormControl(),
-
-      administrationMonitoringOfficerName3: new FormControl(),
-      administrationMonitoringOfficerSignature3: new FormControl(),
-      administrationMonitoringOfficerDate3: new FormControl(),
-
-      monitoringOfficerDirectorateName3: new FormControl(),
-      monitoringOfficerDirectorateSignature3: new FormControl(),
-      monitoringOfficerDirectorateDate3: new FormControl(),
-
-      preventiveDirectorDirectorateName3: new FormControl(),
-      preventiveDirectorDirectorateSignature3: new FormControl(),
-      preventiveDirectorDirectorateDate3: new FormControl(),
-
-      fieldCoverageRatioCaseName: new FormControl(),
-      fieldCoverageRatioNationalId: new FormControl(),
+      // Field Coverage Form
       fieldCoverageRatioVillage: new FormControl(),
       fieldCoverageRatioHealthUnit: new FormControl(),
       fieldCoverageRatioAdministraion: new FormControl(),
       fieldCoverageRatioGovernment: new FormControl(),
+      fieldCoverageChildren: new FormArray([]),
 
-      dosesZeroDate: new FormControl(),
-      dosesZeroSource: new FormControl(),
+      // Field Coverage Rates Summary (stored as JSON)
+      fcRateZeroChildren: new FormControl(), fcRateZeroVaccinated: new FormControl(), fcRateZeroPercentage: new FormControl(),
+      fcRate1SabinChildren: new FormControl(), fcRate1SabinVaccinated: new FormControl(), fcRate1SabinPercentage: new FormControl(),
+      fcRate1SalkChildren: new FormControl(), fcRate1SalkVaccinated: new FormControl(), fcRate1SalkPercentage: new FormControl(),
+      fcRate2SabinChildren: new FormControl(), fcRate2SabinVaccinated: new FormControl(), fcRate2SabinPercentage: new FormControl(),
+      fcRate2SalkChildren: new FormControl(), fcRate2SalkVaccinated: new FormControl(), fcRate2SalkPercentage: new FormControl(),
+      fcRate3SabinChildren: new FormControl(), fcRate3SabinVaccinated: new FormControl(), fcRate3SabinPercentage: new FormControl(),
+      fcRate3SalkChildren: new FormControl(), fcRate3SalkVaccinated: new FormControl(), fcRate3SalkPercentage: new FormControl(),
+      fcRate4Children: new FormControl(), fcRate4Vaccinated: new FormControl(), fcRate4Percentage: new FormControl(),
+      fcRate5Children: new FormControl(), fcRate5Vaccinated: new FormControl(), fcRate5Percentage: new FormControl(),
+      fcRateBoosterChildren: new FormControl(), fcRateBoosterVaccinated: new FormControl(), fcRateBoosterPercentage: new FormControl(),
 
-      sabine1Date: new FormControl(),
-      sabine1Source: new FormControl(),
-      salk1Date: new FormControl(),
-      salk1Source: new FormControl(),
-      sabine2Date: new FormControl(),
-      sabine2Source: new FormControl(),
-      salk2Date: new FormControl(),
-      salk2Source: new FormControl(),
-      sabine3Date: new FormControl(),
-      sabine3Source: new FormControl(),
-      salk3Date: new FormControl(),
-      salk3Source: new FormControl(),
-      date4: new FormControl(),
-      source4: new FormControl(),
-      date5: new FormControl(),
-      source5: new FormControl(),
-      stimulantDate: new FormControl(),
-      stimulantSource: new FormControl(),
+      // Form 4 — Stool Sample Dispatch
+      sample1CollectionPlace: new FormControl(),
+      sample1CollectionDate: new FormControl(),
+      sample1CollectorName: new FormControl(),
+      sample1SendDate: new FormControl(),
+      sample2CollectionPlace: new FormControl(),
+      sample2CollectionDate: new FormControl(),
+      sample2CollectorName: new FormControl(),
+      sample2SendDate: new FormControl(),
+      sampleSenderName: new FormControl(),
+      sampleQuantity8g: new FormControl(),
+      sampleTemperature4to8: new FormControl(),
+      sampleNoLeakage: new FormControl(),
+      sampleDesignatedCooler: new FormControl(),
+      sampleDesignatedTubes: new FormControl(),
+      sampleTemperatureMonitor: new FormControl(),
+      sampleAreValid: new FormControl(),
+      sampleReceiverName: new FormControl(),
+      sampleReceiptDate: new FormControl(),
+      sampleReceiptTime: new FormControl(),
 
-      healthBureauObserver: new FormControl(),
-      managementMonitor: new FormControl(),
-      managementOversightOfficer: new FormControl(),
-      directorateVaccinationOfficer: new FormControl(),
-      preventiveDirector: new FormControl(),
-
-      followUpAfter60DaysName: new FormControl(),
-      followUpAfter60DaysNationalId: new FormControl(),
-      followUpAfter60DaysDateBirth: new FormControl(),
-      followUpAfter60DaysAgeMonths: new FormControl(),
-      followUpAfter60DaysGender: new FormControl(),
-      followUpAfter60DaysAddress: new FormControl(),
-      followUpAfter60DaysGovernorate: new FormControl(),
-      followUpAfter60DaysDateParalysisBegan: new FormControl(),
+      // Form 5 — 60-Day Follow-up
       followUpAfter60DaysFollowUpDate: new FormControl(),
+      followUpAfter60DaysFollowUpPlace: new FormControl(),
       followUpAfter60DaysDoctorName: new FormControl(),
       followUpAfter60DaysSpecialty: new FormControl(),
-      followUpAfter60DaysFollowUpPlace: new FormControl(),
       followUpAfter60DaysFollowUp: new FormControl(),
       followUpAfter60DaysDateDeath: new FormControl(),
       followUpAfter60DaysCauseDeath: new FormControl(),
@@ -443,8 +427,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       followUpAfter60DaysMuscleAtrophy: new FormControl(),
       followUpAfter60DaysMuscleAtrophyPlace: new FormControl(),
       followUpAfter60DaysIsFeelingPresentAffectedOrgans: new FormControl(),
-      followUpAfter60DaysResultsLaboratoryExaminationStoolSamplesCase:
-        new FormControl(),
+      followUpAfter60DaysResultsLaboratoryExaminationStoolSamplesCase: new FormControl(),
       followUpAfter60DaysMixer1: new FormControl(),
       followUpAfter60DaysMixer2: new FormControl(),
       followUpAfter60DaysMixer3: new FormControl(),
@@ -452,975 +435,444 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       followUpAfter60DaysEmg: new FormControl(),
       followUpAfter60DaysCsf: new FormControl(),
       followUpAfter60DaysOtherClinicalSigns: new FormControl(),
-      followUpAfter60DaysMentionNameDiseaseParalysisReportingCase:
-        new FormControl(),
-
-      doctorsFollowUpCommitteeName1: new FormControl(),
-      doctorsFollowUpCommitteeSpecialization1: new FormControl(),
-      doctorsFollowUpCommitteeDate1: new FormControl(),
-      doctorsFollowUpCommitteeSignature1: new FormControl(),
-
-      doctorsFollowUpCommitteeName2: new FormControl(),
-      doctorsFollowUpCommitteeSpecialization2: new FormControl(),
-      doctorsFollowUpCommitteeDate2: new FormControl(),
-      doctorsFollowUpCommitteeSignature2: new FormControl(),
-
-      doctorsFollowUpCommitteeName3: new FormControl(),
-      doctorsFollowUpCommitteeSpecialization3: new FormControl(),
-      doctorsFollowUpCommitteeDate3: new FormControl(),
-      doctorsFollowUpCommitteeSignature3: new FormControl(),
+      followUpAfter60DaysMentionNameDiseaseParalysisReportingCase: new FormControl(),
+      doctorsFollowUpCommittee: new FormArray([this.createDoctorCommitteeRow({ specialization: 'طبيب اخصائي الاطفال' })]),
+      signPreventiveDirectorName: new FormControl(),
+      signPreventiveDirectorDate: new FormControl(),
+      signSurveillanceAdminName: new FormControl(),
+      signSurveillanceAdminDate: new FormControl(),
+      signSurveillanceDirectorateName: new FormControl(),
+      signSurveillanceDirectorateDate: new FormControl(),
     });
 
+    // Start each dynamic table with one empty row
+    this.addCaseMovementRow();
+    this.addVisitorRow();
+    this.addAfpCaseResidenceAreaRow();
+    this.addHealthAuthorityVisitedRow();
+    this.addHealthFacilityActionRow();
+    this.addCampaignDoseRow();
+    this.addSalkInitiativeRow();
+    this.addContactRow();
+    this.addFieldCoverageChildRow();
+    this.addDoctorCommitteeRow();
+
     this.currentId = this.investigationService.currentid;
-    this.AcuteFlaccidParalysisForm.controls['patientID'].setValue(
-      this.currentId
-    );
+    this.AcuteFlaccidParalysisForm.controls['patientID'].setValue(this.currentId);
+
+    this.calculateCompletionPercentage();
+    this.AcuteFlaccidParalysisForm.valueChanges.subscribe(() => {
+      this.calculateCompletionPercentage();
+    });
+
     this.investigationService
       .getByIdAcuteFlaccidParalysis(this.currentId)
       .subscribe(
         (res) => {
-          //console.log(res);
           var v = res.data;
+          if (!v) {
+            this.calculateCompletionPercentage();
+            return;
+          }
+
+          const dateFields = [
+            'reportDate', 'dateOnsetParalysis',
+            'clinicalExaminationCaseDateAdmissionHospital',
+            'clinicalExaminationCaseDateOnsetParalysis',
+            'clinicalExaminationCaseDateImmobilizationCompleted',
+            'feverDate', 'diarrheaDate', 'vomitDate', 'coryzaDate',
+            'epidemiologicalInvestigationDateEntryIntoCountry',
+            'epidemiologicalInvestigationDate',
+            'routineDosesZeroDate', 'routineSabine1Date', 'routineSalk1Date',
+            'routineSabine2Date', 'routineSalk2Date', 'routineSabine3Date', 'routineSalk3Date',
+            'routine4Date', 'routine5Date', 'routineStimulantDate',
+            'csf1LastDoseDate', 'csf1SampleCollectionDate', 'csf1SampleSendDate',
+            'csf2LastDoseDate', 'csf2SampleCollectionDate', 'csf2SampleSendDate',
+            'csf3LastDoseDate', 'csf3SampleCollectionDate', 'csf3SampleSendDate',
+            'csfReceiptDate',
+            'cluster1ParalysisDate', 'cluster2ParalysisDate', 'cluster3ParalysisDate',
+            'sample1CollectionDate', 'sample1SendDate',
+            'sample2CollectionDate', 'sample2SendDate', 'sampleReceiptDate',
+            'followUpAfter60DaysFollowUpDate', 'followUpAfter60DaysDateDeath',
+            'signPreventiveDirectorDate', 'signSurveillanceAdminDate', 'signSurveillanceDirectorateDate',
+          ];
+          dateFields.forEach(field => {
+            if (v[field]) {
+              v[field] = this.datePipe.transform(v[field], 'yyyy-MM-dd');
+            }
+          });
+
           this.AcuteFlaccidParalysisForm.patchValue(v);
-          // this.AcuteFlaccidParalysisForm.patchValue(v);
-          // if (v.immediatelyReportedSituation1 == null) {
-          //   v.immediatelyReportedSituation1 = 2;
-          // }
-          // if (v.immediatelyReportedSituation2 == null) {
-          //   v.immediatelyReportedSituation2 = 2;
-          // }
-          // if (v.immediatelyReportedSituation3 == null) {
-          //   v.immediatelyReportedSituation3 = 2;
-          // }
-          // if (v.immediatelyReportedSituation4 == null) {
-          //   v.immediatelyReportedSituation4 = 2;
-          // }
-          this.AcuteFlaccidParalysisForm.patchValue({
-            immediatelyReportedSituation1:
-              this.AcuteFlaccidParalysisForm.value
-                .immediatelyReportedSituation1 + '',
-            tc: true,
+
+          // Deserialize JSON arrays
+          const formArrayConfigs = [
+            { jsonField: 'caseMovementsJson', array: this.caseMovements, createFn: (d: any) => this.createCaseMovementRow(d) },
+            { jsonField: 'visitorsToAreaJson', array: this.visitorsToArea, createFn: (d: any) => this.createVisitorRow(d) },
+            { jsonField: 'afpCasesResidenceAreaJson', array: this.afpCasesResidenceArea, createFn: (d: any) => this.createAfpCaseRow(d) },
+            { jsonField: 'healthAuthoritiesVisitedJson', array: this.healthAuthoritiesVisited, createFn: (d: any) => this.createHealthAuthorityVisitedRow(d) },
+            { jsonField: 'healthFacilityActionsJson', array: this.healthFacilityActions, createFn: (d: any) => this.createHealthFacilityActionRow(d) },
+            { jsonField: 'campaignDosesJson', array: this.campaignDoses, createFn: (d: any) => this.createCampaignDoseRow(d) },
+            { jsonField: 'salkInitiativeJson', array: this.salkInitiative, createFn: (d: any) => this.createSalkInitiativeRow(d) },
+            { jsonField: 'contactsJson', array: this.contacts, createFn: (d: any) => this.createContactRow(d) },
+            { jsonField: 'fieldCoverageChildrenJson', array: this.fieldCoverageChildren, createFn: (d: any) => this.createFieldCoverageChildRow(d) },
+            { jsonField: 'doctorsFollowUpCommitteeJson', array: this.doctorsFollowUpCommittee, createFn: (d: any) => this.createDoctorCommitteeRow(d) },
+          ];
+
+          formArrayConfigs.forEach(config => {
+            if (v[config.jsonField]) {
+              try {
+                const items = JSON.parse(v[config.jsonField]);
+                if (Array.isArray(items) && items.length > 0) {
+                  while (config.array.length > 0) config.array.removeAt(0);
+                  items.forEach((item: any) => config.array.push(config.createFn(item)));
+                }
+              } catch (e) {}
+            }
           });
-          this.AcuteFlaccidParalysisForm.patchValue({
-            immediatelyReportedSituation2:
-              this.AcuteFlaccidParalysisForm.value
-                .immediatelyReportedSituation2 + '',
-            tc: true,
-          });
-          this.AcuteFlaccidParalysisForm.patchValue({
-            immediatelyReportedSituation3:
-              this.AcuteFlaccidParalysisForm.value
-                .immediatelyReportedSituation3 + '',
-            tc: true,
-          });
-          this.AcuteFlaccidParalysisForm.patchValue({
-            immediatelyReportedSituation4:
-              this.AcuteFlaccidParalysisForm.value
-                .immediatelyReportedSituation4 + '',
-            tc: true,
-          });
-          this.AcuteFlaccidParalysisForm.controls[
-            'dateEntryIntoCountry'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.dateEntryIntoCountry,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['reportDate'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.reportDate,
-              'yyyy-MM-dd'
-            )
-          );
 
-          this.AcuteFlaccidParalysisForm.controls[
-            'dateOnsetParalysis'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.dateOnsetParalysis,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'administrationMonitoringOfficerDate1'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .administrationMonitoringOfficerDate1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'monitoringOfficerDirectorateDate1'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .monitoringOfficerDirectorateDate1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'preventiveDirectorDirectorateDate1'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .preventiveDirectorDirectorateDate1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'clinicalExaminationCaseDateBirth'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .clinicalExaminationCaseDateBirth,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'clinicalExaminationCaseDateAdmissionHospital'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .clinicalExaminationCaseDateAdmissionHospital,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'clinicalExaminationCaseDateOnsetParalysis'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .clinicalExaminationCaseDateOnsetParalysis,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'clinicalExaminationCaseDateOnsetParalysis'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .clinicalExaminationCaseDateImmobilizationCompleted,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['feverDate'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.feverDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['vomitDate'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.vomitDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'administrationMonitoringOfficerDate2'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .administrationMonitoringOfficerDate2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['vomitDate'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.vomitDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'administrationMonitoringOfficerDate2'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .administrationMonitoringOfficerDate2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'preventiveDirectorDirectorateDate2'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .preventiveDirectorDirectorateDate2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'epidemiologicalInvestigationDateBirth'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .epidemiologicalInvestigationDateBirth,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'epidemiologicalInvestigationDateEntryIntoCountry'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .epidemiologicalInvestigationDateEntryIntoCountry,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'epidemiologicalInvestigationDate'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .epidemiologicalInvestigationDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'epidemiologicalInvestigationDateOnsetParalysis'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .epidemiologicalInvestigationDateOnsetParalysis,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['movesFromDate3'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.movesFromDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['movesFromDate4'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.movesFromDate4,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['vomitDate'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.vomitDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['coryzaDate'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.coryzaDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['diarrheaDate'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.diarrheaDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'monitoringOfficerDirectorateDate2'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .monitoringOfficerDirectorateDate2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['movesFromDate1'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.movesFromDate1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['movesFromDate2'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.movesFromDate2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['movesFromDate3'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.movesFromDate3,
-              'yyyy-MM-dd'
-            )
-          );
+          // Deserialize field coverage rates summary
+          if (v.fieldCoverageRatesSummaryJson) {
+            try {
+              const rates = JSON.parse(v.fieldCoverageRatesSummaryJson);
+              if (rates && typeof rates === 'object') {
+                this.AcuteFlaccidParalysisForm.patchValue(rates);
+              }
+            } catch (e) {}
+          }
 
-          this.AcuteFlaccidParalysisForm.controls['movesFromDate3'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.movesFromDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['movesFromDate4'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.movesFromDate4,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'casesDateOnsetParalysis1'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.casesDateOnsetParalysis1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'casesDateOnsetParalysis3'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.casesDateOnsetParalysis3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'casesDateOnsetParalysis4'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.casesDateOnsetParalysis4,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['visitsFromDate1'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.visitsFromDate1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['visitsToDate1'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.visitsToDate1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['visitsFromDate2'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.visitsFromDate2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['visitsFromDate3'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.visitsFromDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'healthAuthorityFromDate1'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.healthAuthorityFromDate1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'healthAuthorityFromDate2'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.healthAuthorityFromDate1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'healthAuthorityFromDate2'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.healthAuthorityFromDate2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'healthAuthorityToDate2'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.healthAuthorityToDate2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'healthAuthorityFromDate3'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.healthAuthorityFromDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'healthAuthorityFromDate4'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.healthAuthorityFromDate4,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'healthAuthorityToDate3'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.healthAuthorityToDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'healthAuthorityToDate3'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.healthAuthorityToDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'specialProceduresDate'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.specialProceduresDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'specialProceduresDate'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.specialProceduresDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'routineDosesZeroDate'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.routineDosesZeroDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['routineSalk1Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.routineSalk1Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'routineSabine1Date'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.routineSabine1Date,
-              'yyyy-MM-dd'
-            )
-          );
+          // Backward compat: migrate old numbered fields to JSON arrays
+          if (this.caseMovements.length <= 1 && !this.hasNonEmptyRow(this.caseMovements)) {
+            this.migrateOldMovements(v);
+          }
+          if (this.visitorsToArea.length <= 1 && !this.hasNonEmptyRow(this.visitorsToArea)) {
+            this.migrateOldVisitors(v);
+          }
+          if (this.afpCasesResidenceArea.length <= 1 && !this.hasNonEmptyRow(this.afpCasesResidenceArea)) {
+            if (v.before60daysName || v.before60daysAdress) {
+              while (this.afpCasesResidenceArea.length > 0) this.afpCasesResidenceArea.removeAt(0);
+              this.afpCasesResidenceArea.push(this.createAfpCaseRow({
+                name: v.before60daysName, address: v.before60daysAdress,
+                dateOnsetParalysis: v.before60daysDateOnsetParalysis,
+              }));
+            }
+          }
+          if (this.healthAuthoritiesVisited.length <= 1 && !this.hasNonEmptyRow(this.healthAuthoritiesVisited)) {
+            this.migrateOldHealthAuthorities(v);
+          }
+          if (this.contacts.length <= 1 && !this.hasNonEmptyRow(this.contacts)) {
+            this.migrateOldContacts(v);
+          }
+          if (this.campaignDoses.length <= 1 && !this.hasNonEmptyRow(this.campaignDoses)) {
+            this.migrateOldCampaignDoses(v);
+          }
+          if (this.doctorsFollowUpCommittee.length <= 1 && !this.hasNonEmptyRow(this.doctorsFollowUpCommittee)) {
+            this.migrateOldDoctorsCommittee(v);
+          }
 
-          this.AcuteFlaccidParalysisForm.controls['routineSalk2Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.routineSalk2Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'routineSabine2Date'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.routineSabine2Date,
-              'yyyy-MM-dd'
-            )
-          );
-
-          this.AcuteFlaccidParalysisForm.controls['routineSalk3Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.routineSalk3Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'routineSabine3Date'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.routineSabine3Date,
-              'yyyy-MM-dd'
-            )
-          );
-
-          this.AcuteFlaccidParalysisForm.controls['routine4Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.routine4Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['routine5Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.routine5Date,
-              'yyyy-MM-dd'
-            )
-          );
-
-          this.AcuteFlaccidParalysisForm.controls[
-            'routineStimulantDate'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.routineStimulantDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'campaignDosesZeroDate'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.campaignDosesZeroDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'campaignSabine1Date'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.campaignSabine1Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['campaignSalk1Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.campaignSalk1Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'campaignSabine2Date'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.campaignSabine2Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['campaignSalk2Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.campaignSalk2Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'campaignSabine3Date'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.campaignSabine3Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['campaignSalk3Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.campaignSalk3Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['campaign4Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.campaign4Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['campaign5Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.campaign5Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'campaignStimulantDate'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.campaignStimulantDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'dangerousCases1DateSampleTaken'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .dangerousCases1DateSampleTaken,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'dangerousCases1DateSent'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.dangerousCases1DateSent,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'dangerousCases2DateSampleTaken'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .dangerousCases2DateSampleTaken,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'dangerousCases2DateSent'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.dangerousCases2DateSent,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'dangerousCases3DateSampleTaken'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .dangerousCases3DateSampleTaken,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'dangerousCases3DateSent'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.dangerousCases3DateSent,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'casesNotHaveSamples1DateSampleTaken'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .casesNotHaveSamples1DateSampleTaken,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'casesNotHaveSamples1DateSent'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.casesNotHaveSamples1DateSent,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'casesNotHaveSamples2DateSampleTaken'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .casesNotHaveSamples2DateSampleTaken,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'casesNotHaveSamples2DateSent'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.casesNotHaveSamples2DateSent,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'administrationMonitoringOfficerDate3'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .administrationMonitoringOfficerDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'monitoringOfficerDirectorateDate3'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .monitoringOfficerDirectorateDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'preventiveDirectorDirectorateDate3'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .preventiveDirectorDirectorateDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['dosesZeroDate'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.dosesZeroDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['sabine1Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.sabine1Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['salk1Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.salk1Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['sabine2Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.sabine2Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['salk2Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.salk2Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['sabine3Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.sabine3Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['salk3Date'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.salk3Date,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['date4'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.date4,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['date5'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.date5,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['stimulantDate'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.stimulantDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'followUpAfter60DaysDateBirth'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.followUpAfter60DaysDateBirth,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'followUpAfter60DaysDateParalysisBegan'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .followUpAfter60DaysDateParalysisBegan,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'followUpAfter60DaysFollowUpDate'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .followUpAfter60DaysFollowUpDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'followUpAfter60DaysDateDeath'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.followUpAfter60DaysDateDeath,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'doctorsFollowUpCommitteeDate1'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .doctorsFollowUpCommitteeDate1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'doctorsFollowUpCommitteeDate2'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .doctorsFollowUpCommitteeDate2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'doctorsFollowUpCommitteeDate3'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .doctorsFollowUpCommitteeDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'epidemiologicalInvestigationReportingDate'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .epidemiologicalInvestigationReportingDate,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['movesToDate1'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.movesToDate1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['movesToDate2'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.movesToDate2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['movesToDate3'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.movesToDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['movesToDate4'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.movesToDate4,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'casesDateOnsetParalysis2'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.casesDateOnsetParalysis2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['visitsToDate2'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.visitsToDate2,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls['visitsToDate3'].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.visitsToDate3,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'before60daysDateOnsetParalysis'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value
-                .before60daysDateOnsetParalysis,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'healthAuthorityToDate1'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.healthAuthorityToDate1,
-              'yyyy-MM-dd'
-            )
-          );
-          this.AcuteFlaccidParalysisForm.controls[
-            'healthAuthorityToDate4'
-          ].setValue(
-            this.datePipe.transform(
-              this.AcuteFlaccidParalysisForm.value.healthAuthorityToDate4,
-              'yyyy-MM-dd'
-            )
-          );
-        this.calculateCompletionPercentage();
-          //routineSabine1Date
+          this.calculateCompletionPercentage();
         },
         (error) => {
           this.translateService
             .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
+            .subscribe((res: string) => { this.userMsg.error(res); });
         }
       );
   }
-  save() {
+
+  // #region Backward Compat Migrations
+  private hasNonEmptyRow(arr: FormArray): boolean {
+    if (!arr || arr.length === 0) return false;
+    return arr.controls.some(row => {
+      const val = (row as FormGroup).value;
+      return Object.values(val).some(v => v !== null && v !== '' && v !== undefined);
+    });
+  }
+
+  private migrateOldMovements(v: any): void {
+    const rows: any[] = [];
+    [1, 2, 3, 4].forEach(i => {
+      if (v[`movesAdress${i}`] || v[`movesAreaName${i}`]) {
+        rows.push({
+          address: v[`movesAdress${i}`], areaName: v[`movesAreaName${i}`],
+          fromDate: v[`movesFromDate${i}`], toDate: v[`movesToDate${i}`],
+        });
+      }
+    });
+    if (rows.length > 0) {
+      while (this.caseMovements.length > 0) this.caseMovements.removeAt(0);
+      rows.forEach(r => this.caseMovements.push(this.createCaseMovementRow(r)));
+    }
+  }
+
+  private migrateOldCases(v: any, target: string): void {
+    const arr = this.afpCasesResidenceArea;
+    const rows: any[] = [];
+    [1, 2, 3, 4].forEach(i => {
+      if (v[`casesName${i}`] || v[`casesAdress${i}`]) {
+        rows.push({
+          name: v[`casesName${i}`], address: v[`casesAdress${i}`],
+          dateOnsetParalysis: v[`casesDateOnsetParalysis${i}`],
+        });
+      }
+    });
+    if (rows.length > 0) {
+      while (arr.length > 0) arr.removeAt(0);
+      rows.forEach(r => arr.push(this.createAfpCaseRow(r)));
+    }
+  }
+
+  private migrateOldVisitors(v: any): void {
+    const rows: any[] = [];
+    [1, 2, 3].forEach(i => {
+      if (v[`visitsName${i}`] || v[`visitsAddress${i}`]) {
+        rows.push({
+          visitorName: v[`visitsName${i}`], relevance: v[`visitsRelevance${i}`],
+          address: v[`visitsAddress${i}`], fromDate: v[`visitsFromDate${i}`], toDate: v[`visitsToDate${i}`],
+        });
+      }
+    });
+    if (rows.length > 0) {
+      while (this.visitorsToArea.length > 0) this.visitorsToArea.removeAt(0);
+      rows.forEach(r => this.visitorsToArea.push(this.createVisitorRow(r)));
+    }
+  }
+
+  private migrateOldHealthAuthorities(v: any): void {
+    const rows: any[] = [];
+    [1, 2, 3, 4].forEach(i => {
+      if (v[`nameHealthAuthority${i}`] || v[`addressHealthFacility${i}`]) {
+        rows.push({
+          healthAuthorityName: v[`nameHealthAuthority${i}`],
+          attendingPhysicianName: v[`nameAttendingPhysician${i}`],
+          healthFacilityAddress: v[`addressHealthFacility${i}`],
+          fromDate: v[`healthAuthorityFromDate${i}`], toDate: v[`healthAuthorityToDate${i}`],
+          immediatelyReported: v[`immediatelyReportedSituation${i}`] != null ? v[`immediatelyReportedSituation${i}`] + '' : null,
+        });
+      }
+    });
+    if (rows.length > 0) {
+      while (this.healthAuthoritiesVisited.length > 0) this.healthAuthoritiesVisited.removeAt(0);
+      rows.forEach(r => this.healthAuthoritiesVisited.push(this.createHealthAuthorityVisitedRow(r)));
+    }
+  }
+
+  private migrateOldContacts(v: any): void {
+    const rows: any[] = [];
+    [1, 2, 3].forEach(i => {
+      if (v[`dangerousCases${i}NameContact`]) {
+        rows.push({
+          contactName: v[`dangerousCases${i}NameContact`], ageMonths: v[`dangerousCases${i}AgeMonths`],
+          kinship: v[`dangerousCases${i}Kinship`], dateSampleTaken: v[`dangerousCases${i}DateSampleTaken`],
+          dateSent: v[`dangerousCases${i}DateSent`],
+        });
+      }
+    });
+    [1, 2].forEach(i => {
+      if (v[`casesNotHaveSamples${i}NameContact`]) {
+        rows.push({
+          contactName: v[`casesNotHaveSamples${i}NameContact`], ageMonths: v[`casesNotHaveSamples${i}AgeMonts`],
+          kinship: v[`casesNotHaveSamples${i}Kinship`], dateSampleTaken: v[`casesNotHaveSamples${i}DateSampleTaken`],
+          dateSent: v[`casesNotHaveSamples${i}DateSent`],
+        });
+      }
+    });
+    if (rows.length > 0) {
+      while (this.contacts.length > 0) this.contacts.removeAt(0);
+      rows.forEach(r => this.contacts.push(this.createContactRow(r)));
+    }
+  }
+
+  private migrateOldCampaignDoses(v: any): void {
+    const fields = [
+      { date: 'campaignDosesZeroDate', source: 'campaignDosesZeroSource' },
+      { date: 'campaignSabine1Date', source: 'campaignSabine1Source' },
+      { date: 'campaignSalk1Date', source: 'campaignSalk1Source' },
+      { date: 'campaignSabine2Date', source: 'campaignSabine2Source' },
+      { date: 'campaignSalk2Date', source: 'campaignSalk2Source' },
+      { date: 'campaignSabine3Date', source: 'campaignSabine3Source' },
+      { date: 'campaignSalk3Date', source: 'campaignSalk3Source' },
+      { date: 'campaign4Date', source: 'campaign4Source' },
+      { date: 'campaign5Date', source: 'campaign5Source' },
+      { date: 'campaignStimulantDate', source: 'campaignStimulantSource' },
+    ];
+    const rows: any[] = [];
+    fields.forEach(f => {
+      if (v[f.date] || v[f.source]) {
+        rows.push({ date: v[f.date], source: v[f.source] });
+      }
+    });
+    if (rows.length > 0) {
+      while (this.campaignDoses.length > 0) this.campaignDoses.removeAt(0);
+      rows.forEach(r => this.campaignDoses.push(this.createCampaignDoseRow(r)));
+    }
+  }
+
+  private migrateOldDoctorsCommittee(v: any): void {
+    const rows: any[] = [];
+    [1, 2, 3].forEach(i => {
+      if (v[`doctorsFollowUpCommitteeName${i}`]) {
+        rows.push({
+          name: v[`doctorsFollowUpCommitteeName${i}`],
+          specialization: v[`doctorsFollowUpCommitteeSpecialization${i}`],
+          date: v[`doctorsFollowUpCommitteeDate${i}`],
+        });
+      }
+    });
+    if (rows.length > 0) {
+      while (this.doctorsFollowUpCommittee.length > 0) this.doctorsFollowUpCommittee.removeAt(0);
+      rows.forEach(r => this.doctorsFollowUpCommittee.push(this.createDoctorCommitteeRow(r)));
+    }
+  }
+  // #endregion
+
+  save(): void {
     Object.entries(this.AcuteFlaccidParalysisForm.controls).map(
-      ([key, value], index) => {
-        if (value.value == 'null')
+      ([key, value]) => {
+        if (value instanceof FormControl && (value.value == 'null' || value.value === ''))
           value.setValue(null);
       });
+
     this.calculateCompletionPercentage();
-    this.AcuteFlaccidParalysisForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
+    this.AcuteFlaccidParalysisForm.controls['investigationCompletePercentage'].setValue(
+      this.allControllesCount === 0
+        ? 0
+        : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2))
+    );
     this.AcuteFlaccidParalysisForm.controls['diseaseGroupId'].setValue(this.diseaseGroupId);
-    if (this.AcuteFlaccidParalysisForm.value.id != null) {
+
+    const payload: any = { ...this.AcuteFlaccidParalysisForm.value };
+
+    // Serialize field coverage rates summary to JSON
+    const fcRateKeys = Object.keys(payload).filter(k => k.startsWith('fcRate'));
+    const fcRates: any = {};
+    fcRateKeys.forEach(k => { fcRates[k] = payload[k]; delete payload[k]; });
+    payload.fieldCoverageRatesSummaryJson = JSON.stringify(fcRates);
+
+    // Serialize FormArrays to JSON
+    const formArrayConfigs = [
+      { arrayName: 'caseMovements', jsonField: 'caseMovementsJson' },
+      { arrayName: 'visitorsToArea', jsonField: 'visitorsToAreaJson' },
+      { arrayName: 'afpCasesResidenceArea', jsonField: 'afpCasesResidenceAreaJson' },
+      { arrayName: 'healthAuthoritiesVisited', jsonField: 'healthAuthoritiesVisitedJson' },
+      { arrayName: 'healthFacilityActions', jsonField: 'healthFacilityActionsJson' },
+      { arrayName: 'campaignDoses', jsonField: 'campaignDosesJson' },
+      { arrayName: 'salkInitiative', jsonField: 'salkInitiativeJson' },
+      { arrayName: 'contacts', jsonField: 'contactsJson' },
+      { arrayName: 'fieldCoverageChildren', jsonField: 'fieldCoverageChildrenJson' },
+      { arrayName: 'doctorsFollowUpCommittee', jsonField: 'doctorsFollowUpCommitteeJson' },
+    ];
+
+    formArrayConfigs.forEach(config => {
+      const formArray = this.AcuteFlaccidParalysisForm.get(config.arrayName) as FormArray;
+      payload[config.jsonField] = JSON.stringify(formArray.value);
+      delete payload[config.arrayName];
+    });
+
+    if (payload.id != null) {
       this.investigationService
-        .updateAcuteFlaccidParalysis(this.AcuteFlaccidParalysisForm.value)
+        .updateAcuteFlaccidParalysis(payload)
         .subscribe(
           (response: any) => {
             if (response) {
               this.translateService
                 .get('NEDSS.COMMON.SENT_SUCESSFULLY')
-                .subscribe((res: string) => {
-                  this.userMsg.success(res);
-                });
+                .subscribe((res: string) => { this.userMsg.success(res); });
             }
           },
           (error) => {
             this.translateService
               .get('NEDSS.COMMON.SENT_FAILD')
-              .subscribe((res: string) => {
-                this.userMsg.error(res);
-              });
+              .subscribe((res: string) => { this.userMsg.error(res); });
           }
         );
     } else {
       this.investigationService
-        .addInvestigationAcuteFlaccidParalysis(
-          this.AcuteFlaccidParalysisForm.value
-        )
+        .addInvestigationAcuteFlaccidParalysis(payload)
         .subscribe(
           (response: any) => {
             if (response) {
+              if (response?.data?.id != null) {
+                this.AcuteFlaccidParalysisForm.controls['id'].setValue(response.data.id);
+              }
               this.translateService
                 .get('NEDSS.COMMON.SENT_SUCESSFULLY')
-                .subscribe((res: string) => {
-                  this.userMsg.success(res);
-                });
+                .subscribe((res: string) => { this.userMsg.success(res); });
             }
           },
           (error) => {
             this.translateService
               .get('NEDSS.COMMON.SENT_FAILD')
-              .subscribe((res: string) => {
-                this.userMsg.error(res);
-              });
+              .subscribe((res: string) => { this.userMsg.error(res); });
           }
         );
     }
   }
 
-    //BL
-    calculateCompletionPercentage() {
-      this.allFilledControlsCount = 0;
-      const data = this.AcuteFlaccidParalysisForm.value;
-      //Exclude fields you don't want to count (like 'id')
-      const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate','genderDay1'];
-      const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
-  
-      this.allControllesCount = totalFields;
-  
-      Object.keys(data).forEach((key) => {
-        if (!excludedFields.includes(key) && data[key] !== null && data[key] !== '' && data[key] !== 'null') {
-          this.allFilledControlsCount++;
-        }
-      });
+  // #region Completion Percentage
+  calculateCompletionPercentage(): void {
+    const data = this.AcuteFlaccidParalysisForm?.value ?? {};
+    const excludedFields = [
+      'id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate',
+      'caseMovements', 'visitorsToArea', 'afpCasesResidenceArea',
+      'healthAuthoritiesVisited', 'healthFacilityActions', 'campaignDoses', 'salkInitiative',
+      'contacts', 'fieldCoverageChildren', 'doctorsFollowUpCommittee',
+      'fcRateZeroChildren', 'fcRateZeroVaccinated', 'fcRateZeroPercentage',
+      'fcRate1SabinChildren', 'fcRate1SabinVaccinated', 'fcRate1SabinPercentage',
+      'fcRate1SalkChildren', 'fcRate1SalkVaccinated', 'fcRate1SalkPercentage',
+      'fcRate2SabinChildren', 'fcRate2SabinVaccinated', 'fcRate2SabinPercentage',
+      'fcRate2SalkChildren', 'fcRate2SalkVaccinated', 'fcRate2SalkPercentage',
+      'fcRate3SabinChildren', 'fcRate3SabinVaccinated', 'fcRate3SabinPercentage',
+      'fcRate3SalkChildren', 'fcRate3SalkVaccinated', 'fcRate3SalkPercentage',
+      'fcRate4Children', 'fcRate4Vaccinated', 'fcRate4Percentage',
+      'fcRate5Children', 'fcRate5Vaccinated', 'fcRate5Percentage',
+      'fcRateBoosterChildren', 'fcRateBoosterVaccinated', 'fcRateBoosterPercentage',
+    ];
+
+    const baseFields = Object.keys(data).filter(key => !excludedFields.includes(key));
+    let totalFields = baseFields.length;
+    let filledFields = baseFields.reduce((acc, key) => {
+      return this.isFieldFilled(data[key]) ? acc + 1 : acc;
+    }, 0);
+
+    const arrays: FormArray[] = [
+      this.caseMovements, this.visitorsToArea,
+      this.afpCasesResidenceArea, this.healthAuthoritiesVisited, this.healthFacilityActions,
+      this.campaignDoses, this.salkInitiative, this.contacts,
+      this.fieldCoverageChildren, this.doctorsFollowUpCommittee,
+    ];
+    arrays.forEach(arr => {
+      if (arr && arr.controls) {
+        const stats = this.countFormArrayCompletion(arr);
+        totalFields += stats.totalFields;
+        filledFields += stats.filledFields;
+      }
+    });
+
+    this.allControllesCount = totalFields;
+    this.allFilledControlsCount = filledFields;
+  }
+
+  private countFormArrayCompletion(formArray: FormArray): { totalFields: number; filledFields: number } {
+    if (!formArray || !Array.isArray(formArray.controls) || formArray.controls.length === 0) {
+      return { totalFields: 0, filledFields: 0 };
     }
+    let totalFields = 0;
+    let filledFields = 0;
+    formArray.controls.forEach((row) => {
+      const rowValue = (row as FormGroup).value;
+      const rowKeys = Object.keys(rowValue).filter(key => key !== 'id');
+      totalFields += rowKeys.length;
+      rowKeys.forEach(key => {
+        if (this.isFieldFilled(rowValue[key])) filledFields += 1;
+      });
+    });
+    return { totalFields, filledFields };
+  }
+
+  private isFieldFilled(value: any): boolean {
+    if (value === null || value === undefined || value === '' || value === 'null') return false;
+    if (typeof value === 'boolean') return value;
+    return true;
+  }
+  // #endregion
 }
