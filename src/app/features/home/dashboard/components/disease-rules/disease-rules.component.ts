@@ -420,26 +420,36 @@ export class DiseaseRulesComponent implements OnInit {
     XLSX.writeFile(wb, 'Disease_Rules_Template.xlsx');
   }
 
-  exportErrorsToExcel() {
-    const allErrors = [...this.importErrorRows, ...this.importInsertErrors, ...this.importDuplicateRows];
-    if (allErrors.length === 0) return;
+  exportTableToExcel(rows: ImportRow[], filename: string, includeError: boolean = true) {
+    if (!rows || rows.length === 0) return;
 
-    const data = allErrors.map(r => ({
-      [this.currentLang === 'ar' ? 'الصف' : 'Row']: r.rowNum,
-      [this.currentLang === 'ar' ? 'مجموعة المرض' : 'Disease Group']: r.diseaseGroupName,
-      [this.currentLang === 'ar' ? 'العينة' : 'Sample']: r.sampleName,
-      [this.currentLang === 'ar' ? 'الاختبار المعملي' : 'Lab Test']: r.labTestName,
-      [this.currentLang === 'ar' ? 'نتيجة الاختبار' : 'Test Result']: r.testResultName,
-      [this.currentLang === 'ar' ? 'تصنيف الحالة' : 'Case Category']: r.caseCategoryName,
-      [this.currentLang === 'ar' ? 'التشخيص النهائي' : 'Final Disease']: r.finalDiseaseName,
-      [this.currentLang === 'ar' ? 'الخطأ' : 'Error']: r.errorMessage || r.insertError
-    }));
+    const isAr = this.currentLang === 'ar';
+    const data = rows.map(r => {
+      const row: any = {
+        [isAr ? 'الصف' : 'Row']: r.rowNum,
+        [isAr ? 'مجموعة المرض' : 'Disease Group']: r.diseaseGroupName,
+        [isAr ? 'العينة' : 'Sample']: r.sampleName,
+        [isAr ? 'الاختبار المعملي' : 'Lab Test']: r.labTestName,
+        [isAr ? 'نتيجة الاختبار' : 'Test Result']: r.testResultName,
+        [isAr ? 'تصنيف الحالة' : 'Case Category']: r.caseCategoryName,
+        [isAr ? 'التشخيص النهائي' : 'Final Disease']: r.finalDiseaseName,
+      };
+      if (includeError) {
+        row[isAr ? 'الخطأ' : 'Error'] = r.errorMessage || r.insertError;
+      }
+      return row;
+    });
 
     const ws = XLSX.utils.json_to_sheet(data);
     ws['!cols'] = Object.keys(data[0]).map(() => ({ wch: 25 }));
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Errors');
-    XLSX.writeFile(wb, 'Disease_Rules_Import_Errors.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, 'Data');
+    XLSX.writeFile(wb, filename);
+  }
+
+  exportErrorsToExcel() {
+    const allErrors = [...this.importErrorRows, ...this.importInsertErrors, ...this.importDuplicateRows];
+    this.exportTableToExcel(allErrors, 'Disease_Rules_Import_Errors.xlsx');
   }
 
   onImportFileSelect(event: any) {

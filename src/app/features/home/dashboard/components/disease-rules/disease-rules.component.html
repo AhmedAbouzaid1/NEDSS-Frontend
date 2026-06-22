@@ -39,7 +39,9 @@
 
 <!-- Import Dialog -->
 <p-dialog [header]="'NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.IMPORT_EXCEL' | translate"
-  [(visible)]="showImportDialog" [modal]="true" [style]="{width: '95vw', maxWidth: '1200px'}"
+  [(visible)]="showImportDialog" [modal]="true"
+  [style]="{width: '95vw', maxWidth: '1200px'}"
+  [contentStyle]="{overflow: 'auto', maxHeight: '80vh'}"
   [maximizable]="true" [closable]="importPhase !== 'inserting'"
   (onHide)="importPhase !== 'inserting' ? cancelImport() : null">
 
@@ -75,9 +77,15 @@
 
     <!-- Error rows table -->
     <div *ngIf="importErrorRows.length > 0" class="mb-3">
-      <h5 class="text-danger"><i class="pi pi-times-circle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROWS_WITH_ERRORS" | translate }}</h5>
-      <p-table [value]="importErrorRows" [paginator]="importErrorRows.length > 10" [rows]="10"
-        [scrollable]="true" scrollHeight="250px" styleClass="p-datatable-sm">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="text-danger mb-0"><i class="pi pi-times-circle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROWS_WITH_ERRORS" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-danger" (click)="exportTableToExcel(importErrorRows, 'Import_Errors.xlsx')">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importErrorRows" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
           <tr>
             <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
@@ -107,9 +115,15 @@
 
     <!-- Duplicate rows table -->
     <div *ngIf="importDuplicateRows.length > 0" class="mb-3">
-      <h5 class="import-text-duplicate"><i class="pi pi-copy"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DUPLICATES" | translate }}</h5>
-      <p-table [value]="importDuplicateRows" [paginator]="importDuplicateRows.length > 10" [rows]="10"
-        [scrollable]="true" scrollHeight="250px" styleClass="p-datatable-sm">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="import-text-duplicate mb-0"><i class="pi pi-copy"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DUPLICATES" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-warning" (click)="exportTableToExcel(importDuplicateRows, 'Import_Duplicates.xlsx')">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importDuplicateRows" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
           <tr>
             <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
@@ -139,9 +153,15 @@
 
     <!-- Valid rows table -->
     <div *ngIf="importValidRows.length > 0" class="mb-3">
-      <h5 class="text-success"><i class="pi pi-check-circle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.READY_TO_INSERT" | translate }}</h5>
-      <p-table [value]="importValidRows" [paginator]="importValidRows.length > 10" [rows]="10"
-        [scrollable]="true" scrollHeight="250px" styleClass="p-datatable-sm">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="text-success mb-0"><i class="pi pi-check-circle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.READY_TO_INSERT" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-success" (click)="exportTableToExcel(importValidRows, 'Import_Valid.xlsx', false)">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importValidRows" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
           <tr>
             <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
@@ -233,9 +253,15 @@
 
     <!-- Insert errors table -->
     <div *ngIf="importInsertErrors.length > 0" class="mb-3">
-      <h5 class="text-danger"><i class="pi pi-times-circle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.INSERT_ERRORS" | translate }}</h5>
-      <p-table [value]="importInsertErrors" [paginator]="importInsertErrors.length > 10" [rows]="10"
-        [scrollable]="true" scrollHeight="250px" styleClass="p-datatable-sm">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="text-danger mb-0"><i class="pi pi-times-circle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.INSERT_ERRORS" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-danger" (click)="exportTableToExcel(importInsertErrors, 'Insert_Errors.xlsx')">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importInsertErrors" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
           <tr>
             <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
@@ -265,9 +291,15 @@
 
     <!-- Validation errors table (from preview) -->
     <div *ngIf="importErrorRows.length > 0" class="mb-3">
-      <h5 class="text-warning"><i class="pi pi-exclamation-triangle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.VALIDATION_ERRORS" | translate }}</h5>
-      <p-table [value]="importErrorRows" [paginator]="importErrorRows.length > 10" [rows]="10"
-        [scrollable]="true" scrollHeight="250px" styleClass="p-datatable-sm">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="text-warning mb-0"><i class="pi pi-exclamation-triangle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.VALIDATION_ERRORS" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-warning" (click)="exportTableToExcel(importErrorRows, 'Validation_Errors.xlsx')">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importErrorRows" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
           <tr>
             <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
@@ -297,9 +329,15 @@
 
     <!-- Duplicate rows table (from preview) -->
     <div *ngIf="importDuplicateRows.length > 0" class="mb-3">
-      <h5 class="import-text-duplicate"><i class="pi pi-copy"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DUPLICATES" | translate }}</h5>
-      <p-table [value]="importDuplicateRows" [paginator]="importDuplicateRows.length > 10" [rows]="10"
-        [scrollable]="true" scrollHeight="250px" styleClass="p-datatable-sm">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="import-text-duplicate mb-0"><i class="pi pi-copy"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DUPLICATES" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-warning" (click)="exportTableToExcel(importDuplicateRows, 'Import_Duplicates.xlsx')">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importDuplicateRows" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
           <tr>
             <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
