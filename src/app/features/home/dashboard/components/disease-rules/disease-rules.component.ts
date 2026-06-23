@@ -535,7 +535,9 @@ export class DiseaseRulesComponent implements OnInit {
       if (!diseaseGroup.id) fieldErrors.push(this.currentLang === 'ar' ? 'مجموعة المرض' : 'Disease Group');
       if (!labTest.id) fieldErrors.push(this.currentLang === 'ar' ? 'الاختبار المعملي' : 'Lab Test');
       if (!testResult.id) fieldErrors.push(this.currentLang === 'ar' ? 'نتيجة الاختبار' : 'Test Result');
-      if (!caseCategory.id) fieldErrors.push(this.currentLang === 'ar' ? 'تصنيف الحالة' : 'Case Category');
+      if (!caseCategory.id) fieldErrors.push(this.currentLang === 'ar' ? 'تشخيص الحالة' : 'Case Category');
+      const finalDiseaseRaw = (row['التشخيص النهائي'] || '').toString().trim();
+      if (finalDiseaseRaw && !finalDisease.id) fieldErrors.push(this.currentLang === 'ar' ? 'التشخيص النهائي' : 'Final Disease');
 
       let duplicateError = '';
       let isDuplicate = false;
