@@ -20,6 +20,365 @@
   </div>
 </div>
 
+<div class="row mt-3 mb-3">
+  <div class="col-12 d-flex justify-content-end gap-2">
+    <button type="button" class="btn btn-lg border-color color btn-light-color" (click)="downloadTemplate()">
+      <i class="bi bi-download"></i>&nbsp;
+      {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DOWNLOAD_TEMPLATE" | translate }}
+    </button>
+    <button type="button" class="btn btn-lg bg text-light" (click)="importFileInput.click()"
+      [disabled]="importPhase === 'inserting' || importLoading">
+      <i class="bi bi-upload" *ngIf="!importLoading"></i>
+      <i class="pi pi-spin pi-spinner" *ngIf="importLoading"></i>&nbsp;
+      {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.IMPORT_EXCEL" | translate }}
+    </button>
+    <input type="file" accept=".xlsx,.xls" #importFileInput hidden
+      (change)="onImportFileSelect($event)" />
+  </div>
+</div>
+
+<!-- Import Dialog -->
+<p-dialog [header]="'NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.IMPORT_EXCEL' | translate"
+  [(visible)]="showImportDialog" [modal]="true"
+  [style]="{width: '95vw', maxWidth: '1200px'}"
+  [contentStyle]="{overflow: 'auto', maxHeight: '80vh'}"
+  [maximizable]="true" [closable]="importPhase !== 'inserting'"
+  (onHide)="importPhase !== 'inserting' ? cancelImport() : null">
+
+  <!-- PHASE 1: Preview before confirmation -->
+  <div *ngIf="importPhase === 'preview'">
+    <!-- Summary cards -->
+    <div class="row mb-3">
+      <div class="col-3">
+        <div class="import-stat-card import-stat-total">
+          <div class="import-stat-number">{{ importPreviewRows.length }}</div>
+          <div class="import-stat-label">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.TOTAL_ROWS" | translate }}</div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="import-stat-card import-stat-valid">
+          <div class="import-stat-number">{{ importValidRows.length }}</div>
+          <div class="import-stat-label">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.READY_TO_INSERT" | translate }}</div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="import-stat-card import-stat-duplicate">
+          <div class="import-stat-number">{{ importDuplicateRows.length }}</div>
+          <div class="import-stat-label">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DUPLICATES" | translate }}</div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="import-stat-card import-stat-error">
+          <div class="import-stat-number">{{ importErrorRows.length }}</div>
+          <div class="import-stat-label">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.HAS_ERRORS" | translate }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error rows table -->
+    <div *ngIf="importErrorRows.length > 0" class="mb-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="text-danger mb-0"><i class="pi pi-times-circle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROWS_WITH_ERRORS" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-danger" (click)="exportTableToExcel(importErrorRows, 'Import_Errors.xlsx')">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importErrorRows" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DISEASE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.SAMPLE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK_RESULT" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.RESULT_CATEGORIES" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.FINAL_RESULT" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ERROR_DETAIL" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.rowNum }}</td>
+            <td [class.import-cell-error]="!row.diseaseGroupId">{{ row.diseaseGroupName }}</td>
+            <td [class.import-cell-error]="!row.sampleId && row.sampleName">{{ row.sampleName || '-' }}</td>
+            <td [class.import-cell-error]="!row.labTestId">{{ row.labTestName }}</td>
+            <td [class.import-cell-error]="!row.testResultId">{{ row.testResultName }}</td>
+            <td [class.import-cell-error]="!row.caseCategoryId">{{ row.caseCategoryName }}</td>
+            <td [class.import-cell-error]="!row.finalDiseaseId && row.finalDiseaseName">{{ row.finalDiseaseName || '-' }}</td>
+            <td class="text-danger" style="font-size: 0.85em">{{ row.errorMessage }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Duplicate rows table -->
+    <div *ngIf="importDuplicateRows.length > 0" class="mb-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="import-text-duplicate mb-0"><i class="pi pi-copy"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DUPLICATES" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-warning" (click)="exportTableToExcel(importDuplicateRows, 'Import_Duplicates.xlsx')">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importDuplicateRows" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DISEASE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.SAMPLE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK_RESULT" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.RESULT_CATEGORIES" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.FINAL_RESULT" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ERROR_DETAIL" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.rowNum }}</td>
+            <td>{{ row.diseaseGroupName }}</td>
+            <td>{{ row.sampleName || '-' }}</td>
+            <td>{{ row.labTestName }}</td>
+            <td>{{ row.testResultName }}</td>
+            <td>{{ row.caseCategoryName }}</td>
+            <td>{{ row.finalDiseaseName || '-' }}</td>
+            <td class="import-text-duplicate" style="font-size: 0.85em">{{ row.errorMessage }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Valid rows table -->
+    <div *ngIf="importValidRows.length > 0" class="mb-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="text-success mb-0"><i class="pi pi-check-circle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.READY_TO_INSERT" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-success" (click)="exportTableToExcel(importValidRows, 'Import_Valid.xlsx', false)">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importValidRows" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DISEASE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.SAMPLE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK_RESULT" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.RESULT_CATEGORIES" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.FINAL_RESULT" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.rowNum }}</td>
+            <td>{{ row.diseaseGroupName }}</td>
+            <td>{{ row.sampleName || '-' }}</td>
+            <td>{{ row.labTestName }}</td>
+            <td>{{ row.testResultName }}</td>
+            <td>{{ row.caseCategoryName }}</td>
+            <td>{{ row.finalDiseaseName || '-' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Confirm / Cancel buttons -->
+    <div class="d-flex justify-content-end gap-2 mt-3">
+      <button class="btn btn-lg border-color color btn-light-color" (click)="cancelImport()">
+        {{ "NEDSS.COMMON.CANCEL" | translate }}
+      </button>
+      <button class="btn btn-lg bg text-light" (click)="confirmImport()"
+        [disabled]="importValidRows.length === 0">
+        <i class="pi pi-check"></i>&nbsp;
+        {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.CONFIRM_IMPORT" | translate }}
+        ({{ importValidRows.length }})
+      </button>
+    </div>
+  </div>
+
+  <!-- PHASE 2: Inserting with live progress -->
+  <div *ngIf="importPhase === 'inserting'">
+    <div class="import-progress-section">
+      <div class="import-progress-bar-container mb-3">
+        <div class="import-progress-bar" [style.width.%]="getProgressPercent()"></div>
+      </div>
+      <div class="text-center mb-2" style="font-size: 1.1em">
+        {{ importProgress.current }} / {{ importProgress.total }}
+      </div>
+      <div class="row text-center">
+        <div class="col-6">
+          <span class="text-success" style="font-size: 1.5em; font-weight: bold">
+            <i class="pi pi-check-circle"></i> {{ importProgress.success }}
+          </span>
+          <div>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.IMPORT_SUCCESS" | translate }}</div>
+        </div>
+        <div class="col-6">
+          <span class="text-danger" style="font-size: 1.5em; font-weight: bold">
+            <i class="pi pi-times-circle"></i> {{ importProgress.failed }}
+          </span>
+          <div>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.IMPORT_FAILED" | translate }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3: Done -->
+  <div *ngIf="importPhase === 'done'">
+    <!-- Final summary -->
+    <div class="row mb-3">
+      <div class="col-4">
+        <div class="import-stat-card import-stat-valid">
+          <div class="import-stat-number">{{ importProgress.success }}</div>
+          <div class="import-stat-label">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.IMPORT_SUCCESS" | translate }}</div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="import-stat-card import-stat-duplicate">
+          <div class="import-stat-number">{{ importDuplicateRows.length }}</div>
+          <div class="import-stat-label">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DUPLICATES" | translate }}</div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="import-stat-card import-stat-error">
+          <div class="import-stat-number">{{ importProgress.failed + importErrorRows.length }}</div>
+          <div class="import-stat-label">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.IMPORT_FAILED" | translate }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insert errors table -->
+    <div *ngIf="importInsertErrors.length > 0" class="mb-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="text-danger mb-0"><i class="pi pi-times-circle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.INSERT_ERRORS" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-danger" (click)="exportTableToExcel(importInsertErrors, 'Insert_Errors.xlsx')">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importInsertErrors" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DISEASE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.SAMPLE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK_RESULT" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.RESULT_CATEGORIES" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.FINAL_RESULT" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ERROR_DETAIL" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.rowNum }}</td>
+            <td>{{ row.diseaseGroupName }}</td>
+            <td>{{ row.sampleName || '-' }}</td>
+            <td>{{ row.labTestName }}</td>
+            <td>{{ row.testResultName }}</td>
+            <td>{{ row.caseCategoryName }}</td>
+            <td>{{ row.finalDiseaseName || '-' }}</td>
+            <td class="text-danger" style="font-size: 0.85em">{{ row.insertError }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Validation errors table (from preview) -->
+    <div *ngIf="importErrorRows.length > 0" class="mb-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="text-warning mb-0"><i class="pi pi-exclamation-triangle"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.VALIDATION_ERRORS" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-warning" (click)="exportTableToExcel(importErrorRows, 'Validation_Errors.xlsx')">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importErrorRows" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DISEASE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.SAMPLE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK_RESULT" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.RESULT_CATEGORIES" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.FINAL_RESULT" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ERROR_DETAIL" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.rowNum }}</td>
+            <td [class.import-cell-error]="!row.diseaseGroupId">{{ row.diseaseGroupName }}</td>
+            <td [class.import-cell-error]="!row.sampleId && row.sampleName">{{ row.sampleName || '-' }}</td>
+            <td [class.import-cell-error]="!row.labTestId">{{ row.labTestName }}</td>
+            <td [class.import-cell-error]="!row.testResultId">{{ row.testResultName }}</td>
+            <td [class.import-cell-error]="!row.caseCategoryId">{{ row.caseCategoryName }}</td>
+            <td [class.import-cell-error]="!row.finalDiseaseId && row.finalDiseaseName">{{ row.finalDiseaseName || '-' }}</td>
+            <td class="text-danger" style="font-size: 0.85em">{{ row.errorMessage }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Duplicate rows table (from preview) -->
+    <div *ngIf="importDuplicateRows.length > 0" class="mb-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="import-text-duplicate mb-0"><i class="pi pi-copy"></i>&nbsp;{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DUPLICATES" | translate }}</h5>
+        <button class="btn btn-sm btn-outline-warning" (click)="exportTableToExcel(importDuplicateRows, 'Import_Duplicates.xlsx')">
+          <i class="pi pi-download"></i>
+        </button>
+      </div>
+      <p-table [value]="importDuplicateRows" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [scrollable]="true" scrollHeight="300px" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:60px">{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ROW_NUM" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.DISEASE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.SAMPLE" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.LAB_CHECK_RESULT" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.RESULT_CATEGORIES" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.FINAL_RESULT" | translate }}</th>
+            <th>{{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ERROR_DETAIL" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.rowNum }}</td>
+            <td>{{ row.diseaseGroupName }}</td>
+            <td>{{ row.sampleName || '-' }}</td>
+            <td>{{ row.labTestName }}</td>
+            <td>{{ row.testResultName }}</td>
+            <td>{{ row.caseCategoryName }}</td>
+            <td>{{ row.finalDiseaseName || '-' }}</td>
+            <td class="import-text-duplicate" style="font-size: 0.85em">{{ row.errorMessage }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-3">
+      <button class="btn btn-lg border-color color btn-light-color"
+        *ngIf="importInsertErrors.length > 0 || importErrorRows.length > 0 || importDuplicateRows.length > 0"
+        (click)="exportErrorsToExcel()">
+        <i class="bi bi-download"></i>&nbsp;
+        {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.EXPORT_ERRORS" | translate }}
+      </button>
+      <button class="btn btn-lg bg text-light" (click)="cancelImport()">
+        {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.CLOSE" | translate }}
+      </button>
+    </div>
+  </div>
+</p-dialog>
+
 <div class="form-titles">
   {{ "NEDSS.HOME.CONTROL_PANEL.DISEASE_RULES.ADD_RULES" | translate }}
 </div>
