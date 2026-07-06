@@ -220,16 +220,19 @@ export class BaseAPIService {
   // }
 
   errorHandler(error: HttpErrorResponse): void {
-    //alert("error :"+JSON.stringify(error));
-    if (error.status !== 401 && error.status != 490) {
-      // this.translateService
-      //   .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-      //   .subscribe((res) => {
-      //     this.userMessage.error(res);
-      //   });
+    if (error.status === 401) {
+      const body = typeof error.error === 'string' ? (() => { try { return JSON.parse(error.error); } catch { return null; } })() : error.error;
+      const msgs: string[] = body?.Messages || [];
+      if (msgs.some((m: string) => m?.toLowerCase().includes('session time out'))) {
+        localStorage.removeItem('ls.authorizationData');
+        this.translateService.get('NEDSS.COMMON.SESSION_EXPIRED').subscribe((msg) => {
+          this.userMessage.warn(msg);
+        });
+        this.router.navigateByUrl('/');
+      }
     }
-    if (error.status == 0) {
-      this.router.navigateByUrl('login');
+    if (error.status === 0) {
+      this.router.navigateByUrl('/');
     }
   }
 
