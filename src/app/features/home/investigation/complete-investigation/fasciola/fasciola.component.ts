@@ -10,26 +10,30 @@ import { DatePipe } from '@angular/common';
   templateUrl: './fasciola.component.html',
   styleUrls: ['./fasciola.component.css']
 })
-export class FasciolaComponent implements OnInit{
+export class FasciolaComponent implements OnInit {
   fasciolaForm: FormGroup;
   currentLang: string;
-  //dir: string;
-  //delay: boolean = false;
-  //timer: any;
-  allFilledControlsCount: number = 0;
+  dir: string;
+  delay: boolean = false;
+  timer: any;
+  patientName: string = '';
   allControllesCount: number = 0;
-  patientName: string;
+  allFilledControlsCount: number = 0;
+
   constructor(private investigationService: InvestigationService,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
     private datePipe: DatePipe
-  ) { 
-    if (this.investigationService.patient.firstName != null && this.investigationService.patient.firstName != undefined) {
-      this.patientName = this.investigationService.patient.firstName + " " + this.investigationService.patient.secondName + " " + this.investigationService.patient.thirdName;
-    }
-  }
+  ) { }
   currentId: any;
   ngOnInit() {
+    this.patientName =
+      (this.investigationService.patient?.firstName || '') +
+      ' ' +
+      (this.investigationService.patient?.secondName || '') +
+      ' ' +
+      (this.investigationService.patient?.thirdName || '');
+
     this.currentLang =
       localStorage.getItem('ls.currentLang') !== undefined &&
         localStorage.getItem('ls.currentLang') !== 'undefined'
@@ -37,23 +41,6 @@ export class FasciolaComponent implements OnInit{
         : 'ar';
 
     this.fasciolaForm = new FormGroup({
-      fever: new FormControl(),
-      feverDays: new FormControl(),
-      maxTemperature: new FormControl(),
-      bloodyStools: new FormControl(),
-      bloodyUrine: new FormControl(),
-      painUrinating: new FormControl(),
-      frequentUrinate: new FormControl(),
-      obstructionducts: new FormControl(),
-      esophagealVarices: new FormControl(),
-      severeAirway: new FormControl(),
-      enlargedliver: new FormControl(),
-      enlargedSpleen: new FormControl(),
-      painAbdomen: new FormControl(),
-      acuteFailure: new FormControl(),
-      bileColic: new FormControl(),
-      portalHypertension: new FormControl(),
-      difficultySwallowing: new FormControl(),
       bathingSwimming: new FormControl(),
       swimmingPlace: new FormControl(),
       drinkingCanalWater: new FormControl(),
@@ -67,6 +54,7 @@ export class FasciolaComponent implements OnInit{
       drinkingCanalHome: new FormControl(),
       drinkingCanalHomePlace: new FormControl(),
       livestockToHouse: new FormControl(),
+      livestockAnimalType: new FormControl(),
       canalsNearLivestockHouse: new FormControl(),
       animalsSlaughteredOutside: new FormControl(),
       animalsSlaughteredOutsidePlace: new FormControl(),
@@ -98,24 +86,24 @@ export class FasciolaComponent implements OnInit{
       patientID: new FormControl(),
       id: new FormControl(),
       diseaseGroupId: new FormControl(this.investigationService.diseaseGroupID),
-      investigationCompletePercentage:new FormControl(),
-
+      investigationCompletePercentage: new FormControl(),
     })
 
     this.currentId = this.investigationService.currentid
     this.fasciolaForm.controls['patientID'].setValue(this.currentId)
-    this.investigationService.getByIdSchistosomiasisFasciola(this.currentId,this.investigationService.diseaseGroupID).subscribe(
+    this.calculateCompletionPercentage();
+    this.fasciolaForm.valueChanges.subscribe(() => {
+      this.calculateCompletionPercentage();
+    });
+    this.investigationService.getByIdFasciola(this.currentId,this.investigationService.diseaseGroupID).subscribe(
       res => {
         console.log(res);
         var v = res.data;
         this.fasciolaForm.patchValue(v)
-        this.fasciolaForm.patchValue({ fever: this.fasciolaForm.value.fever + "", tc: true });
-        console.log('feveeeeeeeer',this.fasciolaForm.value.fever);
-        //hadSchistosomiasisDate
         this.fasciolaForm.controls['hadSchistosomiasisDate'].setValue(this.datePipe.transform(this.fasciolaForm.value.hadSchistosomiasisDate, 'yyyy-MM-dd'));
         this.fasciolaForm.controls['dateDose'].setValue(this.datePipe.transform(this.fasciolaForm.value.dateDose, 'yyyy-MM-dd'));
         this.fasciolaForm.controls['followUpTreatment'].setValue(this.datePipe.transform(this.fasciolaForm.value.followUpTreatment, 'yyyy-MM-dd'));
-        this.calculateCompletionPercentage();
+
       }
       , (error) => {
         this.translateService
@@ -129,14 +117,19 @@ export class FasciolaComponent implements OnInit{
   }
   save() {
     Object.entries(this.fasciolaForm.controls).map(([key, value], index) => {
-      if (value.value == 'null')
+      if (value.value == 'null' || value.value === '')
         value.setValue(null);
     })
     this.fasciolaForm.controls['diseaseGroupId'].setValue(this.investigationService.diseaseGroupID);
     this.calculateCompletionPercentage();
-    this.fasciolaForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
+    this.fasciolaForm.controls['investigationCompletePercentage'].setValue(
+      this.allControllesCount === 0
+        ? 0
+        : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2))
+    );
+
     if (this.fasciolaForm.value.id != null) {
-      this.investigationService.updateSchistosomiasisFasciola(this.fasciolaForm.value).subscribe(
+      this.investigationService.updateFasciola(this.fasciolaForm.value).subscribe(
         (response: any) => {
           if (response) {
             this.translateService
@@ -155,7 +148,7 @@ export class FasciolaComponent implements OnInit{
         }
       )
     } else {
-      this.investigationService.addInvestigationSchistosomiasisFasciola(this.fasciolaForm.value).subscribe(
+      this.investigationService.addInvestigationFasciola(this.fasciolaForm.value).subscribe(
         (response: any) => {
 
           if (response) {
@@ -177,22 +170,26 @@ export class FasciolaComponent implements OnInit{
     }
   }
 
-    //BL
-    calculateCompletionPercentage() {
-      this.allFilledControlsCount = 0;
-      const data = this.fasciolaForm.value;
-      //Exclude fields you don't want to count (like 'id')
-      const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
-      const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
-  
-      this.allControllesCount = totalFields;
-  
-      Object.keys(data).forEach((key) => {
-        if (!excludedFields.includes(key) && data[key] !== null && data[key] !== '' && data[key] !== 'null') {
-          this.allFilledControlsCount++;
-        }
-      });
-    }
-  
+  calculateCompletionPercentage(): void {
+    const data = this.fasciolaForm?.value ?? {};
+    const excludedFields = [
+      'id', 'patientID', 'diseaseGroupId', 'investigationCompletePercentage', 'createdDate'
+    ];
+    const fields = Object.keys(data).filter((key) => !excludedFields.includes(key));
 
+    this.allControllesCount = fields.length;
+    this.allFilledControlsCount = fields.reduce((acc, key) => {
+      return this.isFieldFilled(data[key]) ? acc + 1 : acc;
+    }, 0);
+  }
+
+  private isFieldFilled(value: any): boolean {
+    if (value === null || value === undefined || value === '' || value === 'null') {
+      return false;
+    }
+    if (typeof value === 'boolean') {
+      return value;
+    }
+    return true;
+  }
 }

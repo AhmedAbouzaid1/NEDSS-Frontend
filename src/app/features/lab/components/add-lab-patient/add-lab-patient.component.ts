@@ -231,6 +231,7 @@ export class AddLabPatientComponent {
     this.multipleDropdownSettings = MultipleDropdownSettings;
     this.loadingPanel = false;
     this.generalDataService.cardIdValidationMessage = '';
+    this.patient.nationalityId = this.selectedNationality;
     this.dir = this.currentLang == 'ar' ? 'rtl' : 'ltr';
     this.search(false);
   }
@@ -832,12 +833,16 @@ export class AddLabPatientComponent {
     //   }
     // }
     if (this.validateLabPatientSample()) {
-      if(!this.generalDataService.isPhoneNumber1Valid || !this.generalDataService.isCardIdValid){
-        if (this.currentLang == 'ar') {
-          this.userMsg.error('يجب اضافة كل حقول المريض وتكون صحيحه');
-        } else {
-          this.userMsg.error('Please Add all required fields with valid data');
-        }
+      if(!this.generalDataService.isPhoneNumber1Valid){
+        this.translateService.get('NEDSS.COMMON.INVALID_PHONE_FORMAT').subscribe((res: string) => {
+          this.userMsg.error(res);
+        });
+        return;
+      }
+      if(!this.generalDataService.isCardIdValid){
+        this.translateService.get('NEDSS.LAB_VIEW.ADD_PATIENT.Invalid_NATIONAL').subscribe((res: string) => {
+          this.userMsg.error(res);
+        });
         return;
       }
       if (this.validateLabPatient()) {
@@ -943,6 +948,7 @@ export class AddLabPatientComponent {
     this.selectedHealthOffice = -1;
     this.selectedCity = -1;
     this.selectedNationality = NationalityEnum.Egyptian;
+    this.patient.nationalityId = this.selectedNationality;
     this.patientAddChecks = [];
     this.patientGridChecks = [];
     this.labChecksCount = 0;
@@ -1045,23 +1051,20 @@ export class AddLabPatientComponent {
       this.patient.caseDiscoveryDate
     );
 
-    if (
-      !this.isFirstNameValid ||
-      !this.isSecondNameValid ||
-      !this.isThirdNameValid ||
-      // !this.isFamilyNameValid||
-      !this.isNationalityValid ||
-      // !this.isNationalIdValid ||
-      //  !this.isPassportValid ||
-      !this.isHomeGovernmentValid ||
-      !this.isHomeHealthAdminValid ||
-      !this.isHomeCityValid ||
-      !this.isHomeHealthOfficeValid ||
-      !this.livingAddressValid ||
-      !this.isCaseDiscoveryDateValid
-    )
-      return false;
-    else return true;
+    const validations = {
+      firstName: this.isFirstNameValid,
+      secondName: this.isSecondNameValid,
+      thirdName: this.isThirdNameValid,
+      nationality: this.isNationalityValid,
+      homeGovernment: this.isHomeGovernmentValid,
+      homeHealthAdmin: this.isHomeHealthAdminValid,
+      homeCity: this.isHomeCityValid,
+      homeHealthOffice: this.isHomeHealthOfficeValid,
+      livingAddress: this.livingAddressValid,
+      caseDiscoveryDate: this.isCaseDiscoveryDateValid,
+    };
+    if (Object.values(validations).some(v => !v)) return false;
+    return true;
   }
 
   // Validate Sample

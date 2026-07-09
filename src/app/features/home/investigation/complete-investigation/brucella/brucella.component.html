@@ -1,4 +1,4 @@
-<form [formGroup]="brucellaData" (submit)="save()">
+<form [formGroup]="brucellaData" (ngSubmit)="save()">
   <br />
   <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt">
     <div id="jump_to_this_location"></div>
@@ -41,942 +41,17 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-12 title fs-6 fwb">المخالطة البشرية</div>
-      <div class="col-6">
-        <div class="row">
-          <div class="col-6">مخالط لحالة مشتبهة</div>
-
-          <div class="col-6 has-labels">
-            <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()" formControlName="contactSuspectedCase">
-              <option *ngFor="let case of contactSuspectedCases" [value]="case.id">
-                {{ case.arabicName }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-6">
-        <div class="row">
-          <div class="col-6">جزء من تفشي وبائي أو حالات مشابهة</div>
-          <div class="col-6 has-labels">
-            <select formControlName="epidemicOutbreak" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()">
-              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-              <option value="2">لا</option>
-              <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="row">
-          <div class="col-6">مخالط لحالة مؤكدة</div>
-          <div class="col-6 has-labels">
-            <select formControlName="contactConfirmedCase" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()">
-              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-              <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="row">
-          <div class="col-6">مخالط لمتوفي بمرض تنفسي غير معلوم</div>
-          <div class="col-6 has-labels">
-            <select formControlName="deceasedUnknownRespiratoryDisease" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()">
-              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-              <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="form-group">
-          <div class="row">
-            <div class="col-lg-6">
-              <label for="">عدد المخالطين المباشرين</label>
-            </div>
-            <div class="col-lg-6">
-              <input formControlName="noDirectContacts" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="form-group">
-          <div class="row">
-            <div class="col-lg-6">
-              <label for="">عدد المخالطين غير المباشرين </label>
-            </div>
-            <div class="col-lg-6">
-              <input formControlName="noIndirectContacts" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-    <div class="accordion" id="accordionExample">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-            aria-expanded="true" aria-controls="collapseOne">
-            متابعة اليوم الأول
-          </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-          data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <div class="row">
-              <div class="col-12 title fs-6 fwb">بيانات الحالة المخالطة</div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                  <input formControlName="nameDay1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">العمر</label>
-                  <input formControlName="ageDay1" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">رقم التليفون</label>
-                  <input formControlName="telephoneDay1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">النوع</label>
-                  <select formControlName="genderDay1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()">
-                    <option value="1">ذكر</option>
-                    <option value="2">انثى</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">نوع المخالطة</label>
-                  <select formControlName="contactTypeDay1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()">
-                    <option value="1">إقامة بالمنزل</option>
-                    <option value="2">مخالطة بالعمل</option>
-                    <option value="3">شخص قام بزيارة المريض أو العكس</option>
-                    <option value="4">طرق مخالطة أخري</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">علاقته بالحالة</label>
-                  <input formControlName="relationshipWithPatientDay1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-12 title fs-6 fwb">في حالة ظهور أعراض</div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">تاريخ ظهور الأعراض</label>
-                  <input formControlName="dateOnsetSymptomsDay1" type="date"  (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()"name="" id=""
-                    [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                  <select formControlName="feverDay1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">سعال جاف</label>
-                  <select formControlName="dryCoughDay1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">سعال يصاحبه بصق</label>
-                  <select formControlName="coughingWithSpittingDay1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">التهاب بالحلق</label>
-                  <select formControlName="soreThroatDay1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">صعوبة بالتنفس</label>
-                  <select formControlName="breathingDifficultyDay1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">آلام بالمفاصل</label>
-                  <select formControlName="jointPainDay1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">قئ</label>
-                  <select formControlName="vomitDay1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">إسهال</label>
-                  <select formControlName="diarrheaDay1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">أخرى</label>
-                  <select formControlName="otherDay1" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                  <input formControlName="otherSymptomsDay1" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-12 title fs-6 fwb">المعمل</div>
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-6">تم اخذ العينة؟</div>
-                  <div class="col-6 has-labels">
-                    <label for=""><input formControlName="isSampleTakenDay1" type="radio"  (blur)="calculateCompletionPercentage()"name="isSampleTakenDay1" id=""
-                        value="1" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input formControlName="isSampleTakenDay1" type="radio"  (blur)="calculateCompletionPercentage()"name="isSampleTakenDay1" id=""
-                        value="2" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group row">
-                  <div class="col-lg-4">
-                    <label class="mt-2" for="">تاريخ أخذ العينة</label>
-                  </div>
-                  <div class="col-lg-8">
-                    <input formControlName="dateSampleTakenDay1" type="date"  (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()"name="" id=""
-                      [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-4">نتيجة العينة</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input formControlName="sampleResultDay1" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay1" id=""
-                        value="1" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input formControlName="sampleResultDay1" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay1" id=""
-                        value="2" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input formControlName="sampleResultDay1" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay1" id=""
-                        value="3" />
-                      لم ترد
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingTwo">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseOne">
-            متابعة اليوم الثاني
-          </button>
-        </h2>
-        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="collapseTwo"
-          data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <div class="row">
-              <div class="col-12 title fs-6 fwb">بيانات الحالة المخالطة</div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                  <input formControlName="nameDay2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">العمر</label>
-                  <input formControlName="ageDay2" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">رقم التليفون</label>
-                  <input formControlName="telephoneDay2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">النوع</label>
-                  <select formControlName="genderDay2" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">ذكر</option>
-                    <option value="2">انثى</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">نوع المخالطة</label>
-                  <select formControlName="contactTypeDay2" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">إقامة بالمنزل</option>
-                    <option value="2">مخالطة بالعمل</option>
-                    <option value="3">شخص قام بزيارة المريض أو العكس</option>
-                    <option value="4">طرق مخالطة أخري</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">علاقته بالحالة</label>
-                  <input formControlName="relationshipWithPatientDay2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-12 title fs-6 fwb">في حالة ظهور أعراض</div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">تاريخ ظهور الأعراض</label>
-                  <input formControlName="dateOnsetSymptomsDay2" type="date"  (blur)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()"name="" id=""
-                    [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                  <select formControlName="feverDay2" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">سعال جاف</label>
-                  <select formControlName="dryCoughDay2" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">سعال يصاحبه بصق</label>
-                  <select formControlName="coughingWithSpittingDay2" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">التهاب بالحلق</label>
-                  <select formControlName="soreThroatDay2" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">صعوبة بالتنفس</label>
-                  <select formControlName="breathingDifficultyDay2" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">آلام بالمفاصل</label>
-                  <select formControlName="jointPainDay2" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">قئ</label>
-                  <select formControlName="vomitDay2" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">إسهال</label>
-                  <select formControlName="diarrheaDay2" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">أخرى</label>
-                  <select formControlName="otherDay2" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                  <input formControlName="otherSymptomsDay2" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-12 title fs-6 fwb">المعمل</div>
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-6">تم اخذ العينة؟</div>
-                  <div class="col-6 has-labels">
-                    <label for=""><input formControlName="isSampleTakenDay2" type="radio"  (blur)="calculateCompletionPercentage()"name="isSampleTakenDay2" id=""
-                        value="1" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input formControlName="isSampleTakenDay2" type="radio"  (blur)="calculateCompletionPercentage()"name="isSampleTakenDay2" id=""
-                        value="2" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group row">
-                  <div class="col-lg-4">
-                    <label class="mt-2" for="">تاريخ أخذ العينة</label>
-                  </div>
-                  <div class="col-lg-8">
-                    <input formControlName="dateSampleTakenDay2" type="date"  (blur)="calculateCompletionPercentage()"name="" id=""
-                      [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-4">نتيجة العينة</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input formControlName="sampleResultDay2" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay2" id=""
-                        value="1" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input formControlName="sampleResultDay2" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay2" id=""
-                        value="2" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input formControlName="sampleResultDay2" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay2" id=""
-                        value="3" />
-                      لم ترد
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingSeven">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven"
-            aria-expanded="true" aria-controls="collapseSeven">
-            متابعة بعد 7 ايام
-          </button>
-        </h2>
-        <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="collapseSeven"
-          data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <div class="row">
-              <div class="col-12 title fs-6 fwb">بيانات الحالة المخالطة</div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                  <input formControlName="nameDay7" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">العمر</label>
-                  <input formControlName="ageDay7" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">رقم التليفون</label>
-                  <input formControlName="telephoneDay7" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">النوع</label>
-                  <select formControlName="genderDay7" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">ذكر</option>
-                    <option value="2">انثى</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">نوع المخالطة</label>
-                  <select formControlName="contactTypeDay7" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">إقامة بالمنزل</option>
-                    <option value="2">مخالطة بالعمل</option>
-                    <option value="3">شخص قام بزيارة المريض أو العكس</option>
-                    <option value="4">طرق مخالطة أخري</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">علاقته بالحالة</label>
-                  <input formControlName="relationshipWithPatientDay7" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-12 title fs-6 fwb">في حالة ظهور أعراض</div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">تاريخ ظهور الأعراض</label>
-                  <input formControlName="dateOnsetSymptomsDay7" type="date"  (blur)="calculateCompletionPercentage()"name="" id=""
-                    [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                  <select formControlName="feverDay7" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">سعال جاف</label>
-                  <select formControlName="dryCoughDay7" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">سعال يصاحبه بصق</label>
-                  <select formControlName="coughingWithSpittingDay7" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">التهاب بالحلق</label>
-                  <select formControlName="soreThroatDay7" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">صعوبة بالتنفس</label>
-                  <select formControlName="breathingDifficultyDay7" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">آلام بالمفاصل</label>
-                  <select formControlName="jointPainDay7" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">قئ</label>
-                  <select formControlName="vomitDay7" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">إسهال</label>
-                  <select formControlName="diarrheaDay7" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">أخرى</label>
-                  <select formControlName="otherDay7" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                  <input formControlName="otherSymptomsDay7" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-12 title fs-6 fwb">المعمل</div>
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-6">تم اخذ العينة؟</div>
-                  <div class="col-6 has-labels">
-                    <label for=""><input formControlName="isSampleTakenDay7" type="radio"  (blur)="calculateCompletionPercentage()"name="isSampleTakenDay7" id=""
-                        value="1" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input formControlName="isSampleTakenDay7" type="radio"  (blur)="calculateCompletionPercentage()"name="isSampleTakenDay7" id=""
-                        value="2" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group row">
-                  <div class="col-lg-4">
-                    <label class="mt-2" for="">تاريخ أخذ العينة</label>
-                  </div>
-                  <div class="col-lg-8">
-                    <input formControlName="dateSampleTakenDay7" type="date"  (blur)="calculateCompletionPercentage()"name="" id=""
-                      [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-4">نتيجة العينة</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input formControlName="sampleResultDay7" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay7" id=""
-                        value="1" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input formControlName="sampleResultDay7" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay7" id=""
-                        value="2" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input formControlName="sampleResultDay7" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay7" id=""
-                        value="3" />
-                      لم ترد
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingSevenTeen">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSevenTeen"
-            aria-expanded="true" aria-controls="collapseSevenTeen">
-            متابعة بعد 14 يوم
-          </button>
-        </h2>
-        <div id="collapseSevenTeen" class="accordion-collapse collapse" aria-labelledby="collapseSevenTeen"
-          data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <div class="row">
-              <div class="col-12 title fs-6 fwb">بيانات الحالة المخالطة</div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                  <input formControlName="nameDay14" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">العمر</label>
-                  <input formControlName="ageDay14" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">رقم التليفون</label>
-                  <input formControlName="telephoneDay14" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">النوع</label>
-                  <select formControlName="genderDay14" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">ذكر</option>
-                    <option value="2">انثى</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">نوع المخالطة</label>
-                  <select formControlName="contactTypeDay14" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">إقامة بالمنزل</option>
-                    <option value="2">مخالطة بالعمل</option>
-                    <option value="3">شخص قام بزيارة المريض أو العكس</option>
-                    <option value="4">طرق مخالطة أخري</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group">
-                  <label for="">علاقته بالحالة</label>
-                  <input formControlName="relationshipWithPatientDay14" type="text" name="" id=""
-                    class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-12 title fs-6 fwb">في حالة ظهور أعراض</div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">تاريخ ظهور الأعراض</label>
-                  <input formControlName="dateOnsetSymptomsDay14" type="date"  (blur)="calculateCompletionPercentage()"name="" id=""
-                    [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                  <select formControlName="feverDay14" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">سعال جاف</label>
-                  <select formControlName="dryCoughDay14" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">سعال يصاحبه بصق</label>
-                  <select formControlName="coughingWithSpittingDay14" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">التهاب بالحلق</label>
-                  <select formControlName="soreThroatDay14" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">صعوبة بالتنفس</label>
-                  <select formControlName="breathingDifficultyDay14" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">آلام بالمفاصل</label>
-                  <select formControlName="jointPainDay14" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">قئ</label>
-                  <select formControlName="vomitDay14" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">إسهال</label>
-                  <select formControlName="diarrheaDay14" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label for="">أخرى</label>
-                  <select formControlName="otherDay14" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                  <input formControlName="otherSymptomsDay14" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <div class="col-12 title fs-6 fwb">المعمل</div>
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-6">تم اخذ العينة؟</div>
-                  <div class="col-6 has-labels">
-                    <label for=""><input formControlName="isSampleTakenDay14" type="radio"  (blur)="calculateCompletionPercentage()"name="isSampleTakenDay14"
-                        id="" value="1" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input formControlName="isSampleTakenDay14" type="radio"  (blur)="calculateCompletionPercentage()"name="isSampleTakenDay14"
-                        id="" value="2" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="form-group row">
-                  <div class="col-lg-4">
-                    <label class="mt-2" for="">تاريخ أخذ العينة</label>
-                  </div>
-                  <div class="col-lg-8">
-                    <input formControlName="dateSampleTakenDay14" type="date"  (blur)="calculateCompletionPercentage()"name="" id=""
-                      [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="row">
-                  <div class="col-4">نتيجة العينة</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input formControlName="sampleResultDay14" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay14" id=""
-                        value="1" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input formControlName="sampleResultDay14" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay14" id=""
-                        value="2" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input formControlName="sampleResultDay14" type="radio"  (blur)="calculateCompletionPercentage()"name="sampleResultDay14" id=""
-                        value="3" />
-                      لم ترد
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
     <div class="row">
       <div class="col-12 title fs-6 fwb"> {{ "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors" | translate }}</div>
       <div class="col-lg-3">
         <div class="form-group">
-          <label for="">هل يوجد تعامل مع الحيوانات</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.DEAL_WITH_ANIMALS" | translate }}</label>
 
           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="dealWithAnimals">
             <option *ngFor="let case of DealWithAnimals" [value]="case.id">
-              {{ case.arabicName }}
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
             </option>
           </select>
         </div>
@@ -984,18 +59,18 @@
       <!-- /.col-lg-3 -->
       <div class="col-lg-3">
         <div class="form-group">
-          <label for="">نوع الحيوان</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.ANIMAL_TYPE" | translate }}</label>
           <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="animalType" formControlName="animalType" />
         </div>
       </div>
       <!-- /.col-lg-3 -->
       <div class="col-lg-3">
         <div class="form-group">
-          <label for="">في حالة نعم. اذكر المكان</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_MENTION_PLACE" | translate }}</label>
 
           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="place">
             <option *ngFor="let case of Places" [value]="case.id">
-              {{ case.arabicName }}
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
             </option>
           </select>
         </div>
@@ -1003,18 +78,18 @@
       <!-- /.col-lg-3 -->
       <div class="col-lg-3">
         <div class="form-group">
-          <label for="">في حالة أخرى. يذكر المكان</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_OTHER_MENTION_PLACE" | translate }}</label>
           <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="anotherPlace" formControlName="anotherPlace" />
         </div>
       </div>
       <!-- /.col-lg-3 -->
       <div class="col-lg-6">
         <div class="form-group">
-          <label for="">هل يوجد نفوق أو إجهاض في الحيوانات المصابة</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.ANIMAL_ABORTION_OR_DEATH" | translate }}</label>
 
           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="abortionInfectedAnimals">
             <option *ngFor="let case of AbortionInfectedAnimals" [value]="case.id">
-              {{ case.arabicName }}
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
             </option>
           </select>
         </div>
@@ -1022,11 +97,11 @@
       <!-- /.col-lg-6 -->
       <div class="col-lg-3">
         <div class="form-group">
-          <label for="">في حالة نعم، هل تم إبلاغ الطب البيطري</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.VETERINARY_NOTIFIED" | translate }}</label>
 
           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="veterinarianInformed">
             <option *ngFor="let case of veterinarianInformed" [value]="case.id">
-              {{ case.arabicName }}
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
             </option>
           </select>
         </div>
@@ -1034,27 +109,50 @@
       <!-- /.col-lg-3 -->
       <div class="col-lg-3">
         <div class="form-group">
-          <label for="">في حالة نعم يرفق</label>
-          <!-- <a href=""class="btn btn-primary pl-2 pr-2"
-            >نموذج إخطار الجهات البيطرية</a
-          > -->
-          <button (click)="fileInput.click()" class="btn btn-primary pl-2 pr-2" style="color: aliceblue">
-            نموذج إخطار الجهات البيطرية
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.VETERINARY_NOTIFICATION_FORM" | translate }}</label>
+          <button
+            type="button"
+            (click)="fileInput.click()"
+            class="btn bg rounded-2 text-light w-100">
             {{ "NEDSS.HELP.FILE_UPLOAD" | translate }}
           </button>
 
           <input class="form-control" (blur)="calculateCompletionPercentage()" type="file" #fileInput style="display: none"
             (change)="onFileSelect($event.target)" multiple class="btn-primary"/>
+
+          <div class="small text-muted mt-1">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.MAX_FILES_NOTE" | translate }}</div>
+
+          <div *ngIf="oldFiles.length > 0" class="mt-2">
+            <div class="small text-muted mb-1">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.UPLOADED_FILES" | translate }}</div>
+            <div *ngFor="let fileUrl of oldFiles; let i = index" class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
+              <span class="text-truncate me-2">{{ fileUrl }}</span>
+              <div class="d-flex gap-1">
+                <button type="button" class="btn btn-sm btn-outline-primary" (click)="openExistingFile(fileUrl)">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.VIEW" | translate }}</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeOldSelectedFile(i)">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.DELETE" | translate }}</button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="listOfFiles.length > 0" class="mt-2">
+            <div class="small text-muted mb-1">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.SELECTED_FILES_NOT_SAVED" | translate }}</div>
+            <div *ngFor="let fileName of listOfFiles; let i = index" class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
+              <span class="text-truncate me-2">{{ fileName }}</span>
+              <div class="d-flex gap-1">
+                <button type="button" class="btn btn-sm btn-outline-primary" (click)="openSelectedFile(i)">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.VIEW" | translate }}</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeSelectedFile(i)">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.DELETE" | translate }}</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <!-- /.col-lg-3 -->
       <div class="col-lg-6">
         <div class="form-group">
-          <label for="">هل تم تناول اي من منتجات اللحوم غير مطهية جيداً</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.EATING_UNDERCOOKED_MEAT" | translate }}</label>
 
           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="eatingUndercookedMeat">
             <option *ngFor="let case of EatingUndercookedMeat" [value]="case.id">
-              {{ case.arabicName }}
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
             </option>
           </select>
         </div>
@@ -1062,11 +160,11 @@
       <!-- /.col-lg-6 -->
       <div class="col-lg-6">
         <div class="form-group">
-          <label for="">هل تم تناول من منتجات الألبان الغير مبسترة </label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.CONSUMING_UNPASTEURIZED_DAIRY" | translate }}</label>
 
           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="consumingUnpasteurizedDairy">
             <option *ngFor="let case of consumingUnpasteurizedDairy" [value]="case.id">
-              {{ case.arabicName }}
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
             </option>
           </select>
         </div>
@@ -1074,11 +172,11 @@
       <!-- /.col-lg-6 -->
       <div class="col-lg-6">
         <div class="form-group">
-          <label for="">هل تم التعرض معمليا لميكروب البروسيلا</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.EXPOSED_TO_BRUCELLA_IN_LAB" | translate }}</label>
 
           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="exposedToBrucellosis">
             <option *ngFor="let case of exposedToBrucellosis" [value]="case.id">
-              {{ case.arabicName }}
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
             </option>
           </select>
         </div>
@@ -1086,25 +184,25 @@
       <!-- /.col-lg-6 -->
       <div class="col-lg-3">
         <div class="form-group">
-          <label for="">في حالة نعم اسم المعمل</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_LAB_NAME" | translate }}</label>
           <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="labName" formControlName="labName" />
         </div>
       </div>
       <!-- /.col-lg-3 -->
       <div class="col-lg-3">
         <div class="form-group">
-          <label for="">مكان المعمل</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.LAB_ADDRESS" | translate }}</label>
           <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="labPlace" formControlName="labPlace" />
         </div>
       </div>
       <!-- /.col-lg-3 -->
       <div class="col-lg-6">
         <div class="form-group">
-          <label for="">هل تم التعرض لطعم البروسيلا</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.EXPOSURE_TO_BRUCELLA_VACCINE" | translate }}</label>
 
           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="laboratoryExposureBrucella">
             <option *ngFor="let case of LaboratoryExposureBrucella" [value]="case.id">
-              {{ case.arabicName }}
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
             </option>
           </select>
         </div>
@@ -1112,19 +210,29 @@
       <!-- /.col-lg-6 -->
       <div class="col-lg-6">
         <div class="form-group">
-          <label for="">في حالة نعم تفاصيل التعرض</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_EXPOSURE_DETAILS" | translate }}</label>
           <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="exposureDetails"
             formControlName="exposureDetails" />
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.PREVIOUS_BRUCELLA_DIAGNOSIS" | translate }}</label>
+          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="previousDiagnosis">
+            <option *ngFor="let case of previousDiagnosis" [value]="case.id">
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
+            </option>
+          </select>
         </div>
       </div>
       <!-- /.col-lg-3 -->
       <div class="col-lg-6">
         <div class="form-group">
-          <label for="">هل تعاني حالات أخرى من نفس الأعراض</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.CASES_WITH_SAME_SYMPTOMS" | translate }}</label>
 
           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="casesSameSymptoms">
             <option *ngFor="let case of casesSameSymptoms" [value]="case.id">
-              {{ case.arabicName }}
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
             </option>
           </select>
         </div>
@@ -1132,11 +240,11 @@
       <!-- /.col-lg-6 -->
       <div class="col-lg-6">
         <div class="form-group">
-          <label for="">في حالة نعم اذكر المكان</label>
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_CASE_LOCATION" | translate }}</label>
 
           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="placeOrLab">
-            <option *ngFor="let case of placeOrLabs" [value]="case.id">
-              {{ case.arabicName }}
+            <option *ngFor="let case of homeOrWorkOptions" [value]="case.id">
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
             </option>
           </select>
         </div>
@@ -1147,6 +255,7 @@
   <div class="card-footer text-start pt-4">
     <button type="submit" class="btn bg rounded-2 text-light mb-5"> {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }} </button>
   </div>
+</div>
 </div>
 
   <!--

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { InvestigationService } from '../../services/investigation.service';
 import { __values } from 'tslib';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,6 +12,15 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./malaria.component.css'],
 })
 export class MalariaComponent implements OnInit {
+  private readonly visitFieldBases = [
+    'healthCareFacilityName',
+    'healthUnitBelongs',
+    'dateVisit',
+    'initialdiagnosis',
+    'hospitalization',
+    'entryDate',
+    'exitDate'
+  ];
   currentLang =
     localStorage.getItem('ls.currentLang') !== undefined &&
       localStorage.getItem('ls.currentLang') !== 'undefined'
@@ -25,6 +34,7 @@ export class MalariaComponent implements OnInit {
   diseaseGroupId: any;
 
   constructor(
+    private formBuilder: FormBuilder,
     private investigationService: InvestigationService,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
@@ -35,21 +45,113 @@ export class MalariaComponent implements OnInit {
     }
   }
 
+  get patientVisitHistory(): FormArray {
+    return this.malariaForm.get('patientVisitHistory') as FormArray;
+  }
+
+  createPatientVisitHistoryGroup(data?: any): FormGroup {
+    return new FormGroup({
+      id: new FormControl(data?.id || null),
+      nameHealthFacility: new FormControl(data?.nameHealthFacility || null),
+      healthFacilityBelongs: new FormControl(data?.healthFacilityBelongs || null),
+      dateVisit: new FormControl(data?.dateVisit || null),
+      initialDiagnosis: new FormControl(data?.initialDiagnosis || null),
+      admissionHospital: new FormControl(data?.admissionHospital || null),
+      dateEntry: new FormControl(data?.dateEntry || null),
+      exitDate: new FormControl(data?.exitDate || null)
+    });
+  }
+
+  private syncPatientVisitHistoryFromApi(data: any): void {
+    const apiVisits = data?.PatientVisitHistory ?? data?.patientVisitHistory;
+    while (this.patientVisitHistory.length > 0) {
+      this.patientVisitHistory.removeAt(0);
+    }
+
+    if (!Array.isArray(apiVisits) || apiVisits.length === 0) {
+      return;
+    }
+
+    apiVisits.forEach((item: any) => {
+      this.patientVisitHistory.push(this.createPatientVisitHistoryGroup({
+        id: item?.id ?? null,
+        nameHealthFacility: item?.nameHealthFacility ?? null,
+        healthFacilityBelongs: item?.healthFacilityBelongs ?? null,
+        dateVisit: this.datePipe.transform(item?.dateVisit, 'yyyy-MM-dd') ?? null,
+        initialDiagnosis: item?.initialDiagnosis ?? null,
+        admissionHospital: item?.admissionHospital ?? null,
+        dateEntry: this.datePipe.transform(item?.dateEntry, 'yyyy-MM-dd') ?? null,
+        exitDate: this.datePipe.transform(item?.exitDate, 'yyyy-MM-dd') ?? null,
+      }));
+    });
+  }
+
+  private normalizeNullishValue(value: any): any {
+    return value === '' || value === 'null' || value === undefined ? null : value;
+  }
+
+  private normalizeNumericValue(value: any): number | null | any {
+    const normalizedValue = this.normalizeNullishValue(value);
+    if (normalizedValue === null || typeof normalizedValue === 'number') {
+      return normalizedValue;
+    }
+
+    const numericValue = Number(normalizedValue);
+    return Number.isNaN(numericValue) ? normalizedValue : numericValue;
+  }
+
+  private normalizePatientVisitPayload(visit: any): any {
+    return {
+      id: this.normalizeNumericValue(visit?.id),
+      patientID: this.normalizeNumericValue(this.currentId),
+      nameHealthFacility: this.normalizeNullishValue(visit?.nameHealthFacility),
+      healthFacilityBelongs: this.normalizeNullishValue(visit?.healthFacilityBelongs),
+      dateVisit: this.normalizeNullishValue(visit?.dateVisit),
+      initialDiagnosis: this.normalizeNullishValue(visit?.initialDiagnosis),
+      admissionHospital: this.normalizeNumericValue(visit?.admissionHospital),
+      dateEntry: this.normalizeNullishValue(visit?.dateEntry),
+      exitDate: this.normalizeNullishValue(visit?.exitDate)
+    };
+  }
+
+  private getFlatVisitFieldNames(): string[] {
+    return Array.from({ length: 5 }, (_, index) => index + 1)
+      .flatMap((visitIndex) => this.visitFieldBases.map((field) => `${field}${visitIndex}`));
+  }
+
+  private buildSavePayload(): any {
+    const payload = { ...this.malariaForm.getRawValue() };
+    const stringOnlyFields = new Set([
+      'followD1Phone',
+      'followD2Phone',
+      'followD7Phone',
+      'followD14Phone'
+    ]);
+    payload.investigationCompletePercentage = parseFloat(
+      ((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)
+    );
+    payload.diseaseGroupId = this.normalizeNumericValue(this.diseaseGroupId);
+    payload.patientID = this.normalizeNumericValue(payload.patientID);
+
+    Object.keys(payload).forEach((key) => {
+      if (key === 'patientVisitHistory') {
+        payload.PatientVisitHistory = Array.isArray(payload[key])
+          ? payload[key].map((item: any) => this.normalizePatientVisitPayload(item))
+          : [];
+        delete payload[key];
+        return;
+      }
+
+      payload[key] = stringOnlyFields.has(key)
+        ? this.normalizeNullishValue(payload[key])
+        : this.normalizeNumericValue(payload[key]);
+    });
+
+    return payload;
+  }
+
   ngOnInit() {
     this.malariaForm = new FormGroup({
-      fever: new FormControl(),
-      feverDays: new FormControl(),
-      maxTemperature: new FormControl(),
-      anemia: new FormControl(),
-      chillsSweat: new FormControl(),
-      abdominalPain: new FormControl(),
-      enlargedSpleen: new FormControl(),
-      zombie: new FormControl(),
-      enlargedLiver: new FormControl(),
-      hypoglycemia: new FormControl(),
-      acuteFailure: new FormControl(),
-      plateletDeficiency: new FormControl(),
-      acidityBlood: new FormControl(),
       transfusedBlood: new FormControl(),
       placeName: new FormControl(),
       date: new FormControl(),
@@ -69,42 +171,7 @@ export class MalariaComponent implements OnInit {
       dosage: new FormControl(),
       caseAssessment: new FormControl(),
       result: new FormControl(),
-      healthCareFacilityName1: new FormControl(),
-      healthUnitBelongs1: new FormControl(),
-      dateVisit1: new FormControl(),
-      initialdiagnosis1: new FormControl(),
-      hospitalization1: new FormControl(),
-      entryDate1: new FormControl(),
-      exitDate1: new FormControl(),
-      healthCareFacilityName2: new FormControl(),
-      healthUnitBelongs2: new FormControl(),
-      dateVisit2: new FormControl(),
-      initialdiagnosis2: new FormControl(),
-      hospitalization2: new FormControl(),
-      entryDate2: new FormControl(),
-      exitDate2: new FormControl(),
-      healthCareFacilityName3: new FormControl(),
-      healthUnitBelongs3: new FormControl(),
-      dateVisit3: new FormControl(),
-      initialdiagnosis3: new FormControl(),
-      hospitalization3: new FormControl(),
-      entryDate3: new FormControl(),
-      exitDate3: new FormControl(),
-      healthCareFacilityName4: new FormControl(),
-      healthUnitBelongs4: new FormControl(),
-      dateVisit4: new FormControl(),
-      initialdiagnosis4: new FormControl(),
-      hospitalization4: new FormControl(),
-      entryDate4: new FormControl(),
-      exitDate4: new FormControl(),
-      healthCareFacilityName5: new FormControl(),
-      healthUnitBelongs5: new FormControl(),
-      dateVisit5: new FormControl(),
-      initialdiagnosis5: new FormControl(),
-      hospitalization5: new FormControl(),
-      entryDate5: new FormControl(),
-      exitDate5: new FormControl(),
-      notes: new FormControl(),
+      patientVisitHistory: this.formBuilder.array([]),
       routineSurveillance: new FormControl(),
       contactFollowUp: new FormControl(),
       travelOutsideEgypt: new FormControl(),
@@ -114,7 +181,6 @@ export class MalariaComponent implements OnInit {
       contactWithSuspectedCase: new FormControl(),
       partEpidemicOutbreakOrSimilarSituation: new FormControl(),
       contactWithConfirmedCase: new FormControl(),
-      contactDeceasedPersonUnknownRespiratoryDisease: new FormControl(),
       theNumberDirectContacts: new FormControl(),
       theNumberIndirectContacts: new FormControl(),
       followD1Name: new FormControl(),
@@ -246,10 +312,6 @@ export class MalariaComponent implements OnInit {
         // if (v.followD14SampleResult == null) { v.followD14SampleResult = 2; }
         this.malariaForm.patchValue(v);
 
-        this.malariaForm.patchValue({
-          fever: this.malariaForm.value.fever + '',
-          tc: true,
-        });
         //date
         this.malariaForm.controls['date'].setValue(
           this.datePipe.transform(this.malariaForm.value.date, 'yyyy-MM-dd')
@@ -285,97 +347,7 @@ export class MalariaComponent implements OnInit {
             'yyyy-MM-dd'
           )
         );
-        //
-        this.malariaForm.controls['dateVisit1'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.dateVisit1,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['entryDate1'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.entryDate1,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['dateVisit2'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.dateVisit2,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['entryDate2'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.entryDate2,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['dateVisit3'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.dateVisit3,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['entryDate3'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.entryDate3,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['dateVisit4'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.dateVisit4,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['entryDate4'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.entryDate4,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['dateVisit5'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.dateVisit5,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['entryDate5'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.entryDate5,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['exitDate1'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.exitDate1,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['exitDate2'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.exitDate2,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['exitDate3'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.exitDate3,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['exitDate4'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.exitDate4,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.controls['exitDate5'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.exitDate5,
-            'yyyy-MM-dd'
-          )
-        );
+        this.syncPatientVisitHistoryFromApi(v);
 
         //days
         //followD1DateOfSymptoms
@@ -517,11 +489,10 @@ export class MalariaComponent implements OnInit {
       if (value.value == 'null')
         value.setValue(null);
     })
-    this.malariaForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
-    this.malariaForm.controls['diseaseGroupId'].setValue(this.diseaseGroupId);
+    const payload = this.buildSavePayload();
 
     if (this.malariaForm.value.id != null) {
-      this.investigationService.updateMalaria(this.malariaForm.value).subscribe(
+      this.investigationService.updateMalaria(payload).subscribe(
         (response: any) => {
           if (response) {
             this.translateService
@@ -541,7 +512,7 @@ export class MalariaComponent implements OnInit {
       );
     } else {
       this.investigationService
-        .addInvestigationMalaria(this.malariaForm.value)
+        .addInvestigationMalaria(payload)
         .subscribe(
           (response: any) => {
             if (response) {
@@ -569,16 +540,42 @@ export class MalariaComponent implements OnInit {
     const data = this.malariaForm.value;
     console.log(data);
     //Exclude fields you don't want to count (like 'id')
-    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
+    const excludedFields = [
+      'id',
+      'patientID',
+      'investigationCompletePercentage',
+      'diseaseGroupId',
+      'createdDate',
+      'patientVisitHistory',
+      ...this.getFlatVisitFieldNames()
+    ];
     const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
 
-    this.allControllesCount = totalFields;
+    let patientVisitTotalFields = 0;
+    let patientVisitFilledFields = 0;
+
+    this.patientVisitHistory.controls.forEach((control) => {
+      const visitData = control.value;
+      Object.keys(visitData).forEach((key) => {
+        if (key === 'id') {
+          return;
+        }
+        patientVisitTotalFields++;
+        if (visitData[key] !== null && visitData[key] !== '' && visitData[key] !== 'null') {
+          patientVisitFilledFields++;
+        }
+      });
+    });
+
+    this.allControllesCount = totalFields + patientVisitTotalFields;
 
     Object.keys(data).forEach((key) => {
       if (!excludedFields.includes(key) && data[key] !== null && data[key] !== '' && data[key] !== 'null') {
         this.allFilledControlsCount++;
       }
     });
+
+    this.allFilledControlsCount += patientVisitFilledFields;
   }
 
 }

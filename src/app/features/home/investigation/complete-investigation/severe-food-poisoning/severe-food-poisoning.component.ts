@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AnswerOptions, distanceWaterSourcesSewage, waterSource } from 'src/app/core/constants';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
-import { DatePipe } from '@angular/common';
+import { MultipleDropdownSettings } from 'src/app/core/constants';
 @Component({
   selector: 'app-severe-food-poisoning',
   templateUrl: './severe-food-poisoning.component.html',
@@ -20,10 +19,63 @@ export class SevereFoodPoisoningComponent implements OnInit {
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
   patientName: string;
+  private readonly multiSelectDelimiter = '|';
+  multipleDropdownSettings = {};
+  samplesDropdownSettings = {};
+
+  exposureLocations = [
+    { id: 'HOME', arabicName: 'منزل', englishName: 'Home' },
+    { id: 'RESTAURANT', arabicName: 'مطعم', englishName: 'Restaurant' },
+    { id: 'SCHOOL', arabicName: 'مدرسة', englishName: 'School' },
+    { id: 'HOTEL', arabicName: 'فندق', englishName: 'Hotel' },
+    { id: 'MARKET', arabicName: 'سوق', englishName: 'Market' },
+    { id: 'SUPERMARKET', arabicName: 'سوبر ماركت', englishName: 'Supermarket' },
+    { id: 'PARTIES', arabicName: 'حفلات', englishName: 'Parties' },
+    { id: 'OTHER', arabicName: 'أخرى', englishName: 'Other' },
+  ];
+
+  foodTypeOptions = [
+    { id: 'MEAT', arabicName: 'لحوم', englishName: 'Meat' },
+    { id: 'POULTRY', arabicName: 'دواجن', englishName: 'Poultry' },
+    { id: 'FISH', arabicName: 'أسماك', englishName: 'Fish' },
+    { id: 'DAIRY_PRODUCTS', arabicName: 'منتجات ألبان', englishName: 'Dairy products' },
+    { id: 'WATER', arabicName: 'مياه', englishName: 'Water' },
+    { id: 'BAKERY', arabicName: 'معجنات', englishName: 'Bakery' },
+    { id: 'FRUITS_AND_VEGETABLES', arabicName: 'خضروات وفاكهة', englishName: 'Vegetables and fruits' },
+    { id: 'SWEETS_OR_DRINKS', arabicName: 'حلويات أو مشروبات', englishName: 'Sweets or drinks' },
+    { id: 'OTHER', arabicName: 'أخرى', englishName: 'Other' },
+  ];
+
+  waterSourceOptions = [
+    { id: 'NETWORK', arabicName: 'شبكة', englishName: 'Network' },
+    { id: 'GROUNDWATER', arabicName: 'مياه جوفية', englishName: 'Groundwater' },
+    { id: 'TANK', arabicName: 'خزان', englishName: 'Tank' },
+    { id: 'OTHER', arabicName: 'أخرى', englishName: 'Other' },
+  ];
+
+  humanSampleOptions = [
+    { id: 'VOMIT', arabicName: 'قيء', englishName: 'Vomit' },
+    { id: 'URINE', arabicName: 'بول', englishName: 'Urine' },
+    { id: 'STOOL', arabicName: 'براز', englishName: 'Stool' },
+    { id: 'BLOOD', arabicName: 'دم', englishName: 'Blood' },
+    { id: 'OTHER', arabicName: 'أخرى', englishName: 'Other' },
+  ];
+
+  environmentalSampleOptions = [
+    { id: 'FOOD_REMAINS', arabicName: 'بقايا طعام', englishName: 'Food remains' },
+    { id: 'WATER', arabicName: 'مياه', englishName: 'Water' },
+    { id: 'OTHER', arabicName: 'أخرى', englishName: 'Other' },
+  ];
+
+  selectedFoodTypes: any[] = [];
+  selectedExposureLocations: any[] = [];
+  selectedWaterSources: any[] = [];
+  selectedHumanSamples: any[] = [];
+  selectedEnvironmentalSamples: any[] = [];
+
   constructor(private investigationService: InvestigationService,
     private translateService: TranslateService,
-    private userMsg: UserMessageService
-    , public datePipe: DatePipe) {
+    private userMsg: UserMessageService) {
       if (this.investigationService.patient.firstName != null && this.investigationService.patient.firstName != undefined) {
         this.patientName = this.investigationService.patient.firstName + " " + this.investigationService.patient.secondName + " " + this.investigationService.patient.thirdName;
       }
@@ -32,67 +84,37 @@ export class SevereFoodPoisoningComponent implements OnInit {
   SevereFoodPoisoningData = {
     patientID: null,
     id: null,
-    referralPartOutbreak: null,
-    patientFoodHandler: null,
-    patientHealthCertificate: null,
-    foodsNotPreparedHome: null,
-    mucusAccompanyingStool: null,
-    mucusAccompaniedBlood: null,
-    stoolWatery: null,
-    vomit: null,
-    urgeVomit: null,
-    meaning: null,
-    cough: null,
-    jointPain: null,
-    colic: null,
-    headache: null,
-    muscleAches: null,
-    rednessSkin: null,
-    jerk: null,
-    soreThroat: null,
-    cramp: null,
-    waterStored: null,
-    changeInDrinkingWater: null,
-    dateLastCertificate: null,
-    food: null,
-    source: null,
-    feverDurationDay: null,
-    maxTemperature: null,
-    numberStoolsDay: null,
-    other: null,
-    other2: null,
-    tankType: null,
-    fever: null,
-    waterSource: null,
-    distanceWaterSourcesSewage: null,
+    caseCount: null,
+    exposureLocation: null,
+    exposureLocationOther: null,
+    foodTypes: null,
+    foodTypeOther: null,
+    foodIntakeTime: null,
+    symptomsOnsetTime: null,
+    preparationToIntakeDuration: null,
+    foodExposureCount: null,
+    generalCaseStatus: null,
+    waterSourceType: null,
+    waterSourceOther: null,
+    humanSamples: null,
+    humanSamplesOther: null,
+    environmentalSamples: null,
+    environmentalSamplesOther: null,
     diseaseGroupId: this.investigationService.diseaseGroupID,
     investigationCompletePercentage:null
   }
-  referralPartOutbreaks = AnswerOptions;
-  patientFoodHandlers = AnswerOptions;
-  patientHealthCertificates = AnswerOptions;
-  foodsNotPreparedHomes = AnswerOptions;
-  mucusAccompanyingStools = AnswerOptions;
-  mucusAccompaniedBloods = AnswerOptions;
-  stoolWaterys = AnswerOptions;
-  vomits = AnswerOptions;
-  urgeVomits = AnswerOptions;
-  meanings = AnswerOptions;
-  coughs = AnswerOptions;
-  jointPains = AnswerOptions;
-  colics = AnswerOptions;
-  headaches = AnswerOptions;
-  muscleAchess = AnswerOptions;
-  rednessSkins = AnswerOptions;
-  jerks = AnswerOptions;
-  SoreThroats = AnswerOptions;
-  cramps = AnswerOptions;
-  waterStoreds = AnswerOptions;
-  changeInDrinkingWaters = AnswerOptions;
-  waterSources = waterSource;
-  distanceWaterSourcesSewages = distanceWaterSourcesSewage;
+
   currentId: any;
   ngOnInit(): void {
+    this.multipleDropdownSettings = {
+      ...MultipleDropdownSettings,
+      closeDropDownOnSelection: false,
+    };
+    this.samplesDropdownSettings = {
+      ...MultipleDropdownSettings,
+      closeDropDownOnSelection: false,
+      maxHeight: 240,
+    };
 
     this.currentId = this.investigationService.currentid
     this.SevereFoodPoisoningData.patientID = this.currentId;
@@ -101,11 +123,12 @@ export class SevereFoodPoisoningComponent implements OnInit {
         console.log(res);
         var v = res.data;
         if (v != null) {
-
           this.SevereFoodPoisoningData = v;
-          this.SevereFoodPoisoningData.dateLastCertificate = this.datePipe.transform(this.SevereFoodPoisoningData.dateLastCertificate, 'yyyy-MM-dd');
-
-
+          this.selectedFoodTypes = this.deserializeMultiValue(v.foodTypes, this.foodTypeOptions);
+          this.selectedExposureLocations = this.deserializeMultiValue(v.exposureLocation, this.exposureLocations);
+          this.selectedWaterSources = this.deserializeMultiValue(v.waterSourceType, this.waterSourceOptions);
+          this.selectedHumanSamples = this.deserializeMultiValue(v.humanSamples, this.humanSampleOptions);
+          this.selectedEnvironmentalSamples = this.deserializeMultiValue(v.environmentalSamples, this.environmentalSampleOptions);
           this.calculateCompletionPercentage();
         }
 
@@ -122,8 +145,13 @@ export class SevereFoodPoisoningComponent implements OnInit {
   }
 
   save() {
-
+    this.normalizeOtherFields();
     this.SevereFoodPoisoningData.diseaseGroupId = this.investigationService.diseaseGroupID;
+    this.SevereFoodPoisoningData.exposureLocation = this.serializeMultiValue(this.selectedExposureLocations);
+    this.SevereFoodPoisoningData.foodTypes = this.serializeMultiValue(this.selectedFoodTypes);
+    this.SevereFoodPoisoningData.waterSourceType = this.serializeMultiValue(this.selectedWaterSources);
+    this.SevereFoodPoisoningData.humanSamples = this.serializeMultiValue(this.selectedHumanSamples);
+    this.SevereFoodPoisoningData.environmentalSamples = this.serializeMultiValue(this.selectedEnvironmentalSamples);
     this.calculateCompletionPercentage();
     this.SevereFoodPoisoningData.investigationCompletePercentage = parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2));
     //console.log(this.rabiesForm.value);
@@ -171,6 +199,7 @@ export class SevereFoodPoisoningComponent implements OnInit {
 
   //BL
   calculateCompletionPercentage() {
+    this.normalizeOtherFields();
     this.allFilledControlsCount = 0;
     const data = this.SevereFoodPoisoningData;
     //Exclude fields you don't want to count (like 'id')
@@ -184,6 +213,46 @@ export class SevereFoodPoisoningComponent implements OnInit {
         this.allFilledControlsCount++;
       }
     });
+  }
+
+  isChecked(list: any[], value: string): boolean {
+    return (list || []).some((item) => item?.id === value);
+  }
+
+  private normalizeOtherFields(): void {
+    if (!this.isChecked(this.selectedExposureLocations, 'OTHER')) {
+      this.SevereFoodPoisoningData.exposureLocationOther = null;
+    }
+    if (!this.isChecked(this.selectedFoodTypes, 'OTHER')) {
+      this.SevereFoodPoisoningData.foodTypeOther = null;
+    }
+    if (!this.isChecked(this.selectedWaterSources, 'OTHER')) {
+      this.SevereFoodPoisoningData.waterSourceOther = null;
+    }
+    if (!this.isChecked(this.selectedHumanSamples, 'OTHER')) {
+      this.SevereFoodPoisoningData.humanSamplesOther = null;
+    }
+    if (!this.isChecked(this.selectedEnvironmentalSamples, 'OTHER')) {
+      this.SevereFoodPoisoningData.environmentalSamplesOther = null;
+    }
+  }
+
+  private serializeMultiValue(values: any[]): string | null {
+    if (!values || values.length === 0) {
+      return null;
+    }
+    return values.map((item) => item.id).join(this.multiSelectDelimiter);
+  }
+
+  private deserializeMultiValue(value: string | null, options: any[]): any[] {
+    if (!value) {
+      return [];
+    }
+    const selectedIds = value
+      .split(this.multiSelectDelimiter)
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+    return (options || []).filter((option) => selectedIds.includes(option.id));
   }
 }
 

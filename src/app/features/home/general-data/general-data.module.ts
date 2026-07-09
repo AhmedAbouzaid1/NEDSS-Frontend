@@ -20,7 +20,6 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 
-import { HttpClientModule } from '@angular/common/http';
 import { StringConverterPipe } from 'src/app/core/Pipes/string-converter.pipe';
 import { SentinelComponent } from './sentinel/sentinel.component';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';

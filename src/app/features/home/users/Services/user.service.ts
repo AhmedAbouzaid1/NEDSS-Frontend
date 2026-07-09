@@ -40,6 +40,12 @@ export class UserService {
   updateUser(User: any) {
     return this.APIs.update(this.iUrl + 'Update', User);
   }
+  resetUserPassword(systemUserId: number) {
+    return this.APIs.post(
+      this.iUrl + 'ResetUserPassword?systemUserId=' + systemUserId,
+      {}
+    );
+  }
   addUser(User: any) {
     return this.APIs.post(this.iUrl + 'Register', User);
   }

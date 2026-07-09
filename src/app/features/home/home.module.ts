@@ -62,7 +62,8 @@ import { WhoopingCoughComponent } from './investigation/complete-investigation/w
 import { DiphtheriaComponent } from './investigation/complete-investigation/diphtheria/diphtheria.component';
 import { HemorrhagicFeversComponent } from './investigation/complete-investigation/hemorrhagic-fevers/hemorrhagic-fevers.component';
 import { MalariaComponent } from './investigation/complete-investigation/malaria/malaria.component';
-import { SchistosomiasisFasciolaComponent } from './investigation/complete-investigation/schistosomiasis-fasciola/schistosomiasis-fasciola.component';
+import { SchistosomiasisComponent } from './investigation/complete-investigation/schistosomiasis/schistosomiasis.component';
+import { FasciolaComponent } from './investigation/complete-investigation/fasciola/fasciola.component';
 import { BrucellaComponent } from './investigation/complete-investigation/brucella/brucella.component';
 import { H5n1Component } from './investigation/complete-investigation/h5n1/h5n1.component';
 import { MeningealComponent } from './investigation/complete-investigation/meningeal/meningeal.component';
@@ -80,8 +81,13 @@ import { FalseChickenpoxComponent } from './investigation/complete-investigation
 import { ChatFilterComponent } from './chat/chat-filter/chat-filter.component';
 import { ChatUsersComponent } from './chat/chat-users/chat-users.component';
 import { FilariasisComponent } from './investigation/complete-investigation/filariasis/filariasis.component';
+import { TrachomaComponent } from './investigation/complete-investigation/trachoma/trachoma.component';
 import { LeishmaniaComponent } from './investigation/complete-investigation/leishmania/leishmania.component';
 import { PatientVisitHistoryComponent } from './investigation/complete-investigation/shared/patient-visit-history/patient-visit-history.component';
+import { LocalTravelHistoryComponent } from './investigation/complete-investigation/shared/local-travel-history/local-travel-history.component';
+import { InternationalTravelHistoryComponent } from './investigation/complete-investigation/shared/international-travel-history/international-travel-history.component';
+import { InvestigationSummaryComponent } from './investigation/complete-investigation/shared/investigation-summary/investigation-summary.component';
+import { LabSamplesComponent } from './investigation/complete-investigation/shared/lab-samples/lab-samples.component';
 import { ViewUserComponent } from './users/view-user/view-user.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -139,12 +145,11 @@ import { AccumelateDiseaseByAgePipe } from './reports/pipes/accumelate-disease-b
 import { DiseaseBasedOnPatientComponent } from './reports/disease-based-on-patient/disease-based-on-patient.component';
 import { DiseaseBasedOnPatientPdfComponent } from './reports/disease-based-on-patient/disease-based-on-patient-pdf/disease-based-on-patient-pdf.component';
 import { HighchartsChartModule } from 'highcharts-angular';
-import { FasciolaComponent } from './investigation/complete-investigation/fasciola/fasciola.component';
-import { SchistosomiasisComponent } from './investigation/complete-investigation/schistosomiasis/schistosomiasis.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MergeRepeatedRecordsComponent } from './repeated-records/merge-repeated-records/merge-repeated-records.component';
 import { MergeRecordsPerAttributeComponent } from './repeated-records/merge-records-per-attribute/merge-records-per-attribute.component';
 import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { EpidemiologicalThresholdsUsersComponent } from './epidemiological-thresholds/epidemiological-thresholds-users/epidemiological-thresholds-users.component';
 import { UserReportComponent } from './reports/user-report/user-report.component';
@@ -215,7 +220,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     FinalResultToIncedentComponent,
     AgeCategoriesReportComponent,
     WithJobTitleReportComponent,
-    SchistosomiasisFasciolaComponent,
+    SchistosomiasisComponent,
+    FasciolaComponent,
     HemorrhagicFeversComponent,
     HomeComponent,
     NavbarComponent,
@@ -256,8 +262,13 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ChatFilterComponent,
     ChatUsersComponent,
     FilariasisComponent,
+    TrachomaComponent,
     LeishmaniaComponent,
     PatientVisitHistoryComponent,
+    LocalTravelHistoryComponent,
+    InternationalTravelHistoryComponent,
+    InvestigationSummaryComponent,
+    LabSamplesComponent,
     HivComponent,
     AriComponent,
     MersComponent,
@@ -282,8 +293,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AccumelateDiseaseByAgePipe,
     DiseaseBasedOnPatientComponent,
     DiseaseBasedOnPatientPdfComponent,
-    FasciolaComponent,
-    SchistosomiasisComponent,
     MergeRepeatedRecordsComponent,
     MergeRecordsPerAttributeComponent,
     EpidemiologicalThresholdsUsersComponent,
@@ -354,6 +363,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     HighchartsChartModule,
     CardModule,
     CalendarModule,
+    DropdownModule,
   ],
   exports: [
     NavbarComponent,

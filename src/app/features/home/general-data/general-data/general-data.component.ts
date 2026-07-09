@@ -1,6 +1,6 @@
 import { InvestigationService } from './../../investigation/services/investigation.service';
 import { GeneralDataService } from './../services/general-data.service';
-import { Component, ElementRef, Input, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { SharedDataService } from '../services/shared-data.service';
@@ -19,18 +19,20 @@ import { GeneralDataEnum } from '../models/general-data.eums';
   templateUrl: './general-data.component.html',
   styleUrls: ['./general-data.component.css']
 })
-export class GeneralDataComponent implements OnDestroy, AfterViewInit {
+export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
   @Input() finalTab2: boolean;
   @ViewChild('saveButtonSentinel') saveButtonSentinel: ElementRef;
   loadingPanel: boolean = false;
   hasScrolledToButton = false;
   private saveBarObserver: IntersectionObserver;
+  private saveBarObserverAttached = false;
   patient: PatientModel = new PatientModel();
   updating: boolean = false;
   dataSource: any;
   diseases!: any[];
   activeTab: number;
   isLoadingData: boolean = true;
+  private lastAuxiliaryHydratedPatientId: number | null = null;
   constructor(
     private generalDataService: GeneralDataService,
     private translateService: TranslateService,
@@ -73,7 +75,22 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.tryAttachSaveBarObserver();
+  }
+
+  ngAfterViewChecked() {
+    this.tryAttachSaveBarObserver();
+  }
+
+  private tryAttachSaveBarObserver() {
+    if (this.saveBarObserverAttached || this.isLoadingData) {
+      return;
+    }
+    if (!this.saveButtonSentinel?.nativeElement) {
+      return;
+    }
     this.observeSaveBar();
+    this.saveBarObserverAttached = true;
   }
 
   private observeSaveBar() {
@@ -108,15 +125,43 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit {
 
   public currentTab: string = '/home/general-data/incident-info';
   private routerSubscription: Subscription;
+  private patientObjectSub?: Subscription;
   ngOnInit() {
     this.routerSubscription = this.router.events.subscribe((event: any) => {
       this.currentTab = event.url?.replace('?clear=1', '') ?? this.currentTab;
     });
 
     this.getDiseases();
-    this.sharedDataService.setPatientObject(this.patient);
-    this.sharedDataService.getPatientObject().subscribe((patientObject) => {
+    const storedPidRaw = localStorage.getItem('patientId');
+    const storedPid =
+      storedPidRaw != null && storedPidRaw !== ''
+        ? parseInt(storedPidRaw, 10)
+        : NaN;
+    const openingExistingPatientId =
+      (this.sharedDataService.patientId != null &&
+        this.sharedDataService.patientId > 0) ||
+      (Number.isFinite(storedPid) && storedPid > 0);
+    if (!openingExistingPatientId) {
+      this.sharedDataService.setPatientObject(this.patient);
+    }
+    this.patientObjectSub = this.sharedDataService.getPatientObject().subscribe((patientObject) => {
       this.patient = patientObject;
+      const rawId = patientObject?.id;
+      const pid =
+        rawId != null &&
+        String(rawId).trim() !== '' &&
+        !Number.isNaN(Number(rawId))
+          ? Number(rawId)
+          : null;
+      if (pid != null && pid > 0) {
+        if (this.lastAuxiliaryHydratedPatientId !== pid) {
+          this.lastAuxiliaryHydratedPatientId = pid;
+          this.getFields();
+          this.getSentinel(pid);
+        }
+      } else {
+        this.lastAuxiliaryHydratedPatientId = null;
+      }
     });
   }
 
@@ -132,6 +177,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit {
     this.generalDataService.getBy(id).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
+          this.generalDataService.normalizePatientApiPayload(result.data);
           result.data.caseDiscoveryDate = this.datePipe.transform(
             result.data.caseDiscoveryDate,
             'yyyy-MM-dd',
@@ -155,8 +201,6 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit {
           this.sharedDataService.setPatientObject(result.data);
           this.patient = result.data;
           this.activeAllTabs = true;
-          this.getSentinel(this.sharedDataService.patientId);
-          this.getFields();
           this.isLoadingData = false;
         }
       },
@@ -296,21 +340,40 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit {
       //}
     } catch (error) {
       console.error(error);
-      this.translateService
-        .get('NEDSS.COMMON.FILL_REQUIRED')
-        .subscribe((msg) => {
-          this.userMsg.warn(msg);
-        });
+      const missingFieldLabel = this.getActiveTabInvalidFieldLabel();
+      if (missingFieldLabel) {
+        this.showMissingFieldError(missingFieldLabel);
+      } else {
+        this.translateService
+          .get('NEDSS.COMMON.FILL_REQUIRED')
+          .subscribe((msg) => {
+            this.userMsg.warn(msg);
+          });
+      }
     }
+  }
 
-    // if (this.generalDataService.validateRequiredFields(this.patient)) {
-    //   this.save();
-    // }
-    // else {
-    //   this.translateService.get('NEDSS.COMMON.FILL_REQUIRED').subscribe(msg => {
-    //     this.userMsg.warn(msg);
-    //   });
-    // }
+  private getActiveTabInvalidFieldLabel(): string | null {
+    switch (this.activeTab) {
+      case this.generalDataEnum.IncidentInfo:
+        return this.generalDataService.getIncidentInfoInvalidFieldLabel(
+          this.patient,
+        );
+      case this.generalDataEnum.DemographicInfo:
+        return this.generalDataService.getDemographicInfoInvalidFieldLabel(
+          this.patient,
+        );
+      case this.generalDataEnum.ResidenceInfo:
+        return this.generalDataService.getResidenceInfoInvalidFieldLabel(
+          this.patient,
+        );
+      case this.generalDataEnum.DiagnosticInfo:
+        return this.generalDataService.getDiagnosticsInvalidFieldLabel(
+          this.patient,
+        );
+      default:
+        return null;
+    }
   }
 
   routingBasedOnCurrentPage(varNum: number) {
@@ -328,7 +391,11 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit {
 
   save() {
     try {
-      this.validateAllTabs();
+      const missingFieldLabel = this.generalDataService.getFirstInvalidFieldLabel(this.patient);
+      if (missingFieldLabel) {
+        this.showMissingFieldError(missingFieldLabel);
+        return;
+      }
       this.loadingPanel = true;
       let ValidationResult = this.validatePatientRequiredData();
       if (ValidationResult == true) {
@@ -344,6 +411,8 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit {
           this.patient.workAddress != null
             ? this.patient.workAddress.toString()
             : null;
+
+        this.normalizeFeverSymptomsForApi(this.patient);
 
         if (this.patient.id == null) {
           this.generalDataService.add(this.patient).subscribe(
@@ -462,26 +531,29 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit {
       }
     } catch (error) {
       console.error(error);
-      this.translateService
-        .get('NEDSS.COMMON.FILL_REQUIRED')
-        .subscribe((msg) => {
-          this.userMsg.warn(msg);
-        });
+      this.loadingPanel = false;
+      const missingFieldLabel =
+        this.generalDataService.getFirstInvalidFieldLabel(this.patient);
+      if (missingFieldLabel) {
+        this.showMissingFieldError(missingFieldLabel);
+      } else {
+        this.translateService
+          .get('NEDSS.COMMON.FILL_REQUIRED')
+          .subscribe((msg) => {
+            this.userMsg.warn(msg);
+          });
+      }
     }
   }
-  validateAllTabs() {
-    let validationRes = this.generalDataService.validateDiagnostics(
-      this.patient,
-    );
-    if (!(validationRes == -1)) throw 'validation failed ' + validationRes;
-    validationRes = this.generalDataService.validateResidenceInfo(this.patient);
-    if (!(validationRes == -1)) throw 'validation failed ' + validationRes;
-    validationRes = this.generalDataService.validateDemographicInfo(
-      this.patient,
-    );
-    if (!(validationRes == -1)) throw 'validation failed ' + validationRes;
-    validationRes = this.generalDataService.validateIncidentInfo(this.patient);
-    if (!(validationRes == -1)) throw 'validation failed ' + validationRes;
+
+  private showMissingFieldError(fieldLabelKey: string) {
+    this.translateService.get(fieldLabelKey).subscribe((fieldName: string) => {
+      this.translateService
+        .get('NEDSS.COMMON.FILL_REQUIRED_FIELD', { field: fieldName })
+        .subscribe((msg: string) => {
+          this.userMsg.warn(msg);
+        });
+    });
   }
   getSentinel(id: number) {
     this.generalDataService.getSentinelByPID(id).subscribe(
@@ -593,43 +665,28 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit {
       },
     );
   }
-  //TODO
-  // validate entry of required fields
 
-  validatePatientRequiredData(): any {
-    if (this.sharedDataService.ShowSentinel) {
-      let retResult = true;
-      this.sharedDataService.getSentinelDataObject().subscribe(
-        (r) => {
-          r.patientID = 1;
-          for (let i = 0; i < Object.values(r).length; i++) {
-            if (i > 1 && Object.values(r)[i] == null) {
-              this.userMsg.warn('برجاء ملىء بيانات المواقع المختارة');
-              retResult = false;
-              return false;
-            }
-          }
-          retResult = true;
-          return true;
-        },
-        (error) => {
-          this.translateService
-            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-              retResult = false;
-              return false;
-            });
-          retResult = false;
-          return false;
-        },
-      );
-      return retResult;
-    } else {
+  validatePatientRequiredData(): boolean {
+    if (!this.sharedDataService.ShowSentinel) {
       return true;
     }
+    const r = this.sharedDataService.getSentinelSnapshot();
+    const vals = Object.values(r ?? {});
+    for (let i = 0; i < vals.length; i++) {
+      if (i > 1 && vals[i] == null) {
+        this.translateService
+          .get('NEDSS.HOME.GENERAL_DATA_COMPLETION.SENTINEL_FIELDS_REQUIRED')
+          .subscribe((msg: string) => {
+            this.userMsg.warn(msg);
+          });
+        return false;
+      }
+    }
+    return true;
   }
   ngOnDestroy(): void {
+    this.patientObjectSub?.unsubscribe();
+    this.sharedDataService.duplicateNationalIdMatchCount = 0;
     this.sharedDataService.setPatientObject(new PatientModel());
     this.sharedDataService.patientId = null;
     localStorage.removeItem('patientId');
@@ -643,5 +700,25 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit {
   }
   onTabChange(activeTab) {
     this.activeTab = activeTab;
+  }
+
+  /**
+   * API expects feverSymptoms.feverDurationType as int 1–3 (enum). PrimeNG "Select" uses null;
+   * empty strings or 0 cause 400 model-binding errors.
+   */
+  private normalizeFeverSymptomsForApi(patient: PatientModel): void {
+    if (!patient.feverSymptoms) {
+      return;
+    }
+    const f = patient.feverSymptoms;
+    const raw = f.feverDurationType as unknown;
+    let n: number | null = null;
+    if (raw !== null && raw !== undefined && raw !== '') {
+      const parsed = Number(raw);
+      if (Number.isFinite(parsed) && parsed >= 1 && parsed <= 3) {
+        n = parsed;
+      }
+    }
+    f.feverDurationType = n ?? 3;
   }
 }

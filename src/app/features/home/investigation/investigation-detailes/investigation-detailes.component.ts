@@ -20,6 +20,7 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
   currentId: any;
   data: any = {};
   notFoundForm: FormGroup;
+  isLoadingInvestigationData = false;
   singleDropdownSettings = SingleDropdownSettings;
   patient: PatientModel = new PatientModel();
   phone;
@@ -77,10 +78,11 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
 
     this.dir = this.currentLang == 'ar' ? 'rtl' : 'ltr';
 
-    this.loadData()
+    this.loadData();
 
   }
   async loadData() {
+    this.isLoadingInvestigationData = true;
     this.notFoundForm = new FormGroup({
       patientId: new FormControl(),
       notInvestigationType: new FormControl(),
@@ -93,12 +95,14 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
       livingAddress: new FormControl(),
     });
 
-    await this.getById(this.currentId);
-
-
-    this.getGovernments();
-    this.getHealthAdministration(this.notFoundForm.value.homeGovernmentId);
-    this.getCities(this.notFoundForm.value.homeGovernmentId);
+    try {
+      await this.getById(this.currentId);
+      this.getGovernments();
+      this.getHealthAdministration(this.notFoundForm.value.homeGovernmentId);
+      this.getCities(this.notFoundForm.value.homeGovernmentId);
+    } finally {
+      this.isLoadingInvestigationData = false;
+    }
   }
 
   async getById(id) {
@@ -129,6 +133,12 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
           this.userMsg.error(res);
         });
     }
+  }
+
+  canContinueInvestigation(): boolean {
+    return !this.isLoadingInvestigationData &&
+      Array.isArray(this.invetigationService.patientDiseases) &&
+      this.invetigationService.patientDiseases.length > 0;
   }
 
   getGovernments() {

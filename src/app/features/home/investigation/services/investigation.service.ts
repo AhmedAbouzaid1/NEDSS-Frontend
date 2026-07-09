@@ -22,8 +22,9 @@ export class InvestigationService {
   update(ivestigation: any) {
     return this.APIs.update(this.controllerURL + 'UpdateBirdFlu', ivestigation);
   }
-  getById(id: any) {
-    return this.APIs.get(this.controllerURL + 'GetBirdFluById?id=' + id);
+  getById(id: any, diseaseGroupId?: any) {
+    const diseaseGroupQuery = diseaseGroupId != null ? '&diseaseGroupId=' + diseaseGroupId : '';
+    return this.APIs.get(this.controllerURL + 'GetBirdFluById?id=' + id + diseaseGroupQuery);
   }
   addInvestigationMalaria(ivestigation: any) {
     return this.APIs.post(this.controllerURL + 'AddMalaria', ivestigation);
@@ -139,22 +140,40 @@ export class InvestigationService {
       this.controllerURL + 'GetHemorrhagicFeverByPatientId?id=' + id
     );
   }
-  //SchistosomiasisFasciola
-  addInvestigationSchistosomiasisFasciola(ivestigation: any) {
+  //Schistosomiasis
+  addInvestigationSchistosomiasis(ivestigation: any) {
     return this.APIs.post(
-      this.controllerURL + 'AddSchistosomiasisFasciola',
+      this.controllerURL + 'AddSchistosomiasis',
       ivestigation
     );
   }
-  updateSchistosomiasisFasciola(ivestigation: any) {
+  updateSchistosomiasis(ivestigation: any) {
     return this.APIs.update(
-      this.controllerURL + 'UpdateSchistosomiasisFasciola',
+      this.controllerURL + 'UpdateSchistosomiasis',
       ivestigation
     );
   }
-  getByIdSchistosomiasisFasciola(id: any, diseaseGroupId: number) {
+  getByIdSchistosomiasis(id: any, diseaseGroupId: number) {
     return this.APIs.get(
-      this.controllerURL + 'GetSchistosomiasisFasciolaByPatientId?id=' + id + '&diseaseGroupId=' + diseaseGroupId
+      this.controllerURL + 'GetSchistosomiasisByPatientId?id=' + id + '&diseaseGroupId=' + diseaseGroupId
+    );
+  }
+  //Fasciola
+  addInvestigationFasciola(ivestigation: any) {
+    return this.APIs.post(
+      this.controllerURL + 'AddFasciola',
+      ivestigation
+    );
+  }
+  updateFasciola(ivestigation: any) {
+    return this.APIs.update(
+      this.controllerURL + 'UpdateFasciola',
+      ivestigation
+    );
+  }
+  getByIdFasciola(id: any, diseaseGroupId: number) {
+    return this.APIs.get(
+      this.controllerURL + 'GetFasciolaByPatientId?id=' + id + '&diseaseGroupId=' + diseaseGroupId
     );
   }
   //Monkeypox
@@ -317,8 +336,20 @@ export class InvestigationService {
   updateSeverefilarisis(ivestigation: any) {
     return this.APIs.update(this.controllerURL + "UpdateFilariasis", ivestigation);
   }
-  getByIdfilarisis(id: any) {
-    return this.APIs.get(this.controllerURL + "GetFilariasisPatientId?id=" + id);
+  getByIdfilarisis(id: any, diseaseGroupId: number) {
+    return this.APIs.get(this.controllerURL + "GetFilariasisPatientId?id=" + id + "&diseaseGroupId=" + diseaseGroupId);
+  }
+  //trachoma
+  addInvestigationTrachoma(ivestigation: any) {
+    return this.APIs.post(this.controllerURL + 'AddTrachoma', ivestigation);
+  }
+  updateTrachoma(ivestigation: any) {
+    return this.APIs.update(this.controllerURL + 'UpdateTrachoma', ivestigation);
+  }
+  getByIdTrachoma(id: any, diseaseGroupId: number) {
+    return this.APIs.get(
+      this.controllerURL + 'GetTrachomaPatientId?id=' + id + '&diseaseGroupId=' + diseaseGroupId
+    );
   }
   //leishmania
   addInvestigationleishmania(ivestigation: any) {
@@ -388,8 +419,11 @@ export class InvestigationService {
   updateSeveremers(ivestigation: any) {
     return this.APIs.update(this.controllerURL + "Updatemers", ivestigation);
   }
-  getByIdmers(id: any) {
-    return this.APIs.get(this.controllerURL + "Getmers?id=" + id);
+  getByIdmers(id: any, diseaseGroupId?: number) {
+    const query = diseaseGroupId != null
+      ? `Getmers?id=${id}&diseaseGroupId=${diseaseGroupId}`
+      : `Getmers?id=${id}`;
+    return this.APIs.get(this.controllerURL + query);
   }
   //mumbs
   addInvestigationmumbs(ivestigation: any) {

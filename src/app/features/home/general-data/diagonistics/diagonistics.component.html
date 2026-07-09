@@ -42,7 +42,7 @@
                       patient.doctorName,
                       false
                     )
-                " (keypress)="generalDataService.onNameKeyPress($event)" />
+                " (keypress)="generalDataService.onNameKeyPress($event)" (input)="generalDataService.normalizeNameInput($event)" />
 
               <small *ngIf="!generalDataService.isDoctorNameValid" class="form-text text-danger mess-color">
                 {{
@@ -164,52 +164,20 @@
                 | translate
                 }}
               </label>
-              <div *ngIf="currentLang == 'ar'">
-                <!-- <select
-                  class="form-control select2 select2-hidden-accessible"
-                  (change)="onFinalResultChanged()"
-                  tabindex="-1"
-                  [(ngModel)]="selectedFinalResultId"
-                  aria-hidden="true"
-                >
-                  <option
-                    value="item.id"
-                    *ngFor="let item of finalResuls"
-                    [ngValue]="item.id"
-                    [selected]="item.id === selectedFinalResultId"
-                  >
-                    {{ item.arabicName }}
-                  </option>
-                </select> -->
-                <p-dropdown (onChange)="onFinalResultChanged()" [options]="finalResuls"
-                  [(ngModel)]="selectedFinalResultId" optionLabel="arabicName" optionValue="id" autoWidth="false"
-                  [style]="{ width: '100%' }" name="finalResuls" [required]="true" [filter]="true"
-                  filterBy="arabicName">
-                </p-dropdown>
-              </div>
-              <div *ngIf="currentLang == 'en'">
-                <!-- <select
-                  class="form-control select2 select2-hidden-accessible"
-                  (change)="onFinalResultChanged()"
-                  tabindex="-1"
-                  [(ngModel)]="selectedFinalResultId"
-                  aria-hidden="true"
-                >
-                  <option
-                    value="item.id"
-                    *ngFor="let item of finalResuls"
-                    [ngValue]="item.id"
-                    [selected]="item.id === selectedFinalResultId"
-                  >
-                    {{ item.englishName }}
-                  </option>
-                </select> -->
-                <p-dropdown (onChange)="onFinalResultChanged()" [options]="finalResuls"
-                  [(ngModel)]="selectedFinalResultId" optionLabel="englishName" optionValue="id" autoWidth="false"
-                  [style]="{ width: '100%' }" name="finalResuls" [required]="true" [filter]="true"
-                  filterBy="englishName">
-                </p-dropdown>
-              </div>
+              <p-dropdown
+                (onChange)="onFinalResultChanged()"
+                [options]="finalResuls"
+                [(ngModel)]="selectedFinalResultId"
+                [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                name="finalResuls"
+                [required]="true"
+                [filter]="true"
+                [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+              >
+              </p-dropdown>
             </div>
           </div>
           <!-- <ng-container *ngIf="!patient.hiddenInsideDepartment"> -->
@@ -221,55 +189,22 @@
                   "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.GOVERNMENT_TRANSLATE"
                   | translate
                   }}
+                  <span class="text-danger mess-color">*</span>
                 </label>
-                <div *ngIf="currentLang == 'ar'">
-                  <!-- <select
-                    class="form-control select2 select2-hidden-accessible"
-                    (change)="onGovernmentChanged()"
-                    tabindex="-1"
-                    [(ngModel)]="selectedTransferGovernmentId"
-                    aria-hidden="true"
-                    [disabled]="this.levelId != 1"
-                  >
-                    <option
-                      value="item.id"
-                      *ngFor="let item of governments"
-                      [ngValue]="item.id"
-                      [selected]="item.id === selectedTransferGovernmentId"
-                    >
-                      {{ item.arabicName }}
-                    </option>
-                  </select> -->
-                  <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments"
-                    [(ngModel)]="selectedTransferGovernmentId" [disabled]="this.levelId != 1" optionLabel="arabicName"
-                    optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="governments" [required]="true"
-                    [filter]="true" filterBy="arabicName">
-                  </p-dropdown>
-                </div>
-                <div *ngIf="currentLang == 'en'">
-                  <!-- <select
-                    class="form-control select2 select2-hidden-accessible"
-                    (change)="onGovernmentChanged()"
-                    tabindex="-1"
-                    [(ngModel)]="selectedTransferGovernmentId"
-                    aria-hidden="true"
-                    [disabled]="this.levelId != 1"
-                  >
-                    <option
-                      value="item.id"
-                      *ngFor="let item of governments"
-                      [ngValue]="item.id"
-                      [selected]="item.id === selectedTransferGovernmentId"
-                    >
-                      {{ item.englishName }}
-                    </option>
-                  </select> -->
-                  <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments"
-                    [(ngModel)]="selectedTransferGovernmentId" [disabled]="this.levelId != 1" optionLabel="englishName"
-                    optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="governments" [required]="true"
-                    [filter]="true" filterBy="englishName">
-                  </p-dropdown>
-                </div>
+                <p-dropdown
+                  (onChange)="onGovernmentChanged()"
+                  [options]="governments"
+                  [(ngModel)]="selectedTransferGovernmentId"
+                  [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="governments"
+                  [required]="true"
+                  [filter]="true"
+                  [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                >
+                </p-dropdown>
               </div>
             </div>
           </ng-container>
@@ -282,20 +217,21 @@
                   | translate
                   }}
                 </label>
-                <div *ngIf="currentLang == 'ar'">
-                  <p-dropdown (onChange)="onHealthAdminChange()" [options]="HealthAdmins"
-                    [(ngModel)]="selectedTransferHealthAdminId" [disabled]="this.levelId != 1 && this.levelId != 2" optionLabel="arabicName"
-                    optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="healthAdmins" [required]="true"
-                    [filter]="true" filterBy="arabicName">
-                  </p-dropdown>
-                </div>
-                <div *ngIf="currentLang == 'en'">
-                  <p-dropdown (onChange)="onHealthAdminChange()" [options]="HealthAdmins"
-                    [(ngModel)]="selectedTransferHealthAdminId" [disabled]="this.levelId != 1 && this.levelId != 2" optionLabel="englishName"
-                    optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="healthAdmins" [required]="true"
-                    [filter]="true" filterBy="englishName">
-                  </p-dropdown>
-                </div>
+                <p-dropdown
+                  (onChange)="onHealthAdminChange()"
+                  [options]="HealthAdmins"
+                  [(ngModel)]="selectedTransferHealthAdminId"
+                  [disabled]="this.levelId != 1 && this.levelId != 2"
+                  [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="healthAdminsTransfer"
+                  [required]="true"
+                  [filter]="true"
+                  [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                >
+                </p-dropdown>
               </div>
             </div>
           </ng-container>
@@ -309,70 +245,25 @@
                   | translate
                   }}
                 </label>
-                <div *ngIf="currentLang == 'ar'">
-                  <!-- <select
-                    class="form-control select2 select2-hidden-accessible"
-                    (change)="onIncidentSourceChanged()"
-                    tabindex="-1"
-                    [(ngModel)]="selectedTransferIncidentSourceId"
-                    aria-hidden="true"
-                    [disabled]="
-                      this.levelId != 1 &&
-                      this.levelId != 2 &&
-                      this.levelId != 3
-                    "
-                  >
-                    <option
-                      value="item.id"
-                      *ngFor="let item of incidentSources"
-                      [ngValue]="item.id"
-                      [selected]="item.id === selectedTransferIncidentSourceId"
-                    >
-                      {{ item.arabicName }}
-                    </option>
-                  </select> -->
-                  <p-dropdown (onChange)="onIncidentSourceChanged()" [options]="incidentSources"
-                    [(ngModel)]="selectedTransferIncidentSourceId" optionLabel="arabicName" optionValue="id"
-                    autoWidth="false" [style]="{ width: '100%' }" name="incidentSources" [required]="true"
-                    [filter]="true" filterBy="arabicName" [disabled]="
-                      this.levelId != 1 &&
-                      this.levelId != 2 &&
-                      this.levelId != 3
-                    ">
-                  </p-dropdown>
-                </div>
-                <div *ngIf="currentLang == 'en'">
-                  <!-- <select
-                    class="form-control select2 select2-hidden-accessible"
-                    (change)="onIncidentSourceChanged()"
-                    tabindex="-1"
-                    [(ngModel)]="selectedTransferIncidentSourceId"
-                    aria-hidden="true"
-                    [disabled]="
-                      this.levelId != 1 &&
-                      this.levelId != 2 &&
-                      this.levelId != 3
-                    "
-                  >
-                    <option
-                      value="item.id"
-                      *ngFor="let item of incidentSources"
-                      [ngValue]="item.id"
-                      [selected]="item.id === selectedTransferIncidentSourceId"
-                    >
-                      {{ item.englishName }}
-                    </option>
-                  </select> -->
-                  <p-dropdown (onChange)="onIncidentSourceChanged()" [options]="incidentSources"
-                    [(ngModel)]="selectedTransferIncidentSourceId" optionLabel="englishName" optionValue="id"
-                    autoWidth="false" [style]="{ width: '100%' }" name="incidentSources" [required]="true"
-                    [filter]="true" filterBy="englishName" [disabled]="
-                      this.levelId != 1 &&
-                      this.levelId != 2 &&
-                      this.levelId != 3
-                    ">
-                  </p-dropdown>
-                </div>
+                <p-dropdown
+                  (onChange)="onIncidentSourceChanged()"
+                  [options]="incidentSources"
+                  [(ngModel)]="selectedTransferIncidentSourceId"
+                  [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="incidentSourcesTransfer"
+                  [required]="true"
+                  [filter]="true"
+                  [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                  [disabled]="
+                    this.levelId != 1 &&
+                    this.levelId != 2 &&
+                    this.levelId != 3
+                  "
+                >
+                </p-dropdown>
               </div>
             </div>
           </ng-container>
@@ -467,6 +358,7 @@
                     "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_GOVERNMENT"
                     | translate
                     }}
+                    <span *ngIf="loadingSpecialGovernments" class="spinner-border spinner-border-sm text-secondary ms-2 align-middle" role="status" aria-hidden="true"></span>
                   </label>
                   <div *ngIf="currentLang == 'ar'">
                     <!-- <select
@@ -488,7 +380,14 @@
                     <p-dropdown (onChange)="getSpecialHealthAdmins()" [options]="specialGovernment"
                       [(ngModel)]="selectedSpecialGovernmentId" optionLabel="arabicName" optionValue="id"
                       autoWidth="false" [style]="{ width: '100%' }" name="specialGovernment" [required]="true"
-                      [filter]="true" filterBy="arabicName">
+                      [filter]="true" filterBy="arabicName" [disabled]="loadingSpecialGovernments">
+                    </p-dropdown>
+                  </div>
+                  <div *ngIf="currentLang == 'en'">
+                    <p-dropdown (onChange)="getSpecialHealthAdmins()" [options]="specialGovernment"
+                      [(ngModel)]="selectedSpecialGovernmentId" optionLabel="englishName" optionValue="id"
+                      autoWidth="false" [style]="{ width: '100%' }" name="specialGovernmentEn" [required]="true"
+                      [filter]="true" filterBy="englishName" [disabled]="loadingSpecialGovernments">
                     </p-dropdown>
                   </div>
                 </div>
@@ -499,6 +398,7 @@
                     "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_Department"
                     | translate
                     }}
+                    <span *ngIf="loadingSpecialHealthAdmins" class="spinner-border spinner-border-sm text-secondary ms-2 align-middle" role="status" aria-hidden="true"></span>
                   </label>
                   <div *ngIf="currentLang == 'ar'">
                     <!-- <select
@@ -520,7 +420,7 @@
                     <p-dropdown (onChange)="getSpecialLabs()" [options]="specialHealthAdmin"
                       [(ngModel)]="selectedSpecialHealthAdminId" optionLabel="arabicName" optionValue="id"
                       autoWidth="false" [style]="{ width: '100%' }" name="specialHealthAdmin" [required]="true"
-                      [filter]="true" filterBy="arabicName">
+                      [filter]="true" filterBy="arabicName" [disabled]="loadingSpecialHealthAdmins">
                     </p-dropdown>
                   </div>
                   <div *ngIf="currentLang == 'en'">
@@ -543,7 +443,7 @@
                     <p-dropdown (onChange)="getSpecialLabs()" [options]="specialHealthAdmin"
                       [(ngModel)]="selectedSpecialHealthAdminId" optionLabel="englishName" optionValue="id"
                       autoWidth="false" [style]="{ width: '100%' }" name="specialHealthAdmin" [required]="true"
-                      [filter]="true" filterBy="englishName">
+                      [filter]="true" filterBy="englishName" [disabled]="loadingSpecialHealthAdmins">
                     </p-dropdown>
                   </div>
                 </div>
@@ -554,6 +454,7 @@
                     "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DELEGATED_TO"
                     | translate
                     }}
+                    <span *ngIf="loadingSpecialLabs" class="spinner-border spinner-border-sm text-secondary ms-2 align-middle" role="status" aria-hidden="true"></span>
                   </label>
                   <div *ngIf="currentLang == 'ar'">
                     <!-- <select
@@ -575,7 +476,7 @@
                     <p-dropdown (onChange)="onSpecialLabChanged()" [options]="specialLabs"
                       [(ngModel)]="selectedSpecialLabId" optionLabel="arabicName" optionValue="id" autoWidth="false"
                       [style]="{ width: '100%' }" name="specialLabs" [required]="true" [filter]="true"
-                      filterBy="arabicName">
+                      filterBy="arabicName" [disabled]="loadingSpecialLabs">
                     </p-dropdown>
                   </div>
                   <div *ngIf="currentLang == 'en'">
@@ -598,7 +499,7 @@
                     <p-dropdown (onChange)="onSpecialLabChanged()" [options]="specialLabs"
                       [(ngModel)]="selectedSpecialLabId" optionLabel="englishName" optionValue="id" autoWidth="false"
                       [style]="{ width: '100%' }" name="specialLabs" [required]="true" [filter]="true"
-                      filterBy="englishName">
+                      filterBy="englishName" [disabled]="loadingSpecialLabs">
                     </p-dropdown>
                   </div>
                 </div>

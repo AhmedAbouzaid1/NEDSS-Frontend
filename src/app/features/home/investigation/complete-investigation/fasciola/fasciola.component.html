@@ -1,677 +1,438 @@
 <form [formGroup]="fasciolaForm" (ngSubmit)="save()">
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow mt-4 color mb-4">
-                <div class="card-body">
-                    <h5 style="text-align: center; border: 1px solid; padding: 1%">
-                        {{"NEDSS.INVESTIGATIONS.PAGES.Fasciola"| translate}}
-                    </h5>
-                    <div class="row mt-2">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label for="">
-                                    {{"NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME"| translate}}: {{patientName}}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="">
-                                    {{"NEDSS.INVESTIGATIONS.percentage"| translate}}
-                                    <span class="mx-4" style="font-size: larger; color: red">
-                                        <!-- {{ precentile.value }} % -->
-                                        {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount /
-                                        allControllesCount) * 100 |
-                                        number:'1.0-2') }} %
-                                    </span>
-                                </label>
-                                <input #precentile type="range" class="form-range bg" onkeypress="false"
-                                    [readonly]="true" style="border-radius: 11.7px; border: 5.5px solid white" min="0"
-                                    max="100" step="1" id="customRange3"
-                                    value="{{ (allFilledControlsCount / allControllesCount) * 100 }}"
-                                    formControlName="investigationCompletePercentage" />
-                                <!-- value="{{controlsCount}}" formControlName="completePercentage" /> -->
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            {{"NEDSS.INVESTIGATIONS.Filled"| translate}}
-                            {{allFilledControlsCount}}
-                            {{"NEDSS.INVESTIGATIONS.Field"| translate}}
-                            {{"NEDSS.INVESTIGATIONS.From"| translate}}
-                            {{allControllesCount}}
-                            {{"NEDSS.INVESTIGATIONS.Field"| translate}}
-                        </div>
-                    </div>
-                    <div class="row">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow mt-4 color mb-4">
+        <div class="card-body">
+          <h5 style="text-align: center; border: 1px solid; padding: 1%">
+            {{ "NEDSS.COMPLETE_INVESTEGATION.FASCIOLA.TITLE" | translate }}
+          </h5>
+          <br />
 
-                        <div class="col-6">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</div>
-                        <div class="col-6 has-labels">
-                            <label for=""><input formControlName="fever" type="radio"
-                                    (blur)="calculateCompletionPercentage()" name="fever" id="" value="1"> {{
-                                "NEDSS.COMMON.YES" | translate }} </label>
-                            <label for=""><input formControlName="fever" type="radio"
-                                    (blur)="calculateCompletionPercentage()" name="fever" id="" value="2"> {{
-                                "NEDSS.COMMON.NO" | translate }} </label>
-                            <label for=""><input formControlName="fever" type="radio"
-                                    (blur)="calculateCompletionPercentage()" name="fever" id="" value="3"> {{
-                                "NEDSS.REPORTS.UnKnown" | translate }} </label>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Duration_Fever_Days" | translate
-                                    }}</label>
-                                <input formControlName="feverDays" type="number" name="" id="" class="form-control"
-                                    (blur)="calculateCompletionPercentage()">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Max_Temp" | translate }}</label>
-                                <input formControlName="maxTemperature" type="number" name="" id="" class="form-control"
-                                    (blur)="calculateCompletionPercentage()">
-                            </div>
-                        </div>
-
-
-
-
-
-
-
-
-
-
-                        <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-                            <div class="row">
-                                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" |
-                                    translate }}
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">براز مدمم</label>
-                                        <select formControlName="bloodyStools" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">بول دموى</label>
-                                        <select formControlName="bloodyUrine" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">الم عند التبول</label>
-                                        <select formControlName="painUrinating" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">حاجة متكررة للتبول</label>
-                                        <select formControlName="frequentUrinate" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">انسداد القنوات المرارية</label>
-                                        <select formControlName="obstructionducts" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">دوالى المرىء</label>
-                                        <select formControlName="esophagealVarices" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">انسداد حاد بالمجرى التنفسى</label>
-                                        <select formControlName="severeAirway" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">تضخم بالكبد</label>
-                                        <select formControlName="enlargedliver" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">تضخم الطحال</label>
-                                        <select formControlName="enlargedSpleen" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">الم بالجانب الايمن بالبطن</label>
-                                        <select formControlName="painAbdomen" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">فشل كلوى حاد</label>
-                                        <select formControlName="acuteFailure" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">المغص المرارى</label>
-                                        <select formControlName="bileColic" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-4 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">ارتفاع ضغط الوريد البابى</label>
-                                        <select formControlName="portalHypertension" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-6 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">صعوبة بالبلع</label>
-                                        <select formControlName="difficultySwallowing" name="" id=""
-                                            class="form-control" (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-6 -->
-
-                            </div><!-- /. row -->
-
-                        </div>
-                    </div>
-
-
-                    <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-                        <div class="row">
-                            <div class="col-12 title fs-6 fwb">التقصي الوبائي</div>
-
-                            <div class="col-lg-12 color-d-2 fwb mb-4">التعرضات والتلامس للمياه العذبة</div>
-                            <div class="col-lg-12 text-muted fwb mb-4">خلال الثلاث شهور السابقين لبدء المرض، هل تم
-                                ممارسة أحد الأنشطة
-                                التالية ؟</div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">الاستحمام أو السباحة فى الترع </label>
-                                    <select formControlName="bathingSwimming" name="" id="" class="form-control"
-                                        (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">في حالة نعم. اذكر المكان</label>
-                                    <input formControlName="swimmingPlace" type="text" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">الشرب من مياه الترع</label>
-                                    <select formControlName="drinkingCanalWater" name="" id="" class="form-control"
-                                        (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">في حالة نعم. اذكر المكان</label>
-                                    <input formControlName="drinkingCanalWaterPlace" type="text" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">غسيل الأوانى أو الملابس فى الترعة</label>
-                                    <select formControlName="washingUtensils" name="" id="" class="form-control"
-                                        (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">في حالة نعم. اذكر المكان</label>
-                                    <input formControlName="washingUtensilsPlace" type="text" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">العمل فى الحقل أو بالزراعة</label>
-                                    <select formControlName="workAgriculture" name="" id="" class="form-control"
-                                        (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">في حالة نعم. اذكر المكان</label>
-                                    <input formControlName="workAgriculturePlace" type="text" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">قمت بالتبول أو التبرز فى الترعة</label>
-                                    <select formControlName="urinateCanal" name="" id="" class="form-control"
-                                        (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">في حالة نعم. اذكر المكان</label>
-                                    <input formControlName="urinateCanalPlace" type="text" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">تأتى بمياه الشرب من الترعة إلى المنزل</label>
-                                    <select formControlName="drinkingCanalHome" name="" id="" class="form-control"
-                                        (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">في حالة نعم. اذكر المكان</label>
-                                    <input formControlName="drinkingCanalHomePlace" type="text" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">هل توجد حظيرة مواشى ملحقة بالمنزل</label>
-                                    <select formControlName="livestockToHouse" name="" id="" class="form-control"
-                                        (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">هل توجد ترع أو قنوات بالقرب من حظيرة المواشى الملحقة بالمنزل ؟</label>
-                                    <select formControlName="canalsNearLivestockHouse" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">هل يتم ذبح الحيوانات خارج المجازر بمعرفة الاهالى ؟</label>
-                                    <select formControlName="animalsSlaughteredOutside" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label for="">في حالة نعم. اذكر المكان</label>
-                                    <input formControlName="animalsSlaughteredOutsidePlace" type="text" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                </div>
-                            </div><!-- /.col-lg-3 -->
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label for="">أماكن التخلص من مخلفات الذبيح</label>
-                                    <input formControlName="placesDisposalResidues" type="text" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                </div>
-                            </div><!-- /.col-lg-3 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">هل تقوم بزراعة الخضروات الورقية ؟</label>
-                                    <select formControlName="leafyVegetables" name="" id="" class="form-control"
-                                        (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">اذكر مصدر الرى الخضروات </label>
-                                    <input formControlName="sourceVegetables" type="text" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">هل تناول المصاب أى من الخضروات الورقية الطازجة؟</label>
-                                    <select formControlName="eatVegetables" name="" id="" class="form-control"
-                                        (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label for="">في حالة نعم. اذكرها</label>
-                                    <input formControlName="eatVegetablesMention" type="text" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                </div>
-                            </div><!-- /.col-lg-3 -->
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label for="">مصدرها</label>
-                                    <input formControlName="source" type="text" name="" id="" class="form-control"
-                                        (blur)="calculateCompletionPercentage()">
-                                </div>
-                            </div><!-- /.col-lg-3 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">هل سبق الإصابة بالبلهارسيا / الفاشيولا ؟</label>
-                                    <select formControlName="hadSchistosomiasis" name="" id="" class="form-control"
-                                        (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">في حالة نعم. التاريخ</label>
-                                    <input formControlName="hadSchistosomiasisDate" type="date"
-                                        (blur)="calculateCompletionPercentage()" name="" id=""
-                                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy">
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="">هل سبق العلاج من البلهارسيا / الفاشيولا ؟</label>
-                                    <select formControlName="treatmentSchistosomiasis" name="" id=""
-                                        class="form-control" (blur)="calculateCompletionPercentage()">
-                                        <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                        <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                        <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                    </select>
-                                </div>
-                            </div><!-- /.col-lg-6 -->
-                            <div class="col-lg-6 border-right">
-                                <p class="mt-4">في حالة نعم</p><!-- / .mt-4 -->
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label for="">تاريخ آخر جرعة</label>
-                                            <input formControlName="dateDose" type="date"
-                                                (blur)="calculateCompletionPercentage()" name="" id=""
-                                                class="form-control" (blur)="calculateCompletionPercentage()">
-                                        </div>
-                                    </div><!-- /.col-lg-12 -->
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label for="">اسم العقار</label>
-                                            <input formControlName="propertyName" type="text" name="" id=""
-                                                class="form-control" (blur)="calculateCompletionPercentage()">
-                                        </div>
-                                    </div><!-- /.col-lg-12 -->
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label for="">الجرعة</label>
-                                            <input formControlName="dosage" type="text" name="" id=""
-                                                class="form-control" (blur)="calculateCompletionPercentage()">
-                                        </div>
-                                    </div><!-- /.col-lg-12 -->
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label for="">تاريخ آخر متابعة بعد العلاج</label>
-                                            <input formControlName="followUpTreatment" type="date"
-                                                (blur)="calculateCompletionPercentage()" name="" id=""
-                                                [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy">
-                                        </div>
-                                    </div><!-- /.col-lg-12 -->
-                                </div><!-- / .row -->
-                            </div><!-- / .col-lg-6 border-right -->
-
-
-
-                        </div><!-- / .row -->
-                    </div>
-
-
-
-                    <!-- / .row -->
-
-                    <!-- / .row -->
-
-                    <div class="row color">
-                        <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-                            <div class="row">
-                                <div class="col-12 title fs-6 fwb">الإجراءت الوقائية</div>
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="">هل يتم غسل الخضروات بالخل أو الليمون قبل الأكل</label>
-                                        <select formControlName="vegetablesWashedLemon" name="" id=""
-                                            class="form-control" (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-6 -->
-                                <div class="col-lg-6 mb-4">
-                                    <div class="form-group">
-                                        <label for="">هل تم تحديد مكان التلامس المباشرالمحتمل ( الترع / المصارف )
-                                            ؟</label>
-                                        <select formControlName="locationDirectContact" name="" id=""
-                                            class="form-control" (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-6 -->
-                                <div class="col-lg-6 border-right mb-4">
-                                    <div class="row">
-                                        <div class="col-lg-12 mb-4">في حالة نعم</div><!-- / .col-lg-12 mt-4 -->
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label for="">أذكر اسم الترعة / المصرف</label>
-                                                <input formControlName="nameCanal" type="text" name="" id=""
-                                                    class="form-control" (blur)="calculateCompletionPercentage()">
-                                            </div>
-                                        </div><!-- /.col-lg-12 -->
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label for="">طول المجرى</label>
-                                                <input formControlName="lengthStream" type="text" name="" id=""
-                                                    class="form-control" (blur)="calculateCompletionPercentage()">
-                                            </div>
-                                        </div><!-- /.col-lg-12 -->
-                                    </div><!-- / .row -->
-                                </div><!-- / .col-lg-6 border-right mb-4 -->
-                                <div class="col-lg-6 mb-4">
-                                    <div class="form-group">
-                                        <label for="">هل تم فحص مكان التلامس المباشر المحتمل ( الترع / المصارف )
-                                            ؟</label>
-                                        <select formControlName="possibleDirect" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-6 -->
-                                <div class="col-lg-6 border-right mb-4">
-                                    <div class="row">
-                                        <div class="col-lg-12 mb-4">في حالة نعم</div><!-- / .col-lg-12 mt-4 -->
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label for=""> أذكر نتيجة الفحص</label>
-                                                <input formControlName="mentionTest" type="text" name="" id=""
-                                                    class="form-control" (blur)="calculateCompletionPercentage()">
-                                            </div>
-                                        </div><!-- /.col-lg-6 -->
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label for="">عدد قواقع البولينس </label>
-                                                <input formControlName="numberPolynesque" type="number" name="" id=""
-                                                    class="form-control" (blur)="calculateCompletionPercentage()">
-                                            </div>
-                                        </div><!-- /.col-lg-6 -->
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label for="">عدد قواقع البيومفلاريا</label>
-                                                <input formControlName="numberBiomflaria" type="number" name="" id=""
-                                                    class="form-control" (blur)="calculateCompletionPercentage()">
-                                            </div>
-                                        </div><!-- /.col-lg-6 -->
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label for="">عدد قواقع الليمني</label>
-                                                <input formControlName="numberYemeni" type="number" name="" id=""
-                                                    class="form-control" (blur)="calculateCompletionPercentage()">
-                                            </div>
-                                        </div><!-- /.col-lg-6 -->
-                                    </div><!-- / .row -->
-                                </div><!-- / .col-lg-6 border-right mb-4 -->
-
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="">فى حالة ايجابية القواقع للسركاريا أذكر طريقة العلاج والمكافحة التى
-                                            تمت</label>
-                                        <select formControlName="snailsPositive" name="" id="" class="form-control"
-                                            (blur)="calculateCompletionPercentage()">
-                                            <option value="1">تنظيم وتعديل البيئة</option>
-                                            <option value="2">المكافحة البيولوجية</option>
-                                            <option value="3">كيميائيا</option>
-                                        </select>
-                                    </div>
-                                </div><!-- /.col-lg-12 -->
-                                <div class="col-lg-4 mt-4">
-                                    فى حالة المكافحة الكيميائية بالمبيد
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">أذكر اسم المبيد المستخدم</label>
-                                        <input formControlName="mentionPesticide" type="text" name="" id=""
-                                            class="form-control" (blur)="calculateCompletionPercentage()">
-                                    </div>
-                                </div><!-- /.col-lg-3 -->
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="">تركيزالمبيد المستخدم</label>
-                                        <input formControlName="pesticideConcentration" type="number" name="" id=""
-                                            class="form-control" (blur)="calculateCompletionPercentage()">
-                                    </div>
-                                </div><!-- /.col-lg-3 -->
-                            </div><!-- / .row -->
-                        </div><!-- / .col-12 -->
-                    </div><!-- / .row -->
-                </div>
-                <div class="card-footer text-start">
-                    <button type="submit" class="btn bg rounded-2 text-light"> {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" |
-                        translate
-                        }}</button>
-                </div>
+          <!-- Patient Name -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>
+                  {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME" | translate }}: {{ patientName }}
+                </label>
+              </div>
             </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group">
+                <label>
+                  {{ "NEDSS.INVESTIGATIONS.percentage" | translate }}
+                  <span class="mx-4" style="font-size: larger; color: red">
+                    {{ allControllesCount === 0 ? "0.00" : ((allFilledControlsCount / allControllesCount) * 100 | number: "1.0-2") }} %
+                  </span>
+                </label>
+                <input
+                  type="range"
+                  class="form-range bg"
+                  [readonly]="true"
+                  style="border-radius: 11.7px; border: 5.5px solid white"
+                  min="0"
+                  max="100"
+                  step="1"
+                  [value]="allControllesCount === 0 ? 0 : (allFilledControlsCount / allControllesCount) * 100"
+                  formControlName="investigationCompletePercentage"
+                />
+              </div>
+            </div>
+            <div class="col-lg-4">
+              {{ "NEDSS.INVESTIGATIONS.Filled" | translate }}
+              {{ allFilledControlsCount }}
+              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
+              {{ "NEDSS.INVESTIGATIONS.From" | translate }}
+              {{ allControllesCount }}
+              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
+            </div>
+          </div>
+
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb text-center">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EPIDEMIOLOGICAL_INVESTIGATION" | translate }}</div>
+
+              <div class="col-lg-12 color-d-2 fwb mb-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EXPOSURES_TITLE" | translate }}</div>
+              <div class="col-lg-12 text-muted fwb mb-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EXPOSURES_SUBTITLE" | translate }}</div>
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.BATHING_SWIMMING" | translate }}</label>
+                  <select formControlName="bathingSwimming" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
+                  <input formControlName="swimmingPlace" type="text" name="" id="" class="form-control">
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.DRINKING_CANAL_WATER" | translate }}</label>
+                  <select formControlName="drinkingCanalWater" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
+                  <input formControlName="drinkingCanalWaterPlace" type="text" name="" id="" class="form-control">
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.WASHING_UTENSILS" | translate }}</label>
+                  <select formControlName="washingUtensils" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
+                  <input formControlName="washingUtensilsPlace" type="text" name="" id="" class="form-control">
+                </div>
+              </div><!-- /.col-lg-6 -->
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.WORK_AGRICULTURE" | translate }}</label>
+                  <select formControlName="workAgriculture" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
+                  <input formControlName="workAgriculturePlace" type="text" name="" id="" class="form-control">
+                </div>
+              </div><!-- /.col-lg-6 -->
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.URINATE_CANAL" | translate }}</label>
+                  <select formControlName="urinateCanal" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
+                  <input formControlName="urinateCanalPlace" type="text" name="" id="" class="form-control">
+                </div>
+              </div><!-- /.col-lg-6 -->
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.DRINKING_CANAL_HOME" | translate }}</label>
+                  <select formControlName="drinkingCanalHome" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
+                  <input formControlName="drinkingCanalHomePlace" type="text" name="" id="" class="form-control">
+                </div>
+              </div><!-- /.col-lg-6 -->
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.LIVESTOCK_TO_HOUSE" | translate }}</label>
+                  <select formControlName="livestockToHouse" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.LIVESTOCK_ANIMAL_TYPE" | translate }}</label>
+                  <input formControlName="livestockAnimalType" type="text" name="" id="" class="form-control">
+                </div>
+              </div><!-- /.col-lg-6 -->
+
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.CANALS_NEAR_LIVESTOCK_HOUSE" | translate }}</label>
+                  <select formControlName="canalsNearLivestockHouse" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.ANIMALS_SLAUGHTERED_OUTSIDE" | translate }}</label>
+                  <select formControlName="animalsSlaughteredOutside" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
+                  <input formControlName="animalsSlaughteredOutsidePlace" type="text" name="" id=""
+                    class="form-control">
+                </div>
+              </div><!-- /.col-lg-3 -->
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PLACES_DISPOSAL_RESIDUES" | translate }}</label>
+                  <input formControlName="placesDisposalResidues" type="text" name="" id="" class="form-control">
+                </div>
+              </div><!-- /.col-lg-3 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.LEAFY_VEGETABLES" | translate }}</label>
+                  <select formControlName="leafyVegetables" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SOURCE_VEGETABLES" | translate }}</label>
+                  <input formControlName="sourceVegetables" type="text" name="" id="" class="form-control">
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EAT_VEGETABLES" | translate }}</label>
+                  <select formControlName="eatVegetables" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_IT" | translate }}</label>
+                  <input formControlName="eatVegetablesMention" type="text" name="" id="" class="form-control">
+                </div>
+              </div><!-- /.col-lg-3 -->
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SOURCE" | translate }}</label>
+                  <input formControlName="source" type="text" name="" id="" class="form-control">
+                </div>
+              </div><!-- /.col-lg-3 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.HAD_SCHISTOSOMIASIS" | translate }}</label>
+                  <select formControlName="hadSchistosomiasis" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_DATE" | translate }}</label>
+                  <input formControlName="hadSchistosomiasisDate" type="date" name="" id=""
+                    [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy">
+                </div>
+              </div><!-- /.col-lg-6 -->
+
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.TREATMENT_SCHISTOSOMIASIS" | translate }}</label>
+                  <select formControlName="treatmentSchistosomiasis" name="" id="" class="form-control">
+                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  </select>
+                </div>
+              </div><!-- /.col-lg-6 -->
+              <div class="col-lg-6 border-right">
+                <p class="mt-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES" | translate }}</p><!-- / .mt-4 -->
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.DATE_DOSE" | translate }}</label>
+                      <input formControlName="dateDose" type="date" name="" id="" class="form-control">
+                    </div>
+                  </div><!-- /.col-lg-12 -->
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PROPERTY_NAME" | translate }}</label>
+                      <input formControlName="propertyName" type="text" name="" id="" class="form-control">
+                    </div>
+                  </div><!-- /.col-lg-12 -->
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.DOSAGE" | translate }}</label>
+                      <input formControlName="dosage" type="text" name="" id="" class="form-control">
+                    </div>
+                  </div><!-- /.col-lg-12 -->
+                  <div class="col-lg-12">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.FOLLOW_UP_TREATMENT" | translate }}</label>
+                      <input formControlName="followUpTreatment" type="date" name="" id=""
+                        [class]="'form-control-'+ currentLang" placeholder="dd/mm/yyyy">
+                    </div>
+                  </div><!-- /.col-lg-12 -->
+                </div><!-- / .row -->
+              </div><!-- / .col-lg-6 border-right -->
+
+
+
+            </div><!-- / .row -->
+          </div>
+
+
+
+          <!-- / .row -->
+
+          <!-- / .row -->
+
+          <div class="row color">
+            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES" | translate }}</div>
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.VEGETABLES_WASHED_LEMON" | translate }}</label>
+                    <select formControlName="vegetablesWashedLemon" name="" id="" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
+                  </div>
+                </div><!-- /.col-lg-6 -->
+                <div class="col-lg-6 mb-4">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.LOCATION_DIRECT_CONTACT" | translate }}</label>
+                    <select formControlName="locationDirectContact" name="" id="" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
+                  </div>
+                </div><!-- /.col-lg-6 -->
+                <div class="col-lg-6 border-right mb-4">
+                  <div class="row">
+                    <div class="col-lg-12 mb-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES" | translate }}</div><!-- / .col-lg-12 mt-4 -->
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NAME_CANAL" | translate }}</label>
+                        <input formControlName="nameCanal" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-12 -->
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.LENGTH_STREAM" | translate }}</label>
+                        <input formControlName="lengthStream" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-12 -->
+                  </div><!-- / .row -->
+                </div><!-- / .col-lg-6 border-right mb-4 -->
+                <div class="col-lg-6 mb-4">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.POSSIBLE_DIRECT" | translate }}</label>
+                    <select formControlName="possibleDirect" name="" id="" class="form-control">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
+                  </div>
+                </div><!-- /.col-lg-6 -->
+                <div class="col-lg-6 border-right mb-4">
+                  <div class="row">
+                    <div class="col-lg-12 mb-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES" | translate }}</div><!-- / .col-lg-12 mt-4 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.MENTION_TEST" | translate }}</label>
+                        <input formControlName="mentionTest" type="text" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_POLYNESQUE" | translate }}</label>
+                        <input formControlName="numberPolynesque" type="number" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_BIOMFLARIA" | translate }}</label>
+                        <input formControlName="numberBiomflaria" type="number" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_YEMENI" | translate }}</label>
+                        <input formControlName="numberYemeni" type="number" name="" id="" class="form-control">
+                      </div>
+                    </div><!-- /.col-lg-6 -->
+                  </div><!-- / .row -->
+                </div><!-- / .col-lg-6 border-right mb-4 -->
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE" | translate }}</label>
+                    <select formControlName="snailsPositive" name="" id="" class="form-control">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE_OPTION_1" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE_OPTION_2" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE_OPTION_3" | translate }}</option>
+                    </select>
+                  </div>
+                </div><!-- /.col-lg-12 -->
+                <div class="col-lg-4 mt-4">
+                  {{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.CHEMICAL_PESTICIDE" | translate }}
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.MENTION_PESTICIDE" | translate }}</label>
+                    <input formControlName="mentionPesticide" type="text" name="" id="" class="form-control">
+                  </div>
+                </div><!-- /.col-lg-3 -->
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PESTICIDE_CONCENTRATION" | translate }}</label>
+                    <input formControlName="pesticideConcentration" type="number" step="any" name="" id="" class="form-control">
+                  </div>
+                </div><!-- /.col-lg-3 -->
+              </div><!-- / .row -->
+            </div><!-- / .col-12 -->
+          </div><!-- / .row -->
         </div>
+        <div class="card-footer text-start">
+          <button type="submit" class="btn bg rounded-2 text-light"> {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate
+            }}</button>
+        </div>
+      </div>
     </div>
+  </div>
 </form>

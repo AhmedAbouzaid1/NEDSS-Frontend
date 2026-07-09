@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
 })
 
 export class TyphoidComponent implements OnInit {
+  private static readonly DATE_FORMAT = 'yyyy-MM-dd';
   currentLang =
     localStorage.getItem('ls.currentLang') !== undefined &&
       localStorage.getItem('ls.currentLang') !== 'undefined'
@@ -31,21 +32,19 @@ export class TyphoidComponent implements OnInit {
     private datePipe: DatePipe
   ) {
     if (this.investigationService.patient.firstName != null && this.investigationService.patient.firstName != undefined) {
-      this.patientName = this.investigationService.patient.firstName + " " + this.investigationService.patient.secondName + " " + this.investigationService.patient.thirdName;
+      this.patientName = [
+        this.investigationService.patient.firstName,
+        this.investigationService.patient.secondName,
+        this.investigationService.patient.thirdName,
+      ]
+        .filter((name) => name != null && name !== '')
+        .join(' ');
     }
   }
 
   typhoidData = {
     patientID: null,
     id: null,
-    fever: null,
-    feverDurationDay: null,
-    maxTemperature: null,
-    slowHeartRate: null,
-    numberHeartBeats: null,
-    caseShownDoctor: null,
-    initialTreatmentTaken: null,
-
     contactSuspectedCase: null,
     epidemicOutbreak: null,
     contactConfirmedCase: null,
@@ -186,32 +185,15 @@ export class TyphoidComponent implements OnInit {
     overflowSewerSystem: null,
     changeTasteColorSmellwater: null,
     reportsContaminationWater: null,
-    samplesAnalysisPatienhome: null,
-
-    //entamoebaHistolytica: null,
-    shigellaSpecies: null,
-    campylobacter: null,
-    salmonellaSpecies: null,
-    pathogenicColi: null,
-    salmonellaTyphi: null,
-    vibrioCholera: null,
-    otherSamplesAnalysisPatienhome: null,
 
     filteredWater: null,
     wells: null,
     ethiopianPump: null,
-    canal: null,
-    storedWater: null,
-    sampledSewerSystemTaken: null,
-    sampleResult: null,
     diseaseGroupId: this.investigationService.diseaseGroupID,
     samplesAnalysisPatienhome1: null,
-    investigationCompletePercentage:null,
+    investigationCompletePercentage: null,
   };
 
-  slowHeartRate = AnswerOptions;
-  caseShownDoctors = AnswerOptions;
-  initialTreatmentTakens = AnswerOptions;
   distanceWaterSourcesSewages = distanceWaterSourcesSewage;
 
   genderDay1s = Gender;
@@ -267,62 +249,49 @@ export class TyphoidComponent implements OnInit {
     this.typhoidData.patientID = this.currentId;
     this.investigationService.getByIdtyphoid(this.currentId).subscribe(
       (res) => {
-        console.log(res);
+        const data = res.data;
 
-        var v = res.data;
-        // if (v.isSampleTakenDay1 == null) { v.isSampleTakenDay1 = 1; }
-        // if (v.isSampleTakenDay2 == null) { v.isSampleTakenDay2 = 1; }
-        // if (v.isSampleTakenDay7 == null) { v.isSampleTakenDay7 = 1; }
-        // if (v.isSampleTakenDay14 == null) { v.isSampleTakenDay14 = 1; }
-        // //followD1SampleResult
-        // if (v.sampleResultDay1 == null) { v.sampleResultDay1 = 2; }
-        // if (v.sampleResultDay2 == null) { v.sampleResultDay2 = 2; }
-        // if (v.sampleResultDay7 == null) { v.sampleResultDay7 = 2; }
-        // if (v.sampleResultDay14 == null) { v.sampleResultDay14 = 2; }
-
-        if(v!=null){
-        this.typhoidData = v;
-        this.typhoidData.dateOnsetSymptomsDay1 = this.datePipe.transform(
-          this.typhoidData.dateOnsetSymptomsDay1,
-          'yyyy-MM-dd'
-        );
-        this.typhoidData.dateSampleTakenDay1 = this.datePipe.transform(
-          this.typhoidData.dateSampleTakenDay1,
-          'yyyy-MM-dd'
-        );
-        this.typhoidData.dateOnsetSymptomsDay2 = this.datePipe.transform(
-          this.typhoidData.dateOnsetSymptomsDay2,
-          'yyyy-MM-dd'
-        );
-        this.typhoidData.dateSampleTakenDay2 = this.datePipe.transform(
-          this.typhoidData.dateSampleTakenDay2,
-          'yyyy-MM-dd'
-        );
-        this.typhoidData.dateOnsetSymptomsDay7 = this.datePipe.transform(
-          this.typhoidData.dateOnsetSymptomsDay7,
-          'yyyy-MM-dd'
-        );
-
-        this.typhoidData.dateSampleTakenDay7 = this.datePipe.transform(
-          this.typhoidData.dateSampleTakenDay7,
-          'yyyy-MM-dd'
-        );
-        this.typhoidData.dateOnsetSymptomsDay14 = this.datePipe.transform(
-          this.typhoidData.dateOnsetSymptomsDay14,
-          'yyyy-MM-dd'
-        );
-        this.typhoidData.dateSampleTakenDay14 = this.datePipe.transform(
-          this.typhoidData.dateSampleTakenDay14,
-          'yyyy-MM-dd'
-        );
-        //dateHealthCertificate
-        this.typhoidData.dateHealthCertificate = this.datePipe.transform(
-          this.typhoidData.dateHealthCertificate,
-          'yyyy-MM-dd'
-        );
-        // }
-        this.calculateCompletionPercentage();
-      }},
+        if (data != null) {
+          this.typhoidData = data;
+          this.typhoidData.dateOnsetSymptomsDay1 = this.datePipe.transform(
+            this.typhoidData.dateOnsetSymptomsDay1,
+            TyphoidComponent.DATE_FORMAT
+          );
+          this.typhoidData.dateSampleTakenDay1 = this.datePipe.transform(
+            this.typhoidData.dateSampleTakenDay1,
+            TyphoidComponent.DATE_FORMAT
+          );
+          this.typhoidData.dateOnsetSymptomsDay2 = this.datePipe.transform(
+            this.typhoidData.dateOnsetSymptomsDay2,
+            TyphoidComponent.DATE_FORMAT
+          );
+          this.typhoidData.dateSampleTakenDay2 = this.datePipe.transform(
+            this.typhoidData.dateSampleTakenDay2,
+            TyphoidComponent.DATE_FORMAT
+          );
+          this.typhoidData.dateOnsetSymptomsDay7 = this.datePipe.transform(
+            this.typhoidData.dateOnsetSymptomsDay7,
+            TyphoidComponent.DATE_FORMAT
+          );
+          this.typhoidData.dateSampleTakenDay7 = this.datePipe.transform(
+            this.typhoidData.dateSampleTakenDay7,
+            TyphoidComponent.DATE_FORMAT
+          );
+          this.typhoidData.dateOnsetSymptomsDay14 = this.datePipe.transform(
+            this.typhoidData.dateOnsetSymptomsDay14,
+            TyphoidComponent.DATE_FORMAT
+          );
+          this.typhoidData.dateSampleTakenDay14 = this.datePipe.transform(
+            this.typhoidData.dateSampleTakenDay14,
+            TyphoidComponent.DATE_FORMAT
+          );
+          this.typhoidData.dateHealthCertificate = this.datePipe.transform(
+            this.typhoidData.dateHealthCertificate,
+            TyphoidComponent.DATE_FORMAT
+          );
+          this.calculateCompletionPercentage();
+        }
+      },
       (error) => {
         this.translateService
           .get('NEDSS.COMMON.SENT_FAILD')
@@ -334,8 +303,6 @@ export class TyphoidComponent implements OnInit {
   }
 
   save() {
-    //  this.typhoidData.diseaseGroupId=this.investigationService.diseaseGroupID
-    //console.log(this.rabiesForm.value);
     this.typhoidData.diseaseGroupId = this.investigationService.diseaseGroupID;
     this.calculateCompletionPercentage();
     this.typhoidData.investigationCompletePercentage = parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2));

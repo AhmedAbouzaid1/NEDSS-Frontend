@@ -8,7 +8,12 @@
     </h2>
 
     <div class="d-flex align-items-center gap-3">
-      <a routerLink="../../compelete-investigation" class="btn bg text-light">
+      <a
+        [routerLink]="canContinueInvestigation() ? '../../compelete-investigation' : null"
+        [attr.aria-disabled]="canContinueInvestigation() ? null : true"
+        [class.disabled]="!canContinueInvestigation()"
+        class="btn bg text-light"
+      >
         {{
         "NEDSS.INVESTIGATIONS.INVESTIGATIONS_DETAILES.COMPLETETHEINVESTIGATION"
         | translate

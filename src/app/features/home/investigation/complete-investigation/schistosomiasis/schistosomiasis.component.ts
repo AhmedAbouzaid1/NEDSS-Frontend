@@ -10,27 +10,30 @@ import { DatePipe } from '@angular/common';
   templateUrl: './schistosomiasis.component.html',
   styleUrls: ['./schistosomiasis.component.css']
 })
-export class SchistosomiasisComponent {
-
+export class SchistosomiasisComponent implements OnInit {
   belharisyaForm: FormGroup;
   currentLang: string;
-  //dir: string;
-  //delay: boolean = false;
-  //timer: any;
-  allFilledControlsCount: number = 0;
+  dir: string;
+  delay: boolean = false;
+  timer: any;
+  patientName: string = '';
   allControllesCount: number = 0;
-  patientName: string;
+  allFilledControlsCount: number = 0;
+
   constructor(private investigationService: InvestigationService,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
     private datePipe: DatePipe
-  ) { 
-    if (this.investigationService.patient.firstName != null && this.investigationService.patient.firstName != undefined) {
-      this.patientName = this.investigationService.patient.firstName + " " + this.investigationService.patient.secondName + " " + this.investigationService.patient.thirdName;
-    }
-  }
+  ) { }
   currentId: any;
   ngOnInit() {
+    this.patientName =
+      (this.investigationService.patient?.firstName || '') +
+      ' ' +
+      (this.investigationService.patient?.secondName || '') +
+      ' ' +
+      (this.investigationService.patient?.thirdName || '');
+
     this.currentLang =
       localStorage.getItem('ls.currentLang') !== undefined &&
         localStorage.getItem('ls.currentLang') !== 'undefined'
@@ -38,23 +41,6 @@ export class SchistosomiasisComponent {
         : 'ar';
 
     this.belharisyaForm = new FormGroup({
-      fever: new FormControl(),
-      feverDays: new FormControl(),
-      maxTemperature: new FormControl(),
-      bloodyStools: new FormControl(),
-      bloodyUrine: new FormControl(),
-      painUrinating: new FormControl(),
-      frequentUrinate: new FormControl(),
-      obstructionducts: new FormControl(),
-      esophagealVarices: new FormControl(),
-      severeAirway: new FormControl(),
-      enlargedliver: new FormControl(),
-      enlargedSpleen: new FormControl(),
-      painAbdomen: new FormControl(),
-      acuteFailure: new FormControl(),
-      bileColic: new FormControl(),
-      portalHypertension: new FormControl(),
-      difficultySwallowing: new FormControl(),
       bathingSwimming: new FormControl(),
       swimmingPlace: new FormControl(),
       drinkingCanalWater: new FormControl(),
@@ -68,6 +54,7 @@ export class SchistosomiasisComponent {
       drinkingCanalHome: new FormControl(),
       drinkingCanalHomePlace: new FormControl(),
       livestockToHouse: new FormControl(),
+      livestockAnimalType: new FormControl(),
       canalsNearLivestockHouse: new FormControl(),
       animalsSlaughteredOutside: new FormControl(),
       animalsSlaughteredOutsidePlace: new FormControl(),
@@ -99,24 +86,25 @@ export class SchistosomiasisComponent {
       patientID: new FormControl(),
       id: new FormControl(),
       diseaseGroupId: new FormControl(this.investigationService.diseaseGroupID),
-      investigationCompletePercentage:new FormControl(),
-
+      investigationCompletePercentage: new FormControl(),
     })
 
     this.currentId = this.investigationService.currentid
     this.belharisyaForm.controls['patientID'].setValue(this.currentId)
-    this.investigationService.getByIdSchistosomiasisFasciola(this.currentId,this.investigationService.diseaseGroupID).subscribe(
+    this.calculateCompletionPercentage();
+    this.belharisyaForm.valueChanges.subscribe(() => {
+      this.calculateCompletionPercentage();
+    });
+    this.investigationService.getByIdSchistosomiasis(this.currentId,this.investigationService.diseaseGroupID).subscribe(
       res => {
         console.log(res);
         var v = res.data;
         this.belharisyaForm.patchValue(v)
-        this.belharisyaForm.patchValue({ fever: this.belharisyaForm.value.fever + "", tc: true });
-        console.log('feveeeeeeeer',this.belharisyaForm.value.fever);
         //hadSchistosomiasisDate
         this.belharisyaForm.controls['hadSchistosomiasisDate'].setValue(this.datePipe.transform(this.belharisyaForm.value.hadSchistosomiasisDate, 'yyyy-MM-dd'));
         this.belharisyaForm.controls['dateDose'].setValue(this.datePipe.transform(this.belharisyaForm.value.dateDose, 'yyyy-MM-dd'));
         this.belharisyaForm.controls['followUpTreatment'].setValue(this.datePipe.transform(this.belharisyaForm.value.followUpTreatment, 'yyyy-MM-dd'));
-        this.calculateCompletionPercentage();
+
       }
       , (error) => {
         this.translateService
@@ -130,14 +118,19 @@ export class SchistosomiasisComponent {
   }
   save() {
     Object.entries(this.belharisyaForm.controls).map(([key, value], index) => {
-      if (value.value == 'null')
+      if (value.value == 'null' || value.value === '')
         value.setValue(null);
     })
     this.belharisyaForm.controls['diseaseGroupId'].setValue(this.investigationService.diseaseGroupID);
     this.calculateCompletionPercentage();
-    this.belharisyaForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
+    this.belharisyaForm.controls['investigationCompletePercentage'].setValue(
+      this.allControllesCount === 0
+        ? 0
+        : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2))
+    );
+
     if (this.belharisyaForm.value.id != null) {
-      this.investigationService.updateSchistosomiasisFasciola(this.belharisyaForm.value).subscribe(
+      this.investigationService.updateSchistosomiasis(this.belharisyaForm.value).subscribe(
         (response: any) => {
           if (response) {
             this.translateService
@@ -156,7 +149,7 @@ export class SchistosomiasisComponent {
         }
       )
     } else {
-      this.investigationService.addInvestigationSchistosomiasisFasciola(this.belharisyaForm.value).subscribe(
+      this.investigationService.addInvestigationSchistosomiasis(this.belharisyaForm.value).subscribe(
         (response: any) => {
 
           if (response) {
@@ -178,22 +171,26 @@ export class SchistosomiasisComponent {
     }
   }
 
-    //BL
-    calculateCompletionPercentage() {
-      this.allFilledControlsCount = 0;
-      const data = this.belharisyaForm.value;
-      //Exclude fields you don't want to count (like 'id')
-      const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
-      const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
-  
-      this.allControllesCount = totalFields;
-  
-      Object.keys(data).forEach((key) => {
-        if (!excludedFields.includes(key) && data[key] !== null && data[key] !== '' && data[key] !== 'null') {
-          this.allFilledControlsCount++;
-        }
-      });
-    }
-  
+  calculateCompletionPercentage(): void {
+    const data = this.belharisyaForm?.value ?? {};
+    const excludedFields = [
+      'id', 'patientID', 'diseaseGroupId', 'investigationCompletePercentage', 'createdDate'
+    ];
+    const fields = Object.keys(data).filter((key) => !excludedFields.includes(key));
 
+    this.allControllesCount = fields.length;
+    this.allFilledControlsCount = fields.reduce((acc, key) => {
+      return this.isFieldFilled(data[key]) ? acc + 1 : acc;
+    }, 0);
+  }
+
+  private isFieldFilled(value: any): boolean {
+    if (value === null || value === undefined || value === '' || value === 'null') {
+      return false;
+    }
+    if (typeof value === 'boolean') {
+      return value;
+    }
+    return true;
+  }
 }

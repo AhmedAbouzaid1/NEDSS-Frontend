@@ -12,9 +12,8 @@ export class PageLoadingComponent implements OnInit {
     constructor(public loader: UiLoadingService) {
     }
 
-    public get isLoading() {
-        return this.loader.isLoading;
-    }
+    public readonly isLoading$ = this.loader.isLoading$;
+
     ngOnInit(): void {
     }
 

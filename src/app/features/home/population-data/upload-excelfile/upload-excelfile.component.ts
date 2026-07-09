@@ -111,7 +111,7 @@ export class UploadExcelfileComponent {
       this.selectedGovernment !== null &&
       this.selectedGovernment !== -1 &&
       this.selectedHealthAdministration !== null &&
-      this.selectedHealthAdministration !== -1 && 
+      this.selectedHealthAdministration !== -1 &&
       this.selectedYear > 0 &&
       this.selectedYear !== null
     ) {
@@ -149,7 +149,6 @@ export class UploadExcelfileComponent {
 
   Import() {
     if (this.selectedFile) {
-      debugger;
       // this.file.append('formFile', );
       let filter = {} as PopulationExcelTemplateFilterVM;
       filter.governmentId = this.selectedGovernment;

@@ -26,6 +26,103 @@ export class GeneralDataService {
     private activeUSerService: ActiveUserService
   ) { }
 
+  /**
+   * Ensures camelCase fields exist when API returns PascalCase.
+   * Mutates the payload in place.
+   */
+  normalizePatientApiPayload(d: any): any {
+    if (d == null || typeof d !== 'object') {
+      return d;
+    }
+    const alias = (target: any, camel: string, pascal: string) => {
+      const cur = target[camel];
+      if ((cur === null || cur === undefined) && target[pascal] != null) {
+        target[camel] = target[pascal];
+      }
+    };
+    const pairs: [string, string][] = [
+      ['id', 'Id'],
+      ['patientID', 'PatientID'],
+      ['incidentGovernmentId', 'IncidentGovernmentId'],
+      ['incidentHealthAdministrationId', 'IncidentHealthAdministrationId'],
+      ['incidentSourceId', 'IncidentSourceId'],
+      ['incidentBranchId', 'IncidentBranchId'],
+      ['incidentAreaId', 'IncidentAreaId'],
+      ['incidentDepartmentId', 'IncidentDepartmentId'],
+      ['nationalityId', 'NationalityId'],
+      ['homeGovernmentId', 'HomeGovernmentId'],
+      ['homeHealthAdministrationId', 'HomeHealthAdministrationId'],
+      ['homeCityId', 'HomeCityId'],
+      ['homeHealthOfficeId', 'HomeHealthOfficeId'],
+      ['homePrincipalityId', 'HomePrincipalityId'],
+      ['livingAddress', 'LivingAddress'],
+      ['relationShipDegreeId', 'RelationShipDegreeId'],
+      ['genderId', 'GenderId'],
+      ['age', 'Age'],
+      ['ageTypeId', 'AgeTypeId'],
+      ['birthDate', 'BirthDate'],
+      ['caseDiscoveryDate', 'CaseDiscoveryDate'],
+      ['caseDiscoveryTime', 'CaseDiscoveryTime'],
+      ['hospitalEntryDate', 'HospitalEntryDate'],
+      ['hospitalLeaveDate', 'HospitalLeaveDate'],
+      ['infectionDate', 'InfectionDate'],
+      ['incidentDate', 'IncidentDate'],
+      ['clinicalSymptomIds', 'ClinicalSymptomIds'],
+      ['patientDiseases', 'PatientDiseases'],
+      ['finalDiagonisticsData', 'FinalDiagonisticsData'],
+      ['feverSymptoms', 'FeverSymptoms'],
+      ['chronicDiseasesIds', 'ChronicDiseasesIds'],
+      ['finalResultId', 'FinalResultId'],
+      ['transferGovernmentId', 'TransferGovernmentId'],
+      ['transferHealthAdministrationId', 'TransferHealthAdministrationId'],
+      ['transferIncidentSourceId', 'TransferIncidentSourceId'],
+      ['specialLabSourceId', 'SpecialLabSourceId'],
+      ['isSpecialLabLab', 'IsSpecialLabLab'],
+    ];
+    for (const [camel, pascal] of pairs) {
+      alias(d, camel, pascal);
+    }
+    const coerceNumericIds = (target: any, keys: string[]) => {
+      for (const k of keys) {
+        const v = target[k];
+        if (typeof v === 'string' && /^\s*\d+\s*$/.test(v)) {
+          const n = parseInt(String(v).trim(), 10);
+          if (Number.isFinite(n)) {
+            target[k] = n;
+          }
+        }
+      }
+    };
+    coerceNumericIds(d, [
+      'id',
+      'incidentGovernmentId',
+      'incidentHealthAdministrationId',
+      'incidentSourceId',
+      'incidentBranchId',
+      'incidentAreaId',
+      'incidentDepartmentId',
+      'nationalityId',
+      'homeGovernmentId',
+      'homeHealthAdministrationId',
+      'homeCityId',
+      'homeHealthOfficeId',
+      'homePrincipalityId',
+      'transferGovernmentId',
+      'transferHealthAdministrationId',
+      'transferIncidentSourceId',
+      'specialLabSourceId',
+    ]);
+    if (d.feverSymptoms && typeof d.feverSymptoms === 'object') {
+      const fs = d.feverSymptoms;
+      alias(fs, 'id', 'Id');
+      alias(fs, 'patientId', 'PatientId');
+      alias(fs, 'feverDuration', 'FeverDuration');
+      alias(fs, 'feverMaxTemp', 'FeverMaxTemp');
+      alias(fs, 'feverDurationType', 'FeverDurationType');
+    }
+    return d;
+  }
+
   getPatientsDashboard(filter: any) {
     return this.APIs.get(this.controllerURL + 'GetPage', filter);
   }
@@ -233,12 +330,18 @@ export class GeneralDataService {
       return data;
     }
   }
-  getByNationalId(id: number) {
-    return this.APIs.get(this.controllerURL + 'GetByNationalId?id=' + id);
+  getByNationalId(id: string) {
+    return this.APIs.get(
+      this.controllerURL + 'GetByNationalId?id=' + encodeURIComponent(String(id))
+    );
   }
-  getAllByNationalId(id: number) {
+  getAllByNationalId(id: string) {
     if (navigator.onLine) {
-      return this.APIs.get(this.controllerURL + 'GetAllByNationalId?id=' + id);
+      return this.APIs.get(
+        this.controllerURL +
+          'GetAllByNationalId?id=' +
+          encodeURIComponent(String(id))
+      );
     } else {
       const data = new Observable((observer) => {
         observer.next();
@@ -247,12 +350,18 @@ export class GeneralDataService {
       return data;
     }
   }
-  getByPassportNo(id: number) {
-    return this.APIs.get(this.controllerURL + 'GetByPassportNo?id=' + id);
+  getByPassportNo(id: string) {
+    return this.APIs.get(
+      this.controllerURL + 'GetByPassportNo?id=' + encodeURIComponent(String(id))
+    );
   }
-  getAllByPassportNo(id: number) {
+  getAllByPassportNo(id: string) {
     if (navigator.onLine) {
-      return this.APIs.get(this.controllerURL + 'GetAllByPassportNo?id=' + id);
+      return this.APIs.get(
+        this.controllerURL +
+          'GetAllByPassportNo?id=' +
+          encodeURIComponent(String(id))
+      );
     } else {
       const data = new Observable((observer) => {
         observer.next();
@@ -550,9 +659,10 @@ export class GeneralDataService {
       patient.familyName,
       false
     );
+    const phoneRequired = patient.incidentDepartmentId == DepartmentEnum.Internal || patient.incidentDepartmentId == DepartmentEnum.ICU;
     this.isPhoneNumber1Valid = this.validatePhoneNumber1(
       patient.phoneNo1,
-      false
+      phoneRequired
     );
     this.livingAddressValid = this.validatePhoneNumber1(
       patient.livingAddress,
@@ -573,6 +683,7 @@ export class GeneralDataService {
       //this.livingAddressValid,
       this.isGenderValid,
       this.isAgeValid,
+      this.isAgeTypeValid,
       this.isPassportValid ||
       this.isNationalValid ||
       patient.incidentDepartmentId != 1,
@@ -1147,7 +1258,113 @@ export class GeneralDataService {
     let namePattern = /^[A-Za-z\u0600-\u06FF ]$/;
     if (!namePattern.test(inputKey)) {
       event.preventDefault();
+      return;
+    }
+    const input = event.target as HTMLInputElement;
+    if (inputKey === ' ' && (input.selectionStart === 0 || !input.value)) {
+      event.preventDefault();
+    }
+  }
+
+  normalizeNameInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+    value = value.replace(/[\u0623\u0625]/g, '\u0627');
+    value = value.replace(/\u0649/g, '\u064A');
+    value = value.replace(/^\s+/, '');
+    if (value !== input.value) {
+      input.value = value;
+      input.dispatchEvent(new Event('input'));
     }
   }
   //#endregion "Common Validations"
+
+  getIncidentInfoInvalidFieldLabel(patient: any): string | null {
+    const items: Array<[boolean, string]> = [
+      [this.isIncidentGovernmentValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT'],
+      [this.isIncidentHealthAdministrationValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.HEALTHADMIN'],
+      [this.isUniversityValid, 'NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_UNIVERSITY'],
+      [this.isBranchValid, 'NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_BRANCH'],
+      [this.isAreaValid, 'NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_AREA'],
+      [this.isIncidentSourceValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.INCIDENT_SOURCE'],
+      [this.isIncidentDepartmentValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.DEPARTMENT'],
+      [this.isCaseDiscoveryDateValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.DATE_DISCOVER_STATUS'],
+      [this.isNationalityValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONATILY'],
+      [this.isCardIdValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONAL_ID'],
+      [this.isPassportIdValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.PASSPOR_NO'],
+    ];
+    const failed = items.find(([valid]) => !valid);
+    return failed ? failed[1] : null;
+  }
+
+  getDemographicInfoInvalidFieldLabel(patient: any): string | null {
+    const items: Array<[boolean, string]> = [
+      [this.isFirstNameValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.FIRST_NAME'],
+      [this.isSecondNameValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.SECOND_NAME'],
+      [this.isThirdNameValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.THIRD_NAME'],
+      [this.isFamilyNameValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.FAMILY_NAME'],
+      [this.isPhoneNumber1Valid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO1'],
+      [this.isGenderValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.GENDER'],
+      [this.isAgeValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGE'],
+      [this.isAgeTypeValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGETYPE'],
+    ];
+    const failed = items.find(([valid]) => !valid);
+    if (failed) return failed[1];
+
+    // National ID / Passport requirement is OR-coupled when department is Internal.
+    const idsOk =
+      this.isPassportValid ||
+      this.isNationalValid ||
+      patient?.incidentDepartmentId != 1;
+    if (!idsOk) {
+      return patient?.nationalityId == NationalityEnum.Egyptian
+        ? 'NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONAL_ID'
+        : 'NEDSS.HOME.GENERAL_DATA_COMPLETION.PASSPOR_NO';
+    }
+    return null;
+  }
+
+  getResidenceInfoInvalidFieldLabel(patient: any): string | null {
+    const items: Array<[boolean, string]> = [
+      [this.isHomeGovernmentValid, 'NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.GOVERNMENT'],
+      [this.isHomeHealthAdministrationValid, 'NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.ADMINISTRATION'],
+      [this.isHomeCityValid, 'NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.STATEANDCITY'],
+      [this.isHomeHealthOfficeIdValid, 'NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.HEALTHOFFICE'],
+      [this.isAdressValid, 'NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.DETAILADDRESS'],
+    ];
+    const failed = items.find(([valid]) => !valid);
+    return failed ? failed[1] : null;
+  }
+
+  getDiagnosticsInvalidFieldLabel(patient: any): string | null {
+    const items: Array<[boolean, string]> = [
+      [this.isPatientDiseasesValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES'],
+      [this.isInfectionDateValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE'],
+      [this.isHospitalEntryDateValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALENTRYDATE'],
+      [this.isPatientHospitalNoValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.PATIENT_HOSPITAL_NO'],
+      [this.isDoctorNameValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DOCTOR_NAME'],
+    ];
+    const failed = items.find(([valid]) => !valid);
+    return failed ? failed[1] : null;
+  }
+
+  getFirstInvalidFieldLabel(patient: any): string | null {
+    this.validateIncidentInfo(patient);
+    const incident = this.getIncidentInfoInvalidFieldLabel(patient);
+    if (incident) return incident;
+
+    this.validateDemographicInfo(patient);
+    const demographic = this.getDemographicInfoInvalidFieldLabel(patient);
+    if (demographic) return demographic;
+
+    this.validateResidenceInfo(patient);
+    const residence = this.getResidenceInfoInvalidFieldLabel(patient);
+    if (residence) return residence;
+
+    this.validateDiagnostics(patient);
+    const diagnostics = this.getDiagnosticsInvalidFieldLabel(patient);
+    if (diagnostics) return diagnostics;
+
+    return null;
+  }
 }

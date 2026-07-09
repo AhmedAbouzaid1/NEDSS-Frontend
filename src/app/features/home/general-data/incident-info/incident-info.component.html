@@ -1,4 +1,4 @@
-<div class="card shadow mb-4 small-screen-card">
+<div class="card shadow mb-4">
   <div class="card-body bg-dark-mode">
     <div class="row">
       <div class="col-lg-4" *ngIf="activeUSerService.getAccessibleParts?.showGovernments">
@@ -45,32 +45,18 @@
             {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.HEALTHADMIN" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <div *ngIf="currentLang == 'ar'">
-            <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministration"
-              [(ngModel)]="selectedHealthAdministrationId" [disabled]="
+          <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministration"
+            [(ngModel)]="selectedHealthAdministrationId" [disabled]="
                 !activeUSerService.getAccessibleParts?.enableDepartments
-              " optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
-              name="healthAdministration" [filter]="true" filterBy="arabicName" (onBlur)="
+              " [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
+            autoWidth="false" [style]="{ width: '100%' }" name="healthAdministration" [filter]="true"
+            [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'" (onBlur)="
                 generalDataService.isIncidentHealthAdministrationValid =
                   generalDataService.checkIncidentHealthAdministrationValid(
                     selectedHealthAdministrationId
                   )
               ">
-            </p-dropdown>
-          </div>
-          <div *ngIf="currentLang == 'en'">
-            <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministration"
-              [(ngModel)]="selectedHealthAdministrationId" [disabled]="
-                !activeUSerService.getAccessibleParts?.enableDepartments
-              " optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
-              name="healthAdministration" [required]="true" [filter]="true" filterBy="englishName" (onBlur)="
-                generalDataService.isIncidentHealthAdministrationValid =
-                  generalDataService.checkIncidentHealthAdministrationValid(
-                    selectedHealthAdministrationId
-                  )
-              ">
-            </p-dropdown>
-          </div>
+          </p-dropdown>
           <small *ngIf="!generalDataService.isIncidentHealthAdministrationValid"
             class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
@@ -184,30 +170,17 @@
             }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <div *ngIf="currentLang == 'ar'">
-            <p-dropdown (onChange)="onIncidentSourceChanged()" [options]="incidentSources"
-              [(ngModel)]="selectedIncidentSourceId" [disabled]="!activeUSerService.getAccessibleParts?.enableSources"
-              optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
-              name="incidentSources" [required]="true" [filter]="true" filterBy="arabicName" (onBlur)="
+          <p-dropdown (onChange)="onIncidentSourceChanged()" [options]="incidentSources"
+            [(ngModel)]="selectedIncidentSourceId" [disabled]="!activeUSerService.getAccessibleParts?.enableSources"
+            [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="incidentSources" [required]="true" [filter]="true"
+            [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'" (onBlur)="
                 generalDataService.isIncidentSourceValid =
                   generalDataService.checkIncidentSourceValid(
                     selectedIncidentSourceId
                   )
               ">
-            </p-dropdown>
-          </div>
-          <div *ngIf="currentLang == 'en'">
-            <p-dropdown (onChange)="onIncidentSourceChanged()" [options]="incidentSources"
-              [(ngModel)]="selectedIncidentSourceId" [disabled]="!activeUSerService.getAccessibleParts?.enableSources"
-              optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
-              name="incidentSources" [required]="true" [filter]="true" filterBy="englishName" (onBlur)="
-                generalDataService.isIncidentSourceValid =
-                  generalDataService.checkIncidentSourceValid(
-                    selectedIncidentSourceId
-                  )
-              ">
-            </p-dropdown>
-          </div>
+          </p-dropdown>
           <small *ngIf="!generalDataService.isIncidentSourceValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
@@ -220,28 +193,27 @@
             {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.DEPARTMENT" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <div *ngIf="currentLang == 'ar'">
-            <p-dropdown (onChange)="onDepartmentChanged()" [options]="departments" [(ngModel)]="selectedDepartmentId"
-              optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="departments"
-              [filter]="true" filterBy="arabicName" (onBlur)="
-                generalDataService.isIncidentDepartmentValid =
-                  generalDataService.checkIncidentDepartmentValid(
-                    selectedDepartmentId
-                  )
-              ">
-            </p-dropdown>
-          </div>
-          <div *ngIf="currentLang == 'en'">
-            <p-dropdown (onChange)="onDepartmentChanged()" [options]="departments" [(ngModel)]="selectedDepartmentId"
-              optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
-              name="departments" [filter]="true" filterBy="englishName" (onBlur)="
-                generalDataService.isIncidentDepartmentValid =
-                  generalDataService.checkIncidentDepartmentValid(
-                    selectedDepartmentId
-                  )
-              ">
-            </p-dropdown>
-          </div>
+          <p-dropdown
+            inputId="incidentDepartment"
+            (onChange)="onDepartmentChanged()"
+            [options]="departments"
+            [(ngModel)]="selectedDepartmentId"
+            [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
+            optionValue="id"
+            autoWidth="false"
+            [style]="{ width: '100%' }"
+            name="incidentDepartment"
+            [filter]="true"
+            [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
+            [showClear]="false"
+            (onBlur)="
+              generalDataService.isIncidentDepartmentValid =
+                generalDataService.checkIncidentDepartmentValid(
+                  selectedDepartmentId
+                )
+            "
+          >
+          </p-dropdown>
           <small *ngIf="!generalDataService.isIncidentDepartmentValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
@@ -382,40 +354,31 @@
             <span *ngIf="patient.incidentDepartmentId == departmentEnum.Internal"
               class="text-danger mess-color">*</span>
           </label>
-          <div class="row">
-            <input type="text" name="nationalId" [(ngModel)]="patient.nationalId"
-              (ngModelChange)="onNationalIdChanged($event,true)" #nationalId="ngModel" class="w-100" maxlength="14"
-              (keypress)="generalDataService.onIdentityCardKeyPress($event)" pInputText
-              (blur)="
-                generalDataService.isCardIdValid =
-                  generalDataService.checkCardIdValid(
-                    patient.incidentDepartmentId,
-                    patient.nationalityId,
-                    patient.nationalId
-                  )
-              " />
-            <!-- <input
-              type="text"
-              (ngModelChange)="onNationalIdChanged($event)"
-              tabindex="7"
-              maxlength="14"
-              (keypress)="generalDataService.onIdentityCardKeyPress($event)"
-              [(ngModel)]="patient.nationalId"
-              [class]="'form-control-' + currentLang"
-              class="d-inline national"
-              (blur)="
-                generalDataService.isCardIdValid =
-                  generalDataService.checkCardIdValid(
-                    patient.incidentDepartmentId,
-                    patient.nationalityId,
-                    patient.nationalId
-                  )
-              "
-            /> -->
-            <div *ngIf="!generalDataService.isCardIdValid" class="form-text text-danger mess-color">
-              {{ generalDataService.cardIdValidationMessage | translate }}
-            </div>
-          </div>
+          <input
+            type="text"
+            name="nationalId"
+            [(ngModel)]="patient.nationalId"
+            (ngModelChange)="onNationalIdChanged($event, true)"
+            #nationalId="ngModel"
+            class="w-100"
+            maxlength="14"
+            (keypress)="generalDataService.onIdentityCardKeyPress($event)"
+            pInputText
+            (blur)="
+              generalDataService.isCardIdValid =
+                generalDataService.checkCardIdValid(
+                  patient.incidentDepartmentId,
+                  patient.nationalityId,
+                  patient.nationalId
+                )
+            "
+          />
+          <small
+            *ngIf="!generalDataService.isCardIdValid"
+            class="form-text text-danger mess-color"
+          >
+            {{ generalDataService.cardIdValidationMessage | translate }}
+          </small>
         </div>
       </div>
 
@@ -556,9 +519,7 @@
                 <ng-container>
                   <tr *ngFor="let op of Allpatients">
                     <td>
-                      {{
-                      op.firstName + " " + op.secondName + " " + op.thirdName
-                      }}
+                      {{ formatPatientName(op) }}
                     </td>
                     <td>{{ op.homeGovernmentName }}</td>
                     <td>{{ op.homeCityName }}</td>
