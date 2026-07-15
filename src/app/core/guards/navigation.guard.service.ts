@@ -149,14 +149,14 @@ export class NavigationGuard {
   constructor(private router: Router, private userMsg: UserMessageService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (
-      JSON.parse(localStorage.getItem('ls.authorizationData'))?.emailId ==
-      'admin@admin.com'
-    )
+    const authData = JSON.parse(localStorage.getItem('ls.authorizationData'));
+    if (!authData) {
+      this.router.navigateByUrl('/');
+      return of(false);
+    }
+    if (authData.emailId == 'admin@admin.com')
       return of(true);
-    let userPremitedPages: any[] = JSON.parse(
-      localStorage.getItem('ls.authorizationData')
-    ).pages;
+    let userPremitedPages: any[] = authData.pages;
     let userPremitedPagesIds = [];
     userPremitedPages.forEach((element) => {
       userPremitedPagesIds.push(element.id);

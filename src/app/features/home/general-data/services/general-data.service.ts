@@ -559,7 +559,7 @@ export class GeneralDataService {
     this.isPassportIdValid = this.checkPassportIdValid(
       patient.nationalityId,
       patient.passportNo,
-      patient.incidentDepartmentId == DepartmentEnum.Internal
+      patient.incidentDepartmentId == DepartmentEnum.Internal || patient.incidentDepartmentId == DepartmentEnum.ICU
     );
 
     var validationResults = [
@@ -610,7 +610,7 @@ export class GeneralDataService {
     if (nationalityId == NationalityEnum.Egyptian) {
       return this.validateNationalID(
         nationalId,
-        incidentDepartmentId == DepartmentEnum.Internal
+        incidentDepartmentId == DepartmentEnum.Internal || incidentDepartmentId == DepartmentEnum.ICU
       );
     }
     return true;

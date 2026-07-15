@@ -63,11 +63,8 @@ export class AuthComponent {
         ? userDataObject.userName
         : null;
 
-    if (userData == null) {
-      this.router.navigateByUrl('');
-    } else {
+    if (userData != null) {
       this.router.navigateByUrl('home/chart');
-      // window.open('/#/home/chart', '_self')
     }
     // window.location.reload()
   }
