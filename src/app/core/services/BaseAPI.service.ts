@@ -224,26 +224,20 @@ export class BaseAPIService {
   errorHandler(error: HttpErrorResponse): void {
     if (this.isRedirecting) return;
 
+    const onLoginPage = this.router.url === '/' || this.router.url === '';
+
     if (error.status === 401) {
-      let body = error.error;
-      if (typeof body === 'string') {
-        try { body = JSON.parse(body); } catch { body = null; }
-      }
-      const msgs: string[] = body?.Messages || [];
-      if (msgs.some((m: string) => m?.toLowerCase().includes('session time out'))) {
-        this.isRedirecting = true;
-        localStorage.removeItem('ls.authorizationData');
-        this.translateService.get('NEDSS.COMMON.SESSION_EXPIRED').subscribe((msg) => {
-          this.userMessage.warn(msg);
-        });
-        this.router.navigateByUrl('/').then(() => this.isRedirecting = false);
-      }
-    }
-    if (error.status === 0) {
+      if (onLoginPage) return;
       this.isRedirecting = true;
-      this.translateService.get('NEDSS.COMMON.NETWORK_ERROR').subscribe((msg) => {
+      localStorage.removeItem('ls.authorizationData');
+      this.translateService.get('NEDSS.COMMON.SESSION_EXPIRED').subscribe((msg) => {
         this.userMessage.warn(msg);
       });
+      this.router.navigateByUrl('/').then(() => this.isRedirecting = false);
+    }
+    if (error.status === 0) {
+      if (onLoginPage) return;
+      this.isRedirecting = true;
       this.router.navigateByUrl('/').then(() => this.isRedirecting = false);
     }
   }

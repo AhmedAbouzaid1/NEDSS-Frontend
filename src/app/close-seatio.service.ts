@@ -27,16 +27,14 @@ export class CloseSeatioService {
 
   // تسجيل الخروج
   logout() {
-    // يمكنك تنفيذ تسجيل الخروج هنا
+    localStorage.removeItem('ls.authorizationData');
     this.auth.logout().subscribe(
-      (res: any) => {
-        this.translate.get('NEDSS.HOME.LOGOUT.SIGNING_OUT').subscribe(msg => {
-          this.userMsg.success(msg);
-        });
-        localStorage.removeItem('ls.authorizationData');
-        this.router.navigateByUrl('');
-      }
-    )
-    console.log('تم تسجيل الخروج');
+      () => {},
+      () => {}
+    );
+    this.translate.get('NEDSS.HOME.LOGOUT.SIGNING_OUT').subscribe(msg => {
+      this.userMsg.success(msg);
+    });
+    this.router.navigateByUrl('');
   }
 }
