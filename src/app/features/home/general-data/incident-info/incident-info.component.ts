@@ -941,10 +941,6 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
     if (deptId == null) {
       this.selectedDepartmentId = -1;
       this.selectedDepartment = [];
-      this.generalDataService.isIncidentDepartmentValid =
-        this.generalDataService.checkIncidentDepartmentValid(
-          this.patient?.incidentDepartmentId,
-        );
       this.cdr.markForCheck();
       return;
     }
@@ -959,10 +955,6 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
       this.selectedDepartmentId = deptId;
       this.selectedDepartment = [];
     }
-    this.generalDataService.isIncidentDepartmentValid =
-      this.generalDataService.checkIncidentDepartmentValid(
-        this.patient?.incidentDepartmentId,
-      );
     this.cdr.markForCheck();
   }
   onNationalIdChanged(value: any, isManualChange = false) {

@@ -7,32 +7,17 @@
             {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <div *ngIf="currentLang == 'ar'">
-            <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernmentId"
-              [disabled]="
-                !activeUSerService.getAccessibleParts?.enableGovernments
-              " optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
-              name="governments" [required]="true" [filter]="true" filterBy="arabicName" (onBlur)="
-                generalDataService.isIncidentGovernmentValid =
-                  generalDataService.checkIncidentGovernmentValid(
-                    selectedGovernmentId
-                  )
-              ">
-            </p-dropdown>
-          </div>
-          <div *ngIf="currentLang == 'en'">
-            <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernmentId"
-              [disabled]="
-                !activeUSerService.getAccessibleParts?.enableGovernments
-              " optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
-              name="governments" [filter]="true" filterBy="englishName" (onBlur)="
-                generalDataService.isIncidentGovernmentValid =
-                  generalDataService.checkIncidentGovernmentValid(
-                    selectedGovernmentId
-                  )
-              ">
-            </p-dropdown>
-          </div>
+          <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernmentId"
+            [disabled]="!activeUSerService.getAccessibleParts?.enableGovernments"
+            [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="governments" [required]="true" [filter]="true"
+            [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'" (onBlur)="
+              generalDataService.isIncidentGovernmentValid =
+                generalDataService.checkIncidentGovernmentValid(
+                  selectedGovernmentId
+                )
+            ">
+          </p-dropdown>
           <div *ngIf="!generalDataService.isIncidentGovernmentValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </div>
@@ -72,26 +57,15 @@
             }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <div *ngIf="currentLang == 'ar'">
-            <p-dropdown (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId" [disabled]="
-                !activeUSerService.getAccessibleParts?.enableUniversities
-              " optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="branches"
-              [required]="true" [filter]="true" filterBy="arabicName" (onBlur)="
-                generalDataService.isUniversityValid =
-                  generalDataService.validateField(SelectedbranchId)
-              ">
-            </p-dropdown>
-          </div>
-          <div *ngIf="currentLang == 'en'">
-            <p-dropdown (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId" [disabled]="
-                !activeUSerService.getAccessibleParts?.enableUniversities
-              " optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
-              name="branches" [required]="true" [filter]="true" filterBy="englishName" (onBlur)="
-                generalDataService.isUniversityValid =
-                  generalDataService.validateField(SelectedbranchId)
-              ">
-            </p-dropdown>
-          </div>
+          <p-dropdown (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
+            [disabled]="!activeUSerService.getAccessibleParts?.enableUniversities"
+            [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="branches" [required]="true" [filter]="true"
+            [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'" (onBlur)="
+              generalDataService.isUniversityValid =
+                generalDataService.validateField(SelectedbranchId)
+            ">
+          </p-dropdown>
           <small *ngIf="!generalDataService.isUniversityValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
@@ -104,26 +78,15 @@
             {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_BRANCH" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <div *ngIf="currentLang == 'ar'">
-            <p-dropdown (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
-              [disabled]="!activeUSerService.getAccessibleParts?.enableBranches" optionLabel="arabicName"
-              optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="branches" [required]="true"
-              [filter]="true" filterBy="arabicName" (onBlur)="
-                generalDataService.isBranchValid =
-                  generalDataService.validateField(SelectedbranchId)
-              ">
-            </p-dropdown>
-          </div>
-          <div *ngIf="currentLang == 'en'">
-            <p-dropdown (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
-              [disabled]="!activeUSerService.getAccessibleParts?.enableBranches" optionLabel="englishName"
-              optionValue="id" autoWidth="false" [style]="{ width: '100%' }" name="branches" [required]="true"
-              [filter]="true" filterBy="englishName" (onBlur)="
-                generalDataService.isBranchValid =
-                  generalDataService.validateField(SelectedbranchId)
-              ">
-            </p-dropdown>
-          </div>
+          <p-dropdown (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
+            [disabled]="!activeUSerService.getAccessibleParts?.enableBranches"
+            [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="branches" [required]="true" [filter]="true"
+            [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'" (onBlur)="
+              generalDataService.isBranchValid =
+                generalDataService.validateField(SelectedbranchId)
+            ">
+          </p-dropdown>
           <small *ngIf="!generalDataService.isBranchValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
@@ -136,26 +99,15 @@
             {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_AREA" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <div *ngIf="currentLang == 'ar'">
-            <p-dropdown (onChange)="areaSelected()" [options]="areas" [(ngModel)]="SelectedareaId"
-              [disabled]="!activeUSerService.getAccessibleParts?.enableAreas" optionLabel="arabicName" optionValue="id"
-              autoWidth="false" [style]="{ width: '100%' }" name="areas" [required]="true" [filter]="true"
-              filterBy="arabicName" (onBlur)="
-                generalDataService.isAreaValid =
-                  generalDataService.validateField(SelectedareaId)
-              ">
-            </p-dropdown>
-          </div>
-          <div *ngIf="currentLang == 'en'">
-            <p-dropdown (onChange)="areaSelected()" [options]="areas" [(ngModel)]="SelectedareaId"
-              [disabled]="!activeUSerService.getAccessibleParts?.enableAreas" optionLabel="englishName" optionValue="id"
-              autoWidth="false" [style]="{ width: '100%' }" name="areas" [required]="true" [filter]="true"
-              filterBy="englishName" (onBlur)="
-                generalDataService.isAreaValid =
-                  generalDataService.validateField(SelectedareaId)
-              ">
-            </p-dropdown>
-          </div>
+          <p-dropdown (onChange)="areaSelected()" [options]="areas" [(ngModel)]="SelectedareaId"
+            [disabled]="!activeUSerService.getAccessibleParts?.enableAreas"
+            [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="areas" [required]="true" [filter]="true"
+            [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'" (onBlur)="
+              generalDataService.isAreaValid =
+                generalDataService.validateField(SelectedareaId)
+            ">
+          </p-dropdown>
           <small *ngIf="!generalDataService.isAreaValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
@@ -273,74 +225,17 @@
             <span class="text-danger mess-color">*</span>
           </label>
 
-          <div *ngIf="currentLang == 'ar'">
-            <!-- <select
-              class="form-control select2 select2-hidden-accessible"
-              (change)="onNationalityChanged()"
-              tabindex="6"
-              [(ngModel)]="selectedNationalityId"
-              aria-hidden="true"
-              [ngModelOptions]="{ standalone: true }"
-              (blur)="
-                generalDataService.isNationalityValid =
-                  generalDataService.checkNationalityValid(
-                    selectedNationalityId
-                  )
-              "
-            >
-              <option
-                value="item.id"
-                *ngFor="let item of nationalities"
-                [ngValue]="item.id"
-                [selected]="item.id === selectedNationalityId"
-              >
-                {{ item.arabicName }}
-              </option>
-            </select> -->
-            <p-dropdown (onChange)="onNationalityChanged()" [options]="nationalities"
-              [(ngModel)]="selectedNationalityId" optionLabel="arabicName" optionValue="id" autoWidth="false"
-              [style]="{ width: '100%' }" name="nationalities" [filter]="true" filterBy="arabicName" (onBlur)="
-                generalDataService.isNationalityValid =
-                  generalDataService.checkNationalityValid(
-                    selectedNationalityId
-                  )
-              ">
-            </p-dropdown>
-          </div>
-          <div *ngIf="currentLang == 'en'">
-            <!-- <select
-              class="form-control select2 select2-hidden-accessible"
-              (change)="onNationalityChanged()"
-              tabindex="6"
-              [(ngModel)]="selectedNationalityId"
-              aria-hidden="true"
-              [ngModelOptions]="{ standalone: true }"
-              (blur)="
-                generalDataService.isNationalityValid =
-                  generalDataService.checkNationalityValid(
-                    selectedNationalityId
-                  )
-              "
-            >
-              <option
-                value="item.id"
-                *ngFor="let item of nationalities"
-                [ngValue]="item.id"
-                [selected]="item.id === selectedNationalityId"
-              >
-                {{ item.englishName }}
-              </option>
-            </select> -->
-            <p-dropdown (onChange)="onNationalityChanged()" [options]="nationalities"
-              [(ngModel)]="selectedNationalityId" optionLabel="englishName" optionValue="id" autoWidth="false"
-              [style]="{ width: '100%' }" name="nationalities" [filter]="true" filterBy="englishName" (onBlur)="
-                generalDataService.isNationalityValid =
-                  generalDataService.checkNationalityValid(
-                    selectedNationalityId
-                  )
-              ">
-            </p-dropdown>
-          </div>
+          <p-dropdown (onChange)="onNationalityChanged()" [options]="nationalities"
+            [(ngModel)]="selectedNationalityId"
+            [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="nationalities" [filter]="true"
+            [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'" (onBlur)="
+              generalDataService.isNationalityValid =
+                generalDataService.checkNationalityValid(
+                  selectedNationalityId
+                )
+            ">
+          </p-dropdown>
           <small *ngIf="!generalDataService.isNationalityValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
@@ -433,45 +328,12 @@
             | translate
             }}
           </label>
-          <div *ngIf="currentLang == 'ar'">
-            <!-- <select
-              [(ngModel)]="patient.relationShipDegreeId"
-              (change)="onRelationShipDegreeIdChange()"
-              [ngModelOptions]="{ standalone: true }"
-              class="form-control"
-              tabindex="9"
-            >
-              <option *ngFor="let relation of relations" [value]="relation.id">
-                {{ relation.arabicName }}
-              </option>
-            </select> -->
-            <p-dropdown (onChange)="onRelationShipDegreeIdChange()" [options]="relations"
-              [(ngModel)]="patient.relationShipDegreeId" optionLabel="arabicName" optionValue="id" autoWidth="false"
-              [style]="{ width: '100%' }" name="relations" [filter]="true" filterBy="arabicName">
-            </p-dropdown>
-          </div>
-          <div *ngIf="currentLang == 'en'">
-            <!-- <select
-              [(ngModel)]="patient.relationShipDegreeId"
-              (change)="onRelationShipDegreeIdChange()"
-              [ngModelOptions]="{ standalone: true }"
-              class="form-control"
-              tabindex="9"
-            >
-              <option
-                *ngFor="let relation of relations"
-                [ngValue]="relation.id"
-                [selected]="relation.id === patient.relationShipDegreeId"
-                [value]="relation.id"
-              >
-                {{ relation.englishName }}
-              </option>
-            </select> -->
-            <p-dropdown (onChange)="onRelationShipDegreeIdChange()" [options]="relations"
-              [(ngModel)]="patient.relationShipDegreeId" optionLabel="englishName" optionValue="id" autoWidth="false"
-              [style]="{ width: '100%' }" name="relations" [filter]="true" filterBy="englishName">
-            </p-dropdown>
-          </div>
+          <p-dropdown (onChange)="onRelationShipDegreeIdChange()" [options]="relations"
+            [(ngModel)]="patient.relationShipDegreeId"
+            [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+            [style]="{ width: '100%' }" name="relations" [filter]="true"
+            [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
+          </p-dropdown>
         </div>
       </div>
 

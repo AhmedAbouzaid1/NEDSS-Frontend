@@ -1,6 +1,6 @@
 import { InvestigationService } from './../../investigation/services/investigation.service';
 import { GeneralDataService } from './../services/general-data.service';
-import { Component, ElementRef, Input, OnDestroy, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, ElementRef, Input, NgZone, OnDestroy, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { SharedDataService } from '../services/shared-data.service';
@@ -32,6 +32,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
   diseases!: any[];
   activeTab: number;
   isLoadingData: boolean = true;
+  sectionsReady = [true, false, false, false, false];
   private lastAuxiliaryHydratedPatientId: number | null = null;
   constructor(
     private generalDataService: GeneralDataService,
@@ -44,7 +45,8 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
     private router: Router,
     private datePipe: DatePipe,
     private diseaseSpecialSymptomsService: DiseaseSpecialSymptomsService,
-    private investigaion: InvestigationService
+    private investigaion: InvestigationService,
+    private ngZone: NgZone
   ) {
     this.activeTab = this.generalDataEnum.IncidentInfo;
 
@@ -70,8 +72,20 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
       this.getById(this.sharedDataService.patientId);
     } else {
       this.isLoadingData = false;
+      this.revealSections();
       this.sharedDataService.isEditMode = false;
     }
+  }
+
+  private revealSections(): void {
+    this.sectionsReady = [true, false, false, false, false];
+    this.ngZone.runOutsideAngular(() => {
+      for (let i = 1; i < this.sectionsReady.length; i++) {
+        setTimeout(() => {
+          this.ngZone.run(() => { this.sectionsReady[i] = true; });
+        }, i * 150);
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -202,6 +216,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
           this.patient = result.data;
           this.activeAllTabs = true;
           this.isLoadingData = false;
+          this.revealSections();
         }
       },
       (error) => {
@@ -211,6 +226,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
             this.userMsg.error(res);
           });
         this.isLoadingData = false;
+        this.revealSections();
       },
     );
   }
