@@ -63,7 +63,9 @@ export class AppComponent {
     idle.onTimeout.subscribe(() => {
       this.idleState = 'Timed out!';
       this.timedOut = true;
-      this.router.navigate(['/']);
+      localStorage.removeItem('ls.authorizationData');
+      this.authService.setUserLoggedIn(false);
+      this.router.navigateByUrl('/');
     });
 
     idle.onIdleStart.subscribe(() => {
@@ -87,6 +89,11 @@ export class AppComponent {
         idle.stop();
       }
     });
+
+    if (localStorage.getItem('ls.authorizationData') && localStorage.getItem('ls.authorizationData') !== 'undefined') {
+      this.authService.setUserLoggedIn(true);
+    }
+
     this.onloadHandler();
   }
 

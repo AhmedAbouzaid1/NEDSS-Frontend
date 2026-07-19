@@ -390,6 +390,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
   }
 
   save() {
+    if (this.loadingPanel) return;
     try {
       const missingFieldLabel = this.generalDataService.getFirstInvalidFieldLabel(this.patient);
       if (missingFieldLabel) {
@@ -458,10 +459,9 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
               this.router
                 .navigateByUrl('/home/chart', { skipLocationChange: true })
                 .then(() => {
-                  // to reload component when component is already loaded
                   this.router.navigate(['/home/general-data'], {
                     queryParams: { clear: 1 },
-                  });
+                  }).then(() => document.getElementById('general-data-top')?.scrollIntoView({ behavior: 'smooth' }));
                 });
             },
             (error) => {

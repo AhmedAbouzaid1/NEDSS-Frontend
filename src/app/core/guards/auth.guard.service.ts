@@ -20,22 +20,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     //   return true;
     let url = route.url;
     if (this.isUserLogged()) {
-      //   let userType=this.getUserType();
-
-      //   if (route.data.types.length>0 && route.data.types.indexOf(userType) === -1) {
-      //     if(userType==1 || userType ==2)
-      //     {
-      //       this.router.navigate(['/lab']);
-      //     }
-      //     else{
-      //       this.router.navigate(['/home']);
-      //     }
-      //     return false;
-      // }
-
-      // authorised so return true
       return true;
     }
+    this.router.navigateByUrl('/');
     return false;
   }
 

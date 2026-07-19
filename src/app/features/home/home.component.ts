@@ -40,11 +40,10 @@ export class HomeComponent implements OnInit {
     this.translate.setDefaultLang(this.lang);
     translate.use(this.lang);
 
-    let userData = JSON.parse(
-      localStorage.getItem('ls.authorizationData')
-    ).userName;
-    if (userData == null) {
+    const authData = JSON.parse(localStorage.getItem('ls.authorizationData'));
+    if (!authData?.userName) {
       this.router.navigateByUrl('');
+      return;
     }
     this.activeUSerService.setAccessibleParts();
   }
