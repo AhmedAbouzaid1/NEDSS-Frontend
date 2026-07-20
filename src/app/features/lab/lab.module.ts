@@ -9,8 +9,9 @@ import {
 import { LabViewComponent } from './components/lab-view/lab-view.component';
 import { AddLabPatientComponent } from './components/add-lab-patient/add-lab-patient.component';
 import { AddLabTestComponent } from './components/add-lab-test/add-lab-test.component';
+import { MeningitisChecksFormComponent } from './components/add-lab-test/meningitis-checks-form/meningitis-checks-form.component';
 import { PatientChecksComponent } from './components/patient-checks/patient-checks.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
@@ -48,6 +49,7 @@ export const DATE_FORMATS = {
     LabViewComponent,
     AddLabPatientComponent,
     AddLabTestComponent,
+    MeningitisChecksFormComponent,
     PatientChecksComponent,
     SideBarComponent,
   ],
@@ -61,6 +63,7 @@ export const DATE_FORMATS = {
     MatDatepickerModule,
     TableModule,
     FormsModule,
+    ReactiveFormsModule,
     PaginatorModule,
     HomeModule,
     CalendarModule,

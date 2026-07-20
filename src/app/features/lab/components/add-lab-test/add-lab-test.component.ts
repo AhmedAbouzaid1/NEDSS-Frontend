@@ -66,6 +66,8 @@ export class AddLabTestComponent {
   Diseasies: any[];
   filterdDisease: any[];
 
+  readonly meningitisAndEncephalitisDiseaseGroupIds = [2, 23];
+
   underDeleting = {
     nameAr: '',
     id: null,
@@ -221,7 +223,22 @@ export class AddLabTestComponent {
       );
   }
   filterdDiseaseChange() {
-    this.getLabSamples();
+    if (!this.isMeningitisOrEncephalitisSelected()) {
+      this.getLabSamples();
+    }
+  }
+
+  isMeningitisOrEncephalitisSelected(): boolean {
+    return this.meningitisAndEncephalitisDiseaseGroupIds.includes(
+      Number(this.patientAddCheck.diseaseGroupId)
+    );
+  }
+
+  isDiseaseSelected(): boolean {
+    return (
+      this.patientAddCheck.diseaseGroupId != null &&
+      this.patientAddCheck.diseaseGroupId !== ('' as any)
+    );
   }
   getLabSamples() {
     this.lookupsService

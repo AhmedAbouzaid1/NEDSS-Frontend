@@ -114,20 +114,6 @@
                 {{ "NEDSS.EVENTS.DESIEASE" | translate }}
                 <span class="text-danger mess-color">*</span>
               </label>
-              <!-- <select
-                name=""
-                id=""
-                class="form-control"
-                [(ngModel)]="patientAddCheck.diseaseGroupId"
-                (change)="filterdDiseaseChange()"
-              >
-                <option
-                  *ngFor="let Diseas of filterdDisease"
-                  [value]="Diseas.id"
-                >
-                  {{ Diseas.arabicName }}
-                </option>
-              </select> -->
               <div *ngIf="currentLang == 'ar'">
                 <p-dropdown
                   (onChange)="filterdDiseaseChange()"
@@ -160,6 +146,12 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <div
+          class="row"
+          *ngIf="isDiseaseSelected() && !isMeningitisOrEncephalitisSelected()"
+        >
           <div class="col-lg-6 mt-4">
             <div class="form-group">
               <label for=""
@@ -202,14 +194,6 @@
                 >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_TEST" | translate }}
                 <span class="text-danger mess-color">*</span>
               </label>
-              <!-- <ng-multiselect-dropdown
-                [settings]="singleDropdownSettings"
-                [data]="labChecks"
-                [(ngModel)]="selectedLabCheck"
-                (onSelect)="onLabCheckChanged()"
-                (onDeSelect)="onLabCheckChanged()"
-              >
-              </ng-multiselect-dropdown> -->
               <div *ngIf="currentLang == 'ar'">
                 <p-dropdown
                   (onChange)="onLabCheckChanged()"
@@ -248,14 +232,6 @@
                 >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_TEST_RESULT" | translate }}
                 <span class="text-danger mess-color">*</span>
               </label>
-              <!-- <ng-multiselect-dropdown
-                [settings]="singleDropdownSettings"
-                [data]="labCheckResults"
-                [(ngModel)]="selectedLabCheckResult"
-                (onSelect)="onLabCheckResultChanged()"
-                (onDeSelect)="onLabCheckResultChanged()"
-              >
-              </ng-multiselect-dropdown> -->
               <div *ngIf="currentLang == 'ar'">
                 <p-dropdown
                   (onChange)="onLabCheckResultChanged()"
@@ -324,7 +300,14 @@
     </div>
   </div>
 
-  <div class="col-lg-12">
+  <div
+    class="col-lg-12"
+    *ngIf="isDiseaseSelected() && isMeningitisOrEncephalitisSelected()"
+  >
+    <app-meningitis-checks-form [patientId]="id"></app-meningitis-checks-form>
+  </div>
+
+  <div class="col-lg-12" *ngIf="!isMeningitisOrEncephalitisSelected()">
     <div class="table-reponsive mt-4 shadow border rounded" *ngIf="!noData">
       <div class="row">
         <div class="col-lg-7 fwb p-4 pb-0">
