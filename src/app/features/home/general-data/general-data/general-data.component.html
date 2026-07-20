@@ -83,34 +83,40 @@
       {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.DUPLICATE_NATIONAL_ID_TABLE_HINT" | translate }}
     </div>
 
-    <h5 class="fw-bold mt-4 mb-2">
-      {{ "NEDSS.GENERAL_DATA_SIDEMENU.DEMOGRAPHIC_INFO" | translate }}
-    </h5>
-    <app-demographic-data></app-demographic-data>
+    <ng-container *ngIf="sectionsReady[1]">
+      <h5 class="fw-bold mt-4 mb-2">
+        {{ "NEDSS.GENERAL_DATA_SIDEMENU.DEMOGRAPHIC_INFO" | translate }}
+      </h5>
+      <app-demographic-data></app-demographic-data>
+    </ng-container>
 
-    <h5 class="fw-bold mt-4 mb-2">
-      {{ "NEDSS.GENERAL_DATA_SIDEMENU.RESIDENCEINFO" | translate }}
-    </h5>
-    <app-residence-info></app-residence-info>
+    <ng-container *ngIf="sectionsReady[2]">
+      <h5 class="fw-bold mt-4 mb-2">
+        {{ "NEDSS.GENERAL_DATA_SIDEMENU.RESIDENCEINFO" | translate }}
+      </h5>
+      <app-residence-info></app-residence-info>
+    </ng-container>
 
-    <h5 class="fw-bold mt-4 mb-2">
-      {{ "NEDSS.GENERAL_DATA_SIDEMENU.DIAGNOISTICIFO" | translate }}
-    </h5>
-    <app-diagonistics></app-diagonistics>
+    <ng-container *ngIf="sectionsReady[3]">
+      <h5 class="fw-bold mt-4 mb-2">
+        {{ "NEDSS.GENERAL_DATA_SIDEMENU.DIAGNOISTICIFO" | translate }}
+      </h5>
+      <app-diagonistics></app-diagonistics>
 
-    <h5 class="fw-bold mt-4 mb-2">
-      {{ "NEDSS.GENERAL_DATA_SIDEMENU.CLINICALSYMPTOMS" | translate }}
-    </h5>
-    <app-clinical-symptoms></app-clinical-symptoms>
+      <h5 class="fw-bold mt-4 mb-2">
+        {{ "NEDSS.GENERAL_DATA_SIDEMENU.CLINICALSYMPTOMS" | translate }}
+      </h5>
+      <app-clinical-symptoms></app-clinical-symptoms>
+    </ng-container>
 
-    <ng-container *ngIf="patient.fields?.length">
+    <ng-container *ngIf="sectionsReady[4] && patient.fields?.length">
       <h5 class="fw-bold mt-4 mb-2">
         {{ "NEDSS.GENERAL_DATA_SIDEMENU.SPECIALSYMTOMS" | translate }}
       </h5>
       <app-special-symptoms></app-special-symptoms>
     </ng-container>
 
-    <ng-container *ngIf="sharedDataService.ShowSentinel">
+    <ng-container *ngIf="sectionsReady[4] && sharedDataService.ShowSentinel">
       <h5 class="fw-bold mt-4 mb-2">
         {{ "NEDSS.GENERAL_DATA_SIDEMENU.SENTINEL" | translate }}
       </h5>

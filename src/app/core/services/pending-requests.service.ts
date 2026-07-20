@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Observable, finalize, of, tap } from 'rxjs';
-// import { tap } from 'rxjs/internal/operators';
+import { Observable, finalize, of, tap, shareReplay } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { PartialLoadingService } from '../components/partial-loading/partial-loading.service';
 
@@ -25,27 +24,22 @@ export class PendingRequestsService {
         }
 
         const pendingRequestObservable = this.pending.get(requestId);
-        var response = {
-            data: '', headers: {}, status: environment.DUPLICATED_REQUEST_STATUS_CODE
-        };
         if (pendingRequestObservable) {
-            console.info('Such request is already in progres, rejecting this one with: ', response);
-            return of(response);
+            return pendingRequestObservable;
         }
-        else
-            return this.sendRequest(requestId, request);
+        return this.sendRequest(requestId, request);
     }
 
     public sendRequest(requestId: any, request: any): Observable<any> {
-        this.pending.set(requestId, request);
-        return request.pipe(
-            finalize(() => this.partialLoadingService.hideLoader()),
-            tap(() => {
-                this.pending.delete(requestId);
-            }, () => {
+        const shared = request.pipe(
+            shareReplay(1),
+            finalize(() => {
+                this.partialLoadingService.hideLoader();
                 this.pending.delete(requestId);
             })
         );
+        this.pending.set(requestId, shared);
+        return shared;
     }
 
 }

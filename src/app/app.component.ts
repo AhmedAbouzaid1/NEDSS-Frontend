@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, NgZone, OnInit } from '@angular/core';
 import { observeOn, asyncScheduler, combineLatest, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
@@ -38,7 +38,8 @@ export class AppComponent {
     private authService: AuthService,
     private closeSeatioService: CloseSeatioService,
     private partialLoadingService: PartialLoadingService,
-    private uiLoadingService: UiLoadingService
+    private uiLoadingService: UiLoadingService,
+    private ngZone: NgZone
   ) {
     this.lang =
       localStorage.getItem('ls.currentLang') != undefined
@@ -76,10 +77,10 @@ export class AppComponent {
       this.idleState = 'You will time out in ' + countdown + ' seconds!';
     });
 
-    // sets the ping interval to 15 seconds
-    keepalive.interval(15);
-
-    keepalive.onPing.subscribe(() => (this.lastPing = new Date()));
+    this.ngZone.runOutsideAngular(() => {
+      keepalive.interval(15);
+      keepalive.onPing.subscribe(() => (this.lastPing = new Date()));
+    });
 
     this.authService.getUserLoggedIn().subscribe((userLoggedIn) => {
       if (userLoggedIn) {

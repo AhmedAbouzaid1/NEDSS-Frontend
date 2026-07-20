@@ -57,33 +57,17 @@
           <span class="text-muted"> </span>
         </label>
         <p-dropdown
-          *ngIf="currentLang == 'ar'"
           [options]="feverDurationTypes"
           (onChange)="onfeverDurationTypeChange()"
           [(ngModel)]="patient.feverSymptoms.feverDurationType"
-          optionLabel="arabicName"
+          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
           optionValue="id"
           autoWidth="false"
           [style]="{ width: '100%' }"
           name="feverDurationType"
           [required]="!!patient.feverSymptoms.feverDuration"
           [filter]="true"
-          filterBy="arabicName"
-          #feverDurationType
-        ></p-dropdown>
-        <p-dropdown
-          *ngIf="currentLang != 'ar'"
-          [options]="feverDurationTypes"
-          (onChange)="onfeverDurationTypeChange()"
-          [(ngModel)]="patient.feverSymptoms.feverDurationType"
-          optionLabel="englishName"
-          optionValue="id"
-          autoWidth="false"
-          [style]="{ width: '100%' }"
-          name="feverDurationType"
-          [required]="!!patient.feverSymptoms.feverDuration"
-          [filter]="true"
-          filterBy="englishName"
+          [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
           #feverDurationType
         ></p-dropdown>
         <small

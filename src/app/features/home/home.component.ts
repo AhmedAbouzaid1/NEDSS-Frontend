@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from '../../core/services/notificationService.service';
 import { Router } from '@angular/router';
@@ -26,11 +26,14 @@ export class HomeComponent implements OnInit {
     private uiLoadingService: UiLoadingService,
     private notificationService: NotificationService,
     private connectionService: ConnectionService,
-    private activeUSerService: ActiveUserService
+    private activeUSerService: ActiveUserService,
+    private ngZone: NgZone
   ) {
-    this.connectionService.monitor().subscribe((currentState: any) => {
-      this.hasNetworkConnection = currentState.hasNetworkConnection;
-      this.hasInternetAccess = currentState.hasInternetAccess;
+    this.ngZone.runOutsideAngular(() => {
+      this.connectionService.monitor().subscribe((currentState: any) => {
+        this.hasNetworkConnection = currentState.hasNetworkConnection;
+        this.hasInternetAccess = currentState.hasInternetAccess;
+      });
     });
     this.lang =
       localStorage.getItem('ls.currentLang') !== undefined &&

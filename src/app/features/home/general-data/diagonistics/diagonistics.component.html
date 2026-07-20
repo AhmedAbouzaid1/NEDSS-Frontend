@@ -360,36 +360,13 @@
                     }}
                     <span *ngIf="loadingSpecialGovernments" class="spinner-border spinner-border-sm text-secondary ms-2 align-middle" role="status" aria-hidden="true"></span>
                   </label>
-                  <div *ngIf="currentLang == 'ar'">
-                    <!-- <select
-                      class="form-control select2 select2-hidden-accessible"
-                      (change)="getSpecialHealthAdmins()"
-                      tabindex="-1"
-                      [(ngModel)]="selectedSpecialGovernmentId"
-                      aria-hidden="true"
-                    >
-                      <option
-                        value="item.id"
-                        *ngFor="let item of specialGovernment"
-                        [ngValue]="item.id"
-                        [selected]="item.id === selectedSpecialGovernmentId"
-                      >
-                        {{ item.arabicName }}
-                      </option>
-                    </select> -->
-                    <p-dropdown (onChange)="getSpecialHealthAdmins()" [options]="specialGovernment"
-                      [(ngModel)]="selectedSpecialGovernmentId" optionLabel="arabicName" optionValue="id"
-                      autoWidth="false" [style]="{ width: '100%' }" name="specialGovernment" [required]="true"
-                      [filter]="true" filterBy="arabicName" [disabled]="loadingSpecialGovernments">
-                    </p-dropdown>
-                  </div>
-                  <div *ngIf="currentLang == 'en'">
-                    <p-dropdown (onChange)="getSpecialHealthAdmins()" [options]="specialGovernment"
-                      [(ngModel)]="selectedSpecialGovernmentId" optionLabel="englishName" optionValue="id"
-                      autoWidth="false" [style]="{ width: '100%' }" name="specialGovernmentEn" [required]="true"
-                      [filter]="true" filterBy="englishName" [disabled]="loadingSpecialGovernments">
-                    </p-dropdown>
-                  </div>
+                  <p-dropdown (onChange)="getSpecialHealthAdmins()" [options]="specialGovernment"
+                    [(ngModel)]="selectedSpecialGovernmentId"
+                    [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
+                    autoWidth="false" [style]="{ width: '100%' }" name="specialGovernment" [required]="true"
+                    [filter]="true" [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
+                    [disabled]="loadingSpecialGovernments">
+                  </p-dropdown>
                 </div>
 
                 <div class="col-lg-4 mt-2" *ngIf="patient.isSpecialLabLab">
@@ -400,52 +377,13 @@
                     }}
                     <span *ngIf="loadingSpecialHealthAdmins" class="spinner-border spinner-border-sm text-secondary ms-2 align-middle" role="status" aria-hidden="true"></span>
                   </label>
-                  <div *ngIf="currentLang == 'ar'">
-                    <!-- <select
-                      class="form-control select2 select2-hidden-accessible"
-                      (change)="getSpecialLabs()"
-                      tabindex="-1"
-                      [(ngModel)]="selectedSpecialHealthAdminId"
-                      aria-hidden="true"
-                    >
-                      <option
-                        value="item.id"
-                        *ngFor="let item of specialHealthAdmin"
-                        [ngValue]="item.id"
-                        [selected]="item.id === selectedSpecialHealthAdminId"
-                      >
-                        {{ item.arabicName }}
-                      </option>
-                    </select> -->
-                    <p-dropdown (onChange)="getSpecialLabs()" [options]="specialHealthAdmin"
-                      [(ngModel)]="selectedSpecialHealthAdminId" optionLabel="arabicName" optionValue="id"
-                      autoWidth="false" [style]="{ width: '100%' }" name="specialHealthAdmin" [required]="true"
-                      [filter]="true" filterBy="arabicName" [disabled]="loadingSpecialHealthAdmins">
-                    </p-dropdown>
-                  </div>
-                  <div *ngIf="currentLang == 'en'">
-                    <!-- <select
-                      class="form-control select2 select2-hidden-accessible"
-                      (change)="getSpecialLabs()"
-                      tabindex="-1"
-                      [(ngModel)]="selectedSpecialHealthAdminId"
-                      aria-hidden="true"
-                    >
-                      <option
-                        value="item.id"
-                        *ngFor="let item of specialHealthAdmin"
-                        [ngValue]="item.id"
-                        [selected]="item.id === selectedSpecialHealthAdminId"
-                      >
-                        {{ item.englishName }}
-                      </option>
-                    </select> -->
-                    <p-dropdown (onChange)="getSpecialLabs()" [options]="specialHealthAdmin"
-                      [(ngModel)]="selectedSpecialHealthAdminId" optionLabel="englishName" optionValue="id"
-                      autoWidth="false" [style]="{ width: '100%' }" name="specialHealthAdmin" [required]="true"
-                      [filter]="true" filterBy="englishName" [disabled]="loadingSpecialHealthAdmins">
-                    </p-dropdown>
-                  </div>
+                  <p-dropdown (onChange)="getSpecialLabs()" [options]="specialHealthAdmin"
+                    [(ngModel)]="selectedSpecialHealthAdminId"
+                    [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
+                    autoWidth="false" [style]="{ width: '100%' }" name="specialHealthAdmin" [required]="true"
+                    [filter]="true" [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
+                    [disabled]="loadingSpecialHealthAdmins">
+                  </p-dropdown>
                 </div>
 
                 <div class="col-lg-4 mt-2" *ngIf="patient.isSpecialLabLab">
@@ -456,52 +394,13 @@
                     }}
                     <span *ngIf="loadingSpecialLabs" class="spinner-border spinner-border-sm text-secondary ms-2 align-middle" role="status" aria-hidden="true"></span>
                   </label>
-                  <div *ngIf="currentLang == 'ar'">
-                    <!-- <select
-                      class="form-control select2 select2-hidden-accessible"
-                      (change)="onSpecialLabChanged()"
-                      tabindex="-1"
-                      [(ngModel)]="selectedSpecialLabId"
-                      aria-hidden="true"
-                    >
-                      <option
-                        value="item.id"
-                        *ngFor="let item of specialLabs"
-                        [ngValue]="item.id"
-                        [selected]="item.id === selectedSpecialLabId"
-                      >
-                        {{ item.arabicName }}
-                      </option>
-                    </select> -->
-                    <p-dropdown (onChange)="onSpecialLabChanged()" [options]="specialLabs"
-                      [(ngModel)]="selectedSpecialLabId" optionLabel="arabicName" optionValue="id" autoWidth="false"
-                      [style]="{ width: '100%' }" name="specialLabs" [required]="true" [filter]="true"
-                      filterBy="arabicName" [disabled]="loadingSpecialLabs">
-                    </p-dropdown>
-                  </div>
-                  <div *ngIf="currentLang == 'en'">
-                    <!-- <select
-                      class="form-control select2 select2-hidden-accessible"
-                      (change)="onSpecialLabChanged()"
-                      tabindex="-1"
-                      [(ngModel)]="selectedSpecialLabId"
-                      aria-hidden="true"
-                    >
-                      <option
-                        value="item.id"
-                        *ngFor="let item of specialLabs"
-                        [ngValue]="item.id"
-                        [selected]="item.id === selectedSpecialLabId"
-                      >
-                        {{ item.englishName }}
-                      </option>
-                    </select> -->
-                    <p-dropdown (onChange)="onSpecialLabChanged()" [options]="specialLabs"
-                      [(ngModel)]="selectedSpecialLabId" optionLabel="englishName" optionValue="id" autoWidth="false"
-                      [style]="{ width: '100%' }" name="specialLabs" [required]="true" [filter]="true"
-                      filterBy="englishName" [disabled]="loadingSpecialLabs">
-                    </p-dropdown>
-                  </div>
+                  <p-dropdown (onChange)="onSpecialLabChanged()" [options]="specialLabs"
+                    [(ngModel)]="selectedSpecialLabId"
+                    [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
+                    autoWidth="false" [style]="{ width: '100%' }" name="specialLabs" [required]="true"
+                    [filter]="true" [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
+                    [disabled]="loadingSpecialLabs">
+                  </p-dropdown>
                 </div>
               </div>
             </div>
