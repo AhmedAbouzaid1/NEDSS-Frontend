@@ -10,6 +10,8 @@ export class LabService {
   private controllerURL: string = environment.baseApiUrl + 'Patient/';
   private PatientLabCheckControllerURL: string =
     environment.baseApiUrl + 'PatientLabCheck/';
+  private MeningitisCheckControllerURL: string =
+    environment.baseApiUrl + 'MeningitisCheck/';
 
   constructor(private APIs: BaseAPIService) {}
 
@@ -75,6 +77,26 @@ export class LabService {
     return this.APIs.post(
       this.PatientLabCheckControllerURL + 'Add',
       PatientLabCheck
+    );
+  }
+  ///#endregion
+
+  ///#region MeningitisCheck
+  addMeningitisCheck(meningitisCheck: any) {
+    return this.APIs.post(
+      this.MeningitisCheckControllerURL + 'Add',
+      meningitisCheck
+    );
+  }
+  updateMeningitisCheck(meningitisCheck: any) {
+    return this.APIs.update(
+      this.MeningitisCheckControllerURL + 'Update',
+      meningitisCheck
+    );
+  }
+  getMeningitisCheckByPatientId(id: any) {
+    return this.APIs.get(
+      this.MeningitisCheckControllerURL + 'GetByPatientId?id=' + id
     );
   }
   ///#endregion
