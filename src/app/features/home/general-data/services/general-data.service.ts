@@ -339,8 +339,8 @@ export class GeneralDataService {
     if (navigator.onLine) {
       return this.APIs.get(
         this.controllerURL +
-          'GetAllByNationalId?id=' +
-          encodeURIComponent(String(id))
+        'GetAllByNationalId?id=' +
+        encodeURIComponent(String(id))
       );
     } else {
       const data = new Observable((observer) => {
@@ -359,8 +359,8 @@ export class GeneralDataService {
     if (navigator.onLine) {
       return this.APIs.get(
         this.controllerURL +
-          'GetAllByPassportNo?id=' +
-          encodeURIComponent(String(id))
+        'GetAllByPassportNo?id=' +
+        encodeURIComponent(String(id))
       );
     } else {
       const data = new Observable((observer) => {
@@ -761,7 +761,7 @@ export class GeneralDataService {
     }
 
     if (address != undefined) {
-      var pattern = '^(?![0-9]+$).{3,100}$';
+      var pattern = '^(?![0-9]+$).{5,100}$';
       var reg = new RegExp(pattern);
       var isValid = reg.test(address);
       if (!isValid) {

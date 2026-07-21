@@ -1,0 +1,169 @@
+<!-- Trigger button -->
+<a
+  class="btn bg text-light"
+  data-bs-toggle="modal"
+  data-bs-target="#notInferringModal"
+>
+  {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.NOTINFERING" | translate }}
+</a>
+
+<!-- عدم الاستدلال (Not Inferring) modal -->
+<div
+  class="modal fade"
+  id="notInferringModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="notInferringModalTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="notInferringModalTitle">
+          {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.NOTINFERING" | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form [formGroup]="notFoundForm">
+        <div class="modal-body color">
+          <div class="row">
+            <div class="col-12 fwb color-d-1">
+              {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.REASON" | translate }}
+            </div>
+            <div class="mt-3">
+              <div class="col-11 mt-2 has-labels ms-2">
+                <label for="NIType1" class="d-flex align-items-center gap-2">
+                  <input type="radio" value="1" name="notInvestigationType" id="NIType1" formControlName="notInvestigationType" />
+                  {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.NUMBER" | translate }}
+                </label>
+                <label for="NIType2" class="d-flex align-items-center gap-2">
+                  <input type="radio" value="2" name="notInvestigationType" id="NIType2" formControlName="notInvestigationType" />
+                  {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ADDRESS" | translate }}
+                </label>
+                <label for="NIType3" class="d-flex align-items-center gap-2">
+                  <input type="radio" value="3" name="notInvestigationType" id="NIType3" formControlName="notInvestigationType" />
+                  {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.OTHER" | translate }}
+                </label>
+              </div>
+              <div class="col-11 has-labels ms-2">
+                <label for="NIType4" class="d-flex align-items-center gap-2">
+                  <input type="radio" value="4" name="notInvestigationType" id="NIType4" formControlName="notInvestigationType" />
+                  {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.EDITGOVERNMENT" | translate }}
+                </label>
+                <label for="NIType5" class="d-flex align-items-center gap-2">
+                  <input type="radio" value="5" name="notInvestigationType" id="NIType5" formControlName="notInvestigationType" />
+                  {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.EDITOTHERADMININSAMEGOVR" | translate }}
+                </label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="row">
+                <div class="col-lg-6 mt-3" *ngIf="notFoundForm?.value?.notInvestigationType == 4">
+                  <div class="form-group">
+                    <label class="form-label">
+                      {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.GOVERNMENT" | translate }}
+                    </label>
+                    <div *ngIf="currentLang == 'ar'">
+                      <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernmentId" optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" formControlName="homeGovernmentId" [filter]="true" filterBy="arabicName"></p-dropdown>
+                    </div>
+                    <div *ngIf="currentLang == 'en'">
+                      <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernmentId" optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" formControlName="homeGovernmentId" [filter]="true" filterBy="englishName"></p-dropdown>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mt-3" *ngIf="notFoundForm?.value?.notInvestigationType == 4 || notFoundForm?.value?.notInvestigationType == 5">
+                  <div class="form-group">
+                    <label class="form-label">
+                      {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.ADMINISTRATION" | translate }}
+                    </label>
+                    <div *ngIf="currentLang == 'ar'">
+                      <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations" [(ngModel)]="selectedHealthAdministration" optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" formControlName="homeHealthAdministration" [filter]="true" filterBy="arabicName"></p-dropdown>
+                    </div>
+                    <div *ngIf="currentLang == 'en'">
+                      <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations" [(ngModel)]="selectedHealthAdministration" optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" formControlName="homeHealthAdministration" [filter]="true" filterBy="englishName"></p-dropdown>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mt-3" *ngIf="notFoundForm?.value?.notInvestigationType == 4 || notFoundForm?.value?.notInvestigationType == 5">
+                  <div class="form-group">
+                    <label class="form-label">
+                      {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.STATEANDCITY" | translate }}
+                    </label>
+                    <div *ngIf="currentLang == 'ar'">
+                      <p-dropdown (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCity" optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" formControlName="homeCityId" [filter]="true" filterBy="arabicName"></p-dropdown>
+                    </div>
+                    <div *ngIf="currentLang == 'en'">
+                      <p-dropdown (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCity" optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" formControlName="homeCityId" [filter]="true" filterBy="englishName"></p-dropdown>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mt-3" *ngIf="notFoundForm?.value?.notInvestigationType == 4 || notFoundForm?.value?.notInvestigationType == 5">
+                  <div class="form-group">
+                    <label class="form-label">
+                      {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.HEALTHOFFICE" | translate }}
+                    </label>
+                    <div *ngIf="currentLang == 'ar'">
+                      <p-dropdown [options]="healthOffices" [(ngModel)]="selectedHealthOfficeId" optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" formControlName="homeHealthOffice" [filter]="true" filterBy="arabicName"></p-dropdown>
+                    </div>
+                    <div *ngIf="currentLang == 'en'">
+                      <p-dropdown [options]="healthOffices" [(ngModel)]="selectedHealthOfficeId" optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }" formControlName="homeHealthOffice" [filter]="true" filterBy="englishName"></p-dropdown>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 mt-3" *ngIf="notFoundForm?.value?.notInvestigationType == 1">
+              <div class="form-group">
+                <label for="NIphoneNumber" class="fwb color-d-1 colorWait mb-2">
+                  {{ "NOUR.word57" | translate }}
+                </label>
+                <input type="text" class="w-100" pInputText formControlName="phoneNo1" [(ngModel)]="phone" id="NIphoneNumber" (keypress)="generalDataService.onPhoneNumberKeyPress($event)" (blur)="generalDataService.isPhoneNumber1Valid = generalDataService.validatePhoneNumber1(phone, false)" />
+                <small *ngIf="!generalDataService.isPhoneNumber1Valid" class="form-text text-danger mess-color">
+                  {{ generalDataService.phoneNo1ValidationMessage | translate }}
+                </small>
+              </div>
+            </div>
+            <div class="col-12 mt-3" *ngIf="notFoundForm?.value?.notInvestigationType == 2">
+              <div class="form-group">
+                <label for="NIlivingAddress" class="fwb color-d-1 colorWait mb-2">
+                  {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.DETAILADDRESS" | translate }}
+                </label>
+                <textarea [(ngModel)]="Address" class="w-100" pInputText rows="2" id="NIlivingAddress" formControlName="livingAddress" (blur)="generalDataService.isAdressValid = generalDataService.validateAddress(Address, false)"></textarea>
+                <small *ngIf="!generalDataService.isAdressValid" class="form-text text-danger mess-color">
+                  {{ generalDataService.addressValidationMessage | translate }}
+                </small>
+              </div>
+            </div>
+            <div class="col-12 mt-3">
+              <div class="form-group">
+                <label for="NIdesc" class="fwb color-d-1 colorWait mb-2">
+                  {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.DESCRIPTION" | translate }}
+                </label>
+                <textarea id="NIdesc" rows="2" class="w-100" pInputText formControlName="notInvestigationReason"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="d-flex align-items-center justify-content-end gap-3 w-100">
+            <div>
+              <button type="button" class="btn bg text-light" (click)="updateInvestigatio()" data-bs-dismiss="modal">
+                {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.SAVENOTINFERING" | translate }}
+              </button>
+            </div>
+            <div>
+              <button type="button" class="btn border border-color" data-bs-dismiss="modal">
+                {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.Exit" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
