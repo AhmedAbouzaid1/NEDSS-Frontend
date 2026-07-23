@@ -815,7 +815,7 @@ export class GeneralDataService {
       this.isFeverMaxTemperatureValid =
         this.validateFeverMaxTemperature(
           patient.feverSymptoms.feverMaxTemp
-        ) || !patient.feverSymptoms.feverDuration;
+        );
       this.isChronicDiseaseValid = this.validateChronicDisease(
         patient.chronicDiseasesIds,
         patient.anotherChronicDisease,
@@ -1336,6 +1336,14 @@ export class GeneralDataService {
     return failed ? failed[1] : null;
   }
 
+  getClinicalSymptomsInvalidFieldLabel(patient: any): string | null {
+    const items: Array<[boolean, string]> = [
+      [this.isFeverMaxTemperatureValid, 'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_MAX_TEMP'],
+    ];
+    const failed = items.find(([valid]) => !valid);
+    return failed ? failed[1] : null;
+  }
+
   getDiagnosticsInvalidFieldLabel(patient: any): string | null {
     const items: Array<[boolean, string]> = [
       [this.isPatientDiseasesValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES'],
@@ -1360,6 +1368,10 @@ export class GeneralDataService {
     this.validateResidenceInfo(patient);
     const residence = this.getResidenceInfoInvalidFieldLabel(patient);
     if (residence) return residence;
+
+    this.validateClinicalSymptoms(patient);
+    const clinical = this.getClinicalSymptomsInvalidFieldLabel(patient);
+    if (clinical) return clinical;
 
     this.validateDiagnostics(patient);
     const diagnostics = this.getDiagnosticsInvalidFieldLabel(patient);

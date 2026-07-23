@@ -163,8 +163,8 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
       const rawId = patientObject?.id;
       const pid =
         rawId != null &&
-        String(rawId).trim() !== '' &&
-        !Number.isNaN(Number(rawId))
+          String(rawId).trim() !== '' &&
+          !Number.isNaN(Number(rawId))
           ? Number(rawId)
           : null;
       if (pid != null && pid > 0) {
@@ -184,7 +184,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
       (res: any) => {
         this.patient = res.data;
       },
-      (err) => {},
+      (err) => { },
     );
   }
   getById(id: number) {
@@ -249,7 +249,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
             });
           }
         },
-        () => {},
+        () => { },
       );
   }
   completedTabs: number = 0;
@@ -302,6 +302,11 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
           break;
 
         case this.generalDataEnum.ClinicalSymptoms:
+          validationRes = this.generalDataService.validateClinicalSymptoms(
+            this.patient,
+          );
+          if (!(validationRes == -1))
+            throw 'validation failed ' + validationRes;
           this.routingBasedOnCurrentPage(4);
           this.activeTab = this.generalDataEnum.DiagnosticInfo;
           break;
@@ -381,6 +386,10 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
         );
       case this.generalDataEnum.ResidenceInfo:
         return this.generalDataService.getResidenceInfoInvalidFieldLabel(
+          this.patient,
+        );
+      case this.generalDataEnum.ClinicalSymptoms:
+        return this.generalDataService.getClinicalSymptomsInvalidFieldLabel(
           this.patient,
         );
       case this.generalDataEnum.DiagnosticInfo:
@@ -615,11 +624,11 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
                       let diseaseName = disease[0].router;
                       this.router.navigateByUrl(
                         'home/' +
-                          diseaseName +
-                          '/' +
-                          patientId +
-                          '/diseaseId/' +
-                          disease[0].diseaseGroupId,
+                        diseaseName +
+                        '/' +
+                        patientId +
+                        '/diseaseId/' +
+                        disease[0].diseaseGroupId,
                       );
                     }
                   }
@@ -652,11 +661,11 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
                     let diseaseName = disease[0].router;
                     this.router.navigateByUrl(
                       'home/' +
-                        diseaseName +
-                        '/' +
-                        patientId +
-                        '/diseaseId/' +
-                        disease[0].diseaseGroupId,
+                      diseaseName +
+                      '/' +
+                      patientId +
+                      '/diseaseId/' +
+                      disease[0].diseaseGroupId,
                     );
                   }
                 }
