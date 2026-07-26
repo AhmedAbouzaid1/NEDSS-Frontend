@@ -73,6 +73,9 @@ export class AdvancedSearchComponent implements OnInit {
   first: number = 0;
   last: number = 0;
   pages: number = 0;
+  hasNextPage: boolean = false;
+  totalCount: number | null = null;
+  countLoading: boolean = false;
   underDeleting: Patient = {};
   currentLang: string;
   dir: string;
@@ -204,7 +207,7 @@ export class AdvancedSearchComponent implements OnInit {
     ) {
       this.patient.sortOrder = SortOrder.desc;
       this.patient.sortColumn = event.field;
-      this.search(false);
+      this.search(false, true);
     } else if (
       event.order == 1 &&
       (this.patient.sortOrder != SortOrder.asc ||
@@ -212,10 +215,10 @@ export class AdvancedSearchComponent implements OnInit {
     ) {
       this.patient.sortOrder = SortOrder.asc;
       this.patient.sortColumn = event.field;
-      this.search(false);
+      this.search(false, true);
     }
   }
-  search(firstTime?: boolean) {
+  search(firstTime?: boolean, skipCount?: boolean) {
     this.loadingPanel = true;
 
     if (this.isValidPatient()) {
@@ -252,8 +255,9 @@ export class AdvancedSearchComponent implements OnInit {
               }, 0);
 
               this.noData = false;
-              this.pages = result.data[0].totalCount;
+              this.hasNextPage = result.data[0].hasNextPage === true;
               this.last = this.patient.pageIndex * this.patient.pageSize;
+              if (!skipCount) this.fetchCount(this.patient);
             }
           }
           this.loadingPanel = false;
@@ -286,14 +290,48 @@ export class AdvancedSearchComponent implements OnInit {
     return false;
   }
 
-  paginate(event: any) {
-    this.first = event.first;
-    this.last = event.last;
-    //add one as primeng pagination is zero based ,so we convert it to one based to fit with the API
-    this.patient.pageIndex = event.page;
-    this.patient.pageSize = event.rows;
-    this.search();
+  previousPage() {
+    if (this.patient.pageIndex > 0) {
+      this.patient.pageIndex--;
+      this.first = this.patient.pageIndex * this.patient.pageSize;
+      this.search(false, true);
+    }
   }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.patient.pageIndex++;
+      this.first = this.patient.pageIndex * this.patient.pageSize;
+      this.search(false, true);
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.patient.pageSize = newSize;
+    this.patient.pageIndex = 0;
+    this.first = 0;
+    this.search(false);
+  }
+  private fetchCount(filter: any) {
+    const skip = ['pageSize', 'pageIndex', 'sortColumn', 'sortOrder', 'searchText', 'filterType'];
+    const hasFilter = Object.keys(filter).some(k => !skip.includes(k) && filter[k] != null && filter[k] !== '' && filter[k] !== false);
+    if (!hasFilter) {
+      this.totalCount = null;
+      return;
+    }
+    this.countLoading = true;
+    this.totalCount = null;
+    this.searchService.getPageCount({ ...filter }).subscribe(
+      (res: any) => {
+        this.countLoading = false;
+        if (res?.data?.length > 0) {
+          this.totalCount = res.data[0].totalCount;
+        }
+      },
+      () => { this.countLoading = false; }
+    );
+  }
+
   GetById(id: number) {
     this.data.patientId = id;
     this.router.navigateByUrl('/home/general-data');

@@ -237,8 +237,10 @@ export class BaseAPIService {
     }
     if (error.status === 0) {
       if (onLoginPage) return;
-      this.isRedirecting = true;
-      this.router.navigateByUrl('/').then(() => this.isRedirecting = false);
+      this.translateService.get('NEDSS.COMMON.NETWORK_ERROR').subscribe((msg) => {
+        this.userMessage.warn(msg);
+      });
+      console.warn('Network error (status 0):', error.url);
     }
   }
 

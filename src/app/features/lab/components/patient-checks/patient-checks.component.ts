@@ -73,6 +73,9 @@ export class PatientChecksComponent implements OnInit {
   first: number = 0;
   last: number = 0;
   pages: number = 0;
+  hasNextPage: boolean = false;
+  totalCount: number | null = null;
+  countLoading: boolean = false;
 
   maxDate = new Date();
   minDate = new Date(1900, 0, 1);
@@ -228,7 +231,7 @@ export class PatientChecksComponent implements OnInit {
     }
   }
 
-  getPatients(firstTime?: boolean) {
+  getPatients(firstTime?: boolean, skipCount?: boolean) {
     this.patientsFilter.hasLabChecks =
       this.patientsFilter.hasLabChecks === 'true'
         ? true
@@ -250,15 +253,17 @@ export class PatientChecksComponent implements OnInit {
             this.RemoveDelay();
             this.noData = true;
             this.pages = 0;
+            this.hasNextPage = false;
             this.translateService
               .get('NOUR.NO_RESULTS')
               .subscribe((msg) => this.userMsg.warn(msg));
           } else {
             this.RemoveDelay();
             this.noData = false;
-            this.pages = result.data[0].totalCount;
+            this.hasNextPage = result.data[0].hasNextPage === true;
             this.last =
               this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
+            if (!skipCount) this.fetchCount(this.patientsFilter);
           }
         }
       },
@@ -269,6 +274,49 @@ export class PatientChecksComponent implements OnInit {
             this.userMsg.error(res);
           });
       }
+    );
+  }
+
+  previousPage() {
+    if (this.patientsFilter.pageIndex > 0) {
+      this.patientsFilter.pageIndex--;
+      this.first = this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
+      this.getPatients(false, true);
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.patientsFilter.pageIndex++;
+      this.first = this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
+      this.getPatients(false, true);
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.patientsFilter.pageSize = newSize;
+    this.patientsFilter.pageIndex = 0;
+    this.first = 0;
+    this.getPatients(false);
+  }
+
+  private fetchCount(filter: any) {
+    const skip = ['pageSize', 'pageIndex', 'sortColumn', 'sortOrder', 'searchText', 'filterType', 'firstTime'];
+    const hasFilter = Object.keys(filter).some(k => !skip.includes(k) && filter[k] != null && filter[k] !== '' && filter[k] !== false);
+    if (!hasFilter) {
+      this.totalCount = null;
+      return;
+    }
+    this.countLoading = true;
+    this.totalCount = null;
+    this.labService.getPatientsCount({ ...filter }).subscribe(
+      (res: any) => {
+        this.countLoading = false;
+        if (res?.data?.length > 0) {
+          this.totalCount = res.data[0].totalCount;
+        }
+      },
+      () => { this.countLoading = false; }
     );
   }
 
@@ -409,14 +457,6 @@ export class PatientChecksComponent implements OnInit {
       );
   }
 
-  paginate(event: any) {
-    this.first = event.first;
-    this.last = event.last;
-    //add one as primeng pagination is zero based ,so we convert it to one based to fit with the API
-    this.patientsFilter.pageIndex = event.page;
-    this.patientsFilter.pageSize = event.rows;
-    this.getPatients();
-  }
   addPatientChecks(id: number) {}
 
   Delay() {
