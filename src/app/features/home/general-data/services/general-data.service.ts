@@ -70,6 +70,7 @@ export class GeneralDataService {
       ['clinicalSymptomIds', 'ClinicalSymptomIds'],
       ['patientDiseases', 'PatientDiseases'],
       ['finalDiagonisticsData', 'FinalDiagonisticsData'],
+      ['finalDiagonistics', 'FinalDiagonistics'],
       ['feverSymptoms', 'FeverSymptoms'],
       ['chronicDiseasesIds', 'ChronicDiseasesIds'],
       ['finalResultId', 'FinalResultId'],
@@ -230,6 +231,13 @@ export class GeneralDataService {
       return data;
     }
   }
+  getPageCount(patientFilter: any) {
+    return this.APIs.create(this.controllerURL + 'GetPage', {
+      ...patientFilter,
+      countOnly: true,
+    });
+  }
+
   getAll(patientFilter: any) {
     if (navigator.onLine) {
       return this.APIs.create(this.controllerURL + 'GetPage', patientFilter);

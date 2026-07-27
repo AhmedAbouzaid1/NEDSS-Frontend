@@ -3276,7 +3276,7 @@ export class ChartsDashboardComponent {
                     totalCount = result.data[0].totalCount;
                   }
                   this.generalDataService
-                    .getAll({
+                    .getPageCount({
                       pageSize: 10,
                       pageIndex: 0,
                       sortColumn: '',

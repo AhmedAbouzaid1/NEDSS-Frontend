@@ -66,6 +66,7 @@ export class PatientModel {
   relationShipDegreeId!: number;
   patientDiseases!: PatientDiseases[];
   finalDiagonisticsData!: FinalDiagonistics[];
+  finalDiagonistics?: string;
   feverSymptoms?: FeverSymptoms;
   clinicalSymptomIds?: number[];
 

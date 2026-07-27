@@ -100,6 +100,9 @@ export class FastSearchComponent implements OnInit {
   first: number = 0;
   last: number = 0;
   pages: number = 0;
+  hasNextPage: boolean = false;
+  totalCount: number | null = null;
+  countLoading: boolean = false;
   underDeleting: Patient = {};
   selectedGovId: any;
   selectedGovernmentId: number = -1;
@@ -683,7 +686,7 @@ export class FastSearchComponent implements OnInit {
     ) {
       this.filter.sortOrder = SortOrder.desc;
       this.filter.sortColumn = event.field;
-      this.search(false);
+      this.search(false, true);
     } else if (
       event.order == 1 &&
       (this.filter.sortOrder != SortOrder.asc ||
@@ -691,11 +694,11 @@ export class FastSearchComponent implements OnInit {
     ) {
       this.filter.sortOrder = SortOrder.asc;
       this.filter.sortColumn = event.field;
-      this.search(false);
+      this.search(false, true);
     }
   }
 
-  search(firstTime?: boolean) {
+  search(firstTime?: boolean, skipCount?: boolean) {
     //console.log((this.startDate).toString());
     if (!this.validate()) {
       this.translateService
@@ -789,8 +792,9 @@ export class FastSearchComponent implements OnInit {
           } else {
             this.RemoveDelay();
             this.noData = false;
-            this.pages = result.data[0].totalCount;
+            this.hasNextPage = result.data[0].hasNextPage === true;
             this.last = this.patient.pageIndex * this.patient.pageSize;
+            if (!skipCount) this.fetchCount(dts);
           }
         }
         this.delay = false;
@@ -808,18 +812,52 @@ export class FastSearchComponent implements OnInit {
     );
   }
 
-  paginate(event: any) {
-    this.first = event.first;
-    this.last = event.last;
-    //add one as primeng pagination is zero based ,so we convert it to one based to fit with the API
-    this.patient.pageIndex = event.page;
-    this.patient.pageSize = event.rows;
-    this.generalReportForm.value.pageIndex = event.page;
-    this.filter.pageIndex = event.page;
-    this.generalReportForm.value.pageSize = event.rows;
-    this.filter.pageSize = event.rows;
+  previousPage() {
+    if (this.filter.pageIndex > 0) {
+      this.filter.pageIndex--;
+      this.patient.pageIndex = this.filter.pageIndex;
+      this.first = this.filter.pageIndex * this.filter.pageSize;
+      this.search(false, true);
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.filter.pageIndex++;
+      this.patient.pageIndex = this.filter.pageIndex;
+      this.first = this.filter.pageIndex * this.filter.pageSize;
+      this.search(false, true);
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.filter.pageSize = newSize;
+    this.patient.pageSize = newSize;
+    this.filter.pageIndex = 0;
+    this.patient.pageIndex = 0;
+    this.first = 0;
     this.search(false);
   }
+  private fetchCount(filter: any) {
+    const skip = ['pageSize', 'pageIndex', 'sortColumn', 'sortOrder', 'searchText', 'filterType'];
+    const hasFilter = Object.keys(filter).some(k => !skip.includes(k) && filter[k] != null && filter[k] !== '' && filter[k] !== false);
+    if (!hasFilter) {
+      this.totalCount = null;
+      return;
+    }
+    this.countLoading = true;
+    this.totalCount = null;
+    this.searchService.getPageCount({ ...filter }).subscribe(
+      (res: any) => {
+        this.countLoading = false;
+        if (res?.data?.length > 0) {
+          this.totalCount = res.data[0].totalCount;
+        }
+      },
+      () => { this.countLoading = false; }
+    );
+  }
+
   GetById(id: number) {
     this.data.patientId = id;
     this.router.navigateByUrl('/home/general-data');

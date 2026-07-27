@@ -37,11 +37,23 @@ export class LabService {
       patientFilter
     );
   }
+  getPatientsCount(patientFilter: any) {
+    return this.APIs.create(this.controllerURL + 'GetLabPatientsPage', {
+      ...patientFilter,
+      countOnly: true,
+    });
+  }
   getPatientsFromLab(patientFilter: any) {
     return this.APIs.create(
       this.controllerURL + 'GetPatientsAddedFromLab',
       patientFilter
     );
+  }
+  getPatientsFromLabCount(patientFilter: any) {
+    return this.APIs.create(this.controllerURL + 'GetPatientsAddedFromLab', {
+      ...patientFilter,
+      countOnly: true,
+    });
   }
   getBy(id: number) {
     return this.APIs.get(this.controllerURL + 'GetPatientForLabById?id=' + id);

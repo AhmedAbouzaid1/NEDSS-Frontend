@@ -78,6 +78,9 @@ export class EventsComponent {
   first: number = 0;
   last: number = 0;
   pages: number = 0;
+  hasNextPage: boolean = false;
+  totalCount: number | null = null;
+  countLoading: boolean = false;
   FilterType: number = 2;
   Selectedgovernment: any;
   addSelectedgovernment: any;
@@ -349,18 +352,34 @@ export class EventsComponent {
     ];
   }
 
-  paginate(event: any) {
-    this.first = event.first;
-    this.last = event.last;
-    //add one as primeng pagination is zero based ,so we convert it to one based to fit with the API
-    this.generalReportForm.value.pageIndex = event.page;
-    this.generalReportForm.value.pageSize = event.rows;
-    this.generalReportFormfilter.pageIndex = event.page;
-    this.generalReportFormfilter.pageSize = event.rows;
+  previousPage() {
+    if (this.generalReportFormfilter.pageIndex > 0) {
+      this.generalReportFormfilter.pageIndex--;
+      this.generalReportForm.value.pageIndex = this.generalReportFormfilter.pageIndex;
+      this.first = this.generalReportFormfilter.pageIndex * this.generalReportFormfilter.pageSize;
+      this.search(true);
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.generalReportFormfilter.pageIndex++;
+      this.generalReportForm.value.pageIndex = this.generalReportFormfilter.pageIndex;
+      this.first = this.generalReportFormfilter.pageIndex * this.generalReportFormfilter.pageSize;
+      this.search(true);
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.generalReportFormfilter.pageSize = newSize;
+    this.generalReportForm.value.pageSize = newSize;
+    this.generalReportFormfilter.pageIndex = 0;
+    this.generalReportForm.value.pageIndex = 0;
+    this.first = 0;
     this.search();
   }
 
-  findPatient(formObj?: any) {
+  findPatient(formObj?: any, skipCount?: boolean) {
     if (formObj) {
       if (this.generalReportFormfilter.homeGovernmentId == -1) {
         this.generalReportFormfilter.homeGovernmentId = null;
@@ -428,11 +447,12 @@ export class EventsComponent {
           this.noData = false;
           this.noDatap = false;
           this.event = false;
-          this.pages = res.data[0].totalCount;
+          this.hasNextPage = res.data[0].hasNextPage === true;
 
           this.last =
             this.generalReportForm.value.pageIndex *
             this.generalReportForm.value.pageSize;
+          if (!skipCount) this.fetchCount(formObj);
         }
       }
     });
@@ -454,6 +474,26 @@ export class EventsComponent {
       'phoneNo1',
       '',
     ];
+  }
+
+  private fetchCount(filter: any) {
+    const skip = ['pageSize', 'pageIndex', 'sortColumn', 'sortOrder', 'filterType'];
+    const hasFilter = Object.keys(filter).some(k => !skip.includes(k) && filter[k] != null && filter[k] !== '' && filter[k] !== false);
+    if (!hasFilter) {
+      this.totalCount = null;
+      return;
+    }
+    this.countLoading = true;
+    this.totalCount = null;
+    this.generalDataService.getPageCount({ ...filter }).subscribe(
+      (res: any) => {
+        this.countLoading = false;
+        if (res?.data?.length > 0) {
+          this.totalCount = res.data[0].totalCount;
+        }
+      },
+      () => { this.countLoading = false; }
+    );
   }
 
   showAddEventModal() {
@@ -1289,7 +1329,7 @@ export class EventsComponent {
     ) {
       this.generalReportFormfilter.sortOrder = SortOrder.desc;
       this.generalReportFormfilter.sortColumn = event.field;
-      this.search();
+      this.search(true);
     } else if (
       event.order == 1 &&
       (this.generalReportFormfilter.sortOrder != SortOrder.asc ||
@@ -1297,14 +1337,14 @@ export class EventsComponent {
     ) {
       this.generalReportFormfilter.sortOrder = SortOrder.asc;
       this.generalReportFormfilter.sortColumn = event.field;
-      this.search();
+      this.search(true);
     }
   }
 
-  search() {
+  search(skipCount?: boolean) {
     // this.governmentSelected();
     if (this.event == false) {
-      this.findPatient(this.generalReportForm.value);
+      this.findPatient(this.generalReportForm.value, skipCount);
       // if (this.generalReportForm.value.homeGovernmentId != null) {
       //   if (this.generalReportForm.value.homeGovernmentId == -1) {
       //     this.generalReportForm.value.homeGovernmentId = null;
