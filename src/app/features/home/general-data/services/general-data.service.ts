@@ -70,6 +70,7 @@ export class GeneralDataService {
       ['clinicalSymptomIds', 'ClinicalSymptomIds'],
       ['patientDiseases', 'PatientDiseases'],
       ['finalDiagonisticsData', 'FinalDiagonisticsData'],
+      ['finalDiagonistics', 'FinalDiagonistics'],
       ['feverSymptoms', 'FeverSymptoms'],
       ['chronicDiseasesIds', 'ChronicDiseasesIds'],
       ['finalResultId', 'FinalResultId'],

@@ -68,9 +68,72 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
 
   readonly pcrResultOptions = ['nMeningitidis', 'sPneumoniae', 'hInfluenzae', 'other'];
 
+  readonly viralPcrResultOptions = [
+    'negative',
+    'enterovirus',
+    'herpesSimplexVirus',
+    'varicellaZosterVirus',
+    'cytomegalovirus',
+    'ebv',
+    'arbovirus',
+    'other',
+  ];
+
   readonly ctResultOptions = ['normal', 'abnormal', 'other'];
 
   readonly mriResultOptions = ['normal', 'infectiousDisease', 'other'];
+
+  readonly finalDiagnosisOtherOptions = [
+    'ADEM syndrome',
+    'AKI',
+    'Auto immune disease',
+    'Auto immune encephalitis',
+    'Brain abscess',
+    'Brain atrophy',
+    'Brain edema',
+    'Brain trauma',
+    'Brain tumor',
+    'Bronchitis with meningeal irritation',
+    'DKA',
+    'Drug intake',
+    'Epilepsy',
+    'Febrile convulsions',
+    'Gastroenteritis',
+    'Guillain-Barré Syndrome',
+    'Hydrocephalus',
+    'Meningeal irritation',
+    'Miller Fischer syndrome',
+    'Multiple sclerosis (MS)',
+    'Otitis with meningeal irritation',
+    'Pneumonia with meningeal irritation',
+    'Sepsis',
+    'Sinusitis with meningeal irritation',
+    'Stroke',
+    'Septicemia',
+    'Septic shock',
+  ];
+
+  readonly chronicDiseaseOptions = [
+    'أمراض مناعية',
+    'التهاب بالمخ مناعي',
+    'ضمور بالمخ',
+    'إصابة سابقة بالجمجمة أو المخ',
+    'تسرب السائل النخاعي الشوكي',
+    'التهاب جيوب أنفية مزمن',
+    'التهاب أذن وسطى مزمن',
+    'مرض نقص المناعة المكتسبة',
+    'استسقاء بالمخ',
+    'السرطان',
+    'ورم بالمخ',
+    'أمراض كلى مزمنة',
+    'أمراض كبد مزمنة',
+    'السكري',
+    'أمراض القلب',
+    'أمراض الرئة المزمنة',
+    'ارتفاع ضغط الدم',
+    'خراج بالمخ',
+    'تركيب صمام بالمخ',
+  ];
 
   readonly finalDiagnosisOptions = [
     'confirmedViralBacterialMeningitis',
@@ -166,6 +229,10 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
       pcrResult: [null],
       pcrOtherText: [null],
 
+      viralPcrDone: [null],
+      viralPcrResult: [null],
+      viralPcrOtherText: [null],
+
       ctDone: [null],
       ctResult: [null],
       ctOtherText: [null],
@@ -175,7 +242,11 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
       mriOtherText: [null],
 
       finalDiagnosis: [null],
+      finalDiagnosisOther: [null],
       finalDiagnosisOtherText: [null],
+
+      hasChronicDiseases: [null],
+      chronicDisease: [null],
 
       complicationsExist: [null],
       complicationDate: [null],
@@ -198,7 +269,91 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    // Final diagnosis is algorithm-driven (read-only in the UI): recompute it
+    // whenever any lab input changes, mirroring the backend calculation.
+    this.recomputeFinalDiagnosis();
+    this.form.valueChanges.subscribe(() => this.recomputeFinalDiagnosis());
     this.getById();
+  }
+
+  private recomputeFinalDiagnosis(): void {
+    const v = this.form.getRawValue();
+    const computed = this.computeFinalDiagnosis(v);
+    if (v.finalDiagnosis !== computed) {
+      this.form.get('finalDiagnosis')?.setValue(computed, { emitEvent: false });
+    }
+  }
+
+  // Derives the meningitis final diagnosis from the entered lab data, following
+  // the "algorithm final diagnosis" rules. Kept in sync with MeningitisCheckBusiness.
+  private computeFinalDiagnosis(v: any): string | null {
+    const done = (x: any) => x === 'yes';
+    const pos = (x: any) => x === 'positive';
+    const num = (x: any): number | null => {
+      if (x === null || x === undefined || x === '') return null;
+      const n = parseFloat(String(x).replace(/[^0-9.\-]/g, ''));
+      return isNaN(n) ? null : n;
+    };
+
+    const csf = done(v.csfCultureDone) ? v.csfCultureResult : null;
+    const blood = done(v.bloodCultureDone) ? v.bloodCultureResult : null;
+    const bpcr = done(v.pcrDone) ? v.pcrResult : null;
+    const vpcr = done(v.viralPcrDone) ? v.viralPcrResult : null;
+    const gram = done(v.gramStainDone) ? v.gramStainResult : null;
+    const gramOther = (v.gramStainOtherText || '').toString().toLowerCase();
+
+    const isGrowth = (r: any) => !!r && r !== 'noGrowth';
+    const bactPos = (r: any) => isGrowth(r) && r !== 'cryptococcus';
+
+    // 1. Fungal meningitis
+    if ((done(v.indiaInkDone) && pos(v.indiaInkResult)) ||
+      csf === 'cryptococcus' || blood === 'cryptococcus' ||
+      (gram === 'other' && (gramOther.includes('yeast') || gramOther.includes('خميرة') ||
+        gramOther.includes('hyphae') || gramOther.includes('فطر')))) {
+      return 'fungalMeningitis';
+    }
+
+    // 2. Tuberculous meningitis
+    if ((done(v.znDone) && pos(v.znResult)) || (done(v.genexpertDone) && pos(v.genexpertResult))) {
+      return 'tuberculousMeningitis';
+    }
+
+    // 3. / 4. Confirmed bacterial (CSF culture, blood culture, or bacterial PCR)
+    const epidemicConfirmed = csf === 'nMeningitidis' || blood === 'nMeningitidis' || bpcr === 'nMeningitidis';
+    const bacterialConfirmed = bactPos(csf) || bactPos(blood) ||
+      (!!bpcr && bpcr !== 'negative' && bpcr !== 'noGrowth');
+    if (epidemicConfirmed) return 'confirmedViralBacterialMeningitis';
+    if (bacterialConfirmed) return 'confirmedNonViralBacterialMeningitis';
+
+    // 5. Confirmed viral encephalitis (viral PCR positive)
+    if (!!vpcr && vpcr !== 'negative') return 'confirmedViralEncephalitis';
+
+    // 6. Probable epidemic bacterial (Gram -ve diplococci)
+    if (gram === 'gmNegativeDiplococci') return 'probableViralBacterialMeningitis';
+
+    // 7. Probable non-epidemic bacterial (other Gram-stain organisms)
+    const gramPus = gram === 'other' && (gramOther.includes('pus') || gramOther.includes('صديد'));
+    const nonEpidemicGram = ['gmNegativeCocobacilli', 'gmNegativeRods', 'gmPositiveCocciPairs', 'gmPositiveCocciClusters'];
+    if (nonEpidemicGram.includes(gram) || (gram === 'other' && !gramPus)) {
+      return 'probableNonViralBacterialMeningitis';
+    }
+
+    // 8. Probable unclassified bacterial (chemistry or pus cells)
+    const protein = num(v.protein);
+    const glucose = num(v.glucose);
+    const chemBacterial = glucose !== null && protein !== null && glucose < 40 && protein > 100;
+    if (chemBacterial || gramPus) return 'probableUnclassifiedBacterialMeningitis';
+
+    // 9. Probable viral encephalitis (chemistry pattern or MRI encephalitis)
+    const cell = num(v.cellCount);
+    const chemViral = protein !== null && glucose !== null &&
+      protein >= 50 && protein <= 100 && glucose >= 45 && glucose <= 100 &&
+      cell !== null && cell < 100;
+    const mriEncephalitis = done(v.mriDone) && v.mriResult === 'infectiousDisease';
+    if (chemViral || mriEncephalitis) return 'probableViralEncephalitis';
+
+    // No rule matched.
+    return null;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
