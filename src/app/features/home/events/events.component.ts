@@ -447,7 +447,9 @@ export class EventsComponent {
           this.noData = false;
           this.noDatap = false;
           this.event = false;
-          this.hasNextPage = res.data[0].hasNextPage === true;
+          this.hasNextPage =
+            res.data[0].hasNextPage === true &&
+            res.data.length >= this.generalReportFormfilter.pageSize;
 
           this.last =
             this.generalReportForm.value.pageIndex *
@@ -580,6 +582,7 @@ export class EventsComponent {
             this.noDatae = true;
             this.event = false;
             this.pages = 0;
+            this.hasNextPage = false;
             if (this.noDatae == true && this.noDatap == false) {
               this.translateService
                 .get('NOUR.NO_RESULTSEvent')
@@ -603,6 +606,10 @@ export class EventsComponent {
             this.noDatae = false;
             this.event = true;
             this.pages = res.data[0].totalCount;
+            this.hasNextPage =
+              (this.generalReportFormfilter.pageIndex + 1) *
+                this.generalReportFormfilter.pageSize <
+              this.pages;
             this.last =
               this.generalReportForm.value.pageIndex *
               this.generalReportForm.value.pageSize;

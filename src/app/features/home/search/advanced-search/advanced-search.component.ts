@@ -255,7 +255,9 @@ export class AdvancedSearchComponent implements OnInit {
               }, 0);
 
               this.noData = false;
-              this.hasNextPage = result.data[0].hasNextPage === true;
+              this.hasNextPage =
+                result.data[0].hasNextPage === true &&
+                result.data.length >= this.patient.pageSize;
               this.last = this.patient.pageIndex * this.patient.pageSize;
               if (!skipCount) this.fetchCount(this.patient);
             }

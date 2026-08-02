@@ -226,7 +226,9 @@ export class LabCasesComponent {
           } else {
             this.RemoveDelay();
             this.noData = false;
-            this.hasNextPage = result.data[0].hasNextPage === true;
+            this.hasNextPage =
+              result.data[0].hasNextPage === true &&
+              result.data.length >= this.patientsFilter.pageSize;
             this.last =
               this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
             if (!skipCount) this.fetchCount(this.patientsFilter);

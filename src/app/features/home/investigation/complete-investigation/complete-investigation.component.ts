@@ -24,13 +24,12 @@ export class CompleteInvestigationComponent implements OnInit {
 
   ngOnInit() {
     this.currentId = this.InvestigationService.currentid;
-    this.patientDiseases = this.InvestigationService.patientDiseases;
-    if (this.patientDiseases.length >= 1) {
-      this.InvestigationService.diseaseGroupID =
-        this.patientDiseases[0].diseaseGroupId;
+    this.patientDiseases = this.InvestigationService.patientDiseases || [];
+    const firstDisease = this.patientDiseases[0];
+    if (firstDisease && firstDisease.router) {
+      this.InvestigationService.diseaseGroupID = firstDisease.diseaseGroupId;
       this.Router.navigateByUrl(
-        '/home/investigations/compelete-investigation/' +
-        this.patientDiseases[0].router
+        '/home/investigations/compelete-investigation/' + firstDisease.router
       );
     }
   }

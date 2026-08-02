@@ -635,6 +635,7 @@
               {{ "NEDSS.EVENTS.EVENT_NAME" | translate }}
               <p-sortIcon field="Name" class="exclude-pdf"></p-sortIcon>
             </th>
+            <th class="text-center">{{ "NEDSS.EVENTS.SOURCE" | translate }}</th>
             <th>
               {{ "NEDSS.EVENTS.EVENT_PATIENTDISEASES" | translate }}
             </th>
@@ -694,6 +695,18 @@
               </ng-template>
               <td>
                 <span [innerHTML]="op.name"></span>
+              </td>
+              <td class="text-center">
+                <span
+                  *ngIf="op.ebsSignalId; else manualSource"
+                  class="ebs-tag"
+                  title="{{ 'NEDSS.EVENTS.REGISTERED_FROM_EBS' | translate }} (#{{ op.ebsSignalId }})"
+                >
+                  <span class="ebs-tag-label">EBS&nbsp;#{{ op.ebsSignalId }}</span>
+                </span>
+                <ng-template #manualSource>
+                  <span class="source-dash">—</span>
+                </ng-template>
               </td>
               <td>
                 <span [innerHTML]="op.diseaseGroupName"></span>

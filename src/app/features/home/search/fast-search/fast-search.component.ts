@@ -786,13 +786,14 @@ export class FastSearchComponent implements OnInit {
             this.RemoveDelay();
             this.noData = true;
             this.pages = 0;
+            this.hasNextPage = false;
             this.translateService
               .get('NOUR.NO_RESULTS')
               .subscribe((msg) => this.userMsg.warn(msg));
           } else {
             this.RemoveDelay();
             this.noData = false;
-            this.hasNextPage = result.data[0].hasNextPage === true;
+            this.hasNextPage = this.getHasNextPage(result.data[0]);
             this.last = this.patient.pageIndex * this.patient.pageSize;
             if (!skipCount) this.fetchCount(dts);
           }
@@ -838,6 +839,11 @@ export class FastSearchComponent implements OnInit {
     this.first = 0;
     this.search(false);
   }
+
+  private getHasNextPage(firstRow: Patient): boolean {
+    return firstRow?.['hasNextPage'] === true;
+  }
+
   private fetchCount(filter: any) {
     const skip = ['pageSize', 'pageIndex', 'sortColumn', 'sortOrder', 'searchText', 'filterType'];
     const hasFilter = Object.keys(filter).some(k => !skip.includes(k) && filter[k] != null && filter[k] !== '' && filter[k] !== false);
