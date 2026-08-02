@@ -792,7 +792,9 @@ export class FastSearchComponent implements OnInit {
           } else {
             this.RemoveDelay();
             this.noData = false;
-            this.hasNextPage = result.data[0].hasNextPage === true;
+            this.hasNextPage =
+              result.data[0].hasNextPage === true &&
+              result.data.length >= this.patient.pageSize;
             this.last = this.patient.pageIndex * this.patient.pageSize;
             if (!skipCount) this.fetchCount(dts);
           }

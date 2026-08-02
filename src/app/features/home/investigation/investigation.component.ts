@@ -402,7 +402,9 @@ export class InvestigationComponent implements OnInit {
             clearTimeout(this.timer);
           }, 0);
           this.noData = false;
-          this.hasNextPage = res.data[0].hasNextPage === true;
+          this.hasNextPage =
+            res.data[0].hasNextPage === true &&
+            res.data.length >= this.notInferringFilter.pageSize;
           this.last =
             this.notInferringFilter.pageIndex *
             this.notInferringFilter.pageSize;
