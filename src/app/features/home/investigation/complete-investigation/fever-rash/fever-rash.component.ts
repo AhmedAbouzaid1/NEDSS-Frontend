@@ -377,23 +377,29 @@ export class FeverRashComponent implements OnInit {
   }
 
   // ===================== Statistics =====================
-  private vaccinationLabel(v: any): string {
+  vaccinationLabel(v: any): string {
     switch (String(v)) {
       case '1': return 'مطعم';
       case '2': return 'غير مطعم';
       case '3': return 'غير مستحق';
       case '4': return 'غير معروف';
-      default: return 'غير محدد';
+      default: return '';
     }
   }
-  private placeLabel(v: any): string {
+  placeLabel(v: any): string {
     switch (String(v)) {
       case '1': return 'المنزل';
       case '2': return 'المدرسة';
       case '3': return 'العمل';
       case '4': return 'أخرى';
-      default: return 'غير محدد';
+      default: return '';
     }
+  }
+  yesNo(v: any): string {
+    return String(v) === '1' ? 'نعم' : String(v) === '2' ? 'لا' : '';
+  }
+  mark(v: any): string {
+    return v ? '✓' : '';
   }
   // A record only counts once at least one of its cells is populated.
   private isRowFilled(ctrl: AbstractControl): boolean {
@@ -450,7 +456,7 @@ export class FeverRashComponent implements OnInit {
     const payload: any = {};
     Object.keys(value).forEach((key) => {
       if (this.arrayKeys.includes(key)) return;
-      payload[key] = value[key];
+      payload[key] = value[key] === '' ? null : value[key];
     });
     payload.caseMovementsJson = JSON.stringify(value.caseMovements || []);
     payload.previousCasesJson = JSON.stringify(value.previousCases || []);

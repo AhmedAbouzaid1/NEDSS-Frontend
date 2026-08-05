@@ -129,6 +129,21 @@
                     </button>
                   </div>
 
+                  <div class="col-12 mb-2" *ngIf="caseMovements.length > 0">
+                    <div class="fwb mb-1">عرض السجلات</div>
+                    <div class="table-responsive">
+                      <table class="table table-bordered text-center align-middle">
+                        <thead><tr><th>#</th><th>تاريخ الزيارة</th><th>مكان المخالطة</th><th>العنوان</th><th>مباشرين</th><th>لديهم أعراض</th><th>بدون أعراض</th><th>متطعم</th><th>غير متطعم</th><th>غير مستحق</th><th>غير معروف</th></tr></thead>
+                        <tbody>
+                          <tr *ngFor="let m of caseMovements.controls; let i = index">
+                            <td>{{ i + 1 }}</td><td>{{ m.value.visitDate }}</td><td>{{ placeLabel(m.value.contactPlace) }}</td><td>{{ m.value.address }}</td>
+                            <td>{{ m.value.directContactsCount }}</td><td>{{ m.value.symptomaticCount }}</td><td>{{ m.value.noSymptomsCount }}</td>
+                            <td>{{ m.value.vaccinatedCount }}</td><td>{{ m.value.notVaccinatedCount }}</td><td>{{ m.value.notEligibleCount }}</td><td>{{ m.value.unknownCount }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                   <div class="col-12" formArrayName="caseMovements">
                     <div class="record-card" *ngFor="let m of caseMovements.controls; let i = index" [formGroupName]="i">
                       <div class="record-card-head">
@@ -201,6 +216,20 @@
                       </button>
                     </div>
 
+                    <div class="col-12 mb-2" *ngIf="previousCases.length > 0">
+                      <div class="fwb mb-1">عرض السجلات</div>
+                      <div class="table-responsive">
+                        <table class="table table-bordered text-center align-middle">
+                          <thead><tr><th>#</th><th>اسم المخالط</th><th>تاريخ ظهور الطفح</th><th>صلة القرابة</th><th>الحالة التطعيمية</th><th>تاريخ المخالطة</th></tr></thead>
+                          <tbody>
+                            <tr *ngFor="let p of previousCases.controls; let i = index">
+                              <td>{{ i + 1 }}</td><td>{{ p.value.contactName }}</td><td>{{ p.value.rashOnsetDate }}</td>
+                              <td>{{ p.value.kinship }}</td><td>{{ vaccinationLabel(p.value.vaccinationStatus) }}</td><td>{{ p.value.contactDate }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                     <div class="col-12" formArrayName="previousCases">
                       <div class="record-card" *ngFor="let p of previousCases.controls; let i = index" [formGroupName]="i">
                         <div class="record-card-head">
@@ -271,6 +300,24 @@
                     </button>
                   </div>
 
+                  <div class="col-12 mb-2" *ngIf="generalContacts.length > 0">
+                    <div class="fwb mb-1">عرض السجلات</div>
+                    <div class="table-responsive">
+                      <table class="table table-bordered text-center align-middle">
+                        <thead><tr><th>#</th><th>اسم المخالط</th><th>العمر</th><th>الحالة التطعيمية</th><th>مكان المخالطة</th><th>أسبوع1</th><th>أعراض1</th><th>أسبوع2</th><th>أعراض2</th><th>أسبوع3</th><th>أعراض3</th><th>أسبوع4</th><th>أعراض4</th></tr></thead>
+                        <tbody>
+                          <tr *ngFor="let c of generalContacts.controls; let i = index">
+                            <td>{{ i + 1 }}</td><td>{{ c.value.name }}</td><td>{{ c.value.ageYears }}</td>
+                            <td>{{ vaccinationLabel(c.value.vaccinationStatus) }}</td><td>{{ placeLabel(c.value.contactPlace) }}</td>
+                            <td>{{ c.value.visitWeek1 }}</td><td>{{ mark(c.value.symptomsWeek1) }}</td>
+                            <td>{{ c.value.visitWeek2 }}</td><td>{{ mark(c.value.symptomsWeek2) }}</td>
+                            <td>{{ c.value.visitWeek3 }}</td><td>{{ mark(c.value.symptomsWeek3) }}</td>
+                            <td>{{ c.value.visitWeek4 }}</td><td>{{ mark(c.value.symptomsWeek4) }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                   <div class="col-12" formArrayName="generalContacts">
                     <div class="record-card" *ngFor="let c of generalContacts.controls; let i = index" [formGroupName]="i">
                       <div class="record-card-head">
@@ -361,6 +408,20 @@
                     <div class="d-flex justify-content-between align-items-center mb-2">
                       <span class="fwb">المخالطين الحوامل</span>
                       <button type="button" class="btn btn-add-record rounded-2" (click)="addPregnantContact()"><i class="pi pi-plus"></i> إضافة سجل جديد</button>
+                    </div>
+                    <div class="mb-2" *ngIf="pregnantContacts.length > 0">
+                      <div class="fwb mb-1">عرض السجلات</div>
+                      <div class="table-responsive">
+                        <table class="table table-bordered text-center align-middle">
+                          <thead><tr><th>#</th><th>الاسم</th><th>العمر</th><th>مكان المخالطة</th><th>مطعمة</th><th>أسبوع الحمل</th><th>تاريخ ظهور الأعراض</th><th>تاريخ الولادة المتوقع</th></tr></thead>
+                          <tbody>
+                            <tr *ngFor="let p of pregnantContacts.controls; let i = index">
+                              <td>{{ i + 1 }}</td><td>{{ p.value.name }}</td><td>{{ p.value.age }}</td><td>{{ p.value.contactLocation }}</td>
+                              <td>{{ mark(p.value.vaccinated) }}</td><td>{{ p.value.pregnancyWeeks }}</td><td>{{ p.value.symptomAppearanceDate }}</td><td>{{ p.value.expectedDeliveryDate }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                     <div formArrayName="pregnantContacts">
                       <div class="record-card" *ngFor="let contact of pregnantContacts.controls; let i = index" [formGroupName]="i">
@@ -517,6 +578,19 @@
                     </button>
                   </div>
 
+                  <div class="col-12 mb-2" *ngIf="surveyChildren.length > 0">
+                    <div class="fwb mb-1">عرض السجلات</div>
+                    <div class="table-responsive">
+                      <table class="table table-bordered text-center align-middle">
+                        <thead><tr><th>#</th><th>اسم الطفل</th><th>MMR1</th><th>MMR2</th><th>أعراض الحمى والطفح</th></tr></thead>
+                        <tbody>
+                          <tr *ngFor="let s of surveyChildren.controls; let i = index">
+                            <td>{{ i + 1 }}</td><td>{{ s.value.childName }}</td><td>{{ yesNo(s.value.mmr1) }}</td><td>{{ yesNo(s.value.mmr2) }}</td><td>{{ yesNo(s.value.hasSymptoms) }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                   <div class="col-12" formArrayName="surveyChildren">
                     <div class="record-card" *ngFor="let s of surveyChildren.controls; let i = index" [formGroupName]="i">
                       <div class="record-card-head">
