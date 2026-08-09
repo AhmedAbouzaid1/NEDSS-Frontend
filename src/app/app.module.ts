@@ -83,7 +83,14 @@ export const DATE_FORMATS = {
     CommonModule,
     NgSelectModule,
     NgIdleKeepaliveModule.forRoot(),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+      countDuplicates: true,
+      resetTimeoutOnDuplicate: true,
+      includeTitleDuplicates: true,
+      maxOpened: 4,
+      autoDismiss: true,
+    }),
     NgMultiSelectDropDownModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
@@ -93,12 +100,6 @@ export const DATE_FORMATS = {
         },
         deps: [HttpClient],
       },
-    }),
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: true,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
