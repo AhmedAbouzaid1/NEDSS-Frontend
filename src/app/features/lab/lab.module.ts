@@ -31,6 +31,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DialogModule } from 'primeng/dialog';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 export const DATE_FORMATS = {
   parse: {
@@ -70,6 +71,7 @@ export const DATE_FORMATS = {
     InputTextModule,
     DialogModule,
     NgMultiSelectDropDownModule.forRoot(),
+    MultiSelectModule,
     // ngx-translate and the loader module
     TranslateModule.forRoot({
       loader: {
