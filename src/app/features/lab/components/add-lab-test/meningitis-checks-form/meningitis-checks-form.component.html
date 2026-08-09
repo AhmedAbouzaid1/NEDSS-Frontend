@@ -25,40 +25,159 @@
     </div>
   </div>
 
+  <!-- Chronic diseases: moved to directly after signs & symptoms -->
+  <div class="card shadow color rounded mt-4">
+    <div class="card-header bg text-light fwb">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CHRONIC_DISEASES_TITLE" | translate }}</div>
+    <div class="card-body bg-dark-mode">
+      <div class="q-block" [class.mb-0]="form.get('hasChronicDiseases')?.value !== 'yes'">
+        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CHRONIC_DISEASES_QUESTION" | translate }}</label>
+        <div class="q-options">
+          <label><input type="radio" formControlName="hasChronicDiseases" name="hasChronicDiseases" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+          <label><input type="radio" formControlName="hasChronicDiseases" name="hasChronicDiseases" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+        </div>
+      </div>
+      <ng-container *ngIf="form.get('hasChronicDiseases')?.value === 'yes'">
+        <div class="q-block">
+          <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CHRONIC_DISEASES_IF_YES" | translate }}</label>
+          <p-multiSelect
+            [options]="chronicDiseaseOptions"
+            formControlName="chronicDisease"
+            display="chip"
+            [filter]="true"
+            [filterPlaceHolder]="'NEDSS.COMMON.SEARCH' | translate"
+            [style]="{ width: '100%' }"
+            styleClass="w-100"
+            panelStyleClass="men-chronic-panel"
+          >
+          </p-multiSelect>
+        </div>
+        <div class="q-row-inline mb-0" *ngIf="(form.get('chronicDisease')?.value || []).includes('أخرى')">
+          <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CHRONIC_DISEASES_OTHER_LABEL" | translate }}:</label>
+          <input type="text" class="form-control" formControlName="chronicDiseaseOtherText" />
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
   <div class="card shadow color rounded mt-4">
     <div class="card-header bg text-light fwb">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.LAB_RESULTS_TITLE" | translate }}</div>
     <div class="card-body bg-dark-mode">
-      <div class="q-block">
+      <div class="q-block" [class.mb-0]="!form.get('lumbarPuncture')?.value">
         <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.LUMBAR_PUNCTURE_QUESTION" | translate }}</label>
         <div class="q-options">
           <label><input type="radio" formControlName="lumbarPuncture" name="lumbarPuncture" value="done" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.LUMBAR_PUNCTURE.done" | translate }}</label>
           <label><input type="radio" formControlName="lumbarPuncture" name="lumbarPuncture" value="notDone" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.LUMBAR_PUNCTURE.notDone" | translate }}</label>
         </div>
       </div>
-      <div class="q-block mb-0">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.APPEARANCE_QUESTION" | translate }}</label>
-        <div class="q-options">
-          <label *ngFor="let opt of appearanceOptions">
-            <input type="radio" formControlName="appearance" name="appearance" [value]="opt" />
-            {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.APPEARANCE." + opt) | translate }}
-          </label>
+
+      <!-- Lumbar puncture DONE → puncture info + appearance -->
+      <ng-container *ngIf="form.get('lumbarPuncture')?.value === 'done'">
+        <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.PUNCTURE_INFO_TITLE" | translate }}</div>
+        <div class="q-inputs-grid">
+          <div>
+            <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.LUMBAR_PUNCTURE_PLACE" | translate }}</label>
+            <input type="text" class="form-control" formControlName="lumbarPuncturePlace" />
+          </div>
+          <div>
+            <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.LUMBAR_PUNCTURE_DATE" | translate }}</label>
+            <input type="date" class="form-control" formControlName="lumbarPunctureDate" />
+          </div>
         </div>
-      </div>
+
+        <div class="q-block">
+          <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.ALL_TESTS_INSIDE_HOSPITAL_QUESTION" | translate }}</label>
+          <div class="q-options">
+            <label><input type="radio" formControlName="allTestsInsideHospital" name="allTestsInsideHospital" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+            <label><input type="radio" formControlName="allTestsInsideHospital" name="allTestsInsideHospital" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+          </div>
+        </div>
+
+        <ng-container *ngIf="form.get('allTestsInsideHospital')?.value === 'no'">
+          <div class="q-block">
+            <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.TESTS_OUTSIDE_HOSPITAL_TITLE" | translate }}</div>
+            <div class="q-grid">
+              <label *ngFor="let opt of testsOutsideHospitalOptions">
+                <input type="checkbox" [checked]="hasArrayItem('testsOutsideHospital', opt)"
+                  (change)="toggleArrayItem('testsOutsideHospital', opt, $any($event.target).checked)" />
+                {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.TESTS_OUTSIDE_HOSPITAL." + opt) | translate }}
+              </label>
+            </div>
+          </div>
+          <div class="q-block mb-0">
+            <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.EXTERNAL_LAB_TYPE_TITLE" | translate }}</div>
+            <div class="q-grid">
+              <label *ngFor="let opt of externalLabTypeOptions">
+                <input type="checkbox" [checked]="hasArrayItem('externalLabType', opt)"
+                  (change)="toggleArrayItem('externalLabType', opt, $any($event.target).checked)" />
+                {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.EXTERNAL_LAB_TYPE." + opt) | translate }}
+              </label>
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="q-block mb-0">
+          <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.APPEARANCE_QUESTION" | translate }}</label>
+          <div class="q-options">
+            <label *ngFor="let opt of appearanceOptions">
+              <input type="radio" formControlName="appearance" name="appearance" [value]="opt" />
+              {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.APPEARANCE." + opt) | translate }}
+            </label>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Lumbar puncture NOT DONE → reason -->
+      <ng-container *ngIf="form.get('lumbarPuncture')?.value === 'notDone'">
+        <div class="q-block">
+          <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.LP_NOT_DONE_TITLE" | translate }}</div>
+          <div class="q-grid">
+            <label *ngFor="let opt of lpNotDoneCauseOptions">
+              <input type="radio" formControlName="lpNotDoneCause" name="lpNotDoneCause" [value]="opt" />
+              {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.LP_NOT_DONE_CAUSE." + opt) | translate }}
+            </label>
+          </div>
+        </div>
+        <div class="q-row-inline mb-0" *ngIf="form.get('lpNotDoneCause')?.value === 'other'">
+          <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.LP_NOT_DONE_OTHER" | translate }}:</label>
+          <input type="text" class="form-control" formControlName="lpNotDoneCauseOtherText" />
+        </div>
+      </ng-container>
     </div>
   </div>
 
-  <div class="card shadow color rounded mt-4">
+  <!-- Chemistry: hidden when lumbar puncture not done -->
+  <div class="card shadow color rounded mt-4" *ngIf="form.get('lumbarPuncture')?.value !== 'notDone'">
     <div class="card-header bg text-light fwb">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CHEMISTRY_TITLE" | translate }}</div>
     <div class="card-body bg-dark-mode">
-      <div class="q-inputs-grid">
+      <div class="q-inputs-grid mb-3">
         <div>
           <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.RANDOM_BLOOD_GLUCOSE" | translate }}</label>
           <input type="number" class="form-control" formControlName="randomBloodGlucoseLevel" />
         </div>
+      </div>
+
+      <div class="q-block">
+        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.PROTEIN_DONE_QUESTION" | translate }}</label>
+        <div class="q-options">
+          <label><input type="radio" formControlName="proteinDone" name="proteinDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+          <label><input type="radio" formControlName="proteinDone" name="proteinDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+        </div>
+      </div>
+      <div class="q-inputs-grid mb-3" *ngIf="form.get('proteinDone')?.value === 'yes'">
         <div>
           <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.PROTEIN" | translate }}</label>
           <input type="number" class="form-control" formControlName="protein" />
         </div>
+      </div>
+
+      <div class="q-block">
+        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GLUCOSE_DONE_QUESTION" | translate }}</label>
+        <div class="q-options">
+          <label><input type="radio" formControlName="glucoseDone" name="glucoseDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+          <label><input type="radio" formControlName="glucoseDone" name="glucoseDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+        </div>
+      </div>
+      <div class="q-inputs-grid mb-0" *ngIf="form.get('glucoseDone')?.value === 'yes'">
         <div>
           <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GLUCOSE" | translate }}</label>
           <input type="number" class="form-control" formControlName="glucose" />
@@ -67,10 +186,18 @@
     </div>
   </div>
 
-  <div class="card shadow color rounded mt-4">
+  <!-- Cell count: hidden when lumbar puncture not done -->
+  <div class="card shadow color rounded mt-4" *ngIf="form.get('lumbarPuncture')?.value !== 'notDone'">
     <div class="card-header bg text-light fwb">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CELL_COUNT_TITLE" | translate }}</div>
     <div class="card-body bg-dark-mode">
-      <div class="q-inputs-grid">
+      <div class="q-block" [class.mb-0]="form.get('cellCountDone')?.value !== 'yes'">
+        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CELL_COUNT_DONE_QUESTION" | translate }}</label>
+        <div class="q-options">
+          <label><input type="radio" formControlName="cellCountDone" name="cellCountDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+          <label><input type="radio" formControlName="cellCountDone" name="cellCountDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+        </div>
+      </div>
+      <div class="q-inputs-grid" *ngIf="form.get('cellCountDone')?.value === 'yes'">
         <div>
           <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CELL_COUNT" | translate }}</label>
           <input type="text" class="form-control" formControlName="cellCount" />
@@ -107,98 +234,108 @@
     <div class="card-header bg text-light fwb">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.STAIN_CULTURE_PCR_TITLE" | translate }}</div>
     <div class="card-body bg-dark-mode">
 
-      <div class="q-block">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GRAM_STAIN_QUESTION" | translate }}</label>
-        <div class="q-options">
-          <label><input type="radio" formControlName="gramStainDone" name="gramStainDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
-          <label><input type="radio" formControlName="gramStainDone" name="gramStainDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+      <!-- Gram stain / Z.N / genexpert / India ink / CSF culture / PCR / viral PCR:
+           hidden when lumbar puncture not done (blood culture is the exception below). -->
+      <ng-container *ngIf="form.get('lumbarPuncture')?.value !== 'notDone'">
+        <div class="q-block">
+          <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GRAM_STAIN_QUESTION" | translate }}</label>
+          <div class="q-options">
+            <label><input type="radio" formControlName="gramStainDone" name="gramStainDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+            <label><input type="radio" formControlName="gramStainDone" name="gramStainDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+          </div>
         </div>
-      </div>
-      <div class="q-block">
-        <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GRAM_STAIN_RESULT_TITLE" | translate }}</div>
-        <div class="q-grid">
-          <label *ngFor="let opt of gramStainOptions">
-            <input type="radio" formControlName="gramStainResult" name="gramStainResult" [value]="opt" />
-            {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GRAM_STAIN." + opt) | translate }}
-          </label>
-        </div>
-      </div>
-      <div class="q-row-inline mb-4">
-        <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER" | translate }}:</label>
-        <input type="text" class="form-control" formControlName="gramStainOtherText" />
-      </div>
+        <ng-container *ngIf="form.get('gramStainDone')?.value === 'yes'">
+          <div class="q-block">
+            <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GRAM_STAIN_RESULT_TITLE" | translate }}</div>
+            <div class="q-grid">
+              <label *ngFor="let opt of gramStainOptions">
+                <input type="radio" formControlName="gramStainResult" name="gramStainResult" [value]="opt" />
+                {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GRAM_STAIN." + opt) | translate }}
+              </label>
+            </div>
+          </div>
+          <div class="q-row-inline mb-4" *ngIf="form.get('gramStainResult')?.value === 'other'">
+            <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER" | translate }}:</label>
+            <input type="text" class="form-control" formControlName="gramStainOtherText" />
+          </div>
+        </ng-container>
 
-      <hr />
-      <div class="q-block">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.ZN_QUESTION" | translate }}</label>
-        <div class="q-options">
-          <label><input type="radio" formControlName="znDone" name="znDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
-          <label><input type="radio" formControlName="znDone" name="znDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+        <hr />
+        <div class="q-block">
+          <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.ZN_QUESTION" | translate }}</label>
+          <div class="q-options">
+            <label><input type="radio" formControlName="znDone" name="znDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+            <label><input type="radio" formControlName="znDone" name="znDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+          </div>
         </div>
-      </div>
-      <div class="q-block mb-4">
-        <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.ZN_RESULT_TITLE" | translate }}</div>
-        <div class="q-options">
-          <label><input type="radio" formControlName="znResult" name="znResult" value="negative" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.NEGATIVE" | translate }}</label>
-          <label><input type="radio" formControlName="znResult" name="znResult" value="positive" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.POSITIVE" | translate }}</label>
+        <div class="q-block mb-4" *ngIf="form.get('znDone')?.value === 'yes'">
+          <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.ZN_RESULT_TITLE" | translate }}</div>
+          <div class="q-options">
+            <label><input type="radio" formControlName="znResult" name="znResult" value="negative" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.NEGATIVE" | translate }}</label>
+            <label><input type="radio" formControlName="znResult" name="znResult" value="positive" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.POSITIVE" | translate }}</label>
+          </div>
         </div>
-      </div>
 
-      <hr />
-      <div class="q-block">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GENEXPERT_QUESTION" | translate }}</label>
-        <div class="q-options">
-          <label><input type="radio" formControlName="genexpertDone" name="genexpertDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
-          <label><input type="radio" formControlName="genexpertDone" name="genexpertDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+        <hr />
+        <div class="q-block">
+          <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GENEXPERT_QUESTION" | translate }}</label>
+          <div class="q-options">
+            <label><input type="radio" formControlName="genexpertDone" name="genexpertDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+            <label><input type="radio" formControlName="genexpertDone" name="genexpertDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+          </div>
         </div>
-      </div>
-      <div class="q-block mb-4">
-        <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GENEXPERT_RESULT_TITLE" | translate }}</div>
-        <div class="q-options">
-          <label><input type="radio" formControlName="genexpertResult" name="genexpertResult" value="negative" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.NEGATIVE" | translate }}</label>
-          <label><input type="radio" formControlName="genexpertResult" name="genexpertResult" value="positive" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.POSITIVE" | translate }}</label>
+        <div class="q-block mb-4" *ngIf="form.get('genexpertDone')?.value === 'yes'">
+          <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.GENEXPERT_RESULT_TITLE" | translate }}</div>
+          <div class="q-options">
+            <label><input type="radio" formControlName="genexpertResult" name="genexpertResult" value="negative" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.NEGATIVE" | translate }}</label>
+            <label><input type="radio" formControlName="genexpertResult" name="genexpertResult" value="positive" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.POSITIVE" | translate }}</label>
+          </div>
         </div>
-      </div>
 
-      <hr />
-      <div class="q-block">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.INDIA_INK_QUESTION" | translate }}</label>
-        <div class="q-options">
-          <label><input type="radio" formControlName="indiaInkDone" name="indiaInkDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
-          <label><input type="radio" formControlName="indiaInkDone" name="indiaInkDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+        <hr />
+        <div class="q-block">
+          <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.INDIA_INK_QUESTION" | translate }}</label>
+          <div class="q-options">
+            <label><input type="radio" formControlName="indiaInkDone" name="indiaInkDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+            <label><input type="radio" formControlName="indiaInkDone" name="indiaInkDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+          </div>
         </div>
-      </div>
-      <div class="q-block mb-4">
-        <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.INDIA_INK_RESULT_TITLE" | translate }}</div>
-        <div class="q-options">
-          <label><input type="radio" formControlName="indiaInkResult" name="indiaInkResult" value="negative" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.NEGATIVE" | translate }}</label>
-          <label><input type="radio" formControlName="indiaInkResult" name="indiaInkResult" value="positive" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.POSITIVE" | translate }}</label>
+        <div class="q-block mb-4" *ngIf="form.get('indiaInkDone')?.value === 'yes'">
+          <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.INDIA_INK_RESULT_TITLE" | translate }}</div>
+          <div class="q-options">
+            <label><input type="radio" formControlName="indiaInkResult" name="indiaInkResult" value="negative" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.NEGATIVE" | translate }}</label>
+            <label><input type="radio" formControlName="indiaInkResult" name="indiaInkResult" value="positive" /> {{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.POSITIVE" | translate }}</label>
+          </div>
         </div>
-      </div>
 
-      <hr />
-      <div class="q-block">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CSF_CULTURE_QUESTION" | translate }}</label>
-        <div class="q-options">
-          <label><input type="radio" formControlName="csfCultureDone" name="csfCultureDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
-          <label><input type="radio" formControlName="csfCultureDone" name="csfCultureDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+        <hr />
+        <div class="q-block">
+          <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CSF_CULTURE_QUESTION" | translate }}</label>
+          <div class="q-options">
+            <label><input type="radio" formControlName="csfCultureDone" name="csfCultureDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+            <label><input type="radio" formControlName="csfCultureDone" name="csfCultureDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+          </div>
         </div>
-      </div>
-      <div class="card-header bg text-light fwb mb-3">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CSF_CULTURE_TITLE" | translate }}</div>
-      <div class="q-block">
-        <div class="q-grid">
-          <label *ngFor="let opt of organismOptions">
-            <input type="radio" formControlName="csfCultureResult" name="csfCultureResult" [value]="opt" />
-            {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.ORGANISMS." + opt) | translate }}
-          </label>
-        </div>
-      </div>
-      <div class="q-row-inline mb-4">
-        <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER" | translate }}:</label>
-        <input type="text" class="form-control" formControlName="csfCultureOtherText" />
-      </div>
+        <ng-container *ngIf="form.get('csfCultureDone')?.value === 'yes'">
+          <div class="card-header bg text-light fwb mb-3">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CSF_CULTURE_TITLE" | translate }}</div>
+          <div class="q-block">
+            <div class="q-grid">
+              <label *ngFor="let opt of organismOptions">
+                <input type="radio" formControlName="csfCultureResult" name="csfCultureResult" [value]="opt" />
+                {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.ORGANISMS." + opt) | translate }}
+              </label>
+            </div>
+          </div>
+          <div class="q-row-inline mb-4" *ngIf="form.get('csfCultureResult')?.value === 'others'">
+            <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER" | translate }}:</label>
+            <input type="text" class="form-control" formControlName="csfCultureOtherText" />
+          </div>
+        </ng-container>
 
-      <hr />
+        <hr />
+      </ng-container>
+
+      <!-- Blood culture: always available (not tied to lumbar puncture). -->
       <div class="q-block">
         <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.BLOOD_CULTURE_QUESTION" | translate }}</label>
         <div class="q-options">
@@ -206,77 +343,86 @@
           <label><input type="radio" formControlName="bloodCultureDone" name="bloodCultureDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
         </div>
       </div>
-      <div class="card-header bg text-light fwb mb-3">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.BLOOD_CULTURE_TITLE" | translate }}</div>
-      <div class="q-block">
-        <div class="q-grid">
-          <label *ngFor="let opt of organismOptions">
-            <input type="radio" formControlName="bloodCultureResult" name="bloodCultureResult" [value]="opt" />
-            {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.ORGANISMS." + opt) | translate }}
-          </label>
+      <ng-container *ngIf="form.get('bloodCultureDone')?.value === 'yes'">
+        <div class="card-header bg text-light fwb mb-3">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.BLOOD_CULTURE_TITLE" | translate }}</div>
+        <div class="q-block">
+          <div class="q-grid">
+            <label *ngFor="let opt of organismOptions">
+              <input type="radio" formControlName="bloodCultureResult" name="bloodCultureResult" [value]="opt" />
+              {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.ORGANISMS." + opt) | translate }}
+            </label>
+          </div>
         </div>
-      </div>
-      <div class="q-row-inline mb-4">
-        <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER" | translate }}:</label>
-        <input type="text" class="form-control" formControlName="bloodCultureOtherText" />
-      </div>
+        <div class="q-row-inline mb-4" *ngIf="form.get('bloodCultureResult')?.value === 'others'">
+          <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER" | translate }}:</label>
+          <input type="text" class="form-control" formControlName="bloodCultureOtherText" />
+        </div>
+      </ng-container>
 
-      <hr />
-      <div class="q-block">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.PCR_QUESTION" | translate }}</label>
-        <div class="q-options">
-          <label><input type="radio" formControlName="pcrDone" name="pcrDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
-          <label><input type="radio" formControlName="pcrDone" name="pcrDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+      <!-- Bacterial PCR: hidden when lumbar puncture not done -->
+      <ng-container *ngIf="form.get('lumbarPuncture')?.value !== 'notDone'">
+        <hr />
+        <div class="q-block">
+          <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.PCR_QUESTION" | translate }}</label>
+          <div class="q-options">
+            <label><input type="radio" formControlName="pcrDone" name="pcrDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+            <label><input type="radio" formControlName="pcrDone" name="pcrDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+          </div>
         </div>
-      </div>
-      <div class="q-block">
-        <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.PCR_RESULT_TITLE" | translate }}</div>
-        <div class="q-grid">
-          <label *ngFor="let opt of pcrResultOptions">
-            <input type="radio" formControlName="pcrResult" name="pcrResult" [value]="opt" />
-            {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.PCR_RESULT." + opt) | translate }}
-          </label>
-        </div>
-      </div>
-      <div class="q-row-inline mb-4">
-        <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER" | translate }}:</label>
-        <input type="text" class="form-control" formControlName="pcrOtherText" />
-      </div>
+        <ng-container *ngIf="form.get('pcrDone')?.value === 'yes'">
+          <div class="q-block">
+            <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.PCR_RESULT_TITLE" | translate }}</div>
+            <div class="q-grid">
+              <label *ngFor="let opt of pcrResultOptions">
+                <input type="radio" formControlName="pcrResult" name="pcrResult" [value]="opt" />
+                {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.PCR_RESULT." + opt) | translate }}
+              </label>
+            </div>
+          </div>
+          <div class="q-row-inline mb-4" *ngIf="form.get('pcrResult')?.value === 'other'">
+            <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER" | translate }}:</label>
+            <input type="text" class="form-control" formControlName="pcrOtherText" />
+          </div>
+        </ng-container>
 
-      <hr />
-      <div class="q-block">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.VIRAL_PCR_QUESTION" | translate }}</label>
-        <div class="q-options">
-          <label><input type="radio" formControlName="viralPcrDone" name="viralPcrDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
-          <label><input type="radio" formControlName="viralPcrDone" name="viralPcrDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+        <hr />
+        <div class="q-block">
+          <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.VIRAL_PCR_QUESTION" | translate }}</label>
+          <div class="q-options">
+            <label><input type="radio" formControlName="viralPcrDone" name="viralPcrDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+            <label><input type="radio" formControlName="viralPcrDone" name="viralPcrDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+          </div>
         </div>
-      </div>
-      <div class="q-block">
-        <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.VIRAL_PCR_RESULT_TITLE" | translate }}</div>
-        <div class="q-grid">
-          <label *ngFor="let opt of viralPcrResultOptions">
-            <input type="radio" formControlName="viralPcrResult" name="viralPcrResult" [value]="opt" />
-            {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.VIRAL_PCR_RESULT." + opt) | translate }}
-          </label>
-        </div>
-      </div>
-      <div class="q-row-inline mb-0">
-        <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER" | translate }}:</label>
-        <input type="text" class="form-control" formControlName="viralPcrOtherText" />
-      </div>
+        <ng-container *ngIf="form.get('viralPcrDone')?.value === 'yes'">
+          <div class="q-block">
+            <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.VIRAL_PCR_RESULT_TITLE" | translate }}</div>
+            <div class="q-grid">
+              <label *ngFor="let opt of viralPcrResultOptions">
+                <input type="radio" formControlName="viralPcrResult" name="viralPcrResult" [value]="opt" />
+                {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.VIRAL_PCR_RESULT." + opt) | translate }}
+              </label>
+            </div>
+          </div>
+          <div class="q-row-inline mb-0" *ngIf="form.get('viralPcrResult')?.value === 'other'">
+            <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER" | translate }}:</label>
+            <input type="text" class="form-control" formControlName="viralPcrOtherText" />
+          </div>
+        </ng-container>
+      </ng-container>
     </div>
   </div>
 
   <div class="card shadow color rounded mt-4">
     <div class="card-header bg text-light fwb">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CT_TITLE" | translate }}</div>
     <div class="card-body bg-dark-mode">
-      <div class="q-block">
+      <div class="q-block" [class.mb-0]="form.get('ctDone')?.value !== 'yes'">
         <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CT_QUESTION" | translate }}</label>
         <div class="q-options">
           <label><input type="radio" formControlName="ctDone" name="ctDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
           <label><input type="radio" formControlName="ctDone" name="ctDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
         </div>
       </div>
-      <div class="q-block">
+      <div class="q-block mb-0" *ngIf="form.get('ctDone')?.value === 'yes'">
         <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CT_RESULT_TITLE" | translate }}</div>
         <div class="q-options">
           <label *ngFor="let opt of ctResultOptions">
@@ -285,24 +431,20 @@
           </label>
         </div>
       </div>
-      <div class="q-row-inline mb-0">
-        <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER_SPECIFY" | translate }}:</label>
-        <input type="text" class="form-control" formControlName="ctOtherText" />
-      </div>
     </div>
   </div>
 
   <div class="card shadow color rounded mt-4">
     <div class="card-header bg text-light fwb">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.MRI_TITLE" | translate }}</div>
     <div class="card-body bg-dark-mode">
-      <div class="q-block">
+      <div class="q-block" [class.mb-0]="form.get('mriDone')?.value !== 'yes'">
         <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.MRI_QUESTION" | translate }}</label>
         <div class="q-options">
           <label><input type="radio" formControlName="mriDone" name="mriDone" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
           <label><input type="radio" formControlName="mriDone" name="mriDone" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
         </div>
       </div>
-      <div class="q-block">
+      <div class="q-block mb-0" *ngIf="form.get('mriDone')?.value === 'yes'">
         <div class="section-title">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.MRI_RESULT_TITLE" | translate }}</div>
         <div class="q-options">
           <label *ngFor="let opt of mriResultOptions">
@@ -311,13 +453,47 @@
           </label>
         </div>
       </div>
-      <div class="q-row-inline mb-0">
-        <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.IF_OTHER_SPECIFY" | translate }}:</label>
-        <input type="text" class="form-control" formControlName="mriOtherText" />
-      </div>
     </div>
   </div>
 
+  <!-- Complications: moved to directly before the final diagnosis -->
+  <div class="card shadow color rounded mt-4">
+    <div class="card-header bg text-light fwb">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.COMPLICATIONS_TITLE" | translate }}</div>
+    <div class="card-body bg-dark-mode">
+      <div class="q-block" [class.mb-0]="form.get('complicationsExist')?.value !== 'yes'">
+        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.COMPLICATIONS_EXIST_QUESTION" | translate }}</label>
+        <div class="q-options">
+          <label><input type="radio" formControlName="complicationsExist" name="complicationsExist" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
+          <label><input type="radio" formControlName="complicationsExist" name="complicationsExist" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
+        </div>
+      </div>
+
+      <ng-container *ngIf="form.get('complicationsExist')?.value === 'yes'">
+        <div class="q-block">
+          <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.COMPLICATION_DATE_LABEL" | translate }}</label>
+          <input type="date" class="form-control" formControlName="complicationDate" style="max-width: 260px;" />
+        </div>
+
+        <div class="q-block mb-0">
+          <div class="fwb mb-2">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.COMPLICATION_DETAILS_TITLE" | translate }}</div>
+          <div class="mb-3" *ngFor="let group of complicationGroups">
+            <div class="section-title">
+              {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.COMPLICATION_GROUPS." + group.titleKey) | translate }}
+            </div>
+            <div class="q-grid">
+              <label *ngFor="let item of group.items">
+                <input type="checkbox" [checked]="hasComplication(item)"
+                  (change)="toggleComplication(item, $any($event.target).checked)" />
+                {{ ("NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS." + item) | translate }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Final diagnosis: last section on the page -->
   <div class="card shadow color rounded mt-4">
     <div class="card-header bg text-light fwb">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.FINAL_DIAGNOSIS_TITLE" | translate }}</div>
     <div class="card-body bg-dark-mode">
@@ -341,59 +517,6 @@
       <div class="q-row-inline mb-0">
         <label class="q-inline-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.FINAL_DIAGNOSIS_IF_NOT_MENTIONED" | translate }}:</label>
         <input type="text" class="form-control" formControlName="finalDiagnosisOtherText" />
-      </div>
-    </div>
-  </div>
-
-  <div class="card shadow color rounded mt-4">
-    <div class="card-header bg text-light fwb">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CHRONIC_DISEASES_TITLE" | translate }}</div>
-    <div class="card-body bg-dark-mode">
-      <div class="q-block">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CHRONIC_DISEASES_QUESTION" | translate }}</label>
-        <div class="q-options">
-          <label><input type="radio" formControlName="hasChronicDiseases" name="hasChronicDiseases" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
-          <label><input type="radio" formControlName="hasChronicDiseases" name="hasChronicDiseases" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
-        </div>
-      </div>
-      <div class="q-block mb-0">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.CHRONIC_DISEASES_IF_YES" | translate }}</label>
-        <select class="form-control" formControlName="chronicDisease" name="chronicDisease">
-          <option [ngValue]="null">—</option>
-          <option *ngFor="let opt of chronicDiseaseOptions" [ngValue]="opt">{{ opt }}</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <div class="card shadow color rounded mt-4">
-    <div class="card-header bg text-light fwb">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.COMPLICATIONS_TITLE" | translate }}</div>
-    <div class="card-body bg-dark-mode">
-      <div class="q-block">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.COMPLICATIONS_EXIST_QUESTION" | translate }}</label>
-        <div class="q-options">
-          <label><input type="radio" formControlName="complicationsExist" name="complicationsExist" value="yes" /> {{ "NEDSS.COMMON.YES" | translate }}</label>
-          <label><input type="radio" formControlName="complicationsExist" name="complicationsExist" value="no" /> {{ "NEDSS.COMMON.NO" | translate }}</label>
-        </div>
-      </div>
-      <div class="q-block">
-        <label class="q-label">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.COMPLICATION_DATE_LABEL" | translate }}</label>
-        <input type="date" class="form-control" formControlName="complicationDate" style="max-width: 260px;" />
-      </div>
-
-      <div class="q-block mb-0">
-        <div class="fwb mb-2">{{ "NEDSS.LAB_VIEW.MENINGITIS_CHECKS.COMPLICATION_DETAILS_TITLE" | translate }}</div>
-        <div class="mb-3" *ngFor="let group of complicationGroups">
-          <div class="section-title">
-            {{ ("NEDSS.LAB_VIEW.MENINGITIS_CHECKS.COMPLICATION_GROUPS." + group.titleKey) | translate }}
-          </div>
-          <div class="q-grid">
-            <label *ngFor="let item of group.items">
-              <input type="checkbox" [checked]="hasComplication(item)"
-                (change)="toggleComplication(item, $any($event.target).checked)" />
-              {{ ("NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS." + item) | translate }}
-            </label>
-          </div>
-        </div>
       </div>
     </div>
     <div class="card-footer text-start">

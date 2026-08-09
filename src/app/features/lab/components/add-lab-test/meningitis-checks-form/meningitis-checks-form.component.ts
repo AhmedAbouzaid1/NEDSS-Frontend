@@ -37,6 +37,35 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
 
   readonly appearanceOptions = ['clear', 'turbid', 'bloody', 'hazy', 'other'];
 
+  readonly testsOutsideHospitalOptions = [
+    'chemistry',
+    'gramStain',
+    'zn',
+    'genexpert',
+    'indiaInk',
+    'csfCulture',
+    'bloodCulture',
+    'pcr',
+  ];
+
+  readonly externalLabTypeOptions = [
+    'governmentHospitalLab',
+    'universityLab',
+    'privateLab',
+    'jointLab',
+    'centralLabs',
+  ];
+
+  readonly lpNotDoneCauseOptions = [
+    'coma',
+    'fail',
+    'badGeneralCondition',
+    'severeHeadache',
+    'obesity',
+    'congenitalAnomalies',
+    'other',
+  ];
+
   readonly gramStainOptions = [
     'gmPositiveCocciClusters',
     'gmPositiveCocciPairs',
@@ -66,22 +95,29 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     'noGrowth',
   ];
 
-  readonly pcrResultOptions = ['nMeningitidis', 'sPneumoniae', 'hInfluenzae', 'other'];
+  readonly pcrResultOptions = ['nMeningitidis', 'sPneumoniae', 'hInfluenzae', 'negative', 'other'];
 
   readonly viralPcrResultOptions = [
-    'negative',
+    'ebv',
     'enterovirus',
     'herpesSimplexVirus',
-    'varicellaZosterVirus',
+    'humanHerpesVirus',
+    'adenovirus',
+    'b19',
     'cytomegalovirus',
-    'ebv',
+    'varicellaZosterVirus',
+    'mumpsVirus',
+    'parechovirus',
+    'measles',
     'arbovirus',
+    'rubella',
+    'negative',
     'other',
   ];
 
-  readonly ctResultOptions = ['normal', 'abnormal', 'other'];
+  readonly ctResultOptions = ['probableEncephalitis', 'freeEncephalitis'];
 
-  readonly mriResultOptions = ['normal', 'infectiousDisease', 'other'];
+  readonly mriResultOptions = ['probableEncephalitis', 'freeEncephalitis'];
 
   readonly finalDiagnosisOtherOptions = [
     'ADEM syndrome',
@@ -133,6 +169,7 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     'ارتفاع ضغط الدم',
     'خراج بالمخ',
     'تركيب صمام بالمخ',
+    'أخرى',
   ];
 
   readonly finalDiagnosisOptions = [
@@ -152,7 +189,7 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
   ];
 
   readonly complicationGroups = [
-    { titleKey: 'organic', items: ['epileptic_episodes', 'convulsive_episodes'] },
+    { titleKey: 'neurological', items: ['epileptic_episodes', 'convulsive_episodes'] },
     {
       titleKey: 'sensory',
       items: [
@@ -192,10 +229,24 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
       lumbarPuncture: [null],
       appearance: [null],
 
+      // Lumbar puncture done → puncture info
+      lumbarPuncturePlace: [null],
+      lumbarPunctureDate: [null],
+      allTestsInsideHospital: [null],
+      testsOutsideHospital: [[]],
+      externalLabType: [[]],
+
+      // Lumbar puncture not done → reason
+      lpNotDoneCause: [null],
+      lpNotDoneCauseOtherText: [null],
+
       randomBloodGlucoseLevel: [null],
+      proteinDone: [null],
       protein: [null],
+      glucoseDone: [null],
       glucose: [null],
 
+      cellCountDone: [null],
       pln: [null],
       rbc: [null],
       monocytePercent: [null],
@@ -246,7 +297,8 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
       finalDiagnosisOtherText: [null],
 
       hasChronicDiseases: [null],
-      chronicDisease: [null],
+      chronicDisease: [[]],
+      chronicDiseaseOtherText: [null],
 
       complicationsExist: [null],
       complicationDate: [null],
@@ -254,8 +306,9 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     });
   }
 
-  toggleComplication(item: string, checked: boolean): void {
-    const control = this.form.get('complicationItems');
+  // Generic checkbox-list helpers for controls whose value is a string[] (stored as CSV).
+  toggleArrayItem(controlName: string, item: string, checked: boolean): void {
+    const control = this.form.get(controlName);
     const currentValues = (control?.value as string[]) ?? [];
     const updated = checked
       ? Array.from(new Set([...currentValues, item]))
@@ -263,16 +316,30 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     control?.setValue(updated);
   }
 
-  hasComplication(item: string): boolean {
-    const values = (this.form.get('complicationItems')?.value as string[]) ?? [];
+  hasArrayItem(controlName: string, item: string): boolean {
+    const values = (this.form.get(controlName)?.value as string[]) ?? [];
     return values.includes(item);
+  }
+
+  toggleComplication(item: string, checked: boolean): void {
+    this.toggleArrayItem('complicationItems', item, checked);
+  }
+
+  hasComplication(item: string): boolean {
+    return this.hasArrayItem('complicationItems', item);
   }
 
   ngOnInit(): void {
     // Final diagnosis is algorithm-driven (read-only in the UI): recompute it
     // whenever any lab input changes, mirroring the backend calculation.
+    // Conditional (*ngIf) sections also clear their dependent controls when their
+    // gate turns off, so hidden values never feed the diagnosis or get saved.
+    this.applyConditionalResets();
     this.recomputeFinalDiagnosis();
-    this.form.valueChanges.subscribe(() => this.recomputeFinalDiagnosis());
+    this.form.valueChanges.subscribe(() => {
+      this.applyConditionalResets();
+      this.recomputeFinalDiagnosis();
+    });
     this.getById();
   }
 
@@ -281,6 +348,75 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     const computed = this.computeFinalDiagnosis(v);
     if (v.finalDiagnosis !== computed) {
       this.form.get('finalDiagnosis')?.setValue(computed, { emitEvent: false });
+    }
+  }
+
+  // Controls hidden by *ngIf in the template. When a gate flips off, blank the
+  // dependent controls so stale values are neither saved nor fed to the algorithm.
+  private applyConditionalResets(): void {
+    const v = this.form.getRawValue();
+
+    if (v.lumbarPuncture !== 'done') {
+      this.clearControls(['lumbarPuncturePlace', 'lumbarPunctureDate', 'allTestsInsideHospital', 'appearance']);
+    }
+    if (v.lumbarPuncture !== 'notDone') {
+      this.clearControls(['lpNotDoneCause', 'lpNotDoneCauseOtherText']);
+    }
+    // Lumbar puncture not done → CSF-derived sections are hidden (blood culture excepted).
+    if (v.lumbarPuncture === 'notDone') {
+      this.clearControls([
+        'randomBloodGlucoseLevel', 'proteinDone', 'protein', 'glucoseDone', 'glucose',
+        'cellCountDone', 'pln', 'rbc', 'monocytePercent', 'eosinophilPercent', 'neutPercent', 'lymphPercent', 'cellCount',
+        'gramStainDone', 'gramStainResult', 'gramStainOtherText',
+        'znDone', 'znResult', 'genexpertDone', 'genexpertResult', 'indiaInkDone', 'indiaInkResult',
+        'csfCultureDone', 'csfCultureResult', 'csfCultureOtherText',
+        'pcrDone', 'pcrResult', 'pcrOtherText', 'viralPcrDone', 'viralPcrResult', 'viralPcrOtherText',
+      ]);
+    }
+
+    if (v.allTestsInsideHospital !== 'no') {
+      this.clearControls(['testsOutsideHospital', 'externalLabType']);
+    }
+    if (v.lpNotDoneCause !== 'other') this.clearControls(['lpNotDoneCauseOtherText']);
+
+    if (v.proteinDone !== 'yes') this.clearControls(['protein']);
+    if (v.glucoseDone !== 'yes') this.clearControls(['glucose']);
+    if (v.cellCountDone !== 'yes') {
+      this.clearControls(['pln', 'rbc', 'monocytePercent', 'eosinophilPercent', 'neutPercent', 'lymphPercent', 'cellCount']);
+    }
+
+    if (v.gramStainDone !== 'yes') this.clearControls(['gramStainResult', 'gramStainOtherText']);
+    if (v.gramStainResult !== 'other') this.clearControls(['gramStainOtherText']);
+    if (v.znDone !== 'yes') this.clearControls(['znResult']);
+    if (v.genexpertDone !== 'yes') this.clearControls(['genexpertResult']);
+    if (v.indiaInkDone !== 'yes') this.clearControls(['indiaInkResult']);
+    if (v.csfCultureDone !== 'yes') this.clearControls(['csfCultureResult', 'csfCultureOtherText']);
+    if (v.csfCultureResult !== 'others') this.clearControls(['csfCultureOtherText']);
+    if (v.bloodCultureDone !== 'yes') this.clearControls(['bloodCultureResult', 'bloodCultureOtherText']);
+    if (v.bloodCultureResult !== 'others') this.clearControls(['bloodCultureOtherText']);
+    if (v.pcrDone !== 'yes') this.clearControls(['pcrResult', 'pcrOtherText']);
+    if (v.pcrResult !== 'other') this.clearControls(['pcrOtherText']);
+    if (v.viralPcrDone !== 'yes') this.clearControls(['viralPcrResult', 'viralPcrOtherText']);
+    if (v.viralPcrResult !== 'other') this.clearControls(['viralPcrOtherText']);
+    if (v.ctDone !== 'yes') this.clearControls(['ctResult']);
+    if (v.mriDone !== 'yes') this.clearControls(['mriResult']);
+
+    if (v.hasChronicDiseases !== 'yes') this.clearControls(['chronicDisease', 'chronicDiseaseOtherText']);
+    if (!((v.chronicDisease as string[]) ?? []).includes('أخرى')) this.clearControls(['chronicDiseaseOtherText']);
+
+    if (v.complicationsExist !== 'yes') this.clearControls(['complicationDate', 'complicationItems']);
+  }
+
+  private clearControls(names: string[]): void {
+    for (const name of names) {
+      const control = this.form.get(name);
+      if (!control) continue;
+      const current = control.value;
+      if (Array.isArray(current)) {
+        if (current.length > 0) control.setValue([], { emitEvent: false });
+      } else if (current !== null && current !== '' && current !== undefined) {
+        control.setValue(null, { emitEvent: false });
+      }
     }
   }
 
@@ -349,7 +485,7 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     const chemViral = protein !== null && glucose !== null &&
       protein >= 50 && protein <= 100 && glucose >= 45 && glucose <= 100 &&
       cell !== null && cell < 100;
-    const mriEncephalitis = done(v.mriDone) && v.mriResult === 'infectiousDisease';
+    const mriEncephalitis = done(v.mriDone) && v.mriResult === 'probableEncephalitis';
     if (chemViral || mriEncephalitis) return 'probableViralEncephalitis';
 
     // No rule matched.
@@ -360,6 +496,13 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     if (changes['patientId'] && !changes['patientId'].firstChange) {
       this.getById();
     }
+  }
+
+  // Normalizes an incoming date (ISO string / Date) to the yyyy-MM-dd value that
+  // a native <input type="date"> expects.
+  private toDateInput(value: any): string | null {
+    if (!value) return null;
+    return String(value).substring(0, 10);
   }
 
   getById(): void {
@@ -373,11 +516,16 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
           return;
         }
         this.recordId = data.id ?? null;
+        const toArray = (x: any): string[] =>
+          x ? String(x).split(',').filter((v: string) => v) : [];
         this.form.patchValue({
           ...data,
-          complicationItems: data.complicationItems
-            ? String(data.complicationItems).split(',').filter((x: string) => x)
-            : [],
+          lumbarPunctureDate: this.toDateInput(data.lumbarPunctureDate),
+          complicationDate: this.toDateInput(data.complicationDate),
+          complicationItems: toArray(data.complicationItems),
+          testsOutsideHospital: toArray(data.testsOutsideHospital),
+          externalLabType: toArray(data.externalLabType),
+          chronicDisease: toArray(data.chronicDisease),
         });
       },
       () => {
@@ -392,7 +540,11 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     const payload = { ...this.form.value };
     payload.id = this.recordId;
     payload.patientId = this.patientId;
-    payload.complicationItems = ((payload.complicationItems as string[]) ?? []).join(',');
+    const toCsv = (x: any): string => ((x as string[]) ?? []).join(',');
+    payload.complicationItems = toCsv(payload.complicationItems);
+    payload.testsOutsideHospital = toCsv(payload.testsOutsideHospital);
+    payload.externalLabType = toCsv(payload.externalLabType);
+    payload.chronicDisease = toCsv(payload.chronicDisease);
 
     const request$ = this.recordId
       ? this.labService.updateMeningitisCheck(payload)
