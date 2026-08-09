@@ -8,6 +8,7 @@ import {
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { UserMessageService } from '../services/user.message.service';
+import { SessionService } from '../services/session.service';
 
 @Injectable({
   providedIn: 'root',
@@ -146,14 +147,19 @@ export class NavigationGuard {
     { Comingroute: 'qustion-form', id: 94 },
   ];
   filterdData: any;
-  constructor(private router: Router, private userMsg: UserMessageService) {}
+  constructor(
+    private router: Router,
+    private userMsg: UserMessageService,
+    private session: SessionService
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const authData = JSON.parse(localStorage.getItem('ls.authorizationData'));
-    if (!authData) {
+    if (!this.session.isValid()) {
+      this.session.clearSession();
       this.router.navigateByUrl('/');
       return of(false);
     }
+    const authData = this.session.getSession();
     if (authData.emailId == 'admin@admin.com')
       return of(true);
     let userPremitedPages: any[] = authData.pages;

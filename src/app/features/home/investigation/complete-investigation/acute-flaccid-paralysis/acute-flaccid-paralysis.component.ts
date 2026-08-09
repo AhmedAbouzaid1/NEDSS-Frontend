@@ -24,6 +24,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
 
   allFilledControlsCount = 0;
   allControllesCount = 0;
+  patientName: string = '';
 
   activeTab: 'field' | 'vaccination' | 'survey' | 'aggregation' | 'followup' = 'field';
   tabs = [
@@ -137,6 +138,10 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     this.form.valueChanges.subscribe(() => this.calculateCompletionPercentage());
 
     this.currentId = this.investigationService.currentid;
+    this.patientName =
+      (this.investigationService.patient?.firstName || '') + ' ' +
+      (this.investigationService.patient?.secondName || '') + ' ' +
+      (this.investigationService.patient?.thirdName || '');
     this.form.controls['patientID'].setValue(this.currentId);
 
     this.loadPatientHeader();

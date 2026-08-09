@@ -8,6 +8,8 @@ import { AuthService } from './core/services/auth.service';
 import { CloseSeatioService } from './close-seatio.service';
 import { PartialLoadingService } from './core/components/partial-loading/partial-loading.service';
 import { UiLoadingService } from './core/services/ui-loading.service';
+import { PwaUpdateService } from './core/services/pwa-update.service';
+import { SessionService } from './core/services/session.service';
 
 @Component({
   selector: 'app-root',
@@ -39,8 +41,11 @@ export class AppComponent {
     private closeSeatioService: CloseSeatioService,
     private partialLoadingService: PartialLoadingService,
     private uiLoadingService: UiLoadingService,
+    private pwaUpdateService: PwaUpdateService,
+    private session: SessionService,
     private ngZone: NgZone
   ) {
+    this.pwaUpdateService.init();
     this.lang =
       localStorage.getItem('ls.currentLang') != undefined
         ? localStorage.getItem('ls.currentLang')
@@ -91,8 +96,10 @@ export class AppComponent {
       }
     });
 
-    if (localStorage.getItem('ls.authorizationData') && localStorage.getItem('ls.authorizationData') !== 'undefined') {
+    if (this.session.isValid()) {
       this.authService.setUserLoggedIn(true);
+    } else {
+      this.session.clearSession();
     }
 
     this.onloadHandler();

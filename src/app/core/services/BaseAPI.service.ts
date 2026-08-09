@@ -12,6 +12,7 @@ import { UserMessageService } from './user.message.service';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { Subject } from '@microsoft/signalr';
+import { SessionService } from './session.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,8 @@ export class BaseAPIService {
     private http: HttpClient,
     private userMessage: UserMessageService,
     private translateService: TranslateService,
-    private router: Router
+    private router: Router,
+    private session: SessionService
   ) {}
   createCompleteRoute(route: string): string {
     // return `${window.location.origin}${"/"}${route}`
@@ -42,12 +44,9 @@ export class BaseAPIService {
       headers = headers.set('Accept-Language', lang);
     }
     // console.log(authData);
-    if (
-      localStorage.getItem('ls.authorizationData') != null &&
-      localStorage.getItem('ls.authorizationData') != 'undefined'
-    ) {
-      var authData = JSON.parse(localStorage.getItem('ls.authorizationData'));
-      headers = headers.set('Authorization', ` Bearer ${authData.token}`);
+    const token = this.session.getToken();
+    if (token) {
+      headers = headers.set('Authorization', ` Bearer ${token}`);
     }
     return headers;
   }
@@ -229,7 +228,7 @@ export class BaseAPIService {
     if (error.status === 401) {
       if (onLoginPage) return;
       this.isRedirecting = true;
-      localStorage.removeItem('ls.authorizationData');
+      this.session.clearSession();
       this.translateService.get('NEDSS.COMMON.SESSION_EXPIRED').subscribe((msg) => {
         this.userMessage.warn(msg);
       });
