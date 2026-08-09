@@ -169,8 +169,13 @@
                         <div class="col-lg-3"><div class="form-group"><label>مكان المخالطة</label>
                           <select class="form-control" formControlName="contactPlace">
                             <option [ngValue]="null">اختر...</option>
-                            <option [ngValue]="1">المنزل</option><option [ngValue]="2">المدرسة</option>
-                            <option [ngValue]="3">العمل</option><option [ngValue]="4">أخرى</option>
+                            <option [ngValue]="1">أماكن عامة أخرى</option>
+                            <option [ngValue]="2">السوق</option>
+                            <option [ngValue]="3">المدرسة</option>
+                            <option [ngValue]="4">المستشفى</option>
+                            <option [ngValue]="5">المنزل</option>
+                            <option [ngValue]="6">مكان العمل</option>
+                            <option [ngValue]="7">وسائل النقل</option>
                           </select></div></div>
                         <div class="col-lg-6"><div class="form-group"><label>العنوان بالتفصيل</label>
                           <input type="text" class="form-control" formControlName="address" /></div></div>
@@ -224,7 +229,7 @@
                           <tbody>
                             <tr *ngFor="let p of previousCases.controls; let i = index">
                               <td>{{ i + 1 }}</td><td>{{ p.value.contactName }}</td><td>{{ p.value.rashOnsetDate }}</td>
-                              <td>{{ p.value.kinship }}</td><td>{{ vaccinationLabel(p.value.vaccinationStatus) }}</td><td>{{ p.value.contactDate }}</td>
+                              <td>{{ kinshipLabel(p.value.kinship) }}</td><td>{{ vaccinationLabel(p.value.vaccinationStatus) }}</td><td>{{ p.value.contactDate }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -255,7 +260,26 @@
                           <div class="col-lg-4"><div class="form-group"><label>تاريخ ظهور الطفح</label>
                             <input type="date" class="form-control" formControlName="rashOnsetDate" /></div></div>
                           <div class="col-lg-4"><div class="form-group"><label>صلة القرابة</label>
-                            <input type="text" class="form-control" formControlName="kinship" /></div></div>
+                            <select class="form-control" formControlName="kinship">
+                              <option [ngValue]="null">اختر...</option>
+                              <option [ngValue]="1">أخ</option>
+                              <option [ngValue]="2">أخت</option>
+                              <option [ngValue]="3">آخر</option>
+                              <option [ngValue]="4">ابن</option>
+                              <option [ngValue]="5">ابنة</option>
+                              <option [ngValue]="6">جار</option>
+                              <option [ngValue]="7">جد</option>
+                              <option [ngValue]="8">جدة</option>
+                              <option [ngValue]="9">خال</option>
+                              <option [ngValue]="10">خالة</option>
+                              <option [ngValue]="11">زوج</option>
+                              <option [ngValue]="12">زوجة</option>
+                              <option [ngValue]="13">صديق</option>
+                              <option [ngValue]="14">عم</option>
+                              <option [ngValue]="15">عمة</option>
+                              <option [ngValue]="16">والد</option>
+                              <option [ngValue]="17">والدة</option>
+                            </select></div></div>
                           <div class="col-lg-4"><div class="form-group"><label>الحالة التطعيمية</label>
                             <select class="form-control" formControlName="vaccinationStatus">
                               <option [ngValue]="null">اختر...</option>
@@ -351,8 +375,13 @@
                         <div class="col-lg-3"><div class="form-group"><label>مكان المخالطة</label>
                           <select class="form-control" formControlName="contactPlace">
                             <option [ngValue]="null">اختر...</option>
-                            <option [ngValue]="1">المنزل</option><option [ngValue]="2">المدرسة</option>
-                            <option [ngValue]="3">العمل</option><option [ngValue]="4">أخرى</option>
+                            <option [ngValue]="1">أماكن عامة أخرى</option>
+                            <option [ngValue]="2">السوق</option>
+                            <option [ngValue]="3">المدرسة</option>
+                            <option [ngValue]="4">المستشفى</option>
+                            <option [ngValue]="5">المنزل</option>
+                            <option [ngValue]="6">مكان العمل</option>
+                            <option [ngValue]="7">وسائل النقل</option>
                           </select></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع1</label>
                           <input type="date" class="form-control" formControlName="visitWeek1" /></div></div>
@@ -413,11 +442,11 @@
                       <div class="fwb mb-1">عرض السجلات</div>
                       <div class="table-responsive">
                         <table class="table table-bordered text-center align-middle">
-                          <thead><tr><th>#</th><th>الاسم</th><th>العمر</th><th>مكان المخالطة</th><th>مطعمة</th><th>أسبوع الحمل</th><th>تاريخ ظهور الأعراض</th><th>تاريخ الولادة المتوقع</th></tr></thead>
+                          <thead><tr><th>#</th><th>اسم المخالط</th><th>السن</th><th>صلة القرابة</th><th>تاريخ ظهور الطفح</th><th>الحالة التطعيمية</th><th>تاريخ المخالطة</th><th>أسبوع الحمل</th></tr></thead>
                           <tbody>
                             <tr *ngFor="let p of pregnantContacts.controls; let i = index">
-                              <td>{{ i + 1 }}</td><td>{{ p.value.name }}</td><td>{{ p.value.age }}</td><td>{{ p.value.contactLocation }}</td>
-                              <td>{{ mark(p.value.vaccinated) }}</td><td>{{ p.value.pregnancyWeeks }}</td><td>{{ p.value.symptomAppearanceDate }}</td><td>{{ p.value.expectedDeliveryDate }}</td>
+                              <td>{{ i + 1 }}</td><td>{{ p.value.name }}</td><td>{{ p.value.age }}</td><td>{{ kinshipLabel(p.value.kinship) }}</td>
+                              <td>{{ p.value.rashOnsetDate }}</td><td>{{ vaccinationLabel(p.value.vaccinationStatus) }}</td><td>{{ p.value.contactDate }}</td><td>{{ p.value.pregnancyWeeks }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -443,19 +472,71 @@
                         </div>
 
                         <div class="row" *ngIf="isRowOpen(contact)">
-                          <div class="col-lg-4"><div class="form-group"><label>الاسم</label>
+                          <div class="col-lg-4"><div class="form-group"><label>اسم المخالط</label>
                             <input type="text" class="form-control" formControlName="name" /></div></div>
-                          <div class="col-lg-2"><div class="form-group"><label>العمر</label>
+                          <div class="col-lg-2"><div class="form-group"><label>السن</label>
                             <input type="number" class="form-control" formControlName="age" /></div></div>
-                          <div class="col-lg-3"><div class="form-group"><label>مكان المخالطة</label>
-                            <input type="text" class="form-control" formControlName="contactLocation" /></div></div>
-                          <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="vaccinated" /> مطعمة</label></div>
+                          <div class="col-lg-3"><div class="form-group"><label>تاريخ ظهور الطفح</label>
+                            <input type="date" class="form-control" formControlName="rashOnsetDate" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>صلة القرابة</label>
+                            <select class="form-control" formControlName="kinship">
+                              <option [ngValue]="null">اختر...</option>
+                              <option [ngValue]="1">أخ</option>
+                              <option [ngValue]="2">أخت</option>
+                              <option [ngValue]="3">آخر</option>
+                              <option [ngValue]="4">ابن</option>
+                              <option [ngValue]="5">ابنة</option>
+                              <option [ngValue]="6">جار</option>
+                              <option [ngValue]="7">جد</option>
+                              <option [ngValue]="8">جدة</option>
+                              <option [ngValue]="9">خال</option>
+                              <option [ngValue]="10">خالة</option>
+                              <option [ngValue]="11">زوج</option>
+                              <option [ngValue]="12">زوجة</option>
+                              <option [ngValue]="13">صديق</option>
+                              <option [ngValue]="14">عم</option>
+                              <option [ngValue]="15">عمة</option>
+                              <option [ngValue]="16">والد</option>
+                              <option [ngValue]="17">والدة</option>
+                            </select></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>الحالة التطعيمية</label>
+                            <select class="form-control" formControlName="vaccinationStatus">
+                              <option [ngValue]="null">اختر...</option>
+                              <option [ngValue]="1">مطعم</option><option [ngValue]="2">غير مطعم</option>
+                              <option [ngValue]="3">غير مستحق</option><option [ngValue]="4">غير معروف</option>
+                            </select></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>تاريخ المخالطة</label>
+                            <input type="date" class="form-control" formControlName="contactDate" /></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>أسبوع الحمل</label>
                             <input type="number" class="form-control" formControlName="pregnancyWeeks" /></div></div>
-                          <div class="col-lg-3"><div class="form-group"><label>تاريخ ظهور الأعراض</label>
-                            <input type="date" class="form-control" formControlName="symptomAppearanceDate" /></div></div>
-                          <div class="col-lg-3"><div class="form-group"><label>تاريخ الولادة المتوقع</label>
-                            <input type="date" class="form-control" formControlName="expectedDeliveryDate" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة1</label>
+                            <input type="date" class="form-control" formControlName="sample1Date" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة1</label>
+                            <input type="text" class="form-control" formControlName="sample1Result" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة2</label>
+                            <input type="date" class="form-control" formControlName="sample2Date" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة2</label>
+                            <input type="text" class="form-control" formControlName="sample2Result" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة المولود</label>
+                            <input type="date" class="form-control" formControlName="newbornSampleDate" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة المولود</label>
+                            <input type="text" class="form-control" formControlName="newbornSampleResult" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع1</label>
+                            <input type="date" class="form-control" formControlName="visitWeek1" /></div></div>
+                          <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض1 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek1" /></label></div>
+                          <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع2</label>
+                            <input type="date" class="form-control" formControlName="visitWeek2" /></div></div>
+                          <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض2 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek2" /></label></div>
+                          <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع3</label>
+                            <input type="date" class="form-control" formControlName="visitWeek3" /></div></div>
+                          <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض3 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek3" /></label></div>
+                          <div class="col-lg-4">
+                            <div class="row">
+                              <div class="col-lg-9"><div class="form-group"><label>زيارة أسبوع4</label>
+                                <input type="date" class="form-control" formControlName="visitWeek4" /></div></div>
+                              <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض4 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek4" /></label></div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div *ngIf="pregnantContacts.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة حامل.</div>
@@ -476,7 +557,21 @@
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ زيارة الوحدة</label>
                     <input type="date" class="form-control" formControlName="coverageVisitDate" /></div></div>
                   <div class="col-lg-6"><div class="form-group"><label>شهر نسب التغطية</label>
-                    <input type="text" class="form-control" formControlName="coverageMonth" /></div></div>
+                    <select class="form-control" formControlName="coverageMonth">
+                      <option [ngValue]="null">اختر...</option>
+                      <option [ngValue]="'يناير'">يناير</option>
+                      <option [ngValue]="'فبراير'">فبراير</option>
+                      <option [ngValue]="'مارس'">مارس</option>
+                      <option [ngValue]="'أبريل'">أبريل</option>
+                      <option [ngValue]="'مايو'">مايو</option>
+                      <option [ngValue]="'يونيو'">يونيو</option>
+                      <option [ngValue]="'يوليو'">يوليو</option>
+                      <option [ngValue]="'أغسطس'">أغسطس</option>
+                      <option [ngValue]="'سبتمبر'">سبتمبر</option>
+                      <option [ngValue]="'أكتوبر'">أكتوبر</option>
+                      <option [ngValue]="'نوفمبر'">نوفمبر</option>
+                      <option [ngValue]="'ديسمبر'">ديسمبر</option>
+                    </select></div></div>
 
                   <div class="col-12 table-responsive mt-2">
                     <table class="table table-bordered text-center align-middle">
@@ -551,6 +646,8 @@
                         <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="movedToOutbreak" [value]="1" /> نعم</label>
                         <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="movedToOutbreak" [value]="2" /> لا</label>
                       </div>
+                      <input type="text" class="form-control mt-1" placeholder="اذكر المنطقة الموبوءة"
+                        formControlName="movedToOutbreakPlace" *ngIf="feverRashForm.value.movedToOutbreak === 1" />
                     </div>
                   </div>
                 </div>
@@ -725,7 +822,13 @@
                   <div class="col-12"><p class="text-muted small">يتم اعتماد المتابعة والتشخيص النهائي بمعرفة لجنة تضم طبيب اخصائي ومسئول ترصد الادارة ومسئول ترصد المديرية.</p></div>
 
                   <div class="col-12"><div class="form-group"><label>التصنيف النهائي</label>
-                    <input type="text" class="form-control" formControlName="finalClassification" /></div></div>
+                    <select class="form-control" formControlName="finalClassification">
+                      <option [ngValue]="null">اختر...</option>
+                      <option [ngValue]="'مؤكد'">مؤكد</option>
+                      <option [ngValue]="'مستبعد'">مستبعد</option>
+                      <option [ngValue]="'مرتبط وبائى'">مرتبط وبائى</option>
+                      <option [ngValue]="'متوافق إكلينيكى'">متوافق إكلينيكى</option>
+                    </select></div></div>
                 </div>
               </div>
             </div>

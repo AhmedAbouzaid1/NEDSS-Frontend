@@ -123,6 +123,7 @@ export class FeverRashComponent implements OnInit {
       feverRashCasesLastMonth: new FormControl(),
       feverRashCasesCount: new FormControl(),
       movedToOutbreak: new FormControl(),
+      movedToOutbreakPlace: new FormControl(),
 
       // Tab 4 - field survey (30 children)
       fieldVisitDate: new FormControl(),
@@ -302,11 +303,25 @@ export class FeverRashComponent implements OnInit {
     return new FormGroup({
       name: new FormControl(p.name ?? null),
       age: new FormControl(p.age ?? null),
-      contactLocation: new FormControl(p.contactLocation ?? null),
-      vaccinated: new FormControl(!!p.vaccinated),
+      kinship: new FormControl(p.kinship ?? null),
+      rashOnsetDate: new FormControl(this.d(p.rashOnsetDate)),
+      vaccinationStatus: new FormControl(p.vaccinationStatus ?? null),
+      contactDate: new FormControl(this.d(p.contactDate)),
       pregnancyWeeks: new FormControl(p.pregnancyWeeks ?? null),
-      symptomAppearanceDate: new FormControl(this.d(p.symptomAppearanceDate)),
-      expectedDeliveryDate: new FormControl(this.d(p.expectedDeliveryDate)),
+      sample1Date: new FormControl(this.d(p.sample1Date)),
+      sample1Result: new FormControl(p.sample1Result ?? null),
+      sample2Date: new FormControl(this.d(p.sample2Date)),
+      sample2Result: new FormControl(p.sample2Result ?? null),
+      newbornSampleDate: new FormControl(this.d(p.newbornSampleDate)),
+      newbornSampleResult: new FormControl(p.newbornSampleResult ?? null),
+      visitWeek1: new FormControl(this.d(p.visitWeek1)),
+      visitWeek2: new FormControl(this.d(p.visitWeek2)),
+      visitWeek3: new FormControl(this.d(p.visitWeek3)),
+      visitWeek4: new FormControl(this.d(p.visitWeek4)),
+      symptomsWeek1: new FormControl(!!p.symptomsWeek1),
+      symptomsWeek2: new FormControl(!!p.symptomsWeek2),
+      symptomsWeek3: new FormControl(!!p.symptomsWeek3),
+      symptomsWeek4: new FormControl(!!p.symptomsWeek4),
     });
   }
   private buildSurveyChild(s: any = {}): FormGroup {
@@ -388,11 +403,36 @@ export class FeverRashComponent implements OnInit {
   }
   placeLabel(v: any): string {
     switch (String(v)) {
-      case '1': return 'المنزل';
-      case '2': return 'المدرسة';
-      case '3': return 'العمل';
-      case '4': return 'أخرى';
+      case '1': return 'أماكن عامة أخرى';
+      case '2': return 'السوق';
+      case '3': return 'المدرسة';
+      case '4': return 'المستشفى';
+      case '5': return 'المنزل';
+      case '6': return 'مكان العمل';
+      case '7': return 'وسائل النقل';
       default: return '';
+    }
+  }
+  kinshipLabel(v: any): string {
+    switch (String(v)) {
+      case '1': return 'أخ';
+      case '2': return 'أخت';
+      case '3': return 'آخر';
+      case '4': return 'ابن';
+      case '5': return 'ابنة';
+      case '6': return 'جار';
+      case '7': return 'جد';
+      case '8': return 'جدة';
+      case '9': return 'خال';
+      case '10': return 'خالة';
+      case '11': return 'زوج';
+      case '12': return 'زوجة';
+      case '13': return 'صديق';
+      case '14': return 'عم';
+      case '15': return 'عمة';
+      case '16': return 'والد';
+      case '17': return 'والدة';
+      default: return v || '';
     }
   }
   yesNo(v: any): string {
