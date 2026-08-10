@@ -156,7 +156,7 @@ export class NavigationGuard {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (!this.session.isValid()) {
       this.session.clearSession();
-      this.router.navigateByUrl('/');
+      this.router.navigate(['/'], { queryParams: { returnUrl: state.url } });
       return of(false);
     }
     const authData = this.session.getSession();

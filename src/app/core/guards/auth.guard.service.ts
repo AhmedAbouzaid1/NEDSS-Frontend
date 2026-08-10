@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       return true;
     }
     this.session.clearSession();
-    this.router.navigateByUrl('/');
+    this.router.navigate(['/'], { queryParams: { returnUrl: state.url } });
     return false;
   }
 
