@@ -44,6 +44,7 @@
 <div
   class="table-reponsive mt-4 shadow border rounded"
   *ngIf="patients != undefined && patients.length > 0"
+  [appScrollIntoViewOnResults]="patients"
 >
   <div class="m-3 d-flex justify-content-end">
     <a (click)="exportPatientsAsPdf()"
@@ -306,6 +307,7 @@
     </div>
   </div>
 </div>
+<div class="row" *ngIf="loadError"><div class="no-data content-center"><span class="text-danger">{{ "NEDSS.COMMON.COULD_NOT_LOAD_RESULTS" | translate }}</span><button type="button" class="btn btn-outline-primary btn-sm mt-2" (click)="search()">{{ "NEDSS.COMMON.TRY_AGAIN" | translate }}</button></div></div>
 <!-- Modal -->
 <div
   class="modal fade"

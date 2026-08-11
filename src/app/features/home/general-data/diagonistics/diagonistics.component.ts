@@ -10,7 +10,6 @@ import { GeneralDataService } from '../services/general-data.service';
 import { map, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DepartmentEnum } from '../models/department-enum';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-diagonistics',
@@ -72,7 +71,6 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   loadingSpecialGovernments = false;
   loadingSpecialHealthAdmins = false;
   loadingSpecialLabs = false;
-  private specialGovListFetchRetries = 0;
 
   singleDropdownSettings = {};
   diagnosticsMultipleDropdownSettings = {
@@ -105,7 +103,6 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   };
   DepartmentEnum = DepartmentEnum;
   HealthAdmins:any[] = [];
-  private govListFetchRetries = 0;
   private governorateUserScopeFallbackDone = false;
   private destroy$ = new Subject<void>();
   constructor(
@@ -197,9 +194,6 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   /** Governorate API rows (handles camelCase / PascalCase and paged shapes). */
   private extractGovernanceRows(result: any): any[] {
     if (!result) return [];
-    if (result.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-      return [];
-    }
     const tryArray = (d: any): any[] | null => {
       if (Array.isArray(d)) return d;
       if (d && typeof d === 'object') {
@@ -598,16 +592,6 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
 
     request$.subscribe(
       (result: any) => {
-        if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-          if (this.govListFetchRetries < 3) {
-            this.govListFetchRetries++;
-            setTimeout(() => this.fetchGovernorateOptionsForTransfer(phase), 250);
-          }
-          this.loadingPanel = false;
-          return;
-        }
-        this.govListFetchRetries = 0;
-
         if (result != null && result != undefined) {
           const raw = this.extractGovernanceRows(result);
           const normalized = raw
@@ -739,10 +723,6 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         (result: any) => {
-          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-            this.loadingPanel = false;
-            return;
-          }
           if (result != null && result != undefined) {
             this.HealthAdmins = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
@@ -801,10 +781,6 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     )
       .subscribe(
         (result: any) => {
-          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-            this.loadingPanel = false;
-            return;
-          }
           if (result != null && result != undefined) {
             this.incidentSources = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
@@ -877,27 +853,12 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
 
   getSpecialGovernments(restoreSelection = false) {
     this.loadingSpecialGovernments = true;
-    this.specialGovListFetchRetries = 0;
     this.fetchSpecialGovernorateList(restoreSelection);
   }
 
   private fetchSpecialGovernorateList(restoreSelection: boolean): void {
     this.lookupsService.getAllGovernmentsExplicit(false, 'diag-special').subscribe(
       (result: any) => {
-        if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-          if (this.specialGovListFetchRetries < 3) {
-            this.specialGovListFetchRetries++;
-            setTimeout(() => this.fetchSpecialGovernorateList(restoreSelection), 250);
-            return;
-          }
-          this.specialGovListFetchRetries = 0;
-          this.loadingSpecialGovernments = false;
-          this.loadingPanel = false;
-          this.cdr.detectChanges();
-          return;
-        }
-        this.specialGovListFetchRetries = 0;
-
         if (result != null && result != undefined) {
           const raw = this.extractGovernanceRows(result);
           const normalized = raw
@@ -950,12 +911,6 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
         })
         .subscribe(
           (result: any) => {
-            if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-              this.loadingSpecialHealthAdmins = false;
-              this.loadingPanel = false;
-              this.cdr.detectChanges();
-              return;
-            }
             if (result != null && result != undefined) {
               this.specialHealthAdmin = [
                 { id: -1, arabicName: 'إختر', englishName: 'Select' },
@@ -1023,12 +978,6 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       .getPageIncidentSourceHospitals(filter)
       .subscribe(
         (result: any) => {
-          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-            this.loadingSpecialLabs = false;
-            this.loadingPanel = false;
-            this.cdr.detectChanges();
-            return;
-          }
           if (result != null && result != undefined) {
             this.specialLabs = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },

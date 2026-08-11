@@ -84,6 +84,7 @@ export class GeneralDataCompletionComponent {
   };
 
   noData: boolean = true;
+  loadError: boolean = false;
   loadingPanel: boolean = false;
   first: number = 0;
   last: number = 0;
@@ -534,15 +535,17 @@ export class GeneralDataCompletionComponent {
 
   getGeneralDataCompletions() {
     this.loadingPanel = true;
+    this.loadError = false;
     this.Delay();
     this.generalDataCompletionServiceService
       .getPageGeneralDataCompletions2(this.generalDataCompletionFilter)
       .subscribe(
         (result: any) => {
+          this.loadError = false;
           if (result != null && result != undefined) {
             //TODO Remove !p.incidentSourceId condition when backend be edited
             console.log('general-data-completion', result.data);
-            this.generalDataCompletions = result.data;
+            this.generalDataCompletions = result?.data ?? [];
             // ?.filter(
             //   (p: any) =>
             //     this.lookupsService.incidentsForOrg.includes(
@@ -581,11 +584,13 @@ export class GeneralDataCompletionComponent {
         (error) => {
           this.loadingPanel = false;
           this.delay = false;
+          this.loadError = true;
+          this.noData = false;
+          this.generalDataCompletions = [];
+          this.pages = 0;
           this.translateService
-            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
+            .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
+            .subscribe((res: string) => this.userMsg.error(res));
         }
       );
   }

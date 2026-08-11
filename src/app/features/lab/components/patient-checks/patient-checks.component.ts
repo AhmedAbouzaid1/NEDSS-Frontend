@@ -40,6 +40,7 @@ export class PatientChecksComponent implements OnInit {
     phoneNo: null,
     fromDate: null,
     toDate: null,
+    diseaseGroupId: null,
     insertedByLab: null,
     firstTime: false,
     hasLabChecks: null,
@@ -62,6 +63,9 @@ export class PatientChecksComponent implements OnInit {
   healthOffices!: any[];
   selectedHealthOffice: number;
 
+  diseases!: any[];
+  selectedDiseaseId: number = -1;
+
   loadingPanel: boolean = false;
   isForeign: boolean = false;
 
@@ -70,6 +74,7 @@ export class PatientChecksComponent implements OnInit {
 
   patientsForLab: [];
   noData: boolean = true;
+  loadError: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -133,6 +138,7 @@ export class PatientChecksComponent implements OnInit {
           phoneNo: null,
           fromDate: null,
           toDate: null,
+          diseaseGroupId: null,
           insertedByLab: null,
           hasLabChecks: null,
           firstTime: false,
@@ -158,6 +164,7 @@ export class PatientChecksComponent implements OnInit {
           phoneNo: null,
           fromDate: null,
           toDate: null,
+          diseaseGroupId: null,
           insertedByLab: null,
           hasLabChecks: params.done,
           firstTime: true,
@@ -171,6 +178,7 @@ export class PatientChecksComponent implements OnInit {
     // this.getPatients();
     this.getNationalities();
     this.getGovernments();
+    this.getAllDiseases();
   }
 
   onItemSelect(item: any) {}
@@ -240,38 +248,39 @@ export class PatientChecksComponent implements OnInit {
         : null;
     //alert("has lab checks " + this.patientsFilter.hasLabChecks);
     this.patientsFilter.firstTime = firstTime;
+    this.loadError = false;
     this.Delay();
     this.labService.getPatients(this.patientsFilter).subscribe(
       (result: any) => {
-        if (result != null && result != undefined) {
-          // this.patientsForLab = result.data?.filter((p: any) => this.lookupsService.incidentsForOrg.includes(p.incidentSourceId));
-          this.patientsForLab = result.data;
-          if (
-            this.patientsForLab != undefined &&
-            this.patientsForLab.length == 0
-          ) {
-            this.RemoveDelay();
-            this.noData = true;
-            this.pages = 0;
-            this.hasNextPage = false;
-            this.translateService
-              .get('NOUR.NO_RESULTS')
-              .subscribe((msg) => this.userMsg.warn(msg));
-          } else {
-            this.RemoveDelay();
-            this.noData = false;
-            this.hasNextPage =
-              result.data[0].hasNextPage === true &&
-              result.data.length >= this.patientsFilter.pageSize;
-            this.last =
-              this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
-            if (!skipCount) this.fetchCount(this.patientsFilter);
-          }
+        this.RemoveDelay();
+        this.loadError = false;
+        this.patientsForLab = result?.data ?? [];
+        if (this.patientsForLab.length == 0) {
+          this.noData = true;
+          this.pages = 0;
+          this.hasNextPage = false;
+          this.translateService
+            .get('NOUR.NO_RESULTS')
+            .subscribe((msg) => this.userMsg.warn(msg));
+        } else {
+          this.noData = false;
+          this.hasNextPage =
+            result.data[0].hasNextPage === true &&
+            result.data.length >= this.patientsFilter.pageSize;
+          this.last =
+            this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
+          if (!skipCount) this.fetchCount(this.patientsFilter);
         }
       },
       (error) => {
+        this.RemoveDelay();
+        this.noData = false;
+        this.loadError = true;
+        this.patientsForLab = [];
+        this.pages = 0;
+        this.hasNextPage = false;
         this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+          .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
           .subscribe((res: string) => {
             this.userMsg.error(res);
           });
@@ -457,6 +466,35 @@ export class PatientChecksComponent implements OnInit {
             });
         }
       );
+  }
+
+  getAllDiseases() {
+    this.lookupsService.getAllDiseaseGroups().subscribe(
+      (result: any) => {
+        if (result != null && result != undefined) {
+          this.diseases = [
+            { id: -1, arabicName: 'إختر', englishName: 'Select' },
+          ];
+          result.data.forEach((nat) => {
+            this.diseases.push(nat);
+          });
+        }
+        this.loadingPanel = false;
+      },
+      (error) => {
+        this.loadingPanel = false;
+        this.translateService
+          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+          .subscribe((res: string) => {
+            this.userMsg.error(res);
+          });
+      }
+    );
+  }
+
+  setDiseaseValue() {
+    this.patientsFilter.diseaseGroupId =
+      this.selectedDiseaseId == -1 ? null : this.selectedDiseaseId;
   }
 
   addPatientChecks(id: number) {}

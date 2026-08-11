@@ -82,8 +82,13 @@
             aria-expanded="false"
             style="font-size: 10px !important"
           >
-            <span class="d-none d-md-block">{{ username }}<br /></span>
-            <span class="d-none d-sm-inline-block">{{ userLevel }}</span>
+            <span class="user-summary-name d-none d-md-inline-block">{{
+              username
+            }}</span>
+            <span class="user-summary-divider d-none d-md-inline-block"></span>
+            <span class="user-summary-level d-none d-sm-inline-block">{{
+              userLevel
+            }}</span>
           </button>
           <div
             class="dropdown-menu dropdown-menu-left"
@@ -111,7 +116,8 @@
         </span>
         <img
           [src]="userImage"
-          alt="userImage"
+          (error)="useDefaultAvatar($event)"
+          alt="User avatar"
           width="50px"
           height="50px"
           class="rounded-circle avatar-img m-0"

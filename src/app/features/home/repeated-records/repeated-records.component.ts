@@ -40,6 +40,7 @@ export class RepeatedRecordsComponent implements OnInit {
   };
 
   noData: boolean = true;
+  loadError: boolean = false;
   isSubmitted = false;
   pleaseComplete: boolean = false;
   repeatedRecordsForm: FormGroup;
@@ -823,6 +824,7 @@ export class RepeatedRecordsComponent implements OnInit {
       age: this.repeatedRecordsForm.controls?.["age"]?.value,
       ageType: this.repeatedRecordsForm.controls?.["ageType"]?.value,
     }
+    this.loadError = false;
     this.delay = true;
     this.timer = setTimeout(() => {
       if (this.delay) {
@@ -833,9 +835,11 @@ export class RepeatedRecordsComponent implements OnInit {
     }, 2000);
     this.repearedService.getRepeated(obj).subscribe(
       (result: any) => {
-        if (result != null && result != undefined && result.data.length > 0) {
+        this.loadError = false;
+        const data = result?.data ?? [];
+        if (data.length > 0) {
           this.repeatedDataCount = 0;
-          this.repeatedData = result.data;
+          this.repeatedData = data;
           // ?.filter((p: any) =>
           //   this.lookupsService.incidentsForOrg.includes(p.incidentSourceId)
           // );
@@ -859,8 +863,14 @@ export class RepeatedRecordsComponent implements OnInit {
         }
       },
       (error) => {
+        this.delay = false;
+        clearTimeout(this.timer);
+        this.loadError = true;
+        this.noData = false;
+        this.repeatedData = [];
+        this.repeatedDataCount = 0;
         this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+          .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
           .subscribe((res: string) => {
             this.userMsg.error(res);
           });

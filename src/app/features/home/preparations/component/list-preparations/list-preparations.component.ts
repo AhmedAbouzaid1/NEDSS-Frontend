@@ -45,6 +45,7 @@ export class ListPreparationsComponent implements OnInit {
   SelectedincidentSourceId: any;
   selectedgovenmentId: number = -1;
   noData: boolean = true;
+  loadError: boolean = false;
   loadingPanel: boolean = false;
   first: number = 0;
   last: number = 0;
@@ -256,6 +257,7 @@ export class ListPreparationsComponent implements OnInit {
 
   getPreparationss() {
     this.loadingPanel = true;
+    this.loadError = false;
     // this.generalDataService.isIncidentGovernmentValid =
     //   this.generalDataService.checkIncidentGovernmentValid(
     //     this.selectedgovenmentId
@@ -285,8 +287,9 @@ export class ListPreparationsComponent implements OnInit {
       .getPagePreparations(this.preparationsFilter)
       .subscribe(
         (result: any) => {
+          this.loadError = false;
           if (result != null && result != undefined) {
-            this.preparations = result.data;
+            this.preparations = result?.data ?? [];
             // ?.filter((p: any) => this.lookupsGetterService.incidentsForOrg.includes(p.incidentSourceId));
             if (
               this.preparations != undefined &&
@@ -317,11 +320,17 @@ export class ListPreparationsComponent implements OnInit {
         },
         (error) => {
           this.loadingPanel = false;
+          setTimeout(() => {
+            this.delay = false;
+            clearTimeout(this.timer);
+          }, 0);
+          this.loadError = true;
+          this.noData = false;
+          this.preparations = [];
+          this.pages = 0;
           this.translateService
-            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
+            .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
+            .subscribe((res: string) => this.userMsg.error(res));
         }
       );
     // }

@@ -28,7 +28,13 @@
               >
                 <i class="pi pi-user"></i>
               </span>
-              <h4 class="mb-0">{{ onlineUsersCount }}</h4>
+              <span
+                *ngIf="isValueLoading(onlineUsersCount); else onlineUsersValue"
+                class="dashboard-skeleton dashboard-skeleton-number"
+              ></span>
+              <ng-template #onlineUsersValue>
+                <h4 class="mb-0">{{ onlineUsersCount }}</h4>
+              </ng-template>
             </div>
             <div class="mt-3">
               <span class="bolds">
@@ -50,7 +56,13 @@
               >
                 <i class="pi pi-file-o"></i>
               </span>
-              <h4 class="mb-0">{{ patients }}</h4>
+              <span
+                *ngIf="isValueLoading(patients); else patientsValue"
+                class="dashboard-skeleton dashboard-skeleton-number"
+              ></span>
+              <ng-template #patientsValue>
+                <h4 class="mb-0">{{ patients }}</h4>
+              </ng-template>
             </div>
             <div class="mt-3">
               <span class="bolds">
@@ -72,9 +84,15 @@
               >
                 <i class="fas fa-battery-empty" style="font-size: 1rem"></i>
               </span>
-              <h4 class="mb-0">
-                {{ incompletePatients }}
-              </h4>
+              <span
+                *ngIf="isValueLoading(incompletePatients); else incompletePatientsValue"
+                class="dashboard-skeleton dashboard-skeleton-number"
+              ></span>
+              <ng-template #incompletePatientsValue>
+                <h4 class="mb-0">
+                  {{ incompletePatients }}
+                </h4>
+              </ng-template>
             </div>
             <div class="mt-3">
               <span class="bolds">
@@ -96,9 +114,15 @@
               >
                 <i class="pi pi-volume-off"></i>
               </span>
-              <h4 class="mb-0">
-                {{ silentSources }}
-              </h4>
+              <span
+                *ngIf="isValueLoading(silentSources); else silentSourcesValue"
+                class="dashboard-skeleton dashboard-skeleton-number"
+              ></span>
+              <ng-template #silentSourcesValue>
+                <h4 class="mb-0">
+                  {{ silentSources }}
+                </h4>
+              </ng-template>
               <!-- <ng-template #defaultSilentSource>
                 <h4 class="mb-0">0</h4>
               </ng-template> -->
@@ -123,9 +147,15 @@
               >
                 <i class="fas fa-signature" style="font-size: 1rem"></i>
               </span>
-              <h4 class="mb-0">
-                {{ signutares + " " + "%" }}
-              </h4>
+              <span
+                *ngIf="isValueLoading(signutares); else signutaresValue"
+                class="dashboard-skeleton dashboard-skeleton-number"
+              ></span>
+              <ng-template #signutaresValue>
+                <h4 class="mb-0">
+                  {{ signutares + " " + "%" }}
+                </h4>
+              </ng-template>
             </div>
             <div class="mt-3">
               <span class="bolds">
@@ -147,9 +177,15 @@
               >
                 <i class="fas fa-battery-full" style="font-size: 1rem"></i>
               </span>
-              <h4 class="mb-0">
-                {{ completeData + " " + "%" }}
-              </h4>
+              <span
+                *ngIf="isValueLoading(completeData); else completeDataValue"
+                class="dashboard-skeleton dashboard-skeleton-number"
+              ></span>
+              <ng-template #completeDataValue>
+                <h4 class="mb-0">
+                  {{ completeData + " " + "%" }}
+                </h4>
+              </ng-template>
             </div>
             <div class="mt-3">
               <span class="bolds">
@@ -171,9 +207,15 @@
               >
                 <i class="pi pi-file-excel"></i>
               </span>
-              <h4 class="mb-0">
-                {{ nonInferentialPatients }}
-              </h4>
+              <span
+                *ngIf="isValueLoading(nonInferentialPatients); else nonInferentialPatientsValue"
+                class="dashboard-skeleton dashboard-skeleton-number"
+              ></span>
+              <ng-template #nonInferentialPatientsValue>
+                <h4 class="mb-0">
+                  {{ nonInferentialPatients }}
+                </h4>
+              </ng-template>
             </div>
             <div class="mt-3">
               <span class="bolds">
@@ -196,7 +238,13 @@
                 <!-- <i class="pi pi-file-o"></i> -->
                 <i class="fas fa-wrench" style="font-size: 1rem"></i>
               </span>
-              <h4 class="mb-0">{{ patientChecks }}</h4>
+              <span
+                *ngIf="isValueLoading(patientChecks); else patientChecksValue"
+                class="dashboard-skeleton dashboard-skeleton-number"
+              ></span>
+              <ng-template #patientChecksValue>
+                <h4 class="mb-0">{{ patientChecks }}</h4>
+              </ng-template>
             </div>
             <div class="mt-3">
               <span class="bolds">
@@ -391,6 +439,10 @@
                               >
                               </highcharts-chart>
                             </div>
+                            <div
+                              *ngIf="!ratesVersusGovernorates"
+                              class="dashboard-chart-skeleton"
+                            ></div>
                           </div>
                         </div>
 
@@ -434,6 +486,13 @@
                               >
                               </highcharts-chart>
                             </div>
+                            <div
+                              *ngIf="
+                                !CasesRatesOverYearsVersusGovernorates ||
+                                isReset2
+                              "
+                              class="dashboard-chart-skeleton"
+                            ></div>
                           </div>
                         </div>
 
@@ -454,6 +513,10 @@
                               >
                               </highcharts-chart>
                             </div>
+                            <div
+                              *ngIf="!DistributedOverYears || isReset"
+                              class="dashboard-chart-skeleton"
+                            ></div>
                           </div>
                         </div>
 
@@ -474,6 +537,10 @@
                               >
                               </highcharts-chart>
                             </div>
+                            <div
+                              *ngIf="!ReportingTimings || isReset5"
+                              class="dashboard-chart-skeleton"
+                            ></div>
                           </div>
                         </div>
                       </div>
@@ -708,6 +775,13 @@
                               >
                               </highcharts-chart>
                             </div>
+                            <div
+                              *ngIf="
+                                !InfectedCasesRatesOverYearsVersusGovernoratesData ||
+                                isReset3
+                              "
+                              class="dashboard-chart-skeleton"
+                            ></div>
                           </div>
                         </div>
 
@@ -730,6 +804,12 @@
                               >
                               </highcharts-chart>
                             </div>
+                            <div
+                              *ngIf="
+                                !InfectedDistributedOverYearsData || isReset4
+                              "
+                              class="dashboard-chart-skeleton"
+                            ></div>
                           </div>
                         </div>
 
@@ -750,6 +830,10 @@
                               >
                               </highcharts-chart>
                             </div>
+                            <div
+                              *ngIf="!InvestigationsTimingsData || isReset6"
+                              class="dashboard-chart-skeleton"
+                            ></div>
                           </div>
                         </div>
                       </div>
@@ -941,6 +1025,12 @@
                               >
                               </highcharts-chart>
                             </div>
+                            <div
+                              *ngIf="
+                                !DistributionOfDeathsByGender || isDeathReset
+                              "
+                              class="dashboard-chart-skeleton"
+                            ></div>
                           </div>
                         </div>
 
@@ -981,6 +1071,14 @@
                               </span>
                             </div>
                           </div>
+                          <div
+                            *ngIf="!CaseFatalityRate"
+                            class="card card-box-shadow dashboard-kpi-skeleton-card"
+                          >
+                            <div class="dashboard-skeleton dashboard-skeleton-title"></div>
+                            <div class="dashboard-skeleton dashboard-skeleton-kpi"></div>
+                            <div class="dashboard-skeleton dashboard-skeleton-caption"></div>
+                          </div>
                         </div>
 
                         <div class="px-3 col-12 col-md-6 col-lg-6 mb-4">
@@ -1007,6 +1105,13 @@
                               >
                               </highcharts-chart>
                             </div>
+                            <div
+                              *ngIf="
+                                !DistributionOfDeathsByCaseDiagnosis ||
+                                isDeathReset2
+                              "
+                              class="dashboard-chart-skeleton"
+                            ></div>
                           </div>
                         </div>
 
@@ -1031,6 +1136,12 @@
                               >
                               </highcharts-chart>
                             </div>
+                            <div
+                              *ngIf="
+                                !DistributionOfDeathsByAgeRange || isDeathReset3
+                              "
+                              class="dashboard-chart-skeleton"
+                            ></div>
                           </div>
                         </div>
                       </div>

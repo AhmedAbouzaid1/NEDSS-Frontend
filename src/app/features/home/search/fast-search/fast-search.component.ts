@@ -97,6 +97,7 @@ export class FastSearchComponent implements OnInit {
   selectedDiseaseId: number = -1;
   selectedFinalDiseaseId: number = -1;
   noData: boolean = true;
+  loadError: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -775,10 +776,12 @@ export class FastSearchComponent implements OnInit {
     dts.incidentAreaId = this.SelectedareaId;
 
     this.Delay();
+    this.loadError = false;
     this.searchService.getAll(dts).subscribe(
       (result: any) => {
+        this.loadError = false;
         if (result != null && result != undefined) {
-          this.patients = result.data;
+          this.patients = result?.data ?? [];
           // ?.filter((p: any) =>
           //   this.lookupsService.incidentsForOrg.includes(p.incidentSourceId)
           // );
@@ -804,8 +807,15 @@ export class FastSearchComponent implements OnInit {
       (error) => {
         this.loadingPanel = false;
         this.delay = false;
+        this.RemoveDelay();
+        this.loadError = true;
+        this.noData = false;
+        this.patients = [];
+        this.pages = 0;
+        this.hasNextPage = false;
+        this.totalCount = null;
         this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+          .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
           .subscribe((res: string) => {
             this.userMsg.error(res);
           });

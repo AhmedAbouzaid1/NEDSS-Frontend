@@ -5,11 +5,10 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError, tap } from 'rxjs';
-import { catchError, share, takeWhile } from 'rxjs/operators';
+import { catchError, share } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { PendingRequestsService } from './pending-requests.service';
 import { UserMessageService } from './user.message.service';
-import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { Subject } from '@microsoft/signalr';
 import { SessionService } from './session.service';
@@ -18,7 +17,6 @@ import { SessionService } from './session.service';
   providedIn: 'root',
 })
 export class BaseAPIService {
-  private isRedirecting = false;
 
   constructor(
     private pendingService: PendingRequestsService,
@@ -57,7 +55,7 @@ export class BaseAPIService {
 
   public get(route: string, responseType?: any, observeResponse?: boolean) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
     let options = responseType
       ? { headers: this.setHeader(), responseType: responseType }
@@ -74,16 +72,13 @@ export class BaseAPIService {
         catchError((e: any) => {
           this.errorHandler(e);
           return throwError(e);
-        }),
-        takeWhile(
-          (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-        )
+        })
       );
   }
 
   public update(route: string, body: any) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
     return this.pendingService
       .intercept(
@@ -97,16 +92,13 @@ export class BaseAPIService {
         catchError((e: any) => {
           this.errorHandler(e);
           return throwError(e);
-        }),
-        takeWhile(
-          (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-        )
+        })
       );
   }
 
   public create(route: string, body: any, responseType?: any) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
     let headers = this.setHeader();
     if (responseType == undefined)
@@ -123,11 +115,7 @@ export class BaseAPIService {
           catchError((e: any) => {
             this.errorHandler(e);
             return throwError(e);
-          }),
-          takeWhile(
-            (value) =>
-              value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-          )
+          })
         );
     else
       return this.pendingService
@@ -144,17 +132,13 @@ export class BaseAPIService {
           catchError((e: any) => {
             this.errorHandler(e);
             return throwError(e);
-          }),
-          takeWhile(
-            (value) =>
-              value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-          )
+          })
         );
   }
 
   public delete(route: string) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
     let headers = this.setHeader();
     return this.pendingService
@@ -167,16 +151,13 @@ export class BaseAPIService {
         catchError((e: any) => {
           this.errorHandler(e);
           return throwError(e);
-        }),
-        takeWhile(
-          (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-        )
+        })
       );
   }
 
   public deleteWithBody(route: string, body?: any) {
     if (!this.checkUserIsOnline()) {
-        return new Observable<any>();
+        return throwError(() => new Error('OFFLINE'));
     }
     
     let headers = this.setHeader();
@@ -195,53 +176,11 @@ export class BaseAPIService {
             catchError((e: any) => {
                 this.errorHandler(e);
                 return throwError(e);
-            }),
-            takeWhile(
-                (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-            )
+            })
         );
 }
-  // public deleteMultible(route: string, body: any,) {
-  //   let headers = this.setHeader();
-  //   return this.pendingService
-  //     .intercept(
-  //       this.createCompleteRoute(route),
-  //       body,
-  //       this.http.delete(this.createCompleteRoute(route), body)
-  //     )
-  //     .pipe(
-  //       catchError((e: any) => {
-  //         this.errorHandler(e);
-  //         return throwError(e);
-  //       }),
-  //       takeWhile(
-  //         (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-  //       )
-  //     );
-  // }
 
-  errorHandler(error: HttpErrorResponse): void {
-    if (this.isRedirecting) return;
-
-    const onLoginPage = this.router.url === '/' || this.router.url === '';
-
-    if (error.status === 401) {
-      if (onLoginPage) return;
-      this.isRedirecting = true;
-      this.session.clearSession();
-      this.translateService.get('NEDSS.COMMON.SESSION_EXPIRED').subscribe((msg) => {
-        this.userMessage.warn(msg);
-      });
-      this.router.navigateByUrl('/').then(() => this.isRedirecting = false);
-    }
-    if (error.status === 0) {
-      if (onLoginPage) return;
-      this.translateService.get('NEDSS.COMMON.NETWORK_ERROR').subscribe((msg) => {
-        this.userMessage.warn(msg);
-      });
-      console.warn('Network error (status 0):', error.url);
-    }
-  }
+  errorHandler(_error: HttpErrorResponse): void {}
 
   public post(
     route: string,
@@ -249,7 +188,7 @@ export class BaseAPIService {
     cancelDuplicatedRequest: boolean = true
   ) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
 
     let headers = this.setHeader();
@@ -271,11 +210,7 @@ export class BaseAPIService {
             //alert(JSON.stringify(obj));
             this.errorHandler(e);
             return throwError(e);
-          }),
-          takeWhile(
-            (value) =>
-              value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-          )
+          })
         );
     else
       return this.http
@@ -297,7 +232,7 @@ export class BaseAPIService {
     options: any = {} // Add options parameter for additional configurations
   ) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
   
     let headers = this.setHeader();
@@ -315,11 +250,7 @@ export class BaseAPIService {
           catchError((e: any, obj: any) => {
             this.errorHandler(e);
             return throwError(e);
-          }),
-          takeWhile(
-            (value) =>
-              value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-          )
+          })
         );
     else
       return this.http
@@ -346,10 +277,7 @@ export class BaseAPIService {
         catchError((e: any) => {
           this.errorHandler(e);
           return throwError(e);
-        }),
-        takeWhile(
-          (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-        )
+        })
       );
   }
 

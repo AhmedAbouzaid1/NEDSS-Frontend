@@ -128,8 +128,8 @@ export class AddLabTestComponent {
   onSelectAll(items: any) {}
 
   onSampleChanged() {
-    if (this.selectedCheckSample.length > 0) {
-      this.patientAddCheck.diseaseCheckId = this.selectedCheckSample[0].id;
+    if (this.selectedCheckSample != null) {
+      this.patientAddCheck.diseaseCheckId = this.selectedCheckSample;
       this.getLabChecks();
       this.labChecks = null;
       this.labCheckResults = null;
@@ -248,9 +248,7 @@ export class AddLabTestComponent {
           if (result != null && result != undefined) {
             this.checkSamples = result.data;
             if (this.patientAddCheck.diseaseCheckId > 0) {
-              this.selectedCheckSample = this.checkSamples.filter(
-                (item) => item.id === this.patientAddCheck.diseaseCheckId
-              );
+              this.selectedCheckSample = this.patientAddCheck.diseaseCheckId;
               this.getLabChecks();
               this.getLabCheckResults();
             }
@@ -388,9 +386,7 @@ export class AddLabTestComponent {
           'yyyy-MM-dd'
         );
         this.getAllDiseases();
-        this.selectedCheckSample = this.checkSamples?.filter(
-          (item) => item.id === this.patientAddCheck.diseaseCheckId
-        );
+        this.selectedCheckSample = this.patientAddCheck.diseaseCheckId;
         this.selectedLabCheck = this.labChecks?.find(
           (item) => item.id === this.patientAddCheck.dieaseLabTestId
         )?.id;

@@ -1,6 +1,7 @@
 import { LabModule } from './features/lab/lab.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './features/auth/auth.module';
@@ -47,6 +48,10 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { NetworkFailureComponent } from './features/errors/network-failure/network-failure.component';
 import { SharedModule } from './core/shared/shared.module';
+import {
+  ConnectionServiceOptions,
+  ConnectionServiceOptionsToken,
+} from 'angular-connection-service';
 
 export const DATE_FORMATS = {
   parse: {
@@ -116,8 +121,23 @@ export const DATE_FORMATS = {
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     {
+      provide: ConnectionServiceOptionsToken,
+      useValue: {
+        enableHeartbeat: false,
+        heartbeatUrl: '',
+        heartbeatInterval: 30000,
+        heartbeatRetryInterval: 1000,
+        requestMethod: 'head',
+      } as ConnectionServiceOptions,
+    },
+    {
       provide: MAT_DATE_FORMATS,
       useValue: DATE_FORMATS,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true,
     },
   ],
   bootstrap: [AppComponent],

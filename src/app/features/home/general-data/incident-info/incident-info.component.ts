@@ -25,7 +25,6 @@ import { ActiveUserService } from 'src/app/core/services/active-user.service';
 import { NationalityEnum } from '../models/nationality-enum';
 import { DepartmentEnum } from '../models/department-enum';
 import { RelativeEnum } from '../models/relative-enum';
-import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 @Component({
@@ -111,13 +110,10 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
   ) { }
 
-  private incidentGovFetchRetries = 0;
-  private healthAdminFetchRetries = 0;
-  private incidentSourceFetchRetries = 0;
-  private departmentFetchRetries = 0;
   /** Avoid re-running governorate cascade on every patient emission for the same record. */
   private incidentLocationHydratedForPatientId: number | null = null;
   private lastSeenPatientIdForIncidentHydrate: number | null = null;
+  private branchesHydratedForPatientId: number | null | undefined = undefined;
   private isSettingPatientLocally = false;
 
   private toPositiveInt(v: unknown): number | null {
@@ -129,7 +125,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
   }
 
   private extractApiDataArray(result: any): any[] {
-    if (!result || result.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+    if (!result) {
       return [];
     }
     const tryArray = (d: any): any[] | null => {
@@ -346,7 +342,11 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
           this.activeUSerService.getAccessibleParts?.showBranches ||
           this.activeUSerService.getAccessibleParts?.showUniversities
         ) {
-          this.getBranches();
+          const branchPid = this.toPositiveInt(this.patient?.id);
+          if (this.branchesHydratedForPatientId !== branchPid) {
+            this.branchesHydratedForPatientId = branchPid;
+            this.getBranches();
+          }
         }
         if (patientObject.incidentAreaId) {
           this.SelectedareaId = this.patient.incidentAreaId;
@@ -364,6 +364,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
       if (params.clear == 1) {
         this.incidentLocationHydratedForPatientId = null;
         this.lastSeenPatientIdForIncidentHydrate = null;
+        this.branchesHydratedForPatientId = undefined;
         this.patient = new PatientModel();
         this.sharedDataService.setPatientObject(new PatientModel());
         this.sharedDataService.ShowSentinel = false;
@@ -725,15 +726,6 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
   getGovernments() {
     this.lookupsService.getAllGovernmentsExplicit(false, 'incident-gov').subscribe(
       (result: any) => {
-        if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-          if (this.incidentGovFetchRetries < 3) {
-            this.incidentGovFetchRetries++;
-            setTimeout(() => this.getGovernments(), 250);
-          }
-          this.loadingPanel = false;
-          return;
-        }
-        this.incidentGovFetchRetries = 0;
         this.applyIncidentGovernmentsFromApi(result, true);
       },
       (error) => {
@@ -753,20 +745,9 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
       this.lookupsService
         .getPageHealthAdministrations({
           governmentID: governmentID,
-          /** PendingRequestsService dedupes url+body; residence uses same shape — avoid starving this tab. */
-          _clientScope: 'incident-info-ha',
         })
         .subscribe(
           (result: any) => {
-            if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-              if (this.healthAdminFetchRetries < 4) {
-                this.healthAdminFetchRetries++;
-                setTimeout(() => this.getHealthAdministration(governmentID), 280);
-              }
-              this.loadingPanel = false;
-              return;
-            }
-            this.healthAdminFetchRetries = 0;
             if (result != null && result != undefined) {
               const raw = this.extractApiDataArray(result);
               const mapped = raw
@@ -821,23 +802,9 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
         areaId: this.SelectedareaId,
         governmentID: governmentID,
         forSystemUser: governmentID ? true : null,
-        _clientScope: 'incident-info-is',
       })
       .subscribe(
         (result: any) => {
-          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-            if (this.incidentSourceFetchRetries < 4) {
-              this.incidentSourceFetchRetries++;
-              setTimeout(
-                () =>
-                  this.getIncidentSources(healthAdministrationID, governmentID),
-                280,
-              );
-            }
-            this.loadingPanel = false;
-            return;
-          }
-          this.incidentSourceFetchRetries = 0;
           if (result != null && result != undefined) {
             const raw = this.extractApiDataArray(result);
             const mapped = raw
@@ -895,17 +862,6 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
   getDepartments() {
     this.lookupsService.getAllDepartments().subscribe(
       (result: any) => {
-        if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-          if (this.departmentFetchRetries < 3) {
-            this.departmentFetchRetries++;
-            setTimeout(() => this.getDepartments(), 250);
-            return;
-          }
-          this.departmentFetchRetries = 0;
-          this.loadingPanel = false;
-          return;
-        }
-        this.departmentFetchRetries = 0;
         if (result != null && result != undefined) {
           const raw = this.extractApiDataArray(result);
           this.departments = [
@@ -1187,6 +1143,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
 
     this.incidentLocationHydratedForPatientId = null;
     this.lastSeenPatientIdForIncidentHydrate = null;
+    this.branchesHydratedForPatientId = undefined;
 
     this.isSettingPatientLocally = true;
     this.patient = patient;
