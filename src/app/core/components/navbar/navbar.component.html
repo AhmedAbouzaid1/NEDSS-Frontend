@@ -115,13 +115,17 @@
           </div>
         </span>
         <img
+          *ngIf="hasProfileImage; else defaultAvatar"
           [src]="userImage"
           (error)="useDefaultAvatar($event)"
           alt="User avatar"
-          width="50px"
-          height="50px"
           class="rounded-circle avatar-img m-0"
         />
+        <ng-template #defaultAvatar>
+          <span class="avatar-img avatar-fallback rounded-circle m-0">
+            {{ avatarInitials }}
+          </span>
+        </ng-template>
       </span>
       <!-- <span>
         <img src="../../../../Content/Images/logo.png">
