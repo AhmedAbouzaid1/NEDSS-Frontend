@@ -11,7 +11,6 @@ import {
   SingleDropdownSettings,
 } from 'src/app/core/constants';
 import { GeneralDataService } from '../services/general-data.service';
-import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 @Component({
@@ -106,11 +105,6 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
   // dependent dropdowns only when the patient actually changed.
   private lastSyncedHomeKey: string = '';
   private lastPatientIdForResidence: number | null = null;
-  private residenceGovFetchRetries = 0;
-  private residenceHaFetchRetries = 0;
-  private residenceCitiesFetchRetries = 0;
-  private residenceHoFetchRetries = 0;
-  private residencePrFetchRetries = 0;
 
   private hasGovernorateListReady(): boolean {
     return (
@@ -128,7 +122,7 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
   }
 
   private extractApiDataArray(result: any): any[] {
-    if (!result || result.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
+    if (!result) {
       return [];
     }
     const tryArray = (d: any): any[] | null => {
@@ -357,15 +351,6 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
       .getAllGovernmentsExplicit(false, 'residence-home')
       .subscribe(
         (result: any) => {
-          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-            if (this.residenceGovFetchRetries < 3) {
-              this.residenceGovFetchRetries++;
-              setTimeout(() => this.getGovernments(), 250);
-            }
-            this.loadingPanel = false;
-            return;
-          }
-          this.residenceGovFetchRetries = 0;
           this.applyResidenceGovernmentsFromApi(result, true);
         },
         (error) => {
@@ -383,20 +368,9 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
     this.lookupsService
       .getPageHealthAdministrations({
         governmentID: governmentID,
-        /** Dedupes with incident-info use same body — must differ from `_clientScope: incident-info-ha`. */
-        _clientScope: 'residence-info-ha',
       })
       .subscribe(
         (result: any) => {
-          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-            if (this.residenceHaFetchRetries < 4) {
-              this.residenceHaFetchRetries++;
-              setTimeout(() => this.getHealthAdministration(governmentID), 280);
-            }
-            this.loadingPanel = false;
-            return;
-          }
-          this.residenceHaFetchRetries = 0;
           if (result != null && result != undefined) {
             const raw = this.extractApiDataArray(result);
             const mapped = raw
@@ -432,22 +406,9 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
     this.lookupsService
       .getPageCitys({
         governmentID: governmentID,
-        _clientScope: 'residence-info-cities',
       })
       .subscribe(
         (result: any) => {
-          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-            if (this.residenceCitiesFetchRetries < 4) {
-              this.residenceCitiesFetchRetries++;
-              setTimeout(
-                () => this.getCities(governmentID, skipInitialCityDeselect),
-                280,
-              );
-            }
-            this.loadingPanel = false;
-            return;
-          }
-          this.residenceCitiesFetchRetries = 0;
           if (result != null && result != undefined) {
             const raw = this.extractApiDataArray(result);
             const mapped = raw
@@ -487,22 +448,9 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationid,
         forHome: true,
-        _clientScope: `residence-info-ho-${healthAdministrationid}`,
       })
       .subscribe(
         (result: any) => {
-          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-            if (this.residenceHoFetchRetries < 4) {
-              this.residenceHoFetchRetries++;
-              setTimeout(
-                () => this.getHealthOffices(healthAdministrationid),
-                280,
-              );
-            }
-            this.loadingPanel = false;
-            return;
-          }
-          this.residenceHoFetchRetries = 0;
           if (result != null && result != undefined) {
             const raw = this.extractApiDataArray(result);
             const mapped = raw
@@ -537,19 +485,9 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
     this.lookupsService
       .getPagePrincipalitys({
         cityID: cityID,
-        _clientScope: `residence-info-pr-${cityID}`,
       })
       .subscribe(
         (result: any) => {
-          if (result?.status === environment.DUPLICATED_REQUEST_STATUS_CODE) {
-            if (this.residencePrFetchRetries < 4) {
-              this.residencePrFetchRetries++;
-              setTimeout(() => this.getPrincipalities(cityID), 280);
-            }
-            this.loadingPanel = false;
-            return;
-          }
-          this.residencePrFetchRetries = 0;
           if (result != null && result != undefined) {
             const raw = this.extractApiDataArray(result);
             const mapped = raw

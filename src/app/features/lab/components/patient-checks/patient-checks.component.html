@@ -331,6 +331,46 @@
       <div class="col-lg-6 mt-3">
         <div class="form-group">
           <label for="">
+            {{
+              "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES"
+                | translate
+            }}
+          </label>
+          <div *ngIf="currentLang == 'ar'">
+            <p-dropdown
+              (onChange)="setDiseaseValue()"
+              [options]="diseases"
+              [(ngModel)]="selectedDiseaseId"
+              optionLabel="arabicName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="diseaseGroup"
+              [filter]="true"
+              filterBy="arabicName"
+            >
+            </p-dropdown>
+          </div>
+          <div *ngIf="currentLang == 'en'">
+            <p-dropdown
+              (onChange)="setDiseaseValue()"
+              [options]="diseases"
+              [(ngModel)]="selectedDiseaseId"
+              optionLabel="englishName"
+              optionValue="id"
+              autoWidth="false"
+              [style]="{ width: '100%' }"
+              name="diseaseGroup"
+              [filter]="true"
+              filterBy="englishName"
+            >
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 mt-3">
+        <div class="form-group">
+          <label for="">
             {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.MOBILE" | translate }}
           </label>
           <input
@@ -466,7 +506,7 @@
   </div>
 </div>
 
-<div class="mt-4 shadow border rounded" *ngIf="!noData">
+<div class="mt-4 shadow border rounded" *ngIf="!noData" [appScrollIntoViewOnResults]="patientsForLab">
   <div class="row">
     <div class="col-lg-7 fwb p-4 pb-0" *ngIf="totalCount !== null || countLoading">
       {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_COUNT" | translate }}
@@ -586,11 +626,19 @@
           </button>
         </div>
       </div>
-      <div class="row" [hidden]="!noData">
+      <div class="row" [hidden]="!noData || loadError">
         <div class="no-data content-center">
           <img src="../../../../../../../Content/Images/svg/no-data.svg" />
 
           <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+        </div>
+      </div>
+      <div class="row" *ngIf="loadError">
+        <div class="no-data content-center">
+          <span class="text-danger">{{ "NEDSS.COMMON.COULD_NOT_LOAD_RESULTS" | translate }}</span>
+          <button type="button" class="btn btn-outline-primary btn-sm mt-2" (click)="getPatients()">
+            {{ "NEDSS.COMMON.TRY_AGAIN" | translate }}
+          </button>
         </div>
       </div>
 

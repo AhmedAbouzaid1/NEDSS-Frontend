@@ -6,14 +6,29 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class PartialLoadingService {
 
+  private activeRequests = 0;
   private readonly isLoadingSubject = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
   showloader() {
-    this.isLoadingSubject.next(true);
+    this.activeRequests++;
+    if (this.activeRequests === 1) {
+      this.isLoadingSubject.next(true);
+    }
   }
+
   hideLoader() {
+    if (this.activeRequests > 0) {
+      this.activeRequests--;
+    }
+    if (this.activeRequests === 0) {
+      this.isLoadingSubject.next(false);
+    }
+  }
+
+  reset() {
+    this.activeRequests = 0;
     this.isLoadingSubject.next(false);
   }
 

@@ -14,6 +14,7 @@ import { PatientChecksComponent } from './components/patient-checks/patient-chec
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from 'primeng/api';
+import { SharedModule as CoreSharedModule } from 'src/app/core/shared/shared.module';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { LabRoutes } from './lab.routing';
@@ -59,6 +60,7 @@ export const DATE_FORMATS = {
     CommonModule,
     LabRoutes,
     SharedModule,
+    CoreSharedModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,

@@ -762,6 +762,7 @@
 </form>
 <div
   *ngIf="patients != undefined && patients.length > 0"
+  [appScrollIntoViewOnResults]="patients"
   class="table-reponsive mt-4 shadow border rounded"
 >
   <div class="d-flex justify-content-between m-3">
@@ -793,7 +794,7 @@
     class="table-responsive table-none-scroll"
     id="myTableElementId"
     #myTableElementId
-    *ngIf="!noData"
+    *ngIf="!noData && !loadError"
   >
     <p-table
       class="table table-bordered"
@@ -1009,7 +1010,8 @@
       </tbody>
     </table> -->
   </div>
-  <div class="col-lg-12 p-0 d-flex align-items-center justify-content-between flex-wrap gap-3 px-3 py-3 border-top" *ngIf="!noData">
+  <div class="row" *ngIf="loadError"><div class="no-data content-center"><span class="text-danger">{{ "NEDSS.COMMON.COULD_NOT_LOAD_RESULTS" | translate }}</span><button type="button" class="btn btn-outline-primary btn-sm mt-2" (click)="search()">{{ "NEDSS.COMMON.TRY_AGAIN" | translate }}</button></div></div>
+  <div class="col-lg-12 p-0 d-flex align-items-center justify-content-between flex-wrap gap-3 px-3 py-3 border-top" *ngIf="!noData && !loadError">
     <div class="d-flex align-items-center gap-2">
       <label class="mb-0 text-muted">{{ 'NEDSS.COMMON.ROWS_PER_PAGE' | translate }}:</label>
       <select class="form-select" style="width: 80px" [ngModel]="filter.pageSize" (ngModelChange)="onPageSizeChange($event)" name="pageSizeSelect">

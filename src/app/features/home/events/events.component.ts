@@ -75,6 +75,7 @@ export class EventsComponent {
   noData: boolean = true;
   noDatap: boolean = true;
   noDatae: boolean = true;
+  loadError: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -415,9 +416,12 @@ export class EventsComponent {
       }
     }, 500);
     this.generalReportForm.value.FilterType = 2;
-    this.generalDataService.getAll(formObj).subscribe((res: any) => {
+    this.loadError = false;
+    this.generalDataService.getAll(formObj).subscribe(
+      (res: any) => {
       if (res != null) {
-        this.dataSource = res.data;
+        this.loadError = false;
+        this.dataSource = res?.data ?? [];
         // ?.filter((p: any) =>
         //   this.lookupsService.incidentsForOrg.includes(p.incidentSourceId)
         // );
@@ -457,7 +461,22 @@ export class EventsComponent {
           if (!skipCount) this.fetchCount(formObj);
         }
       }
-    });
+      },
+      (error) => {
+        this.delay = false;
+        clearTimeout(this.timer);
+        this.loadError = true;
+        this.noData = true;
+        this.noDatap = false;
+        this.dataSource = [];
+        this.pages = 0;
+        this.totalCount = null;
+        this.hasNextPage = false;
+        this.translateService
+          .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
+          .subscribe((msg: string) => this.userMsg.error(msg));
+      }
+    );
     this.columnsToDisplay = [
       ' ',
       'الاسم الاول ',
@@ -566,10 +585,12 @@ export class EventsComponent {
       }
     }, 500);
 
+    this.loadError = false;
     this.eventService.getAll(formObj).subscribe(
       (res: any) => {
         if (res != null) {
-          this.dataSource = res.data;
+          this.loadError = false;
+          this.dataSource = res?.data ?? [];
 
           //TODO BACK TO EVENTS
           if (this.dataSource != undefined && this.dataSource.length == 0) {
@@ -617,11 +638,18 @@ export class EventsComponent {
         }
       },
       (error) => {
+        this.delay = false;
+        clearTimeout(this.timer);
+        this.loadError = true;
+        this.noData = true;
+        this.noDatae = false;
+        this.dataSource = [];
+        this.pages = 0;
+        this.totalCount = null;
+        this.hasNextPage = false;
         this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
+          .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
+          .subscribe((msg: string) => this.userMsg.error(msg));
       }
     );
     this.columnsToDisplay = [

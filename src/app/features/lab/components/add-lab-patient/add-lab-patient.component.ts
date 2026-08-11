@@ -1137,24 +1137,22 @@ export class AddLabPatientComponent {
     this.Delay();
     this.labService.getPatientsFromLab(this.filter)
       .subscribe((response: any) => {
-        if (response != null && response != undefined) {
-          this.patientsFromLab = response.data;
-          if (this.patientsFromLab.length == 0 && this.patientsFromLab != undefined) {
-            this.RemoveDelay();
-            this.noPatientData = true;
-            this.pages = 0;
-            this.translateService
-              .get('NOUR.NO_RESULTS')
-              .subscribe((msg) => this.userMsg.warn(msg));
-          } else {
-            this.RemoveDelay();
-            this.noPatientData = false;
-            this.pageSize = this.filter.pageSize;
-            this.pages = response.data[0].totalCount;
-            this.last = this.pageIndex * this.pageSize;
-          }
-          this.delay = false;
-          this.loadingPanel = false;
+        this.RemoveDelay();
+        this.delay = false;
+        this.loadingPanel = false;
+
+        this.patientsFromLab = response?.data ?? [];
+        if (this.patientsFromLab.length == 0) {
+          this.noPatientData = true;
+          this.pages = 0;
+          this.translateService
+            .get('NOUR.NO_RESULTS')
+            .subscribe((msg) => this.userMsg.warn(msg));
+        } else {
+          this.noPatientData = false;
+          this.pageSize = this.filter.pageSize;
+          this.pages = response.data[0].totalCount;
+          this.last = this.pageIndex * this.pageSize;
         }
       },
         (error) => {
@@ -1320,6 +1318,10 @@ export class AddLabPatientComponent {
         diseaseCheckId: null,
         dieaseLabTestId: null,
       };
+    }, () => {
+      this.translateService
+        .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+        .subscribe((res: string) => this.userMsg.error(res));
     });
   }
 

@@ -85,6 +85,7 @@ export class LabCasesComponent {
 
   patientsForLab: [];
   noData: boolean = true;
+  loadError: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -205,10 +206,12 @@ export class LabCasesComponent {
         ? false
         : null;
     this.Delay();
+    this.loadError = false;
     this.labService.getPatientsFromLab(this.patientsFilter).subscribe(
       (result: any) => {
+        this.loadError = false;
         if (result != null && result != undefined) {
-          this.patientsForLab = result.data;
+          this.patientsForLab = result?.data ?? [];
           // ?.filter((p: any) =>
           //   this.lookupsService.incidentsForOrg.includes(p.homeHealthOfficeId)
           // );
@@ -236,11 +239,15 @@ export class LabCasesComponent {
         }
       },
       (error) => {
+        this.RemoveDelay();
+        this.loadError = true;
+        this.noData = false;
+        this.patientsForLab = [];
+        this.pages = 0;
+        this.hasNextPage = false;
         this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
+          .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
+          .subscribe((res: string) => this.userMsg.error(res));
       }
     );
   }

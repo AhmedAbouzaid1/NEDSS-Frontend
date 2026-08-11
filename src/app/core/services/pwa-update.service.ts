@@ -21,19 +21,7 @@ export class PwaUpdateService {
     // A new version was downloaded and is ready to activate.
     this.swUpdate.versionUpdates
       .pipe(filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'))
-      .subscribe(() => {
-        // Don't yank the page out from under a signed-in user; apply on the
-        // login screen where there is nothing to lose.
-        const hasSession =
-          !!localStorage.getItem('ls.authorizationData') &&
-          localStorage.getItem('ls.authorizationData') !== 'undefined';
-        if (!hasSession) {
-          this.swUpdate
-            .activateUpdate()
-            .then(() => document.location.reload())
-            .catch(() => {});
-        }
-      });
+      .subscribe(() => this.applyUpdate());
 
     // Poll for updates once the app is stable, then every 6 hours, so a new
     // deploy is picked up without depending on a full browser restart.
@@ -43,5 +31,33 @@ export class PwaUpdateService {
     concat(appIsStable$, interval(6 * 60 * 60 * 1000)).subscribe(() => {
       this.swUpdate.checkForUpdate().catch(() => {});
     });
+  }
+
+  private applyUpdate(): void {
+    if (this.isUserBusy()) {
+      // Signed in and interacting with a form: swap on the next navigation
+      // instead of reloading now, so we don't discard unsaved work.
+      return;
+    }
+    this.swUpdate
+      .activateUpdate()
+      .then(() => document.location.reload())
+      .catch(() => {});
+  }
+
+  private isUserBusy(): boolean {
+    const raw = localStorage.getItem('ls.authorizationData');
+    const hasSession = !!raw && raw !== 'undefined';
+    if (!hasSession) {
+      return false;
+    }
+    const active = document.activeElement;
+    const editing =
+      !!active &&
+      (active.tagName === 'INPUT' ||
+        active.tagName === 'TEXTAREA' ||
+        active.tagName === 'SELECT' ||
+        (active as HTMLElement).isContentEditable === true);
+    return editing;
   }
 }

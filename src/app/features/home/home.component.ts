@@ -51,14 +51,11 @@ export class HomeComponent implements OnInit {
     this.activeUSerService.setAccessibleParts();
   }
   public isOnline() {
-    return this.hasNetworkConnection && this.hasInternetAccess;
+    return this.hasNetworkConnection;
   }
   ngOnInit() {
     this.uiLoadingService.isLoading = true;
-    let incidentInfoLink = document.getElementById(
-      'incidentInfo'
-    ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    document.getElementById('incidentInfo')?.classList.remove('active');
 
     //REMOVE THIS IF INCIDENTS FOR ORGANIZATION HANDLED IN THE BACKEND LATER ON
     // this.lookupsService

@@ -178,14 +178,36 @@
                 >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAMPLE" | translate }}
                 <span class="text-danger mess-color">*</span>
               </label>
-              <ng-multiselect-dropdown
-                [settings]="multipleDropdownSettings"
-                [data]="checkSamples"
-                [(ngModel)]="selectedCheckSample"
-                (onSelect)="onSampleChanged()"
-                (onDeSelect)="onSampleChanged()"
-              >
-              </ng-multiselect-dropdown>
+              <div *ngIf="currentLang == 'ar'">
+                <p-dropdown
+                  (onChange)="onSampleChanged()"
+                  [options]="checkSamples"
+                  [(ngModel)]="selectedCheckSample"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="checkSamples"
+                  [filter]="true"
+                  filterBy="arabicName"
+                >
+                </p-dropdown>
+              </div>
+              <div *ngIf="currentLang == 'en'">
+                <p-dropdown
+                  (onChange)="onSampleChanged()"
+                  [options]="checkSamples"
+                  [(ngModel)]="selectedCheckSample"
+                  optionLabel="englishName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="checkSamples"
+                  [filter]="true"
+                  filterBy="englishName"
+                >
+                </p-dropdown>
+              </div>
             </div>
           </div>
           <div class="col-lg-6 mt-4">

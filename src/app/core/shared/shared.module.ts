@@ -13,6 +13,9 @@ import { BuildFormContainerComponent } from '../components/build-form-container/
 import { SidebarModule } from 'primeng/sidebar';
 import { RedirectComponent } from './components/redirect/redirect.component';
 import { AttachemntNamePipe } from '../Pipes/attachemnt-name.pipe';
+import { NoFutureDateDirective } from './directives/no-future-date.directive';
+import { ClearInvalidMinDateDirective } from './directives/clear-invalid-min-date.directive';
+import { ScrollIntoViewOnResultsDirective } from './directives/scroll-into-view-on-results.directive';
 @NgModule({
   declarations: [
     PageLoadingComponent,
@@ -25,6 +28,9 @@ import { AttachemntNamePipe } from '../Pipes/attachemnt-name.pipe';
     BuildFormContainerComponent,
     RedirectComponent,
     AttachemntNamePipe,
+    NoFutureDateDirective,
+    ClearInvalidMinDateDirective,
+    ScrollIntoViewOnResultsDirective,
   ],
   imports: [CommonModule, SidebarModule, TranslateModule, ReactiveFormsModule, FormsModule],
   exports: [
@@ -37,6 +43,9 @@ import { AttachemntNamePipe } from '../Pipes/attachemnt-name.pipe';
     BuildFormContainerComponent,
     BuildFormComponent,
     AttachemntNamePipe,
+    NoFutureDateDirective,
+    ClearInvalidMinDateDirective,
+    ScrollIntoViewOnResultsDirective,
   ],
 })
 export class SharedModule { }

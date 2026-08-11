@@ -69,6 +69,7 @@ export class AdvancedSearchComponent implements OnInit {
   };
 
   noData: boolean = true;
+  loadError: boolean = false;
   loadingPanel: boolean = false;
   first: number = 0;
   last: number = 0;
@@ -230,10 +231,12 @@ export class AdvancedSearchComponent implements OnInit {
             .subscribe((msg) => this.userMsg.info(msg));
         }
       }, 500);
+      this.loadError = false;
       this.searchService.getAll(this.patient).subscribe(
         (result: any) => {
+          this.loadError = false;
           if (result != null && result != undefined) {
-            this.patients = result.data;
+            this.patients = result?.data ?? [];
             // ?.filter((p: any) =>
             //   this.lookupsService.incidentsForOrg.includes(p.incidentSourceId)
             // );
@@ -266,11 +269,14 @@ export class AdvancedSearchComponent implements OnInit {
         },
         (error) => {
           this.loadingPanel = false;
+          this.loadError = true;
+          this.noData = false;
+          this.patients = [];
+          this.pages = 0;
+          this.totalCount = null;
           this.translateService
-            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
+            .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
+            .subscribe((res: string) => this.userMsg.error(res));
         }
       );
     }

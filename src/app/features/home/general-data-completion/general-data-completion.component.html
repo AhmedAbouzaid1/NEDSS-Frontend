@@ -1086,10 +1086,16 @@
           ></p-paginator>
         </div>
       </div>
-      <div class="row" [hidden]="!noData">
+      <div class="row" [hidden]="!noData || loadError">
         <div class="no-data content-center">
           <img src="../../../../../../../Content/Images/svg/no-data.svg" />
           <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+        </div>
+      </div>
+      <div class="row" *ngIf="loadError">
+        <div class="no-data content-center">
+          <span class="text-danger">{{ "NEDSS.COMMON.COULD_NOT_LOAD_RESULTS" | translate }}</span>
+          <button type="button" class="btn btn-outline-primary btn-sm mt-2" (click)="search()">{{ "NEDSS.COMMON.TRY_AGAIN" | translate }}</button>
         </div>
       </div>
     </div>

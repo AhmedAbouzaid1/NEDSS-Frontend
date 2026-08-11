@@ -14,6 +14,7 @@ import { GeneralDataService } from 'src/app/features/home/general-data/services/
 import { TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 import { UiLoadingService } from '../../services/ui-loading.service';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-navbar',
@@ -32,8 +33,8 @@ export class NavbarComponent implements OnInit {
   private hubConnection: signalR.HubConnection;
   userId: number = 0;
   notstr: string = '';
-  userImage: any = 'assets/default-user.webp';
-  // defaultUserImage: string = "assets/default-user.webp";
+  readonly defaultUserImage = 'assets/default-user.webp';
+  userImage: string = this.defaultUserImage;
 
   constructor(
     private notificationService: NotificationService,
@@ -44,16 +45,15 @@ export class NavbarComponent implements OnInit {
     private lookupService: LookupsGetterService,
     private generalDataService: GeneralDataService,
     private translate: TranslateService,
-    private uiLoadingService: UiLoadingService
+    private uiLoadingService: UiLoadingService,
+    private session: SessionService
   ) {
     this.username = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     ).userName;
     let img = JSON.parse(localStorage.getItem('ls.authorizationData')).user
       .profilePic;
-    if (img) this.userImage = img;
-    // console.log("IMAGE MARK", this.userImage, this.userImage.trim() == '')
-    // if (this.userImage == null) this.userImage = 'assets/default-user.webp'
+    this.userImage = this.getProfileImageOrDefault(img);
     this.incidentSourceName = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     ).user.incidentSourceName;
@@ -66,6 +66,19 @@ export class NavbarComponent implements OnInit {
       ).user.levelName;
     }
   }
+
+  getProfileImageOrDefault(profilePic: unknown): string {
+    return typeof profilePic === 'string' && profilePic.trim()
+      ? profilePic
+      : this.defaultUserImage;
+  }
+
+  useDefaultAvatar(event: Event) {
+    const image = event.target as HTMLImageElement;
+    if (image.src.includes(this.defaultUserImage)) return;
+    image.src = this.defaultUserImage;
+  }
+
   @HostListener('window:online', ['$event'])
   onOnline(event) {
     this.generalDataService.syncData();
@@ -249,13 +262,15 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.auth.logout().subscribe((res: any) => {
+    const finish = () => {
+      this.session.clear();
+      this.auth.setUserLoggedIn(false);
       this.translate.get('NEDSS.HOME.LOGOUT.SIGNING_OUT').subscribe((msg) => {
         this.userMsg.success(msg);
       });
-      localStorage.removeItem('ls.authorizationData');
       this.router.navigateByUrl('');
-    });
+    };
+    this.auth.logout().subscribe({ next: finish, error: finish });
   }
   testNot() {
     let not: NotificationDTO = {};

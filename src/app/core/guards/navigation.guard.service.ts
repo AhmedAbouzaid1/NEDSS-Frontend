@@ -176,7 +176,8 @@ export class NavigationGuard {
       )
     ) {
       this.userMsg.error('انت ليس لديك صلاحية الدخول');
-      return false;
+      this.router.navigateByUrl('/home/chart');
+      return of(false);
     }
     return of(true);
   }

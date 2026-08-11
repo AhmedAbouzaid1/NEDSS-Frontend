@@ -77,6 +77,7 @@ export class InvestigationComponent implements OnInit {
     searchText: '',
   };
   noData: boolean = true;
+  loadError: boolean = false;
   loadingPanel: boolean = false;
   first: number = 0;
   last: number = 0;
@@ -380,27 +381,20 @@ export class InvestigationComponent implements OnInit {
       }
     }, 500);
 
-    this.generalDataService.getAll(formObj).subscribe((res: any) => {
-      if (res != null) {
-        this.dataSource = res.data;
-        // ?.filter((p: any) =>
-        //   this.lookupsService.incidentsForOrg.includes(p.incidentSourceId)
-        // );
-        if (this.dataSource != undefined && this.dataSource.length == 0) {
-          setTimeout(() => {
-            this.delay = false;
-            clearTimeout(this.timer);
-          }, 0);
+    this.loadError = false;
+    this.generalDataService.getAll(formObj).subscribe(
+      (res: any) => {
+        this.delay = false;
+        clearTimeout(this.timer);
+        this.loadError = false;
+        this.dataSource = res?.data ?? [];
+        if (this.dataSource.length == 0) {
           this.noData = true;
           this.pages = 0;
           this.translateService
             .get('NOUR.NO_RESULTS')
             .subscribe((msg) => this.userMsg.warn(msg));
         } else {
-          setTimeout(() => {
-            this.delay = false;
-            clearTimeout(this.timer);
-          }, 0);
           this.noData = false;
           this.hasNextPage =
             res.data[0].hasNextPage === true &&
@@ -410,8 +404,20 @@ export class InvestigationComponent implements OnInit {
             this.notInferringFilter.pageSize;
           if (!skipCount) this.fetchCount(formObj);
         }
+      },
+      () => {
+        this.delay = false;
+        clearTimeout(this.timer);
+        this.noData = false;
+        this.loadError = true;
+        this.dataSource = [];
+        this.pages = 0;
+        this.totalCount = null;
+        this.translateService
+          .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
+          .subscribe((msg) => this.userMsg.error(msg));
       }
-    });
+    );
   }
 
   private fetchCount(filter: any) {

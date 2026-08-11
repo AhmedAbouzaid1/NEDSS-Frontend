@@ -5,7 +5,6 @@ import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from './core/services/auth.service';
-import { CloseSeatioService } from './close-seatio.service';
 import { PartialLoadingService } from './core/components/partial-loading/partial-loading.service';
 import { UiLoadingService } from './core/services/ui-loading.service';
 import { PwaUpdateService } from './core/services/pwa-update.service';
@@ -38,7 +37,6 @@ export class AppComponent {
     private keepalive: Keepalive,
     private router: Router,
     private authService: AuthService,
-    private closeSeatioService: CloseSeatioService,
     private partialLoadingService: PartialLoadingService,
     private uiLoadingService: UiLoadingService,
     private pwaUpdateService: PwaUpdateService,
@@ -53,9 +51,9 @@ export class AppComponent {
     this.translate.setDefaultLang(this.lang);
     translate.use(this.lang);
 
-    // sets an idle timeout of 5 seconds, for testing purposes.
+    // @ng-idle is the single auto-logout mechanism (the CloseSeatio timer was
+    // removed). Consider the user idle after 300s (5 min) of no interaction,
     idle.setIdle(300);
-    // sets a timeout period of 300 seconds. after 10 seconds of inactivity, the user will be considered timed out.
     idle.setTimeout(300);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
@@ -69,7 +67,8 @@ export class AppComponent {
     idle.onTimeout.subscribe(() => {
       this.idleState = 'Timed out!';
       this.timedOut = true;
-      localStorage.removeItem('ls.authorizationData');
+      this.authService.logout().subscribe({ next: () => {}, error: () => {} });
+      this.session.clear();
       this.authService.setUserLoggedIn(false);
       this.router.navigateByUrl('/');
     });
@@ -105,10 +104,6 @@ export class AppComponent {
     this.onloadHandler();
   }
 
-  ngOnInit() {
-    //  وقت الإغلاق  5 دقيقة
-    this.closeSeatioService.setLogoutTimeout(15);
-  }
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event) {
     localStorage['unloadTime'] = new Date().getTime();
@@ -145,11 +140,6 @@ export class AppComponent {
     this.router.navigateByUrl('');
   }
 
-  resetLogoutTimeout() {
-    this.closeSeatioService.clearLogoutTimeout();
-    this.closeSeatioService.setLogoutTimeout(1500);
-  }
-
   reset() {
     this.idle.watch();
     //xthis.idleState = 'Started.';
@@ -157,6 +147,7 @@ export class AppComponent {
   }
 
   logout() {
+    this.session.clear();
     this.authService.setUserLoggedIn(false);
     this.router.navigate(['/']);
   }
