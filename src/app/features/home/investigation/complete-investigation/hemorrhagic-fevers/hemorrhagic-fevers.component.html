@@ -7,6 +7,15 @@
             {{ "NEDSS.COMPLETE_INVESTEGATION.Hemorrhagic_Fever" | translate }} </h5>
           <br />
           <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>
+                  {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME" | translate }}: {{ patientName }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-lg-4">
               <div class="form-group">
                 <label for="">
@@ -18,8 +27,8 @@
                 </label>
                 <input #precentile type="range" class="form-range bg" onkeypress="false" [readonly]="true"
                         style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
-                       value="{{ (allFilledControlsCount / allControllesCount) * 100 }}" />
-                        <!-- value="{{controlsCount}}" formControlName="completePercentage" /> -->
+                       [value]="allControllesCount ? (allFilledControlsCount / allControllesCount) * 100 : 0" />
+                        <!-- value="{{controlsCount}}" /> -->
               </div>
             </div>
             <div class="col-lg-4">

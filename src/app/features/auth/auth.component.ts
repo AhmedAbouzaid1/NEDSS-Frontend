@@ -2,7 +2,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 // import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LocalizationService } from 'src/app/core/services/localization.service';
@@ -45,6 +45,7 @@ export class AuthComponent {
     private localizationService: LocalizationService,
     private userMsg: UserMessageService,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private authService: AuthService,
     private lookupService: LookupsGetterService,
     private diseaseSpecialSymptomsService: DiseaseSpecialSymptomsService,
@@ -63,13 +64,23 @@ export class AuthComponent {
         ? userDataObject.userName
         : null;
 
-    if (userData == null) {
-      this.router.navigateByUrl('');
-    } else {
-      this.router.navigateByUrl('home/chart');
-      // window.open('/#/home/chart', '_self')
+    if (userData != null) {
+      this.router.navigateByUrl(this.getReturnUrl() || 'home/chart');
     }
     // window.location.reload()
+  }
+
+  private getReturnUrl(): string {
+    const returnUrl = this.activatedRoute.snapshot.queryParamMap.get('returnUrl');
+    if (
+      returnUrl &&
+      returnUrl.startsWith('/') &&
+      !returnUrl.startsWith('//') &&
+      returnUrl !== '/'
+    ) {
+      return returnUrl;
+    }
+    return '';
   }
 
   ngOnInit(): void {
@@ -187,9 +198,11 @@ export class AuthComponent {
                   );
                   localStorage.setItem('username', form.value.username);
                   localStorage.setItem('password', form.value.password);
-                  this.router.navigate(['/home/chart']);
+                  const target = this.getReturnUrl() || '/home/chart';
+                  this.router
+                    .navigateByUrl(target)
+                    .then(() => window.location.reload());
                   // window.open('/#/home/chart', '_self')
-                  window.location.reload();
                 }
               }
             },
@@ -221,8 +234,10 @@ export class AuthComponent {
               'ls.authorizationData',
               JSON.stringify(lsOffline)
             );
-          this.router.navigate(['/home/general-data']);
-          window.location.reload();
+          const target = this.getReturnUrl() || '/home/general-data';
+          this.router
+            .navigateByUrl(target)
+            .then(() => window.location.reload());
           // window.open('/#/home/general-data/incident-info', '_self')
         } else {
           this.translate

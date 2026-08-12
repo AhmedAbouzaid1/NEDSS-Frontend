@@ -5,24 +5,26 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError, tap } from 'rxjs';
-import { catchError, share, takeWhile } from 'rxjs/operators';
+import { catchError, share } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { PendingRequestsService } from './pending-requests.service';
 import { UserMessageService } from './user.message.service';
-import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { Subject } from '@microsoft/signalr';
+import { SessionService } from './session.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BaseAPIService {
+
   constructor(
     private pendingService: PendingRequestsService,
     private http: HttpClient,
     private userMessage: UserMessageService,
     private translateService: TranslateService,
-    private router: Router
+    private router: Router,
+    private session: SessionService
   ) {}
   createCompleteRoute(route: string): string {
     // return `${window.location.origin}${"/"}${route}`
@@ -40,12 +42,9 @@ export class BaseAPIService {
       headers = headers.set('Accept-Language', lang);
     }
     // console.log(authData);
-    if (
-      localStorage.getItem('ls.authorizationData') != null &&
-      localStorage.getItem('ls.authorizationData') != 'undefined'
-    ) {
-      var authData = JSON.parse(localStorage.getItem('ls.authorizationData'));
-      headers = headers.set('Authorization', ` Bearer ${authData.token}`);
+    const token = this.session.getToken();
+    if (token) {
+      headers = headers.set('Authorization', ` Bearer ${token}`);
     }
     return headers;
   }
@@ -56,7 +55,7 @@ export class BaseAPIService {
 
   public get(route: string, responseType?: any, observeResponse?: boolean) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
     let options = responseType
       ? { headers: this.setHeader(), responseType: responseType }
@@ -73,16 +72,13 @@ export class BaseAPIService {
         catchError((e: any) => {
           this.errorHandler(e);
           return throwError(e);
-        }),
-        takeWhile(
-          (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-        )
+        })
       );
   }
 
   public update(route: string, body: any) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
     return this.pendingService
       .intercept(
@@ -96,16 +92,13 @@ export class BaseAPIService {
         catchError((e: any) => {
           this.errorHandler(e);
           return throwError(e);
-        }),
-        takeWhile(
-          (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-        )
+        })
       );
   }
 
   public create(route: string, body: any, responseType?: any) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
     let headers = this.setHeader();
     if (responseType == undefined)
@@ -122,11 +115,7 @@ export class BaseAPIService {
           catchError((e: any) => {
             this.errorHandler(e);
             return throwError(e);
-          }),
-          takeWhile(
-            (value) =>
-              value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-          )
+          })
         );
     else
       return this.pendingService
@@ -143,17 +132,13 @@ export class BaseAPIService {
           catchError((e: any) => {
             this.errorHandler(e);
             return throwError(e);
-          }),
-          takeWhile(
-            (value) =>
-              value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-          )
+          })
         );
   }
 
   public delete(route: string) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
     let headers = this.setHeader();
     return this.pendingService
@@ -166,16 +151,13 @@ export class BaseAPIService {
         catchError((e: any) => {
           this.errorHandler(e);
           return throwError(e);
-        }),
-        takeWhile(
-          (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-        )
+        })
       );
   }
 
   public deleteWithBody(route: string, body?: any) {
     if (!this.checkUserIsOnline()) {
-        return new Observable<any>();
+        return throwError(() => new Error('OFFLINE'));
     }
     
     let headers = this.setHeader();
@@ -194,47 +176,11 @@ export class BaseAPIService {
             catchError((e: any) => {
                 this.errorHandler(e);
                 return throwError(e);
-            }),
-            takeWhile(
-                (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-            )
+            })
         );
 }
-  // public deleteMultible(route: string, body: any,) {
-  //   let headers = this.setHeader();
-  //   return this.pendingService
-  //     .intercept(
-  //       this.createCompleteRoute(route),
-  //       body,
-  //       this.http.delete(this.createCompleteRoute(route), body)
-  //     )
-  //     .pipe(
-  //       catchError((e: any) => {
-  //         this.errorHandler(e);
-  //         return throwError(e);
-  //       }),
-  //       takeWhile(
-  //         (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-  //       )
-  //     );
-  // }
 
-  errorHandler(error: HttpErrorResponse): void {
-    if (error.status === 401) {
-      const body = typeof error.error === 'string' ? (() => { try { return JSON.parse(error.error); } catch { return null; } })() : error.error;
-      const msgs: string[] = body?.Messages || [];
-      if (msgs.some((m: string) => m?.toLowerCase().includes('session time out'))) {
-        localStorage.removeItem('ls.authorizationData');
-        this.translateService.get('NEDSS.COMMON.SESSION_EXPIRED').subscribe((msg) => {
-          this.userMessage.warn(msg);
-        });
-        this.router.navigateByUrl('/');
-      }
-    }
-    if (error.status === 0) {
-      this.router.navigateByUrl('/');
-    }
-  }
+  errorHandler(_error: HttpErrorResponse): void {}
 
   public post(
     route: string,
@@ -242,7 +188,7 @@ export class BaseAPIService {
     cancelDuplicatedRequest: boolean = true
   ) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
 
     let headers = this.setHeader();
@@ -264,11 +210,7 @@ export class BaseAPIService {
             //alert(JSON.stringify(obj));
             this.errorHandler(e);
             return throwError(e);
-          }),
-          takeWhile(
-            (value) =>
-              value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-          )
+          })
         );
     else
       return this.http
@@ -290,7 +232,7 @@ export class BaseAPIService {
     options: any = {} // Add options parameter for additional configurations
   ) {
     if (!this.checkUserIsOnline()) {
-      return new Observable<any>();
+      return throwError(() => new Error('OFFLINE'));
     }
   
     let headers = this.setHeader();
@@ -308,11 +250,7 @@ export class BaseAPIService {
           catchError((e: any, obj: any) => {
             this.errorHandler(e);
             return throwError(e);
-          }),
-          takeWhile(
-            (value) =>
-              value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-          )
+          })
         );
     else
       return this.http
@@ -339,10 +277,7 @@ export class BaseAPIService {
         catchError((e: any) => {
           this.errorHandler(e);
           return throwError(e);
-        }),
-        takeWhile(
-          (value) => value?.status != environment.DUPLICATED_REQUEST_STATUS_CODE
-        )
+        })
       );
   }
 

@@ -8,6 +8,7 @@ import {
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { UserMessageService } from '../services/user.message.service';
+import { SessionService } from '../services/session.service';
 
 @Injectable({
   providedIn: 'root',
@@ -146,17 +147,22 @@ export class NavigationGuard {
     { Comingroute: 'qustion-form', id: 94 },
   ];
   filterdData: any;
-  constructor(private router: Router, private userMsg: UserMessageService) {}
+  constructor(
+    private router: Router,
+    private userMsg: UserMessageService,
+    private session: SessionService
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (
-      JSON.parse(localStorage.getItem('ls.authorizationData'))?.emailId ==
-      'admin@admin.com'
-    )
+    if (!this.session.isValid()) {
+      this.session.clearSession();
+      this.router.navigate(['/'], { queryParams: { returnUrl: state.url } });
+      return of(false);
+    }
+    const authData = this.session.getSession();
+    if (authData.emailId == 'admin@admin.com')
       return of(true);
-    let userPremitedPages: any[] = JSON.parse(
-      localStorage.getItem('ls.authorizationData')
-    ).pages;
+    let userPremitedPages: any[] = authData.pages;
     let userPremitedPagesIds = [];
     userPremitedPages.forEach((element) => {
       userPremitedPagesIds.push(element.id);
@@ -170,7 +176,8 @@ export class NavigationGuard {
       )
     ) {
       this.userMsg.error('انت ليس لديك صلاحية الدخول');
-      return false;
+      this.router.navigateByUrl('/home/chart');
+      return of(false);
     }
     return of(true);
   }

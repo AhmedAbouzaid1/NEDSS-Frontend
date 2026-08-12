@@ -46,12 +46,9 @@ export class LoaderComponent implements OnInit, OnDestroy {
   }
 
   private syncLoaderPosition(): void {
-    // Wait for the new route DOM to render, then rebind observers.
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       this.bindLayoutObservers();
       this.updateLayoutStyle();
-      // Account for sidebar width transition after collapse/expand.
-      setTimeout(() => this.updateLayoutStyle(), 320);
     });
   }
 

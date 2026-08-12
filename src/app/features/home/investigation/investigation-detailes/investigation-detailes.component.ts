@@ -21,6 +21,7 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
   data: any = {};
   notFoundForm: FormGroup;
   isLoadingInvestigationData = false;
+  hasLoadedPatientData = false;
   singleDropdownSettings = SingleDropdownSettings;
   patient: PatientModel = new PatientModel();
   phone;
@@ -109,6 +110,7 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
     try {
       let result = await firstValueFrom(this.generalDataService.getPatientByIdForInvestigation(id))
       if (result != null && result != undefined) {
+        this.hasLoadedPatientData = true;
         this.data = result.data;
         this.phone = result.data.phoneNo1;
         this.Address = result.data.livingAddress;
@@ -124,7 +126,11 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
         this.investigation.patient.familyName = this.data.familyName;
         this.investigation.patient.phoneNo1 = this.data.phoneNo1;
         this.investigation.patient.livingAddress = this.data.livingAddress;
-        this.invetigationService.patientDiseases = this.data.patientDiseasesGroups;
+        const pendingDiseaseGroups = this.data.patientDiseasesGroups;
+        this.invetigationService.patientDiseases =
+          pendingDiseaseGroups && pendingDiseaseGroups.length
+            ? pendingDiseaseGroups
+            : this.data.patientDiseases || [];
       }
     } catch (error) {
       this.translateService
@@ -136,9 +142,7 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
   }
 
   canContinueInvestigation(): boolean {
-    return !this.isLoadingInvestigationData &&
-      Array.isArray(this.invetigationService.patientDiseases) &&
-      this.invetigationService.patientDiseases.length > 0;
+    return !this.isLoadingInvestigationData && this.hasLoadedPatientData;
   }
 
   getGovernments() {

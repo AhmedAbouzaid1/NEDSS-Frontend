@@ -40,6 +40,7 @@ export class PatientChecksComponent implements OnInit {
     phoneNo: null,
     fromDate: null,
     toDate: null,
+    diseaseGroupId: null,
     insertedByLab: null,
     firstTime: false,
     hasLabChecks: null,
@@ -62,6 +63,9 @@ export class PatientChecksComponent implements OnInit {
   healthOffices!: any[];
   selectedHealthOffice: number;
 
+  diseases!: any[];
+  selectedDiseaseId: number = -1;
+
   loadingPanel: boolean = false;
   isForeign: boolean = false;
 
@@ -70,9 +74,13 @@ export class PatientChecksComponent implements OnInit {
 
   patientsForLab: [];
   noData: boolean = true;
+  loadError: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
+  hasNextPage: boolean = false;
+  totalCount: number | null = null;
+  countLoading: boolean = false;
 
   maxDate = new Date();
   minDate = new Date(1900, 0, 1);
@@ -130,6 +138,7 @@ export class PatientChecksComponent implements OnInit {
           phoneNo: null,
           fromDate: null,
           toDate: null,
+          diseaseGroupId: null,
           insertedByLab: null,
           hasLabChecks: null,
           firstTime: false,
@@ -155,6 +164,7 @@ export class PatientChecksComponent implements OnInit {
           phoneNo: null,
           fromDate: null,
           toDate: null,
+          diseaseGroupId: null,
           insertedByLab: null,
           hasLabChecks: params.done,
           firstTime: true,
@@ -168,6 +178,7 @@ export class PatientChecksComponent implements OnInit {
     // this.getPatients();
     this.getNationalities();
     this.getGovernments();
+    this.getAllDiseases();
   }
 
   onItemSelect(item: any) {}
@@ -228,7 +239,7 @@ export class PatientChecksComponent implements OnInit {
     }
   }
 
-  getPatients(firstTime?: boolean) {
+  getPatients(firstTime?: boolean, skipCount?: boolean) {
     this.patientsFilter.hasLabChecks =
       this.patientsFilter.hasLabChecks === 'true'
         ? true
@@ -237,38 +248,86 @@ export class PatientChecksComponent implements OnInit {
         : null;
     //alert("has lab checks " + this.patientsFilter.hasLabChecks);
     this.patientsFilter.firstTime = firstTime;
+    this.loadError = false;
     this.Delay();
     this.labService.getPatients(this.patientsFilter).subscribe(
       (result: any) => {
-        if (result != null && result != undefined) {
-          // this.patientsForLab = result.data?.filter((p: any) => this.lookupsService.incidentsForOrg.includes(p.incidentSourceId));
-          this.patientsForLab = result.data;
-          if (
-            this.patientsForLab != undefined &&
-            this.patientsForLab.length == 0
-          ) {
-            this.RemoveDelay();
-            this.noData = true;
-            this.pages = 0;
-            this.translateService
-              .get('NOUR.NO_RESULTS')
-              .subscribe((msg) => this.userMsg.warn(msg));
-          } else {
-            this.RemoveDelay();
-            this.noData = false;
-            this.pages = result.data[0].totalCount;
-            this.last =
-              this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
-          }
+        this.RemoveDelay();
+        this.loadError = false;
+        this.patientsForLab = result?.data ?? [];
+        if (this.patientsForLab.length == 0) {
+          this.noData = true;
+          this.pages = 0;
+          this.hasNextPage = false;
+          this.translateService
+            .get('NOUR.NO_RESULTS')
+            .subscribe((msg) => this.userMsg.warn(msg));
+        } else {
+          this.noData = false;
+          this.hasNextPage =
+            result.data[0].hasNextPage === true &&
+            result.data.length >= this.patientsFilter.pageSize;
+          this.last =
+            this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
+          if (!skipCount) this.fetchCount(this.patientsFilter);
         }
       },
       (error) => {
+        this.RemoveDelay();
+        this.noData = false;
+        this.loadError = true;
+        this.patientsForLab = [];
+        this.pages = 0;
+        this.hasNextPage = false;
         this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+          .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
           .subscribe((res: string) => {
             this.userMsg.error(res);
           });
       }
+    );
+  }
+
+  previousPage() {
+    if (this.patientsFilter.pageIndex > 0) {
+      this.patientsFilter.pageIndex--;
+      this.first = this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
+      this.getPatients(false, true);
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.patientsFilter.pageIndex++;
+      this.first = this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
+      this.getPatients(false, true);
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.patientsFilter.pageSize = newSize;
+    this.patientsFilter.pageIndex = 0;
+    this.first = 0;
+    this.getPatients(false);
+  }
+
+  private fetchCount(filter: any) {
+    const skip = ['pageSize', 'pageIndex', 'sortColumn', 'sortOrder', 'searchText', 'filterType', 'firstTime'];
+    const hasFilter = Object.keys(filter).some(k => !skip.includes(k) && filter[k] != null && filter[k] !== '' && filter[k] !== false);
+    if (!hasFilter) {
+      this.totalCount = null;
+      return;
+    }
+    this.countLoading = true;
+    this.totalCount = null;
+    this.labService.getPatientsCount({ ...filter }).subscribe(
+      (res: any) => {
+        this.countLoading = false;
+        if (res?.data?.length > 0) {
+          this.totalCount = res.data[0].totalCount;
+        }
+      },
+      () => { this.countLoading = false; }
     );
   }
 
@@ -409,14 +468,35 @@ export class PatientChecksComponent implements OnInit {
       );
   }
 
-  paginate(event: any) {
-    this.first = event.first;
-    this.last = event.last;
-    //add one as primeng pagination is zero based ,so we convert it to one based to fit with the API
-    this.patientsFilter.pageIndex = event.page;
-    this.patientsFilter.pageSize = event.rows;
-    this.getPatients();
+  getAllDiseases() {
+    this.lookupsService.getAllDiseaseGroups().subscribe(
+      (result: any) => {
+        if (result != null && result != undefined) {
+          this.diseases = [
+            { id: -1, arabicName: 'إختر', englishName: 'Select' },
+          ];
+          result.data.forEach((nat) => {
+            this.diseases.push(nat);
+          });
+        }
+        this.loadingPanel = false;
+      },
+      (error) => {
+        this.loadingPanel = false;
+        this.translateService
+          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+          .subscribe((res: string) => {
+            this.userMsg.error(res);
+          });
+      }
+    );
   }
+
+  setDiseaseValue() {
+    this.patientsFilter.diseaseGroupId =
+      this.selectedDiseaseId == -1 ? null : this.selectedDiseaseId;
+  }
+
   addPatientChecks(id: number) {}
 
   Delay() {

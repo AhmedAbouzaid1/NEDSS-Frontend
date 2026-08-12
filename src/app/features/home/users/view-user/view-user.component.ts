@@ -74,7 +74,9 @@ export class ViewUserComponent implements OnInit, OnChanges {
     })
   }
   getOrgName(id) {
-    if (id !== null && id !== undefined) { return this.organizations.find(x => x.id == id).arabicName; }
+    if (id !== null && id !== undefined) {
+      return this.organizations?.find(x => x.id == id)?.arabicName ?? "";
+    }
     else return "";
   }
 }

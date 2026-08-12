@@ -1,1252 +1,870 @@
 <form [formGroup]="feverRashForm" (ngSubmit)="save()">
   <div class="row">
     <div class="col-12">
-      <div class="card shadow mt-4 color mb-4">
+
+      <!-- ==================== HEADER (image 1) ==================== -->
+      <div class="card shadow mt-4 color mb-3">
         <div class="card-body">
-          <h5 style="text-align: center; border: 1px solid; padding: 1%">
-            {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FORM_TITLE" | translate }}
-          </h5>
-          <br />
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-4">
               <div class="form-group">
                 <label>
-                  {{"NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME"| translate}}: {{ patientName }}
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="form-group">
-                <label for="">
-                  {{"NEDSS.INVESTIGATIONS.percentage"| translate}}
+                  {{ "NEDSS.INVESTIGATIONS.percentage" | translate }}
                   <span class="mx-4" style="font-size: larger; color: red">
-                    {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount /
-                    allControllesCount) * 100 |
-                    number:'1.0-2') }} %
+                    {{ allControllesCount === 0 ? "0.00" : ((allFilledControlsCount / allControllesCount) * 100 | number: "1.0-2") }} %
                   </span>
                 </label>
-                <input #precentile type="range" class="form-range bg" onkeypress="false" [readonly]="true"
-                  style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
-                  value="{{ allControllesCount === 0 ? 0 : (allFilledControlsCount / allControllesCount) * 100 }}"
-                  formControlName="investigationCompletePercentage" />
+                <input type="range" class="form-range bg" [readonly]="true"
+                  style="border-radius: 11.7px; border: 5.5px solid white"
+                  min="0" max="100" step="1"
+                  [value]="allControllesCount ? (allFilledControlsCount / allControllesCount) * 100 : 0" />
               </div>
             </div>
-            <div class="col-lg-4">
-              {{"NEDSS.INVESTIGATIONS.Filled"| translate}}
-              {{allFilledControlsCount}}
-              {{"NEDSS.INVESTIGATIONS.Field"| translate}}
-              {{"NEDSS.INVESTIGATIONS.From"| translate}}
-              {{allControllesCount}}
-              {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+            <div class="col-lg-4 d-flex align-items-center">
+              {{ "NEDSS.INVESTIGATIONS.Filled" | translate }} {{ allFilledControlsCount }}
+              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
+              {{ "NEDSS.INVESTIGATIONS.From" | translate }} {{ allControllesCount }}
+              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
             </div>
           </div>
-
-          <!-- ==================== SECTION 1: MEDICAL HISTORY ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.MEDICAL_HISTORY" | translate }}</div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FEVER_ONSET_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="feverOnsetDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.RASH_ONSET_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="rashOnsetDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.NOTIFICATION_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="notificationDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.REPORTER_NAME" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="reporterName" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.REPORTER_PHONE" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="reporterPhone" />
-                  </div>
-                </div>
-
-                <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FEMALE_CHILDBEARING" | translate }}</div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PREGNANT_WEEK" | translate }}</label>
-                    <input type="number" class="form-control" formControlName="pregnancyWeek" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PLANNING_PREGNANCY" | translate }}</label>
-                    <select formControlName="planningPregnancy" class="form-control">
-                      <option [ngValue]="null"></option>
-                      <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
+          <div class="row align-items-end">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label class="fwb">اسم الحالة</label>
+                <input type="text" class="form-control" [value]="patientName" readonly />
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-6">
+              <div class="form-group">
+                <label class="fwb">العمر</label>
+                <input type="text" class="form-control" [value]="patientAgeLabel" readonly />
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-6">
+              <div class="form-group">
+                <label class="fwb">النوع</label>
+                <input type="text" class="form-control" [value]="patientSexLabel" readonly />
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-6">
+              <div class="form-group">
+                <label class="fwb">تاريخ التقرير</label>
+                <input type="date" class="form-control" formControlName="reportDate" />
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-6">
+              <div class="form-group">
+                <label class="fwb">تاريخ زيارة منزل الحالة</label>
+                <input type="date" class="form-control" formControlName="homeVisitDate" />
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          <!-- ==================== SECTION 2: CLINICAL EXAMINATION ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.CLINICAL_EXAMINATION" | translate }}</div>
+      <!-- ==================== TAB NAV ==================== -->
+      <ul class="nav nav-tabs fwb">
+        <li class="nav-item" *ngFor="let t of tabs">
+          <a class="nav-link" style="cursor:pointer" [class.active]="activeTab === t.key"
+            (click)="setTab(t.key)">{{ t.label }}</a>
+        </li>
+      </ul>
 
-                <div class="col-12">
-                  <div class="form-group d-flex gap-4 flex-wrap align-items-center">
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="checkbox" formControlName="rash" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.RASH" | translate }}
-                    </label>
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="checkbox" formControlName="cough" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.COUGH" | translate }}
-                    </label>
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="checkbox" formControlName="conjunctivitis" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.CONJUNCTIVITIS" | translate }}
-                    </label>
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="checkbox" formControlName="lymphNodeEnlargement" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.LYMPH_NODE" | translate }}
-                    </label>
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="checkbox" formControlName="jointPain" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.JOINT_PAIN" | translate }}
-                    </label>
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="checkbox" formControlName="tonsillitis" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.TONSILLITIS" | translate }}
-                    </label>
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="checkbox" formControlName="drugIntake" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.DRUG_INTAKE" | translate }}
-                    </label>
-                  </div>
-                </div>
+      <div class="card shadow color">
+        <div class="card-body">
 
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.DRUG_NAME" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="drugName" />
-                  </div>
-                </div>
+          <!-- ============================================================ -->
+          <!-- TAB 1 : التقصى الميدانى للحالة (images 2,3,4,5)               -->
+          <!-- ============================================================ -->
+          <ng-container *ngIf="activeTab === 'field'">
 
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.OTHER_SYMPTOMS" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="otherSymptoms" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.HOSPITALIZED" | translate }}</label>
-                    <select formControlName="hospitalized" class="form-control">
-                      <option [ngValue]="null"></option>
-                      <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.HOSPITALIZED_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="hospitalizedDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.HOSPITAL_NAME" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="hospitalName" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.INITIAL_DIAGNOSIS" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="initialDiagnosis" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.EXAMINING_PHYSICIAN" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="examiningPhysician" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PHYSICIAN_PHONE" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="physicianPhone" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SPECIALTY" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="specialty" />
+            <!-- Vaccination status (image 2) -->
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">اذكر موقف التطعيم للحالة</div>
+                  <div class="col-12">
+                    <div class="form-group d-flex gap-4 flex-wrap align-items-center">
+                      <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="caseVaccinationStatus" [value]="1" /> مطعم</label>
+                      <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="caseVaccinationStatus" [value]="2" /> غير مطعم</label>
+                      <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="caseVaccinationStatus" [value]="4" /> غير معروف</label>
+                      <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="caseVaccinationStatus" [value]="3" /> غير مستحق</label>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- ==================== CROSS GOVERNORATE REPORTING ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.CROSS_GOVERNORATE" | translate }}</div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GOVERNORATE" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="crossGovernorate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.ADMINISTRATION" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="crossAdministration" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.UNIT" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="crossUnit" />
-                  </div>
-                </div>
-
-                <div class="col-12">
-                  <p class="text-muted small mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.CROSS_GOV_NOTE" | translate }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== SECTION 3: CASE MOVEMENT & TRAVEL HISTORY ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.CASE_MOVEMENT" | translate }}</div>
-                <div class="col-12">
-                  <p class="text-muted small">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.CASE_MOVEMENT_NOTE" | translate }}</p>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.HOME_VISIT_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="homeVisitDate" />
-                  </div>
-                </div>
-
-                <!-- Source of Infection -->
-                <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SOURCE_OF_INFECTION" | translate }}</div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.CONFIRMED_CASES_LAST_MONTH" | translate }}</label>
-                    <select formControlName="confirmedCasesLastMonth" class="form-control">
-                      <option [ngValue]="null"></option>
-                      <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.CONFIRMED_CASES_CONTACT" | translate }}</label>
-                    <select formControlName="confirmedCasesContact" class="form-control">
-                      <option [ngValue]="null"></option>
-                      <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-4"></div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FEVER_RASH_CASES_LAST_MONTH" | translate }}</label>
-                    <select formControlName="feverRashCasesLastMonth" class="form-control">
-                      <option [ngValue]="null"></option>
-                      <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FEVER_RASH_CASES_CONTACT" | translate }}</label>
-                    <select formControlName="feverRashCasesContact" class="form-control">
-                      <option [ngValue]="null"></option>
-                      <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-4"></div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.TRAVELED_TO_OUTBREAK" | translate }}</label>
-                    <select formControlName="traveledToOutbreak" class="form-control">
-                      <option [ngValue]="null"></option>
-                      <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.TRAVELED_TO_OUTBREAK_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="traveledToOutbreakDate" />
-                  </div>
-                </div>
-
-                <!-- Epidemiological Linkage -->
-                <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.EPI_LINKAGE" | translate }}</div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SOURCE_CASE_NAME" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="sourceCaseName" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SOURCE_CASE_ADDRESS" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="sourceCaseAddress" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SOURCE_CASE_CODE" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="sourceCaseCode" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SOURCE_CASE_RASH_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="sourceCaseRashDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SOURCE_CASE_FINAL_CLASSIFICATION" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="sourceCaseFinalClassification" />
+            <!-- Case vaccinations table (image 2) - shown only when the case is vaccinated (مطعم) -->
+            <div class="row color" *ngIf="feverRashForm.value.caseVaccinationStatus === 1">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">موقف تطعيمات الحالة</div>
+                  <div class="col-12 table-responsive">
+                    <table class="table table-bordered text-center align-middle">
+                      <thead>
+                        <tr>
+                          <th>الطعم</th>
+                          <th>عدد الجرعات - تطعيم روتينى</th>
+                          <th>عدد الجرعات - حملة</th>
+                          <th>تاريخ آخر جرعة</th>
+                          <th>الإجمالي (روتينى + حملة)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Measles</td>
+                          <td><input type="number" class="form-control" formControlName="measlesRoutineDoses" /></td>
+                          <td><input type="number" class="form-control" formControlName="measlesCampaignDoses" /></td>
+                          <td><input type="date" class="form-control" formControlName="measlesLastDoseDate" /></td>
+                          <td class="fwb">{{ (+feverRashForm.value.measlesRoutineDoses || 0) + (+feverRashForm.value.measlesCampaignDoses || 0) }}</td>
+                        </tr>
+                        <tr>
+                          <td>MMR</td>
+                          <td><input type="number" class="form-control" formControlName="mmrRoutineDoses" /></td>
+                          <td><input type="number" class="form-control" formControlName="mmrCampaignDoses" /></td>
+                          <td><input type="date" class="form-control" formControlName="mmrLastDoseDate" /></td>
+                          <td class="fwb">{{ (+feverRashForm.value.mmrRoutineDoses || 0) + (+feverRashForm.value.mmrCampaignDoses || 0) }}</td>
+                        </tr>
+                        <tr>
+                          <td>MR</td>
+                          <td><input type="number" class="form-control" formControlName="mrRoutineDoses" /></td>
+                          <td><input type="number" class="form-control" formControlName="mrCampaignDoses" /></td>
+                          <td><input type="date" class="form-control" formControlName="mrLastDoseDate" /></td>
+                          <td class="fwb">{{ (+feverRashForm.value.mrRoutineDoses || 0) + (+feverRashForm.value.mrCampaignDoses || 0) }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- ==================== SECTION 4: VACCINATION STATUS ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.VACCINATION_STATUS" | translate }}</div>
-
-                <div class="col-12 table-responsive">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.VACCINE" | translate }}</th>
-                        <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.NUM_DOSES" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.LAST_DOSE_DATE" | translate }}</th>
-                      </tr>
-                      <tr>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.ROUTINE_DOSES" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.CAMPAIGN_DOSES" | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>MMR</td>
-                        <td><input type="text" class="form-control" formControlName="mmrRoutineDoses" /></td>
-                        <td><input type="text" class="form-control" formControlName="mmrCampaignDoses" /></td>
-                        <td><input type="date" class="form-control" formControlName="mmrLastDoseDate" /></td>
-                      </tr>
-                      <tr>
-                        <td>MR</td>
-                        <td style="background-color: #e9ecef;"></td>
-                        <td><input type="text" class="form-control" formControlName="mrCampaignDoses" /></td>
-                        <td><input type="date" class="form-control" formControlName="mrLastDoseDate" /></td>
-                      </tr>
-                      <tr>
-                        <td>Measles</td>
-                        <td><input type="text" class="form-control" formControlName="measlesRoutineDoses" /></td>
-                        <td><input type="text" class="form-control" formControlName="measlesCampaignDoses" /></td>
-                        <td><input type="date" class="form-control" formControlName="measlesLastDoseDate" /></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== SECTION 5: COVERAGE DATA ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.COVERAGE_DATA" | translate }}</div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.COVERAGE_VISIT_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="coverageVisitDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.COVERAGE_UNIT_NAME" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="coverageUnitName" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4"></div>
-
-                <div class="col-12 table-responsive mt-3">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.DOSE" | translate }}</th>
-                        <th>MMR 1</th>
-                        <th>MMR 2</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.CAMPAIGN_2015" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.OTHER" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.OTHER" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.OTHER" | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.UNIT_ROW" | translate }}</td>
-                        <td><input type="text" class="form-control" formControlName="mmr1Unit" /></td>
-                        <td><input type="text" class="form-control" formControlName="mmr2Unit" /></td>
-                        <td><input type="text" class="form-control" formControlName="campaign2015Unit" /></td>
-                        <td><input type="text" class="form-control" formControlName="other1Unit" /></td>
-                        <td><input type="text" class="form-control" formControlName="other2Unit" /></td>
-                        <td><input type="text" class="form-control" formControlName="other3Unit" /></td>
-                      </tr>
-                      <tr>
-                        <td>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.ADMIN_ROW" | translate }}</td>
-                        <td><input type="text" class="form-control" formControlName="mmr1Admin" /></td>
-                        <td><input type="text" class="form-control" formControlName="mmr2Admin" /></td>
-                        <td><input type="text" class="form-control" formControlName="campaign2015Admin" /></td>
-                        <td><input type="text" class="form-control" formControlName="other1Admin" /></td>
-                        <td><input type="text" class="form-control" formControlName="other2Admin" /></td>
-                        <td><input type="text" class="form-control" formControlName="other3Admin" /></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.LAST_CASE_DATE_ADMIN" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="lastCaseDateAdmin" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.LAST_CASE_DATE_DIRECTORATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="lastCaseDateDirectorate" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== SECTION 6: LABORATORY EXAMINATION ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.LAB_EXAMINATION" | translate }}</div>
-
-                <!-- First Sample -->
-                <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FIRST_SAMPLE" | translate }}</div>
-
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SAMPLE_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="firstSampleDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.DISPATCH_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="firstSampleDispatchDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.BLOOD_SAMPLE" | translate }}</label>
-                    <select formControlName="firstSampleBlood" class="form-control">
-                      <option [ngValue]="null"></option>
-                      <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.THROAT_SWAB" | translate }}</label>
-                    <select formControlName="firstSampleThroatSwab" class="form-control">
-                      <option [ngValue]="null"></option>
-                      <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <!-- Second Sample (Repeat) -->
-                <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SECOND_SAMPLE" | translate }}</div>
-
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.REPEAT_SAMPLE_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="secondSampleDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.DISPATCH_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="secondSampleDispatchDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.BLOOD_SAMPLE" | translate }}</label>
-                    <select formControlName="secondSampleBlood" class="form-control">
-                      <option [ngValue]="null"></option>
-                      <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.THROAT_SWAB" | translate }}</label>
-                    <select formControlName="secondSampleThroatSwab" class="form-control">
-                      <option [ngValue]="null"></option>
-                      <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-
-                <!-- Lab Results -->
-                <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.LAB_RESULTS" | translate }}</div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.ELISA_RESULT" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="elisaResult" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.ELISA_RESULT_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="elisaResultDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PCR_RESULT" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="pcrResult" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PCR_RESULT_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="pcrResultDate" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== SECTION 7: CASE FOLLOW-UP AND FINAL DIAGNOSIS ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FOLLOWUP_DIAGNOSIS" | translate }}</div>
-                <div class="col-12">
-                  <p class="text-muted small">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FOLLOWUP_NOTE" | translate }}</p>
-                </div>
-
-                <!-- Disease Outcome -->
-                <div class="col-12 title fs-6 fwb mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.DISEASE_OUTCOME" | translate }}</div>
-
-                <div class="col-12">
-                  <div class="form-group d-flex gap-4 flex-wrap align-items-center">
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="radio" formControlName="diseaseOutcome" [value]="1" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.RECOVERY" | translate }}
-                    </label>
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="radio" formControlName="diseaseOutcome" [value]="2" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.DEATH" | translate }}
-                    </label>
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.COMPLICATIONS" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="complications" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FINAL_DIAGNOSIS" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="finalDiagnosis" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== COMMITTEE SIGNATURES ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.COMMITTEE_SIGNATURES" | translate }}</div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SPECIALIST_PHYSICIAN" | translate }} - {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.NAME" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="committeeSpecialistName" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SPECIALIST_PHYSICIAN" | translate }} - {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="committeeSpecialistDate" />
-                  </div>
-                </div>
-
-                <div class="col-12">
-                  <p class="text-muted small mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.COMMITTEE_NOTE" | translate }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== FINAL CLASSIFICATION ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FINAL_CLASSIFICATION" | translate }}</div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FINAL_CLASSIFICATION" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="finalClassification" />
-                  </div>
-                </div>
-
-                <div class="col-12">
-                  <p class="text-muted small mt-2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FINAL_CLASSIFICATION_NOTE" | translate }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== FIELD SURVEY ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FIELD_SURVEY" | translate }}</div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_GOVERNORATE" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="fieldSurveyGovernorate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_ADMINISTRATION" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="fieldSurveyAdministration" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_UNIT" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="fieldSurveyUnit" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_CASE_NAME" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="fieldSurveyCaseName" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_CASE_CODE" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="fieldSurveyCaseCode" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_FINAL_CLASSIFICATION" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="fieldSurveyFinalClassification" />
-                  </div>
-                </div>
-
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_CASE_ADDRESS" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="fieldSurveyCaseAddress" />
-                  </div>
-                </div>
-
-                <!-- Children Survey Table -->
-                <div class="col-12 mt-3">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_CHILDREN_TABLE" | translate }}</span>
-                    <button type="button" class="btn bg rounded-2 text-light" (click)="addFieldSurveyChild()">
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.ADD_ROW" | translate }}
+            <!-- Case movements 28 days before rash (image 3) - card sections -->
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 d-flex justify-content-between align-items-center mb-2">
+                    <span class="title fs-6 fwb">تحركات الحالة خلال 28 يوم قبل ظهور الطفح</span>
+                    <button type="button" class="btn btn-add-record rounded-2" (click)="addCaseMovement()">
+                      <i class="pi pi-plus"></i> إضافة سجل جديد
                     </button>
                   </div>
-                </div>
 
-                <div class="col-12 table-responsive">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_CHILD_NAME" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_DOB" | translate }}</th>
-                        <th>MMR1</th>
-                        <th>MMR2</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody formArrayName="fieldSurveyChildren">
-                      <tr *ngFor="let child of fieldSurveyChildren.controls; let i = index" [formGroupName]="i">
-                        <td>{{ i + 1 }}</td>
-                        <td><input type="text" class="form-control" formControlName="childName" /></td>
-                        <td><input type="date" class="form-control" formControlName="dob" /></td>
-                        <td class="text-center"><input type="checkbox" formControlName="mmr1" /></td>
-                        <td class="text-center"><input type="checkbox" formControlName="mmr2" /></td>
-                        <td>
-                          <button type="button" class="btn btn-danger" (click)="removeFieldSurveyChild(i)">
-                            <i class="fas fa-trash"></i>
+                  <div class="col-12 mb-2" *ngIf="caseMovements.length > 0">
+                    <div class="fwb mb-1">عرض السجلات</div>
+                    <div class="table-responsive">
+                      <table class="table table-bordered text-center align-middle">
+                        <thead><tr><th>#</th><th>تاريخ الزيارة</th><th>مكان المخالطة</th><th>العنوان</th><th>مباشرين</th><th>لديهم أعراض</th><th>بدون أعراض</th><th>متطعم</th><th>غير متطعم</th><th>غير مستحق</th><th>غير معروف</th></tr></thead>
+                        <tbody>
+                          <tr *ngFor="let m of caseMovements.controls; let i = index">
+                            <td>{{ i + 1 }}</td><td>{{ m.value.visitDate }}</td><td>{{ placeLabel(m.value.contactPlace) }}</td><td>{{ m.value.address }}</td>
+                            <td>{{ m.value.directContactsCount }}</td><td>{{ m.value.symptomaticCount }}</td><td>{{ m.value.noSymptomsCount }}</td>
+                            <td>{{ m.value.vaccinatedCount }}</td><td>{{ m.value.notVaccinatedCount }}</td><td>{{ m.value.notEligibleCount }}</td><td>{{ m.value.unknownCount }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-12" formArrayName="caseMovements">
+                    <div class="record-card" *ngFor="let m of caseMovements.controls; let i = index" [formGroupName]="i">
+                      <div class="record-card-head">
+                        <span class="fwb">سجل #{{ i + 1 }}</span>
+                        <div class="d-flex gap-2">
+                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(m)">
+                            <i class="pi" [ngClass]="isRowOpen(m) ? 'pi-chevron-up' : 'pi-pencil'"></i>
+                            {{ isRowOpen(m) ? 'إغلاق' : 'تعديل' }}
                           </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                          <button type="button" class="btn btn-sm btn-danger" (click)="removeCaseMovement(i)">
+                            <i class="pi pi-trash"></i> حذف
+                          </button>
+                        </div>
+                      </div>
 
-                <!-- Summary Totals -->
-                <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_SUMMARY" | translate }}</div>
+                      <div *ngIf="!isRowOpen(m)" class="text-muted small">
+                        {{ m.value.visitDate || 'بدون تاريخ' }} <span *ngIf="m.value.address">— {{ m.value.address }}</span>
+                      </div>
 
-                <div class="col-12 table-responsive">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th colspan="3" class="text-center" style="border-bottom: 2px solid;">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_MMR1_DOSE" | translate }}</th>
-                        <th colspan="3" class="text-center" style="border-bottom: 2px solid;">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_MMR2_DOSE" | translate }}</th>
-                      </tr>
-                      <tr>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_NUM_CHILDREN" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_NUM_VACCINATED" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_RATE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_NUM_CHILDREN" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_NUM_VACCINATED" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_RATE" | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="text-center">{{ fieldSurveyMmr1TotalCount }}</td>
-                        <td class="text-center">{{ fieldSurveyMmr1VaccinatedCount }}</td>
-                        <td class="text-center">{{ fieldSurveyMmr1TotalCount === 0 ? '0.00' : ((fieldSurveyMmr1VaccinatedCount / fieldSurveyMmr1TotalCount) * 100 | number:'1.0-2') }}%</td>
-                        <td class="text-center">{{ fieldSurveyMmr2TotalCount }}</td>
-                        <td class="text-center">{{ fieldSurveyMmr2VaccinatedCount }}</td>
-                        <td class="text-center">{{ fieldSurveyMmr2TotalCount === 0 ? '0.00' : ((fieldSurveyMmr2VaccinatedCount / fieldSurveyMmr2TotalCount) * 100 | number:'1.0-2') }}%</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <!-- Field Survey Signatures -->
-                <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SIGNATURES" | translate }}</div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_SUPERVISOR" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="fieldSurveySupervisorName" />
+                      <div class="row" *ngIf="isRowOpen(m)">
+                        <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة</label>
+                          <input type="date" class="form-control" formControlName="visitDate" /></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>مكان المخالطة</label>
+                          <select class="form-control" formControlName="contactPlace">
+                            <option [ngValue]="null">اختر...</option>
+                            <option [ngValue]="1">أماكن عامة أخرى</option>
+                            <option [ngValue]="2">السوق</option>
+                            <option [ngValue]="3">المدرسة</option>
+                            <option [ngValue]="4">المستشفى</option>
+                            <option [ngValue]="5">المنزل</option>
+                            <option [ngValue]="6">مكان العمل</option>
+                            <option [ngValue]="7">وسائل النقل</option>
+                          </select></div></div>
+                        <div class="col-lg-6"><div class="form-group"><label>العنوان بالتفصيل</label>
+                          <input type="text" class="form-control" formControlName="address" /></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>عدد المخالطين المباشرين</label>
+                          <input type="number" class="form-control" formControlName="directContactsCount" /></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>إجمالى من لديهم أعراض</label>
+                          <input type="number" class="form-control" formControlName="symptomaticCount" /></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>إجمالى لا يوجد أعراض</label>
+                          <input type="number" class="form-control" formControlName="noSymptomsCount" /></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>متطعم</label>
+                          <input type="number" class="form-control" formControlName="vaccinatedCount" /></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>غير متطعم</label>
+                          <input type="number" class="form-control" formControlName="notVaccinatedCount" /></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>غير مستحق</label>
+                          <input type="number" class="form-control" formControlName="notEligibleCount" /></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>غير معروف</label>
+                          <input type="number" class="form-control" formControlName="unknownCount" /></div></div>
+                      </div>
+                    </div>
+                    <div *ngIf="caseMovements.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة سجل.</div>
                   </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.FS_PHYSICIAN" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="fieldSurveyPhysicianName" />
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== SAMPLE SUBMISSION ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SAMPLE_SUBMISSION" | translate }}</div>
-
-                <!-- Case Origin -->
-                <div class="col-12">
-                  <div class="form-group d-flex gap-4 flex-wrap align-items-center mt-2">
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="radio" formControlName="caseBelongsTo" [value]="1" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_CASE_BELONGS_REPORTING" | translate }}
-                    </label>
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="radio" formControlName="caseBelongsTo" [value]="2" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_CASE_BELONGS_OTHER" | translate }}
-                    </label>
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_BELONGING_GOV_NAME" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="sampleBelongingGovernorateName" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6"></div>
-
-                <div class="col-12">
-                  <div class="form-group d-flex gap-4 flex-wrap align-items-center">
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="radio" formControlName="caseType" [value]="1" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_ORIGINAL_CASE" | translate }}
-                    </label>
-                    <label class="d-flex align-items-center gap-1">
-                      <input type="radio" formControlName="caseType" [value]="2" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_CONTACT_CARRIER" | translate }}
-                    </label>
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_ORIGINAL_CASE_CODE" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="sampleOriginalCaseCode" />
-                  </div>
-                </div>
-
-                <!-- Sample Collection & Dispatch -->
-                <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_COLLECTION_DISPATCH" | translate }}</div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_RESPONSIBLE_COLLECTION" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="sampleResponsibleCollection" />
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_RESPONSIBLE_SENDING" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="sampleResponsibleSending" />
-                  </div>
-                </div>
-
-                <!-- Sample Types Table -->
-                <div class="col-12 table-responsive mt-3">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_SAMPLE_TYPE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_DATE_COLLECTED" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_DATE_SENT" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_FIRST_SAMPLE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_SECOND_SAMPLE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_REPEAT_SAMPLE" | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_BLOOD" | translate }}</td>
-                        <td><input type="date" class="form-control" formControlName="sampleBloodDateCollected" /></td>
-                        <td><input type="date" class="form-control" formControlName="sampleBloodDateSent" /></td>
-                        <td class="text-center"><input type="checkbox" formControlName="sampleBloodFirst" /></td>
-                        <td class="text-center"><input type="checkbox" formControlName="sampleBloodSecond" /></td>
-                        <td class="text-center"><input type="checkbox" formControlName="sampleBloodRepeat" /></td>
-                      </tr>
-                      <tr>
-                        <td>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_THROAT_SWAB" | translate }}</td>
-                        <td><input type="date" class="form-control" formControlName="sampleThroatDateCollected" /></td>
-                        <td><input type="date" class="form-control" formControlName="sampleThroatDateSent" /></td>
-                        <td class="text-center"><input type="checkbox" formControlName="sampleThroatFirst" /></td>
-                        <td class="text-center"><input type="checkbox" formControlName="sampleThroatSecond" /></td>
-                        <td class="text-center"><input type="checkbox" formControlName="sampleThroatRepeat" /></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <!-- Compliance Conditions -->
-                <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_CONDITIONS" | translate }}</div>
-
-                <div class="col-12 table-responsive mt-2">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_CONDITION" | translate }}</th>
-                        <th>{{ "NEDSS.COMMON.YES" | translate }}</th>
-                        <th>{{ "NEDSS.COMMON.NO" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_NOTES" | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_COND_COOLER" | translate }}</td>
-                        <td class="text-center"><input type="radio" formControlName="conditionCooler" [value]="1" /></td>
-                        <td class="text-center"><input type="radio" formControlName="conditionCooler" [value]="2" /></td>
-                        <td><input type="text" class="form-control" formControlName="conditionCoolerNotes" /></td>
-                      </tr>
-                      <tr>
-                        <td>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_COND_ICE_PACKS" | translate }}</td>
-                        <td class="text-center"><input type="radio" formControlName="conditionIcePacks" [value]="1" /></td>
-                        <td class="text-center"><input type="radio" formControlName="conditionIcePacks" [value]="2" /></td>
-                        <td><input type="text" class="form-control" formControlName="conditionIcePacksNotes" /></td>
-                      </tr>
-                      <tr>
-                        <td>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_COND_TUBES" | translate }}</td>
-                        <td class="text-center"><input type="radio" formControlName="conditionTubes" [value]="1" /></td>
-                        <td class="text-center"><input type="radio" formControlName="conditionTubes" [value]="2" /></td>
-                        <td><input type="text" class="form-control" formControlName="conditionTubesNotes" /></td>
-                      </tr>
-                      <tr>
-                        <td>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_COND_NO_LEAKAGE" | translate }}</td>
-                        <td class="text-center"><input type="radio" formControlName="conditionNoLeakage" [value]="1" /></td>
-                        <td class="text-center"><input type="radio" formControlName="conditionNoLeakage" [value]="2" /></td>
-                        <td><input type="text" class="form-control" formControlName="conditionNoLeakageNotes" /></td>
-                      </tr>
-                      <tr>
-                        <td>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_COND_BLOOD_VOLUME" | translate }}</td>
-                        <td class="text-center"><input type="radio" formControlName="conditionBloodVolume" [value]="1" /></td>
-                        <td class="text-center"><input type="radio" formControlName="conditionBloodVolume" [value]="2" /></td>
-                        <td><input type="text" class="form-control" formControlName="conditionBloodVolumeNotes" /></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_DELIVERER_NAME" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="sampleDelivererName" />
-                  </div>
-                </div>
-
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_RECEIPT_DATE" | translate }}</label>
-                    <input type="date" class="form-control" formControlName="sampleReceiptDate" />
-                  </div>
-                </div>
-
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_RECEIPT_TIME" | translate }}</label>
-                    <input type="time" class="form-control" formControlName="sampleReceiptTime" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_LAB_NUMBER" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="sampleLabNumber" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_VIROLOGIST_NAME" | translate }}</label>
-                    <input type="text" class="form-control" formControlName="sampleVirologistName" />
-                  </div>
-                </div>
-
-                <div class="col-lg-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_VIROLOGIST_RECEIPT_DATETIME" | translate }}</label>
-                    <input type="datetime-local" class="form-control" formControlName="sampleVirologistReceiptDatetime" />
-                  </div>
-                </div>
-
-                <!-- Footer Notes -->
-                <div class="col-12 mt-3">
-                  <p class="text-muted small">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_NOTE1" | translate }}</p>
-                  <p class="text-muted small">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_NOTE2" | translate }}</p>
-                  <p class="text-muted small">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_NOTE3" | translate }}</p>
-                  <p class="text-muted small">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SS_NOTE4" | translate }}</p>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- ==================== PREGNANT CONTACTS ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_TITLE" | translate }}</div>
+            <!-- Previous cases timeline (images 4,5) - card sections -->
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">خط سير الحالات السابقة لتحديد مصدر العدوى</div>
+                  <div class="col-12 mb-2">
+                    <div class="form-group d-flex gap-3 align-items-center">
+                      <span class="fwb">هل يوجد حالات سابقة ظهر عليها أعراض؟</span>
+                      <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasPreviousCases" [value]="1" /> نعم</label>
+                      <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasPreviousCases" [value]="2" /> لا</label>
+                    </div>
+                  </div>
 
-                <div class="col-12 d-flex justify-content-end mb-2">
-                  <button type="button" class="btn btn-success btn-sm" (click)="addPregnantContact()">
-                    <i class="fa fa-plus"></i>
-                  </button>
-                </div>
+                  <ng-container *ngIf="feverRashForm.value.hasPreviousCases === 1">
+                    <div class="col-12 d-flex justify-content-end mb-2">
+                      <button type="button" class="btn btn-add-record rounded-2" (click)="addPreviousCase()">
+                        <i class="pi pi-plus"></i> إضافة سجل جديد
+                      </button>
+                    </div>
 
-                <div class="col-12 table-responsive">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th rowspan="2">#</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_NAME" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_AGE" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_CONTACT_LOCATION" | translate }}</th>
-                        <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_VACCINATION_STATUS" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_PREGNANCY_WEEKS" | translate }}</th>
-                        <th colspan="7">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_VISIT_DATES" | translate }}</th>
-                        <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_SAMPLE_DATE" | translate }}</th>
-                        <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_SAMPLE_RESULT" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_SYMPTOM_APPEARANCE" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_EXPECTED_DELIVERY" | translate }}</th>
-                        <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_NEWBORN_FOLLOWUP" | translate }}</th>
-                        <th rowspan="2"></th>
-                      </tr>
-                      <tr>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_VACCINATED" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_DOSES" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_VISIT1" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_WEEK1" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_WEEK2" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_WEEK3" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_MONTH1" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_MONTH2" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_MONTH3" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_SAMPLE1" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_SAMPLE2" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_RESULT1" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_RESULT2" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_POSITIVE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_NEGATIVE" | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody formArrayName="pregnantContacts">
-                      <tr *ngFor="let contact of pregnantContacts.controls; let i = index" [formGroupName]="i">
-                        <td>{{ i + 1 }}</td>
-                        <td class="col-wide"><input type="text" class="form-control form-control-sm" formControlName="name" /></td>
-                        <td class="col-age"><input type="number" class="form-control form-control-sm" formControlName="age" /></td>
-                        <td class="col-wide"><input type="text" class="form-control form-control-sm" formControlName="contactLocation" /></td>
-                        <td class="text-center"><input type="checkbox" formControlName="vaccinated" /></td>
-                        <td><input type="number" class="form-control form-control-sm" formControlName="doses" /></td>
-                        <td><input type="number" class="form-control form-control-sm" formControlName="pregnancyWeeks" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="visit1" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="visitWeek1" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="visitWeek2" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="visitWeek3" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="visitMonth1" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="visitMonth2" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="visitMonth3" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="sampleDate1" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="sampleDate2" /></td>
-                        <td class="col-result"><input type="text" class="form-control form-control-sm" formControlName="sampleResult1" /></td>
-                        <td class="col-result"><input type="text" class="form-control form-control-sm" formControlName="sampleResult2" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="symptomAppearanceDate" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="expectedDeliveryDate" /></td>
-                        <td class="text-center"><input type="radio" formControlName="newbornFollowup" [value]="1" /></td>
-                        <td class="text-center"><input type="radio" formControlName="newbornFollowup" [value]="2" /></td>
-                        <td><button type="button" class="btn btn-delete" (click)="removePregnantContact(i)"><i class="fas fa-trash"></i></button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                    <div class="col-12 mb-2" *ngIf="previousCases.length > 0">
+                      <div class="fwb mb-1">عرض السجلات</div>
+                      <div class="table-responsive">
+                        <table class="table table-bordered text-center align-middle">
+                          <thead><tr><th>#</th><th>اسم المخالط</th><th>تاريخ ظهور الطفح</th><th>صلة القرابة</th><th>الحالة التطعيمية</th><th>تاريخ المخالطة</th></tr></thead>
+                          <tbody>
+                            <tr *ngFor="let p of previousCases.controls; let i = index">
+                              <td>{{ i + 1 }}</td><td>{{ p.value.contactName }}</td><td>{{ p.value.rashOnsetDate }}</td>
+                              <td>{{ kinshipLabel(p.value.kinship) }}</td><td>{{ vaccinationLabel(p.value.vaccinationStatus) }}</td><td>{{ p.value.contactDate }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="col-12" formArrayName="previousCases">
+                      <div class="record-card" *ngFor="let p of previousCases.controls; let i = index" [formGroupName]="i">
+                        <div class="record-card-head">
+                          <span class="fwb">سجل #{{ i + 1 }}</span>
+                          <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(p)">
+                              <i class="pi" [ngClass]="isRowOpen(p) ? 'pi-chevron-up' : 'pi-pencil'"></i>
+                              {{ isRowOpen(p) ? 'إغلاق' : 'تعديل' }}
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger" (click)="removePreviousCase(i)">
+                              <i class="pi pi-trash"></i> حذف
+                            </button>
+                          </div>
+                        </div>
 
-                <!-- Footer Notes -->
-                <div class="col-12 mt-2">
-                  <p class="text-muted small">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_NOTE1" | translate }}</p>
-                  <p class="text-muted small">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PC_NOTE2" | translate }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+                        <div *ngIf="!isRowOpen(p)" class="text-muted small">
+                          {{ p.value.contactName || 'بدون اسم' }} <span *ngIf="p.value.rashOnsetDate">— {{ p.value.rashOnsetDate }}</span>
+                        </div>
 
-          <!-- ==================== GENERAL CONTACTS ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_TITLE" | translate }}</div>
+                        <div class="row" *ngIf="isRowOpen(p)">
+                          <div class="col-lg-4"><div class="form-group"><label>اسم المخالط</label>
+                            <input type="text" class="form-control" formControlName="contactName" /></div></div>
+                          <div class="col-lg-4"><div class="form-group"><label>تاريخ ظهور الطفح</label>
+                            <input type="date" class="form-control" formControlName="rashOnsetDate" /></div></div>
+                          <div class="col-lg-4"><div class="form-group"><label>صلة القرابة</label>
+                            <select class="form-control" formControlName="kinship">
+                              <option [ngValue]="null">اختر...</option>
+                              <option [ngValue]="1">أخ</option>
+                              <option [ngValue]="2">أخت</option>
+                              <option [ngValue]="3">آخر</option>
+                              <option [ngValue]="4">ابن</option>
+                              <option [ngValue]="5">ابنة</option>
+                              <option [ngValue]="6">جار</option>
+                              <option [ngValue]="7">جد</option>
+                              <option [ngValue]="8">جدة</option>
+                              <option [ngValue]="9">خال</option>
+                              <option [ngValue]="10">خالة</option>
+                              <option [ngValue]="11">زوج</option>
+                              <option [ngValue]="12">زوجة</option>
+                              <option [ngValue]="13">صديق</option>
+                              <option [ngValue]="14">عم</option>
+                              <option [ngValue]="15">عمة</option>
+                              <option [ngValue]="16">والد</option>
+                              <option [ngValue]="17">والدة</option>
+                            </select></div></div>
+                          <div class="col-lg-4"><div class="form-group"><label>الحالة التطعيمية</label>
+                            <select class="form-control" formControlName="vaccinationStatus">
+                              <option [ngValue]="null">اختر...</option>
+                              <option [ngValue]="1">مطعم</option><option [ngValue]="2">غير مطعم</option>
+                              <option [ngValue]="3">غير مستحق</option><option [ngValue]="4">غير معروف</option>
+                            </select></div></div>
+                          <div class="col-lg-4"><div class="form-group"><label>تاريخ المخالطة</label>
+                            <input type="date" class="form-control" formControlName="contactDate" /></div></div>
+                        </div>
+                      </div>
+                      <div *ngIf="previousCases.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة سجل.</div>
+                    </div>
+                  </ng-container>
 
-                <div class="col-12 d-flex justify-content-end mb-2">
-                  <button type="button" class="btn btn-success btn-sm" (click)="addGeneralContact()">
-                    <i class="fa fa-plus"></i>
-                  </button>
-                </div>
-
-                <div class="col-12 table-responsive">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th rowspan="2">#</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_NAME" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_AGE" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_SEX" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_VACCINATION_STATUS" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_DOSES" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_CONTACT_LOCATION" | translate }}</th>
-                        <th colspan="4">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_VISIT_DATES" | translate }}</th>
-                        <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_REPORTING_DATE" | translate }}</th>
-                        <th rowspan="2"></th>
-                      </tr>
-                      <tr>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_VISIT1" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_WEEK1" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_WEEK2" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_WEEK3" | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody formArrayName="generalContacts">
-                      <tr *ngFor="let contact of generalContacts.controls; let i = index" [formGroupName]="i">
-                        <td>{{ i + 1 }}</td>
-                        <td><input type="text" class="form-control form-control-sm" formControlName="name" /></td>
-                        <td><input type="number" class="form-control form-control-sm" formControlName="age" /></td>
-                        <td><input type="text" class="form-control form-control-sm" formControlName="sex" /></td>
-                        <td><input type="text" class="form-control form-control-sm" formControlName="vaccinationStatus" /></td>
-                        <td><input type="number" class="form-control form-control-sm" formControlName="doses" /></td>
-                        <td><input type="text" class="form-control form-control-sm" formControlName="contactLocation" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="visit1" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="visitWeek1" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="visitWeek2" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="visitWeek3" /></td>
-                        <td><input type="date" class="form-control form-control-sm" formControlName="reportingDate" /></td>
-                        <td><button type="button" class="btn btn-delete" (click)="removeGeneralContact(i)"><i class="fas fa-trash"></i></button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <!-- Footer Notes -->
-                <div class="col-12 mt-2">
-                  <p class="text-muted small">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_NOTE1" | translate }}</p>
-                  <p class="text-muted small">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_NOTE2" | translate }}</p>
-                  <p class="text-muted small">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.GC_NOTE3" | translate }}</p>
+                  <!-- Source of infection (image 5) -->
+                  <div class="col-12 mt-2">
+                    <div class="form-group d-flex gap-3 align-items-center flex-wrap">
+                      <span class="fwb">هل يوجد مصدر العدوى؟</span>
+                      <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasInfectionSource" [value]="1" /> نعم</label>
+                      <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasInfectionSource" [value]="2" /> لا</label>
+                      <input type="text" class="form-control" style="max-width:420px" placeholder="فى حالة نعم اذكر مصدر العدوى"
+                        formControlName="infectionSourceText" *ngIf="feverRashForm.value.hasInfectionSource === 1" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- ==================== SIGNATURES ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.SIGNATURES" | translate }}</div>
+          </ng-container>
 
-                <div class="col-12 table-responsive">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.ADMIN_OFFICER" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.DIRECTORATE_OFFICER" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.PREVENTIVE_DIRECTOR" | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.NAME" | translate }}</td>
-                        <td><input type="text" class="form-control" formControlName="adminOfficerName" /></td>
-                        <td><input type="text" class="form-control" formControlName="directorateOfficerName" /></td>
-                        <td><input type="text" class="form-control" formControlName="preventiveDirectorName" /></td>
-                      </tr>
-                      <tr>
-                        <td>{{ "NEDSS.COMPLETE_INVESTEGATION.FEVER_RASH.DATE" | translate }}</td>
-                        <td><input type="date" class="form-control" formControlName="adminOfficerDate" /></td>
-                        <td><input type="date" class="form-control" formControlName="directorateOfficerDate" /></td>
-                        <td><input type="date" class="form-control" formControlName="preventiveDirectorDate" /></td>
-                      </tr>
-                    </tbody>
-                  </table>
+          <!-- ============================================================ -->
+          <!-- TAB 2 : حصر المخالطين (images 6,7)                            -->
+          <!-- ============================================================ -->
+          <ng-container *ngIf="activeTab === 'contacts'">
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 d-flex justify-content-between align-items-center mb-2">
+                    <span class="title fs-6 fwb">المخالطين</span>
+                    <button type="button" class="btn btn-add-record rounded-2" (click)="addGeneralContact()">
+                      <i class="pi pi-plus"></i> إضافة سجل جديد
+                    </button>
+                  </div>
+
+                  <div class="col-12 mb-2" *ngIf="generalContacts.length > 0">
+                    <div class="fwb mb-1">عرض السجلات</div>
+                    <div class="table-responsive">
+                      <table class="table table-bordered text-center align-middle">
+                        <thead><tr><th>#</th><th>اسم المخالط</th><th>العمر</th><th>الحالة التطعيمية</th><th>مكان المخالطة</th><th>أسبوع1</th><th>أعراض1</th><th>أسبوع2</th><th>أعراض2</th><th>أسبوع3</th><th>أعراض3</th><th>أسبوع4</th><th>أعراض4</th></tr></thead>
+                        <tbody>
+                          <tr *ngFor="let c of generalContacts.controls; let i = index">
+                            <td>{{ i + 1 }}</td><td>{{ c.value.name }}</td><td>{{ c.value.ageYears }}</td>
+                            <td>{{ vaccinationLabel(c.value.vaccinationStatus) }}</td><td>{{ placeLabel(c.value.contactPlace) }}</td>
+                            <td>{{ c.value.visitWeek1 }}</td><td>{{ mark(c.value.symptomsWeek1) }}</td>
+                            <td>{{ c.value.visitWeek2 }}</td><td>{{ mark(c.value.symptomsWeek2) }}</td>
+                            <td>{{ c.value.visitWeek3 }}</td><td>{{ mark(c.value.symptomsWeek3) }}</td>
+                            <td>{{ c.value.visitWeek4 }}</td><td>{{ mark(c.value.symptomsWeek4) }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-12" formArrayName="generalContacts">
+                    <div class="record-card" *ngFor="let c of generalContacts.controls; let i = index" [formGroupName]="i">
+                      <div class="record-card-head">
+                        <span class="fwb">مخالط #{{ i + 1 }}</span>
+                        <div class="d-flex gap-2">
+                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(c)">
+                            <i class="pi" [ngClass]="isRowOpen(c) ? 'pi-chevron-up' : 'pi-pencil'"></i>
+                            {{ isRowOpen(c) ? 'إغلاق' : 'تعديل' }}
+                          </button>
+                          <button type="button" class="btn btn-sm btn-danger" (click)="removeGeneralContact(i)">
+                            <i class="pi pi-trash"></i> حذف
+                          </button>
+                        </div>
+                      </div>
+
+                      <div *ngIf="!isRowOpen(c)" class="text-muted small">
+                        {{ c.value.name || 'بدون اسم' }} <span *ngIf="c.value.ageYears">— {{ c.value.ageYears }} سنة</span>
+                      </div>
+
+                      <div class="row" *ngIf="isRowOpen(c)">
+                        <div class="col-lg-4"><div class="form-group"><label>اسم المخالط</label>
+                          <input type="text" class="form-control" formControlName="name" /></div></div>
+                        <div class="col-lg-2"><div class="form-group"><label>العمر بالسنوات</label>
+                          <input type="number" class="form-control" formControlName="ageYears" /></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>الحالة التطعيمية</label>
+                          <select class="form-control" formControlName="vaccinationStatus">
+                            <option [ngValue]="null">اختر...</option>
+                            <option [ngValue]="1">مطعم</option><option [ngValue]="2">غير مطعم</option>
+                            <option [ngValue]="3">غير مستحق</option><option [ngValue]="4">غير معروف</option>
+                          </select></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>مكان المخالطة</label>
+                          <select class="form-control" formControlName="contactPlace">
+                            <option [ngValue]="null">اختر...</option>
+                            <option [ngValue]="1">أماكن عامة أخرى</option>
+                            <option [ngValue]="2">السوق</option>
+                            <option [ngValue]="3">المدرسة</option>
+                            <option [ngValue]="4">المستشفى</option>
+                            <option [ngValue]="5">المنزل</option>
+                            <option [ngValue]="6">مكان العمل</option>
+                            <option [ngValue]="7">وسائل النقل</option>
+                          </select></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع1</label>
+                          <input type="date" class="form-control" formControlName="visitWeek1" /></div></div>
+                        <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek1" /> أعراض أسبوع1</label></div>
+                        <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع2</label>
+                          <input type="date" class="form-control" formControlName="visitWeek2" /></div></div>
+                        <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek2" /> أعراض أسبوع2</label></div>
+                        <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع3</label>
+                          <input type="date" class="form-control" formControlName="visitWeek3" /></div></div>
+                        <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek3" /> أعراض أسبوع3</label></div>
+                        <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع4</label>
+                          <input type="date" class="form-control" formControlName="visitWeek4" /></div></div>
+                        <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek4" /> أعراض أسبوع4</label></div>
+                      </div>
+                    </div>
+                    <div *ngIf="generalContacts.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة مخالط.</div>
+                  </div>
+
+                  <!-- Statistics (image 7) -->
+                  <div class="col-12 title fs-6 fwb mt-3">ملخص إحصائي للمخالطين</div>
+                  <div class="col-12 mb-2">عدد المخالطين: <span class="badge bg-primary">{{ contactsCount }}</span></div>
+                  <div class="col-lg-6">
+                    <div class="fwb mb-1">توزيع الحالة التطعيمية</div>
+                    <table class="table table-bordered text-center">
+                      <thead><tr><th>الحالة</th><th>العدد</th></tr></thead>
+                      <tbody>
+                        <tr *ngFor="let r of contactsByVaccination"><td>{{ r.label }}</td><td>{{ r.count }}</td></tr>
+                        <tr *ngIf="contactsCount === 0"><td colspan="2" class="text-muted">لا توجد بيانات</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="fwb mb-1">توزيع مكان المخالطة</div>
+                    <table class="table table-bordered text-center">
+                      <thead><tr><th>المكان</th><th>العدد</th></tr></thead>
+                      <tbody>
+                        <tr *ngFor="let r of contactsByPlace"><td>{{ r.label }}</td><td>{{ r.count }}</td></tr>
+                        <tr *ngIf="contactsCount === 0"><td colspan="2" class="text-muted">لا توجد بيانات</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Pregnant contacts (image 7) -->
+                  <div class="col-12 mt-2">
+                    <div class="form-group d-flex gap-3 align-items-center">
+                      <span class="fwb">المخالطين الحوامل</span>
+                      <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasPregnantContacts" [value]="1" (change)="onHasPregnantChange()" /> نعم</label>
+                      <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasPregnantContacts" [value]="2" /> لا</label>
+                    </div>
+                  </div>
+
+                  <div class="col-12" *ngIf="feverRashForm.value.hasPregnantContacts === 1">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="fwb">المخالطين الحوامل</span>
+                      <button type="button" class="btn btn-add-record rounded-2" (click)="addPregnantContact()"><i class="pi pi-plus"></i> إضافة سجل جديد</button>
+                    </div>
+                    <div class="mb-2" *ngIf="pregnantContacts.length > 0">
+                      <div class="fwb mb-1">عرض السجلات</div>
+                      <div class="table-responsive">
+                        <table class="table table-bordered text-center align-middle">
+                          <thead><tr><th>#</th><th>اسم المخالط</th><th>السن</th><th>صلة القرابة</th><th>تاريخ ظهور الطفح</th><th>الحالة التطعيمية</th><th>تاريخ المخالطة</th><th>أسبوع الحمل</th></tr></thead>
+                          <tbody>
+                            <tr *ngFor="let p of pregnantContacts.controls; let i = index">
+                              <td>{{ i + 1 }}</td><td>{{ p.value.name }}</td><td>{{ p.value.age }}</td><td>{{ kinshipLabel(p.value.kinship) }}</td>
+                              <td>{{ p.value.rashOnsetDate }}</td><td>{{ vaccinationLabel(p.value.vaccinationStatus) }}</td><td>{{ p.value.contactDate }}</td><td>{{ p.value.pregnancyWeeks }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div formArrayName="pregnantContacts">
+                      <div class="record-card" *ngFor="let contact of pregnantContacts.controls; let i = index" [formGroupName]="i">
+                        <div class="record-card-head">
+                          <span class="fwb">حامل #{{ i + 1 }}</span>
+                          <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(contact)">
+                              <i class="pi" [ngClass]="isRowOpen(contact) ? 'pi-chevron-up' : 'pi-pencil'"></i>
+                              {{ isRowOpen(contact) ? 'إغلاق' : 'تعديل' }}
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger" (click)="removePregnantContact(i)">
+                              <i class="pi pi-trash"></i> حذف
+                            </button>
+                          </div>
+                        </div>
+
+                        <div *ngIf="!isRowOpen(contact)" class="text-muted small">
+                          {{ contact.value.name || 'بدون اسم' }} <span *ngIf="contact.value.pregnancyWeeks">— {{ contact.value.pregnancyWeeks }} أسبوع</span>
+                        </div>
+
+                        <div class="row" *ngIf="isRowOpen(contact)">
+                          <div class="col-lg-4"><div class="form-group"><label>اسم المخالط</label>
+                            <input type="text" class="form-control" formControlName="name" /></div></div>
+                          <div class="col-lg-2"><div class="form-group"><label>السن</label>
+                            <input type="number" class="form-control" formControlName="age" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>تاريخ ظهور الطفح</label>
+                            <input type="date" class="form-control" formControlName="rashOnsetDate" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>صلة القرابة</label>
+                            <select class="form-control" formControlName="kinship">
+                              <option [ngValue]="null">اختر...</option>
+                              <option [ngValue]="1">أخ</option>
+                              <option [ngValue]="2">أخت</option>
+                              <option [ngValue]="3">آخر</option>
+                              <option [ngValue]="4">ابن</option>
+                              <option [ngValue]="5">ابنة</option>
+                              <option [ngValue]="6">جار</option>
+                              <option [ngValue]="7">جد</option>
+                              <option [ngValue]="8">جدة</option>
+                              <option [ngValue]="9">خال</option>
+                              <option [ngValue]="10">خالة</option>
+                              <option [ngValue]="11">زوج</option>
+                              <option [ngValue]="12">زوجة</option>
+                              <option [ngValue]="13">صديق</option>
+                              <option [ngValue]="14">عم</option>
+                              <option [ngValue]="15">عمة</option>
+                              <option [ngValue]="16">والد</option>
+                              <option [ngValue]="17">والدة</option>
+                            </select></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>الحالة التطعيمية</label>
+                            <select class="form-control" formControlName="vaccinationStatus">
+                              <option [ngValue]="null">اختر...</option>
+                              <option [ngValue]="1">مطعم</option><option [ngValue]="2">غير مطعم</option>
+                              <option [ngValue]="3">غير مستحق</option><option [ngValue]="4">غير معروف</option>
+                            </select></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>تاريخ المخالطة</label>
+                            <input type="date" class="form-control" formControlName="contactDate" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>أسبوع الحمل</label>
+                            <input type="number" class="form-control" formControlName="pregnancyWeeks" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة1</label>
+                            <input type="date" class="form-control" formControlName="sample1Date" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة1</label>
+                            <input type="text" class="form-control" formControlName="sample1Result" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة2</label>
+                            <input type="date" class="form-control" formControlName="sample2Date" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة2</label>
+                            <input type="text" class="form-control" formControlName="sample2Result" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة المولود</label>
+                            <input type="date" class="form-control" formControlName="newbornSampleDate" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة المولود</label>
+                            <input type="text" class="form-control" formControlName="newbornSampleResult" /></div></div>
+                          <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع1</label>
+                            <input type="date" class="form-control" formControlName="visitWeek1" /></div></div>
+                          <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض1 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek1" /></label></div>
+                          <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع2</label>
+                            <input type="date" class="form-control" formControlName="visitWeek2" /></div></div>
+                          <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض2 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek2" /></label></div>
+                          <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع3</label>
+                            <input type="date" class="form-control" formControlName="visitWeek3" /></div></div>
+                          <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض3 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek3" /></label></div>
+                          <div class="col-lg-4">
+                            <div class="row">
+                              <div class="col-lg-9"><div class="form-group"><label>زيارة أسبوع4</label>
+                                <input type="date" class="form-control" formControlName="visitWeek4" /></div></div>
+                              <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض4 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek4" /></label></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="pregnantContacts.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة حامل.</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ng-container>
 
-          <!-- SECTIONS WILL BE ADDED HERE -->
+          <!-- ============================================================ -->
+          <!-- TAB 3 : التقصى على مستوى الوحدة الصحية (image 8)              -->
+          <!-- ============================================================ -->
+          <ng-container *ngIf="activeTab === 'unit'">
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-lg-6"><div class="form-group"><label>تاريخ زيارة الوحدة</label>
+                    <input type="date" class="form-control" formControlName="coverageVisitDate" /></div></div>
+                  <div class="col-lg-6"><div class="form-group"><label>شهر نسب التغطية</label>
+                    <select class="form-control" formControlName="coverageMonth">
+                      <option [ngValue]="null">اختر...</option>
+                      <option [ngValue]="'يناير'">يناير</option>
+                      <option [ngValue]="'فبراير'">فبراير</option>
+                      <option [ngValue]="'مارس'">مارس</option>
+                      <option [ngValue]="'أبريل'">أبريل</option>
+                      <option [ngValue]="'مايو'">مايو</option>
+                      <option [ngValue]="'يونيو'">يونيو</option>
+                      <option [ngValue]="'يوليو'">يوليو</option>
+                      <option [ngValue]="'أغسطس'">أغسطس</option>
+                      <option [ngValue]="'سبتمبر'">سبتمبر</option>
+                      <option [ngValue]="'أكتوبر'">أكتوبر</option>
+                      <option [ngValue]="'نوفمبر'">نوفمبر</option>
+                      <option [ngValue]="'ديسمبر'">ديسمبر</option>
+                    </select></div></div>
+
+                  <div class="col-12 table-responsive mt-2">
+                    <table class="table table-bordered text-center align-middle">
+                      <thead>
+                        <tr>
+                          <th rowspan="3">الجرعة</th>
+                          <th colspan="4">روتينى</th>
+                          <th colspan="4">حملات</th>
+                        </tr>
+                        <tr>
+                          <th colspan="2">MMR1</th><th colspan="2">MMR2</th>
+                          <th colspan="2">MMR1</th><th colspan="2">MMR2</th>
+                        </tr>
+                        <tr>
+                          <th>مستهدف</th><th>نسبة</th><th>مستهدف</th><th>نسبة</th>
+                          <th>مستهدف</th><th>نسبة</th><th>مستهدف</th><th>نسبة</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="fwb">الوحدة</td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covUnitRoutineMmr1Target" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covUnitRoutineMmr1Rate" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covUnitRoutineMmr2Target" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covUnitRoutineMmr2Rate" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covUnitCampaignMmr1Target" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covUnitCampaignMmr1Rate" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covUnitCampaignMmr2Target" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covUnitCampaignMmr2Rate" /></td>
+                        </tr>
+                        <tr>
+                          <td class="fwb">الإدارة</td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covAdminRoutineMmr1Target" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covAdminRoutineMmr1Rate" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covAdminRoutineMmr2Target" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covAdminRoutineMmr2Rate" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covAdminCampaignMmr1Target" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covAdminCampaignMmr1Rate" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covAdminCampaignMmr2Target" /></td>
+                          <td><input type="number" class="form-control form-control-sm" formControlName="covAdminCampaignMmr2Rate" /></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="col-lg-6"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالإدارة</label>
+                    <input type="date" class="form-control" formControlName="lastCaseDateAdmin" /></div></div>
+                  <div class="col-lg-6"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالمديرية</label>
+                    <input type="date" class="form-control" formControlName="lastCaseDateDirectorate" /></div></div>
+
+                  <div class="col-lg-4">
+                    <div class="form-group"><label>هل يوجد حالات مؤكدة خلال الشهر السابق؟</label>
+                      <div class="d-flex gap-3">
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="confirmedCasesLastMonth" [value]="1" /> نعم</label>
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="confirmedCasesLastMonth" [value]="2" /> لا</label>
+                      </div>
+                      <input type="number" class="form-control mt-1" placeholder="العدد" formControlName="confirmedCasesCount" *ngIf="feverRashForm.value.confirmedCasesLastMonth === 1" />
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group"><label>هل يوجد حالات حمى وطفح خلال الشهر السابق؟</label>
+                      <div class="d-flex gap-3">
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="feverRashCasesLastMonth" [value]="1" /> نعم</label>
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="feverRashCasesLastMonth" [value]="2" /> لا</label>
+                      </div>
+                      <input type="number" class="form-control mt-1" placeholder="العدد" formControlName="feverRashCasesCount" *ngIf="feverRashForm.value.feverRashCasesLastMonth === 1" />
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group"><label>هل انتقلت الحالة إلى منطقة موبوءة؟</label>
+                      <div class="d-flex gap-3">
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="movedToOutbreak" [value]="1" /> نعم</label>
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="movedToOutbreak" [value]="2" /> لا</label>
+                      </div>
+                      <input type="text" class="form-control mt-1" placeholder="اذكر المنطقة الموبوءة"
+                        formControlName="movedToOutbreakPlace" *ngIf="feverRashForm.value.movedToOutbreak === 1" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- ============================================================ -->
+          <!-- TAB 4 : المسح الميدانى 30 طفل (image 9)                       -->
+          <!-- ============================================================ -->
+          <ng-container *ngIf="activeTab === 'survey'">
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">المسح الميداني - 30 طفل</div>
+                  <div class="col-lg-6"><div class="form-group"><label>تاريخ الزيارة الميدانية</label>
+                    <input type="date" class="form-control" formControlName="fieldVisitDate" /></div></div>
+                  <div class="col-lg-6"><div class="form-group"><label>رقم المربع</label>
+                    <input type="text" class="form-control" formControlName="fieldSquareNumber" /></div></div>
+
+                  <div class="col-12 d-flex justify-content-between align-items-center mb-2">
+                    <span class="fwb">السجلات المدخلة</span>
+                    <button type="button" class="btn btn-add-record rounded-2" (click)="addSurveyChild()">
+                      <i class="pi pi-plus"></i> إضافة سجل جديد
+                    </button>
+                  </div>
+
+                  <div class="col-12 mb-2" *ngIf="surveyChildren.length > 0">
+                    <div class="fwb mb-1">عرض السجلات</div>
+                    <div class="table-responsive">
+                      <table class="table table-bordered text-center align-middle">
+                        <thead><tr><th>#</th><th>اسم الطفل</th><th>MMR1</th><th>MMR2</th><th>أعراض الحمى والطفح</th></tr></thead>
+                        <tbody>
+                          <tr *ngFor="let s of surveyChildren.controls; let i = index">
+                            <td>{{ i + 1 }}</td><td>{{ s.value.childName }}</td><td>{{ yesNo(s.value.mmr1) }}</td><td>{{ yesNo(s.value.mmr2) }}</td><td>{{ yesNo(s.value.hasSymptoms) }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-12" formArrayName="surveyChildren">
+                    <div class="record-card" *ngFor="let s of surveyChildren.controls; let i = index" [formGroupName]="i">
+                      <div class="record-card-head">
+                        <span class="fwb">طفل #{{ i + 1 }}</span>
+                        <div class="d-flex gap-2">
+                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(s)">
+                            <i class="pi" [ngClass]="isRowOpen(s) ? 'pi-chevron-up' : 'pi-pencil'"></i>
+                            {{ isRowOpen(s) ? 'إغلاق' : 'تعديل' }}
+                          </button>
+                          <button type="button" class="btn btn-sm btn-danger" (click)="removeSurveyChild(i)">
+                            <i class="pi pi-trash"></i> حذف
+                          </button>
+                        </div>
+                      </div>
+
+                      <div *ngIf="!isRowOpen(s)" class="text-muted small">
+                        {{ s.value.childName || 'بدون اسم' }}
+                      </div>
+
+                      <div class="row" *ngIf="isRowOpen(s)">
+                        <div class="col-lg-4"><div class="form-group"><label>اسم الطفل</label>
+                          <input type="text" class="form-control" formControlName="childName" /></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>MMR1</label>
+                          <select class="form-control" formControlName="mmr1">
+                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
+                          </select></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>MMR2</label>
+                          <select class="form-control" formControlName="mmr2">
+                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
+                          </select></div></div>
+                        <div class="col-lg-2"><div class="form-group"><label>أعراض الحمى والطفح</label>
+                          <select class="form-control" formControlName="hasSymptoms">
+                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
+                          </select></div></div>
+                      </div>
+                    </div>
+                    <div *ngIf="surveyChildren.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة طفل.</div>
+                  </div>
+
+                  <div class="col-12 title fs-6 fwb mt-3">ملخص إحصائي للسجلات المدخلة</div>
+                  <div class="col-12 mb-2">عدد السجلات: <span class="badge bg-primary">{{ surveyCount }}</span></div>
+                  <div class="col-lg-4">
+                    <div class="fwb mb-1">اختيارات MMR1</div>
+                    <table class="table table-bordered text-center">
+                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
+                      <tbody><tr><td>نعم</td><td>{{ surveyMmr1.yes }}</td></tr><tr><td>لا</td><td>{{ surveyMmr1.no }}</td></tr></tbody>
+                    </table>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="fwb mb-1">اختيارات MMR2</div>
+                    <table class="table table-bordered text-center">
+                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
+                      <tbody><tr><td>نعم</td><td>{{ surveyMmr2.yes }}</td></tr><tr><td>لا</td><td>{{ surveyMmr2.no }}</td></tr></tbody>
+                    </table>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="fwb mb-1">أعراض الحمى والطفح</div>
+                    <table class="table table-bordered text-center">
+                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
+                      <tbody><tr><td>نعم</td><td>{{ surveySymptoms.yes }}</td></tr><tr><td>لا</td><td>{{ surveySymptoms.no }}</td></tr></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- ============================================================ -->
+          <!-- TAB 5 : متابعة الحالة بعد 28 يوم (image 10)                   -->
+          <!-- ============================================================ -->
+          <ng-container *ngIf="activeTab === 'followup'">
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">متابعة الحالة والتشخيص النهائي بعد 28 يوم</div>
+
+                  <div class="col-lg-6">
+                    <div class="form-group"><label>نتيجة المرض</label>
+                      <div class="d-flex gap-3">
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="diseaseOutcome" [value]="1" /> شفاء</label>
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="diseaseOutcome" [value]="2" /> وفاة</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group"><label>هل هناك مضاعفات؟</label>
+                      <div class="d-flex gap-3">
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasComplications" [value]="1" /> نعم</label>
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasComplications" [value]="2" /> لا</label>
+                      </div>
+                      <input type="text" class="form-control mt-1" placeholder="اكتب المضاعفات" formControlName="complications" *ngIf="feverRashForm.value.hasComplications === 1" />
+                    </div>
+                  </div>
+
+                  <div class="col-12"><div class="form-group"><label>تشخيص الحالة النهائي</label>
+                    <input type="text" class="form-control" formControlName="finalDiagnosis" /></div></div>
+                  <div class="col-12"><div class="form-group"><label>تعليقات اللجنة</label>
+                    <textarea rows="3" class="form-control" formControlName="committeeComments"></textarea></div></div>
+
+                  <div class="col-12 table-responsive">
+                    <table class="table table-bordered text-center align-middle">
+                      <thead>
+                        <tr>
+                          <th>البيان</th>
+                          <th>طبيب اخصائي (حميات / وبائي / اطفال)</th>
+                          <th>مسئول ترصد الادارة</th>
+                          <th>مسئول ترصد المديرية</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="fwb">الاسم</td>
+                          <td><input type="text" class="form-control" formControlName="committeeSpecialistName" /></td>
+                          <td><input type="text" class="form-control" formControlName="adminOfficerName" /></td>
+                          <td><input type="text" class="form-control" formControlName="directorateOfficerName" /></td>
+                        </tr>
+                        <tr>
+                          <td class="fwb">التوقيع</td>
+                          <td><input type="text" class="form-control" formControlName="committeeSpecialistSignature" /></td>
+                          <td><input type="text" class="form-control" formControlName="adminOfficerSignature" /></td>
+                          <td><input type="text" class="form-control" formControlName="directorateOfficerSignature" /></td>
+                        </tr>
+                        <tr>
+                          <td class="fwb">التاريخ</td>
+                          <td><input type="date" class="form-control" formControlName="committeeSpecialistDate" /></td>
+                          <td><input type="date" class="form-control" formControlName="adminOfficerDate" /></td>
+                          <td><input type="date" class="form-control" formControlName="directorateOfficerDate" /></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-12"><p class="text-muted small">يتم اعتماد المتابعة والتشخيص النهائي بمعرفة لجنة تضم طبيب اخصائي ومسئول ترصد الادارة ومسئول ترصد المديرية.</p></div>
+
+                  <div class="col-12"><div class="form-group"><label>التصنيف النهائي</label>
+                    <select class="form-control" formControlName="finalClassification">
+                      <option [ngValue]="null">اختر...</option>
+                      <option [ngValue]="'مؤكد'">مؤكد</option>
+                      <option [ngValue]="'مستبعد'">مستبعد</option>
+                      <option [ngValue]="'مرتبط وبائى'">مرتبط وبائى</option>
+                      <option [ngValue]="'متوافق إكلينيكى'">متوافق إكلينيكى</option>
+                    </select></div></div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
 
         </div>
       </div>
-      <div class="card-footer text-start pt-4">
-        <button type="submit" class="btn bg rounded-2 text-light mb-5">
-          {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
-        </button>
+
+      <!-- ==================== FOOTER (save / back) ==================== -->
+      <div class="text-center pt-4 pb-5 d-flex justify-content-center gap-3">
+        <button type="submit" class="btn bg rounded-2 text-light px-4">حفظ البيانات</button>
+        <a class="btn btn-outline-secondary rounded-2 px-4" routerLink="/home/investigations">عودة للقائمة</a>
       </div>
+
     </div>
   </div>
 </form>

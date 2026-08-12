@@ -1,6 +1,6 @@
 import { InvestigationService } from './../../investigation/services/investigation.service';
 import { GeneralDataService } from './../services/general-data.service';
-import { Component, ElementRef, Input, OnDestroy, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, ElementRef, Input, NgZone, OnDestroy, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { SharedDataService } from '../services/shared-data.service';
@@ -32,6 +32,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
   diseases!: any[];
   activeTab: number;
   isLoadingData: boolean = true;
+  sectionsReady = [true, false, false, false, false];
   private lastAuxiliaryHydratedPatientId: number | null = null;
   constructor(
     private generalDataService: GeneralDataService,
@@ -44,7 +45,8 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
     private router: Router,
     private datePipe: DatePipe,
     private diseaseSpecialSymptomsService: DiseaseSpecialSymptomsService,
-    private investigaion: InvestigationService
+    private investigaion: InvestigationService,
+    private ngZone: NgZone
   ) {
     this.activeTab = this.generalDataEnum.IncidentInfo;
 
@@ -70,8 +72,20 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
       this.getById(this.sharedDataService.patientId);
     } else {
       this.isLoadingData = false;
+      this.revealSections();
       this.sharedDataService.isEditMode = false;
     }
+  }
+
+  private revealSections(): void {
+    this.sectionsReady = [true, false, false, false, false];
+    this.ngZone.runOutsideAngular(() => {
+      for (let i = 1; i < this.sectionsReady.length; i++) {
+        setTimeout(() => {
+          this.ngZone.run(() => { this.sectionsReady[i] = true; });
+        }, i * 150);
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -149,8 +163,8 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
       const rawId = patientObject?.id;
       const pid =
         rawId != null &&
-        String(rawId).trim() !== '' &&
-        !Number.isNaN(Number(rawId))
+          String(rawId).trim() !== '' &&
+          !Number.isNaN(Number(rawId))
           ? Number(rawId)
           : null;
       if (pid != null && pid > 0) {
@@ -170,7 +184,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
       (res: any) => {
         this.patient = res.data;
       },
-      (err) => {},
+      (err) => { },
     );
   }
   getById(id: number) {
@@ -202,6 +216,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
           this.patient = result.data;
           this.activeAllTabs = true;
           this.isLoadingData = false;
+          this.revealSections();
         }
       },
       (error) => {
@@ -211,6 +226,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
             this.userMsg.error(res);
           });
         this.isLoadingData = false;
+        this.revealSections();
       },
     );
   }
@@ -233,7 +249,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
             });
           }
         },
-        () => {},
+        () => { },
       );
   }
   completedTabs: number = 0;
@@ -286,6 +302,11 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
           break;
 
         case this.generalDataEnum.ClinicalSymptoms:
+          validationRes = this.generalDataService.validateClinicalSymptoms(
+            this.patient,
+          );
+          if (!(validationRes == -1))
+            throw 'validation failed ' + validationRes;
           this.routingBasedOnCurrentPage(4);
           this.activeTab = this.generalDataEnum.DiagnosticInfo;
           break;
@@ -367,6 +388,10 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
         return this.generalDataService.getResidenceInfoInvalidFieldLabel(
           this.patient,
         );
+      case this.generalDataEnum.ClinicalSymptoms:
+        return this.generalDataService.getClinicalSymptomsInvalidFieldLabel(
+          this.patient,
+        );
       case this.generalDataEnum.DiagnosticInfo:
         return this.generalDataService.getDiagnosticsInvalidFieldLabel(
           this.patient,
@@ -390,6 +415,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
   }
 
   save() {
+    if (this.loadingPanel) return;
     try {
       const missingFieldLabel = this.generalDataService.getFirstInvalidFieldLabel(this.patient);
       if (missingFieldLabel) {
@@ -458,10 +484,9 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
               this.router
                 .navigateByUrl('/home/chart', { skipLocationChange: true })
                 .then(() => {
-                  // to reload component when component is already loaded
                   this.router.navigate(['/home/general-data'], {
                     queryParams: { clear: 1 },
-                  });
+                  }).then(() => document.getElementById('general-data-top')?.scrollIntoView({ behavior: 'smooth' }));
                 });
             },
             (error) => {
@@ -599,11 +624,11 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
                       let diseaseName = disease[0].router;
                       this.router.navigateByUrl(
                         'home/' +
-                          diseaseName +
-                          '/' +
-                          patientId +
-                          '/diseaseId/' +
-                          disease[0].diseaseGroupId,
+                        diseaseName +
+                        '/' +
+                        patientId +
+                        '/diseaseId/' +
+                        disease[0].diseaseGroupId,
                       );
                     }
                   }
@@ -636,11 +661,11 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
                     let diseaseName = disease[0].router;
                     this.router.navigateByUrl(
                       'home/' +
-                        diseaseName +
-                        '/' +
-                        patientId +
-                        '/diseaseId/' +
-                        disease[0].diseaseGroupId,
+                      diseaseName +
+                      '/' +
+                      patientId +
+                      '/diseaseId/' +
+                      disease[0].diseaseGroupId,
                     );
                   }
                 }

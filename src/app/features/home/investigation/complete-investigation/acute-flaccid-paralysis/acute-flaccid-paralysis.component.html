@@ -1,1826 +1,530 @@
-<form [formGroup]="AcuteFlaccidParalysisForm" (ngSubmit)="save()">
+<form [formGroup]="form" (ngSubmit)="save()">
   <div class="row">
     <div class="col-12">
-      <div class="card shadow mt-4 color mb-4">
+
+      <!-- ==================== HEADER ==================== -->
+      <div class="card shadow mt-4 color mb-3">
         <div class="card-body">
-          <h5 style="text-align: center; border: 1px solid; padding: 1%">
-            {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.TITLE" | translate }}
-          </h5>
-          <br />
-
-          <!-- Patient Name -->
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="form-group">
-                <label>
-                  {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME" | translate }}: {{ patientName }}
-                </label>
-              </div>
+          <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+            <h4 class="fwb mb-0">إدارة حالات الشلل الرخو الحاد (AFP)</h4>
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge bg-primary p-2">رقم الحالة: {{ form.value.patientID }}</span>
+              <button type="submit" class="btn btn-success"><i class="pi pi-save"></i> حفظ</button>
             </div>
           </div>
 
-          <!-- Progress Bar -->
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="form-group">
-                <label>
-                  {{ "NEDSS.INVESTIGATIONS.percentage" | translate }}
-                  <span class="mx-4" style="font-size: larger; color: red">
-                    {{ allControllesCount === 0 ? "0.00" : ((allFilledControlsCount / allControllesCount) * 100 | number: "1.0-2") }} %
-                  </span>
-                </label>
-                <input
-                  type="range"
-                  class="form-range bg"
-                  [readonly]="true"
-                  style="border-radius: 11.7px; border: 5.5px solid white"
-                  min="0"
-                  max="100"
-                  step="1"
-                  [value]="allControllesCount === 0 ? 0 : (allFilledControlsCount / allControllesCount) * 100"
-                  formControlName="investigationCompletePercentage"
-                />
-              </div>
+          <app-investigation-summary
+            [patientName]="patientName"
+            [allFilledControlsCount]="allFilledControlsCount"
+            [allControllesCount]="allControllesCount"
+          ></app-investigation-summary>
+
+          <div class="row align-items-end">
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group"><label class="fwb">رقم الحالة</label>
+                <input type="text" class="form-control" [value]="form.value.patientID" readonly /></div>
             </div>
-            <div class="col-lg-4">
-              {{ "NEDSS.INVESTIGATIONS.Filled" | translate }}
-              {{ allFilledControlsCount }}
-              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
-              {{ "NEDSS.INVESTIGATIONS.From" | translate }}
-              {{ allControllesCount }}
-              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group"><label class="fwb">تاريخ زيارة منزل الحالة</label>
+                <input type="date" class="form-control" formControlName="homeVisitDate" /></div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group"><label class="fwb">تاريخ الادخال</label>
+                <input type="date" class="form-control" formControlName="entryDate" readonly /></div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group"><label class="fwb">المستخدم</label>
+                <input type="text" class="form-control" [value]="userName" readonly /></div>
             </div>
           </div>
-
-          <!-- ==================== FAX NOTIFICATION ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CASE_DISCOVERY_INFO" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.REPORTING_DIRECTORATE" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="directorateReportingCase" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ADMINISTRATION" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="administration" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NAME_INFORMANT" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="nameInformant" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.REPORTING_SITE" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="reportingSite" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.REPORT_DATE" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="reportDate" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.REPORTED_HEALTH_AUTHORITY" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="reportedHealthAuthority" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DATE_ONSET_PARALYSIS" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="dateOnsetParalysis" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.IS_PARALYSIS_FLACCID" | translate }}</label>
-                      <select class="form-control" formControlName="isParalysisFlaccid">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PARALYZED_MEMBERS" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="paralyzedMembers" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLINICAL_SYMPTOMS" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SYMMETRY_AFFECTED_ORGANS" | translate }}</label>
-                      <select class="form-control" formControlName="symmetryAffectedOrgans">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HIGH_TEMP_AT_ONSET" | translate }}</label>
-                      <select class="form-control" formControlName="presenceHighTemperatureParalysisBegins">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                        <option [ngValue]="3">{{ "NEDSS.COMMON.UNKNOWN" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.COMPLETE_PARALYSIS_4DAYS" | translate }}</label>
-                      <select class="form-control" formControlName="completeParalysisWithinFourDays1">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                        <option [ngValue]="3">{{ "NEDSS.COMMON.UNKNOWN" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FEELING_AFFECTED_ORGANS" | translate }}</label>
-                      <select class="form-control" formControlName="feelingAffectedOrgans">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                        <option [ngValue]="3">{{ "NEDSS.COMMON.UNKNOWN" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.IS_CASE_DANGEROUS" | translate }}</label>
-                      <select class="form-control" formControlName="isCaseDangerous">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== CLINICAL EXAMINATION ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.EXAMINING_DOCTOR" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="clinicalExaminationCaseNameExaminingDoctor" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOCTOR_SPECIALTY" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="clinicalExaminationCaseSpecialty" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.EXAMINATION_LOCATION" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="clinicalExaminationCaseWhereExaminePatient" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HOSPITAL_ADMISSION_DATE" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="clinicalExaminationCaseDateAdmissionHospital" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PARALYSIS_ONSET_DATE" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="clinicalExaminationCaseDateOnsetParalysis" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PARALYSIS_COMPLETION_DATE" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="clinicalExaminationCaseDateImmobilizationCompleted" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PARALYSIS_COMPLETED_4DAYS" | translate }}</label>
-                      <select class="form-control" formControlName="clinicalExaminationCaseCompleteParalysis4Days">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-12 mt-2">
-                      <div class="border rounded p-3">
-                        <div class="row">
-                          <div class="col-lg-4">
-                            <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PARALYSIS_SINCE_BIRTH" | translate }}</label>
-                            <select class="form-control" formControlName="clinicalExaminationCaseIsParalysisPresentBirth">
-                              <option [ngValue]="null"></option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            </select>
-                          </div>
-                          <div class="col-lg-4">
-                            <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PARALYSIS_FROM_ACCIDENT" | translate }}</label>
-                            <select class="form-control" formControlName="clinicalExaminationCaseIsParalysisAccidentFracture">
-                              <option [ngValue]="null"></option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            </select>
-                          </div>
-                          <div class="col-lg-4">
-                            <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ACCIDENT_REASON" | translate }}</label>
-                            <input type="text" class="form-control" formControlName="clinicalExaminationCaseStateReason" />
-                          </div>
-                        </div>
-                        <div class="row mt-2">
-                          <div class="col-12">
-                            <div class="alert alert-warning mb-0 p-2">
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.BIRTH_ACCIDENT_NOTE" | translate }}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Injections -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.INJECTIONS_SECTION" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.RECEIVED_INJECTIONS_3DAYS" | translate }}</label>
-                      <select class="form-control" formControlName="childReceiveInjections3Days">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.INJECTION_BODY_SITE" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="mentionPlaceInjectionBody" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.INJECTION_LOCATION" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="injectionSite" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.INJECTION_SITE_AWARENESS" | translate }}</label>
-                      <select class="form-control" formControlName="isSiteAware">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Paralysis Site -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PARALYSIS_SITE" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.RIGHT_ARM" | translate }}</label>
-                      <select class="form-control" formControlName="rightArmParalysis">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.LEFT_ARM" | translate }}</label>
-                      <select class="form-control" formControlName="leftArmParalysis">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.RIGHT_LEG" | translate }}</label>
-                      <select class="form-control" formControlName="rightLegParalysis">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.LEFT_LEG" | translate }}</label>
-                      <select class="form-control" formControlName="leftLegParalysis">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-12">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.OTHER_PARALYSIS_SITE" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="otherParalysisSite" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Clinical Symptoms -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLINICAL_SYMPTOMS" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ASYMMETRY" | translate }}</label>
-                      <select class="form-control" formControlName="asymmetry">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PARALYZED_PART_FLACCID" | translate }}</label>
-                      <select class="form-control" formControlName="paralyzedPartFlaccid">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SENSATION_PARALYZED_PARTS" | translate }}</label>
-                      <select class="form-control" formControlName="soundSensationParalyzedParts">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.MUSCLE_PAIN" | translate }}</label>
-                      <select class="form-control" formControlName="musclePain">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Symptoms before/at onset -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SYMPTOMS_AT_ONSET" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FEVER" | translate }}</label>
-                      <select class="form-control" formControlName="fever">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FEVER_DATE" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="feverDate" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DIARRHEA" | translate }}</label>
-                      <select class="form-control" formControlName="diarrhea">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DIARRHEA_DATE" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="diarrheaDate" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.VOMITING" | translate }}</label>
-                      <select class="form-control" formControlName="vomit">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.VOMITING_DATE" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="vomitDate" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CORYZA" | translate }}</label>
-                      <select class="form-control" formControlName="coryza">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CORYZA_DATE" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="coryzaDate" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Clinical Signs -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLINICAL_SIGNS" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SPHINCTER_CONTROL" | translate }}</label>
-                      <select class="form-control" formControlName="sphincterControl">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NECK_STIFFNESS" | translate }}</label>
-                      <select class="form-control" formControlName="stiffNeck">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CONVULSIONS" | translate }}</label>
-                      <select class="form-control" formControlName="convulsions">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.BABINSKI_SIGN" | translate }}</label>
-                      <select class="form-control" formControlName="babinskiSign">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.REFLEXES" | translate }}</label>
-                      <select class="form-control" formControlName="reactions">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HYPER_REFLEXIA" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HYPO_REFLEXIA" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.MUSCLE_TONE" | translate }}</label>
-                      <select class="form-control" formControlName="muscleStrength">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HYPERTONIA" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HYPOTONIA" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-6">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.OTHER_CLINICAL_SIGNS" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="otherClinicalSigns" />
-                    </div>
-                    <div class="col-lg-12">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PROVISIONAL_DIAGNOSIS" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="initialDiagnosisCondition" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== EPIDEMIOLOGICAL INVESTIGATION ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <!-- Birth Certificate Address -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.BIRTH_CERT_ADDRESS" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.STREET" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="epidemiologicalInvestigationStreetBirthCertificate" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HEALTH_UNIT" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="epidemiologicalInvestigationHealthUnitBirthCertificate" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ADMINISTRATION" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="epidemiologicalInvestigationAdministratioBirthCertificaten" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.GOVERNORATE" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="epidemiologicalInvestigationGovernorateBirthCertificate" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Current Address -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CURRENT_ADDRESS" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.STREET" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="epidemiologicalInvestigationStreet" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HEALTH_UNIT" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="epidemiologicalInvestigationHealthUnit" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ADMINISTRATION" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="epidemiologicalInvestigationAdministratio" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.GOVERNORATE" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="epidemiologicalInvestigationGovernorate" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.RESIDING_AREA" | translate }}</label>
-                      <select class="form-control" formControlName="epidemiologicalInvestigationCurrentlyResidingArea">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.RURAL" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.URBAN" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.EPI_NATIONALITY" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="epidemiologicalInvestigationNationality" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.EPI_DATE_ENTRY" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="epidemiologicalInvestigationDateEntryIntoCountry" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Discovery & Investigation Info -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DISCOVERY_INVESTIGATION_INFO" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.INVESTIGATING_PHYSICIAN" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="epidemiologicalInvestigationNameAttendingPhysician" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.INVESTIGATION_DATE" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="epidemiologicalInvestigationDate" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Epidemiological Information -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.EPI_INFO" | translate }}
-                </div>
-
-                <!-- Case Movements Table -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CASE_MOVEMENTS" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead><tr>
-                        <th>#</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ADDRESS_AREA" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.AREA_NAME" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FROM_DATE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.TO_DATE" | translate }}</th>
-                        <th></th>
-                      </tr></thead>
-                      <tbody formArrayName="caseMovements">
-                        <tr *ngFor="let row of caseMovements.controls; let i = index" [formGroupName]="i">
-                          <td>{{ i + 1 }}</td>
-                          <td><input type="text" class="form-control" formControlName="address" /></td>
-                          <td><input type="text" class="form-control" formControlName="areaName" /></td>
-                          <td><input type="date" class="form-control" formControlName="fromDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="toDate" /></td>
-                          <td><button type="button" class="btn btn-delete" (click)="removeCaseMovementRow(i)"><i class="fas fa-trash"></i></button></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="addCaseMovementRow()"><i class="fas fa-plus"></i> {{ "NEDSS.COMMON.ADD" | translate }}</button>
-                  </div>
-                </div>
-
-                <!-- Visitors to Area -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.VISITORS_TO_AREA" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead><tr>
-                        <th>#</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.VISITOR_NAME_RELEVANCE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.RELEVANCE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FROM_DATE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.TO_DATE" | translate }}</th>
-                        <th></th>
-                      </tr></thead>
-                      <tbody formArrayName="visitorsToArea">
-                        <tr *ngFor="let row of visitorsToArea.controls; let i = index" [formGroupName]="i">
-                          <td>{{ i + 1 }}</td>
-                          <td><input type="text" class="form-control" formControlName="visitorName" /></td>
-                          <td><input type="text" class="form-control" formControlName="relevance" /></td>
-                          <td><input type="date" class="form-control" formControlName="fromDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="toDate" /></td>
-                          <td><button type="button" class="btn btn-delete" (click)="removeVisitorRow(i)"><i class="fas fa-trash"></i></button></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="addVisitorRow()"><i class="fas fa-plus"></i> {{ "NEDSS.COMMON.ADD" | translate }}</button>
-                  </div>
-                </div>
-
-                <!-- AFP Cases in Residence Area -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.AFP_CASES_RESIDENCE_AREA" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead><tr>
-                        <th>#</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NAME" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ADDRESS" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DATE_ONSET_PARALYSIS" | translate }}</th>
-                        <th></th>
-                      </tr></thead>
-                      <tbody formArrayName="afpCasesResidenceArea">
-                        <tr *ngFor="let row of afpCasesResidenceArea.controls; let i = index" [formGroupName]="i">
-                          <td>{{ i + 1 }}</td>
-                          <td><input type="text" class="form-control" formControlName="name" /></td>
-                          <td><input type="text" class="form-control" formControlName="address" /></td>
-                          <td><input type="date" class="form-control" formControlName="dateOnsetParalysis" /></td>
-                          <td><button type="button" class="btn btn-delete" (click)="removeAfpCaseResidenceAreaRow(i)"><i class="fas fa-trash"></i></button></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="addAfpCaseResidenceAreaRow()"><i class="fas fa-plus"></i> {{ "NEDSS.COMMON.ADD" | translate }}</button>
-                  </div>
-                </div>
-
-                <!-- Health Authorities Visited -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HEALTH_AUTHORITIES_VISITED" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead><tr>
-                        <th>#</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HEALTH_AUTHORITY_DOCTOR" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ATTENDING_PHYSICIAN" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ADDRESS" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FROM_DATE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.TO_DATE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.IMMEDIATELY_REPORTED" | translate }}</th>
-                        <th></th>
-                      </tr></thead>
-                      <tbody formArrayName="healthAuthoritiesVisited">
-                        <tr *ngFor="let row of healthAuthoritiesVisited.controls; let i = index" [formGroupName]="i">
-                          <td>{{ i + 1 }}</td>
-                          <td><input type="text" class="form-control" formControlName="healthAuthorityName" /></td>
-                          <td><input type="text" class="form-control" formControlName="attendingPhysicianName" /></td>
-                          <td><input type="text" class="form-control" formControlName="healthFacilityAddress" /></td>
-                          <td><input type="date" class="form-control" formControlName="fromDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="toDate" /></td>
-                          <td>
-                            <select class="form-control" formControlName="immediatelyReported">
-                              <option [ngValue]="null"></option>
-                              <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            </select>
-                          </td>
-                          <td><button type="button" class="btn btn-delete" (click)="removeHealthAuthorityVisitedRow(i)"><i class="fas fa-trash"></i></button></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="addHealthAuthorityVisitedRow()"><i class="fas fa-plus"></i> {{ "NEDSS.COMMON.ADD" | translate }}</button>
-                  </div>
-                </div>
-
-                <!-- Health Facility Actions -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HEALTH_FACILITY_ACTIONS" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead><tr>
-                        <th>#</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HEALTH_FACILITY" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ACTIONS_TAKEN" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DATE" | translate }}</th>
-                        <th></th>
-                      </tr></thead>
-                      <tbody formArrayName="healthFacilityActions">
-                        <tr *ngFor="let row of healthFacilityActions.controls; let i = index" [formGroupName]="i">
-                          <td>{{ i + 1 }}</td>
-                          <td><input type="text" class="form-control" formControlName="healthFacility" /></td>
-                          <td><input type="text" class="form-control" formControlName="actionsTaken" /></td>
-                          <td><input type="date" class="form-control" formControlName="date" /></td>
-                          <td><button type="button" class="btn btn-delete" (click)="removeHealthFacilityActionRow(i)"><i class="fas fa-trash"></i></button></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="addHealthFacilityActionRow()"><i class="fas fa-plus"></i> {{ "NEDSS.COMMON.ADD" | translate }}</button>
-                  </div>
-                </div>
-
-                <!-- Vaccination Info -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.VACCINATION_INFO" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.TOTAL_DOSES" | translate }}</label>
-                      <input type="number" class="form-control" formControlName="numberDosesBeforeTotal" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ROUTINE_DOSES" | translate }}</label>
-                      <input type="number" class="form-control" formControlName="numberDosesBeforeRoutine" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CAMPAIGN_DOSES_COUNT" | translate }}</label>
-                      <input type="number" class="form-control" formControlName="numberDosesBeforeCampaigns" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SALK_INITIATIVE_COUNT" | translate }}</label>
-                      <input type="number" class="form-control" formControlName="numberDosesBeforeBehaviorInitiative" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Routine Doses Table -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ROUTINE_DOSES_TABLE" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead><tr>
-                        <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DATE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SOURCE" | translate }}</th>
-                      </tr></thead>
-                      <tbody>
-                        <tr><td colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_ZERO" | translate }}</td><td><input type="date" class="form-control" formControlName="routineDosesZeroDate" /></td><td><input type="text" class="form-control" formControlName="routineDosesZeroSource" /></td></tr>
-                        <tr><td rowspan="2" class="align-middle text-center">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_1" | translate }}</td><td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SABIN" | translate }}</td><td><input type="date" class="form-control" formControlName="routineSabine1Date" /></td><td><input type="text" class="form-control" formControlName="routineSabine1Source" /></td></tr>
-                        <tr><td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SALK" | translate }}</td><td><input type="date" class="form-control" formControlName="routineSalk1Date" /></td><td><input type="text" class="form-control" formControlName="routineSalk1Source" /></td></tr>
-                        <tr><td rowspan="2" class="align-middle text-center">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_2" | translate }}</td><td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SABIN" | translate }}</td><td><input type="date" class="form-control" formControlName="routineSabine2Date" /></td><td><input type="text" class="form-control" formControlName="routineSabine2Source" /></td></tr>
-                        <tr><td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SALK" | translate }}</td><td><input type="date" class="form-control" formControlName="routineSalk2Date" /></td><td><input type="text" class="form-control" formControlName="routineSalk2Source" /></td></tr>
-                        <tr><td rowspan="2" class="align-middle text-center">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_3" | translate }}</td><td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SABIN" | translate }}</td><td><input type="date" class="form-control" formControlName="routineSabine3Date" /></td><td><input type="text" class="form-control" formControlName="routineSabine3Source" /></td></tr>
-                        <tr><td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SALK" | translate }}</td><td><input type="date" class="form-control" formControlName="routineSalk3Date" /></td><td><input type="text" class="form-control" formControlName="routineSalk3Source" /></td></tr>
-                        <tr><td colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_4" | translate }}</td><td><input type="date" class="form-control" formControlName="routine4Date" /></td><td><input type="text" class="form-control" formControlName="routine4Source" /></td></tr>
-                        <tr><td colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_5" | translate }}</td><td><input type="date" class="form-control" formControlName="routine5Date" /></td><td><input type="text" class="form-control" formControlName="routine5Source" /></td></tr>
-                        <tr><td colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_BOOSTER" | translate }}</td><td><input type="date" class="form-control" formControlName="routineStimulantDate" /></td><td><input type="text" class="form-control" formControlName="routineStimulantSource" /></td></tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <!-- Campaign Doses Table (dynamic) -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CAMPAIGN_DOSES_TABLE" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead><tr>
-                        <th>#</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DATE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SOURCE" | translate }}</th>
-                        <th></th>
-                      </tr></thead>
-                      <tbody formArrayName="campaignDoses">
-                        <tr *ngFor="let row of campaignDoses.controls; let i = index" [formGroupName]="i">
-                          <td>{{ i + 1 }}</td>
-                          <td><input type="date" class="form-control" formControlName="date" /></td>
-                          <td><input type="text" class="form-control" formControlName="source" /></td>
-                          <td><button type="button" class="btn btn-delete" (click)="removeCampaignDoseRow(i)"><i class="fas fa-trash"></i></button></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="addCampaignDoseRow()"><i class="fas fa-plus"></i> {{ "NEDSS.COMMON.ADD" | translate }}</button>
-                  </div>
-                </div>
-
-                <!-- Salk Initiative Table (dynamic) -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SALK_INITIATIVE_TABLE" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead><tr>
-                        <th>#</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DATE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SOURCE" | translate }}</th>
-                        <th></th>
-                      </tr></thead>
-                      <tbody formArrayName="salkInitiative">
-                        <tr *ngFor="let row of salkInitiative.controls; let i = index" [formGroupName]="i">
-                          <td>{{ i + 1 }}</td>
-                          <td><input type="date" class="form-control" formControlName="date" /></td>
-                          <td><input type="text" class="form-control" formControlName="source" /></td>
-                          <td><button type="button" class="btn btn-delete" (click)="removeSalkInitiativeRow(i)"><i class="fas fa-trash"></i></button></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="addSalkInitiativeRow()"><i class="fas fa-plus"></i> {{ "NEDSS.COMMON.ADD" | translate }}</button>
-                  </div>
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.VALID_DOSES_COUNT" | translate }}</label>
-                      <input type="number" class="form-control" formControlName="validDosesCount" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Coverage Ratio Table -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.COVERAGE_RATIO" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered table-sm">
-                      <thead>
-                        <tr>
-                          <th rowspan="3">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE" | translate }}</th>
-                          <th colspan="6">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.COVERAGE_UNIT_LEVEL" | translate }}</th>
-                          <th colspan="3" rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.COVERAGE_ADMIN" | translate }}</th>
-                        </tr>
-                        <tr>
-                          <th colspan="3">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.COVERAGE_UNIT_RECORDS" | translate }}</th>
-                          <th colspan="3">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.COVERAGE_FIELD" | translate }}</th>
-                        </tr>
-                        <tr>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NUM_CHILDREN" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NUM_VACCINATED" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PERCENTAGE" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NUM_CHILDREN" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NUM_VACCINATED" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PERCENTAGE" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NUM_CHILDREN" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NUM_VACCINATED" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PERCENTAGE" | translate }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_3_POLIO" | translate }}</td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOnsetParalysisnumberChildren3" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOnsetParalysisNumberVaccinators3" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOnsetParalysisPercentege3" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fieldNumberChildren3" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fieldNumberVaccinators3" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fieldPercentege3" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOccurrenceParalysisNumberChildren3" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOccurrenceParalysisNumberVaccinators3" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOccurrenceParalysisPercentege3" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_4_POLIO" | translate }}</td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOnsetParalysisnumberChildren4" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOnsetParalysisNumberVaccinators4" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOnsetParalysisPercentege4" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fieldNumberChildren4" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fieldNumberVaccinators4" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fieldPercentege4" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOccurrenceParalysisNumberChildren4" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOccurrenceParalysisNumberVaccinators4" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOccurrenceParalysisPercentege4" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_BOOSTER" | translate }}</td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOnsetParalysisnumberChildrenStimulant" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOnsetParalysisNumberVaccinatorsStimulant" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOnsetParalysisPercentegeStimulant" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fieldNumberChildrenStimulant" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fieldNumberVaccinatorsStimulant" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fieldPercentegeStimulant" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOccurrenceParalysisNumberChildrenStimulant" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOccurrenceParalysisNumberVaccinatorsStimulant" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="monthPriorOccurrenceParalysisPercentegeStimulant" /></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <!-- Contacts Table (dynamic) -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CONTACTS" | translate }}
-                </div>
-                <div class="col-12">
-                  <div class="alert alert-info mb-0 p-2">
-                    {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CONTACTS_NOTE" | translate }}
-                  </div>
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead><tr>
-                        <th>#</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CONTACT_NAME" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.AGE_MONTHS" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.KINSHIP" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SAMPLE_DATE_TAKEN" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SAMPLE_DATE_SENT" | translate }}</th>
-                        <th></th>
-                      </tr></thead>
-                      <tbody formArrayName="contacts">
-                        <tr *ngFor="let row of contacts.controls; let i = index" [formGroupName]="i">
-                          <td>{{ i + 1 }}</td>
-                          <td><input type="text" class="form-control" formControlName="contactName" /></td>
-                          <td><input type="number" class="form-control" formControlName="ageMonths" /></td>
-                          <td><input type="text" class="form-control" formControlName="kinship" /></td>
-                          <td><input type="date" class="form-control" formControlName="dateSampleTaken" /></td>
-                          <td><input type="date" class="form-control" formControlName="dateSent" /></td>
-                          <td><button type="button" class="btn btn-delete" (click)="removeContactRow(i)"><i class="fas fa-trash"></i></button></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="addContactRow()"><i class="fas fa-plus"></i> {{ "NEDSS.COMMON.ADD" | translate }}</button>
-                  </div>
-                </div>
-
-                <!-- Contacts Sample Form -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_TITLE" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_REASON" | translate }}</label>
-                      <select class="form-control" formControlName="csfReason">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_INADEQUATE_SAMPLES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_HOT_CASE" | translate }}</option>
-                        <option [ngValue]="3">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_BORDER_GOV" | translate }}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_DATA" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_CONTACT_1" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_CONTACT_2" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_CONTACT_3" | translate }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_NAME" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="csf1Name" /></td>
-                          <td><input type="text" class="form-control" formControlName="csf2Name" /></td>
-                          <td><input type="text" class="form-control" formControlName="csf3Name" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_AGE" | translate }}</td>
-                          <td><input type="number" class="form-control" formControlName="csf1Age" /></td>
-                          <td><input type="number" class="form-control" formControlName="csf2Age" /></td>
-                          <td><input type="number" class="form-control" formControlName="csf3Age" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_GENDER" | translate }}</td>
-                          <td><select class="form-control" formControlName="csf1Gender"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.MALE" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.FEMALE" | translate }}</option></select></td>
-                          <td><select class="form-control" formControlName="csf2Gender"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.MALE" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.FEMALE" | translate }}</option></select></td>
-                          <td><select class="form-control" formControlName="csf3Gender"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.MALE" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.FEMALE" | translate }}</option></select></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_RELATION" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="csf1Relation" /></td>
-                          <td><input type="text" class="form-control" formControlName="csf2Relation" /></td>
-                          <td><input type="text" class="form-control" formControlName="csf3Relation" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_CONTACT_PERIOD" | translate }}</td>
-                          <td><select class="form-control" formControlName="csf1WeekBefore"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_WEEK_BEFORE" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_TWO_WEEKS_AFTER" | translate }}</option></select></td>
-                          <td><select class="form-control" formControlName="csf2WeekBefore"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_WEEK_BEFORE" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_TWO_WEEKS_AFTER" | translate }}</option></select></td>
-                          <td><select class="form-control" formControlName="csf3WeekBefore"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_WEEK_BEFORE" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_TWO_WEEKS_AFTER" | translate }}</option></select></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_ROUTINE_DOSES" | translate }}</td>
-                          <td><input type="number" class="form-control" formControlName="csf1RoutineDoses" /></td>
-                          <td><input type="number" class="form-control" formControlName="csf2RoutineDoses" /></td>
-                          <td><input type="number" class="form-control" formControlName="csf3RoutineDoses" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_CAMPAIGN_DOSES" | translate }}</td>
-                          <td><input type="number" class="form-control" formControlName="csf1CampaignDoses" /></td>
-                          <td><input type="number" class="form-control" formControlName="csf2CampaignDoses" /></td>
-                          <td><input type="number" class="form-control" formControlName="csf3CampaignDoses" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_SALK_DOSES" | translate }}</td>
-                          <td><input type="number" class="form-control" formControlName="csf1SalkDoses" /></td>
-                          <td><input type="number" class="form-control" formControlName="csf2SalkDoses" /></td>
-                          <td><input type="number" class="form-control" formControlName="csf3SalkDoses" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_LAST_DOSE_DATE" | translate }}</td>
-                          <td><input type="date" class="form-control" formControlName="csf1LastDoseDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="csf2LastDoseDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="csf3LastDoseDate" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_SAMPLE_COLLECTION_DATE" | translate }}</td>
-                          <td><input type="date" class="form-control" formControlName="csf1SampleCollectionDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="csf2SampleCollectionDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="csf3SampleCollectionDate" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_SAMPLE_SEND_DATE" | translate }}</td>
-                          <td><input type="date" class="form-control" formControlName="csf1SampleSendDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="csf2SampleSendDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="csf3SampleSendDate" /></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_COLLECTOR_NAME" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="csfCollectorName" />
-                    </div>
-                    <div class="col-lg-6">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_SENDER_NAME" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="csfSenderName" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Lab Info Section -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_LAB_INFO" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <tbody>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.QUANTITY_8G" | translate }}</td>
-                          <td><select class="form-control" formControlName="csfQuantity8g"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></td>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_RECEIVER_NAME" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="csfReceiverName" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.TEMP_4_8" | translate }}</td>
-                          <td><select class="form-control" formControlName="csfTemp4to8"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></td>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_RECEIPT_DATE" | translate }}</td>
-                          <td><input type="date" class="form-control" formControlName="csfReceiptDate" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NO_LEAKAGE" | translate }}</td>
-                          <td><select class="form-control" formControlName="csfNoLeakage"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></td>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_RECEIPT_TIME" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="csfReceiptTime" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DESIGNATED_COOLER" | translate }}</td>
-                          <td><select class="form-control" formControlName="csfDesignatedCooler"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></td>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF_NOTES" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="csfNotes" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DESIGNATED_TUBES" | translate }}</td>
-                          <td><select class="form-control" formControlName="csfDesignatedTubes"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></td>
-                          <td colspan="2"></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.TEMP_MONITOR" | translate }}</td>
-                          <td><select class="form-control" formControlName="csfTempMonitor"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></td>
-                          <td colspan="2"></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SAMPLES_VALID" | translate }}</td>
-                          <td><select class="form-control" formControlName="csfSamplesValid"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></td>
-                          <td colspan="2"></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <!-- Cluster Investigation -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_TITLE" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.GOVERNORATE" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="clusterGovernorate" />
-                    </div>
-                    <div class="col-lg-6">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ADMINISTRATION" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="clusterAdministration" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th style="width: 25%">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_DATA" | translate }}</th>
-                          <th style="width: 25%">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_CASE_1" | translate }}</th>
-                          <th style="width: 25%">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_CASE_2" | translate }}</th>
-                          <th style="width: 25%">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_CASE_3" | translate }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr><td colspan="4" class="fw-bold">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_DEMO" | translate }}</td></tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_NAME" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1Name" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2Name" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3Name" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_UNIT" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1Unit" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2Unit" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3Unit" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_AGE" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1Age" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2Age" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3Age" /></td>
-                        </tr>
-                        <tr><td colspan="4" class="fw-bold">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_EPI" | translate }}</td></tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_PARALYSIS_DATE" | translate }}</td>
-                          <td><input type="date" class="form-control" formControlName="cluster1ParalysisDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="cluster2ParalysisDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="cluster3ParalysisDate" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_SAMPLE_ADEQUACY" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1SampleAdequacy" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2SampleAdequacy" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3SampleAdequacy" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_VACCINATION" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1Vaccination" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2Vaccination" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3Vaccination" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_UNIT_COVERAGE" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1UnitCoverage" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2UnitCoverage" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3UnitCoverage" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_FIELD_COVERAGE" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1FieldCoverage" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2FieldCoverage" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3FieldCoverage" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_ENDEMIC_VISIT" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1EndemicVisit" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2EndemicVisit" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3EndemicVisit" /></td>
-                        </tr>
-                        <tr><td colspan="4" class="fw-bold">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_CLINICAL" | translate }}</td></tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_FEVER" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1Fever" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2Fever" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3Fever" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_SYMMETRY" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1Symmetry" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2Symmetry" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3Symmetry" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_COMPLETE_4DAYS" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1Complete4Days" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2Complete4Days" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3Complete4Days" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_OTHER_TESTS" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1OtherTests" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2OtherTests" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3OtherTests" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_INITIAL_DIAGNOSIS" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1InitialDiagnosis" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2InitialDiagnosis" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3InitialDiagnosis" /></td>
-                        </tr>
-                        <tr><td colspan="4" class="fw-bold">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_SURVEILLANCE" | translate }}</td></tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_ZERO_REPORTING" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1ZeroReporting" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2ZeroReporting" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3ZeroReporting" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_POSITIVE_SURVEILLANCE" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1PositiveSurveillance" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2PositiveSurveillance" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3PositiveSurveillance" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_SILENT_SITES" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1SilentSites" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2SilentSites" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3SilentSites" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_UNREPORTED_CASES" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="cluster1UnreportedCases" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster2UnreportedCases" /></td>
-                          <td><input type="text" class="form-control" formControlName="cluster3UnreportedCases" /></td>
-                        </tr>
-                        <tr>
-                          <td colspan="4">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CLUSTER_CONCLUSION" | translate }} <input type="text" class="form-control mt-1" formControlName="clusterConclusion" /></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== FIELD COVERAGE FORM ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FIELD_COVERAGE_TITLE" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.VILLAGE_STREET" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="fieldCoverageRatioVillage" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.HEALTH_UNIT" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="fieldCoverageRatioHealthUnit" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ADMINISTRATION" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="fieldCoverageRatioAdministraion" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.GOVERNORATE" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="fieldCoverageRatioGovernment" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Children Coverage Table (dynamic) -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CHILDREN_TABLE" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered table-sm">
-                      <thead>
-                        <tr>
-                          <th rowspan="2">#</th>
-                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CHILD_NAME" | translate }}</th>
-                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOB" | translate }}</th>
-                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.REG_NUMBER" | translate }}</th>
-                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_ZERO" | translate }}</th>
-                          <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_1" | translate }}</th>
-                          <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_2" | translate }}</th>
-                          <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_3" | translate }}</th>
-                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_4" | translate }}</th>
-                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_5" | translate }}</th>
-                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_BOOSTER" | translate }}</th>
-                          <th rowspan="2"></th>
-                        </tr>
-                        <tr>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SABIN" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SALK" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SABIN" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SALK" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SABIN" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SALK" | translate }}</th>
-                        </tr>
-                      </thead>
-                      <tbody formArrayName="fieldCoverageChildren">
-                        <tr *ngFor="let row of fieldCoverageChildren.controls; let i = index" [formGroupName]="i">
-                          <td>{{ i + 1 }}</td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="childName" /></td>
-                          <td><input type="date" class="form-control form-control-sm" formControlName="dateOfBirth" /></td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="registrationNumber" /></td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="zeroDose" /></td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="sabin1" /></td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="salk1" /></td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="sabin2" /></td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="salk2" /></td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="sabin3" /></td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="salk3" /></td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="dose4" /></td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="dose5" /></td>
-                          <td><input type="text" class="form-control form-control-sm" formControlName="booster" /></td>
-                          <td><button type="button" class="btn btn-delete" (click)="removeFieldCoverageChildRow(i)"><i class="fas fa-trash"></i></button></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="addFieldCoverageChildRow()"><i class="fas fa-plus"></i> {{ "NEDSS.COMMON.ADD" | translate }}</button>
-                  </div>
-                </div>
-
-                <!-- Coverage Rates Summary -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FC_RATES_TITLE" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered table-sm">
-                      <thead>
-                        <tr>
-                          <th rowspan="2"></th>
-                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_ZERO" | translate }}</th>
-                          <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_1" | translate }}</th>
-                          <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_2" | translate }}</th>
-                          <th colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_3" | translate }}</th>
-                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_4" | translate }}</th>
-                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_5" | translate }}</th>
-                          <th rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOSE_BOOSTER" | translate }}</th>
-                        </tr>
-                        <tr>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SABIN" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SALK" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SABIN" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SALK" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SABIN" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SALK" | translate }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NUM_CHILDREN" | translate }}</td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRateZeroChildren" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate1SabinChildren" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate1SalkChildren" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate2SabinChildren" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate2SalkChildren" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate3SabinChildren" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate3SalkChildren" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate4Children" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate5Children" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRateBoosterChildren" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NUM_VACCINATED" | translate }}</td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRateZeroVaccinated" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate1SabinVaccinated" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate1SalkVaccinated" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate2SabinVaccinated" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate2SalkVaccinated" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate3SabinVaccinated" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate3SalkVaccinated" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate4Vaccinated" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate5Vaccinated" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRateBoosterVaccinated" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PERCENTAGE" | translate }}</td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRateZeroPercentage" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate1SabinPercentage" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate1SalkPercentage" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate2SabinPercentage" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate2SalkPercentage" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate3SabinPercentage" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate3SalkPercentage" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate4Percentage" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRate5Percentage" /></td>
-                          <td><input type="number" class="form-control form-control-sm" formControlName="fcRateBoosterPercentage" /></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== STOOL SAMPLE DISPATCH ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <!-- Sample Info -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SAMPLE_INFO" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead><tr>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SAMPLE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.COLLECTION_PLACE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.COLLECTION_DATE" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.COLLECTOR_NAME" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SEND_DATE" | translate }}</th>
-                      </tr></thead>
-                      <tbody>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SAMPLE_1" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="sample1CollectionPlace" /></td>
-                          <td><input type="date" class="form-control" formControlName="sample1CollectionDate" /></td>
-                          <td><input type="text" class="form-control" formControlName="sample1CollectorName" /></td>
-                          <td><input type="date" class="form-control" formControlName="sample1SendDate" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SAMPLE_2" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="sample2CollectionPlace" /></td>
-                          <td><input type="date" class="form-control" formControlName="sample2CollectionDate" /></td>
-                          <td><input type="text" class="form-control" formControlName="sample2CollectorName" /></td>
-                          <td><input type="date" class="form-control" formControlName="sample2SendDate" /></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SAMPLE_SENDER_NAME" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="sampleSenderName" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Sample Validity -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SAMPLE_VALIDITY" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.QUANTITY_8G" | translate }}</label>
-                      <select class="form-control" formControlName="sampleQuantity8g">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.TEMP_4_8" | translate }}</label>
-                      <select class="form-control" formControlName="sampleTemperature4to8">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NO_LEAKAGE" | translate }}</label>
-                      <select class="form-control" formControlName="sampleNoLeakage">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DESIGNATED_COOLER" | translate }}</label>
-                      <select class="form-control" formControlName="sampleDesignatedCooler">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DESIGNATED_TUBES" | translate }}</label>
-                      <select class="form-control" formControlName="sampleDesignatedTubes">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.TEMP_MONITOR" | translate }}</label>
-                      <select class="form-control" formControlName="sampleTemperatureMonitor">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SAMPLES_VALID" | translate }}</label>
-                      <select class="form-control" formControlName="sampleAreValid">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Sample Receipt -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SAMPLE_RECEIPT" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.RECEIVER_NAME" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="sampleReceiverName" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.RECEIPT_DATE" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="sampleReceiptDate" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.RECEIPT_TIME" | translate }}</label>
-                      <input type="time" class="form-control" formControlName="sampleReceiptTime" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== 60-DAY FOLLOW-UP ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <!-- Follow-up Status -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FOLLOWUP_DATA" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FOLLOWUP_DATE" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="followUpAfter60DaysFollowUpDate" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FOLLOWUP_DOCTOR" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="followUpAfter60DaysDoctorName" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FOLLOWUP_SPECIALTY" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="followUpAfter60DaysSpecialty" />
-                    </div>
-                    <div class="col-lg-3">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FOLLOWUP_PLACE" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="followUpAfter60DaysFollowUpPlace" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FOLLOWUP_STATUS" | translate }}</label>
-                      <select class="form-control" formControlName="followUpAfter60DaysFollowUp">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PRESENT" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NOT_PRESENT" | translate }}</option>
-                        <option [ngValue]="3">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DEATH" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-12 mt-2">
-                      <label class="fw-bold">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.IN_CASE_OF_DEATH" | translate }}</label>
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DATE_DEATH" | translate }}</label>
-                      <input type="date" class="form-control" formControlName="followUpAfter60DaysDateDeath" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CAUSE_DEATH" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="followUpAfter60DaysCauseDeath" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Paralysis & Atrophy -->
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.RESIDUAL_PARALYSIS" | translate }}</label>
-                      <select class="form-control" formControlName="followUpAfter60DaysIsFlaccidParalysisAfter60Days">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-8">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.PARALYSIS_LOCATION" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="followUpAfter60DaysLocateRemainingParalysis" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.MUSCLE_ATROPHY" | translate }}</label>
-                      <select class="form-control" formControlName="followUpAfter60DaysMuscleAtrophy">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-8">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ATROPHY_LOCATION" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="followUpAfter60DaysMuscleAtrophyPlace" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SENSATION_PRESENT" | translate }}</label>
-                      <select class="form-control" formControlName="followUpAfter60DaysIsFeelingPresentAffectedOrgans">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Lab Results -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.LAB_RESULTS" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.LAB_RESULTS_CASE" | translate }}</label>
-                      <select class="form-control" formControlName="followUpAfter60DaysResultsLaboratoryExaminationStoolSamplesCase">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NEGATIVE" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.WILD_POLIO" | translate }}</option>
-                        <option [ngValue]="3">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SABIN_VIRUS" | translate }}</option>
-                        <option [ngValue]="4">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.OTHER_ENTEROVIRUS" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-8">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.LAB_RESULTS_CONTACTS" | translate }}</label>
-                      <div class="row">
-                        <div class="col-lg-4"><input type="text" class="form-control" formControlName="followUpAfter60DaysMixer1" placeholder="{{ 'NEDSS.COMPLETE_INVESTEGATION.AFP.CONTACT_1' | translate }}" /></div>
-                        <div class="col-lg-4"><input type="text" class="form-control" formControlName="followUpAfter60DaysMixer2" placeholder="{{ 'NEDSS.COMPLETE_INVESTEGATION.AFP.CONTACT_2' | translate }}" /></div>
-                        <div class="col-lg-4"><input type="text" class="form-control" formControlName="followUpAfter60DaysMixer3" placeholder="{{ 'NEDSS.COMPLETE_INVESTEGATION.AFP.CONTACT_3' | translate }}" /></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Additional Tests -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ADDITIONAL_TESTS" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CT_MRI" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="followUpAfter60DaysCt" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.EMG" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="followUpAfter60DaysEmg" />
-                    </div>
-                    <div class="col-lg-4">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.CSF" | translate }}</label>
-                      <select class="form-control" formControlName="followUpAfter60DaysCsf">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NORMAL" | translate }}</option>
-                        <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SEPTIC" | translate }}</option>
-                        <option [ngValue]="3">{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.ASEPTIC" | translate }}</option>
-                      </select>
-                    </div>
-                    <div class="col-lg-6">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.OTHER_CLINICAL_SIGNS" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="followUpAfter60DaysOtherClinicalSigns" />
-                    </div>
-                    <div class="col-lg-6">
-                      <label>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.FINAL_DIAGNOSIS" | translate }}</label>
-                      <input type="text" class="form-control" formControlName="followUpAfter60DaysMentionNameDiseaseParalysisReportingCase" />
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Doctors Follow-up Committee -->
-                <div class="col-12 title fs-6 fwb mt-3">
-                  {{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DOCTORS_COMMITTEE" | translate }}
-                </div>
-
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead><tr>
-                        <th>#</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NAME" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SPECIALIZATION" | translate }}</th>
-                        <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DATE" | translate }}</th>
-                        <th></th>
-                      </tr></thead>
-                      <tbody formArrayName="doctorsFollowUpCommittee">
-                        <tr *ngFor="let row of doctorsFollowUpCommittee.controls; let i = index" [formGroupName]="i">
-                          <td>{{ i + 1 }}</td>
-                          <td><input type="text" class="form-control" formControlName="name" /></td>
-                          <td><input type="text" class="form-control" formControlName="specialization" [readonly]="i === 0" /></td>
-                          <td><input type="date" class="form-control" formControlName="date" /></td>
-                          <td><button *ngIf="i > 0" type="button" class="btn btn-delete" (click)="removeDoctorCommitteeRow(i)"><i class="fas fa-trash"></i></button></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="addDoctorCommitteeRow()"><i class="fas fa-plus"></i> {{ "NEDSS.COMMON.ADD" | translate }}</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ==================== SIGNATURES TABLE ==================== -->
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 mt-2">
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SIGN_PREVENTIVE_DIRECTOR" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SIGN_SURVEILLANCE_ADMIN" | translate }}</th>
-                          <th>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.SIGN_SURVEILLANCE_DIRECTORATE" | translate }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.NAME" | translate }}</td>
-                          <td><input type="text" class="form-control" formControlName="signPreventiveDirectorName" /></td>
-                          <td><input type="text" class="form-control" formControlName="signSurveillanceAdminName" /></td>
-                          <td><input type="text" class="form-control" formControlName="signSurveillanceDirectorateName" /></td>
-                        </tr>
-                        <tr>
-                          <td>{{ "NEDSS.COMPLETE_INVESTEGATION.AFP.DATE" | translate }}</td>
-                          <td><input type="date" class="form-control" formControlName="signPreventiveDirectorDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="signSurveillanceAdminDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="signSurveillanceDirectorateDate" /></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="card-footer text-start">
-          <button type="submit" class="btn bg rounded-2 text-light">
-            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
-          </button>
         </div>
       </div>
+
+      <!-- ==================== TABS ==================== -->
+      <ul class="nav nav-tabs fwb">
+        <li class="nav-item" *ngFor="let t of tabs">
+          <a class="nav-link" style="cursor:pointer" [class.active]="activeTab === t.key" (click)="setTab(t.key)">{{ t.label }}</a>
+        </li>
+      </ul>
+
+      <div class="card shadow color">
+        <div class="card-body">
+
+          <!-- ================= TAB 1: التقصي الميداني للحالة ================= -->
+          <ng-container *ngIf="activeTab === 'field'">
+
+            <!-- 1. Case movements -->
+            <div class="section-bar b1 d-flex justify-content-between align-items-center">
+              <span>1) تحركات الحالة خلال 30 يوم قبل بداية الشلل</span>
+              <button type="button" class="btn btn-light btn-sm" (click)="addCaseMovement()"><i class="pi pi-plus"></i> إضافة تحرك جديد</button>
+            </div>
+            <div class="row mb-2">
+              <div class="col-lg-4"><div class="form-group"><label>تاريخ بداية شلل الحالة</label>
+                <input type="date" class="form-control" formControlName="paralysisOnsetDate" /></div></div>
+            </div>
+            <div class="mb-2" *ngIf="caseMovements.length > 0">
+              <div class="fwb mb-1">عرض السجلات</div>
+              <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle">
+                  <thead><tr><th>#</th><th>تاريخ الزيارة</th><th>مكان المخالطة</th><th>العنوان</th><th>هل يوجد حالات؟</th><th>بيانات الحالة</th></tr></thead>
+                  <tbody>
+                    <tr *ngFor="let m of caseMovements.controls; let i = index">
+                      <td>{{ i + 1 }}</td><td>{{ m.value.visitDate }}</td><td>{{ m.value.contactPlace }}</td><td>{{ m.value.address }}</td><td>{{ yesNo(m.value.hasCases) }}</td><td>{{ m.value.caseData }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div formArrayName="caseMovements">
+              <div class="record-card" *ngFor="let m of caseMovements.controls; let i = index" [formGroupName]="i">
+                <div class="record-card-head">
+                  <span class="fwb">سجل #{{ i + 1 }}</span>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(m)"><i class="pi" [ngClass]="isRowOpen(m) ? 'pi-chevron-up' : 'pi-pencil'"></i> {{ isRowOpen(m) ? 'إغلاق' : 'تعديل' }}</button>
+                    <button type="button" class="btn btn-sm btn-danger" (click)="removeCaseMovement(i)"><i class="pi pi-trash"></i> حذف</button>
+                  </div>
+                </div>
+                <div *ngIf="!isRowOpen(m)" class="text-muted small">{{ m.value.visitDate || 'بدون تاريخ' }} <span *ngIf="m.value.address">— {{ m.value.address }}</span></div>
+                <div class="row" *ngIf="isRowOpen(m)">
+                  <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة</label><input type="date" class="form-control" formControlName="visitDate" /></div></div>
+                  <div class="col-lg-3"><div class="form-group"><label>مكان المخالطة</label><input type="text" class="form-control" formControlName="contactPlace" /></div></div>
+                  <div class="col-lg-6"><div class="form-group"><label>العنوان بالتفصيل</label><input type="text" class="form-control" formControlName="address" /></div></div>
+                  <div class="col-lg-3"><div class="form-group"><label>هل يوجد حالات؟</label>
+                    <select class="form-control" formControlName="hasCases"><option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
+                  <div class="col-lg-9"><div class="form-group"><label>بيانات الحالة</label><input type="text" class="form-control" formControlName="caseData" /></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Previous cases -->
+            <div class="section-bar b2 mt-4">2) خط سير الحالات السابقة لتحديد مصدر العدوى</div>
+            <div class="form-group d-flex gap-3 align-items-center mb-2">
+              <span class="fwb">هل يوجد حالات AFP بالمنطقة قبل 60 يوم؟</span>
+              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasPreviousAfpCases" [value]="1" /> نعم</label>
+              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasPreviousAfpCases" [value]="2" /> لا</label>
+            </div>
+            <ng-container *ngIf="form.value.hasPreviousAfpCases === 1">
+              <div class="d-flex justify-content-end mb-2"><button type="button" class="btn btn-add-record btn-sm" (click)="addPreviousCase()"><i class="pi pi-plus"></i> إضافة مخالط جديد</button></div>
+              <div class="mb-2" *ngIf="previousCases.length > 0">
+                <div class="fwb mb-1">عرض السجلات</div>
+                <div class="table-responsive">
+                  <table class="table table-bordered text-center align-middle">
+                    <thead><tr><th>#</th><th>اسم المخالط</th><th>تاريخ ظهور الشلل</th><th>نطاق السكن</th><th>العنوان</th><th>كود الحالة</th></tr></thead>
+                    <tbody>
+                      <tr *ngFor="let p of previousCases.controls; let i = index">
+                        <td>{{ i + 1 }}</td><td>{{ p.value.contactName }}</td><td>{{ p.value.paralysisOnsetDate }}</td><td>{{ p.value.residenceScope }}</td><td>{{ p.value.address }}</td><td>{{ p.value.caseCode }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div formArrayName="previousCases">
+                <div class="record-card" *ngFor="let p of previousCases.controls; let i = index" [formGroupName]="i">
+                  <div class="record-card-head">
+                    <span class="fwb">مخالط #{{ i + 1 }}</span>
+                    <div class="d-flex gap-2">
+                      <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(p)"><i class="pi" [ngClass]="isRowOpen(p) ? 'pi-chevron-up' : 'pi-pencil'"></i> {{ isRowOpen(p) ? 'إغلاق' : 'تعديل' }}</button>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="removePreviousCase(i)"><i class="pi pi-trash"></i> حذف</button>
+                    </div>
+                  </div>
+                  <div *ngIf="!isRowOpen(p)" class="text-muted small">{{ p.value.contactName || 'بدون اسم' }}</div>
+                  <div class="row" *ngIf="isRowOpen(p)">
+                    <div class="col-lg-4"><div class="form-group"><label>اسم المخالط</label><input type="text" class="form-control" formControlName="contactName" /></div></div>
+                    <div class="col-lg-4"><div class="form-group"><label>تاريخ ظهور الشلل</label><input type="date" class="form-control" formControlName="paralysisOnsetDate" /></div></div>
+                    <div class="col-lg-4"><div class="form-group"><label>نطاق السكن</label><input type="text" class="form-control" formControlName="residenceScope" /></div></div>
+                    <div class="col-lg-8"><div class="form-group"><label>العنوان</label><input type="text" class="form-control" formControlName="address" /></div></div>
+                    <div class="col-lg-4"><div class="form-group"><label>كود الحالة</label><input type="text" class="form-control" formControlName="caseCode" /></div></div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- 3. High risk areas -->
+            <div class="section-bar b3 mt-4">3) المناطق عالية الخطورة أو تجمع الوافدين</div>
+            <div class="form-group d-flex gap-3 align-items-center mb-2">
+              <span class="fwb">هل يوجد مناطق عالية الخطورة؟</span>
+              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasHighRiskAreas" [value]="1" /> نعم</label>
+              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasHighRiskAreas" [value]="2" /> لا</label>
+            </div>
+            <ng-container *ngIf="form.value.hasHighRiskAreas === 1">
+              <div class="d-flex justify-content-end mb-2"><button type="button" class="btn btn-add-record btn-sm" (click)="addHighRiskArea()"><i class="pi pi-plus"></i> إضافة منطقة جديدة</button></div>
+              <div class="mb-2" *ngIf="highRiskAreas.length > 0">
+                <div class="fwb mb-1">عرض السجلات</div>
+                <div class="table-responsive">
+                  <table class="table table-bordered text-center align-middle">
+                    <thead><tr><th>#</th><th>تاريخ الزيارة</th><th>وصف المنطقة</th><th>سبب التصنيف</th><th>العنوان</th><th>هل يوجد حالات؟</th><th>بيانات الحالة</th></tr></thead>
+                    <tbody>
+                      <tr *ngFor="let a of highRiskAreas.controls; let i = index">
+                        <td>{{ i + 1 }}</td><td>{{ a.value.visitDate }}</td><td>{{ a.value.areaDescription }}</td><td>{{ a.value.classificationReason }}</td><td>{{ a.value.address }}</td><td>{{ yesNo(a.value.hasCases) }}</td><td>{{ a.value.caseData }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div formArrayName="highRiskAreas">
+                <div class="record-card" *ngFor="let a of highRiskAreas.controls; let i = index" [formGroupName]="i">
+                  <div class="record-card-head">
+                    <span class="fwb">منطقة #{{ i + 1 }}</span>
+                    <div class="d-flex gap-2">
+                      <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(a)"><i class="pi" [ngClass]="isRowOpen(a) ? 'pi-chevron-up' : 'pi-pencil'"></i> {{ isRowOpen(a) ? 'إغلاق' : 'تعديل' }}</button>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="removeHighRiskArea(i)"><i class="pi pi-trash"></i> حذف</button>
+                    </div>
+                  </div>
+                  <div *ngIf="!isRowOpen(a)" class="text-muted small">{{ a.value.visitDate || 'بدون تاريخ' }} <span *ngIf="a.value.areaDescription">— {{ a.value.areaDescription }}</span></div>
+                  <div class="row" *ngIf="isRowOpen(a)">
+                    <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة</label><input type="date" class="form-control" formControlName="visitDate" /></div></div>
+                    <div class="col-lg-4"><div class="form-group"><label>وصف المنطقة</label><input type="text" class="form-control" formControlName="areaDescription" /></div></div>
+                    <div class="col-lg-5"><div class="form-group"><label>سبب التصنيف</label><input type="text" class="form-control" formControlName="classificationReason" /></div></div>
+                    <div class="col-lg-6"><div class="form-group"><label>العنوان</label><input type="text" class="form-control" formControlName="address" /></div></div>
+                    <div class="col-lg-3"><div class="form-group"><label>هل يوجد حالات؟</label>
+                      <select class="form-control" formControlName="hasCases"><option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
+                    <div class="col-lg-3"><div class="form-group"><label>بيانات الحالة</label><input type="text" class="form-control" formControlName="caseData" /></div></div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- 4. Health facility visits -->
+            <div class="section-bar b4 mt-4">4) تردد الطفل على جهات صحية بعد ظهور الأعراض</div>
+            <div class="form-group d-flex gap-3 align-items-center mb-2">
+              <span class="fwb">هل الطفل تردد على جهة صحية؟</span>
+              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="visitedHealthFacility" [value]="1" /> نعم</label>
+              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="visitedHealthFacility" [value]="2" /> لا</label>
+            </div>
+            <ng-container *ngIf="form.value.visitedHealthFacility === 1">
+              <div class="d-flex justify-content-end mb-2"><button type="button" class="btn btn-add-record btn-sm" (click)="addFacilityVisit()"><i class="pi pi-plus"></i> إضافة زيارة جديدة</button></div>
+              <div class="mb-2" *ngIf="healthFacilityVisits.length > 0">
+                <div class="fwb mb-1">عرض السجلات</div>
+                <div class="table-responsive">
+                  <table class="table table-bordered text-center align-middle">
+                    <thead><tr><th>#</th><th>تاريخ الزيارة</th><th>الطبيب</th><th>نوع الجهة</th><th>اسم الجهة</th><th>العنوان</th><th>إبلاغ فوري</th><th>الإجراءات</th><th>تاريخ التفتيش</th></tr></thead>
+                    <tbody>
+                      <tr *ngFor="let f of healthFacilityVisits.controls; let i = index">
+                        <td>{{ i + 1 }}</td><td>{{ f.value.visitDate }}</td><td>{{ f.value.doctor }}</td><td>{{ f.value.facilityType }}</td><td>{{ f.value.facilityName }}</td><td>{{ f.value.address }}</td><td>{{ yesNo(f.value.immediateReport) }}</td><td>{{ f.value.actions }}</td><td>{{ f.value.inspectionDate }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div formArrayName="healthFacilityVisits">
+                <div class="record-card" *ngFor="let f of healthFacilityVisits.controls; let i = index" [formGroupName]="i">
+                  <div class="record-card-head">
+                    <span class="fwb">زيارة #{{ i + 1 }}</span>
+                    <div class="d-flex gap-2">
+                      <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(f)"><i class="pi" [ngClass]="isRowOpen(f) ? 'pi-chevron-up' : 'pi-pencil'"></i> {{ isRowOpen(f) ? 'إغلاق' : 'تعديل' }}</button>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="removeFacilityVisit(i)"><i class="pi pi-trash"></i> حذف</button>
+                    </div>
+                  </div>
+                  <div *ngIf="!isRowOpen(f)" class="text-muted small">{{ f.value.visitDate || 'بدون تاريخ' }} <span *ngIf="f.value.facilityName">— {{ f.value.facilityName }}</span></div>
+                  <div class="row" *ngIf="isRowOpen(f)">
+                    <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة</label><input type="date" class="form-control" formControlName="visitDate" /></div></div>
+                    <div class="col-lg-3"><div class="form-group"><label>الطبيب</label><input type="text" class="form-control" formControlName="doctor" /></div></div>
+                    <div class="col-lg-3"><div class="form-group"><label>نوع الجهة</label><input type="text" class="form-control" formControlName="facilityType" /></div></div>
+                    <div class="col-lg-3"><div class="form-group"><label>اسم الجهة</label><input type="text" class="form-control" formControlName="facilityName" /></div></div>
+                    <div class="col-lg-6"><div class="form-group"><label>العنوان</label><input type="text" class="form-control" formControlName="address" /></div></div>
+                    <div class="col-lg-2"><div class="form-group"><label>إبلاغ فوري</label>
+                      <select class="form-control" formControlName="immediateReport"><option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
+                    <div class="col-lg-4"><div class="form-group"><label>الإجراءات</label><input type="text" class="form-control" formControlName="actions" /></div></div>
+                    <div class="col-lg-3"><div class="form-group"><label>تاريخ التفتيش</label><input type="date" class="form-control" formControlName="inspectionDate" /></div></div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+
+          <!-- ================= TAB 2: موقف التطعيمات ================= -->
+          <ng-container *ngIf="activeTab === 'vaccination'">
+            <div class="title fs-6 fwb mb-2">التطعيمات الروتينية</div>
+            <div class="table-responsive">
+              <table class="table table-bordered text-center align-middle" formArrayName="routineVaccinations">
+                <thead><tr><th>الجرعة</th><th>نوع الطعم</th><th>التاريخ</th><th>المصدر</th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let r of routineVaccinations.controls; let i = index" [formGroupName]="i">
+                    <td class="fwb">{{ r.value.doseLabel }}</td>
+                    <td><select class="form-control form-control-sm" formControlName="vaccineType">
+                      <option [ngValue]="null">-- اختر --</option>
+                      <option *ngFor="let o of vaccineTypes" [ngValue]="o">{{ o }}</option>
+                    </select></td>
+                    <td><input type="date" class="form-control form-control-sm" formControlName="date" /></td>
+                    <td><select class="form-control form-control-sm" formControlName="source">
+                      <option [ngValue]="null">-- اختر --</option>
+                      <option *ngFor="let o of sources" [ngValue]="o">{{ o }}</option>
+                    </select></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+              <span class="title fs-6 fwb">موقف الحملات</span>
+              <button type="button" class="btn btn-add-record btn-sm" (click)="addCampaign()"><i class="pi pi-plus"></i> إضافة حملة</button>
+            </div>
+            <div class="mb-2" *ngIf="campaigns.length > 0">
+              <div class="fwb mb-1">عرض السجلات</div>
+              <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle">
+                  <thead><tr><th>#</th><th>تاريخ الحملة</th><th>نوع الحملة</th><th>نوع الطعم</th><th>المصدر</th></tr></thead>
+                  <tbody>
+                    <tr *ngFor="let c of campaigns.controls; let i = index">
+                      <td>{{ i + 1 }}</td><td>{{ c.value.campaignDate }}</td><td>{{ c.value.campaignType }}</td><td>{{ c.value.vaccineType }}</td><td>{{ c.value.source }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div formArrayName="campaigns">
+              <div class="record-card" *ngFor="let c of campaigns.controls; let i = index" [formGroupName]="i">
+                <div class="record-card-head">
+                  <span class="fwb">حملة #{{ i + 1 }}</span>
+                  <button type="button" class="btn btn-sm btn-danger" (click)="removeCampaign(i)"><i class="pi pi-trash"></i> حذف</button>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3"><div class="form-group"><label>تاريخ الحملة</label><input type="date" class="form-control" formControlName="campaignDate" /></div></div>
+                  <div class="col-lg-3"><div class="form-group"><label>نوع الحملة</label>
+                    <select class="form-control" formControlName="campaignType">
+                      <option [ngValue]="null">-- اختر --</option>
+                      <option *ngFor="let o of campaignTypes" [ngValue]="o">{{ o }}</option>
+                    </select></div></div>
+                  <div class="col-lg-3"><div class="form-group"><label>نوع الطعم</label>
+                    <select class="form-control" formControlName="vaccineType">
+                      <option [ngValue]="null">-- اختر --</option>
+                      <option *ngFor="let o of vaccineTypes" [ngValue]="o">{{ o }}</option>
+                    </select></div></div>
+                  <div class="col-lg-3"><div class="form-group"><label>المصدر</label>
+                    <select class="form-control" formControlName="source">
+                      <option [ngValue]="null">-- اختر --</option>
+                      <option *ngFor="let o of sources" [ngValue]="o">{{ o }}</option>
+                    </select></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="title fs-6 fwb mt-3 mb-2">مبادرة السلوك</div>
+            <div class="row">
+              <div class="col-lg-3"><div class="form-group"><label>جرعة أولى - تاريخ</label><input type="date" class="form-control" formControlName="behaviorDose1Date" /></div></div>
+              <div class="col-lg-3"><div class="form-group"><label>جرعة أولى - المصدر</label>
+                <select class="form-control" formControlName="behaviorDose1Source">
+                  <option [ngValue]="null">-- اختر --</option>
+                  <option *ngFor="let o of sources" [ngValue]="o">{{ o }}</option>
+                </select></div></div>
+              <div class="col-lg-3"><div class="form-group"><label>جرعة ثانية - تاريخ</label><input type="date" class="form-control" formControlName="behaviorDose2Date" /></div></div>
+              <div class="col-lg-3"><div class="form-group"><label>جرعة ثانية - المصدر</label>
+                <select class="form-control" formControlName="behaviorDose2Source">
+                  <option [ngValue]="null">-- اختر --</option>
+                  <option *ngFor="let o of sources" [ngValue]="o">{{ o }}</option>
+                </select></div></div>
+            </div>
+          </ng-container>
+
+          <!-- ================= TAB 3: المسح الميداني ================= -->
+          <ng-container *ngIf="activeTab === 'survey'">
+            <div class="row">
+              <div class="col-lg-6"><div class="form-group"><label>تاريخ الزيارة</label><input type="date" class="form-control" formControlName="surveyVisitDate" /></div></div>
+              <div class="col-lg-6"><div class="form-group"><label>رقم المربع</label><input type="text" class="form-control" formControlName="surveySquareNumber" /></div></div>
+            </div>
+
+            <div class="d-flex justify-content-end mb-2"><button type="button" class="btn btn-add-record btn-sm" (click)="addSurveyChild()"><i class="pi pi-plus"></i> إضافة طفل</button></div>
+            <div class="mb-2" *ngIf="surveyChildren.length > 0">
+              <div class="fwb mb-1">عرض السجلات</div>
+              <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle">
+                  <thead><tr><th>#</th><th>الاسم</th><th>شهر</th><th>سنة</th><th>صفر</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>منشطة</th><th>حمى/طفح</th><th>التاريخ</th><th>الهاتف</th><th>Long</th><th>Lat</th></tr></thead>
+                  <tbody>
+                    <tr *ngFor="let s of surveyChildren.controls; let i = index">
+                      <td>{{ i + 1 }}</td><td>{{ s.value.name }}</td><td>{{ s.value.ageMonth }}</td><td>{{ s.value.ageYear }}</td>
+                      <td>{{ mark(s.value.dose0) }}</td><td>{{ mark(s.value.dose1) }}</td><td>{{ mark(s.value.dose2) }}</td><td>{{ mark(s.value.dose3) }}</td><td>{{ mark(s.value.dose4) }}</td><td>{{ mark(s.value.dose5) }}</td><td>{{ mark(s.value.booster) }}</td>
+                      <td>{{ yesNo(s.value.feverRash) }}</td><td>{{ s.value.date }}</td><td>{{ s.value.phone }}</td><td>{{ s.value.long }}</td><td>{{ s.value.lat }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div formArrayName="surveyChildren">
+              <div class="record-card" *ngFor="let s of surveyChildren.controls; let i = index" [formGroupName]="i">
+                <div class="record-card-head">
+                  <span class="fwb">طفل #{{ i + 1 }}</span>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(s)"><i class="pi" [ngClass]="isRowOpen(s) ? 'pi-chevron-up' : 'pi-pencil'"></i> {{ isRowOpen(s) ? 'إغلاق' : 'تعديل' }}</button>
+                    <button type="button" class="btn btn-sm btn-danger" (click)="removeSurveyChild(i)"><i class="pi pi-trash"></i> حذف</button>
+                  </div>
+                </div>
+                <div *ngIf="!isRowOpen(s)" class="text-muted small">{{ s.value.name || 'بدون اسم' }}</div>
+                <div class="row" *ngIf="isRowOpen(s)">
+                  <div class="col-lg-4 col-md-6"><div class="form-group"><label>الاسم</label><input type="text" class="form-control" formControlName="name" /></div></div>
+                  <div class="col-lg-2 col-md-3"><div class="form-group"><label>شهر</label><input type="number" min="0" class="form-control" formControlName="ageMonth" /></div></div>
+                  <div class="col-lg-2 col-md-3"><div class="form-group"><label>سنة</label><input type="number" min="0" class="form-control" formControlName="ageYear" /></div></div>
+                  <div class="col-lg-4 col-md-6"><div class="form-group"><label>حمى/طفح</label>
+                    <select class="form-control" formControlName="feverRash"><option [ngValue]="null">--</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
+
+                  <div class="col-12">
+                    <label class="fwb d-block mb-1">الجرعات</label>
+                    <div class="d-flex flex-wrap gap-3 mb-2 pb-2 border-bottom">
+                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose0" /> صفر</label>
+                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose1" /> 1</label>
+                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose2" /> 2</label>
+                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose3" /> 3</label>
+                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose4" /> 4</label>
+                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose5" /> 5</label>
+                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="booster" /> منشطة</label>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-3 col-md-6"><div class="form-group"><label>التاريخ</label><input type="date" class="form-control" formControlName="date" /></div></div>
+                  <div class="col-lg-3 col-md-6"><div class="form-group"><label>الهاتف</label><input type="text" class="form-control" formControlName="phone" /></div></div>
+                  <div class="col-lg-3 col-md-6"><div class="form-group"><label>Long</label><input type="text" class="form-control" formControlName="long" /></div></div>
+                  <div class="col-lg-3 col-md-6"><div class="form-group"><label>Lat</label><input type="text" class="form-control" formControlName="lat" /></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="title fs-6 fwb mt-3 mb-2">نسب التغطية</div>
+            <div class="row mb-2">
+              <div class="col-lg-4"><div class="form-group"><label>الشهر</label><input type="text" class="form-control" formControlName="surveyMonth" /></div></div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>المستوى</th><th>ج3 مستهدف</th><th>ج3 متطعم</th><th>ج4 مستهدف</th><th>ج4 متطعم</th><th>منشطة مستهدف</th><th>منشطة متطعم</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td class="fwb">الوحدة</td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose3Target" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose3Vaccinated" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose4Target" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose4Vaccinated" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitBoosterTarget" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitBoosterVaccinated" /></td>
+                  </tr>
+                  <tr>
+                    <td class="fwb">الإدارة</td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose3Target" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose3Vaccinated" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose4Target" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose4Vaccinated" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminBoosterTarget" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminBoosterVaccinated" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-container>
+
+          <!-- ================= TAB 4: تجمع الحالات ================= -->
+          <ng-container *ngIf="activeTab === 'aggregation'">
+            <div class="d-flex justify-content-end gap-2 mb-2">
+              <button type="button" class="btn btn-add-record btn-sm" (click)="addAggregatedCase()"><i class="pi pi-plus"></i> إضافة حالة</button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="copyAggregatedCase()"><i class="pi pi-copy"></i> نسخ سطر</button>
+            </div>
+            <div class="mb-2" *ngIf="aggregatedCases.length > 0">
+              <div class="fwb mb-1">عرض السجلات</div>
+              <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle">
+                  <thead><tr><th>#</th><th>كود الحالة</th><th>الاسم</th><th>الوحدة</th><th>العمر</th></tr></thead>
+                  <tbody>
+                    <tr *ngFor="let a of aggregatedCases.controls; let i = index">
+                      <td>{{ i + 1 }}</td><td>{{ a.value.caseCode }}</td><td>{{ a.value.name }}</td><td>{{ a.value.unit }}</td><td>{{ a.value.age }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div formArrayName="aggregatedCases">
+              <div class="record-card" *ngFor="let a of aggregatedCases.controls; let i = index" [formGroupName]="i">
+                <div class="record-card-head">
+                  <span class="fwb">حالة #{{ i + 1 }}</span>
+                  <button type="button" class="btn btn-sm btn-danger" (click)="removeAggregatedCase(i)"><i class="pi pi-trash"></i> حذف</button>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3"><div class="form-group"><label>كود الحالة</label><input type="text" class="form-control" formControlName="caseCode" /></div></div>
+                  <div class="col-lg-4"><div class="form-group"><label>الاسم</label><input type="text" class="form-control" formControlName="name" /></div></div>
+                  <div class="col-lg-3"><div class="form-group"><label>الوحدة</label><input type="text" class="form-control" formControlName="unit" /></div></div>
+                  <div class="col-lg-2"><div class="form-group"><label>العمر</label><input type="number" min="0" class="form-control" formControlName="age" /></div></div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- ================= TAB 5: المتابعة ================= -->
+          <ng-container *ngIf="activeTab === 'followup'">
+            <div class="row">
+              <div class="col-lg-4"><div class="form-group"><label>تاريخ بداية الشلل</label><input type="date" class="form-control" formControlName="paralysisStartDate" /></div></div>
+              <div class="col-lg-4"><div class="form-group"><label>تاريخ المتابعة</label><input type="date" class="form-control" formControlName="followupDate" /></div></div>
+              <div class="col-lg-4"><div class="form-group"><label>نتيجة المعمل</label>
+                <select class="form-control" formControlName="labResult">
+                  <option [ngValue]="null">-- اختر --</option>
+                  <option *ngFor="let o of labResults" [ngValue]="o">{{ o }}</option>
+                </select></div></div>
+            </div>
+
+            <div class="form-group mt-2">
+              <label class="fwb d-block">حالة المريض</label>
+              <div class="d-flex gap-4">
+                <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="patientStatus" [value]="1" /> موجودة</label>
+                <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="patientStatus" [value]="2" /> غير موجودة</label>
+                <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="patientStatus" [value]="3" /> وفاة</label>
+              </div>
+            </div>
+
+            <div class="mt-2" *ngIf="form.value.patientStatus === 1">
+              <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="hasResidualParalysis" /> هل يوجد شلل رخو متبقي</label>
+              <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="hasMuscleAtrophy" /> هل يوجد ضمور بالعضلات</label>
+              <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="hasSensationInAffected" /> هل الاحساس موجود بالأعضاء المصابة</label>
+            </div>
+
+            <div class="row mt-2" *ngIf="form.value.patientStatus === 3">
+              <div class="col-lg-4"><div class="form-group"><label>تاريخ الوفاة</label><input type="date" class="form-control" formControlName="deathDate" /></div></div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12"><div class="form-group"><label>CT / MRI</label><textarea rows="2" class="form-control" formControlName="ctMri"></textarea></div></div>
+              <div class="col-12"><div class="form-group"><label>Myelograph (EMG)</label><textarea rows="2" class="form-control" formControlName="myelographEmg"></textarea></div></div>
+              <div class="col-12"><div class="form-group"><label>CSF</label><textarea rows="2" class="form-control" formControlName="csf"></textarea></div></div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+              <span class="title fs-6 fwb">لجنة المتابعة</span>
+              <button type="button" class="btn btn-add-record btn-sm" (click)="addCommittee()"><i class="pi pi-plus"></i> إضافة طبيب</button>
+            </div>
+            <div class="mb-2" *ngIf="followupCommittee.length > 0">
+              <div class="fwb mb-1">عرض السجلات</div>
+              <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle">
+                  <thead><tr><th>#</th><th>الاسم</th><th>الوظيفة</th><th>التاريخ</th></tr></thead>
+                  <tbody>
+                    <tr *ngFor="let c of followupCommittee.controls; let i = index">
+                      <td>{{ i + 1 }}</td><td>{{ c.value.name }}</td><td>{{ c.value.position }}</td><td>{{ c.value.date }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div formArrayName="followupCommittee">
+              <div class="record-card" *ngFor="let c of followupCommittee.controls; let i = index" [formGroupName]="i">
+                <div class="record-card-head">
+                  <span class="fwb">عضو #{{ i + 1 }}</span>
+                  <button type="button" class="btn btn-sm btn-danger" (click)="removeCommittee(i)"><i class="pi pi-trash"></i> حذف</button>
+                </div>
+                <div class="row">
+                  <div class="col-lg-5"><div class="form-group"><label>الاسم</label><input type="text" class="form-control" formControlName="name" /></div></div>
+                  <div class="col-lg-4"><div class="form-group"><label>الوظيفة</label><input type="text" class="form-control" formControlName="position" /></div></div>
+                  <div class="col-lg-3"><div class="form-group"><label>التاريخ</label><input type="date" class="form-control" formControlName="date" /></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-center gap-3 mt-3">
+              <button type="submit" class="btn btn-success px-4">اعتماد المتابعة</button>
+              <button type="button" class="btn btn-secondary px-4" onclick="window.print()">طباعة التقرير</button>
+            </div>
+          </ng-container>
+
+        </div>
+      </div>
+
+      <!-- ==================== FOOTER ==================== -->
+      <div class="text-center pt-4 pb-5">
+        <button type="submit" class="btn bg rounded-2 text-light px-4">حفظ البيانات</button>
+      </div>
+
     </div>
   </div>
 </form>

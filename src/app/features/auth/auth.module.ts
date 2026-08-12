@@ -19,15 +19,7 @@ import { ForgetPasswordComponent } from './forget-password/forget-password/forge
     ForgetPasswordComponent
   ],
   imports: [
-      // ngx-translate and the loader module
-      TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
-          deps: [HttpClient],
-        },
-        defaultLanguage: localStorage.getItem("ls.currentLang")!==undefined && localStorage.getItem("ls.currentLang")!=="undefined"?localStorage.getItem("ls.currentLang"):"ar",
-      }),
+      TranslateModule,
     CommonModule,
     AuthRoutingModule ,
     FormsModule,

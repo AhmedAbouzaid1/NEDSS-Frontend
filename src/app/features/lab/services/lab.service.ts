@@ -10,6 +10,8 @@ export class LabService {
   private controllerURL: string = environment.baseApiUrl + 'Patient/';
   private PatientLabCheckControllerURL: string =
     environment.baseApiUrl + 'PatientLabCheck/';
+  private MeningitisCheckControllerURL: string =
+    environment.baseApiUrl + 'MeningitisCheck/';
 
   constructor(private APIs: BaseAPIService) {}
 
@@ -35,11 +37,23 @@ export class LabService {
       patientFilter
     );
   }
+  getPatientsCount(patientFilter: any) {
+    return this.APIs.create(this.controllerURL + 'GetLabPatientsPage', {
+      ...patientFilter,
+      countOnly: true,
+    });
+  }
   getPatientsFromLab(patientFilter: any) {
     return this.APIs.create(
       this.controllerURL + 'GetPatientsAddedFromLab',
       patientFilter
     );
+  }
+  getPatientsFromLabCount(patientFilter: any) {
+    return this.APIs.create(this.controllerURL + 'GetPatientsAddedFromLab', {
+      ...patientFilter,
+      countOnly: true,
+    });
   }
   getBy(id: number) {
     return this.APIs.get(this.controllerURL + 'GetPatientForLabById?id=' + id);
@@ -75,6 +89,26 @@ export class LabService {
     return this.APIs.post(
       this.PatientLabCheckControllerURL + 'Add',
       PatientLabCheck
+    );
+  }
+  ///#endregion
+
+  ///#region MeningitisCheck
+  addMeningitisCheck(meningitisCheck: any) {
+    return this.APIs.post(
+      this.MeningitisCheckControllerURL + 'Add',
+      meningitisCheck
+    );
+  }
+  updateMeningitisCheck(meningitisCheck: any) {
+    return this.APIs.update(
+      this.MeningitisCheckControllerURL + 'Update',
+      meningitisCheck
+    );
+  }
+  getMeningitisCheckByPatientId(id: any) {
+    return this.APIs.get(
+      this.MeningitisCheckControllerURL + 'GetByPatientId?id=' + id
     );
   }
   ///#endregion

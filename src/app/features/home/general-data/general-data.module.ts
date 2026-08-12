@@ -22,6 +22,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { StringConverterPipe } from 'src/app/core/Pipes/string-converter.pipe';
 import { SentinelComponent } from './sentinel/sentinel.component';
+import { NotInferringModalComponent } from './not-inferring-modal/not-inferring-modal.component';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -43,6 +44,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     StringConverterPipe,
     DiagonisticsComponent,
     SentinelComponent,
+    NotInferringModalComponent,
   ],
   imports: [
     CommonModule,

@@ -77,10 +77,14 @@ export class InvestigationComponent implements OnInit {
     searchText: '',
   };
   noData: boolean = true;
+  loadError: boolean = false;
   loadingPanel: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
+  hasNextPage: boolean = false;
+  totalCount: number | null = null;
+  countLoading: boolean = false;
   levelId: any;
 
   constructor(
@@ -233,7 +237,7 @@ export class InvestigationComponent implements OnInit {
     this.findPatient(this.investigationForm.value);
   }
 
-  findPatient(formObj?: any) {
+  findPatient(formObj?: any, skipCount?: boolean) {
     if (formObj) {
       if (
         this.investigationForm.value.patientDiseases != null &&
@@ -377,35 +381,63 @@ export class InvestigationComponent implements OnInit {
       }
     }, 500);
 
-    this.generalDataService.getAll(formObj).subscribe((res: any) => {
-      if (res != null) {
-        this.dataSource = res.data;
-        // ?.filter((p: any) =>
-        //   this.lookupsService.incidentsForOrg.includes(p.incidentSourceId)
-        // );
-        if (this.dataSource != undefined && this.dataSource.length == 0) {
-          setTimeout(() => {
-            this.delay = false;
-            clearTimeout(this.timer);
-          }, 0);
+    this.loadError = false;
+    this.generalDataService.getAll(formObj).subscribe(
+      (res: any) => {
+        this.delay = false;
+        clearTimeout(this.timer);
+        this.loadError = false;
+        this.dataSource = res?.data ?? [];
+        if (this.dataSource.length == 0) {
           this.noData = true;
           this.pages = 0;
           this.translateService
             .get('NOUR.NO_RESULTS')
             .subscribe((msg) => this.userMsg.warn(msg));
         } else {
-          setTimeout(() => {
-            this.delay = false;
-            clearTimeout(this.timer);
-          }, 0);
           this.noData = false;
-          this.pages = res.data[0].totalCount;
+          this.hasNextPage =
+            res.data[0].hasNextPage === true &&
+            res.data.length >= this.notInferringFilter.pageSize;
           this.last =
             this.notInferringFilter.pageIndex *
             this.notInferringFilter.pageSize;
+          if (!skipCount) this.fetchCount(formObj);
         }
+      },
+      () => {
+        this.delay = false;
+        clearTimeout(this.timer);
+        this.noData = false;
+        this.loadError = true;
+        this.dataSource = [];
+        this.pages = 0;
+        this.totalCount = null;
+        this.translateService
+          .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
+          .subscribe((msg) => this.userMsg.error(msg));
       }
-    });
+    );
+  }
+
+  private fetchCount(filter: any) {
+    const skip = ['pageSize', 'pageIndex', 'sortColumn', 'sortOrder', 'searchText', 'filterType', 'InvestigationStatus', 'isInvistegationDone'];
+    const hasFilter = Object.keys(filter).some(k => !skip.includes(k) && filter[k] != null && filter[k] !== '' && filter[k] !== false);
+    if (!hasFilter) {
+      this.totalCount = null;
+      return;
+    }
+    this.countLoading = true;
+    this.totalCount = null;
+    this.generalDataService.getPageCount({ ...filter }).subscribe(
+      (res: any) => {
+        this.countLoading = false;
+        if (res?.data?.length > 0) {
+          this.totalCount = res.data[0].totalCount;
+        }
+      },
+      () => { this.countLoading = false; }
+    );
   }
   onGovernmentChanged() {
     if (this.selectedGovernment > 0) {
@@ -601,7 +633,7 @@ export class InvestigationComponent implements OnInit {
       this.notInferringFilter.sortOrder = SortOrder.desc;
       if (typeof event.field === 'string')
         this.notInferringFilter.sortColumn = event.field;
-      this.findPatient();
+      this.findPatient(undefined, true);
     } else if (
       event.order == 1 &&
       this.notInferringFilter.sortOrder != SortOrder.asc
@@ -609,7 +641,7 @@ export class InvestigationComponent implements OnInit {
       this.notInferringFilter.sortOrder = SortOrder.asc;
       if (typeof event.field === 'string')
         this.notInferringFilter.sortColumn = event.field;
-      this.findPatient();
+      this.findPatient(undefined, true);
     }
   }
 
@@ -701,11 +733,26 @@ export class InvestigationComponent implements OnInit {
     );
   }
 
-  paginate(event: any) {
-    this.first = event.first;
-    this.last = event.last;
-    this.notInferringFilter.pageIndex = event.page;
-    this.notInferringFilter.pageSize = event.rows;
+  previousPage() {
+    if (this.notInferringFilter.pageIndex > 0) {
+      this.notInferringFilter.pageIndex--;
+      this.first = this.notInferringFilter.pageIndex * this.notInferringFilter.pageSize;
+      this.findPatient(undefined, true);
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.notInferringFilter.pageIndex++;
+      this.first = this.notInferringFilter.pageIndex * this.notInferringFilter.pageSize;
+      this.findPatient(undefined, true);
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.notInferringFilter.pageSize = newSize;
+    this.notInferringFilter.pageIndex = 0;
+    this.first = 0;
     this.findPatient();
   }
 

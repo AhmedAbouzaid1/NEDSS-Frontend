@@ -18,6 +18,7 @@ export class HemorrhagicFeversComponent implements OnInit {
   hemorrhagicForm: FormGroup;
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
+  patientName: string = '';
   constructor(private investigationService: InvestigationService, private datePipe: DatePipe,
     private translateService: TranslateService,
     private userMsg: UserMessageService) { }
@@ -146,6 +147,10 @@ export class HemorrhagicFeversComponent implements OnInit {
       investigationCompletePercentage:new FormControl()
     })
     this.currentId = this.investigationService.currentid
+    this.patientName =
+      (this.investigationService.patient?.firstName || '') + ' ' +
+      (this.investigationService.patient?.secondName || '') + ' ' +
+      (this.investigationService.patient?.thirdName || '');
     this.hemorrhagicForm.controls['patientID'].setValue(this.currentId)
     this.investigationService.getByIdHemorrhagicFever(this.currentId).subscribe(
       res => {

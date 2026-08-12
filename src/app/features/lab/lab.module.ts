@@ -9,10 +9,12 @@ import {
 import { LabViewComponent } from './components/lab-view/lab-view.component';
 import { AddLabPatientComponent } from './components/add-lab-patient/add-lab-patient.component';
 import { AddLabTestComponent } from './components/add-lab-test/add-lab-test.component';
+import { MeningitisChecksFormComponent } from './components/add-lab-test/meningitis-checks-form/meningitis-checks-form.component';
 import { PatientChecksComponent } from './components/patient-checks/patient-checks.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from 'primeng/api';
+import { SharedModule as CoreSharedModule } from 'src/app/core/shared/shared.module';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { LabRoutes } from './lab.routing';
@@ -30,6 +32,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DialogModule } from 'primeng/dialog';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 export const DATE_FORMATS = {
   parse: {
@@ -48,6 +51,7 @@ export const DATE_FORMATS = {
     LabViewComponent,
     AddLabPatientComponent,
     AddLabTestComponent,
+    MeningitisChecksFormComponent,
     PatientChecksComponent,
     SideBarComponent,
   ],
@@ -56,17 +60,20 @@ export const DATE_FORMATS = {
     CommonModule,
     LabRoutes,
     SharedModule,
+    CoreSharedModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
     TableModule,
     FormsModule,
+    ReactiveFormsModule,
     PaginatorModule,
     HomeModule,
     CalendarModule,
     InputTextModule,
     DialogModule,
     NgMultiSelectDropDownModule.forRoot(),
+    MultiSelectModule,
     // ngx-translate and the loader module
     TranslateModule.forRoot({
       loader: {

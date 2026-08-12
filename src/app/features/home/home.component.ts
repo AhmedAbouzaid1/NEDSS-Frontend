@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from '../../core/services/notificationService.service';
 import { Router } from '@angular/router';
@@ -26,11 +26,14 @@ export class HomeComponent implements OnInit {
     private uiLoadingService: UiLoadingService,
     private notificationService: NotificationService,
     private connectionService: ConnectionService,
-    private activeUSerService: ActiveUserService
+    private activeUSerService: ActiveUserService,
+    private ngZone: NgZone
   ) {
-    this.connectionService.monitor().subscribe((currentState: any) => {
-      this.hasNetworkConnection = currentState.hasNetworkConnection;
-      this.hasInternetAccess = currentState.hasInternetAccess;
+    this.ngZone.runOutsideAngular(() => {
+      this.connectionService.monitor().subscribe((currentState: any) => {
+        this.hasNetworkConnection = currentState.hasNetworkConnection;
+        this.hasInternetAccess = currentState.hasInternetAccess;
+      });
     });
     this.lang =
       localStorage.getItem('ls.currentLang') !== undefined &&
@@ -40,23 +43,19 @@ export class HomeComponent implements OnInit {
     this.translate.setDefaultLang(this.lang);
     translate.use(this.lang);
 
-    let userData = JSON.parse(
-      localStorage.getItem('ls.authorizationData')
-    ).userName;
-    if (userData == null) {
+    const authData = JSON.parse(localStorage.getItem('ls.authorizationData'));
+    if (!authData?.userName) {
       this.router.navigateByUrl('');
+      return;
     }
     this.activeUSerService.setAccessibleParts();
   }
   public isOnline() {
-    return this.hasNetworkConnection && this.hasInternetAccess;
+    return this.hasNetworkConnection;
   }
   ngOnInit() {
     this.uiLoadingService.isLoading = true;
-    let incidentInfoLink = document.getElementById(
-      'incidentInfo'
-    ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    document.getElementById('incidentInfo')?.classList.remove('active');
 
     //REMOVE THIS IF INCIDENTS FOR ORGANIZATION HANDLED IN THE BACKEND LATER ON
     // this.lookupsService

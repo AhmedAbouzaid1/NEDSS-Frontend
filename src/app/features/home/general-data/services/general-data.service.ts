@@ -70,6 +70,7 @@ export class GeneralDataService {
       ['clinicalSymptomIds', 'ClinicalSymptomIds'],
       ['patientDiseases', 'PatientDiseases'],
       ['finalDiagonisticsData', 'FinalDiagonisticsData'],
+      ['finalDiagonistics', 'FinalDiagonistics'],
       ['feverSymptoms', 'FeverSymptoms'],
       ['chronicDiseasesIds', 'ChronicDiseasesIds'],
       ['finalResultId', 'FinalResultId'],
@@ -230,6 +231,13 @@ export class GeneralDataService {
       return data;
     }
   }
+  getPageCount(patientFilter: any) {
+    return this.APIs.create(this.controllerURL + 'GetPage', {
+      ...patientFilter,
+      countOnly: true,
+    });
+  }
+
   getAll(patientFilter: any) {
     if (navigator.onLine) {
       return this.APIs.create(this.controllerURL + 'GetPage', patientFilter);
@@ -339,8 +347,8 @@ export class GeneralDataService {
     if (navigator.onLine) {
       return this.APIs.get(
         this.controllerURL +
-          'GetAllByNationalId?id=' +
-          encodeURIComponent(String(id))
+        'GetAllByNationalId?id=' +
+        encodeURIComponent(String(id))
       );
     } else {
       const data = new Observable((observer) => {
@@ -359,8 +367,8 @@ export class GeneralDataService {
     if (navigator.onLine) {
       return this.APIs.get(
         this.controllerURL +
-          'GetAllByPassportNo?id=' +
-          encodeURIComponent(String(id))
+        'GetAllByPassportNo?id=' +
+        encodeURIComponent(String(id))
       );
     } else {
       const data = new Observable((observer) => {
@@ -559,7 +567,7 @@ export class GeneralDataService {
     this.isPassportIdValid = this.checkPassportIdValid(
       patient.nationalityId,
       patient.passportNo,
-      patient.incidentDepartmentId == DepartmentEnum.Internal
+      patient.incidentDepartmentId == DepartmentEnum.Internal || patient.incidentDepartmentId == DepartmentEnum.ICU
     );
 
     var validationResults = [
@@ -610,7 +618,7 @@ export class GeneralDataService {
     if (nationalityId == NationalityEnum.Egyptian) {
       return this.validateNationalID(
         nationalId,
-        incidentDepartmentId == DepartmentEnum.Internal
+        incidentDepartmentId == DepartmentEnum.Internal || incidentDepartmentId == DepartmentEnum.ICU
       );
     }
     return true;
@@ -761,7 +769,7 @@ export class GeneralDataService {
     }
 
     if (address != undefined) {
-      var pattern = '^(?![0-9]+$).{3,100}$';
+      var pattern = '^(?![0-9]+$).{5,100}$';
       var reg = new RegExp(pattern);
       var isValid = reg.test(address);
       if (!isValid) {
@@ -815,7 +823,7 @@ export class GeneralDataService {
       this.isFeverMaxTemperatureValid =
         this.validateFeverMaxTemperature(
           patient.feverSymptoms.feverMaxTemp
-        ) || !patient.feverSymptoms.feverDuration;
+        );
       this.isChronicDiseaseValid = this.validateChronicDisease(
         patient.chronicDiseasesIds,
         patient.anotherChronicDisease,
@@ -1336,6 +1344,14 @@ export class GeneralDataService {
     return failed ? failed[1] : null;
   }
 
+  getClinicalSymptomsInvalidFieldLabel(patient: any): string | null {
+    const items: Array<[boolean, string]> = [
+      [this.isFeverMaxTemperatureValid, 'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_MAX_TEMP'],
+    ];
+    const failed = items.find(([valid]) => !valid);
+    return failed ? failed[1] : null;
+  }
+
   getDiagnosticsInvalidFieldLabel(patient: any): string | null {
     const items: Array<[boolean, string]> = [
       [this.isPatientDiseasesValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES'],
@@ -1360,6 +1376,10 @@ export class GeneralDataService {
     this.validateResidenceInfo(patient);
     const residence = this.getResidenceInfoInvalidFieldLabel(patient);
     if (residence) return residence;
+
+    this.validateClinicalSymptoms(patient);
+    const clinical = this.getClinicalSymptomsInvalidFieldLabel(patient);
+    if (clinical) return clinical;
 
     this.validateDiagnostics(patient);
     const diagnostics = this.getDiagnosticsInvalidFieldLabel(patient);

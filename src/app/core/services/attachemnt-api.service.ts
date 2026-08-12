@@ -16,7 +16,7 @@ export class AttachemntApiService {
 
 
   upload(data): Observable<any> {
-    this.partialLoadingService.showloader()
+    const loaderGeneration = this.partialLoadingService.showloader()
     try {
       let headers = new HttpHeaders();
       if (
@@ -35,9 +35,9 @@ export class AttachemntApiService {
       }
       return this.http
         .post(`${this.AttachmentControllerURL}Uploud`, data, { headers })
-        .pipe(finalize(() => this.partialLoadingService.hideLoader()))
+        .pipe(finalize(() => this.partialLoadingService.hideLoader(loaderGeneration)))
     } catch (error) {
-      this.partialLoadingService.hideLoader();
+      this.partialLoadingService.hideLoader(loaderGeneration);
       return null
     }
   }

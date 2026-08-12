@@ -76,7 +76,7 @@ export class ChartsDashboardComponent {
   updateFlag: boolean = true;
   governments: any;
   selectedGovernment: any[] = [];
-  loadingPanel: boolean;
+  loadingPanel: boolean = true;
   diseases: any;
   diseasesGroups: any;
   jobs: any;
@@ -421,6 +421,10 @@ export class ChartsDashboardComponent {
   };
   cardsPeriodFromDate: string = '';
   cardsPeriodToDate: string = '';
+
+  isValueLoading(value: unknown): boolean {
+    return value === undefined || value === null;
+  }
 
   ngOnInit(): void {
     //New By Hatem
@@ -3276,7 +3280,7 @@ export class ChartsDashboardComponent {
                     totalCount = result.data[0].totalCount;
                   }
                   this.generalDataService
-                    .getAll({
+                    .getPageCount({
                       pageSize: 10,
                       pageIndex: 0,
                       sortColumn: '',

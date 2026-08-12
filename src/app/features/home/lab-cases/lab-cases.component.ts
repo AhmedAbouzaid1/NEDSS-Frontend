@@ -85,9 +85,13 @@ export class LabCasesComponent {
 
   patientsForLab: [];
   noData: boolean = true;
+  loadError: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
+  hasNextPage: boolean = false;
+  totalCount: number | null = null;
+  countLoading: boolean = false;
 
   constructor(
     private translateService: TranslateService,
@@ -194,7 +198,7 @@ export class LabCasesComponent {
     }
   }
 
-  getPatients() {
+  getPatients(skipCount?: boolean) {
     this.patientsFilter.mandatoryDataCompleted =
       this.patientsFilter.mandatoryDataCompleted === 'true'
         ? true
@@ -202,10 +206,12 @@ export class LabCasesComponent {
         ? false
         : null;
     this.Delay();
+    this.loadError = false;
     this.labService.getPatientsFromLab(this.patientsFilter).subscribe(
       (result: any) => {
+        this.loadError = false;
         if (result != null && result != undefined) {
-          this.patientsForLab = result.data;
+          this.patientsForLab = result?.data ?? [];
           // ?.filter((p: any) =>
           //   this.lookupsService.incidentsForOrg.includes(p.homeHealthOfficeId)
           // );
@@ -216,25 +222,76 @@ export class LabCasesComponent {
             this.RemoveDelay();
             this.noData = true;
             this.pages = 0;
+            this.hasNextPage = false;
             this.translateService
               .get('NOUR.NO_RESULTS')
               .subscribe((msg) => this.userMsg.warn(msg));
           } else {
             this.RemoveDelay();
             this.noData = false;
-            this.pages = result.data[0].totalCount;
+            this.hasNextPage =
+              result.data[0].hasNextPage === true &&
+              result.data.length >= this.patientsFilter.pageSize;
             this.last =
               this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
+            if (!skipCount) this.fetchCount(this.patientsFilter);
           }
         }
       },
       (error) => {
+        this.RemoveDelay();
+        this.loadError = true;
+        this.noData = false;
+        this.patientsForLab = [];
+        this.pages = 0;
+        this.hasNextPage = false;
         this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
+          .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
+          .subscribe((res: string) => this.userMsg.error(res));
       }
+    );
+  }
+
+  previousPage() {
+    if (this.patientsFilter.pageIndex > 0) {
+      this.patientsFilter.pageIndex--;
+      this.first = this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
+      this.getPatients(true);
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.patientsFilter.pageIndex++;
+      this.first = this.patientsFilter.pageIndex * this.patientsFilter.pageSize;
+      this.getPatients(true);
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.patientsFilter.pageSize = newSize;
+    this.patientsFilter.pageIndex = 0;
+    this.first = 0;
+    this.getPatients();
+  }
+
+  private fetchCount(filter: any) {
+    const skip = ['pageSize', 'pageIndex', 'sortColumn', 'sortOrder', 'searchText', 'filterType', 'insertedByLab'];
+    const hasFilter = Object.keys(filter).some(k => !skip.includes(k) && filter[k] != null && filter[k] !== '' && filter[k] !== false);
+    if (!hasFilter) {
+      this.totalCount = null;
+      return;
+    }
+    this.countLoading = true;
+    this.totalCount = null;
+    this.labService.getPatientsFromLabCount({ ...filter }).subscribe(
+      (res: any) => {
+        this.countLoading = false;
+        if (res?.data?.length > 0) {
+          this.totalCount = res.data[0].totalCount;
+        }
+      },
+      () => { this.countLoading = false; }
     );
   }
 
@@ -386,15 +443,6 @@ export class LabCasesComponent {
             });
         }
       );
-  }
-
-  paginate(event: any) {
-    this.first = event.first;
-    this.last = event.last;
-    //add one as primeng pagination is zero based ,so we convert it to one based to fit with the API
-    this.patientsFilter.pageIndex = event.page;
-    this.patientsFilter.pageSize = event.rows;
-    this.getPatients();
   }
 
   GetById(id: number) {

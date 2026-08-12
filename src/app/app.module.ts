@@ -1,6 +1,7 @@
 import { LabModule } from './features/lab/lab.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './features/auth/auth.module';
@@ -47,6 +48,12 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { NetworkFailureComponent } from './features/errors/network-failure/network-failure.component';
 import { SharedModule } from './core/shared/shared.module';
+import {
+  ConnectionServiceOptions,
+  ConnectionServiceOptionsToken,
+} from 'angular-connection-service';
+import { RouteReuseStrategy } from '@angular/router';
+import { AppRouteReuseStrategy } from './core/strategies/app-route-reuse.strategy';
 
 export const DATE_FORMATS = {
   parse: {
@@ -83,7 +90,14 @@ export const DATE_FORMATS = {
     CommonModule,
     NgSelectModule,
     NgIdleKeepaliveModule.forRoot(),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+      countDuplicates: true,
+      resetTimeoutOnDuplicate: true,
+      includeTitleDuplicates: true,
+      maxOpened: 4,
+      autoDismiss: true,
+    }),
     NgMultiSelectDropDownModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
@@ -93,12 +107,6 @@ export const DATE_FORMATS = {
         },
         deps: [HttpClient],
       },
-    }),
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: true,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
@@ -115,8 +123,27 @@ export const DATE_FORMATS = {
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     {
+      provide: ConnectionServiceOptionsToken,
+      useValue: {
+        enableHeartbeat: false,
+        heartbeatUrl: '',
+        heartbeatInterval: 30000,
+        heartbeatRetryInterval: 1000,
+        requestMethod: 'head',
+      } as ConnectionServiceOptions,
+    },
+    {
       provide: MAT_DATE_FORMATS,
       useValue: DATE_FORMATS,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true,
+    },
+    {
+      provide: RouteReuseStrategy,
+      useClass: AppRouteReuseStrategy,
     },
   ],
   bootstrap: [AppComponent],

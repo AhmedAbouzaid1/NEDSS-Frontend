@@ -26,6 +26,7 @@ import { AnnouncementsComponent } from './announcements/announcements.component'
 import { AddPopulationDataComponent } from './population-data/add-population-data/add-population-data.component';
 import { AuthGuard } from 'src/app/core/guards/auth.guard.service';
 import { NavigationGuard } from 'src/app/core/guards/navigation.guard.service';
+import { InvestigationPatientGuard } from 'src/app/core/guards/investigation-patient.guard.service';
 import { SearchComponent } from './search/search.component';
 import { InvestigationDetailesComponent } from './investigation/investigation-detailes/investigation-detailes.component';
 import { CompleteInvestigationComponent } from './investigation/complete-investigation/complete-investigation.component';
@@ -115,7 +116,7 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
-    canActivate: [],
+    canActivate: [AuthGuard],
     data: { types: [3] },
     children: [
       {
@@ -472,6 +473,7 @@ const routes: Routes = [
           {
             path: 'compelete-investigation',
             component: CompleteInvestigationComponent,
+            canActivate: [InvestigationPatientGuard],
             children: [
               { path: 'h5n1', component: H5n1Component },
               { path: 'brucella', component: BrucellaComponent },

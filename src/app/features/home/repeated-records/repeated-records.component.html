@@ -442,7 +442,14 @@
   </div>
 </form>
 
-<div class="mt-4 shadow border rounded" *ngIf="!noData">
+<div class="row" *ngIf="loadError">
+  <div class="no-data content-center">
+    <span class="text-danger">{{ "NEDSS.COMMON.COULD_NOT_LOAD_RESULTS" | translate }}</span>
+    <button type="button" class="btn btn-outline-primary btn-sm mt-2" (click)="getRepeatedData()">{{ "NEDSS.COMMON.TRY_AGAIN" | translate }}</button>
+  </div>
+</div>
+
+<div class="mt-4 shadow border rounded" *ngIf="!noData" [appScrollIntoViewOnResults]="repeatedData">
   <div class="d-block d-md-flex flex-wrap gap-2 justify-content-between">
     <div class="fwb p-4 pb-0">
       {{ "NEDSS.REPEATED_RECORDS.CASES_COUNT" | translate }} ({{
