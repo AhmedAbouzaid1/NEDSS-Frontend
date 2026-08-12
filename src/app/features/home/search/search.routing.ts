@@ -14,8 +14,8 @@ import { NavigationGuard } from 'src/app/core/guards/navigation.guard.service';
 
 const routes: Routes = [
 
-    { path: 'fast-search', component: FastSearchComponent } ,
-    { path: 'advanced-search', component: AdvancedSearchComponent,children:[
+    { path: 'fast-search', component: FastSearchComponent, data: { reuseComponent: true } } ,
+    { path: 'advanced-search', component: AdvancedSearchComponent, data: { reuseComponent: true }, children:[
       { path: '', component: generalreportFormComponent } ,
       { path: 'general-report', component: generalreportFormComponent } ,
        { path: 'place-residence', component: PlaceOfResidenceComponent } ,

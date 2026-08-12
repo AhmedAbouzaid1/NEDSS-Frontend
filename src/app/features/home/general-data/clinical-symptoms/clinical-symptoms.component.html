@@ -145,7 +145,8 @@
         </div>
         <div class="has-labels">
           <label for="">
-            <input [(ngModel)]="patient.haveChronicDisease" name="ChronicDiseases" type="radio" [value]="true" />
+            <input [(ngModel)]="patient.haveChronicDisease" name="ChronicDiseases" type="radio" [value]="true"
+              (change)="scrollToChronicSection()" />
             {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.YES" | translate }}
           </label>
           <label for="">
@@ -155,17 +156,17 @@
         </div>
       </div>
 
-      <div class="col-12 mt-3" *ngIf="patient.haveChronicDisease === true">
+      <div class="col-12 mt-3" *ngIf="patient.haveChronicDisease === true" #chronicSection>
         <div class="fwb spaceLable color-d-3">
           {{
           "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.ChronicDiseases"
           | translate
           }}
         </div>
-        <div class="has-labels">
-          <label *ngFor="let dieases of chronicDiseases; let i = index" class="text-muted">
+        <div class="chronic-grid">
+          <label *ngFor="let dieases of chronicDiseases; let i = index" class="chronic-item text-muted">
             <input class="form-check-input" type="checkbox" [(ngModel)]="selectedChronicDiseases[dieases.id]"
-              [value]="dieases.id" (change)="itemsCheck(dieases.id)" (blur)="
+              [name]="'chronic_' + dieases.id" (change)="itemsCheck(dieases.id)" (blur)="
               generalDataService.isChronicDiseaseValid =
                 generalDataService.validateChronicDisease(
                   patient.chronicDiseasesIds,
@@ -173,7 +174,7 @@
                   patient.haveChronicDisease
                 )
             " />
-            {{ dieases.name }}
+            <span>{{ dieases.name }}</span>
           </label>
         </div>
       </div>
