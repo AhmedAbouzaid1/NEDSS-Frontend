@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PatientModel, FeverSymptoms } from '../models/patient-model';
 import { DepartmentEnum } from '../models/department-enum';
 import { SharedDataService } from '../services/shared-data.service';
@@ -16,6 +16,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./clinical-symptoms.component.css'],
 })
 export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
+  @ViewChild('chronicSection') chronicSection?: ElementRef<HTMLElement>;
   patient: PatientModel = new PatientModel();
   currentLang: string;
   isfeverDurationTypeChanged: boolean;
@@ -326,6 +327,15 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
             });
         },
       );
+  }
+
+  scrollToChronicSection() {
+    setTimeout(() => {
+      this.chronicSection?.nativeElement?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    });
   }
 
   itemsCheck(diseaseId) {

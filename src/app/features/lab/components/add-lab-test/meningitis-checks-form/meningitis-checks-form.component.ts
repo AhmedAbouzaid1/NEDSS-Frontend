@@ -73,6 +73,8 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     'gmNegativeCocobacilli',
     'gmNegativeDiplococci',
     'noOrganism',
+    'gmPositiveBuddingYeast',
+    'fungalHyphae',
     'other',
   ];
 
@@ -89,6 +91,8 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     'klebsiella',
     'others',
     'cryptococcus',
+    'gmPositiveBuddingYeast',
+    'fungalHyphae',
     'mrsa',
     'acinetobacter',
     'cons',
@@ -439,11 +443,13 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     const gramOther = (v.gramStainOtherText || '').toString().toLowerCase();
 
     const isGrowth = (r: any) => !!r && r !== 'noGrowth';
-    const bactPos = (r: any) => isGrowth(r) && r !== 'cryptococcus';
+    const fungalResult = (r: any) => r === 'gmPositiveBuddingYeast' || r === 'fungalHyphae';
+    const bactPos = (r: any) => isGrowth(r) && r !== 'cryptococcus' && !fungalResult(r);
 
     // 1. Fungal meningitis
     if ((done(v.indiaInkDone) && pos(v.indiaInkResult)) ||
       csf === 'cryptococcus' || blood === 'cryptococcus' ||
+      fungalResult(gram) || fungalResult(csf) || fungalResult(blood) ||
       (gram === 'other' && (gramOther.includes('yeast') || gramOther.includes('خميرة') ||
         gramOther.includes('hyphae') || gramOther.includes('فطر')))) {
       return 'fungalMeningitis';
@@ -480,13 +486,15 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     const chemBacterial = glucose !== null && protein !== null && glucose < 40 && protein > 100;
     if (chemBacterial || gramPus) return 'probableUnclassifiedBacterialMeningitis';
 
-    // 9. Probable viral encephalitis (chemistry pattern or MRI encephalitis)
+    // 9. Probable viral encephalitis (chemistry pattern, or CT/MRI encephalitis)
     const cell = num(v.cellCount);
+    const lymph = num(v.lymphPercent);
     const chemViral = protein !== null && glucose !== null &&
-      protein >= 50 && protein <= 100 && glucose >= 45 && glucose <= 100 &&
-      cell !== null && cell < 100;
+      protein <= 100 && glucose >= 45 && glucose <= 100 &&
+      ((cell !== null && cell < 100) || (lymph !== null && lymph > 50));
+    const ctEncephalitis = done(v.ctDone) && v.ctResult === 'probableEncephalitis';
     const mriEncephalitis = done(v.mriDone) && v.mriResult === 'probableEncephalitis';
-    if (chemViral || mriEncephalitis) return 'probableViralEncephalitis';
+    if (chemViral || ctEncephalitis || mriEncephalitis) return 'probableViralEncephalitis';
 
     // No rule matched.
     return null;

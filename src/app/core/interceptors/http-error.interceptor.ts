@@ -6,10 +6,10 @@ import {
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, throwError, TimeoutError } from 'rxjs';
-import { catchError, finalize, timeout } from 'rxjs/operators';
+import { catchError, filter, finalize, timeout } from 'rxjs/operators';
 import { SessionService } from '../services/session.service';
 import { UserMessageService } from '../services/user.message.service';
 import { PartialLoadingService } from '../components/partial-loading/partial-loading.service';
@@ -27,7 +27,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private translate: TranslateService,
     private userMessage: UserMessageService,
     private loading: PartialLoadingService
-  ) {}
+  ) {
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationStart))
+      .subscribe(() => this.loading.reset());
+  }
 
   intercept(
     req: HttpRequest<any>,
@@ -46,8 +50,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
     const drivesLoader = !this.isBackgroundRequest(req);
 
+    let loaderGeneration = -1;
     if (drivesLoader) {
-      this.loading.showloader();
+      loaderGeneration = this.loading.showloader();
     }
 
     let stream$ = next.handle(req);
@@ -64,7 +69,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       }),
       finalize(() => {
         if (drivesLoader) {
-          this.loading.hideLoader();
+          this.loading.hideLoader(loaderGeneration);
         }
       })
     );

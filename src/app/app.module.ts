@@ -52,6 +52,8 @@ import {
   ConnectionServiceOptions,
   ConnectionServiceOptionsToken,
 } from 'angular-connection-service';
+import { RouteReuseStrategy } from '@angular/router';
+import { AppRouteReuseStrategy } from './core/strategies/app-route-reuse.strategy';
 
 export const DATE_FORMATS = {
   parse: {
@@ -138,6 +140,10 @@ export const DATE_FORMATS = {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
       multi: true,
+    },
+    {
+      provide: RouteReuseStrategy,
+      useClass: AppRouteReuseStrategy,
     },
   ],
   bootstrap: [AppComponent],

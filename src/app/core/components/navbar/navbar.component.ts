@@ -35,6 +35,7 @@ export class NavbarComponent implements OnInit {
   notstr: string = '';
   readonly defaultUserImage = 'assets/default-user.webp';
   userImage: string = this.defaultUserImage;
+  hasProfileImage = false;
 
   constructor(
     private notificationService: NotificationService,
@@ -54,6 +55,7 @@ export class NavbarComponent implements OnInit {
     let img = JSON.parse(localStorage.getItem('ls.authorizationData')).user
       .profilePic;
     this.userImage = this.getProfileImageOrDefault(img);
+    this.hasProfileImage = this.hasValidProfileImage(img);
     this.incidentSourceName = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     ).user.incidentSourceName;
@@ -68,14 +70,23 @@ export class NavbarComponent implements OnInit {
   }
 
   getProfileImageOrDefault(profilePic: unknown): string {
-    return typeof profilePic === 'string' && profilePic.trim()
+    return this.hasValidProfileImage(profilePic)
       ? profilePic
       : this.defaultUserImage;
   }
 
+  hasValidProfileImage(profilePic: unknown): profilePic is string {
+    return typeof profilePic === 'string' && profilePic.trim().length > 0;
+  }
+
+  get avatarInitials(): string {
+    const name = `${this.username || ''}`.trim();
+    return name ? name.slice(0, 2).toUpperCase() : 'NA';
+  }
+
   useDefaultAvatar(event: Event) {
+    this.hasProfileImage = false;
     const image = event.target as HTMLImageElement;
-    if (image.src.includes(this.defaultUserImage)) return;
     image.src = this.defaultUserImage;
   }
 
