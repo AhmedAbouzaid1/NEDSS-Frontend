@@ -65,7 +65,7 @@ export class AuthComponent {
         : null;
 
     if (userData != null) {
-      this.router.navigateByUrl(this.getReturnUrl() || 'home/chart');
+      this.router.navigateByUrl(this.getReturnUrl() || 'home/welcome');
     }
     // window.location.reload()
   }
@@ -198,7 +198,7 @@ export class AuthComponent {
                   );
                   localStorage.setItem('username', form.value.username);
                   localStorage.setItem('password', form.value.password);
-                  const target = this.getReturnUrl() || '/home/chart';
+                  const target = this.getReturnUrl() || '/home/welcome';
                   this.router
                     .navigateByUrl(target)
                     .then(() => window.location.reload());

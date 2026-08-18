@@ -282,10 +282,6 @@ export class BaseAPIService {
   }
 
   private checkUserIsOnline() {
-    if (!navigator.onLine) {
-      this.router.navigateByUrl('network-error');
-      return false;
-    }
     return true;
   }
 

@@ -12,6 +12,9 @@ import { LabCasesComponent } from './lab-cases/lab-cases.component';
 import { RepeatedRecordsComponent } from './repeated-records/repeated-records.component';
 
 import { ChartsDashboardComponent } from './charts-dashboard/charts-dashboard.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { ChartsDisabledComponent } from './charts-disabled/charts-disabled.component';
+import { ChartsTabGuard } from 'src/app/core/guards/charts-tab.guard.service';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
@@ -139,9 +142,21 @@ const routes: Routes = [
       },
 
       {
+        path: 'welcome',
+        component: WelcomeComponent,
+        canActivate: [AuthGuard],
+        data: { types: [3] },
+      },
+      {
         path: 'chart',
         component: ChartsDashboardComponent,
-        canActivate: [AuthGuard, NavigationGuard],
+        canActivate: [AuthGuard, NavigationGuard, ChartsTabGuard],
+        data: { types: [3] },
+      },
+      {
+        path: 'chart-disabled',
+        component: ChartsDisabledComponent,
+        canActivate: [AuthGuard],
         data: { types: [3] },
       },
       {

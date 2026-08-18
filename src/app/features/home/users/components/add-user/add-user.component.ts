@@ -287,6 +287,10 @@ export class AddUserComponent {
     this.user.profilePic = this.imageSrc;
     this.loaded = true;
   }
+  handleImageError() {
+    this.imageSrc = 'assets/upload-image.webp';
+  }
+
   handleImageLoad() {
     this.imageLoaded = true;
     this.iconColor = this.overlayColor;
@@ -1075,7 +1079,9 @@ export class AddUserComponent {
         if (result != null && result != undefined) {
           this.user = result.data;
           this.isNew = false;
-          this.imageSrc = this.user.profilePic;
+          this.imageSrc = this.user.profilePic
+            ? this.user.profilePic
+            : 'assets/upload-image.webp';
           this.onUserLevelChange(true);
           this.getGovernmentsForUser();
           this.getRoles();
