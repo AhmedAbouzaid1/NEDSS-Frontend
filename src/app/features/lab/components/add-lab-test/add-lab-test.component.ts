@@ -93,7 +93,11 @@ export class AddLabTestComponent {
     }
 
     this.singleDropdownSettings = SingleDropdownSettings;
-    this.multipleDropdownSettings = MultipleDropdownSettings;
+    this.multipleDropdownSettings = {
+      ...MultipleDropdownSettings,
+      textField: this.currentLang == 'ar' ? 'arabicName' : 'englishName',
+      placeholder: this.currentLang == 'ar' ? 'اختر' : 'Choose',
+    };
     this.loadingPanel = false;
   }
   getLookups() {
@@ -239,6 +243,11 @@ export class AddLabTestComponent {
         (result: any) => {
           if (result != null && result != undefined) {
             this.checkSamples = result.data;
+            this.checkSamples.unshift({
+              id: null,
+              arabicName: 'إختر',
+              englishName: 'Select',
+            });
             if (this.patientAddCheck.diseaseCheckId > 0) {
               this.selectedCheckSample = this.patientAddCheck.diseaseCheckId;
               this.getLabChecks();

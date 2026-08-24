@@ -392,15 +392,17 @@
                     "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DELEGATED_TO"
                     | translate
                     }}
-                    <span *ngIf="loadingSpecialLabs" class="spinner-border spinner-border-sm text-secondary ms-2 align-middle" role="status" aria-hidden="true"></span>
                   </label>
-                  <p-dropdown (onChange)="onSpecialLabChanged()" [options]="specialLabs"
-                    [(ngModel)]="selectedSpecialLabId"
-                    [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
-                    autoWidth="false" [style]="{ width: '100%' }" name="specialLabs" [required]="true"
-                    [filter]="true" [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
-                    [disabled]="loadingSpecialLabs">
-                  </p-dropdown>
+                  <input type="text" [(ngModel)]="patient.specialLabName" name="specialLabName" pInputText
+                    class="w-100" (blur)="
+                      generalDataService.isSpecialLabNameValid =
+                        !patient.isSpecialLabLab ||
+                        generalDataService.validateEmptyField(patient.specialLabName)
+                    " />
+                  <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isSpecialLabNameValid"
+                    class="form-text text-danger mess-color">
+                    {{ "NEDSS.COMMON.SPECIAL_LAB_NAME_VALIDATION" | translate }}
+                  </small>
                 </div>
               </div>
             </div>

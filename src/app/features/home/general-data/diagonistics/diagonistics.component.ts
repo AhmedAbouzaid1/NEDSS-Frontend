@@ -375,59 +375,15 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     }
 
     this.isSpecialLabSelected = true;
-    const pid = this.toPositiveId(this.patient.id);
+    this.resolvedSpecialLabGovId = this.toPositiveId(this.patient.specialLabGovernmentId);
+    this.resolvedSpecialLabHaId = this.toPositiveId(this.patient.specialLabHealthAdministrationId);
 
-    const sourceId = this.toPositiveId(this.patient.specialLabSourceId);
-
-    // New registration: patient id is not assigned yet — still load governorate / district / lab lookups.
-    if (!pid) {
-      if (!(this.specialGovernment?.length > 1)) {
-        this.getSpecialGovernments(false);
-      }
-      return;
+    if (!(this.specialGovernment?.length > 1)) {
+      this.getSpecialGovernments(true);
+    } else if (this.resolvedSpecialLabGovId) {
+      this.selectedSpecialGovernmentId = this.resolvedSpecialLabGovId;
+      this.getSpecialHealthAdmins(true);
     }
-
-    if (!sourceId) {
-      if (!(this.specialGovernment?.length > 1)) {
-        this.getSpecialGovernments(false);
-      }
-      return;
-    }
-
-    if (this.specialLabHydratedForPatientId === pid) return;
-    this.specialLabHydratedForPatientId = pid;
-
-    this.lookupsService.getIncidentSourceHospitalById(sourceId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((result: any) => {
-        const source = result?.data ?? result?.Data ?? result;
-        if (!source || typeof source !== 'object') return;
-
-        const govId = this.toPositiveId(
-          source.governmentID ??
-            source.GovernmentID ??
-            source.governmentId ??
-            source.GovernmentId,
-        );
-        const haId = this.toPositiveId(
-          source.healthAdministrationID ??
-            source.HealthAdministrationID ??
-            source.healthAdministrationId ??
-            source.HealthAdministrationId,
-        );
-
-        if (!govId) return;
-
-        this.resolvedSpecialLabGovId = govId;
-        this.resolvedSpecialLabHaId = haId;
-
-        if (this.specialGovernment?.length > 1) {
-          this.selectedSpecialGovernmentId = govId;
-          this.getSpecialHealthAdmins(true);
-        } else {
-          this.getSpecialGovernments(true);
-        }
-      });
   }
 
   onItemSelect(item: any) { }
@@ -579,6 +535,10 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     if (!this.patient.isSpecialLabLab) {
       this.isSpecialLabSelected = false;
       this.patient.specialLabSourceId = null;
+      this.patient.specialLabName = null;
+      this.patient.specialLabGovernmentId = null;
+      this.patient.specialLabHealthAdministrationId = null;
+      this.generalDataService.isSpecialLabNameValid = true;
       this.resolvedSpecialLabGovId = null;
       this.resolvedSpecialLabHaId = null;
       this.selectedSpecialGovernmentId = -1;
@@ -928,6 +888,8 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       this.selectedSpecialHealthAdmin = null;
       this.selectedSpecialHealthAdminId = -1;
       this.patient.specialLabSourceId = null;
+      this.patient.specialLabGovernmentId = this.toPositiveId(this.selectedSpecialGovernmentId);
+      this.patient.specialLabHealthAdministrationId = null;
     }
     const specialGovId = this.toPositiveId(this.selectedSpecialGovernmentId);
     if (specialGovId != null) {
@@ -985,6 +947,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       this.selectedSpecialLab = null;
       this.selectedSpecialLabId = -1;
       this.patient.specialLabSourceId = null;
+      this.patient.specialLabHealthAdministrationId = this.toPositiveId(this.selectedSpecialHealthAdminId);
     }
     const labGov = this.toPositiveId(this.selectedSpecialGovernmentId);
     if (labGov == null) {
