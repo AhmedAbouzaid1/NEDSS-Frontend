@@ -96,6 +96,7 @@ export class FastSearchComponent implements OnInit {
   expandedElement: Patient | null;
   selectedDiseaseId: number = -1;
   selectedFinalDiseaseId: number = -1;
+  selectedCaseResultCategoryId: number = -1;
   noData: boolean = true;
   loadError: boolean = false;
   first: number = 0;
@@ -126,6 +127,7 @@ export class FastSearchComponent implements OnInit {
 
   diseases: any;
   finalDiseases: any;
+  caseResultCategories: any;
   areas: any[];
   SelectedareaId: number;
   defaultAreaId: number;
@@ -226,6 +228,7 @@ export class FastSearchComponent implements OnInit {
       diseaseGroupId: new FormControl(null),
       diseaseId: new FormControl(null),
       areaId: new FormControl(null),
+      caseResultCategoryId: new FormControl(null),
     });
     this.disableControls();
     this.filter = {
@@ -248,6 +251,7 @@ export class FastSearchComponent implements OnInit {
       diseaseGroupId: null,
       diseaseId: null,
       areaId: null,
+      caseResultCategoryId: null,
       sortOrder: SortOrder.desc,
       sortColumn: 'createdDate',
     };
@@ -368,6 +372,7 @@ export class FastSearchComponent implements OnInit {
     this.getAllDiseases();
     this.getFinalDiseases();
     this.getNationalties();
+    this.getCaseResultCategories();
   }
   getGovernments() {
     this.lookupsService.getAllGovernments().subscribe(
@@ -1042,6 +1047,39 @@ export class FastSearchComponent implements OnInit {
       this.selectedDiseaseId == -1 ? null : this.selectedDiseaseId;
     this.filter.diseaseGroupId =
       this.selectedDiseaseId == -1 ? null : this.selectedDiseaseId;
+  }
+
+  getCaseResultCategories() {
+    this.lookupsService.getAllCaseResultCategorys().subscribe(
+      (result: any) => {
+        if (result != null && result != undefined) {
+          this.caseResultCategories = [
+            { id: -1, arabicName: 'إختر', englishName: 'select' },
+          ];
+          result.data.forEach((cat) => {
+            this.caseResultCategories.push(cat);
+          });
+        }
+      },
+      (error) => {
+        this.translateService
+          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+          .subscribe((res: string) => {
+            this.userMsg.error(res);
+          });
+      }
+    );
+  }
+
+  setCaseResultCategoryValue() {
+    this.generalReportForm.value.caseResultCategoryId =
+      this.selectedCaseResultCategoryId == -1
+        ? null
+        : this.selectedCaseResultCategoryId;
+    this.filter.caseResultCategoryId =
+      this.selectedCaseResultCategoryId == -1
+        ? null
+        : this.selectedCaseResultCategoryId;
   }
 
   setDiseaseDValue() {

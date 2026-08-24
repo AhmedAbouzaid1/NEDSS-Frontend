@@ -31,6 +31,8 @@ import { DiseaseClinicalSymptomsMappingComponent } from './components/controlPan
 import { VisitNewReviewComponent } from './components/visit-new-review/visit-new-review.component';
 import { AddUpdateContainerFieldComponent } from './components/add-update-container-field/add-update-container-field.component';
 import { PeriodOfCardsComponent } from './components/period-of-cards/period-of-cards.component';
+import { DataFetchDaysComponent } from './components/controlPanel/data-fetch-days/data-fetch-days.component';
+import { ChartsTabVisibilityComponent } from './components/controlPanel/charts-tab-visibility/charts-tab-visibility.component';
 
 const routes: Routes = [
   { path: '', component: ControlPanelComponent },
@@ -184,6 +186,16 @@ const routes: Routes = [
   },
   { path: 'Visit-new-review', component: VisitNewReviewComponent },
   { path: 'period-of-cards', component: PeriodOfCardsComponent },
+  {
+    path: 'data-fetch-days',
+    component: DataFetchDaysComponent,
+    canActivate: [NavigationGuard],
+  },
+  {
+    path: 'charts-tab-visibility',
+    component: ChartsTabVisibilityComponent,
+    canActivate: [NavigationGuard],
+  },
 ];
 
 @NgModule({

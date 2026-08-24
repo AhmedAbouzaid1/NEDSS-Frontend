@@ -24,6 +24,26 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   private diseasesInitializedFromPatient = false;
   private lastSyncedPatientId: number | null = null;
 
+  get caseStatusDisplay(): string {
+    if (this.patient?.caseResultCategory) {
+      return this.patient.caseResultCategory;
+    }
+    const data = this.patient?.finalDiagonisticsData;
+    return data && data.length
+      ? data.map((d) => d.caseResultCategory).filter((x) => !!x).join(' , ')
+      : '';
+  }
+
+  get finalDiagnosisDisplay(): string {
+    if (this.patient?.finalDiagonistics) {
+      return this.patient.finalDiagonistics;
+    }
+    const data = this.patient?.finalDiagonisticsData;
+    return data && data.length
+      ? data.map((d) => d.finalResult).filter((x) => !!x).join(' , ')
+      : '';
+  }
+
   levelId: any;
   currentLang: string = 'ar';
   governments: any[] = [];
@@ -687,9 +707,16 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
           this.finalResuls = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
           ];
-          result.data.forEach((gov) => {
-            this.finalResuls.push(gov);
-          });
+          const excludedFinalResultNames = ['Blank', 'غير معروف', 'Unknown'];
+          result.data
+            .filter(
+              (gov) =>
+                !excludedFinalResultNames.includes(gov.arabicName) &&
+                !excludedFinalResultNames.includes(gov.englishName)
+            )
+            .forEach((gov) => {
+              this.finalResuls.push(gov);
+            });
           if (this.patient.finalResultId > 0) {
             this.selectedFinalResultId = this.patient.finalResultId;
           } else {

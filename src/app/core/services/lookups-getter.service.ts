@@ -271,12 +271,7 @@ export class LookupsGetterService {
 
   ///#region  Dashboards
   getOnlineCount() {
-    let data = this.APIs.get(this.AccountApiUrl + 'GetOnlineCount');
-    var r = data.subscribe((result: any) => {
-      return result.data;
-    });
-
-    return data;
+    return this.APIs.get(this.AccountApiUrl + 'GetOnlineCount');
   }
   getConnectedUsers(UserFilter: any) {
     return this.APIs.create(
@@ -286,14 +281,9 @@ export class LookupsGetterService {
   }
 
   getDashBoardsByUserId(id) {
-    let data = this.APIs.get(
+    return this.APIs.get(
       this.DashBoardApiUrl + 'GetDashBordByUserId?User_Id=' + id
     );
-    var r = data.subscribe((result: any) => {
-      return result.data;
-    });
-    localStorage.setItem('getDashBoardsByUserId', JSON.stringify(data));
-    return data;
   }
   getAllDashBoards() {
     return this.APIs.get(this.DashBoardApiUrl + 'GetAllDashBords');
@@ -2261,6 +2251,30 @@ export class LookupsGetterService {
 
   updateDatesForCards(periodEntity:any) {
     return this.APIs.create(this.appSettingsApiUrl + 'SetCardsPeriod', periodEntity);
+  }
+
+  getDataDaysLimit() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/7');
+  }
+
+  updateDataDaysLimit(daysLimitEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetDataDaysLimit', daysLimitEntity);
+  }
+
+  getNationalIdSearchDaysLimit() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/9');
+  }
+
+  updateNationalIdSearchDaysLimit(daysLimitEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetNationalIdSearchDaysLimit', daysLimitEntity);
+  }
+
+  getChartsTabEnabled() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/8');
+  }
+
+  updateChartsTabEnabled(chartsTabEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetChartsTabEnabled', chartsTabEntity);
   }
   //end region
 }

@@ -1,4 +1,4 @@
-import { Component, HostListener, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { observeOn, asyncScheduler, combineLatest, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
@@ -101,43 +101,6 @@ export class AppComponent {
       this.session.clearSession();
     }
 
-    this.onloadHandler();
-  }
-
-  @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler(event) {
-    localStorage['unloadTime'] = new Date().getTime();
-  }
-
-  onloadHandler() {
-    const navEntry = performance.getEntriesByType(
-      'navigation'
-    )[0] as PerformanceNavigationTiming | undefined;
-    const pageAccessedByReload =
-      navEntry?.type === 'reload' ||
-      (window.performance.navigation &&
-        window.performance.navigation.type === 1);
-
-    if (pageAccessedByReload) {
-      localStorage.removeItem('unloadTime');
-      return;
-    }
-
-    const unloadTime = Number(localStorage['unloadTime']);
-    if (isNaN(unloadTime)) {
-      return;
-    }
-
-    localStorage.removeItem('unloadTime');
-    if (
-      navEntry?.type === 'navigate' &&
-      Date.now() - unloadTime < 5000
-    ) {
-      return;
-    }
-
-    localStorage.removeItem('ls.authorizationData');
-    this.router.navigateByUrl('');
   }
 
   reset() {

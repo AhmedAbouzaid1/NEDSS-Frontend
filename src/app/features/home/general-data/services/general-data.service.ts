@@ -479,6 +479,49 @@ export class GeneralDataService {
     }
   }
 
+  showValidationErrors: boolean = false;
+
+  resetValidationState() {
+    this.showValidationErrors = false;
+    this.isIncidentGovernmentValid = true;
+    this.isIncidentHealthAdministrationValid = true;
+    this.isIncidentSourceValid = true;
+    this.isIncidentDepartmentValid = true;
+    this.isCaseDiscoveryDateValid = true;
+    this.isNationalityValid = true;
+    this.isCardIdValid = true;
+    this.isPassportIdValid = true;
+    this.isUniversityValid = true;
+    this.isBranchValid = true;
+    this.isAreaValid = true;
+    this.isFirstNameValid = true;
+    this.isSecondNameValid = true;
+    this.isThirdNameValid = true;
+    this.isFamilyNameValid = true;
+    this.isPhoneNumber1Valid = true;
+    this.livingAddressValid = true;
+    this.isGenderValid = true;
+    this.isAgeTypeValid = true;
+    this.isAgeValid = true;
+    this.isBirthDateValid = true;
+    this.isPassportValid = true;
+    this.isNationalValid = true;
+    this.isHomeGovernmentValid = true;
+    this.isHomeHealthAdministrationValid = true;
+    this.isHomeCityValid = true;
+    this.isHomeHealthOfficeIdValid = true;
+    this.isAdressValid = true;
+    this.isFeverDurationValid = true;
+    this.isFeverMaxTemperatureValid = true;
+    this.isFeverDurationTypeValid = true;
+    this.isChronicDiseaseValid = true;
+    this.isPatientHospitalNoValid = true;
+    this.isDoctorNameValid = true;
+    this.isPatientDiseasesValid = true;
+    this.isInfectionDateValid = true;
+    this.isHospitalEntryDateValid = true;
+  }
+
   // MARK IMP
   validateRequiredFields(patient) {
     var inc = this.validateIncidentInfo(patient) == -1;
@@ -1365,6 +1408,7 @@ export class GeneralDataService {
   }
 
   getFirstInvalidFieldLabel(patient: any): string | null {
+    this.showValidationErrors = true;
     this.validateIncidentInfo(patient);
     const incident = this.getIncidentInfoInvalidFieldLabel(patient);
     if (incident) return incident;

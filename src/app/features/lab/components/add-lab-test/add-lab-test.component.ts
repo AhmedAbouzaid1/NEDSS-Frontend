@@ -12,6 +12,8 @@ import {
   SingleDropdownSettings,
   MultipleDropdownSettings,
 } from 'src/app/core/constants';
+import { from } from 'rxjs';
+import { concatMap, toArray } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-lab-test',
@@ -53,7 +55,7 @@ export class AddLabTestComponent {
   selectedCheckSample: any;
 
   labCheckResults!: any[];
-  selectedLabCheckResult: any;
+  selectedLabCheckResult: any[] = [];
 
   noData: boolean = true;
   loadingPanel: boolean = false;
@@ -133,7 +135,7 @@ export class AddLabTestComponent {
       this.getLabChecks();
       this.labChecks = null;
       this.labCheckResults = null;
-      this.selectedLabCheckResult = null;
+      this.selectedLabCheckResult = [];
     } else {
       this.patientAddCheck.diseaseCheckId = null;
     }
@@ -146,17 +148,10 @@ export class AddLabTestComponent {
     } else {
       this.patientAddCheck.dieaseLabTestId = null;
       this.labCheckResults = null;
-      this.selectedLabCheckResult = null;
+      this.selectedLabCheckResult = [];
     }
   }
 
-  onLabCheckResultChanged() {
-    if (this.selectedLabCheckResult > 0) {
-      this.patientAddCheck.diseaseLabTestResultId = this.selectedLabCheckResult;
-    } else {
-      this.patientAddCheck.diseaseLabTestResultId = null;
-    }
-  }
   getLabChecks() {
     this.lookupsService
       .GetDiseaseLabTestByPatientId(
@@ -200,16 +195,13 @@ export class AddLabTestComponent {
         (result: any) => {
           if (result != null && result != undefined) {
             this.labCheckResults = result.data;
-            this.labCheckResults.unshift({
-              id: null,
-              arabicName: 'إختر',
-              englishName: 'Select',
-            });
             if (this.patientAddCheck.diseaseLabTestResultId > 0) {
-              this.selectedLabCheckResult = this.labCheckResults.find(
+              this.selectedLabCheckResult = this.labCheckResults.filter(
                 (item) =>
                   item.id === this.patientAddCheck.diseaseLabTestResultId
-              )?.id;
+              );
+            } else {
+              this.selectedLabCheckResult = [];
             }
           }
         },
@@ -390,9 +382,9 @@ export class AddLabTestComponent {
         this.selectedLabCheck = this.labChecks?.find(
           (item) => item.id === this.patientAddCheck.dieaseLabTestId
         )?.id;
-        this.selectedLabCheckResult = this.labCheckResults?.find(
+        this.selectedLabCheckResult = this.labCheckResults?.filter(
           (item) => item.id === this.patientAddCheck.diseaseLabTestResultId
-        )?.id;
+        ) ?? [];
       },
       () => {
         this.translateService
@@ -408,9 +400,19 @@ export class AddLabTestComponent {
     if (this.validateRequiredData()) {
       this.patientAddCheck.patientId = this.id;
       if (this.patientAddCheck.id == null) {
-        this.labService.addPatientLabCheck(this.patientAddCheck).subscribe(
-          (response: any) => {
-            if (response) {
+        const resultIds = this.selectedLabCheckResult.map((r) => r.id);
+        from(resultIds)
+          .pipe(
+            concatMap((resultId) =>
+              this.labService.addPatientLabCheck({
+                ...this.patientAddCheck,
+                diseaseLabTestResultId: resultId,
+              })
+            ),
+            toArray()
+          )
+          .subscribe(
+            (responses: any[]) => {
               this.translateService
                 .get('NEDSS.COMMON.SENT_SUCESSFULLY')
                 .subscribe((res: string) => {
@@ -419,19 +421,20 @@ export class AddLabTestComponent {
               this.getPatientChecks();
               this.resetLabCheck();
               //send notification here
-              response.messages.forEach((msg) => {
-                this.notificationService.sendNotification([], JSON.parse(msg));
+              responses.forEach((response) => {
+                response?.messages?.forEach((msg) => {
+                  this.notificationService.sendNotification([], JSON.parse(msg));
+                });
               });
+            },
+            (error) => {
+              this.translateService
+                .get('NEDSS.COMMON.SENT_FAILD')
+                .subscribe((res: string) => {
+                  this.userMsg.error(res);
+                });
             }
-          },
-          (error) => {
-            this.translateService
-              .get('NEDSS.COMMON.SENT_FAILD')
-              .subscribe((res: string) => {
-                this.userMsg.error(res);
-              });
-          }
-        );
+          );
       } else this.update();
     } else {
       this.userMsg.error('يجب ادخال كل الحقول');
@@ -439,26 +442,31 @@ export class AddLabTestComponent {
   }
 
   update() {
-    this.labService.updatePatientLabCheck(this.patientAddCheck).subscribe(
-      (response: any) => {
-        if (response) {
+    this.labService
+      .updatePatientLabCheck({
+        ...this.patientAddCheck,
+        diseaseLabTestResultId: this.selectedLabCheckResult[0]?.id ?? null,
+      })
+      .subscribe(
+        (response: any) => {
+          if (response) {
+            this.translateService
+              .get('NEDSS.COMMON.UPDATE_SUCESSFULLY')
+              .subscribe((res: string) => {
+                this.userMsg.success(res);
+              });
+            this.getPatientChecks();
+            this.resetLabCheck();
+          }
+        },
+        (error) => {
           this.translateService
-            .get('NEDSS.COMMON.UPDATE_SUCESSFULLY')
+            .get('NEDSS.COMMON.UPDATE_FAILD')
             .subscribe((res: string) => {
-              this.userMsg.success(res);
+              this.userMsg.error(res);
             });
-          this.getPatientChecks();
-          this.resetLabCheck();
         }
-      },
-      (error) => {
-        this.translateService
-          .get('NEDSS.COMMON.UPDATE_FAILD')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
-    );
+      );
   }
 
   paginate(event: any) {
@@ -503,14 +511,15 @@ export class AddLabTestComponent {
     };
     this.selectedCheckSample = null;
     this.selectedLabCheck = null;
-    this.selectedLabCheckResult = null;
+    this.selectedLabCheckResult = [];
   }
 
   validateRequiredData(): boolean {
     if (
       this.patientAddCheck.dieaseLabTestId == null ||
       this.patientAddCheck.diseaseCheckId == null ||
-      this.patientAddCheck.diseaseLabTestResultId == null ||
+      !this.selectedLabCheckResult ||
+      this.selectedLabCheckResult.length === 0 ||
       this.patientAddCheck.getSampleDate == null ||
       this.patientAddCheck.labResultDate == null
     )

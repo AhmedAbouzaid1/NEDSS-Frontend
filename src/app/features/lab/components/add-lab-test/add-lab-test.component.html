@@ -254,36 +254,13 @@
                 >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_TEST_RESULT" | translate }}
                 <span class="text-danger mess-color">*</span>
               </label>
-              <div *ngIf="currentLang == 'ar'">
-                <p-dropdown
-                  (onChange)="onLabCheckResultChanged()"
-                  [options]="labCheckResults"
-                  [(ngModel)]="selectedLabCheckResult"
-                  optionLabel="arabicName"
-                  optionValue="id"
-                  autoWidth="false"
-                  [style]="{ width: '100%' }"
-                  name="labCheckResults"
-                  [filter]="true"
-                  filterBy="arabicName"
-                >
-                </p-dropdown>
-              </div>
-              <div *ngIf="currentLang == 'en'">
-                <p-dropdown
-                  (onChange)="onLabCheckResultChanged()"
-                  [options]="labCheckResults"
-                  [(ngModel)]="selectedLabCheckResult"
-                  optionLabel="englishName"
-                  optionValue="id"
-                  autoWidth="false"
-                  [style]="{ width: '100%' }"
-                  name="labCheckResults"
-                  [filter]="true"
-                  filterBy="englishName"
-                >
-                </p-dropdown>
-              </div>
+              <ng-multiselect-dropdown
+                [settings]="multipleDropdownSettings"
+                [data]="labCheckResults"
+                [(ngModel)]="selectedLabCheckResult"
+                name="labCheckResults"
+              >
+              </ng-multiselect-dropdown>
             </div>
           </div>
           <div class="col-lg-6 mt-4">

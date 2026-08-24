@@ -27,26 +27,36 @@ export class FeverRashComponent implements OnInit {
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
 
+  // True when the case final diagnosis is confirmed measles / rubella; unlocks the 400-children survey tab.
+  confirmedMeasles = false;
+
   // Tabs (order matches the paper form / attached images)
-  activeTab: 'field' | 'contacts' | 'unit' | 'survey' | 'followup' = 'field';
+  activeTab: 'field' | 'contacts' | 'unit' | 'survey' | 'survey400' | 'followup' = 'field';
   tabs = [
     { key: 'field', label: 'التقصى الميدانى للحالة' },
     { key: 'contacts', label: 'حصر المخالطين' },
     { key: 'unit', label: 'التقصى على مستوى الوحدة الصحية' },
     { key: 'survey', label: 'المسح الميدانى 30 طفل' },
+    { key: 'survey400', label: 'المسح الميداني 400 طفل' },
     { key: 'followup', label: 'متابعة الحالة بعد 28 يوم' },
   ];
+
+  // The 400-children tab only appears for confirmed measles / rubella cases.
+  get visibleTabs() {
+    return this.tabs.filter((t) => t.key !== 'survey400' || this.confirmedMeasles);
+  }
 
   // Expand/collapse state for the card-based grids (case movements, previous cases).
   private openRows = new Set<AbstractControl>();
 
-  private arrayKeys = ['caseMovements', 'previousCases', 'generalContacts', 'pregnantContacts', 'surveyChildren'];
+  private arrayKeys = ['caseMovements', 'previousCases', 'generalContacts', 'pregnantContacts', 'surveyChildren', 'survey400Children'];
   private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage'];
 
   // Scalar date controls (formatted to yyyy-MM-dd on load).
   private dateFields = new Set([
     'reportDate', 'homeVisitDate', 'measlesLastDoseDate', 'mmrLastDoseDate', 'mrLastDoseDate',
     'coverageVisitDate', 'lastCaseDateAdmin', 'lastCaseDateDirectorate', 'fieldVisitDate',
+    'field400VisitDate',
     'committeeSpecialistDate', 'adminOfficerDate', 'directorateOfficerDate',
   ]);
 
@@ -130,6 +140,11 @@ export class FeverRashComponent implements OnInit {
       fieldSquareNumber: new FormControl(),
       surveyChildren: new FormArray([]),
 
+      // Tab 4b - field survey (400 children) - positive cases only
+      field400VisitDate: new FormControl(),
+      field400SquareNumber: new FormControl(),
+      survey400Children: new FormArray([]),
+
       // Tab 5 - follow-up after 28 days
       diseaseOutcome: new FormControl(),
       hasComplications: new FormControl(),
@@ -168,7 +183,20 @@ export class FeverRashComponent implements OnInit {
       if (p.homeVisitDate && !this.feverRashForm.value.homeVisitDate) {
         this.feverRashForm.controls['homeVisitDate'].setValue(this.d(p.homeVisitDate));
       }
+      this.evaluateConfirmedMeasles(p);
     });
+  }
+
+  // Show the 400-children tab when the final diagnosis is confirmed measles / rubella
+  // (e.g. "حصبة مؤكدة" or "حصبة الماني مؤكدة").
+  private evaluateConfirmedMeasles(p: any) {
+    const texts: string[] = [];
+    if (p?.finalDiagonistics) texts.push(String(p.finalDiagonistics));
+    (p?.finalDiagonisticsData || []).forEach((d: any) => {
+      texts.push(`${d?.caseResultCategory ?? ''} ${d?.finalResult ?? ''}`);
+    });
+    this.confirmedMeasles = texts.some((t) => t.includes('حصبة') && t.includes('مؤكد'));
+    if (!this.confirmedMeasles && this.activeTab === 'survey400') this.activeTab = 'field';
   }
 
   private ageUnit(ageTypeId: number): string {
@@ -211,6 +239,7 @@ export class FeverRashComponent implements OnInit {
     if (this.previousCases.length === 0) this.addPreviousCase();
     if (this.generalContacts.length === 0) this.addGeneralContact();
     if (this.surveyChildren.length === 0) this.addSurveyChild();
+    if (this.survey400Children.length === 0) this.addSurvey400Child();
   }
 
   private patchFromRecord(v: any) {
@@ -227,6 +256,7 @@ export class FeverRashComponent implements OnInit {
     this.parseJsonInto(v.generalContactsJson, (c) => this.generalContacts.push(this.buildContact(c)));
     this.parseJsonInto(v.pregnantContactsJson, (p) => this.pregnantContacts.push(this.buildPregnant(p)));
     this.parseJsonInto(v.surveyChildrenJson, (s) => this.surveyChildren.push(this.buildSurveyChild(s)));
+    this.parseJsonInto(v.survey400ChildrenJson, (s) => this.survey400Children.push(this.buildSurveyChild(s)));
   }
 
   private parseJsonInto(json: string, push: (item: any) => void) {
@@ -247,6 +277,7 @@ export class FeverRashComponent implements OnInit {
   get generalContacts(): FormArray { return this.feverRashForm.get('generalContacts') as FormArray; }
   get pregnantContacts(): FormArray { return this.feverRashForm.get('pregnantContacts') as FormArray; }
   get surveyChildren(): FormArray { return this.feverRashForm.get('surveyChildren') as FormArray; }
+  get survey400Children(): FormArray { return this.feverRashForm.get('survey400Children') as FormArray; }
 
   // ===================== Card expand / collapse (edit toggle) =====================
   toggleRow(ctrl: AbstractControl) {
@@ -391,6 +422,16 @@ export class FeverRashComponent implements OnInit {
     this.surveyChildren.removeAt(i);
   }
 
+  addSurvey400Child() {
+    const g = this.buildSurveyChild();
+    this.survey400Children.push(g);
+    this.openRows.add(g);
+  }
+  removeSurvey400Child(i: number) {
+    this.openRows.delete(this.survey400Children.at(i));
+    this.survey400Children.removeAt(i);
+  }
+
   // ===================== Statistics =====================
   vaccinationLabel(v: any): string {
     switch (String(v)) {
@@ -482,6 +523,23 @@ export class FeverRashComponent implements OnInit {
   get surveyMmr2() { return this.surveyYesNo('mmr2'); }
   get surveySymptoms() { return this.surveyYesNo('hasSymptoms'); }
 
+  get survey400Count(): number {
+    return this.survey400Children.controls.filter((c) => this.isRowFilled(c)).length;
+  }
+  private survey400YesNo(field: string) {
+    let yes = 0, no = 0;
+    this.survey400Children.controls.forEach((c) => {
+      if (!this.isRowFilled(c)) return;
+      const val = c.get(field)?.value;
+      if (val === 1 || val === '1') yes++;
+      else if (val === 2 || val === '2') no++;
+    });
+    return { yes, no };
+  }
+  get survey400Mmr1() { return this.survey400YesNo('mmr1'); }
+  get survey400Mmr2() { return this.survey400YesNo('mmr2'); }
+  get survey400Symptoms() { return this.survey400YesNo('hasSymptoms'); }
+
   // ===================== Save =====================
   save() {
     this.feverRashForm.controls['diseaseGroupID'].setValue(this.investigationService.diseaseGroupID);
@@ -503,6 +561,7 @@ export class FeverRashComponent implements OnInit {
     payload.generalContactsJson = JSON.stringify(value.generalContacts || []);
     payload.pregnantContactsJson = JSON.stringify(value.pregnantContacts || []);
     payload.surveyChildrenJson = JSON.stringify(value.surveyChildren || []);
+    payload.survey400ChildrenJson = JSON.stringify(value.survey400Children || []);
 
     const ok = () =>
       this.translateService.get('NEDSS.COMMON.SENT_SUCESSFULLY').subscribe((r: string) => this.userMsg.success(r));

@@ -201,6 +201,7 @@ export class UsersRolesPermissionsComponent {
     let checkbox = document.getElementsByName('systemPages');
     if (e.target.checked) {
       if (checkbox != null) {
+        this.systemPageIds = [];
         for (var i = 0; i < checkbox.length; i++) {
           this.valueChecked = checkbox[i] as HTMLInputElement;
           this.valueChecked.checked = true;
@@ -230,6 +231,7 @@ export class UsersRolesPermissionsComponent {
     let checkbox = document.getElementsByName('chkdiseases');
     if (e.target.checked) {
       if (checkbox != null) {
+        this.diseaseIds = [];
         for (var i = 0; i < checkbox.length; i++) {
           this.valueChecked = checkbox[i] as HTMLInputElement;
           this.valueChecked.checked = true;
@@ -250,6 +252,7 @@ export class UsersRolesPermissionsComponent {
     let checkbox = document.getElementsByName('chks');
     if (e.target.checked) {
       if (checkbox != null) {
+        this.diseaseFieldIds = [];
         for (var i = 0; i < checkbox.length; i++) {
           this.valueChecked = checkbox[i] as HTMLInputElement;
           this.valueChecked.checked = true;
@@ -288,6 +291,7 @@ export class UsersRolesPermissionsComponent {
     let checkbox = document.getElementsByName('chkSelectedDiseases');
     if (e.target.checked) {
       if (checkbox != null) {
+        this.selectedDiseaseIds = [];
         for (var i = 0; i < checkbox.length; i++) {
           this.valueChecked = checkbox[i] as HTMLInputElement;
           this.valueChecked.checked = true;

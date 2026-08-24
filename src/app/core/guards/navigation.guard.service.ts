@@ -96,6 +96,8 @@ export class NavigationGuard {
     { Comingroute: 'evaluation-questions', id: 31 },
     { Comingroute: 'system-settings', id: 31 },
     { Comingroute: 'control-panel', id: 50 },
+    { Comingroute: 'data-fetch-days', id: 96 },
+    { Comingroute: 'charts-tab-visibility', id: 97 },
     { Comingroute: 'patient-checks', id: 51 },
     { Comingroute: 'add-checks', id: 51 },
     { Comingroute: 'add-patient', id: 52 },

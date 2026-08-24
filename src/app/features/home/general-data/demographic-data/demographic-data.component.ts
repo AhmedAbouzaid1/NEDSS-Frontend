@@ -51,6 +51,7 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
   loadingPanel: boolean = false;
   isStudent: boolean = false;
   isOthers: boolean = false;
+  isConscriptOrPrisoner: boolean = false;
   singleDropdownSettings = {};
   multipleDropdownSettings = {};
   currentLang: string = 'ar';
@@ -169,6 +170,14 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
       else this.isStudent = false;
 
       this.isOthers = this.selectedJobCategoryId == 4 ? true : false;
+
+      this.isConscriptOrPrisoner =
+        this.selectedJobCategoryId == 6 || this.selectedJobCategoryId == 7;
+      if (this.isConscriptOrPrisoner) {
+        this.patient.patientJobId = null;
+        this.selectedJobId = -1;
+        this.patient.workAddress = null;
+      }
     } else {
       this.patient.patientJobCategoryId = null;
       this.jobs = [];
@@ -176,6 +185,7 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
 
       this.selectedJob = null;
       this.selectedJobId = -1;
+      this.isConscriptOrPrisoner = false;
     }
   }
   onJobChanged() {
