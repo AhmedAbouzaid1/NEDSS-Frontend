@@ -63,6 +63,9 @@ export class PatientModel {
   regionalLabId!: number;
   isSpecialLabLab!: boolean;
   specialLabSourceId!: number;
+  specialLabName?: string | null;
+  specialLabGovernmentId?: number | null;
+  specialLabHealthAdministrationId?: number | null;
   relationShipDegreeId!: number;
   patientDiseases!: PatientDiseases[];
   finalDiagonisticsData!: FinalDiagonistics[];

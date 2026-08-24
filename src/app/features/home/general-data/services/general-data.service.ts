@@ -945,6 +945,7 @@ export class GeneralDataService {
   isPatientDiseasesValid: boolean = true;
   isInfectionDateValid: boolean = true;
   isHospitalEntryDateValid: boolean = true;
+  isSpecialLabNameValid: boolean = true;
 
   doctorNameValidationMessage: string;
 
@@ -960,6 +961,9 @@ export class GeneralDataService {
     this.isHospitalEntryDateValid =
       this.validateField(patient.hospitalEntryDate) ||
       patient.incidentDepartmentId != 1;
+    this.isSpecialLabNameValid =
+      !patient.isSpecialLabLab ||
+      this.validateEmptyField(patient.specialLabName);
 
     var validationResults = [
       this.isPatientHospitalNoValid,
@@ -967,6 +971,7 @@ export class GeneralDataService {
       this.isPatientDiseasesValid,
       this.isInfectionDateValid,
       this.isHospitalEntryDateValid,
+      this.isSpecialLabNameValid,
     ];
     return validationResults.findIndex((result) => result == false);
     // return validationResults.every(result => result);
@@ -1402,6 +1407,7 @@ export class GeneralDataService {
       [this.isHospitalEntryDateValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALENTRYDATE'],
       [this.isPatientHospitalNoValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.PATIENT_HOSPITAL_NO'],
       [this.isDoctorNameValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DOCTOR_NAME'],
+      [this.isSpecialLabNameValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DELEGATED_TO'],
     ];
     const failed = items.find(([valid]) => !valid);
     return failed ? failed[1] : null;
