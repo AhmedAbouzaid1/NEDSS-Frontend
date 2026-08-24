@@ -2261,6 +2261,14 @@ export class LookupsGetterService {
     return this.APIs.create(this.appSettingsApiUrl + 'SetDataDaysLimit', daysLimitEntity);
   }
 
+  getNationalIdSearchDaysLimit() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/9');
+  }
+
+  updateNationalIdSearchDaysLimit(daysLimitEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetNationalIdSearchDaysLimit', daysLimitEntity);
+  }
+
   getChartsTabEnabled() {
     return this.APIs.get(this.appSettingsApiUrl + 'Get/8');
   }

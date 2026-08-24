@@ -24,6 +24,24 @@
             </div>
           </div>
         </div>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="nationalIdDaysLimit">
+              {{ "NEDSS.HOME.CONTROL_PANEL.NATIONAL_ID_SEARCH_DAYS" | translate }}
+              <span class="text-muted">{{ "NEDSS.HOME.CONTROL_PANEL.NATIONAL_ID_SEARCH_DAYS_HINT" | translate }}</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" name="nationalIdDaysLimit" [(ngModel)]="nationalIdDaysLimit" class="form-control"
+              (keypress)="onNumberKeyPress($event)" required>
+            <div *ngIf="userForm.controls.nationalIdDaysLimit?.touched && userForm.controls.nationalIdDaysLimit?.errors?.required"
+              class="form-text text-danger">
+              {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+            </div>
+            <div *ngIf="!isNationalIdValid" class="form-text text-danger">
+              {{"NEDSS.COMMON.INVALID_NUMBER" | translate }}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="card-footer text-start" style="text-align:center !important">

@@ -1,5 +1,5 @@
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 // import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -39,6 +39,10 @@ export class AuthComponent {
   ];
 
   language: any;
+
+  @ViewChild('name') nameInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('password') passwordInput!: ElementRef<HTMLInputElement>;
+
   constructor(
     private auth: AuthService,
     private translate: TranslateService,
@@ -96,10 +100,7 @@ export class AuthComponent {
     this.translate.use(this.language);
 
     this.LoginForm = new FormGroup({
-      username: new FormControl('', [
-        Validators.required,
-        Validators.minLength(5),
-      ]),
+      username: new FormControl('', [Validators.required]),
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(4),
@@ -136,7 +137,19 @@ export class AuthComponent {
     return this.hasNetworkConnection;
   }
 
+  private syncAutofilledValues() {
+    const domUsername = this.nameInput?.nativeElement?.value ?? '';
+    const domPassword = this.passwordInput?.nativeElement?.value ?? '';
+    if (domUsername !== this.LoginForm.controls['username'].value) {
+      this.LoginForm.controls['username'].setValue(domUsername);
+    }
+    if (domPassword !== this.LoginForm.controls['password'].value) {
+      this.LoginForm.controls['password'].setValue(domPassword);
+    }
+  }
+
   login(form: any) {
+    this.syncAutofilledValues();
     if (form.value.username.trim() == '') {
       this.translate
         .get('NEDSS.HOME.LOGIN.INVALID_USERNAME')

@@ -41,7 +41,7 @@
               )
           "
         />
-        <small *ngIf="!generalDataService.isFeverDurationValid" class="form-text text-danger mess-color">
+        <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isFeverDurationValid" class="form-text text-danger mess-color">
           {{
             "NEDSS.COMMON.MAX_DIGITS_VALIDATION"
               | translate : { fieldName: FEVER_DURATION_DAYS, maxDigits: 3 }
@@ -98,7 +98,7 @@
               )
           "
         />
-        <small *ngIf="!generalDataService.isFeverMaxTemperatureValid" class="form-text text-danger mess-color">
+        <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isFeverMaxTemperatureValid" class="form-text text-danger mess-color">
           {{ "NEDSS.COMMON.FEVER_TEMPERATURE_VALIDATION" | translate }}
         </small>
       </div>
@@ -196,7 +196,7 @@
           "></textarea>
       </div>
 
-      <div class="col-12" *ngIf="!generalDataService.isChronicDiseaseValid">
+      <div class="col-12" *ngIf="generalDataService.showValidationErrors && !generalDataService.isChronicDiseaseValid">
         <small class="form-text text-danger mess-color">
           {{ "NEDSS.COMMON.FILEDBOTHREQUIRED" | translate }}
         </small>

@@ -16,7 +16,7 @@
             [style]="{ width: '100%' }" name="governments" [filter]="true"
             [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
           </p-dropdown>
-          <small *ngIf="!generalDataService.isHomeGovernmentValid" class="form-text text-danger mess-color">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isHomeGovernmentValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -35,7 +35,7 @@
             [style]="{ width: '100%' }" name="healthAdministrations" [filter]="true"
             [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
           </p-dropdown>
-          <small *ngIf="!generalDataService.isHomeHealthAdministrationValid" class="form-text text-danger mess-color">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isHomeHealthAdministrationValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -53,7 +53,7 @@
             [style]="{ width: '100%' }" name="cities" [filter]="true"
             [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
           </p-dropdown>
-          <small *ngIf="!generalDataService.isHomeCityValid" class="form-text text-danger mess-color">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isHomeCityValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -72,7 +72,7 @@
             [style]="{ width: '100%' }" name="healthOffices" [filter]="true"
             [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
           </p-dropdown>
-          <small *ngIf="!generalDataService.isHomeHealthOfficeIdValid" class="form-text text-danger mess-color">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isHomeHealthOfficeIdValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -111,7 +111,7 @@
                 generalDataService.validateAddress(patient.livingAddress, true)
             "></textarea>
         </div>
-        <small *ngIf="!generalDataService.isAdressValid" class="form-text text-danger mess-color">
+        <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isAdressValid" class="form-text text-danger mess-color">
           {{ generalDataService.addressValidationMessage | translate }}
         </small>
       </div>

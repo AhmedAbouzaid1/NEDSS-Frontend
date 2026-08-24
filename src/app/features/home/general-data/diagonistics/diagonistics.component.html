@@ -22,7 +22,7 @@
                       patient.patientHospitalNo
                     )
                 " />
-              <small *ngIf="!generalDataService.isPatientHospitalNoValid" class="form-text text-danger mess-color">
+              <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isPatientHospitalNoValid" class="form-text text-danger mess-color">
                 {{ "NEDSS.COMMON.PATIENT_HOSPITAL_NO_VALIDATION" | translate }}
               </small>
             </div>
@@ -44,7 +44,7 @@
                     )
                 " (keypress)="generalDataService.onNameKeyPress($event)" (input)="generalDataService.normalizeNameInput($event)" />
 
-              <small *ngIf="!generalDataService.isDoctorNameValid" class="form-text text-danger mess-color">
+              <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isDoctorNameValid" class="form-text text-danger mess-color">
                 {{
                 "NEDSS.COMMON.INVALID_NAME_CHARACTERS"
                 | translate : { maxLength: 30 }
@@ -65,7 +65,7 @@
                 [(ngModel)]="selectedDiseases" (onSelect)="onDiseasesChanged()" (onDeSelect)="onDiseasesChanged()"
                 (onSelectAll)="onDiseasesSelectAll($event)" (onDeSelectAll)="onDiseasesDSelectAll()">
               </ng-multiselect-dropdown>
-              <small *ngIf="!generalDataService.isPatientDiseasesValid" class="form-text text-danger mess-color">
+              <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isPatientDiseasesValid" class="form-text text-danger mess-color">
                 {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
               </small>
             </div>
@@ -95,7 +95,7 @@
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
-              <small *ngIf="!generalDataService.isInfectionDateValid" class="form-text text-danger mess-color">
+              <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isInfectionDateValid" class="form-text text-danger mess-color">
                 {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
               </small>
             </div>
@@ -127,7 +127,7 @@
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
-              <small *ngIf="!generalDataService.isHospitalEntryDateValid" class="form-text text-danger mess-color">
+              <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isHospitalEntryDateValid" class="form-text text-danger mess-color">
                 {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
               </small>
             </div>
@@ -406,64 +406,29 @@
             </div>
           </div>
 
-          <div class="row mt-3" *ngIf="patient.finalDiagonistics">
+          <div class="row mt-3">
             <div class="col-lg-4 mt-2">
-              <label for="">
-                {{
-                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.COMPUTED_FINAL_DIAGNOSIS"
-                | translate
-                }}
-              </label>
+              <div class="form-group">
+                <label for="">
+                  {{
+                  "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULTCATEGORY"
+                  | translate
+                  }}
+                </label>
+                <input class="w-100" type="text" name="caseStatus" disabled [ngModel]="caseStatusDisplay"
+                  pInputText />
+              </div>
             </div>
             <div class="col-lg-8 mt-2">
               <div class="form-group">
-                <input class="w-100" type="text" name="computedFinalDiagonistics" disabled
-                  [ngModel]="patient.finalDiagonistics" pInputText />
-              </div>
-            </div>
-          </div>
-
-          <div class="row mt-3" *ngIf="patient.finalDiagonisticsData">
-            <div class="col-lg-4 mt-2">
-              <label for="">
-                {{
-                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULTCATEGORY"
-                | translate
-                }}
-              </label>
-            </div>
-            <div class="col-lg-8 mt-2">
-              <label for="">
-                {{
-                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.FINALDIGONISTICS"
-                | translate
-                }}
-              </label>
-            </div>
-          </div>
-          <div class="row mt-3" *ngFor="let finalDiagonistic of patient.finalDiagonisticsData">
-            <div class="col-lg-4 mt-2" *ngIf="finalDiagonistic.caseResultCategory != ''">
-              <div class="form-group">
-                <!-- <label for="">
+                <label for="">
                   {{
-                    "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULTCATEGORY"
-                      | translate
+                  "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.FINALDIGONISTICS"
+                  | translate
                   }}
-                </label> -->
-                <input class="w-100" type="text" name="caseResultCategory" disabled
-                  [(ngModel)]="finalDiagonistic.caseResultCategory" #caseResultCategory="ngModel" pInputText />
-              </div>
-            </div>
-            <div class="col-lg-8 mt-2" *ngIf="finalDiagonistic.caseResultCategory != ''">
-              <div class="form-group">
-                <!-- <label for="">
-                  {{
-                    "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.FINALDIGONISTICS"
-                      | translate
-                  }}
-                </label> -->
-                <input class="w-100" type="text" name="finalResult" disabled [(ngModel)]="finalDiagonistic.finalResult"
-                  #finalResult="ngModel" pInputText />
+                </label>
+                <input class="w-100" type="text" name="finalDiagonistics" disabled [ngModel]="finalDiagnosisDisplay"
+                  pInputText />
               </div>
             </div>
           </div>

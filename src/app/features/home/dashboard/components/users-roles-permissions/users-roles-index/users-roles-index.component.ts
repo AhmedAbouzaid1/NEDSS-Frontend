@@ -95,7 +95,7 @@ export class UsersRolesIndexComponent {
   GetRoles() {
     this.loadingPanel = true;
     this.usersRolesPermissionService
-      .getPageUsersRolesPermissions(this.roleFilterForm.value)
+      .getPageUsersRolesPermissions(this.roleFilterForm.getRawValue())
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
@@ -107,8 +107,8 @@ export class UsersRolesIndexComponent {
               this.noData = false;
               this.pages = result.data[0].totalCount;
               this.last =
-                this.roleFilterForm.value.pageIndex *
-                this.roleFilterForm.value.pageSize;
+                this.roleFilterForm.get('pageIndex').value *
+                this.roleFilterForm.get('pageSize').value;
             }
           }
           this.loadingPanel = false;
@@ -126,44 +126,56 @@ export class UsersRolesIndexComponent {
   search() {
     this.users = [];
     this.first = 0;
-    this.roleFilterForm.value.pageIndex = 0;
+    this.roleFilterForm.patchValue({
+      pageIndex: 0,
+      organizationId: this.selectedOrganizationId,
+      levelsIds: this.selectedLevelId,
+    });
     this.last =
-      this.roleFilterForm.value.pageIndex * this.roleFilterForm.value.pageSize;
-
-    this.roleFilterForm.controls['organizationId'].setValue(this.selectedOrganizationId);
-    this.roleFilterForm.controls['levelsIds'].setValue(this.selectedLevelId);
+      this.roleFilterForm.get('pageIndex').value *
+      this.roleFilterForm.get('pageSize').value;
     this.GetRoles();
   }
 
   sort(event: SortEvent) {
     if (
       event.order == -1 &&
-      this.roleFilterForm.value.sortOrder != SortOrder.desc
+      this.roleFilterForm.get('sortOrder').value != SortOrder.desc
     ) {
-      this.roleFilterForm.value.sortOrder = SortOrder.desc;
-      if (typeof event.field === 'string')
-        this.roleFilterForm.value.sortColumn = event.field;
+      this.roleFilterForm.patchValue({
+        sortOrder: SortOrder.desc,
+        sortColumn:
+          typeof event.field === 'string'
+            ? event.field
+            : this.roleFilterForm.get('sortColumn').value,
+      });
       this.GetRoles();
     } else if (
       event.order == 1 &&
-      this.roleFilterForm.value.sortOrder != SortOrder.asc
+      this.roleFilterForm.get('sortOrder').value != SortOrder.asc
     ) {
-      this.roleFilterForm.value.sortOrder = SortOrder.asc;
-      if (typeof event.field === 'string')
-        this.roleFilterForm.value.sortColumn = event.field;
+      this.roleFilterForm.patchValue({
+        sortOrder: SortOrder.asc,
+        sortColumn:
+          typeof event.field === 'string'
+            ? event.field
+            : this.roleFilterForm.get('sortColumn').value,
+      });
       this.GetRoles();
     }
   }
   paginate(event: any) {
     this.first = event.first;
     this.last = event.last;
-    this.roleFilterForm.value.pageIndex = event.page;
-    this.roleFilterForm.value.pageSize = event.rows;
+    this.roleFilterForm.patchValue({
+      pageIndex: event.page,
+      pageSize: event.rows,
+    });
     this.GetRoles();
   }
   delete(id: number) {}
   clearSearch() {
-    this.roleFilterForm.value.searchText = '';
+    this.roleFilterForm.patchValue({ searchText: '' });
     this.search();
   }
 

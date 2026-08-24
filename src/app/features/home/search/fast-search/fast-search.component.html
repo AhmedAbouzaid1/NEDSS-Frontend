@@ -499,6 +499,48 @@
           <div class="form-group">
             <label for="">
               {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULTCATEGORY"
+                  | translate
+              }}
+            </label>
+
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                (onChange)="setCaseResultCategoryValue()"
+                [options]="caseResultCategories"
+                [(ngModel)]="selectedCaseResultCategoryId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                formControlName="caseResultCategoryId"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                (onChange)="setCaseResultCategoryValue()"
+                [options]="caseResultCategories"
+                [(ngModel)]="selectedCaseResultCategoryId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                formControlName="caseResultCategoryId"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+          <div class="form-group">
+            <label for="">
+              {{
                 "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.FINAL_DISEASES"
                   | translate
               }}
