@@ -107,18 +107,70 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         this.handleUnauthorized();
         break;
       case error.status === 0:
-        if (!this.onLoginPage && !navigator.onLine) {
+        if (!this.onLoginPage) {
           this.toast('NEDSS.COMMON.NETWORK_ERROR', 'warn');
         }
         break;
       case error.status >= 500:
-        this.toast('NEDSS.COMMON.INTERNAL_SERVER_ERROR', 'error');
+        this.surfaceBackendMessage(error, 'NEDSS.COMMON.INTERNAL_SERVER_ERROR');
         break;
-      // 4xx (validation/forbidden/not-found) are surfaced by the calling
+      case this.isInvestigationSave(error):
+        this.surfaceBackendMessage(error, 'NEDSS.COMMON.SENT_FAILD');
+        break;
+      // Other 4xx (validation/forbidden/not-found) are surfaced by the calling
       // component, which knows the domain context — no generic toast here.
       default:
         break;
     }
+  }
+
+  private isInvestigationSave(error: HttpErrorResponse): boolean {
+    return !!error.url && error.url.includes('InvistigationForms/');
+  }
+
+  private surfaceBackendMessage(
+    error: HttpErrorResponse,
+    fallbackKey: string
+  ): void {
+    const backend = this.extractBackendMessage(error);
+    if (!backend) {
+      this.toast(fallbackKey, 'error');
+      return;
+    }
+    console.error(`[API ${error.status}] ${error.url ?? ''} — ${backend}`);
+
+    const isCode = /^[A-Za-z0-9_.]+$/.test(backend);
+    const candidate = isCode ? `NEDSS.COMMON.${backend}` : backend;
+    this.translate.get(candidate).subscribe((translated: string) => {
+      if (translated && translated !== candidate) {
+        this.userMessage.error(translated);
+      } else if (isCode) {
+        this.userMessage.error(backend);
+      } else {
+        this.toast(fallbackKey, 'error');
+      }
+    });
+  }
+
+  private extractBackendMessage(error: HttpErrorResponse): string | null {
+    const body: any = error.error;
+    if (!body) {
+      return null;
+    }
+    if (typeof body === 'string') {
+      const text = body.trim();
+      return text || null;
+    }
+    const messages = body.messages ?? body.Messages;
+    if (Array.isArray(messages) && messages.length) {
+      const first = `${messages[0] ?? ''}`.trim();
+      return first || null;
+    }
+    const single = body.message ?? body.Message;
+    if (typeof single === 'string' && single.trim()) {
+      return single.trim();
+    }
+    return null;
   }
 
   private handleUnauthorized(): void {

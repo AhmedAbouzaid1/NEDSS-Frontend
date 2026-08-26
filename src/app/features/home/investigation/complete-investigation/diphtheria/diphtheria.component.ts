@@ -327,13 +327,7 @@ export class DiphtheriaComponent implements OnInit {
                 });
             }
           },
-          (error) => {
-            this.translateService
-              .get('NEDSS.COMMON.SENT_FAILD')
-              .subscribe((res: string) => {
-                this.userMsg.error(res);
-              });
-          }
+          (error) => { }
         );
     } else {
       this.investigationService
@@ -352,13 +346,7 @@ export class DiphtheriaComponent implements OnInit {
                 });
             }
           },
-          (error) => {
-            this.translateService
-              .get('NEDSS.COMMON.SENT_FAILD')
-              .subscribe((res: string) => {
-                this.userMsg.error(res);
-              });
-          }
+          (error) => { }
       );
     }
   }

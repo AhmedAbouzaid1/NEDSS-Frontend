@@ -1031,6 +1031,17 @@ export class ZeroReportComponent {
     this.isFromDateValid = this.generalDataService.validateField(
       this.zeroInstantNotification.fromDate
     );
+    if (event.value) {
+      const from = new Date(event.value);
+      if (!isNaN(from.getTime())) {
+        const to = new Date(from);
+        to.setDate(to.getDate() + 6);
+        this.zeroInstantNotification.toDate = to;
+        this.isToDateValid = this.generalDataService.validateField(
+          this.zeroInstantNotification.toDate
+        );
+      }
+    }
   }
   toDateSelected(event) {
     this.zeroInstantNotification.toDate = event.value;

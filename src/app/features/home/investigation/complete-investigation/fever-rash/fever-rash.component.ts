@@ -565,13 +565,11 @@ export class FeverRashComponent implements OnInit {
 
     const ok = () =>
       this.translateService.get('NEDSS.COMMON.SENT_SUCESSFULLY').subscribe((r: string) => this.userMsg.success(r));
-    const fail = () =>
-      this.translateService.get('NEDSS.COMMON.SENT_FAILD').subscribe((r: string) => this.userMsg.error(r));
 
     if (payload.id != null) {
-      this.investigationService.updateFeverRash(payload).subscribe((r: any) => r && ok(), () => fail());
+      this.investigationService.updateFeverRash(payload).subscribe((r: any) => r && ok(), () => { });
     } else {
-      this.investigationService.addInvestigationFeverRash(payload).subscribe((r: any) => r && ok(), () => fail());
+      this.investigationService.addInvestigationFeverRash(payload).subscribe((r: any) => r && ok(), () => { });
     }
   }
 

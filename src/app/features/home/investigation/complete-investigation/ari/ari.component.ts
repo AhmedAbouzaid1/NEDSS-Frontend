@@ -308,7 +308,6 @@ export class AriComponent implements OnInit {
             .subscribe((resMsg: string) => this.userMsg.success(resMsg));
         },
         () => {
-          this.translateService.get('NEDSS.COMMON.SENT_FAILD').subscribe((msg: string) => this.userMsg.error(msg));
         }
       );
       return;
@@ -324,7 +323,6 @@ export class AriComponent implements OnInit {
           .subscribe((resMsg: string) => this.userMsg.success(resMsg));
       },
       () => {
-        this.translateService.get('NEDSS.COMMON.SENT_FAILD').subscribe((msg: string) => this.userMsg.error(msg));
       }
     );
   }

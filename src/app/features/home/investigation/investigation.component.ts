@@ -633,7 +633,7 @@ export class InvestigationComponent implements OnInit {
       this.notInferringFilter.sortOrder = SortOrder.desc;
       if (typeof event.field === 'string')
         this.notInferringFilter.sortColumn = event.field;
-      this.findPatient(undefined, true);
+      this.findPatient(this.investigationForm.value, true);
     } else if (
       event.order == 1 &&
       this.notInferringFilter.sortOrder != SortOrder.asc
@@ -641,7 +641,7 @@ export class InvestigationComponent implements OnInit {
       this.notInferringFilter.sortOrder = SortOrder.asc;
       if (typeof event.field === 'string')
         this.notInferringFilter.sortColumn = event.field;
-      this.findPatient(undefined, true);
+      this.findPatient(this.investigationForm.value, true);
     }
   }
 
@@ -737,7 +737,7 @@ export class InvestigationComponent implements OnInit {
     if (this.notInferringFilter.pageIndex > 0) {
       this.notInferringFilter.pageIndex--;
       this.first = this.notInferringFilter.pageIndex * this.notInferringFilter.pageSize;
-      this.findPatient(undefined, true);
+      this.findPatient(this.investigationForm.value, true);
     }
   }
 
@@ -745,7 +745,7 @@ export class InvestigationComponent implements OnInit {
     if (this.hasNextPage) {
       this.notInferringFilter.pageIndex++;
       this.first = this.notInferringFilter.pageIndex * this.notInferringFilter.pageSize;
-      this.findPatient(undefined, true);
+      this.findPatient(this.investigationForm.value, true);
     }
   }
 
@@ -753,7 +753,7 @@ export class InvestigationComponent implements OnInit {
     this.notInferringFilter.pageSize = newSize;
     this.notInferringFilter.pageIndex = 0;
     this.first = 0;
-    this.findPatient();
+    this.findPatient(this.investigationForm.value);
   }
 
   exportPatiantsAsExcel() {

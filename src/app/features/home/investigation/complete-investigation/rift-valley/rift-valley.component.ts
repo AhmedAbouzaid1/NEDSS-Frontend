@@ -97,13 +97,7 @@ export class RiftValleyComponent implements OnInit {
               this.userMsg.success(message);
             });
         },
-        () => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((message: string) => {
-              this.userMsg.error(message);
-            });
-        }
+        () => { }
       );
     } else {
       this.investigationService.addInvestigationRiftValley(this.riftValley.value).subscribe(
@@ -114,13 +108,7 @@ export class RiftValleyComponent implements OnInit {
               this.userMsg.success(message);
             });
         },
-        () => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((message: string) => {
-              this.userMsg.error(message);
-            });
-        }
+        () => { }
       );
     }
   }

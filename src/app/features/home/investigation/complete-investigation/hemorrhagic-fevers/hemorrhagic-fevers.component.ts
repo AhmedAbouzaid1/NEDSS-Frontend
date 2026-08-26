@@ -225,11 +225,6 @@ export class HemorrhagicFeversComponent implements OnInit {
           }
         }
         , (error) => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
         }
       )
     } else {
@@ -244,11 +239,6 @@ export class HemorrhagicFeversComponent implements OnInit {
           }
         }
         , (error) => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
         }
       )
     }

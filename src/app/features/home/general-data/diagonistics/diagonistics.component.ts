@@ -119,7 +119,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     itemsShowLimit: 3,
     allowSearchFilter: true,
     enableCheckAll: false,
-    limitSelection: 4,
+    limitSelection: 3,
   };
   DepartmentEnum = DepartmentEnum;
   HealthAdmins:any[] = [];
