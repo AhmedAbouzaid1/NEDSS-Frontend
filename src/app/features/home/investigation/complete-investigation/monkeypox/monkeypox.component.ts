@@ -320,13 +320,7 @@ export class MonkeypoxComponent implements OnInit {
               this.userMsg.success(res);
             });
         },
-        () => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
+        () => { }
       );
       return;
     }
@@ -343,13 +337,7 @@ export class MonkeypoxComponent implements OnInit {
             this.userMsg.success(res);
           });
       },
-      () => {
-        this.translateService
-          .get('NEDSS.COMMON.SENT_FAILD')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
+      () => { }
     );
   }
 

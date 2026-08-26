@@ -503,11 +503,6 @@ export class MalariaComponent implements OnInit {
           }
         },
         (error) => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
         }
       );
     } else {
@@ -524,11 +519,6 @@ export class MalariaComponent implements OnInit {
             }
           },
           (error) => {
-            this.translateService
-              .get('NEDSS.COMMON.SENT_FAILD')
-              .subscribe((res: string) => {
-                this.userMsg.error(res);
-              });
           }
         );
     }

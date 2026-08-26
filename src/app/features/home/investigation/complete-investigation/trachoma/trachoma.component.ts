@@ -104,9 +104,6 @@ export class TrachomaComponent implements OnInit {
         }
       },
       () => {
-        this.translateService
-          .get('NEDSS.COMMON.SENT_FAILD')
-          .subscribe((msg: string) => this.userMsg.error(msg));
       }
     );
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { InvestigationService } from 'src/app/features/home/investigation/services/investigation.service';
 
@@ -12,11 +12,22 @@ export class InvestigationPatientGuard implements CanActivate {
     private investigation: InvestigationService
   ) {}
 
-  canActivate() {
-    if (this.investigation.currentid == null) {
-      this.router.navigateByUrl('/home/investigations');
-      return of(false);
+  canActivate(route: ActivatedRouteSnapshot) {
+    const routeId = route.paramMap.get('id');
+    if (routeId) {
+      this.investigation.currentid = routeId;
+      const diseaseGroupId = route.paramMap.get('diseaseId');
+      if (diseaseGroupId) {
+        this.investigation.diseaseGroupID = Number(diseaseGroupId);
+      }
+      return of(true);
     }
-    return of(true);
+
+    if (this.investigation.currentid != null) {
+      return of(true);
+    }
+
+    this.router.navigateByUrl('/home/investigations');
+    return of(false);
   }
 }

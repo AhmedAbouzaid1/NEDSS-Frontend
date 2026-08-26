@@ -347,9 +347,7 @@ export class BloodyDiarrheaComponent implements OnInit {
           this.showMessage('NEDSS.COMMON.SENT_SUCESSFULLY', 'success');
         }
       },
-      () => {
-        this.showMessage('NEDSS.COMMON.SENT_FAILD', 'error');
-      },
+      () => { },
     );
   }
 

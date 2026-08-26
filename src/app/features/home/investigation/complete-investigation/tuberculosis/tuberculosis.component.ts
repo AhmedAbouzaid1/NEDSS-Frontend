@@ -216,9 +216,6 @@ export class TuberculosisComponent implements OnInit {
           }
         },
         () => {
-          this.translateService.get('NEDSS.COMMON.SENT_FAILD').subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
         }
       );
     } else {
@@ -236,9 +233,6 @@ export class TuberculosisComponent implements OnInit {
           }
         },
         () => {
-          this.translateService.get('NEDSS.COMMON.SENT_FAILD').subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
         }
       );
     }

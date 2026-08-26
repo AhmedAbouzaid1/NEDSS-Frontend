@@ -386,11 +386,7 @@ export class MeningealComponent implements OnInit {
           this.userMsg.success(msg);
         });
       },
-      () => {
-        this.translateService.get('NEDSS.COMMON.SENT_FAILD').subscribe((msg: string) => {
-          this.userMsg.error(msg);
-        });
-      }
+      () => { }
     );
   }
 

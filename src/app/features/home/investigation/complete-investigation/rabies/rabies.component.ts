@@ -673,13 +673,7 @@ export class RabiesComponent implements OnInit {
             this.veterinaryNotifyListOfFiles = [];
           }
         }
-        , (error) => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
+        , (error) => { }
       )
     } else {
       this.investigationService.addInvestigationRabies(payload).subscribe(
@@ -702,13 +696,7 @@ export class RabiesComponent implements OnInit {
             this.veterinaryNotifyListOfFiles = [];
           }
         }
-        , (error) => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
+        , (error) => { }
       )
     }
   }
