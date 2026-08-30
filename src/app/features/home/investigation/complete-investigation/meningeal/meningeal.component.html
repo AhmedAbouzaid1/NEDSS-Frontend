@@ -40,7 +40,7 @@
               <div class="col-lg-4"><label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_VISIT_DATE" | translate }}</label><input type="date" class="form-control" formControlName="lastVisitDate" (change)="calculateCompletionPercentage()" /></div>
               <div class="col-lg-6">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SCHOOL_GOVERNORATE" | translate }}</label>
-                <select class="form-control" formControlName="schoolGovernorate" (change)="calculateCompletionPercentage()">
+                <select class="form-control" [appDropdownLoading]="governoratesLoading" formControlName="schoolGovernorate" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of governorates" [value]="item.id">
                     {{ currentLang === 'ar' ? item.arabicName : item.englishName }}
@@ -49,7 +49,7 @@
               </div>
               <div class="col-lg-6">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SCHOOL_ADMINISTRATION_AREA" | translate }}</label>
-                <select class="form-control" formControlName="schoolAdministrationArea" (change)="calculateCompletionPercentage()">
+                <select class="form-control" [appDropdownLoading]="schoolDistrictsLoading" formControlName="schoolAdministrationArea" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of schoolDistricts" [value]="item.id">
                     {{ currentLang === 'ar' ? item.arabicName : item.englishName }}
@@ -61,7 +61,7 @@
               <div class="col-lg-4"><label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TRAVELED_ABROAD" | translate }}</label><select class="form-control" formControlName="traveledAbroad" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option *ngFor="let item of yesNoOptions" [value]="item">{{ yesNoLabel(item) }}</option></select></div>
               <div class="col-lg-4">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COUNTRY" | translate }}</label>
-                <select class="form-control" formControlName="travelDestinationCountry" (change)="calculateCompletionPercentage()">
+                <select class="form-control" [appDropdownLoading]="countriesLoading" formControlName="travelDestinationCountry" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of countries" [value]="item.id">
                     {{ currentLang === 'ar' ? item.arabicName : item.englishName }}
@@ -103,7 +103,7 @@
               <div class="col-lg-6"><label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_TRAVELED_ABROAD" | translate }}</label><select class="form-control" formControlName="contactTraveledAbroad" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option *ngFor="let item of yesNoOptions" [value]="item">{{ yesNoLabel(item) }}</option></select></div>
               <div class="col-lg-3">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COUNTRY" | translate }}</label>
-                <select class="form-control" formControlName="contactTravelCountry" (change)="calculateCompletionPercentage()">
+                <select class="form-control" [appDropdownLoading]="countriesLoading" formControlName="contactTravelCountry" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of countries" [value]="item.id">
                     {{ currentLang === 'ar' ? item.arabicName : item.englishName }}

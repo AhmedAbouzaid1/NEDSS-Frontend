@@ -67,6 +67,12 @@ export class PatientChecksComponent implements OnInit {
   selectedDiseaseId: number = -1;
 
   loadingPanel: boolean = false;
+  nationalitiesLoading: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  citiesLoading: boolean = false;
+  healthOfficesLoading: boolean = false;
+  diseasesLoading: boolean = false;
   isForeign: boolean = false;
 
   singleDropdownSettings = {};
@@ -332,6 +338,7 @@ export class PatientChecksComponent implements OnInit {
   }
 
   getNationalities() {
+    this.nationalitiesLoading = true;
     this.lookupsService.getAllNationalitys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -342,9 +349,11 @@ export class PatientChecksComponent implements OnInit {
             this.nationalities.push(nat);
           });
         }
+        this.nationalitiesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.nationalitiesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -356,6 +365,7 @@ export class PatientChecksComponent implements OnInit {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -371,9 +381,11 @@ export class PatientChecksComponent implements OnInit {
           //   this.onGovernmentChanged();
           // }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -385,6 +397,7 @@ export class PatientChecksComponent implements OnInit {
   }
 
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({ governmentID: governmentID })
       .subscribe(
@@ -402,9 +415,11 @@ export class PatientChecksComponent implements OnInit {
             //   this.onHealthAdministrationChanged();
             // }
           }
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -416,6 +431,7 @@ export class PatientChecksComponent implements OnInit {
   }
 
   getCities(governmentID: any) {
+    this.citiesLoading = true;
     this.lookupsService.getPageCitys({ governmentID: governmentID }).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -425,9 +441,11 @@ export class PatientChecksComponent implements OnInit {
           });
           this.selectedHealthOffice = -1;
         }
+        this.citiesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.citiesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -440,6 +458,7 @@ export class PatientChecksComponent implements OnInit {
 
   getHealthOffices(healthAdministrationid: any) {
     //, reportingOrResidence: 2
+    this.healthOfficesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationid,
@@ -455,9 +474,11 @@ export class PatientChecksComponent implements OnInit {
               this.healthOffices.push(nat);
             });
           }
+          this.healthOfficesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthOfficesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -469,6 +490,7 @@ export class PatientChecksComponent implements OnInit {
   }
 
   getAllDiseases() {
+    this.diseasesLoading = true;
     this.lookupsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -479,9 +501,11 @@ export class PatientChecksComponent implements OnInit {
             this.diseases.push(nat);
           });
         }
+        this.diseasesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseasesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

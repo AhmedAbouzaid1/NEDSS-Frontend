@@ -63,6 +63,16 @@ export class AddUserComponent {
   branches!: any[];
   areas!: any[];
   loadingPanel: boolean = false;
+  organizationsLoading: boolean = false;
+  levelsLoading: boolean = false;
+  governmentsLoading: boolean = false;
+  branchesLoading: boolean = false;
+  areasLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
+  rolesLoading: boolean = false;
+  positionsLoading: boolean = false;
+  departmentsLoading: boolean = false;
   imageLoaded: boolean = false;
   messageService: any;
   systemPages!: any[];
@@ -182,6 +192,7 @@ export class AddUserComponent {
     this.isEvaluationValid = this.checkEvaluationValid();
   }
   getRoles() {
+    this.rolesLoading = true;
     this.userService.getPageRoles({
       organizationId:this.user.organizationId,
       levelId:this.user.levelId
@@ -201,9 +212,11 @@ export class AddUserComponent {
             this.rolesSelected();
           }
         }
+        this.rolesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.rolesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -316,6 +329,7 @@ export class AddUserComponent {
       );
   }
   getPositions() {
+    this.positionsLoading = true;
     this.lookupsGetterService.getAllPositions().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {

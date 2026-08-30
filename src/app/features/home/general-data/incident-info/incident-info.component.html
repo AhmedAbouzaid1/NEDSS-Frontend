@@ -7,7 +7,7 @@
             {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernmentId"
+          <p-dropdown [appDropdownLoading]="governmentsLoading" (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernmentId"
             [disabled]="!activeUSerService.getAccessibleParts?.enableGovernments"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="governments" [required]="true" [filter]="true"
@@ -30,7 +30,7 @@
             {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.HEALTHADMIN" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministration"
+          <p-dropdown [appDropdownLoading]="healthAdministrationLoading" (onChange)="onHealthAdministrationChanged()" [options]="healthAdministration"
             [(ngModel)]="selectedHealthAdministrationId" [disabled]="
                 !activeUSerService.getAccessibleParts?.enableDepartments
               " [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
@@ -57,7 +57,7 @@
             }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
+          <p-dropdown [appDropdownLoading]="branchesLoading" (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
             [disabled]="!activeUSerService.getAccessibleParts?.enableUniversities"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="branches" [required]="true" [filter]="true"
@@ -78,7 +78,7 @@
             {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_BRANCH" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
+          <p-dropdown [appDropdownLoading]="branchesLoading" (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
             [disabled]="!activeUSerService.getAccessibleParts?.enableBranches"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="branches" [required]="true" [filter]="true"
@@ -99,7 +99,7 @@
             {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_AREA" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="areaSelected()" [options]="areas" [(ngModel)]="SelectedareaId"
+          <p-dropdown [appDropdownLoading]="areasLoading" (onChange)="areaSelected()" [options]="areas" [(ngModel)]="SelectedareaId"
             [disabled]="!activeUSerService.getAccessibleParts?.enableAreas"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="areas" [required]="true" [filter]="true"
@@ -122,7 +122,7 @@
             }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="onIncidentSourceChanged()" [options]="incidentSources"
+          <p-dropdown [appDropdownLoading]="incidentSourcesLoading" (onChange)="onIncidentSourceChanged()" [options]="incidentSources"
             [(ngModel)]="selectedIncidentSourceId" [disabled]="!activeUSerService.getAccessibleParts?.enableSources"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="incidentSources" [required]="true" [filter]="true"
@@ -146,6 +146,7 @@
             <span class="text-danger mess-color">*</span>
           </label>
           <p-dropdown
+            [appDropdownLoading]="departmentsLoading"
             inputId="incidentDepartment"
             (onChange)="onDepartmentChanged()"
             [options]="departments"
@@ -225,7 +226,7 @@
             <span class="text-danger mess-color">*</span>
           </label>
 
-          <p-dropdown (onChange)="onNationalityChanged()" [options]="nationalities"
+          <p-dropdown [appDropdownLoading]="nationalitiesLoading" (onChange)="onNationalityChanged()" [options]="nationalities"
             [(ngModel)]="selectedNationalityId"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="nationalities" [filter]="true"

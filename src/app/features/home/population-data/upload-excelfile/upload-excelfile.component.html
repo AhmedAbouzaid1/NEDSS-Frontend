@@ -56,7 +56,7 @@
                 </label>
                 <div>
                   <p-dropdown [(ngModel)]="selectedGovernment" (onChange)="onGovernmentChanged()" [options]="governments" [ngModelOptions]="{standalone: true}"
-                    optionValue="id" optionLabel="arabicName" [style]="{width:'100%'}" 
+                    optionValue="id" optionLabel="arabicName" [style]="{width:'100%'}" [appDropdownLoading]="governmentsLoading"
                     (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)"></p-dropdown>
                   </div>
 <!--                     
@@ -70,7 +70,7 @@
                 </div>
               <div *ngIf="currentLang== 'en'">
                 <p-dropdown [(ngModel)]="selectedGovernment" (onChange)="onGovernmentChanged()" [options]="governments" [ngModelOptions]="{standalone: true}"
-                optionValue="id" optionLabel="englishName" [style]="{width:'100%'}" 
+                optionValue="id" optionLabel="englishName" [style]="{width:'100%'}" [appDropdownLoading]="governmentsLoading"
                 (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)"></p-dropdown>
 <!-- 
                 <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
@@ -93,7 +93,7 @@
         <div >
           <!-- (change)="onHealthAdministrationChanged()" -->
           <p-dropdown [(ngModel)]="selectedHealthAdministration" [options]="healthAdministration" [ngModelOptions]="{standalone: true}"
-          optionValue="id" optionLabel="arabicName" [style]="{width:'100%'}" 
+          optionValue="id" optionLabel="arabicName" [style]="{width:'100%'}" [appDropdownLoading]="healthAdministrationLoading"
           (blur)="generalDataService.isIncidentHealthAdministrationValid = generalDataService.checkIncidentHealthAdministrationValid(selectedHealthAdministration)"></p-dropdown>
 
           <!-- <select class="form-control select2 select2-hidden-accessible" 

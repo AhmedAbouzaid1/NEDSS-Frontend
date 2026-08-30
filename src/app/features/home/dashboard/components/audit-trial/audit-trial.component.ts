@@ -7,6 +7,7 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { SharedDataService } from '../../../general-data/services/shared-data.service';
 import { SysAuditService } from './Services/sys-audit.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-audit-trial',
@@ -33,6 +34,8 @@ export class AuditTrialComponent {
   };
   noData: boolean = true;
   loadingPanel: boolean = false;
+  usersLoading: boolean = false;
+  sysPagesLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -59,7 +62,11 @@ export class AuditTrialComponent {
     this.getAllPages();
   }
   getUser() {
-    this.sysAuditService.getAllUsers({}).subscribe(
+    this.usersLoading = true;
+    this.sysAuditService
+      .getAllUsers({})
+      .pipe(finalize(() => (this.usersLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.users = result.data;
@@ -78,8 +85,10 @@ export class AuditTrialComponent {
   }
 
   getAllPages() {
+    this.sysPagesLoading = true;
     this.sysAuditService
       .getAllPages()
+      .pipe(finalize(() => (this.sysPagesLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {

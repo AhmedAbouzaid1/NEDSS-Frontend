@@ -41,6 +41,7 @@ export class DeviceTypeComponent {
   };
   noData: boolean = true;
   loadingPanel: boolean = false;
+  deviceCategorysLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -73,15 +74,18 @@ export class DeviceTypeComponent {
   }
 
   getDeviceCategorys() {
+    this.deviceCategorysLoading = true;
     this.deviceTypeService.getAllDeviceCategorys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.deviceCategorys = result.data;
         }
         this.loadingPanel = false;
+        this.deviceCategorysLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.deviceCategorysLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {

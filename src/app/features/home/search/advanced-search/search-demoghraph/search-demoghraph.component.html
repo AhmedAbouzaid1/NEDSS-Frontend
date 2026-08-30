@@ -83,13 +83,13 @@
                 {{ item.arabicName }}
               </option>
             </select> -->
-            <p-dropdown (onChange)="setValue()" [options]="nationalities" [(ngModel)]="national"
+            <p-dropdown (onChange)="setValue()" [appDropdownLoading]="nationalitiesLoading" [options]="nationalities" [(ngModel)]="national"
               optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
               name="nationalities" [filter]="true" filterBy="arabicName">
             </p-dropdown>
           </div>
           <div *ngIf="currentLang == 'en'">
-            <p-dropdown (onChange)="setValue()" [options]="nationalities" [(ngModel)]="national"
+            <p-dropdown (onChange)="setValue()" [appDropdownLoading]="nationalitiesLoading" [options]="nationalities" [(ngModel)]="national"
               optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
               name="nationalities" [filter]="true" filterBy="englishName">
             </p-dropdown>
@@ -239,7 +239,7 @@
           <label for="" class="form-label">
             {{ "NEDSS.SEARCH.JOB_CATEGORY" | translate }}
           </label>
-          <select name="" id="" class="w-100" pInputText [(ngModel)]="patient.patientJobName">
+          <select name="" id="" class="w-100" pInputText [appDropdownLoading]="jobsLoading" [(ngModel)]="patient.patientJobName">
             <option *ngFor="let job of jobs" [value]="job.id">
               {{ job.arabicName }}
             </option>

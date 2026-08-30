@@ -41,6 +41,7 @@ export class PrincipalityComponent {
   };
   noData: boolean = true;
   loadingPanel: boolean = false;
+  healthOfficesLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -73,15 +74,18 @@ export class PrincipalityComponent {
   }
 
   gethealthOffices() {
+    this.healthOfficesLoading = true;
     this.principalityService.getAllCitys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.healthOffices = result.data;
         }
         this.loadingPanel = false;
+        this.healthOfficesLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.healthOfficesLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {

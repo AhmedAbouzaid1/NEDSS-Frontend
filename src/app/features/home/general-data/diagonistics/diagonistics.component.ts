@@ -8,7 +8,7 @@ import { SharedDataService } from '../services/shared-data.service';
 import { DiseaseSpecialSymptomsService } from '../../dashboard/components/disease-special-symptoms/services/disease-special-symptoms.service';
 import { GeneralDataService } from '../services/general-data.service';
 import { map, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { DepartmentEnum } from '../models/department-enum';
 
 @Component({
@@ -87,6 +87,10 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   selectedSpecialLabId: number = -1;
 
   loadingPanel: boolean = false;
+  finalResultsLoading: boolean = false;
+  transferGovernmentsLoading: boolean = false;
+  healthAdminsLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
   /** Inline loading for special-lab cascade (new patient has no id — full-screen loader is not tied to these calls). */
   loadingSpecialGovernments = false;
   loadingSpecialHealthAdmins = false;
@@ -565,12 +569,15 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
    * swallow this subscription. Falls back to user-scoped list if the full list is empty.
    */
   private fetchGovernorateOptionsForTransfer(phase: 'primary' | 'userScoped'): void {
+    this.transferGovernmentsLoading = true;
     const request$ =
       phase === 'primary'
         ? this.lookupsService.getAllGovernmentsExplicit(false, 'diag-transfer')
         : this.lookupsService.getAllGovernmentsForUser(true);
 
-    request$.subscribe(
+    request$
+      .pipe(finalize(() => (this.transferGovernmentsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           const raw = this.extractGovernanceRows(result);
@@ -661,7 +668,11 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     );
   }
   getFinalResults() {
-    this.lookupsService.getAllFinalResults().subscribe(
+    this.finalResultsLoading = true;
+    this.lookupsService
+      .getAllFinalResults()
+      .pipe(finalize(() => (this.finalResultsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.finalResuls = [
@@ -703,11 +714,13 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       this.HealthAdmins = [];
       return;
     }
+    this.healthAdminsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({
         governmentID: govId,
         forSystemUser: false,
       })
+      .pipe(finalize(() => (this.healthAdminsLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
@@ -747,6 +760,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   }
   
   getIncidentSources(healthAdministrationID: any, preserveSelection = false) {
+    this.incidentSourcesLoading = true;
     (!this.isPatientTransfered ?
       this.lookupsService
         .getPageIncidentSourceHospitals({
@@ -766,6 +780,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
           return res;
         }))
     )
+      .pipe(finalize(() => (this.incidentSourcesLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {

@@ -9,6 +9,7 @@ import { ExportService } from '../../../../../../core/services/export.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Organiztion } from 'src/app/features/home/chat/Models/organiztion';
 import { Result } from 'src/app/features/Result';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users-roles-index',
@@ -49,8 +50,10 @@ export class UsersRolesIndexComponent {
   @ViewChild('myTableElementId', { static: false }) tableElement: ElementRef;
   screenName: string;
   organizations: any[] = [];
+  organizationsLoading: boolean = false;
   selectedOrganizationId:number = null;
   levels: any[] = [];
+  levelsLoading: boolean = false;
   selectedLevelId:number[] = [];
   constructor(
     private lookupsService: LookupsGetterService,
@@ -213,7 +216,10 @@ export class UsersRolesIndexComponent {
   }
 
   getOrganizations() {
-    this.lookupsService.getAllOrganizations().subscribe({
+    this.organizationsLoading = true;
+    this.lookupsService.getAllOrganizations()
+      .pipe(finalize(() => (this.organizationsLoading = false)))
+      .subscribe({
       next: (response: Result<Organiztion[]>) => {
         let selectionObject = {
           id: null,
@@ -249,7 +255,10 @@ export class UsersRolesIndexComponent {
   }
 
   getLevels(){
-    this.lookupsService.getAllLevels(this.selectedOrganizationId).subscribe({
+    this.levelsLoading = true;
+    this.lookupsService.getAllLevels(this.selectedOrganizationId)
+      .pipe(finalize(() => (this.levelsLoading = false)))
+      .subscribe({
       next: (response: any) => {
         // let selectionObject = {
         //   id: null,

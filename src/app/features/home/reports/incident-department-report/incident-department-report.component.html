@@ -33,6 +33,7 @@
         </label>
         <div *ngIf="currentLang== 'ar'">
           <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
+            [appDropdownLoading]="governmentsLoading"
             [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             [disabled]="this.levelId!=1"
             (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)">
@@ -43,6 +44,7 @@
         </div>
         <div *ngIf="currentLang== 'en'">
           <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
+            [appDropdownLoading]="governmentsLoading"
             [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             [disabled]="this.levelId!=1"
             (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)">
@@ -61,6 +63,7 @@
         </label>
         <div *ngIf="currentLang== 'ar'">
           <select class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
+            [appDropdownLoading]="healthAdministrationLoading"
             [(ngModel)]="selectedHealthAdministration" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             (blur)="generalDataService.isIncidentHealthAdministrationValid = generalDataService.checkIncidentHealthAdministrationValid(selectedHealthAdministration)"
             [disabled]="this.levelId!=1 && this.levelId!=2">
@@ -71,6 +74,7 @@
         </div>
         <div *ngIf="currentLang== 'en'">
           <select class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
+            [appDropdownLoading]="healthAdministrationLoading"
             [(ngModel)]="selectedHealthAdministration" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             (blur)="generalDataService.isIncidentHealthAdministrationValid = generalDataService.checkIncidentHealthAdministrationValid(selectedHealthAdministration)"
             [disabled]="this.levelId!=1 && this.levelId!=2">
@@ -91,6 +95,7 @@
           <span class="text-danger">*</span>
         </label>
         <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="incidentSources"
+          [appDropdownLoading]="incidentSourcesLoading"
           [(ngModel)]="selectedIncidentSource" [disabled]="this.levelId!=1 && this.levelId!=2 && this.levelId!=3">
         </ng-multiselect-dropdown>
       </div>
@@ -101,7 +106,7 @@
     <div class="col-lg-3">
       <div class="form-group">
         <label for="">{{ "NEDSS.REPORTS.Diseases" | translate }} </label>
-        <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="diseases" [(ngModel)]="selectedDiseases">
+        <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="diseases" [appDropdownLoading]="diseasesLoading" [(ngModel)]="selectedDiseases">
         </ng-multiselect-dropdown>
       </div>
     </div>
@@ -112,6 +117,7 @@
           <span class="text-danger">*</span>
         </label>
         <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="departments"
+          [appDropdownLoading]="departmentsLoading"
           [(ngModel)]="selectedDepartment">
         </ng-multiselect-dropdown>
       </div>
@@ -155,6 +161,7 @@
             {{ "NEDSS.EVENTS.CASE_CATEGORY" | translate }}
           </label>
           <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="Categories"
+            [appDropdownLoading]="categoriesLoading"
             [(ngModel)]="selectedCaseCategory">
           </ng-multiselect-dropdown>
         </div>
@@ -192,6 +199,7 @@
             }}
           </label>
           <ng-multiselect-dropdown id="diseaseSelect" [settings]="multipleDropdownSettings" [data]="diseases"
+            [appDropdownLoading]="diseasesLoading"
             [(ngModel)]="StartselectedDiseases">
           </ng-multiselect-dropdown>
         </div>
@@ -200,6 +208,7 @@
         <div class="form-group">
           <label for="finalResultSelect">{{ "NEDSS.REPORTS.TheFinalDiagnosis" | translate }}</label>
           <ng-multiselect-dropdown id="finalResultSelect" [settings]="multipleDropdownSettings" [data]="diseases"
+            [appDropdownLoading]="diseasesLoading"
             [(ngModel)]="EndselectedDiseases">
           </ng-multiselect-dropdown>
         </div>

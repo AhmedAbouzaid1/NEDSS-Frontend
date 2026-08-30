@@ -72,7 +72,7 @@
             <span class="text-danger">*</span>
           </label>
           <div *ngIf="currentLang== 'ar'">
-            <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
+            <select [appDropdownLoading]="governmentsLoading" class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
               tabindex="-1" [(ngModel)]="selectedGovernment" aria-hidden="true" [disabled]="this.levelId!=1"
               [ngModelOptions]="{standalone: true}">
               <option value="item.id" *ngFor="let item of governments" [ngValue]="item.id"
@@ -83,7 +83,7 @@
             </select>
           </div>
           <div *ngIf="currentLang== 'en'">
-            <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
+            <select [appDropdownLoading]="governmentsLoading" class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
               tabindex="-1" [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
               [disabled]="this.levelId!=1">
               <option value="item.id" *ngFor="let item of governments" [ngValue]="item.id"

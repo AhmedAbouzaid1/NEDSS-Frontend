@@ -50,6 +50,7 @@ export class CaseResultCategoryComponent implements OnInit {
   };
   governments: any;
   loadingPanel: boolean;
+  governmentsLoading: boolean = false;
   selectedGovernment: number = -1;
   healthAdministration: any;
   selectedHealthAdministration: any;
@@ -177,6 +178,7 @@ export class CaseResultCategoryComponent implements OnInit {
     }
   }
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookUpsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -193,9 +195,11 @@ export class CaseResultCategoryComponent implements OnInit {
             }
           }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

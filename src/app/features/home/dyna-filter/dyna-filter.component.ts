@@ -23,6 +23,8 @@ export class DynaFilterComponent implements OnInit {
   gBValues: any[] = [];
   arr = Array;
   groupBy: GroupBy;
+  govsLoading = false;
+  diseasesLoading = false;
 
   homeGovIDs: number = 0;
 
@@ -50,17 +52,19 @@ export class DynaFilterComponent implements OnInit {
     this.gBValues = Object.values(GroupBy).splice(0, this.gBLength / 2);
   }
   loadGovs() {
+    this.govsLoading = true;
     this.lookUpService.getAllGovernments().subscribe({
       next: (result: Result<GovernmentDTO[]>) => { this.govs = result.data },
-      error: (err) => { console.error(err) },
-      complete: () => { }
+      error: (err) => { this.govsLoading = false; console.error(err) },
+      complete: () => { this.govsLoading = false; }
     })
   }
   loadDiseases() {
+    this.diseasesLoading = true;
     this.lookUpService.getAllDiseases().subscribe({
       next: (result: Result<DiseaseDTO[]>) => { this.diseases = result.data },
-      error: (err) => { console.error(err) },
-      complete: () => { }
+      error: (err) => { this.diseasesLoading = false; console.error(err) },
+      complete: () => { this.diseasesLoading = false; }
     })
   }
   SetHomeGovernments(event) {

@@ -132,6 +132,19 @@ export class EventsComponent {
   caseResultCategory: any;
   DiseasiesCat: any;
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
+  citiesLoading: boolean = false;
+  healthOfficesLoading: boolean = false;
+  diseasesLoading: boolean = false;
+  diseaseCategoriesLoading: boolean = false;
+  caseCategoriesLoading: boolean = false;
+  eventsLoading: boolean = false;
+  primaryDiseasesLoading: boolean = false;
+  addHealthAdministrationsLoading: boolean = false;
+  addIncidentSourcesLoading: boolean = false;
+  branchesLoading: boolean = false;
+  areasLoading: boolean = false;
   generalReportForm: FormGroup;
   relations = Relations;
   healthAdministration: any;
@@ -917,6 +930,7 @@ export class EventsComponent {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernmentsForUser(true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -950,9 +964,11 @@ export class EventsComponent {
           ];
           this.governmentSelected(false);
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -964,6 +980,7 @@ export class EventsComponent {
   }
 
   getHealthAdministration(currentGovernmentId?: number) {
+    this.healthAdministrationLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({
         governmentID:
@@ -993,9 +1010,11 @@ export class EventsComponent {
             }
           }, 500);
 
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1007,6 +1026,7 @@ export class EventsComponent {
   }
 
   getCaseCategories() {
+    this.caseCategoriesLoading = true;
     this.lookupsService.getAllCaseResultCategorys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -1017,9 +1037,11 @@ export class EventsComponent {
             this.Categories.push(nat);
           });
         }
+        this.caseCategoriesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.caseCategoriesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1031,14 +1053,17 @@ export class EventsComponent {
   }
 
   getAllDiseases() {
+    this.diseasesLoading = true;
     this.lookupsService.getAllDiseases().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.Diseasies = result.data;
         }
+        this.diseasesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseasesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1050,6 +1075,7 @@ export class EventsComponent {
   }
 
   getAllDiseaseCategorys() {
+    this.diseaseCategoriesLoading = true;
     this.lookupsService.getAllDiseaseCategorys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -1060,9 +1086,11 @@ export class EventsComponent {
             this.DiseasiesCategoris.push(nat);
           });
         }
+        this.diseaseCategoriesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseaseCategoriesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1074,6 +1102,7 @@ export class EventsComponent {
   }
 
   getHealthOffice() {
+    this.healthOfficesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID:
@@ -1090,9 +1119,11 @@ export class EventsComponent {
               this.healthOfficcies.push(nat);
             });
           }
+          this.healthOfficesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthOfficesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1104,6 +1135,7 @@ export class EventsComponent {
   }
 
   gethomeCity() {
+    this.citiesLoading = true;
     this.lookupsService
       .getPageCitys({
         governmentID: this.generalReportForm.value.homeGovernmentId,
@@ -1118,9 +1150,11 @@ export class EventsComponent {
               this.cities.push(nat);
             });
           }
+          this.citiesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.citiesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1305,6 +1339,7 @@ export class EventsComponent {
 
   EventsShow() {
     this.notadded = [];
+    this.eventsLoading = true;
     this.eventService.getAll({}).subscribe((res: any) => {
       if (res != null) {
         this.EventShow = res.data;
@@ -1313,6 +1348,9 @@ export class EventsComponent {
           this.AlreadyExist = false;
         }
       }
+      this.eventsLoading = false;
+    }, () => {
+      this.eventsLoading = false;
     });
   }
 
@@ -1874,6 +1912,7 @@ export class EventsComponent {
 
   //HealthAdministration
   getHealthAdministrationByGovernment(addSelectedgovernment?: any) {
+    this.addHealthAdministrationsLoading = true;
     this.lookupsService
       .getHealthAdministrationsByGovernmentsIds(addSelectedgovernment)
       .subscribe(
@@ -1899,9 +1938,11 @@ export class EventsComponent {
               this.addhealthAdministrationId = -1;
             }
           }
+          this.addHealthAdministrationsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.addHealthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1946,6 +1987,7 @@ export class EventsComponent {
 
   //IncidentSource
   getIncidentSourceHospitalsByGovernment() {
+    this.addIncidentSourcesLoading = true;
     this.lookupsService
       .getIncidentSourceHospitalsByGovernmentsIds({
         governmentsIds: this.eventCheckResult?.displayHealthAdministrations
@@ -1982,9 +2024,11 @@ export class EventsComponent {
                 .incidentSourceId,
             ];
           }
+          this.addIncidentSourcesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.addIncidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -2021,6 +2065,7 @@ export class EventsComponent {
 
   //Branches
   getBranches() {
+    this.branchesLoading = true;
     this.lookupsGetterService.getAllBranches(this.organizationId).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -2042,8 +2087,10 @@ export class EventsComponent {
           );
           this.onBranchEventChanged();
         }
+        this.branchesLoading = false;
       },
       (error) => {
+        this.branchesLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {
@@ -2083,6 +2130,7 @@ export class EventsComponent {
 
   //Area
   getAreasByBranch(addSelectedBranch?: any) {
+    this.areasLoading = true;
     this.lookupsService.getAreasByBranches(addSelectedBranch).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -2104,8 +2152,10 @@ export class EventsComponent {
           );
           this.onAreaEventChanged();
         }
+        this.areasLoading = false;
       },
       (error) => {
+        this.areasLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {
@@ -2209,6 +2259,7 @@ export class EventsComponent {
   }
 
   getPrimaryDiagnosis() {
+    this.primaryDiseasesLoading = true;
     this.lookupsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -2219,8 +2270,10 @@ export class EventsComponent {
             this.primaryDiseases.push(nat);
           });
         }
+        this.primaryDiseasesLoading = false;
       },
       (error) => {
+        this.primaryDiseasesLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {

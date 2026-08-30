@@ -26,7 +26,7 @@ import { NationalityEnum } from '../models/nationality-enum';
 import { DepartmentEnum } from '../models/department-enum';
 import { RelativeEnum } from '../models/relative-enum';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-incident-info',
   templateUrl: './incident-info.component.html',
@@ -82,6 +82,13 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
 
   relations = Relations;
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
+  departmentsLoading: boolean = false;
+  nationalitiesLoading: boolean = false;
+  branchesLoading: boolean = false;
+  areasLoading: boolean = false;
   isForeign: boolean = false;
   currentLang: string = 'ar';
   singleDropdownSettings = {};
@@ -416,7 +423,11 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
   }
 
   getBranches() {
-    this.lookupsService.getAllBranches(this.organizationId).subscribe(
+    this.branchesLoading = true;
+    this.lookupsService
+      .getAllBranches(this.organizationId)
+      .pipe(finalize(() => (this.branchesLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.branches = result.data;
@@ -457,7 +468,11 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
   }
 
   getAreas() {
-    this.lookupsService.getAllAreas(this.SelectedbranchId).subscribe(
+    this.areasLoading = true;
+    this.lookupsService
+      .getAllAreas(this.SelectedbranchId)
+      .pipe(finalize(() => (this.areasLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.areas = result.data;
@@ -630,7 +645,11 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
   }
 
   getNationalities() {
-    this.lookupsService.getAllNationalitys().subscribe(
+    this.nationalitiesLoading = true;
+    this.lookupsService
+      .getAllNationalitys()
+      .pipe(finalize(() => (this.nationalitiesLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.nationalities = [
@@ -663,6 +682,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
     allowUserScopeFallback: boolean,
   ): void {
     if (result == null || result === undefined) {
+      this.governmentsLoading = false;
       this.loadingPanel = false;
       return;
     }
@@ -677,6 +697,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
       this.lookupsService.getAllGovernmentsForUser(true).subscribe(
         (r2) => this.applyIncidentGovernmentsFromApi(r2, false),
         () => {
+          this.governmentsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -719,16 +740,19 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
         this.onGovernmentChanged();
       }
     });
+    this.governmentsLoading = false;
     this.loadingPanel = false;
     this.maybeHydrateIncidentLocationFromPatient();
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernmentsExplicit(false, 'incident-gov').subscribe(
       (result: any) => {
         this.applyIncidentGovernmentsFromApi(result, true);
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -742,10 +766,12 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
     if (governmentID != null && governmentID != -1) {
       // this.Delay();
       this.loadingPanel = true;
+      this.healthAdministrationLoading = true;
       this.lookupsService
         .getPageHealthAdministrations({
           governmentID: governmentID,
         })
+        .pipe(finalize(() => (this.healthAdministrationLoading = false)))
         .subscribe(
           (result: any) => {
             if (result != null && result != undefined) {
@@ -793,6 +819,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
       this.toPositiveInt(healthAdministrationID) ??
       this.toPositiveInt(this.selectedHealthAdministrationId) ??
       -1;
+    this.incidentSourcesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: resolvedHealthAdminId,
@@ -803,6 +830,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
         governmentID: governmentID,
         forSystemUser: governmentID ? true : null,
       })
+      .pipe(finalize(() => (this.incidentSourcesLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
@@ -860,7 +888,11 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
       );
   }
   getDepartments() {
-    this.lookupsService.getAllDepartments().subscribe(
+    this.departmentsLoading = true;
+    this.lookupsService
+      .getAllDepartments()
+      .pipe(finalize(() => (this.departmentsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           const raw = this.extractApiDataArray(result);

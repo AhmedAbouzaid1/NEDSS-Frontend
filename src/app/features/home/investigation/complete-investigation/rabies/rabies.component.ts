@@ -30,6 +30,10 @@ export class RabiesComponent implements OnInit {
   incidentHealthAdministrations: any[] = [];
   incidentHealthOffices: any[] = [];
 
+  incidentGovernmentsLoading: boolean = false;
+  incidentHealthAdministrationsLoading: boolean = false;
+  incidentHealthOfficesLoading: boolean = false;
+
   private readonly maxRabiesAttachmentFiles = 3;
   bittenPersonsFileList: File[] = [];
   bittenPersonsListOfFiles: string[] = [];
@@ -317,8 +321,10 @@ export class RabiesComponent implements OnInit {
   }
 
   prefillIncidentLocationDropdowns(): void {
+    this.incidentGovernmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe({
       next: (result: any) => {
+        this.incidentGovernmentsLoading = false;
         this.incidentGovernments = this.withIncidentSelectOption(result?.data);
         const govId = this.rabiesForm.get('incidentGovernmentId')?.value;
         if (govId != null && govId > 0) {
@@ -336,6 +342,7 @@ export class RabiesComponent implements OnInit {
         }
       },
       error: () => {
+        this.incidentGovernmentsLoading = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((msg: string) => {
           this.userMsg.error(msg);
         });
@@ -344,8 +351,10 @@ export class RabiesComponent implements OnInit {
   }
 
   private fetchIncidentHealthAdministrations(governmentId: number, done?: () => void): void {
+    this.incidentHealthAdministrationsLoading = true;
     this.lookupsService.getPageHealthAdministrations({ governmentID: governmentId }).subscribe({
       next: (result: any) => {
+        this.incidentHealthAdministrationsLoading = false;
         this.incidentHealthAdministrations = this.withIncidentSelectOption(result?.data);
         setTimeout(() => {
           if (this.restoreIncidentAdminId != null) {
@@ -359,6 +368,7 @@ export class RabiesComponent implements OnInit {
         }, 0);
       },
       error: () => {
+        this.incidentHealthAdministrationsLoading = false;
         this.incidentHealthAdministrations = this.withIncidentSelectOption([]);
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((msg: string) => {
           this.userMsg.error(msg);
@@ -368,6 +378,7 @@ export class RabiesComponent implements OnInit {
   }
 
   private fetchIncidentHealthOffices(healthAdministrationId: number): void {
+    this.incidentHealthOfficesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationId,
@@ -375,6 +386,7 @@ export class RabiesComponent implements OnInit {
       })
       .subscribe({
         next: (result: any) => {
+          this.incidentHealthOfficesLoading = false;
           this.incidentHealthOffices = this.withIncidentSelectOption(result?.data);
           setTimeout(() => {
             if (this.restoreIncidentOfficeId != null) {
@@ -387,6 +399,7 @@ export class RabiesComponent implements OnInit {
           }, 0);
         },
         error: () => {
+          this.incidentHealthOfficesLoading = false;
           this.incidentHealthOffices = this.withIncidentSelectOption([]);
           this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((msg: string) => {
             this.userMsg.error(msg);

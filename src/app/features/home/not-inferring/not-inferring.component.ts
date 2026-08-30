@@ -87,6 +87,9 @@ export class NotInferringComponent {
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
   levelId: any;
   patientId: any = null;
+  governmentsLoading = false;
+  healthAdministrationsLoading = false;
+  incidentSourcesLoading = false;
 
   constructor(
     private lookupsGetterService: LookupsGetterService,
@@ -236,6 +239,7 @@ export class NotInferringComponent {
   }
 
   getGovernment() {
+    this.governmentsLoading = true;
     this.lookupsGetterService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -256,9 +260,11 @@ export class NotInferringComponent {
             }
           }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -289,6 +295,7 @@ export class NotInferringComponent {
   }
 
   getHealthAdministrations(governmentID: any) {
+    this.healthAdministrationsLoading = true;
     this.lookupsGetterService
       .getPageHealthAdministrations({
         governmentID: governmentID,
@@ -313,9 +320,11 @@ export class NotInferringComponent {
               }
             }, 200);
           }
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -350,6 +359,7 @@ export class NotInferringComponent {
     this.notInferringFilter.incidentSourceId = null;
   }
   getIncidentSources(healthAdministrationID: any) {
+    this.incidentSourcesLoading = true;
     this.lookupsGetterService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationID,
@@ -375,9 +385,11 @@ export class NotInferringComponent {
             }, 200);
           }
 
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

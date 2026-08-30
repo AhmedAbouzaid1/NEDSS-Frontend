@@ -16,6 +16,7 @@ import { AttachemntNamePipe } from '../Pipes/attachemnt-name.pipe';
 import { NoFutureDateDirective } from './directives/no-future-date.directive';
 import { ClearInvalidMinDateDirective } from './directives/clear-invalid-min-date.directive';
 import { ScrollIntoViewOnResultsDirective } from './directives/scroll-into-view-on-results.directive';
+import { DropdownLoadingDirective } from './directives/dropdown-loading.directive';
 @NgModule({
   declarations: [
     PageLoadingComponent,
@@ -31,6 +32,7 @@ import { ScrollIntoViewOnResultsDirective } from './directives/scroll-into-view-
     NoFutureDateDirective,
     ClearInvalidMinDateDirective,
     ScrollIntoViewOnResultsDirective,
+    DropdownLoadingDirective,
   ],
   imports: [CommonModule, SidebarModule, TranslateModule, ReactiveFormsModule, FormsModule],
   exports: [
@@ -46,6 +48,7 @@ import { ScrollIntoViewOnResultsDirective } from './directives/scroll-into-view-
     NoFutureDateDirective,
     ClearInvalidMinDateDirective,
     ScrollIntoViewOnResultsDirective,
+    DropdownLoadingDirective,
   ],
 })
 export class SharedModule { }

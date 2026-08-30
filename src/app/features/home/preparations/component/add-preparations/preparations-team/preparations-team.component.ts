@@ -60,6 +60,7 @@ export class PreparationsTeamComponent {
   singleDropdownSettings = SingleDropdownSettings;
   noData: boolean = true;
   loadingPanel: boolean = false;
+  unitResponsibilityLevelsLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -104,8 +105,10 @@ export class PreparationsTeamComponent {
     this.generalDataService.cardIdValidationMessage = '';
   }
   getAllUnitResponsibilityLevels() {
+    this.unitResponsibilityLevelsLoading = true;
     this.lookupsGetterService.getAllUnitResponsibilityLevels().subscribe(
       (result: any) => {
+        this.unitResponsibilityLevelsLoading = false;
         if (result != null && result != undefined) {
           this.unitResponsibilityLevels = result.data;
           this.unitResponsibilityLevels.unshift(
@@ -121,6 +124,7 @@ export class PreparationsTeamComponent {
         this.loadingPanel = false;
       },
       (error) => {
+        this.unitResponsibilityLevelsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

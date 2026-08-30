@@ -82,6 +82,11 @@ export class DashBoardControlersComponent implements OnInit {
     enableCheckAll: false,
   };
   loadingPanel: boolean;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
+  organizationsLoading: boolean = false;
+  usersLoading: boolean = false;
   governments!: any[];
   selectedGovernment: any[];
   incidentSources!: any[];
@@ -159,15 +164,18 @@ export class DashBoardControlersComponent implements OnInit {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.deviceCategoryService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.governments = result.data;
         }
         this.loadingPanel = false;
+        this.governmentsLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.governmentsLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {
@@ -177,6 +185,7 @@ export class DashBoardControlersComponent implements OnInit {
     );
   }
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.deviceCategoryService
       .getPageHealthAdministrations({ governmentID: governmentID })
       .subscribe(
@@ -185,9 +194,11 @@ export class DashBoardControlersComponent implements OnInit {
             this.healthAdministration = result.data;
           }
           this.loadingPanel = false;
+          this.healthAdministrationLoading = false;
         },
         (error) => {
           this.loadingPanel = false;
+          this.healthAdministrationLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -197,6 +208,7 @@ export class DashBoardControlersComponent implements OnInit {
       );
   }
   getIncidentSources(healthAdministrationID: any) {
+    this.incidentSourcesLoading = true;
     this.deviceCategoryService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationID,
@@ -208,9 +220,11 @@ export class DashBoardControlersComponent implements OnInit {
             this.incidentSources = result.data;
           }
           this.loadingPanel = false;
+          this.incidentSourcesLoading = false;
         },
         (error) => {
           this.loadingPanel = false;
+          this.incidentSourcesLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -236,15 +250,18 @@ export class DashBoardControlersComponent implements OnInit {
     }
   }
   getOrganization() {
+    this.organizationsLoading = true;
     this.deviceCategoryService.getAllOrganizations().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.organizations = result.data;
         }
         this.loadingPanel = false;
+        this.organizationsLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.organizationsLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {
@@ -426,11 +443,14 @@ export class DashBoardControlersComponent implements OnInit {
       this.userFilter.incidentSourceId = this.selectedIncidentSource[0].id;
     }
 
+    this.usersLoading = true;
     this.deviceCategoryService.getPageUsers(this.userFilter).subscribe(
       (result: any) => {
         this.users = result.data;
+        this.usersLoading = false;
       },
       (error) => {
+        this.usersLoading = false;
         console.log(error);
       }
     );

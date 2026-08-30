@@ -55,6 +55,7 @@ export class HealthAdministrationReportComponent implements OnInit {
     elementIdOrContent: this.currentConfig, // the id of html/table element
   };
   governments: any;
+  governmentsLoading: boolean = false;
   loadingPanel: boolean;
   selectedGovernment: number = -1;
   healthAdministration: any[];
@@ -231,6 +232,7 @@ export class HealthAdministrationReportComponent implements OnInit {
     }
   }
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookUpsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -247,9 +249,11 @@ export class HealthAdministrationReportComponent implements OnInit {
             }
           }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

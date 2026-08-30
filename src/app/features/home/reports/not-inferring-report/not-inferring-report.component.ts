@@ -65,6 +65,8 @@ export class NotInferringReportComponent implements OnInit {
   };
   governments: any;
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
   healthAdministration: any;
   selectedhealthAdministration: any;
   ids: string = '';
@@ -283,6 +285,7 @@ export class NotInferringReportComponent implements OnInit {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsGetterService.getAllGovernmentsForUser(true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -293,9 +296,11 @@ export class NotInferringReportComponent implements OnInit {
             englishName: 'Select',
           });
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -314,6 +319,7 @@ export class NotInferringReportComponent implements OnInit {
   }
 
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookUpsService
       .getPageHealthAdministrations({
         GovernmentID: governmentID,
@@ -329,9 +335,11 @@ export class NotInferringReportComponent implements OnInit {
               englishName: 'Select',
             });
           }
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

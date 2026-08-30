@@ -46,6 +46,8 @@ export class PreparationsDevicesComponent {
   };
   noData: boolean = true;
   loadingPanel: boolean = false;
+  deviceCategorysLoading: boolean = false;
+  deviceTypesLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -80,8 +82,10 @@ export class PreparationsDevicesComponent {
     });
   }
   getAllDeviceCategorys() {
+    this.deviceCategorysLoading = true;
     this.lookupsGetterService.getAllDeviceCategorys().subscribe(
       (result: any) => {
+        this.deviceCategorysLoading = false;
         if (result != null && result != undefined) {
           this.deviceCategorys = result.data;
           // Add an option at the beginning of the list
@@ -98,6 +102,7 @@ export class PreparationsDevicesComponent {
         this.loadingPanel = false;
       },
       (error) => {
+        this.deviceCategorysLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -118,16 +123,19 @@ export class PreparationsDevicesComponent {
   }
 
   getAllDeviceTypes(deviceCategoryId) {
+    this.deviceTypesLoading = true;
     this.lookupsGetterService.getPageDeviceTypes({
       deviceCategoryId: deviceCategoryId
     }).subscribe(
       (result: any) => {
+        this.deviceTypesLoading = false;
         if (result != null && result != undefined) {
           this.deviceTypes = result.data;
         }
         this.loadingPanel = false;
       },
       (error) => {
+        this.deviceTypesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

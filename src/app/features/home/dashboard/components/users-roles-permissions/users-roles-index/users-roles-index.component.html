@@ -52,19 +52,21 @@
             <div class="col-lg-6">
                 <label class="col-md-2">{{'NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ORGANIZATIONS' | translate }}</label>
                 <div *ngIf="currentLang == 'ar'">
-                    <p-dropdown 
-                        [options]="organizations" 
+                    <p-dropdown
+                        [options]="organizations"
                         optionLabel="arabicName"
                         (onChange)="onOrganizationChange($event)"
-                        [style]="{ width:'100%' }">
+                        [style]="{ width:'100%' }"
+                        [appDropdownLoading]="organizationsLoading">
                     </p-dropdown>
                 </div>
                 <div *ngIf="currentLang == 'en'">
-                    <p-dropdown 
-                        [options]="organizations" 
+                    <p-dropdown
+                        [options]="organizations"
                         optionLabel="englishName"
                         (onChange)="onOrganizationChange($event)"
-                        [style]="{ width:'100%' }">
+                        [style]="{ width:'100%' }"
+                        [appDropdownLoading]="organizationsLoading">
                     </p-dropdown>
                 </div>
             </div>
@@ -77,15 +79,16 @@
                       (onChange)="onLevelChange($event)"
                       [style]="{ width:'100%' }">
                   </p-dropdown> -->
-                  <p-multiSelect 
+                  <p-multiSelect
                   [style]="{ width:'100%' }"
-                  [options]="levels" 
+                  [options]="levels"
                   [(ngModel)]="selectedLevelId"
                   defaultLabel="أختر المستوى"
                   optionLabel="arabicName"
                   optionValue="id"
                   (onChange)="onLevelChange($event)"
                   [ngModelOptions]="{standalone: true}"
+                  [appDropdownLoading]="levelsLoading"
                   >
                   </p-multiSelect>
               </div>
@@ -96,15 +99,16 @@
                   (onChange)="onLevelChange($event)"
                   [style]="{ width:'100%' }">
                   </p-dropdown> -->
-                  <p-multiSelect 
+                  <p-multiSelect
                   [style]="{ width:'100%' }"
-                  [options]="levels" 
+                  [options]="levels"
                   [(ngModel)]="selectedLevelId"
                   defaultLabel="Select levels"
                   optionLabel="englishName"
                   optionValue="id"
                   (onChange)="onLevelChange($event)"
                   [ngModelOptions]="{standalone: true}"
+                  [appDropdownLoading]="levelsLoading"
                   >
                   </p-multiSelect>
 

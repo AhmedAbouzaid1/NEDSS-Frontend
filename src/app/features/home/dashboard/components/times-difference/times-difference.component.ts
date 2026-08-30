@@ -51,6 +51,9 @@ export class TimesDifferenceComponent {
   healthAdministrations!: any[];
   incidentSources!: any[];
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
   selectedincidentSource: any
   selectedDisase: any
   zeroInstantNotificationFilter = {
@@ -138,6 +141,7 @@ export class TimesDifferenceComponent {
   };
 
   getGovernments(setDefault?: boolean) {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -156,9 +160,11 @@ export class TimesDifferenceComponent {
           this.getTimePercentage();
         }
         this.loadingPanel = false;
+        this.governmentsLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.governmentsLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {
@@ -194,6 +200,7 @@ export class TimesDifferenceComponent {
   }
 
   getHealthAdministrations(governmentID: any, setDefault?: boolean) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({
         governmentID: governmentID,
@@ -216,9 +223,11 @@ export class TimesDifferenceComponent {
             this.getTimePercentage();
           }
           this.loadingPanel = false;
+          this.healthAdministrationsLoading = false;
         },
         (error) => {
           this.loadingPanel = false;
+          this.healthAdministrationsLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -255,6 +264,7 @@ export class TimesDifferenceComponent {
 
 
   getIncidentSources(healthAdministrationID: any, setDefault?: boolean) {
+    this.incidentSourcesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationID,
@@ -275,9 +285,11 @@ export class TimesDifferenceComponent {
             this.getTimePercentage();
           }
           this.loadingPanel = false;
+          this.incidentSourcesLoading = false;
         },
         (error) => {
           this.loadingPanel = false;
+          this.incidentSourcesLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {

@@ -29,7 +29,7 @@
           <span class="text-danger mess-color">*</span>
         </label>
         <div *ngIf="currentLang== 'ar'">
-          <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
+          <select class="form-control select2 select2-hidden-accessible" [appDropdownLoading]="governmentsLoading" (change)="onGovernmentChanged()"
             [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             [disabled]="this.levelId!=1"
             (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)">
@@ -39,7 +39,7 @@
           </select>
         </div>
         <div *ngIf="currentLang== 'en'">
-          <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
+          <select class="form-control select2 select2-hidden-accessible" [appDropdownLoading]="governmentsLoading" (change)="onGovernmentChanged()"
             [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             [disabled]="this.levelId!=1"
             (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)">

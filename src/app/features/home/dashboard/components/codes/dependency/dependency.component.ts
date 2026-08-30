@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
 import { fromEvent, map, debounceTime, distinctUntilChanged } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { SortOrder } from 'src/app/core/constants';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
@@ -40,6 +41,7 @@ export class DependencyComponent implements OnInit {
   }
   noData: boolean = true;
   loadingPanel: boolean = false;
+  organizationsLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -68,7 +70,8 @@ export class DependencyComponent implements OnInit {
 
   }
   getOrganization() {
-    this.dependencyService.getAllOrganizations().subscribe((result: any) => {
+    this.organizationsLoading = true;
+    this.dependencyService.getAllOrganizations().pipe(finalize(() => (this.organizationsLoading = false))).subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.organizations = result.data;
       }

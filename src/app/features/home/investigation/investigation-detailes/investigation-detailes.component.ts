@@ -39,6 +39,10 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
   healthAdministration: any[];
 
   loadingPanel: boolean;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  citiesLoading: boolean = false;
+  healthOfficesLoading: boolean = false;
   governments: any;
   healthOffices: any[];
   healthAdministrations: any[];
@@ -146,6 +150,7 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -165,9 +170,11 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
             this.getCities(this.patient.homeGovernmentId);
           }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -178,6 +185,7 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
     );
   }
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({ governmentID: governmentID })
       .subscribe(
@@ -199,9 +207,11 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
             //     this.getCities(this.collectedObj.healthAdministrationID);
             // }
           }
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -212,6 +222,7 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
       );
   }
   getCities(governmentID: any) {
+    this.citiesLoading = true;
     this.lookupsService.getPageCitys({ governmentID: governmentID }).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -227,9 +238,11 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
             );
           }
         }
+        this.citiesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.citiesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -241,6 +254,7 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
   }
   getHealthOffices(healthAdministrationId: any) {
     //, reportingOrResidence: 2
+    this.healthOfficesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationId,
@@ -259,9 +273,11 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
               })
             }
           }
+          this.healthOfficesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthOfficesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

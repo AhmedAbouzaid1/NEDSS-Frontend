@@ -38,6 +38,8 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
   showPatientJobName: boolean = false;
   patient: PatientModel = new PatientModel();
   jobCategories!: any[];
+  jobCategoriesLoading: boolean = false;
+  jobsLoading: boolean = false;
   selectedJobCategory: any;
   selectedJobCategoryId: number;
   jobs!: any[];
@@ -201,6 +203,7 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
   }
 
   getJobCategories() {
+    this.jobCategoriesLoading = true;
     this.lookupsService.getAllPatientJobCategorys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -212,9 +215,11 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
           });
           this.syncJobCategoryFromPatient();
         }
+        this.jobCategoriesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.jobCategoriesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -236,6 +241,7 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
   }
 
   getJobs(jobCategoryId: any) {
+    this.jobsLoading = true;
     this.lookupsService
       .getPagePatientJobs({ patientJobCategoryID: jobCategoryId })
       .subscribe(
@@ -252,9 +258,11 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
               this.selectedJobId = -1;
             }
           }
+          this.jobsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.jobsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

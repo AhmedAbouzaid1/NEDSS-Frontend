@@ -34,6 +34,11 @@ export class PlaceOfResidenceComponent implements OnInit {
   dir: string;
   delay: boolean = false;
   timer: any;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
+  healthOfficciesLoading: boolean = false;
+  citiesLoading: boolean = false;
+  PrincipalitiesLoading: boolean = false;
   singleDropdownSettings = SingleDropdownSettings;
   constructor(
     private sharedDataService: SearchSharedDataService,
@@ -75,6 +80,7 @@ export class PlaceOfResidenceComponent implements OnInit {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -92,9 +98,11 @@ export class PlaceOfResidenceComponent implements OnInit {
             this.selectedgovernment = -1;
           }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -130,6 +138,7 @@ export class PlaceOfResidenceComponent implements OnInit {
   }
 
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({ governmentID: governmentID })
       .subscribe(
@@ -150,9 +159,11 @@ export class PlaceOfResidenceComponent implements OnInit {
               this.selectedhealthAdministration = -1;
             }
           }
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -183,6 +194,7 @@ export class PlaceOfResidenceComponent implements OnInit {
   }
   getIncidentSources(healthAdministrationID: any) {
     //, reportingOrResidence: 2
+    this.healthOfficciesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationID,
@@ -204,9 +216,11 @@ export class PlaceOfResidenceComponent implements OnInit {
               this.selectedhealthOfficcie = -1;
             }
           }
+          this.healthOfficciesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthOfficciesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -218,6 +232,7 @@ export class PlaceOfResidenceComponent implements OnInit {
   }
 
   gethomeCity(governmentID: any) {
+    this.citiesLoading = true;
     this.lookupsService.getPageCitys({ governmentID: governmentID }).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -234,9 +249,11 @@ export class PlaceOfResidenceComponent implements OnInit {
             this.Selectedcity = -1;
           }
         }
+        this.citiesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.citiesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -293,6 +310,7 @@ export class PlaceOfResidenceComponent implements OnInit {
       this.selectedhomePrincipaly != -1 ? this.selectedhomePrincipaly : null;
   }
   getPrincipality(homeCityId: any) {
+    this.PrincipalitiesLoading = true;
     this.lookupsService.getPagePrincipalitys({ cityID: homeCityId }).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -309,9 +327,11 @@ export class PlaceOfResidenceComponent implements OnInit {
             this.selectedhomePrincipaly = -1;
           }
         }
+        this.PrincipalitiesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.PrincipalitiesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
