@@ -16,6 +16,9 @@ import { SessionService } from './core/services/session.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  private readonly idleSeconds = 25 * 60;
+  private readonly timeoutWarningSeconds = 5 * 60;
+
   title = 'app-structure';
   lang: any;
   // Hide the request banner while the full-page infinity loader is active.
@@ -30,6 +33,9 @@ export class AppComponent {
   idleState = 'Not started.';
   timedOut = false;
   lastPing?: Date = null;
+  showSessionWarning = false;
+  sessionCountdown = this.timeoutWarningSeconds;
+  private warningSoundPlayed = false;
 
   constructor(
     private translate: TranslateService,
@@ -51,15 +57,16 @@ export class AppComponent {
     this.translate.setDefaultLang(this.lang);
     translate.use(this.lang);
 
-    // @ng-idle is the single auto-logout mechanism (the CloseSeatio timer was
-    // removed). Consider the user idle after 300s (5 min) of no interaction,
-    idle.setIdle(300);
-    idle.setTimeout(300);
+    // @ng-idle is the single auto-logout mechanism. Warn after 25 minutes of
+    // inactivity, then keep the session open for 5 more minutes.
+    idle.setIdle(this.idleSeconds);
+    idle.setTimeout(this.timeoutWarningSeconds);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     idle.onIdleEnd.subscribe(() => {
       this.idleState = 'No longer idle.';
+      this.hideSessionWarning();
 
       this.reset();
     });
@@ -67,18 +74,22 @@ export class AppComponent {
     idle.onTimeout.subscribe(() => {
       this.idleState = 'Timed out!';
       this.timedOut = true;
-      this.authService.logout().subscribe({ next: () => {}, error: () => {} });
-      this.session.clear();
-      this.authService.setUserLoggedIn(false);
-      this.router.navigateByUrl('/');
+      this.hideSessionWarning();
+      this.finishLogout();
     });
 
     idle.onIdleStart.subscribe(() => {
       this.idleState = "You've gone idle!";
+      this.showSessionWarning = true;
+      this.sessionCountdown = this.timeoutWarningSeconds;
+      this.playSessionWarningSound();
     });
 
     idle.onTimeoutWarning.subscribe((countdown) => {
       this.idleState = 'You will time out in ' + countdown + ' seconds!';
+      this.showSessionWarning = true;
+      this.sessionCountdown = countdown;
+      this.playSessionWarningSound();
     });
 
     this.ngZone.runOutsideAngular(() => {
@@ -104,15 +115,76 @@ export class AppComponent {
   }
 
   reset() {
+    this.hideSessionWarning();
     this.idle.watch();
     //xthis.idleState = 'Started.';
     this.timedOut = false;
   }
 
   logout() {
+    this.finishLogout();
+  }
+
+  extendSession() {
+    this.reset();
+  }
+
+  logoutFromSessionWarning() {
+    this.finishLogout();
+  }
+
+  get sessionCountdownMinutes(): number {
+    return Math.floor(this.sessionCountdown / 60);
+  }
+
+  get sessionCountdownSeconds(): string {
+    return String(this.sessionCountdown % 60).padStart(2, '0');
+  }
+
+  private hideSessionWarning() {
+    this.showSessionWarning = false;
+    this.warningSoundPlayed = false;
+  }
+
+  private finishLogout() {
+    this.hideSessionWarning();
+    this.authService.logout().subscribe({ next: () => {}, error: () => {} });
     this.session.clear();
     this.authService.setUserLoggedIn(false);
     this.router.navigate(['/']);
+  }
+
+  private playSessionWarningSound() {
+    if (this.warningSoundPlayed) {
+      return;
+    }
+
+    this.warningSoundPlayed = true;
+
+    try {
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioContextClass) {
+        console.warn('Session warning sound is unavailable because this browser does not support Web Audio.');
+        return;
+      }
+
+      const audioContext = new AudioContextClass();
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+      gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.18, audioContext.currentTime + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.65);
+
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.7);
+    } catch (error) {
+      console.warn('Session warning sound could not be played.', error);
+    }
   }
 
   dark: boolean = true;

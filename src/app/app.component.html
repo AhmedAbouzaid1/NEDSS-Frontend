@@ -1,4 +1,24 @@
 <app-loader *ngIf="showTopLoader$ | async"></app-loader>
+<div class="session-warning-backdrop" *ngIf="showSessionWarning">
+  <div class="session-warning-dialog" role="alertdialog" aria-modal="true">
+    <div class="session-warning-icon">
+      <i class="fa-solid fa-clock"></i>
+    </div>
+    <h2>{{ "NEDSS.HOME.SESSION_WARNING.TITLE" | translate }}</h2>
+    <p>{{ "NEDSS.HOME.SESSION_WARNING.MESSAGE" | translate }}</p>
+    <div class="session-warning-countdown">
+      {{ sessionCountdownMinutes }}:{{ sessionCountdownSeconds }}
+    </div>
+    <div class="session-warning-actions">
+      <button type="button" class="btn btn-primary" (click)="extendSession()">
+        {{ "NEDSS.HOME.SESSION_WARNING.EXTEND" | translate }}
+      </button>
+      <button type="button" class="btn btn-outline-primary" (click)="logoutFromSessionWarning()">
+        {{ "NEDSS.HOME.NAV_BAR.LOGOUT" | translate }}
+      </button>
+    </div>
+  </div>
+</div>
 <div>
   <!-- محتوى المكون الخاص بك -->
   <section [class]="lang">
