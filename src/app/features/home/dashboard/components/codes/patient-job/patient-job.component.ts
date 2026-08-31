@@ -41,6 +41,7 @@ export class PatientJobComponent {
   };
   noData: boolean = true;
   loadingPanel: boolean = false;
+  patientJobCategorysLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -73,15 +74,18 @@ export class PatientJobComponent {
   }
 
   getPatientJobCategorys() {
+    this.patientJobCategorysLoading = true;
     this.patientJobService.getAllPatientJobCategorys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.patientJobCategorys = result.data;
         }
         this.loadingPanel = false;
+        this.patientJobCategorysLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.patientJobCategorysLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {

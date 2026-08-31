@@ -49,6 +49,8 @@ export class FinalResultToIncedentComponent implements OnInit {
   };
   governments: any;
   loadingPanel: boolean;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
   selectedGovernment: number = -1;
   healthAdministration: any;
   selectedHealthAdministration: number = -1;
@@ -173,6 +175,7 @@ export class FinalResultToIncedentComponent implements OnInit {
     }
   }
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookUpsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -189,9 +192,11 @@ export class FinalResultToIncedentComponent implements OnInit {
             }
           }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -209,6 +214,7 @@ export class FinalResultToIncedentComponent implements OnInit {
     }
   }
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookUpsService
       .getPageHealthAdministrations({ governmentID: governmentID })
       .subscribe(
@@ -227,9 +233,11 @@ export class FinalResultToIncedentComponent implements OnInit {
               this.selectedHealthAdministration = -1;
             }
           }
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

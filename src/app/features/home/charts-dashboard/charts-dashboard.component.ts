@@ -80,6 +80,15 @@ export class ChartsDashboardComponent {
   diseases: any;
   diseasesGroups: any;
   jobs: any;
+  governmentsLoading: boolean = false;
+  diseasesLoading: boolean = false;
+  diseaseGroupsLoading: boolean = false;
+  caseCategoriesLoading: boolean = false;
+  departmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
+  finalResultsLoading: boolean = false;
+  jobsLoading: boolean = false;
   selectedInfectedgovernment: any;
   selectedInfectedDiseaseGroups: any;
   selectedInfectedDiseases: any;
@@ -649,14 +658,17 @@ export class ChartsDashboardComponent {
   }
 
   getMultiGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernmentsForUser(true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.governments = result.data;
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -3469,6 +3481,7 @@ export class ChartsDashboardComponent {
     }
   }
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -3489,9 +3502,11 @@ export class ChartsDashboardComponent {
           this.onGovernmentChanged();
           //}
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -3502,14 +3517,17 @@ export class ChartsDashboardComponent {
     );
   }
   getAllFinalResults() {
+    this.finalResultsLoading = true;
     this.lookupsService.getAllFinalResults().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.AllFinalResults = result.data;
         }
+        this.finalResultsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.finalResultsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -3521,14 +3539,17 @@ export class ChartsDashboardComponent {
   }
 
   getDepartments() {
+    this.departmentsLoading = true;
     this.lookupsService.getAllDepartments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.departments = result.data;
         }
+        this.departmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.departmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -3547,6 +3568,7 @@ export class ChartsDashboardComponent {
     }
   }
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({ governmentID: governmentID })
       .subscribe(
@@ -3558,9 +3580,11 @@ export class ChartsDashboardComponent {
               this.onHealthAdministrationChanged();
             }
           }
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -3572,6 +3596,7 @@ export class ChartsDashboardComponent {
   }
   getIncidentSources(healthAdministrationID: any) {
     //, reportingOrResidence: 1
+    this.incidentSourcesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationID,
@@ -3587,9 +3612,11 @@ export class ChartsDashboardComponent {
               this.selectedIncidentSource = this.incidentSources[0];
             }
           }
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -3607,14 +3634,17 @@ export class ChartsDashboardComponent {
     }
   }
   getJobs() {
+    this.jobsLoading = true;
     this.lookupsService.getAllPatientJobs().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.jobs = result.data;
         }
+        this.jobsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.jobsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -3625,14 +3655,17 @@ export class ChartsDashboardComponent {
     );
   }
   getDiseases() {
+    this.diseasesLoading = true;
     this.lookupsService.getAllDiseases().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.diseases = result.data;
         }
+        this.diseasesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseasesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -3644,11 +3677,14 @@ export class ChartsDashboardComponent {
   }
 
   getDiseaseGroups() {
+    this.diseaseGroupsLoading = true;
     this.lookupsService.getAllDiseaseGroups().subscribe({
       next: (data) => {
         this.diseasesGroups = data.data;
+        this.diseaseGroupsLoading = false;
       },
       error: (error) => {
+        this.diseaseGroupsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -3905,14 +3941,17 @@ export class ChartsDashboardComponent {
     });
   }
   getCaseCategories() {
+    this.caseCategoriesLoading = true;
     this.lookupsService.getAllCaseResultCategorys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.Categories = result.data;
         }
+        this.caseCategoriesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.caseCategoriesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

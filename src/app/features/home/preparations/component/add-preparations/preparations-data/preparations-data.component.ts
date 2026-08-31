@@ -53,6 +53,9 @@ export class PreparationsDataComponent implements OnDestroy {
   selectedincidentSourceId: number = -1;
   selectedGovernment: number = -1;
   loadingPanel: boolean = false;
+  govenmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
   currentLang: string;
   dir: string;
   delay: boolean = false;
@@ -110,8 +113,10 @@ export class PreparationsDataComponent implements OnDestroy {
   }
 
   getGovenments() {
+    this.govenmentsLoading = true;
     this.lookupsGetterService.getAllGovernments().subscribe(
       (result: any) => {
+        this.govenmentsLoading = false;
         if (result != null && result != undefined) {
           this.govenments = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
@@ -133,6 +138,7 @@ export class PreparationsDataComponent implements OnDestroy {
         this.loadingPanel = false;
       },
       (error) => {
+        this.govenmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -172,12 +178,14 @@ export class PreparationsDataComponent implements OnDestroy {
     );
   }
   getHealthAdministrations(govenmentId) {
+    this.healthAdministrationsLoading = true;
     this.lookupsGetterService
       .getPageHealthAdministrations({
         GovernmentID: govenmentId,
       })
       .subscribe(
         (result: any) => {
+          this.healthAdministrationsLoading = false;
           if (result != null && result != undefined) {
             this.healthAdministrations = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
@@ -203,6 +211,7 @@ export class PreparationsDataComponent implements OnDestroy {
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -231,12 +240,14 @@ export class PreparationsDataComponent implements OnDestroy {
     );
   }
   getIncidentSources(healthAdministrationId) {
+    this.incidentSourcesLoading = true;
     this.lookupsGetterService
       .getPageIncidentSourceHospitals({
         healthAdministrationId: healthAdministrationId,
       })
       .subscribe(
         (result: any) => {
+          this.incidentSourcesLoading = false;
           if (result != null && result != undefined) {
             this.incidentSources = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
@@ -260,6 +271,7 @@ export class PreparationsDataComponent implements OnDestroy {
           this.loadingPanel = false;
         },
         (error) => {
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

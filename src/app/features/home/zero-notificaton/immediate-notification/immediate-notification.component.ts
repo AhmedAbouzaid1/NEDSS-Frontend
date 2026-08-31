@@ -14,6 +14,7 @@ import { GeneralDataService } from '../../general-data/services/general-data.ser
 import { ExportService } from '../../../../core/services/export.service';
 import { ExportAsConfig } from 'ngx-export-as';
 import { ActiveUserService } from 'src/app/core/services/active-user.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-immediate-notification',
@@ -96,6 +97,12 @@ export class ImmediateNotificationComponent {
   healthAdministrations!: any[];
   incidentSources!: any[];
   loadingPanel: boolean = false;
+  diseasesLoading: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  branchesLoading: boolean = false;
+  areasLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
   immediateNotificationFilter = {
     pageSize: 10,
     pageIndex: 0,
@@ -232,6 +239,7 @@ export class ImmediateNotificationComponent {
   // }
 
   getDiseases() {
+    this.diseasesLoading = true;
     this.lookupsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -254,9 +262,11 @@ export class ImmediateNotificationComponent {
             this.selectedDisase = null;
           }
         }
+        this.diseasesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseasesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -314,6 +324,7 @@ export class ImmediateNotificationComponent {
   // }
 
   getBranches() {
+    this.branchesLoading = true;
     this.lookupsService.getAllBranchesForUsers(this.organizationId,true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -340,9 +351,11 @@ export class ImmediateNotificationComponent {
             this.SelectedbranchId = -1;
           }
         }
+        this.branchesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.branchesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -367,6 +380,7 @@ export class ImmediateNotificationComponent {
   }
 
   getAreas() {
+    this.areasLoading = true;
     this.lookupsService.getAllAreas(this.SelectedbranchId).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -394,9 +408,11 @@ export class ImmediateNotificationComponent {
             this.SelectedareaId = -1;
           }
         }
+        this.areasLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.areasLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -420,6 +436,7 @@ export class ImmediateNotificationComponent {
   }
 
   getGovernments(setDefault?: boolean) {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -441,9 +458,11 @@ export class ImmediateNotificationComponent {
             }
           }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -477,6 +496,7 @@ export class ImmediateNotificationComponent {
     this.incidentSources = null;
   }
   getHealthAdministrations(governmentID: any, setDefault?: boolean) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({
         governmentID: governmentID,
@@ -512,9 +532,11 @@ export class ImmediateNotificationComponent {
               this.selectedhealthAdministration = -1;
             }
           }
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -558,6 +580,7 @@ export class ImmediateNotificationComponent {
     );
   }
   getIncidentSources(healthAdministrationID: any, setDefault?: boolean) {
+    this.incidentSourcesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID:
@@ -602,9 +625,11 @@ export class ImmediateNotificationComponent {
               this.selectedincidentSource = -1;
             }
           }
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1295,11 +1320,12 @@ export class ImmediateNotificationComponent {
   }
 
   getPageIncidentSourceHospitalsForEductionalAndAmmana(){
+    this.incidentSourcesLoading = true;
     this.lookupsService.getPageIncidentSourceHospitals({
       GovernmentID:this.immediateNotification.governmentId,
       organizationID:this.organizationId,
       forSystemUser:true
-    }).subscribe({
+    }).pipe(finalize(() => (this.incidentSourcesLoading = false))).subscribe({
       next:(result) => {
         if (result != null && result != undefined) {
           this.incidentSources = [

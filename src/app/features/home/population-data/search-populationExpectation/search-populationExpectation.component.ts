@@ -44,6 +44,8 @@ export class SearchPopulationExpectationComponent implements OnInit {
     id: null
   };
   governments: any;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
   selectedGovernment: number = -1;
   healthAdministration: any;
   years: number[] = [];
@@ -188,7 +190,9 @@ export class SearchPopulationExpectationComponent implements OnInit {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe((result: any) => {
+      this.governmentsLoading = false;
       if (result != null && result != undefined) {
         this.governments = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
         result.data.forEach(nat => {
@@ -202,13 +206,16 @@ export class SearchPopulationExpectationComponent implements OnInit {
       }
 
     }, error => {
+      this.governmentsLoading = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
       });
     });
   }
   getHealthAdministration(id) {
+    this.healthAdministrationLoading = true;
     this.lookupsService.getPageHealthAdministrations({ governmentID: id }).subscribe((result: any) => {
+      this.healthAdministrationLoading = false;
       if (result != null && result != undefined) {
 
         this.healthAdministration = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
@@ -228,19 +235,21 @@ export class SearchPopulationExpectationComponent implements OnInit {
         this.selectedhealthAdministrationId = -1;
       }
     }, error => {
-
+      this.healthAdministrationLoading = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
       });
     });
   }
   getHealthAdministrationByGovId(x: any) {
+    this.healthAdministrationLoading = true;
     this.lookupsService.getPageHealthAdministrations({ "governmentID": x }).subscribe((result: any) => {
+      this.healthAdministrationLoading = false;
       if (result != null && result != undefined) {
         this.healthAdministration = result.data;
       }
     }, error => {
-
+      this.healthAdministrationLoading = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
       });

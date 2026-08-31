@@ -21,6 +21,8 @@ export class PopulationsReportComponent implements OnInit {
   dir: string = '';
   //loading settings
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
 
   levelValue: string = '1';
   levelsEnum = LevelsEnum; // Makes LevelsEnum available in the template
@@ -85,6 +87,7 @@ export class PopulationsReportComponent implements OnInit {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernmentsForUser(true).subscribe({
       next: (result: Result<GovernmentDTO[]>) => {
         if (result != null && result != undefined) {
@@ -95,6 +98,7 @@ export class PopulationsReportComponent implements OnInit {
             englishName: 'Select',
           });
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
 
         if (
@@ -105,6 +109,7 @@ export class PopulationsReportComponent implements OnInit {
         }
       },
       error: (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -127,6 +132,7 @@ export class PopulationsReportComponent implements OnInit {
   }
 
   getHealthAdministration(governmentID: number) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({
         governmentID: governmentID,
@@ -142,9 +148,11 @@ export class PopulationsReportComponent implements OnInit {
               englishName: 'Select',
             });
           }
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

@@ -23,6 +23,8 @@ export class UploadExcelfileComponent {
       : 'ar';
 
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
   pleaseComplete: boolean = false;
   multipleDropdownSettings = MultipleDropdownSettings;
   healthAdministration: any[];
@@ -182,8 +184,10 @@ export class UploadExcelfileComponent {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookUpsService.getAllGovernmentsForUser(true).subscribe(
       (result: any) => {
+        this.governmentsLoading = false;
         if (result != null && result != undefined) {
           this.governments = [
             { id: -1, arabicName: 'إختر', englishName: 'All' },
@@ -205,6 +209,7 @@ export class UploadExcelfileComponent {
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -227,10 +232,12 @@ export class UploadExcelfileComponent {
   }
 
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookUpsService
       .getPageHealthAdministrationsForUsers({ governmentID: governmentID, forSystemUser: true })
       .subscribe(
         (result: any) => {
+          this.healthAdministrationLoading = false;
           if (result != null && result != undefined) {
             this.healthAdministration = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
@@ -248,6 +255,7 @@ export class UploadExcelfileComponent {
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

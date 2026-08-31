@@ -131,6 +131,16 @@ export class FastSearchComponent implements OnInit {
   areas: any[];
   SelectedareaId: number;
   defaultAreaId: number;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
+  branchesLoading: boolean = false;
+  areasLoading: boolean = false;
+  departmentsLoading: boolean = false;
+  nationalitiesLoading: boolean = false;
+  diseaseGroupsLoading: boolean = false;
+  diseasesLoading: boolean = false;
+  caseResultCategoriesLoading: boolean = false;
   NationalityEnum = NationalityEnum;
   constructor(
     private searchService: GeneralDataService,
@@ -375,6 +385,7 @@ export class FastSearchComponent implements OnInit {
     this.getCaseResultCategories();
   }
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -401,9 +412,11 @@ export class FastSearchComponent implements OnInit {
             }
           }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -450,6 +463,7 @@ export class FastSearchComponent implements OnInit {
   }
 
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({ governmentID: governmentID })
       .subscribe(
@@ -472,9 +486,11 @@ export class FastSearchComponent implements OnInit {
               }
             }
           }
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -508,6 +524,7 @@ export class FastSearchComponent implements OnInit {
     this.incidentSources = null;
   }
   getIncidentSources(healthAdministrationID: any) {
+    this.incidentSourcesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: this.selectedAdministrationId,
@@ -544,9 +561,11 @@ export class FastSearchComponent implements OnInit {
               }
             }, 200);
           }
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -584,6 +603,7 @@ export class FastSearchComponent implements OnInit {
   }
 
   getBranches() {
+    this.branchesLoading = true;
     this.lookupsService.getAllBranches(this.organizationId).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -600,9 +620,11 @@ export class FastSearchComponent implements OnInit {
             this.branchSelected();
           }
         }
+        this.branchesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.branchesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -625,6 +647,7 @@ export class FastSearchComponent implements OnInit {
   }
 
   getDepartments() {
+    this.departmentsLoading = true;
     this.lookupsService.getAllDepartments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -635,9 +658,11 @@ export class FastSearchComponent implements OnInit {
             this.departments.push(nat);
           });
         }
+        this.departmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.departmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -649,6 +674,7 @@ export class FastSearchComponent implements OnInit {
   }
 
   getNationalties() {
+    this.nationalitiesLoading = true;
     this.lookupsService.getAllNationalitys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -659,9 +685,11 @@ export class FastSearchComponent implements OnInit {
             this.nationalities.push(nat);
           });
         }
+        this.nationalitiesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.nationalitiesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -995,6 +1023,7 @@ export class FastSearchComponent implements OnInit {
   }
 
   getAllDiseases() {
+    this.diseaseGroupsLoading = true;
     this.lookupsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -1005,9 +1034,11 @@ export class FastSearchComponent implements OnInit {
             this.diseases.push(nat);
           });
         }
+        this.diseaseGroupsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseaseGroupsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1019,6 +1050,7 @@ export class FastSearchComponent implements OnInit {
   }
 
   getFinalDiseases() {
+    this.diseasesLoading = true;
     this.lookupsService.getAllDiseases().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -1029,9 +1061,11 @@ export class FastSearchComponent implements OnInit {
             this.finalDiseases.push(nat);
           });
         }
+        this.diseasesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseasesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1050,6 +1084,7 @@ export class FastSearchComponent implements OnInit {
   }
 
   getCaseResultCategories() {
+    this.caseResultCategoriesLoading = true;
     this.lookupsService.getAllCaseResultCategorys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -1060,8 +1095,10 @@ export class FastSearchComponent implements OnInit {
             this.caseResultCategories.push(cat);
           });
         }
+        this.caseResultCategoriesLoading = false;
       },
       (error) => {
+        this.caseResultCategoriesLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {
@@ -1134,6 +1171,7 @@ export class FastSearchComponent implements OnInit {
   }
 
   getAreas() {
+    this.areasLoading = true;
     this.lookupsGetterService.getAllAreas(this.SelectedbranchId).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -1150,8 +1188,10 @@ export class FastSearchComponent implements OnInit {
             this.areaSelected();
           }
         }
+        this.areasLoading = false;
       },
       (error) => {
+        this.areasLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1176,6 +1216,7 @@ export class FastSearchComponent implements OnInit {
 
     //Start of Incident Source مصدر إبلاغ
     getIncidentSourceHospital(filter: any) {
+      this.incidentSourcesLoading = true;
       this.lookupsService.getIncidentSourceHospitalsByIncidentGovernmentsIds(filter).subscribe({
         next: (response) => {
           this.incidentSources = response.data;
@@ -1186,7 +1227,9 @@ export class FastSearchComponent implements OnInit {
               "englishName": "Select",
             })
           }
+          this.incidentSourcesLoading = false;
         }, error: (error) => {
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
             this.userMsg.error(res);

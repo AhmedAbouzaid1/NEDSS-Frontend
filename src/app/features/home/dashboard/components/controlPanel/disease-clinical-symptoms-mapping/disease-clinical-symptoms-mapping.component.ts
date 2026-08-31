@@ -17,6 +17,7 @@ type SymptomRow = {
 })
 export class DiseaseClinicalSymptomsMappingComponent implements OnInit {
   loading = false;
+  diseasesLoading: boolean = false;
   currentLang: string = 'ar';
 
   diseases: any[] = [];
@@ -105,6 +106,7 @@ export class DiseaseClinicalSymptomsMappingComponent implements OnInit {
 
   private loadDiseases() {
     this.loading = true;
+    this.diseasesLoading = true;
     this.lookupsService.getAllDiseaseGroups().subscribe(
       (res: any) => {
         this.diseases = Array.isArray(res?.data) ? res.data : [];
@@ -114,9 +116,11 @@ export class DiseaseClinicalSymptomsMappingComponent implements OnInit {
               ? diseaseRes.data
               : [];
             this.loading = false;
+            this.diseasesLoading = false;
           },
           () => {
             this.loading = false;
+            this.diseasesLoading = false;
             this.userMsg.error(
               this.translateService.instant('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             );
@@ -125,6 +129,7 @@ export class DiseaseClinicalSymptomsMappingComponent implements OnInit {
       },
       () => {
         this.loading = false;
+        this.diseasesLoading = false;
         this.userMsg.error(
           this.translateService.instant('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
         );

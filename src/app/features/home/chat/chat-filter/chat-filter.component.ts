@@ -59,6 +59,12 @@ export class ChatFilterComponent implements OnInit, OnChanges {
   imageUploaded: boolean = false;
   attachUploaded: boolean = false;
   loadingPanel: boolean = false;
+  organizationsLoading = false;
+  governmentsLoading = false;
+  healthAdminsLoading = false;
+  incidentSourcesLoading = false;
+  incidentSourceTypesLoading = false;
+  usersLoading = false;
 
   singleDropdownSettings = {
     singleSelection: true,
@@ -164,12 +170,15 @@ export class ChatFilterComponent implements OnInit, OnChanges {
     }
   }
   getOrganizations() {
+    this.organizationsLoading = true;
     this.lookupsService.getAllOrganizations().subscribe({
       next: (r: Result<Organiztion[]>) => {
         this.organizations = r.data;
+        this.organizationsLoading = false;
         this.loadingPanel = false;
       },
       error: error => {
+        this.organizationsLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
@@ -179,14 +188,17 @@ export class ChatFilterComponent implements OnInit, OnChanges {
     })
   }
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe({
       next: (result: Result<GovernmentDTO[]>) => {
         if (result != null && result != undefined) {
           this.governments = result.data;
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       error: error => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
@@ -202,15 +214,18 @@ export class ChatFilterComponent implements OnInit, OnChanges {
     });
   }
   getHealthAdministration() {
+    this.healthAdminsLoading = true;
     this.lookupsService.getAllHealthAdministrations().subscribe({
       next: (result: Result<HealthAdministrationDTO[]>) => {
         if (result != null && result != undefined) {
           //this.healthAdmins = result.data;
           this.healthAdminsBak = result.data;
         }
+        this.healthAdminsLoading = false;
         this.loadingPanel = false;
       },
       error: error => {
+        this.healthAdminsLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
@@ -246,14 +261,17 @@ export class ChatFilterComponent implements OnInit, OnChanges {
       this.GetAllIncidentSources();
     }
     else if (this.adminID == 0 && this.govID > 0) {
+      this.incidentSourcesLoading = true;
       this.lookupsService.getIncidentSourceHospitalsByGovID(this.govID).subscribe({
         next: (result: Result<IncidentSourceHospitalDTO[]>) => {
           if (result != null && result != undefined) {
             this.incidentSources = result.data;
           }
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
         },
         error: error => {
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
             this.userMsg.error(res);
@@ -267,14 +285,17 @@ export class ChatFilterComponent implements OnInit, OnChanges {
       });
     }
     else {
+      this.incidentSourcesLoading = true;
       this.lookupsService.getIncidentSourceHospitalsByAdminID(this.adminID).subscribe({
         next: (result: Result<IncidentSourceHospitalDTO[]>) => {
           if (result != null && result != undefined) {
             this.incidentSources = result.data;
           }
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
         },
         error: error => {
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
             this.userMsg.error(res);
@@ -290,14 +311,17 @@ export class ChatFilterComponent implements OnInit, OnChanges {
 
   }
   GetAllIncidentSources() {
+    this.incidentSourcesLoading = true;
     this.lookupsService.getAllIncidentSourceHospitals().subscribe({
       next: (result: Result<IncidentSourceHospitalDTO[]>) => {
         if (result != null && result != undefined) {
           this.incidentSources = result.data;
         }
+        this.incidentSourcesLoading = false;
         this.loadingPanel = false;
       },
       error: error => {
+        this.incidentSourcesLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
@@ -318,11 +342,13 @@ export class ChatFilterComponent implements OnInit, OnChanges {
     //this.usersFilter.pageSize = 50;
     //this.usersFilter.pageIndex = 1;
     console.log(this.usersFilter);
+    this.usersLoading = true;
     this.userService.getPageUsers(this.usersFilter).subscribe({
       next: (res: Result<SystemUserDataDto[]>) => {
         //console.log("Get page users");
         //console.log(res.data);
         if (res.data.length == 0) {
+          this.usersLoading = false;
           return;
         }
 
@@ -333,22 +359,25 @@ export class ChatFilterComponent implements OnInit, OnChanges {
         this.usersAvailableForChat.forEach(el => {
           el.isSelected = (this.currentUsers.find(x => x.id == el.id) == undefined) ? false : true;
         });
+        this.usersLoading = false;
       },
-      error: err => console.log(err),
-      complete: () => { }
+      error: err => { this.usersLoading = false; console.log(err); },
+      complete: () => { this.usersLoading = false; }
     }
 
     );
   }
   GetIncidentSourceTypes() {
+    this.incidentSourceTypesLoading = true;
     this.loadingPanel = true;
     this.lookupsService.getAllIncidentSourceHospitalTypes().subscribe({
       next: (result: Result<IncidentSourceTypeDTO[]>) => {
         this.incidentSourceTypes = result.data;
       },
-      error: err => console.error(err),
+      error: err => { this.incidentSourceTypesLoading = false; console.error(err); },
       complete: () => {
         console.log(this.incidentSourceTypes);
+        this.incidentSourceTypesLoading = false;
         this.loadingPanel = false;
       }
     });
@@ -444,12 +473,14 @@ export class ChatFilterComponent implements OnInit, OnChanges {
   }
   getFilteredIncidentSources() {
     if (this._chatFilter == this.chatFilter) return;
+    this.incidentSourcesLoading = true;
     this.lookupsService.getFilteredSourceHospitals(this.chatFilter).subscribe({
       next: (result: Result<IncidentSourceHospitalDTO[]>) => {
         this.incidentSources = result.data;
       },
-      error: err => console.error(err),
+      error: err => { this.incidentSourcesLoading = false; console.error(err); },
       complete: () => {
+        this.incidentSourcesLoading = false;
         this._chatFilter = this.chatFilter;
       }
     });
@@ -467,12 +498,14 @@ export class ChatFilterComponent implements OnInit, OnChanges {
     console.log(this.chatFilter);
 
     //if (this._chatFilter == this.chatFilter) return;
+    this.usersLoading = true;
     this.userService.getFilteredUsers(this.chatFilter).subscribe({
       next: (result: Result<SystemUserDataDto[]>) => {
         this.usersAvailableForChat = result.data
       },
-      error: err => console.error(err),
+      error: err => { this.usersLoading = false; console.error(err); },
       complete: () => {
+        this.usersLoading = false;
         this._chatFilter = this.chatFilter;
       }
     });

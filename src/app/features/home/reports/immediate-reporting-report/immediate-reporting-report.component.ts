@@ -65,8 +65,10 @@ export class ImmediateReportingReportComponent implements OnInit {
     elementIdOrContent: this.currentConfig, // the id of html/table element
   };
   governments: any;
+  governmentsLoading: boolean = false;
   loadingPanel: boolean = false;
   healthAdministration: any;
+  healthAdministrationLoading: boolean = false;
   selectedhealthAdministration: any;
   ids: string = '';
   myDatalength = 0;
@@ -284,6 +286,7 @@ export class ImmediateReportingReportComponent implements OnInit {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsGetterService.getAllGovernmentsForUser(true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -294,9 +297,11 @@ export class ImmediateReportingReportComponent implements OnInit {
             englishName: 'Select',
           });
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -315,6 +320,7 @@ export class ImmediateReportingReportComponent implements OnInit {
   }
 
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookUpsService
       .getPageHealthAdministrations({
         GovernmentID: governmentID,
@@ -330,9 +336,11 @@ export class ImmediateReportingReportComponent implements OnInit {
               englishName: 'Select',
             });
           }
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

@@ -27,7 +27,7 @@
           <span class="text-danger mess-color">*</span>
         </label>
         <div *ngIf="currentLang== 'ar'">
-          <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
+          <select [appDropdownLoading]="governmentsLoading" class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
             [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             [disabled]="this.levelId!=1"
             (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)">
@@ -37,7 +37,7 @@
           </select>
         </div>
         <div *ngIf="currentLang== 'en'">
-          <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
+          <select [appDropdownLoading]="governmentsLoading" class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()"
             [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             [disabled]="this.levelId!=1"
             (blur)="generalDataService.isIncidentGovernmentValid = generalDataService.checkIncidentGovernmentValid(selectedGovernment)">
@@ -55,7 +55,7 @@
           <span class="text-danger mess-color">*</span>
         </label>
         <div *ngIf="currentLang== 'ar'">
-          <select class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
+          <select [appDropdownLoading]="healthAdministrationLoading" class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
             [(ngModel)]="selectedHealthAdministration" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             (blur)="generalDataService.isIncidentHealthAdministrationValid = generalDataService.checkIncidentHealthAdministrationValid(selectedHealthAdministration)"
             [disabled]="this.levelId!=1 && this.levelId!=2">
@@ -65,7 +65,7 @@
           </select>
         </div>
         <div *ngIf="currentLang== 'en'">
-          <select class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
+          <select [appDropdownLoading]="healthAdministrationLoading" class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
             [(ngModel)]="selectedHealthAdministration" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             (blur)="generalDataService.isIncidentHealthAdministrationValid = generalDataService.checkIncidentHealthAdministrationValid(selectedHealthAdministration)"
             [disabled]="this.levelId!=1 && this.levelId!=2">

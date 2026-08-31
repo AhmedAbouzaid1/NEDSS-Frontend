@@ -49,6 +49,11 @@ export class FinalResultToDiseasesComponent implements OnInit {
   };
   governments: any;
   loadingPanel: boolean;
+  diseasesLoading: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
+  CategoriesLoading: boolean = false;
+  AllFinalResultsLoading: boolean = false;
   selectedGovernment: any[];
   healthAdministration: any;
   selectedHealthAdministration: any;
@@ -118,6 +123,7 @@ export class FinalResultToDiseasesComponent implements OnInit {
     this.getAllFinalResults();
   }
   getDiseases() {
+    this.diseasesLoading = true;
     this.lookUpsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -130,9 +136,11 @@ export class FinalResultToDiseasesComponent implements OnInit {
 
           // }
         }
+        this.diseasesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseasesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -171,14 +179,17 @@ export class FinalResultToDiseasesComponent implements OnInit {
     }
   }
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookUpsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.governments = result.data;
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -196,6 +207,7 @@ export class FinalResultToDiseasesComponent implements OnInit {
     }
   }
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookUpsService
       .getPageHealthAdministrations({ governmentID: governmentID })
       .subscribe(
@@ -203,9 +215,11 @@ export class FinalResultToDiseasesComponent implements OnInit {
           if (result != null && result != undefined) {
             this.healthAdministration = result.data;
           }
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -216,6 +230,7 @@ export class FinalResultToDiseasesComponent implements OnInit {
       );
   }
   getAllFinalResults() {
+    this.AllFinalResultsLoading = true;
     this.lookUpsService
       .getAllFinalResults()
       .subscribe(
@@ -223,9 +238,11 @@ export class FinalResultToDiseasesComponent implements OnInit {
           if (result != null && result != undefined) {
             this.AllFinalResults = result.data;
           }
+          this.AllFinalResultsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.AllFinalResultsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -367,14 +384,17 @@ export class FinalResultToDiseasesComponent implements OnInit {
       );
   }
   getCaseCategories() {
+    this.CategoriesLoading = true;
     this.lookUpsService.getAllCaseResultCategorys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.Categories = result.data;
         }
+        this.CategoriesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.CategoriesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

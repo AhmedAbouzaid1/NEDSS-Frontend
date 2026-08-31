@@ -37,8 +37,8 @@
                   }}
                   <span class="mess-color" style="color: red">*</span></label>
                 <div *ngIf="currentLang == 'ar'">
-                  <p-dropdown formControlName="governmentID" (onChange)="onGovernmentChanged()" [options]="governments" 
-                    optionValue="id" optionLabel="arabicName" [style]="{width:'100%'}"></p-dropdown>
+                  <p-dropdown formControlName="governmentID" (onChange)="onGovernmentChanged()" [options]="governments"
+                    optionValue="id" optionLabel="arabicName" [style]="{width:'100%'}" [appDropdownLoading]="governmentsLoading"></p-dropdown>
                   <!-- <select
                     class="form-control select2 select2-hidden-accessible"
                     (change)="onGovernmentChanged()"
@@ -59,7 +59,7 @@
                 </div>
                 <div *ngIf="currentLang == 'en'">
                   <p-dropdown formControlName="governmentID" (onChange)="onGovernmentChanged()" [options]="governments"
-                    optionValue="id" optionLabel="englishName" [style]="{width:'100%'}"></p-dropdown>
+                    optionValue="id" optionLabel="englishName" [style]="{width:'100%'}" [appDropdownLoading]="governmentsLoading"></p-dropdown>
                   <!-- <select
                     class="form-control select2 select2-hidden-accessible"
                     (change)="onGovernmentChanged()"
@@ -91,6 +91,7 @@
                 <div *ngIf="currentLang == 'ar'">
                   <p-dropdown formControlName="healthAdministrationID" (onChange)="onHealthAdministrationChanged()"
                     [options]="healthAdministration" optionValue="id" optionLabel="arabicName" [style]="{width:'100%'}"
+                    [appDropdownLoading]="healthAdministrationLoading"
                     [disabled]="this.levelId != 1 && this.levelId != 2"></p-dropdown>
                   <!-- <select
                     class="form-control select2 select2-hidden-accessible"
@@ -113,6 +114,7 @@
                 <div *ngIf="currentLang == 'en'">
                   <p-dropdown (onChange)="onHealthAdministrationChanged()" formControlName="healthAdministrationID"
                     [options]="healthAdministration" optionValue="id" optionLabel="englishName" [style]="{width:'100%'}"
+                    [appDropdownLoading]="healthAdministrationLoading"
                     [disabled]="this.levelId != 1 && this.levelId != 2"></p-dropdown>
                   <!-- <select
                     class="form-control select2 select2-hidden-accessible"
@@ -146,6 +148,7 @@
                 <div *ngIf="currentLang == 'ar'">
                   <p-dropdown formControlName="incidentSourceId" (onChange)="getTableData()" [options]="incidentSources"
                     optionValue="id" optionLabel="arabicName" [style]="{width:'100%'}"
+                    [appDropdownLoading]="incidentSourcesLoading"
                     [disabled]="this.levelId != 1 && this.levelId != 2 && this.levelId != 3"></p-dropdown>
 
                   <!-- <select
@@ -173,6 +176,7 @@
                 <div *ngIf="currentLang == 'en'">
                   <p-dropdown formControlName="incidentSourceId" (onChange)="getTableData()" [options]="incidentSources"
                     optionValue="id" optionLabel="englishName" [style]="{width:'100%'}"
+                    [appDropdownLoading]="incidentSourcesLoading"
                     [disabled]="this.levelId != 1 && this.levelId != 2 && this.levelId != 3"></p-dropdown>
                   <!--  <select
                     class="form-control select2 select2-hidden-accessible"

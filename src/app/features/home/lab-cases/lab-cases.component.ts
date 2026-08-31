@@ -78,6 +78,11 @@ export class LabCasesComponent {
   selectedHealthOffice: number = -1;
 
   loadingPanel: boolean = false;
+  nationalitiesLoading: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  citiesLoading: boolean = false;
+  healthOfficesLoading: boolean = false;
   isForeign: boolean = false;
 
   singleDropdownSettings = {};
@@ -296,6 +301,7 @@ export class LabCasesComponent {
   }
 
   getNationalities() {
+    this.nationalitiesLoading = true;
     this.lookupsService.getAllNationalitys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -306,9 +312,11 @@ export class LabCasesComponent {
             this.nationalities.push(nat);
           });
         }
+        this.nationalitiesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.nationalitiesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -320,6 +328,7 @@ export class LabCasesComponent {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -341,9 +350,11 @@ export class LabCasesComponent {
           }
           this.selectedHealthAdministration = -1;
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -355,6 +366,7 @@ export class LabCasesComponent {
   }
 
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({ governmentID: governmentID })
       .subscribe(
@@ -377,9 +389,11 @@ export class LabCasesComponent {
             }
             this.selectedHealthOffice = -1;
           }
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -391,6 +405,7 @@ export class LabCasesComponent {
   }
 
   getCities(healthAdministrationID: any) {
+    this.citiesLoading = true;
     this.lookupsService
       .getPageCitys({ healthAdministrationID: healthAdministrationID })
       .subscribe(
@@ -403,9 +418,11 @@ export class LabCasesComponent {
               this.cities.push(nat);
             });
           }
+          this.citiesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.citiesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -417,6 +434,7 @@ export class LabCasesComponent {
   }
 
   getHealthOffices(healthAdministrationid: any) {
+    this.healthOfficesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationid: healthAdministrationid,
@@ -432,9 +450,11 @@ export class LabCasesComponent {
             });
             this.selectedHealthOffice = -1;
           }
+          this.healthOfficesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthOfficesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

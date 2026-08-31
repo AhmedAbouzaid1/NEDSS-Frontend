@@ -12,7 +12,7 @@ import {
 } from 'src/app/core/constants';
 import { GeneralDataService } from '../services/general-data.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-residence-info',
   templateUrl: './residence-info.component.html',
@@ -48,6 +48,11 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
   selectedPrincipalityId: number;
 
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  citiesLoading: boolean = false;
+  healthOfficesLoading: boolean = false;
+  principalitiesLoading: boolean = false;
   currentLang: string = 'ar';
   levelId: number;
   singleDropdownSettings = {};
@@ -314,6 +319,7 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
     allowUserScopeFallback: boolean,
   ): void {
     if (result == null || result === undefined) {
+      this.governmentsLoading = false;
       this.loadingPanel = false;
       return;
     }
@@ -328,6 +334,7 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
       this.lookupsService.getAllGovernmentsForUser(true).subscribe(
         (r2) => this.applyResidenceGovernmentsFromApi(r2, false),
         () => {
+          this.governmentsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -343,10 +350,12 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
       ...mapped,
     ];
     this.scheduleDropdownBind(() => this.syncDropdownsFromPatient());
+    this.governmentsLoading = false;
     this.loadingPanel = false;
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService
       .getAllGovernmentsExplicit(false, 'residence-home')
       .subscribe(
@@ -354,6 +363,7 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
           this.applyResidenceGovernmentsFromApi(result, true);
         },
         (error) => {
+          this.governmentsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -365,10 +375,12 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
   }
   getHealthAdministration(governmentID: any) {
     //;
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({
         governmentID: governmentID,
       })
+      .pipe(finalize(() => (this.healthAdministrationsLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
@@ -403,10 +415,12 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
       );
   }
   getCities(governmentID: any, skipInitialCityDeselect = false) {
+    this.citiesLoading = true;
     this.lookupsService
       .getPageCitys({
         governmentID: governmentID,
       })
+      .pipe(finalize(() => (this.citiesLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
@@ -444,11 +458,13 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
   getHealthOffices(healthAdministrationid: any) {
     // this.lookupsService.getPageHealthOffices({ cityID: cityID }).subscribe((result: any) => {
     //, reportingOrResidence: 2
+    this.healthOfficesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationid,
         forHome: true,
       })
+      .pipe(finalize(() => (this.healthOfficesLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
@@ -482,10 +498,12 @@ export class ResidenceInfoComponent implements OnInit, OnDestroy {
       );
   }
   getPrincipalities(cityID: any) {
+    this.principalitiesLoading = true;
     this.lookupsService
       .getPagePrincipalitys({
         cityID: cityID,
       })
+      .pipe(finalize(() => (this.principalitiesLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {

@@ -47,6 +47,9 @@ export class ListPreparationsComponent implements OnInit {
   noData: boolean = true;
   loadError: boolean = false;
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -125,8 +128,10 @@ export class ListPreparationsComponent implements OnInit {
       });
   }
   getGovernment() {
+    this.governmentsLoading = true;
     this.lookupsGetterService.getAllGovernments().subscribe(
       (result: any) => {
+        this.governmentsLoading = false;
         if (result != null && result != undefined) {
           this.governments = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
@@ -148,6 +153,7 @@ export class ListPreparationsComponent implements OnInit {
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -168,12 +174,14 @@ export class ListPreparationsComponent implements OnInit {
     }
   }
   getHealthAdministrations(governmentID: any) {
+    this.healthAdministrationsLoading = true;
     this.lookupsGetterService
       .getPageHealthAdministrations({
         governmentID: governmentID,
       })
       .subscribe(
         (result: any) => {
+          this.healthAdministrationsLoading = false;
           if (result != null && result != undefined) {
             this.healthAdministrations = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
@@ -194,6 +202,7 @@ export class ListPreparationsComponent implements OnInit {
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

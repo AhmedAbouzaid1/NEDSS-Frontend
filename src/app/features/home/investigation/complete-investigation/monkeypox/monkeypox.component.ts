@@ -6,6 +6,7 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
 import { InvestigationService } from '../../services/investigation.service';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-monkeypox',
@@ -23,6 +24,8 @@ export class MonkeypoxComponent implements OnInit {
   allControllesCount: number = 0;
   governorates: any[] = [];
   countries: any[] = [];
+  governoratesLoading: boolean = false;
+  countriesLoading: boolean = false;
   patientName: string;
   currentId: any;
   diseaseGroupID: any;
@@ -209,15 +212,21 @@ export class MonkeypoxComponent implements OnInit {
   }
 
   private loadGovernorates(): void {
-    this.lookupsService.getAllGovernments().subscribe((result: any) => {
-      this.governorates = result?.data ?? [];
-    });
+    this.governoratesLoading = true;
+    this.lookupsService.getAllGovernments()
+      .pipe(finalize(() => (this.governoratesLoading = false)))
+      .subscribe((result: any) => {
+        this.governorates = result?.data ?? [];
+      });
   }
 
   private loadCountries(): void {
-    this.lookupsService.getAllNationalitys().subscribe((result: any) => {
-      this.countries = result?.data ?? [];
-    });
+    this.countriesLoading = true;
+    this.lookupsService.getAllNationalitys()
+      .pipe(finalize(() => (this.countriesLoading = false)))
+      .subscribe((result: any) => {
+        this.countries = result?.data ?? [];
+      });
   }
 
   get domesticTravelLocations(): FormArray {

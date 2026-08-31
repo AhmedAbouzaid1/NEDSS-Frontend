@@ -165,6 +165,7 @@
                 }}
               </label>
               <p-dropdown
+                [appDropdownLoading]="finalResultsLoading"
                 (onChange)="onFinalResultChanged()"
                 [options]="finalResuls"
                 [(ngModel)]="selectedFinalResultId"
@@ -192,6 +193,7 @@
                   <span class="text-danger mess-color">*</span>
                 </label>
                 <p-dropdown
+                  [appDropdownLoading]="transferGovernmentsLoading"
                   (onChange)="onGovernmentChanged()"
                   [options]="governments"
                   [(ngModel)]="selectedTransferGovernmentId"
@@ -218,6 +220,7 @@
                   }}
                 </label>
                 <p-dropdown
+                  [appDropdownLoading]="healthAdminsLoading"
                   (onChange)="onHealthAdminChange()"
                   [options]="HealthAdmins"
                   [(ngModel)]="selectedTransferHealthAdminId"
@@ -246,6 +249,7 @@
                   }}
                 </label>
                 <p-dropdown
+                  [appDropdownLoading]="incidentSourcesLoading"
                   (onChange)="onIncidentSourceChanged()"
                   [options]="incidentSources"
                   [(ngModel)]="selectedTransferIncidentSourceId"
@@ -358,9 +362,8 @@
                     "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_GOVERNMENT"
                     | translate
                     }}
-                    <span *ngIf="loadingSpecialGovernments" class="spinner-border spinner-border-sm text-secondary ms-2 align-middle" role="status" aria-hidden="true"></span>
                   </label>
-                  <p-dropdown (onChange)="getSpecialHealthAdmins()" [options]="specialGovernment"
+                  <p-dropdown [appDropdownLoading]="loadingSpecialGovernments" (onChange)="getSpecialHealthAdmins()" [options]="specialGovernment"
                     [(ngModel)]="selectedSpecialGovernmentId"
                     [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
                     autoWidth="false" [style]="{ width: '100%' }" name="specialGovernment" [required]="true"
@@ -375,9 +378,8 @@
                     "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_Department"
                     | translate
                     }}
-                    <span *ngIf="loadingSpecialHealthAdmins" class="spinner-border spinner-border-sm text-secondary ms-2 align-middle" role="status" aria-hidden="true"></span>
                   </label>
-                  <p-dropdown (onChange)="getSpecialLabs()" [options]="specialHealthAdmin"
+                  <p-dropdown [appDropdownLoading]="loadingSpecialHealthAdmins" (onChange)="getSpecialLabs()" [options]="specialHealthAdmin"
                     [(ngModel)]="selectedSpecialHealthAdminId"
                     [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
                     autoWidth="false" [style]="{ width: '100%' }" name="specialHealthAdmin" [required]="true"

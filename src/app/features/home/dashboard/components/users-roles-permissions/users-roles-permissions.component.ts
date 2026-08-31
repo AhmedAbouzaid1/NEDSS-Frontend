@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DiseaseFormService } from '../disease-special-symptoms/services/disease-form.service';
 import { Organiztion } from '../../../chat/Models/organiztion';
 import { Result } from 'src/app/features/Result';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users-roles-permissions',
@@ -63,8 +64,10 @@ export class UsersRolesPermissionsComponent {
   currentId: any;
   currentLang: string;
   organizations: Organiztion[] = [];
+  organizationsLoading: boolean = false;
   selectedOrganizationId: number = null;
   levels: any[] = [];
+  levelsLoading: boolean = false;
   selectedLevelId: number[] = [];
   constructor(
     private lookupsService: LookupsGetterService,
@@ -602,7 +605,10 @@ export class UsersRolesPermissionsComponent {
   }
 
   getOrganizations() {
-    this.lookupsService.getAllOrganizations().subscribe({
+    this.organizationsLoading = true;
+    this.lookupsService.getAllOrganizations()
+      .pipe(finalize(() => (this.organizationsLoading = false)))
+      .subscribe({
       next: (response: Result<Organiztion[]>) => {
         let selectionObject = {
           id: null,
@@ -639,7 +645,10 @@ export class UsersRolesPermissionsComponent {
   }
 
   getLevels() {
-    this.lookupsService.getAllLevels(this.selectedOrganizationId).subscribe({
+    this.levelsLoading = true;
+    this.lookupsService.getAllLevels(this.selectedOrganizationId)
+      .pipe(finalize(() => (this.levelsLoading = false)))
+      .subscribe({
       next: (response: any) => {
         // let selectionObject = {
         //   id: null,

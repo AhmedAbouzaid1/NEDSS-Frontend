@@ -59,6 +59,11 @@ export class AddLabTestComponent {
 
   noData: boolean = true;
   loadingPanel: boolean = false;
+  labSamplesLoading: boolean = false;
+  labChecksLoading: boolean = false;
+  labCheckResultsLoading: boolean = false;
+  diseasesLoading: boolean = false;
+  diseaseGroupsLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -157,6 +162,7 @@ export class AddLabTestComponent {
   }
 
   getLabChecks() {
+    this.labChecksLoading = true;
     this.lookupsService
       .GetDiseaseLabTestByPatientId(
         this.patientAddCheck.diseaseGroupId,
@@ -177,8 +183,10 @@ export class AddLabTestComponent {
               )?.id;
             }
           }
+          this.labChecksLoading = false;
         },
         (error) => {
+          this.labChecksLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -189,6 +197,7 @@ export class AddLabTestComponent {
   }
 
   getLabCheckResults() {
+    this.labCheckResultsLoading = true;
     this.lookupsService
       .GetDiseaseLabTestResultByPatientId(
         this.patientAddCheck.diseaseGroupId,
@@ -208,8 +217,10 @@ export class AddLabTestComponent {
               this.selectedLabCheckResult = [];
             }
           }
+          this.labCheckResultsLoading = false;
         },
         (error) => {
+          this.labCheckResultsLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -237,6 +248,7 @@ export class AddLabTestComponent {
     );
   }
   getLabSamples() {
+    this.labSamplesLoading = true;
     this.lookupsService
       .GetByPatientId(this.patientAddCheck.diseaseGroupId)
       .subscribe(
@@ -254,8 +266,10 @@ export class AddLabTestComponent {
               this.getLabCheckResults();
             }
           }
+          this.labSamplesLoading = false;
         },
         (error) => {
+          this.labSamplesLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -266,6 +280,7 @@ export class AddLabTestComponent {
   }
 
   getAllDiseases() {
+    this.diseasesLoading = true;
     this.lookupsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -275,9 +290,11 @@ export class AddLabTestComponent {
           }
         }
 
+        this.diseasesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseasesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -289,6 +306,7 @@ export class AddLabTestComponent {
   }
 
   getAllDiseasesGroup() {
+    this.diseaseGroupsLoading = true;
     this.lookupsService
       .getPageDiseaseGroups({ patientId: this.patientAddCheck.patientId })
       .subscribe(
@@ -310,9 +328,11 @@ export class AddLabTestComponent {
             // }
           }
 
+          this.diseaseGroupsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.diseaseGroupsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

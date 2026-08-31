@@ -55,6 +55,8 @@ export class DiseasesComponent {
   };
   noData: boolean = true;
   loadingPanel: boolean = false;
+  diseaseCategorysLoading: boolean = false;
+  diseaseGroupsLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -87,15 +89,18 @@ export class DiseasesComponent {
   }
 
   getDiseaseCategorys() {
+    this.diseaseCategorysLoading = true;
     this.diseaseService.getAllDiseaseCategorys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.diseaseCategorys = result.data;
         }
         this.loadingPanel = false;
+        this.diseaseCategorysLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.diseaseCategorysLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {
@@ -105,15 +110,18 @@ export class DiseasesComponent {
     );
   }
   getDiseaseGroups() {
+    this.diseaseGroupsLoading = true;
     this.diseaseService.getAllDiseaseGroups().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.diseaseGroups = result.data;
         }
         this.loadingPanel = false;
+        this.diseaseGroupsLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.diseaseGroupsLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {

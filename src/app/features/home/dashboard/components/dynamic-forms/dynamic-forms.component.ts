@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { debounceTime, distinctUntilChanged, fromEvent, map } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
@@ -39,6 +40,7 @@ export class DynamicFormsComponent {
   };
   noData: boolean = true;
   loadingPanel: boolean = false;
+  diseasesLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -69,7 +71,10 @@ export class DynamicFormsComponent {
     private router: Router,
   ) { }
   getDiseases() {
-    this.diseaseService.getAllDiseaseGroups().subscribe(
+    this.diseasesLoading = true;
+    this.diseaseService.getAllDiseaseGroups()
+      .pipe(finalize(() => (this.diseasesLoading = false)))
+      .subscribe(
       (result: any) => {
         this.diseases = result.data;
       },

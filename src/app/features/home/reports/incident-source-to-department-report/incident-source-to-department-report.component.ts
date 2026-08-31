@@ -51,6 +51,12 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
 
   governments: any;
   loadingPanel: boolean;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
+  categoriesLoading: boolean = false;
+  diseasesLoading: boolean = false;
+  departmentsLoading: boolean = false;
   selectedGovernment: number = -1;
   healthAdministration: any;
   selectedHealthAdministration: number;
@@ -143,14 +149,17 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
 
   getIncidentSources(healthAdministrationID: any) {
     //, reportingOrResidence: 1
+    this.incidentSourcesLoading = true;
     this.lookUpsService.getPageIncidentSourceHospitals({ healthAdministrationID: healthAdministrationID }).subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.incidentSources = result.data;
         var selectedIncidentSourceId = JSON.parse(localStorage.getItem('ls.authorizationData')).user.incidentSourceId;
         this.selectedIncidentSource = this.incidentSources.filter(s => s.id == selectedIncidentSourceId)
       }
+      this.incidentSourcesLoading = false;
       this.loadingPanel = false;
     }, error => {
+      this.incidentSourcesLoading = false;
       this.loadingPanel = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
@@ -166,14 +175,17 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
     }
   }
   getDiseases() {
+    this.diseasesLoading = true;
     this.lookUpsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.diseases = result.data;
         }
+        this.diseasesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseasesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -217,14 +229,17 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
     }
   }
   getDepartments() {
+    this.departmentsLoading = true;
     this.lookUpsService.getAllDepartments().subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.departments = result.data;
 
 
       }
+      this.departmentsLoading = false;
       this.loadingPanel = false;
     }, error => {
+      this.departmentsLoading = false;
       this.loadingPanel = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
@@ -232,6 +247,7 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
     });
   }
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookUpsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -248,9 +264,11 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
             }
           }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -269,6 +287,7 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
     }
   }
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookUpsService
       .getPageHealthAdministrations({ governmentID: governmentID })
       .subscribe(
@@ -286,9 +305,11 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
               this.selectedHealthAdministration = -1;
             }
           }
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -431,14 +452,17 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
       );
   }
   getCaseCategories() {
+    this.categoriesLoading = true;
     this.lookUpsService.getAllCaseResultCategorys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.Categories = result.data;
         }
+        this.categoriesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.categoriesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

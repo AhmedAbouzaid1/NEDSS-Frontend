@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { InvestigationService } from '../../services/investigation.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-meningeal',
@@ -26,6 +27,9 @@ export class MeningealComponent implements OnInit {
   governorates: any[] = [];
   schoolDistricts: any[] = [];
   countries: any[] = [];
+  governoratesLoading: boolean = false;
+  schoolDistrictsLoading: boolean = false;
+  countriesLoading: boolean = false;
   private suppressSchoolDistrictReset = false;
   readonly yesNoOptions = ['yes', 'no'];
   readonly yesNoUnknownOptions = ['yes', 'no', 'unknown'];
@@ -293,17 +297,23 @@ export class MeningealComponent implements OnInit {
   }
 
   private loadGovernorates(): void {
-    this.lookupsService.getAllGovernments().subscribe((result: any) => {
-      const options = result?.data ?? [];
-      this.governorates = options;
-    });
+    this.governoratesLoading = true;
+    this.lookupsService.getAllGovernments()
+      .pipe(finalize(() => (this.governoratesLoading = false)))
+      .subscribe((result: any) => {
+        const options = result?.data ?? [];
+        this.governorates = options;
+      });
   }
 
   private loadCountries(): void {
-    this.lookupsService.getAllNationalitys().subscribe((result: any) => {
-      const options = result?.data ?? [];
-      this.countries = options;
-    });
+    this.countriesLoading = true;
+    this.lookupsService.getAllNationalitys()
+      .pipe(finalize(() => (this.countriesLoading = false)))
+      .subscribe((result: any) => {
+        const options = result?.data ?? [];
+        this.countries = options;
+      });
   }
 
   private loadSchoolDistricts(governorateId: any, preserveCurrentSelection = false): void {
@@ -316,8 +326,10 @@ export class MeningealComponent implements OnInit {
       }
       return;
     }
+    this.schoolDistrictsLoading = true;
     this.lookupsService
       .getPageCitys({ governmentID: Number(governorateId) })
+      .pipe(finalize(() => (this.schoolDistrictsLoading = false)))
       .subscribe((result: any) => {
         this.schoolDistricts = result?.data ?? [];
         if (!preserveCurrentSelection) {

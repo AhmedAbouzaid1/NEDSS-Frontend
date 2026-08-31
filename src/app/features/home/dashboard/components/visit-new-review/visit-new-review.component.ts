@@ -57,6 +57,8 @@ export class VisitNewReviewComponent implements OnInit {
   };
   noData: boolean = true;
   loadingPanel: boolean = false;
+  diseaseFieldsLoading: boolean = false;
+  governmentsLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -84,6 +86,7 @@ export class VisitNewReviewComponent implements OnInit {
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
 
+    this.diseaseFieldsLoading = true;
     this.diseaseFormService.getAllDiseaseField().subscribe(
       (result: any) => {
         this.diseaseFields = [{ id: -1, nameAr: 'إختر', nameEn: 'Select' }];
@@ -91,8 +94,10 @@ export class VisitNewReviewComponent implements OnInit {
           this.diseaseFields.push(dis);
         });
         this.getGovernments();
+        this.diseaseFieldsLoading = false;
       },
       () => {
+        this.diseaseFieldsLoading = false;
         this.translateService
           .get('NEDSS.COMMON.failaddField')
           .subscribe((res: string) => {
@@ -348,6 +353,7 @@ export class VisitNewReviewComponent implements OnInit {
   // }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -364,9 +370,11 @@ export class VisitNewReviewComponent implements OnInit {
           }
         }
         this.loadingPanel = false;
+        this.governmentsLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.governmentsLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {

@@ -57,6 +57,9 @@ export class ExamineCasesComponent {
   healthAdministrations!: any[];
   incidentSources!: any[];
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
   selectedincidentSource: any
   selectedDisase: any
   zeroInstantNotificationFilter = {
@@ -133,6 +136,7 @@ export class ExamineCasesComponent {
   };
 
   getGovernments(setDefault?: boolean) {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -151,9 +155,11 @@ export class ExamineCasesComponent {
           this.getExamineCases();
         }
         this.loadingPanel = false;
+        this.governmentsLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.governmentsLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {
@@ -189,6 +195,7 @@ export class ExamineCasesComponent {
   }
 
   getHealthAdministrations(governmentID: any, setDefault?: boolean) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({
         governmentID: governmentID,
@@ -211,9 +218,11 @@ export class ExamineCasesComponent {
             this.getExamineCases();
           }
           this.loadingPanel = false;
+          this.healthAdministrationsLoading = false;
         },
         (error) => {
           this.loadingPanel = false;
+          this.healthAdministrationsLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -250,6 +259,7 @@ export class ExamineCasesComponent {
 
 
   getIncidentSources(healthAdministrationID: any, setDefault?: boolean) {
+    this.incidentSourcesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationID,
@@ -270,9 +280,11 @@ export class ExamineCasesComponent {
             this.getExamineCases();
           }
           this.loadingPanel = false;
+          this.incidentSourcesLoading = false;
         },
         (error) => {
           this.loadingPanel = false;
+          this.incidentSourcesLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
