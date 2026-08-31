@@ -5,6 +5,106 @@
 .en {
   direction: ltr;
 }
+
+.session-warning-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.58);
+}
+
+.session-warning-dialog {
+  width: min(440px, 100%);
+  padding: 1.5rem;
+  border: 1px solid #d7e7ff;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2937;
+  text-align: center;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+}
+
+.session-warning-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 0.85rem;
+  border-radius: 50%;
+  background: #eef5ff;
+  color: #007bff;
+  font-size: 1.35rem;
+}
+
+.session-warning-dialog h2 {
+  margin: 0 0 0.6rem;
+  color: #007bff;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.session-warning-dialog p {
+  margin: 0;
+  color: #475467;
+  line-height: 1.6;
+}
+
+.session-warning-countdown {
+  width: fit-content;
+  min-width: 112px;
+  margin: 1.15rem auto;
+  padding: 0.55rem 1rem;
+  border: 1px solid #cfe2ff;
+  border-radius: 8px;
+  background: #f4f8ff;
+  color: #007bff;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.session-warning-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.session-warning-actions .btn {
+  min-width: 140px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+:host-context(.dark-mode) .session-warning-dialog {
+  border-color: var(--border-color);
+  background: var(--dark-color);
+  color: var(--light-color);
+}
+
+:host-context(.dark-mode) .session-warning-dialog p {
+  color: var(--light-color);
+}
+
+:host-context(.dark-mode) .session-warning-icon,
+:host-context(.dark-mode) .session-warning-countdown {
+  background: rgba(0, 123, 255, 0.2);
+}
+
+@media (max-width: 575.98px) {
+  .session-warning-dialog {
+    padding: 1.2rem;
+  }
+
+  .session-warning-actions .btn {
+    width: 100%;
+  }
+}
+
 .checkbox-wrapper-5 .check {
   --size: 25px;
   position: relative;
