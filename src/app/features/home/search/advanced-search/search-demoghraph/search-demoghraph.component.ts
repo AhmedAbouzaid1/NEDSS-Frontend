@@ -35,6 +35,8 @@ export class SearchDemoghraphComponent implements OnInit {
   maritalStatus = MaritalStatus;
   schoolCategorys = SchoolCategory;
   jobs: any;
+  nationalitiesLoading: boolean = false;
+  jobsLoading: boolean = false;
   national: number = -1;
   singleDropdownSettings = SingleDropdownSettings;
   singleDropdownSettingsnationality = SingleDropdownSettings;
@@ -85,6 +87,7 @@ export class SearchDemoghraphComponent implements OnInit {
   }
 
   getNationalties() {
+    this.nationalitiesLoading = true;
     this.lookupsService.getAllNationalitys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -103,9 +106,11 @@ export class SearchDemoghraphComponent implements OnInit {
             this.national = -1;
           }
         }
+        this.nationalitiesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.nationalitiesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -117,14 +122,17 @@ export class SearchDemoghraphComponent implements OnInit {
   }
 
   getjobNames() {
+    this.jobsLoading = true;
     this.lookupsService.getAllPatientJobs().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.jobs = result.data;
         }
+        this.jobsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.jobsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

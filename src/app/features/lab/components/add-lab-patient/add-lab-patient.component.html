@@ -88,7 +88,7 @@
                 <span class="text-danger mess-color">*</span>
               </label>
               <div *ngIf="currentLang == 'ar'">
-                <p-dropdown (onChange)="onNationalityChanged()" [options]="nationalities"
+                <p-dropdown [appDropdownLoading]="nationalitiesLoading" (onChange)="onNationalityChanged()" [options]="nationalities"
                   [(ngModel)]="selectedNationality" optionLabel="arabicName" optionValue="id" autoWidth="false"
                   style="width: 100%" name="nationalities" [required]="true" [filter]="true"
                   filterBy="arabicName" (onBlur)="
@@ -100,7 +100,7 @@
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
-                <p-dropdown (onChange)="onNationalityChanged()" [options]="nationalities"
+                <p-dropdown [appDropdownLoading]="nationalitiesLoading" (onChange)="onNationalityChanged()" [options]="nationalities"
                   [(ngModel)]="selectedNationality" optionLabel="englishName" optionValue="id" autoWidth="false"
                   style="width: 100%" name="nationalities" [required]="true" [filter]="true"
                   filterBy="englishName" (onBlur)="
@@ -215,14 +215,14 @@
                 <span class="text-danger mess-color">*</span>
               </label>
               <div *ngIf="currentLang == 'ar'">
-                <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernment"
+                <p-dropdown [appDropdownLoading]="governmentsLoading" (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernment"
                   optionLabel="arabicName" optionValue="id" autoWidth="false" style="width: 100%"
                   name="governments" [required]="true" [filter]="true" [disabled]="this.levelId != 1"
                   filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
-                <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernment"
+                <p-dropdown [appDropdownLoading]="governmentsLoading" (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernment"
                   optionLabel="englishName" optionValue="id" autoWidth="false" style="width: 100%"
                   name="governments" [required]="true" [filter]="true" [disabled]="this.levelId != 1"
                   filterBy="englishName">
@@ -241,14 +241,14 @@
                 <span class="text-danger mess-color">*</span>
               </label>
               <div *ngIf="currentLang == 'ar'">
-                <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations"
+                <p-dropdown [appDropdownLoading]="healthAdministrationsLoading" (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations"
                   [(ngModel)]="selectedHealthAdministration" optionLabel="arabicName" optionValue="id" autoWidth="false"
                   style="width: 100%" name="healthAdministrations" [filter]="true"
                   [disabled]="this.levelId != 1 && this.levelId != 2" filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
-                <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations"
+                <p-dropdown [appDropdownLoading]="healthAdministrationsLoading" (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations"
                   [(ngModel)]="selectedHealthAdministration" optionLabel="englishName" optionValue="id"
                   autoWidth="false" style="width: 100%" name="healthAdministrations" [filter]="true"
                   [disabled]="this.levelId != 1 && this.levelId != 2" filterBy="englishName">
@@ -267,13 +267,13 @@
                 <span class="text-danger mess-color">*</span>
               </label>
               <div *ngIf="currentLang == 'ar'">
-                <p-dropdown (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCity"
+                <p-dropdown [appDropdownLoading]="citiesLoading" (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCity"
                   optionLabel="arabicName" optionValue="id" autoWidth="false" style="width: 100%" name="cities"
                   [filter]="true" filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
-                <p-dropdown (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCity"
+                <p-dropdown [appDropdownLoading]="citiesLoading" (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCity"
                   optionLabel="englishName" optionValue="id" autoWidth="false" style="width: 100%" name="cities"
                   [filter]="true" filterBy="englishName">
                 </p-dropdown>
@@ -291,13 +291,13 @@
                 <span class="text-danger mess-color">*</span>
               </label>
               <div *ngIf="currentLang == 'ar'">
-                <p-dropdown (onChange)="onHealthOfficeChanged()" [options]="healthOffices"
+                <p-dropdown [appDropdownLoading]="healthOfficesLoading" (onChange)="onHealthOfficeChanged()" [options]="healthOffices"
                   [(ngModel)]="selectedHealthOffice" optionLabel="arabicName" optionValue="id" autoWidth="false"
                   style="width: 100%" name="healthOffices" [filter]="true" filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
-                <p-dropdown (onChange)="onHealthOfficeChanged()" [options]="healthOffices"
+                <p-dropdown [appDropdownLoading]="healthOfficesLoading" (onChange)="onHealthOfficeChanged()" [options]="healthOffices"
                   [(ngModel)]="selectedHealthOffice" optionLabel="englishName" optionValue="id" autoWidth="false"
                   style="width: 100%" name="healthOffices" [filter]="true" filterBy="englishName">
                 </p-dropdown>
@@ -386,13 +386,13 @@
                 </option>
               </select> -->
               <div *ngIf="currentLang == 'ar'">
-                <p-dropdown (onChange)="filterdDiseaseChange()" [options]="Diseasies"
+                <p-dropdown [appDropdownLoading]="diseasesLoading" (onChange)="filterdDiseaseChange()" [options]="Diseasies"
                   [(ngModel)]="patientAddCheck.diseaseGroupId" optionLabel="arabicName" optionValue="id"
                   autoWidth="false" style="width: 100%" name="Diseasies" [filter]="true" filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
-                <p-dropdown (onChange)="filterdDiseaseChange()" [options]="Diseasies"
+                <p-dropdown [appDropdownLoading]="diseasesLoading" (onChange)="filterdDiseaseChange()" [options]="Diseasies"
                   [(ngModel)]="patientAddCheck.diseaseGroupId" optionLabel="englishName" optionValue="id"
                   autoWidth="false" style="width: 100%" name="Diseasies" [filter]="true" filterBy="englishName">
                 </p-dropdown>
@@ -433,7 +433,7 @@
               optionLabel="arabicName" optionValue="id" autoWidth="false" style="width: 100%"
               name="labChecks" [filter]="true" filterBy="arabicName">
             </p-dropdown> -->
-              <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="checkSamples"
+              <ng-multiselect-dropdown [appDropdownLoading]="labSamplesLoading" [settings]="multipleDropdownSettings" [data]="checkSamples"
                 [(ngModel)]="selectedCheckSample" (onSelect)="onSampleChanged()" (onDeSelect)="onSampleChanged()">
               </ng-multiselect-dropdown>
               <small *ngIf="!isDiseaseCheckValid" class="form-text text-danger mess-color">
@@ -456,13 +456,13 @@
               >
               </ng-multiselect-dropdown> -->
               <div *ngIf="currentLang == 'ar'">
-                <p-dropdown (onChange)="onLabCheckChanged()" [options]="labChecks" [(ngModel)]="selectedLabCheck"
+                <p-dropdown [appDropdownLoading]="labChecksLoading" (onChange)="onLabCheckChanged()" [options]="labChecks" [(ngModel)]="selectedLabCheck"
                   optionLabel="arabicName" optionValue="id" autoWidth="false" style="width: 100%"
                   name="labChecks" [filter]="true" filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
-                <p-dropdown (onChange)="onLabCheckChanged()" [options]="labChecks" [(ngModel)]="selectedLabCheck"
+                <p-dropdown [appDropdownLoading]="labChecksLoading" (onChange)="onLabCheckChanged()" [options]="labChecks" [(ngModel)]="selectedLabCheck"
                   optionLabel="englishName" optionValue="id" autoWidth="false" style="width: 100%"
                   name="labChecks" [filter]="true" filterBy="englishName">
                 </p-dropdown>
@@ -487,13 +487,13 @@
               >
               </ng-multiselect-dropdown> -->
               <div *ngIf="currentLang == 'ar'">
-                <p-dropdown (onChange)="onLabCheckResultChanged()" [options]="labCheckResults"
+                <p-dropdown [appDropdownLoading]="labCheckResultsLoading" (onChange)="onLabCheckResultChanged()" [options]="labCheckResults"
                   [(ngModel)]="selectedLabCheckResult" optionLabel="arabicName" optionValue="id" autoWidth="false"
                   style="width: 100%" name="labCheckResults" [filter]="true" filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
-                <p-dropdown (onChange)="onLabCheckResultChanged()" [options]="labCheckResults"
+                <p-dropdown [appDropdownLoading]="labCheckResultsLoading" (onChange)="onLabCheckResultChanged()" [options]="labCheckResults"
                   [(ngModel)]="selectedLabCheckResult" optionLabel="englishName" optionValue="id" autoWidth="false"
                   style="width: 100%" name="labCheckResults" [filter]="true" filterBy="englishName">
                 </p-dropdown>

@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { debounceTime, distinctUntilChanged, fromEvent, map } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { DiseaseSpecialSymptomsService } from './services/disease-special-symptoms.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -32,6 +33,7 @@ export class DiseaseSpecialSymptomsComponent {
   };
   diseasesField!: any[];
   diseases!: any[];
+  diseasesLoading: boolean = false;
   diseaseSelected: number = 0;
   diseasesFieldForm: any = {};
   isListShow = false;
@@ -100,7 +102,8 @@ export class DiseaseSpecialSymptomsComponent {
     private userMsg: UserMessageService
   ) { }
   getDiseases() {
-    this.diseaseService.getAllDiseaseGroups().subscribe(
+    this.diseasesLoading = true;
+    this.diseaseService.getAllDiseaseGroups().pipe(finalize(() => (this.diseasesLoading = false))).subscribe(
       (result: any) => {
         this.diseases = result.data;
       },

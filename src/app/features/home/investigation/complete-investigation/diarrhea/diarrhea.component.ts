@@ -311,9 +311,7 @@ export class DiarrheaComponent implements OnInit {
           this.showMessage('NEDSS.COMMON.SENT_SUCESSFULLY', 'success');
         }
       },
-      () => {
-        this.showMessage('NEDSS.COMMON.SENT_FAILD', 'error');
-      },
+      () => { },
     );
   }
 

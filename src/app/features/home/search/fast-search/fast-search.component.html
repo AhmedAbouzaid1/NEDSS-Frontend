@@ -32,6 +32,7 @@
                 </option>
               </select> -->
               <p-dropdown
+                [appDropdownLoading]="governmentsLoading"
                 (onChange)="governmentSelected()"
                 [options]="governments"
                 [(ngModel)]="selectedGovernmentId"
@@ -50,6 +51,7 @@
             </div>
             <div *ngIf="currentLang == 'en'">
               <p-dropdown
+                [appDropdownLoading]="governmentsLoading"
                 (onChange)="governmentSelected()"
                 [options]="governments"
                 [(ngModel)]="selectedGovernmentId"
@@ -98,6 +100,7 @@
                 </option>
               </select> -->
               <p-dropdown
+                [appDropdownLoading]="healthAdministrationLoading"
                 (onChange)="healthAdministrationSelected()"
                 [options]="healthAdministration"
                 [(ngModel)]="selectedAdministrationId"
@@ -116,6 +119,7 @@
             </div>
             <div *ngIf="currentLang == 'en'">
               <p-dropdown
+                [appDropdownLoading]="healthAdministrationLoading"
                 (onChange)="healthAdministrationSelected()"
                 [options]="healthAdministration"
                 [(ngModel)]="selectedAdministrationId"
@@ -149,6 +153,7 @@
             </label>
             <div *ngIf="currentLang == 'ar'">
               <p-dropdown
+                [appDropdownLoading]="branchesLoading"
                 (onChange)="branchSelected()"
                 [options]="branches"
                 [(ngModel)]="SelectedbranchId"
@@ -168,6 +173,7 @@
             </div>
             <div *ngIf="currentLang == 'en'">
               <p-dropdown
+                [appDropdownLoading]="branchesLoading"
                 (onChange)="branchSelected()"
                 [options]="branches"
                 [(ngModel)]="SelectedbranchId"
@@ -200,6 +206,7 @@
             </label>
             <div *ngIf="currentLang == 'ar'">
               <p-dropdown
+                [appDropdownLoading]="branchesLoading"
                 (onChange)="branchSelected()"
                 [options]="branches"
                 [(ngModel)]="SelectedbranchId"
@@ -219,6 +226,7 @@
             </div>
             <div *ngIf="currentLang == 'en'">
               <p-dropdown
+                [appDropdownLoading]="branchesLoading"
                 (onChange)="branchSelected()"
                 [options]="branches"
                 [(ngModel)]="SelectedbranchId"
@@ -249,6 +257,7 @@
             </label>
             <div *ngIf="currentLang == 'ar'">
               <p-dropdown
+                [appDropdownLoading]="areasLoading"
                 (onChange)="areaSelected()"
                 [options]="areas"
                 [(ngModel)]="SelectedareaId"
@@ -266,6 +275,7 @@
             </div>
             <div *ngIf="currentLang == 'en'">
               <p-dropdown
+                [appDropdownLoading]="areasLoading"
                 (onChange)="areaSelected()"
                 [options]="areas"
                 [(ngModel)]="SelectedareaId"
@@ -314,6 +324,7 @@
                 </option>
               </select> -->
               <p-dropdown
+                [appDropdownLoading]="incidentSourcesLoading"
                 (onChange)="incidentSourcesSelected()"
                 [options]="incidentSources"
                 [(ngModel)]="selectedIncidentSourcesId"
@@ -332,6 +343,7 @@
             </div>
             <div *ngIf="currentLang == 'en'">
               <p-dropdown
+                [appDropdownLoading]="incidentSourcesLoading"
                 (onChange)="incidentSourcesSelected()"
                 [options]="incidentSources"
                 [(ngModel)]="selectedIncidentSourcesId"
@@ -375,6 +387,7 @@
                 </option>
               </select> -->
               <p-dropdown
+                [appDropdownLoading]="departmentsLoading"
                 (onChange)="incidentDepartmentSelected()"
                 [options]="departments"
                 [(ngModel)]="selectedIncidentDepartmentId"
@@ -390,6 +403,7 @@
             </div>
             <div *ngIf="currentLang == 'en'">
               <p-dropdown
+                [appDropdownLoading]="departmentsLoading"
                 (onChange)="incidentDepartmentSelected()"
                 [options]="departments"
                 [(ngModel)]="selectedIncidentDepartmentId"
@@ -464,6 +478,7 @@
                 </option>
               </select> -->
               <p-dropdown
+                [appDropdownLoading]="diseaseGroupsLoading"
                 (onChange)="setDiseaseValue()"
                 [options]="diseases"
                 [(ngModel)]="selectedDiseaseId"
@@ -479,6 +494,7 @@
             </div>
             <div *ngIf="currentLang == 'en'">
               <p-dropdown
+                [appDropdownLoading]="diseaseGroupsLoading"
                 (onChange)="setDiseaseValue()"
                 [options]="diseases"
                 [(ngModel)]="selectedDiseaseId"
@@ -499,6 +515,50 @@
           <div class="form-group">
             <label for="">
               {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULTCATEGORY"
+                  | translate
+              }}
+            </label>
+
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                [appDropdownLoading]="caseResultCategoriesLoading"
+                (onChange)="setCaseResultCategoryValue()"
+                [options]="caseResultCategories"
+                [(ngModel)]="selectedCaseResultCategoryId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                formControlName="caseResultCategoryId"
+                [filter]="true"
+                filterBy="arabicName"
+              >
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                [appDropdownLoading]="caseResultCategoriesLoading"
+                (onChange)="setCaseResultCategoryValue()"
+                [options]="caseResultCategories"
+                [(ngModel)]="selectedCaseResultCategoryId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                formControlName="caseResultCategoryId"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+          <div class="form-group">
+            <label for="">
+              {{
                 "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.FINAL_DISEASES"
                   | translate
               }}
@@ -506,6 +566,7 @@
 
             <div *ngIf="currentLang == 'ar'">
               <p-dropdown
+                [appDropdownLoading]="diseasesLoading"
                 (onChange)="setFinalDiseaseValue()"
                 [options]="finalDiseases"
                 [(ngModel)]="selectedFinalDiseaseId"
@@ -521,6 +582,7 @@
             </div>
             <div *ngIf="currentLang == 'en'">
               <p-dropdown
+                [appDropdownLoading]="diseasesLoading"
                 (onChange)="setFinalDiseaseValue()"
                 [options]="finalDiseases"
                 [(ngModel)]="selectedFinalDiseaseId"
@@ -617,6 +679,7 @@
                 </option>
               </select> -->
               <p-dropdown
+                [appDropdownLoading]="nationalitiesLoading"
                 (onChange)="setNationalityValue()"
                 [options]="nationalities"
                 [(ngModel)]="selectedNationalityId"
@@ -632,6 +695,7 @@
             </div>
             <div *ngIf="currentLang == 'en'">
               <p-dropdown
+                [appDropdownLoading]="nationalitiesLoading"
                 (onChange)="setNationalityValue()"
                 [options]="nationalities"
                 [(ngModel)]="selectedNationalityId"

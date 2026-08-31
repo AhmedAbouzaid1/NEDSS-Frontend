@@ -49,6 +49,15 @@ export class EpidemiologicalThresholdsUsersComponent implements OnInit {
   users: any;
   systemUserMainData: SystemUserMainDataFilter = {} as SystemUserMainDataFilter;
   thresholdUsers:ThresholdUser[];
+  organizationsLoading = false;
+  governmentsLoading = false;
+  healthAdminsLoading = false;
+  branchesLoading = false;
+  universitiesLoading = false;
+  areasLoading = false;
+  incidentSourcesLoading = false;
+  incidentSourceTypesLoading = false;
+  usersLoading = false;
   constructor(private lookupsService: LookupsGetterService,
     private userMsg: UserMessageService,
     private translateService: TranslateService,
@@ -77,14 +86,17 @@ export class EpidemiologicalThresholdsUsersComponent implements OnInit {
 
   //Start of Organization الهيئات
   getOrganizations() {
+    this.organizationsLoading = true;
     this.lookupsService.getAllOrganizations().subscribe({
       next: (response: Result<Organiztion[]>) => {
         let selectionObject = { id: -1, englishName: '', arabicName: '', code: '', totalCount: -1 };
         this.organizations = response.data;
         this.organizations.unshift(selectionObject);
+        this.organizationsLoading = false;
         this.loadingPanel = false;
       },
       error: (error) => {
+        this.organizationsLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
@@ -146,14 +158,17 @@ export class EpidemiologicalThresholdsUsersComponent implements OnInit {
 
   //Start of Government المحافظة
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernmentsForUser(true).subscribe({
       next: (result: Result<GovernmentDTO[]>) => {
         if (result != null && result != undefined) {
           this.governments = result.data;
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       error: error => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
@@ -190,14 +205,17 @@ export class EpidemiologicalThresholdsUsersComponent implements OnInit {
 
   //Start of Health adminstration الإدارة
   getHealthAdministrationForGovIds(filterHealthAdmin: FilterHealthAdministrationDto) {
+    this.healthAdminsLoading = true;
     this.lookupsService.getHealthAdministrationsIncidentByGovernmentsIds(filterHealthAdmin).subscribe({
       next: (result: Result<HealthAdministrationDTO[]>) => {
         if (result != null && result != undefined) {
           this.healthAdmins = result.data;
         }
+        this.healthAdminsLoading = false;
         this.loadingPanel = false;
       },
       error: error => {
+        this.healthAdminsLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
@@ -226,14 +244,17 @@ export class EpidemiologicalThresholdsUsersComponent implements OnInit {
 
   //Start of Branch الفروع
   getAllBranchesForUsers() {
+    this.branchesLoading = true;
     this.lookupsService.getAllBranchesForUsers(this.selectedOrganizationId, true).subscribe({
       next: (response) => {
         if (response != null && response != undefined) {
           this.branches = response.data;
         }
+        this.branchesLoading = false;
         this.loadingPanel = false;
       },
       error: (error) => {
+        this.branchesLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
@@ -272,14 +293,17 @@ export class EpidemiologicalThresholdsUsersComponent implements OnInit {
   //Start of Area المناطق
   // getAreasByBranchFilter
   getAreasByBranchFilter(areaFilter: any) {
+    this.areasLoading = true;
     this.lookupsService.getAreasByBranchFilter(areaFilter).subscribe({
       next: (response) => {
         if (response != null && response != undefined) {
           this.areas = response.data;
         }
+        this.areasLoading = false;
         this.loadingPanel = false;
       },
       error: (error) => {
+        this.areasLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
@@ -311,14 +335,17 @@ export class EpidemiologicalThresholdsUsersComponent implements OnInit {
   //Start of Branch الجامعات
   // getAllBranchesForUsers
   getAllUniversitiesForUsers() {
+    this.universitiesLoading = true;
     this.lookupsService.getAllBranchesForUsers(this.selectedOrganizationId, true).subscribe({
       next: (response) => {
         if (response != null && response != undefined) {
           this.universities = response.data;
         }
+        this.universitiesLoading = false;
         this.loadingPanel = false;
       },
       error: (error) => {
+        this.universitiesLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
@@ -353,16 +380,18 @@ export class EpidemiologicalThresholdsUsersComponent implements OnInit {
 
   //Start of Incident Source مصدر إبلاغ
   getIncidentSourceHospital(filter: any) {
+    this.incidentSourcesLoading = true;
     this.lookupsService.getIncidentSourceHospitalsByIncidentGovernmentsIds(filter).subscribe({
       next: (response) => {
         this.incidentSourceHospital = response.data;
       }, error: (error) => {
+        this.incidentSourcesLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
         })
       }, complete: () => {
-
+        this.incidentSourcesLoading = false;
       }
     })
   }
@@ -379,15 +408,18 @@ export class EpidemiologicalThresholdsUsersComponent implements OnInit {
 
   //start of get user
   getUsers(filter: SystemUserMainDataFilter) {
+    this.usersLoading = true;
     this.lookupsService.getUsersMainData(filter).subscribe({
       next: (data) => {
         this.users = data.data;
       }, error: () => {
+        this.usersLoading = false;
         this.loadingPanel = false;
         this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
           this.userMsg.error(res);
         })
       }, complete: () => {
+        this.usersLoading = false;
       }
     })
   }
@@ -396,16 +428,18 @@ export class EpidemiologicalThresholdsUsersComponent implements OnInit {
 
     //Start of Incident Source Hospital Types أنواع مصادر الإبلاغ
     getAllIncidentSourceHospitalTypes() {
+      this.incidentSourceTypesLoading = true;
       this.lookupsService.getAllIncidentSourceHospitalTypes().subscribe({
         next: (response) => {
           this.incidentSourceHospitalTypes = response.data;
         }, error: (error) => {
+          this.incidentSourceTypesLoading = false;
           this.loadingPanel = false;
           this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
             this.userMsg.error(res);
           });
         }, complete: () => {
-  
+          this.incidentSourceTypesLoading = false;
         }
       })
     }

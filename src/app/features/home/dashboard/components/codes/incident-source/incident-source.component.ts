@@ -58,6 +58,10 @@ export class IncidentSourceComponent {
   dependencys!: any[];
   noData: boolean = true;
   loadingPanel: boolean = false;
+  organizationsLoading: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  incidentSourceTypesLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -94,14 +98,17 @@ export class IncidentSourceComponent {
   }
 
   getOrganization() {
+    this.organizationsLoading = true;
     this.incidentSourceService.getAllOrganizations().subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.organizations = result.data;
         this.incidentSource.organizationID = 1;
       }
       this.loadingPanel = false;
+      this.organizationsLoading = false;
     }, error => {
       this.loadingPanel = false;
+      this.organizationsLoading = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
       });
@@ -109,6 +116,7 @@ export class IncidentSourceComponent {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.incidentSourceService.getAllGovernmentsForUser(true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -116,13 +124,15 @@ export class IncidentSourceComponent {
           this.governments.unshift({
             id: null,
             arabicName: this.translateService.instant('NEDSS.COMMON.SELECT'),
-            englishName: this.translateService.instant('NEDSS.COMMON.SELECT'),  
+            englishName: this.translateService.instant('NEDSS.COMMON.SELECT'),
           });
         }
         this.loadingPanel = false;
+        this.governmentsLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.governmentsLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {
@@ -142,6 +152,7 @@ export class IncidentSourceComponent {
 
 
   getHealthAdministrations(governmentID: any) {
+    this.healthAdministrationsLoading = true;
     this.incidentSourceService
       .getPageHealthAdministrations({
         governmentID: governmentID,
@@ -161,9 +172,11 @@ export class IncidentSourceComponent {
             }
           }
           this.loadingPanel = false;
+          this.healthAdministrationsLoading = false;
         },
         (error) => {
           this.loadingPanel = false;
+          this.healthAdministrationsLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -174,6 +187,7 @@ export class IncidentSourceComponent {
   }
 
   getIncidentSourceTypes() {
+    this.incidentSourceTypesLoading = true;
     this.incidentSourceService.getAllIncidentSourceHospitalTypes().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -185,9 +199,11 @@ export class IncidentSourceComponent {
           });
         }
         this.loadingPanel = false;
+        this.incidentSourceTypesLoading = false;
       },
       (error) => {
         this.loadingPanel = false;
+        this.incidentSourceTypesLoading = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {

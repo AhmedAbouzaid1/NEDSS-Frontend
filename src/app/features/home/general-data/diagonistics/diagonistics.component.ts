@@ -8,7 +8,7 @@ import { SharedDataService } from '../services/shared-data.service';
 import { DiseaseSpecialSymptomsService } from '../../dashboard/components/disease-special-symptoms/services/disease-special-symptoms.service';
 import { GeneralDataService } from '../services/general-data.service';
 import { map, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { DepartmentEnum } from '../models/department-enum';
 
 @Component({
@@ -23,6 +23,26 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   patient: PatientModel = new PatientModel();
   private diseasesInitializedFromPatient = false;
   private lastSyncedPatientId: number | null = null;
+
+  get caseStatusDisplay(): string {
+    if (this.patient?.caseResultCategory) {
+      return this.patient.caseResultCategory;
+    }
+    const data = this.patient?.finalDiagonisticsData;
+    return data && data.length
+      ? data.map((d) => d.caseResultCategory).filter((x) => !!x).join(' , ')
+      : '';
+  }
+
+  get finalDiagnosisDisplay(): string {
+    if (this.patient?.finalDiagonistics) {
+      return this.patient.finalDiagonistics;
+    }
+    const data = this.patient?.finalDiagonisticsData;
+    return data && data.length
+      ? data.map((d) => d.finalResult).filter((x) => !!x).join(' , ')
+      : '';
+  }
 
   levelId: any;
   currentLang: string = 'ar';
@@ -67,6 +87,10 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   selectedSpecialLabId: number = -1;
 
   loadingPanel: boolean = false;
+  finalResultsLoading: boolean = false;
+  transferGovernmentsLoading: boolean = false;
+  healthAdminsLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
   /** Inline loading for special-lab cascade (new patient has no id — full-screen loader is not tied to these calls). */
   loadingSpecialGovernments = false;
   loadingSpecialHealthAdmins = false;
@@ -99,7 +123,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     itemsShowLimit: 3,
     allowSearchFilter: true,
     enableCheckAll: false,
-    limitSelection: 4,
+    limitSelection: 3,
   };
   DepartmentEnum = DepartmentEnum;
   HealthAdmins:any[] = [];
@@ -355,59 +379,15 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     }
 
     this.isSpecialLabSelected = true;
-    const pid = this.toPositiveId(this.patient.id);
+    this.resolvedSpecialLabGovId = this.toPositiveId(this.patient.specialLabGovernmentId);
+    this.resolvedSpecialLabHaId = this.toPositiveId(this.patient.specialLabHealthAdministrationId);
 
-    const sourceId = this.toPositiveId(this.patient.specialLabSourceId);
-
-    // New registration: patient id is not assigned yet — still load governorate / district / lab lookups.
-    if (!pid) {
-      if (!(this.specialGovernment?.length > 1)) {
-        this.getSpecialGovernments(false);
-      }
-      return;
+    if (!(this.specialGovernment?.length > 1)) {
+      this.getSpecialGovernments(true);
+    } else if (this.resolvedSpecialLabGovId) {
+      this.selectedSpecialGovernmentId = this.resolvedSpecialLabGovId;
+      this.getSpecialHealthAdmins(true);
     }
-
-    if (!sourceId) {
-      if (!(this.specialGovernment?.length > 1)) {
-        this.getSpecialGovernments(false);
-      }
-      return;
-    }
-
-    if (this.specialLabHydratedForPatientId === pid) return;
-    this.specialLabHydratedForPatientId = pid;
-
-    this.lookupsService.getIncidentSourceHospitalById(sourceId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((result: any) => {
-        const source = result?.data ?? result?.Data ?? result;
-        if (!source || typeof source !== 'object') return;
-
-        const govId = this.toPositiveId(
-          source.governmentID ??
-            source.GovernmentID ??
-            source.governmentId ??
-            source.GovernmentId,
-        );
-        const haId = this.toPositiveId(
-          source.healthAdministrationID ??
-            source.HealthAdministrationID ??
-            source.healthAdministrationId ??
-            source.HealthAdministrationId,
-        );
-
-        if (!govId) return;
-
-        this.resolvedSpecialLabGovId = govId;
-        this.resolvedSpecialLabHaId = haId;
-
-        if (this.specialGovernment?.length > 1) {
-          this.selectedSpecialGovernmentId = govId;
-          this.getSpecialHealthAdmins(true);
-        } else {
-          this.getSpecialGovernments(true);
-        }
-      });
   }
 
   onItemSelect(item: any) { }
@@ -559,6 +539,10 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     if (!this.patient.isSpecialLabLab) {
       this.isSpecialLabSelected = false;
       this.patient.specialLabSourceId = null;
+      this.patient.specialLabName = null;
+      this.patient.specialLabGovernmentId = null;
+      this.patient.specialLabHealthAdministrationId = null;
+      this.generalDataService.isSpecialLabNameValid = true;
       this.resolvedSpecialLabGovId = null;
       this.resolvedSpecialLabHaId = null;
       this.selectedSpecialGovernmentId = -1;
@@ -585,12 +569,15 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
    * swallow this subscription. Falls back to user-scoped list if the full list is empty.
    */
   private fetchGovernorateOptionsForTransfer(phase: 'primary' | 'userScoped'): void {
+    this.transferGovernmentsLoading = true;
     const request$ =
       phase === 'primary'
         ? this.lookupsService.getAllGovernmentsExplicit(false, 'diag-transfer')
         : this.lookupsService.getAllGovernmentsForUser(true);
 
-    request$.subscribe(
+    request$
+      .pipe(finalize(() => (this.transferGovernmentsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           const raw = this.extractGovernanceRows(result);
@@ -681,15 +668,26 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     );
   }
   getFinalResults() {
-    this.lookupsService.getAllFinalResults().subscribe(
+    this.finalResultsLoading = true;
+    this.lookupsService
+      .getAllFinalResults()
+      .pipe(finalize(() => (this.finalResultsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.finalResuls = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
           ];
-          result.data.forEach((gov) => {
-            this.finalResuls.push(gov);
-          });
+          const excludedFinalResultNames = ['Blank', 'غير معروف', 'Unknown'];
+          result.data
+            .filter(
+              (gov) =>
+                !excludedFinalResultNames.includes(gov.arabicName) &&
+                !excludedFinalResultNames.includes(gov.englishName)
+            )
+            .forEach((gov) => {
+              this.finalResuls.push(gov);
+            });
           if (this.patient.finalResultId > 0) {
             this.selectedFinalResultId = this.patient.finalResultId;
           } else {
@@ -716,11 +714,13 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       this.HealthAdmins = [];
       return;
     }
+    this.healthAdminsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({
         governmentID: govId,
         forSystemUser: false,
       })
+      .pipe(finalize(() => (this.healthAdminsLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
@@ -760,6 +760,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   }
   
   getIncidentSources(healthAdministrationID: any, preserveSelection = false) {
+    this.incidentSourcesLoading = true;
     (!this.isPatientTransfered ?
       this.lookupsService
         .getPageIncidentSourceHospitals({
@@ -779,6 +780,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
           return res;
         }))
     )
+      .pipe(finalize(() => (this.incidentSourcesLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
@@ -901,6 +903,8 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       this.selectedSpecialHealthAdmin = null;
       this.selectedSpecialHealthAdminId = -1;
       this.patient.specialLabSourceId = null;
+      this.patient.specialLabGovernmentId = this.toPositiveId(this.selectedSpecialGovernmentId);
+      this.patient.specialLabHealthAdministrationId = null;
     }
     const specialGovId = this.toPositiveId(this.selectedSpecialGovernmentId);
     if (specialGovId != null) {
@@ -958,6 +962,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       this.selectedSpecialLab = null;
       this.selectedSpecialLabId = -1;
       this.patient.specialLabSourceId = null;
+      this.patient.specialLabHealthAdministrationId = this.toPositiveId(this.selectedSpecialHealthAdminId);
     }
     const labGov = this.toPositiveId(this.selectedSpecialGovernmentId);
     if (labGov == null) {

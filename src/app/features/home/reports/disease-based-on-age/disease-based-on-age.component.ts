@@ -180,6 +180,14 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
   diagnosisType = DiagnosisType;
   selectedDiagnosisType: DiagnosisType = DiagnosisType.Intial;
   totalCountsOfCounts:any[]= [];
+  diseasesLoading = false;
+  primaryDiseasesLoading = false;
+  departmentsLoading = false;
+  governmentsLoading = false;
+  healthAdministrationLoading = false;
+  incidentSourcesLoading = false;
+  homeHealthAdministrationLoading = false;
+  homeIncidentSourcesLoading = false;
   constructor(
     private lookUpsService: LookupsGetterService,
     private lookupsGetterService: LookupsGetterService,
@@ -269,6 +277,7 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
 
   getIncidentSources(healthAdministrationIDs: any[]) {
     //, reportingOrResidence: 1
+    this.incidentSourcesLoading = true;
     this.lookUpsService
       .getIncidentSourceHospitalsByGovernmentsIds({
         healthAdministrationsIds: healthAdministrationIDs,
@@ -279,9 +288,11 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
           if (result != null && result != undefined) {
             this.incidentSources = result.data;
           }
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -294,6 +305,7 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
 
   getHomeIncidentSources(healthAdministrationIDs: any[]) {
     //, reportingOrResidence: 1
+    this.homeIncidentSourcesLoading = true;
     this.lookUpsService
       .getIncidentSourceHospitalsByGovernmentsIds({
         healthAdministrationsIds: healthAdministrationIDs,
@@ -304,9 +316,11 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
           if (result != null && result != undefined) {
             this.homeIncidentSources = result.data;
           }
+          this.homeIncidentSourcesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.homeIncidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -360,14 +374,17 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
   }
 
   getDiseases() {
+    this.diseasesLoading = true;
     this.lookUpsService.getAllDiseases().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.diseases = result.data;
         }
+        this.diseasesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseasesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -379,14 +396,17 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
   }
 
   getPrimaryDiseases() {
+    this.primaryDiseasesLoading = true;
     this.lookUpsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.primaryDiseases = result.data;
         }
+        this.primaryDiseasesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.primaryDiseasesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -434,14 +454,17 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
   }
 
   getDepartments() {
+    this.departmentsLoading = true;
     this.lookUpsService.getAllDepartments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.departments = result.data;
         }
+        this.departmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.departmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -453,15 +476,18 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsGetterService.getAllGovernmentsForUser(true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.governments = result.data;
           this.homeGovernments = result.data;
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -473,14 +499,17 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
   }
 
   getHomeGovernments() {
+    this.governmentsLoading = true;
     this.lookUpsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.homeGovernments = result.data;
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -516,6 +545,7 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
   }
 
   getHealthAdministration(governmentIDs: any[]) {
+    this.healthAdministrationLoading = true;
     this.lookUpsService
       .getHealthAdministrationsIncidentByGovernmentsIds({
         governmentsIds: governmentIDs,
@@ -526,9 +556,11 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
           if (result != null && result != undefined) {
             this.healthAdministration = result.data;
           }
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -540,6 +572,7 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
   }
 
   getHomeHealthAdministration(governmentIDs: any[]) {
+    this.homeHealthAdministrationLoading = true;
     this.lookUpsService
       .getHealthAdministrationsIncidentByGovernmentsIds({
         governmentsIds: governmentIDs,
@@ -550,9 +583,11 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
           if (result != null && result != undefined) {
             this.homeHealthAdministration = result.data;
           }
+          this.homeHealthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.homeHealthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

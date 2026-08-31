@@ -5,7 +5,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { fromEvent } from 'rxjs/internal/observable/fromEvent';
 import { map } from 'rxjs/internal/operators/map';
 import { environment } from 'src/environments/environment';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { SortEvent } from 'primeng/api';
 import { SortOrder } from 'src/app/core/constants';
 
@@ -47,6 +47,7 @@ export class CityComponent {
   };
   noData: boolean = true;
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -80,7 +81,11 @@ export class CityComponent {
   }
 
   getHealthAdministrations() {
-    this.cityService.getAllGovernments().subscribe(
+    this.governmentsLoading = true;
+    this.cityService
+      .getAllGovernments()
+      .pipe(finalize(() => (this.governmentsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.governments = result.data;

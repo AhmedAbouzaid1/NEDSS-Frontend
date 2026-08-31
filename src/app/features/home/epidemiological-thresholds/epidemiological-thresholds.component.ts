@@ -73,6 +73,11 @@ export class EpidemiologicalThresholdsComponent implements OnInit, OnDestroy {
   standardDeviationOptions:any;
   thresholdUsers:ThresholdUser[];
   currentOption:any;
+  governmentsLoading = false;
+  healthAdministrationLoading = false;
+  diseasesLoading = false;
+  caseCategoriesLoading = false;
+  citiesLoading = false;
   constructor(
     private lookupsService: LookupsGetterService, 
     private translateService: TranslateService, 
@@ -137,6 +142,7 @@ export class EpidemiologicalThresholdsComponent implements OnInit, OnDestroy {
     this.getPage()
   }
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.governments = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
@@ -144,8 +150,10 @@ export class EpidemiologicalThresholdsComponent implements OnInit, OnDestroy {
           this.governments.push(nat);
         });
       }
+      this.governmentsLoading = false;
       this.loadingPanel = false;
     }, error => {
+      this.governmentsLoading = false;
       this.loadingPanel = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
@@ -154,6 +162,7 @@ export class EpidemiologicalThresholdsComponent implements OnInit, OnDestroy {
   }
 
   getHealthAdministration() {
+    this.healthAdministrationLoading = true;
     this.lookupsService.getPageHealthAdministrations({ governmentID: this.selectedGovernment }).subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.healthAdministration = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
@@ -166,8 +175,10 @@ export class EpidemiologicalThresholdsComponent implements OnInit, OnDestroy {
           this.epidmiologicalForm.value.healthAdministrationId = this.selectedHealthAdministration;
         }
       }
+      this.healthAdministrationLoading = false;
       this.loadingPanel = false;
     }, error => {
+      this.healthAdministrationLoading = false;
       this.loadingPanel = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
@@ -176,6 +187,7 @@ export class EpidemiologicalThresholdsComponent implements OnInit, OnDestroy {
   }
 
   getCaseCategories() {
+    this.caseCategoriesLoading = true;
     this.lookupsService.getAllCaseResultCategorys().subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.Categories = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
@@ -183,8 +195,10 @@ export class EpidemiologicalThresholdsComponent implements OnInit, OnDestroy {
           this.Categories.push(nat);
         });
       }
+      this.caseCategoriesLoading = false;
       this.loadingPanel = false;
     }, error => {
+      this.caseCategoriesLoading = false;
       this.loadingPanel = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
@@ -193,12 +207,15 @@ export class EpidemiologicalThresholdsComponent implements OnInit, OnDestroy {
 
   }
   gethomeCity() {
+    this.citiesLoading = true;
     this.lookupsService.getAllCitys().subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.cities = result.data;
       }
+      this.citiesLoading = false;
       this.loadingPanel = false;
     }, error => {
+      this.citiesLoading = false;
       this.loadingPanel = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
@@ -206,6 +223,7 @@ export class EpidemiologicalThresholdsComponent implements OnInit, OnDestroy {
     });
   }
   getAllDiseases() {
+    this.diseasesLoading = true;
     this.lookupsService.getAllDiseases().subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.Diseasies = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
@@ -213,8 +231,10 @@ export class EpidemiologicalThresholdsComponent implements OnInit, OnDestroy {
           this.Diseasies.push(nat);
         });
       }
+      this.diseasesLoading = false;
       this.loadingPanel = false;
     }, error => {
+      this.diseasesLoading = false;
       this.loadingPanel = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);

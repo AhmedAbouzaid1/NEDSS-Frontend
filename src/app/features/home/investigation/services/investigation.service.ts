@@ -8,11 +8,51 @@ import { PatientModel } from '../../general-data/models/patient-model';
   providedIn: 'root',
 })
 export class InvestigationService {
+  private static readonly PATIENT_ID_KEY = 'investigation.currentid';
+  private static readonly DISEASE_GROUP_KEY = 'investigation.diseaseGroupID';
+
   patientDiseases = [];
   patient: PatientModel = new PatientModel;
-  currentid;
-  diseaseGroupID: number = 0
   view: boolean = true;
+
+  get currentid(): any {
+    return this.readSession(InvestigationService.PATIENT_ID_KEY);
+  }
+  set currentid(value: any) {
+    this.writeSession(InvestigationService.PATIENT_ID_KEY, value);
+  }
+
+  get diseaseGroupID(): number {
+    const raw = this.readSession(InvestigationService.DISEASE_GROUP_KEY);
+    return raw != null ? Number(raw) : 0;
+  }
+  set diseaseGroupID(value: number) {
+    this.writeSession(InvestigationService.DISEASE_GROUP_KEY, value);
+  }
+
+  private readSession(key: string): string | null {
+    try {
+      const raw = sessionStorage.getItem(key);
+      if (raw == null || raw === 'null' || raw === 'undefined' || raw === '') {
+        return null;
+      }
+      return raw;
+    } catch {
+      return null;
+    }
+  }
+
+  private writeSession(key: string, value: any): void {
+    try {
+      if (value == null || value === '') {
+        sessionStorage.removeItem(key);
+      } else {
+        sessionStorage.setItem(key, String(value));
+      }
+    } catch {
+    }
+  }
+
   constructor(private APIs: BaseAPIService) { }
   private controllerURL: string = environment.baseApiUrl + "InvistigationForms/";
 

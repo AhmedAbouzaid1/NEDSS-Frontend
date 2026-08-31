@@ -21,6 +21,7 @@ export class UserManualComponent implements OnInit {
   };
   addCaseForm: FormGroup;
   AllAppPages: any;
+  appPagesLoading: boolean = false;
   loadingPanel: boolean;
   fileList: any = [];
   listOfFiles: any[] = [];
@@ -57,14 +58,17 @@ export class UserManualComponent implements OnInit {
   }
 
   getMainBranch() {
+    this.appPagesLoading = true;
     this.lookupsService.getAllAppPages().subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.AllAppPages = result.data;
         this.getManuals();
       }
       this.loadingPanel = false;
+      this.appPagesLoading = false;
     }, error => {
       this.loadingPanel = false;
+      this.appPagesLoading = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
       });

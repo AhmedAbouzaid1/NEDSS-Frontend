@@ -74,6 +74,12 @@ export class ZeroReportComponent {
   healthAdministrations!: any[];
   incidentSources!: any[];
   loadingPanel: boolean = false;
+  diseasesLoading: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
+  branchesLoading: boolean = false;
+  areasLoading: boolean = false;
   selectedincidentSource: any;
   selectedDisase: any;
   zeroInstantNotificationFilter = {
@@ -202,6 +208,7 @@ export class ZeroReportComponent {
   }
 
   getDiseases() {
+    this.diseasesLoading = true;
     this.lookupsService.getAllDiseases().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -219,9 +226,11 @@ export class ZeroReportComponent {
             this.selectedDisase = [];
           }
         }
+        this.diseasesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.diseasesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -233,6 +242,7 @@ export class ZeroReportComponent {
   }
 
   getBranches() {
+    this.branchesLoading = true;
     this.lookupsService.getAllBranchesForUsers(this.organizationId,true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -259,9 +269,11 @@ export class ZeroReportComponent {
             this.SelectedbranchId = -1;
           }
         }
+        this.branchesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.branchesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -286,6 +298,7 @@ export class ZeroReportComponent {
   }
 
   getAreas() {
+    this.areasLoading = true;
     this.lookupsService.getAllAreas(this.SelectedbranchId).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -313,9 +326,11 @@ export class ZeroReportComponent {
             this.SelectedareaId = -1;
           }
         }
+        this.areasLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.areasLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -339,6 +354,7 @@ export class ZeroReportComponent {
   }
 
   getGovernments(setDefault?: boolean) {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -359,9 +375,11 @@ export class ZeroReportComponent {
             }
           }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -397,6 +415,7 @@ export class ZeroReportComponent {
     this.incidentSources = null;
   }
   getHealthAdministrations(governmentID: any, setDefault?: boolean) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({
         governmentID: governmentID,
@@ -428,9 +447,11 @@ export class ZeroReportComponent {
               this.healthAdministrationId = -1;
             }
           }
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -457,6 +478,7 @@ export class ZeroReportComponent {
   }
 
   getIncidentSources(healthAdministrationID: any, setDefault?: boolean) {
+    this.incidentSourcesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: this.healthAdministrationId,
@@ -494,9 +516,11 @@ export class ZeroReportComponent {
               this.selectedincidentSource = -1;
             }
           }
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -1031,6 +1055,17 @@ export class ZeroReportComponent {
     this.isFromDateValid = this.generalDataService.validateField(
       this.zeroInstantNotification.fromDate
     );
+    if (event.value) {
+      const from = new Date(event.value);
+      if (!isNaN(from.getTime())) {
+        const to = new Date(from);
+        to.setDate(to.getDate() + 6);
+        this.zeroInstantNotification.toDate = to;
+        this.isToDateValid = this.generalDataService.validateField(
+          this.zeroInstantNotification.toDate
+        );
+      }
+    }
   }
   toDateSelected(event) {
     this.zeroInstantNotification.toDate = event.value;
@@ -1040,6 +1075,7 @@ export class ZeroReportComponent {
   }
 
   getPageIncidentSourceHospitalsForEductionalAndAmmana(){
+    this.incidentSourcesLoading = true;
     this.lookupsService.getPageIncidentSourceHospitals({
       GovernmentID:this.zeroInstantNotification.governmentId,
       organizationID:this.organizationId,
@@ -1073,6 +1109,11 @@ export class ZeroReportComponent {
             this.selectedincidentSource = -1;
           }
         }
+        this.incidentSourcesLoading = false;
+        this.loadingPanel = false;
+      },
+      error: () => {
+        this.incidentSourcesLoading = false;
         this.loadingPanel = false;
       }
     })

@@ -67,6 +67,16 @@ export class UserReportComponent implements OnInit {
     ...MultipleDropdownSettings,
     enableCheckAll: false,
   };
+  organizationsLoading = false;
+  governmentsLoading = false;
+  healthAdministrationsLoading = false;
+  branchesLoading = false;
+  areasLoading = false;
+  universitiesLoading = false;
+  incidentSourcesLoading = false;
+  rolesLoading = false;
+  departmentsLoading = false;
+  positionsLoading = false;
 
   constructor(
     private lookupsService: LookupsGetterService,
@@ -139,6 +149,7 @@ export class UserReportComponent implements OnInit {
   }
 
   getOrganizations() {
+    this.organizationsLoading = true;
     this.lookupsService.getAllOrganizations().subscribe({
       next: (response: Result<Organiztion[]>) => {
         let selectionObject = {
@@ -150,9 +161,11 @@ export class UserReportComponent implements OnInit {
         };
         this.organizations = response.data;
         this.organizations.unshift(selectionObject);
+        this.organizationsLoading = false;
         this.loadingPanel = false;
       },
       error: (error) => {
+        this.organizationsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -202,14 +215,17 @@ export class UserReportComponent implements OnInit {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernmentsForUser(true).subscribe({
       next: (result: Result<GovernmentDTO[]>) => {
         if (result != null && result != undefined) {
           this.governments = result.data;
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       error: (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -249,6 +265,7 @@ export class UserReportComponent implements OnInit {
   }
 
   getHealthAdministration(governmentIDs: number[]) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getHealthAdministrationsIncidentByGovernmentsIds({
         governmentsIds: governmentIDs,
@@ -259,9 +276,11 @@ export class UserReportComponent implements OnInit {
           if (result != null && result != undefined) {
             this.healthAdministrations = result.data;
           }
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -287,6 +306,7 @@ export class UserReportComponent implements OnInit {
   }
 
   getIncidentSources(filterIncidentSources: FilterIncidentSources) {
+    this.incidentSourcesLoading = true;
     this.lookupsService
       .getIncidentSourceHospitalsByGovernmentsIds(filterIncidentSources)
       .subscribe(
@@ -294,9 +314,11 @@ export class UserReportComponent implements OnInit {
           if (result != null && result != undefined) {
             this.incidentSources = result.data;
           }
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.incidentSourcesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -308,14 +330,17 @@ export class UserReportComponent implements OnInit {
   }
 
   getRoles() {
+    this.rolesLoading = true;
     this.userService.getAllRoles().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.roles = result.data;
         }
+        this.rolesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.rolesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -327,14 +352,17 @@ export class UserReportComponent implements OnInit {
   }
 
   getDepartments() {
+    this.departmentsLoading = true;
     this.lookupsService.getAllDepartments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.departments = result.data;
         }
+        this.departmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.departmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -346,14 +374,17 @@ export class UserReportComponent implements OnInit {
   }
 
   getPositions() {
+    this.positionsLoading = true;
     this.lookupsService.getAllPositions().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.positions = result.data;
         }
+        this.positionsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.positionsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -366,6 +397,7 @@ export class UserReportComponent implements OnInit {
 
   //Start of Branch الفروع
   getAllBranchesForUsers() {
+    this.branchesLoading = true;
     this.lookupsService
       .getAllBranchesForUsers(this.selectedOrginzationId, true)
       .subscribe({
@@ -373,9 +405,11 @@ export class UserReportComponent implements OnInit {
           if (response != null && response != undefined) {
             this.branches = response.data;
           }
+          this.branchesLoading = false;
           this.loadingPanel = false;
         },
         error: (error) => {
+          this.branchesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -388,6 +422,7 @@ export class UserReportComponent implements OnInit {
   }
 
   getAllUniversitiesForUsers() {
+    this.universitiesLoading = true;
     this.lookupsService
       .getAllBranchesForUsers(this.selectedOrginzationId, true)
       .subscribe({
@@ -395,9 +430,11 @@ export class UserReportComponent implements OnInit {
           if (response != null && response != undefined) {
             this.universities = response.data;
           }
+          this.universitiesLoading = false;
           this.loadingPanel = false;
         },
         error: (error) => {
+          this.universitiesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -446,14 +483,17 @@ export class UserReportComponent implements OnInit {
   }
 
   getAreasByBranchFilter(areaFilter: any) {
+    this.areasLoading = true;
     this.lookupsService.getAreasByBranchFilter(areaFilter).subscribe({
       next: (response) => {
         if (response != null && response != undefined) {
           this.areas = response.data;
         }
+        this.areasLoading = false;
         this.loadingPanel = false;
       },
       error: (error) => {
+        this.areasLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

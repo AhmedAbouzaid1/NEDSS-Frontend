@@ -3,10 +3,23 @@
   <h2 id="general-data-top" class="titles h5 fw-bold mb-0">
     {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.PUBLICREPORTING" | translate }}
   </h2>
-  <app-not-inferring-modal
-    *ngIf="patient?.id != null"
-    [patient]="patient"
-  ></app-not-inferring-modal>
+  <div class="d-flex flex-wrap align-items-center gap-2">
+    <button
+      type="button"
+      *ngIf="patient?.id != null"
+      class="btn btn-primary d-inline-flex align-items-center gap-2"
+      (click)="registerNewCase()"
+    >
+      <i class="bi bi-plus-circle" aria-hidden="true"></i>
+      <span>{{
+        "NEDSS.HOME.GENERAL_DATA_COMPLETION.REGISTER_NEW_CASE" | translate
+      }}</span>
+    </button>
+    <app-not-inferring-modal
+      *ngIf="patient?.id != null"
+      [patient]="patient"
+    ></app-not-inferring-modal>
+  </div>
 </div>
 <!-- <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -77,17 +90,9 @@
 <div class="general-data-form w-100" *ngIf="!isLoadingData">
   <div class="general-data-form__sections w-100">
     <h5 class="fw-bold mt-3 mb-2">
-      {{ "NEDSS.GENERAL_DATA_SIDEMENU.INCIDENTINFO0" | translate }}
+      {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.REPORTING_DATA" | translate }}
     </h5>
     <app-incident-info></app-incident-info>
-
-    <div
-      *ngIf="sharedDataService.duplicateNationalIdMatchCount > 0"
-      class="alert alert-info py-2 small mb-3"
-      role="status"
-    >
-      {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.DUPLICATE_NATIONAL_ID_TABLE_HINT" | translate }}
-    </div>
 
     <ng-container *ngIf="sectionsReady[1]">
       <h5 class="fw-bold mt-4 mb-2">

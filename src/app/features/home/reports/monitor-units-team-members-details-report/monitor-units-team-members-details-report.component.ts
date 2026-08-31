@@ -15,6 +15,8 @@ import * as html2pdf from 'html2pdf.js';
 export class MonitorUnitsTeamMembersDetailsReportComponent {
   reportLevel: any = '1';
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
   LevelsEnum = LevelsEnum;
   governments: any;
   healthAdministration: any;
@@ -53,6 +55,7 @@ export class MonitorUnitsTeamMembersDetailsReportComponent {
 
   //#region Government
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookUpsService.getAllGovernmentsForUser(true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -63,9 +66,11 @@ export class MonitorUnitsTeamMembersDetailsReportComponent {
             englishName: 'Select',
           });
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -85,6 +90,7 @@ export class MonitorUnitsTeamMembersDetailsReportComponent {
   //#endregion
 
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookUpsService
       .getPageHealthAdministrations({
         GovernmentID: governmentID,
@@ -100,9 +106,11 @@ export class MonitorUnitsTeamMembersDetailsReportComponent {
               englishName: 'Select',
             });
           }
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

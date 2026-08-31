@@ -1,5 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { DiseaseFormService } from '../disease-special-symptoms/services/disease-form.service';
 
@@ -86,7 +87,7 @@ export class DynamicFormDesignComponent implements OnInit {
    private activatedRoute:ActivatedRoute,
    private userMsg: UserMessageService,
    private diseaseFormService: DiseaseFormService,
-
+   private translate: TranslateService,
 
 
   ) { }
@@ -101,7 +102,7 @@ this.activatedRoute.data.subscribe(
    this.configData(res.data.data);
 
     },
-  (err)=>{this.userMsg.error("")}
+  (err)=>{this.translate.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((m: string) => this.userMsg.error(m));}
 );
   }
   configData(data:any){

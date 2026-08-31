@@ -10,6 +10,7 @@
     <div class="d-flex align-items-center gap-3">
       <a
         [routerLink]="canContinueInvestigation() ? '../../compelete-investigation' : null"
+        [replaceUrl]="true"
         [attr.aria-disabled]="canContinueInvestigation() ? null : true"
         [class.disabled]="!canContinueInvestigation()"
         class="btn bg text-light"
@@ -420,14 +421,14 @@
                       }}
                     </label>
                     <div *ngIf="currentLang == 'ar'">
-                      <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments"
+                      <p-dropdown (onChange)="onGovernmentChanged()" [appDropdownLoading]="governmentsLoading" [options]="governments"
                         [(ngModel)]="selectedGovernmentId" optionLabel="arabicName" optionValue="id" autoWidth="false"
                         [style]="{ width: '100%' }" formControlName="homeGovernmentId" [filter]="true"
                         filterBy="arabicName">
                       </p-dropdown>
                     </div>
                     <div *ngIf="currentLang == 'en'">
-                      <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments"
+                      <p-dropdown (onChange)="onGovernmentChanged()" [appDropdownLoading]="governmentsLoading" [options]="governments"
                         [(ngModel)]="selectedGovernmentId" optionLabel="englishName" optionValue="id" autoWidth="false"
                         [style]="{ width: '100%' }" formControlName="homeGovernmentId" [filter]="true"
                         filterBy="englishName">
@@ -456,14 +457,14 @@
                       }}
                     </label>
                     <div *ngIf="currentLang == 'ar'">
-                      <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations"
+                      <p-dropdown (onChange)="onHealthAdministrationChanged()" [appDropdownLoading]="healthAdministrationsLoading" [options]="healthAdministrations"
                         [(ngModel)]="selectedHealthAdministration" optionLabel="arabicName" optionValue="id"
                         autoWidth="false" [style]="{ width: '100%' }" formControlName="homeHealthAdministration"
                         [filter]="true" filterBy="arabicName">
                       </p-dropdown>
                     </div>
                     <div *ngIf="currentLang == 'en'">
-                      <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations"
+                      <p-dropdown (onChange)="onHealthAdministrationChanged()" [appDropdownLoading]="healthAdministrationsLoading" [options]="healthAdministrations"
                         [(ngModel)]="selectedHealthAdministration" optionLabel="englishName" optionValue="id"
                         autoWidth="false" [style]="{ width: '100%' }" formControlName="homeHealthAdministration"
                         [filter]="true" filterBy="englishName">
@@ -492,13 +493,13 @@
                       }}
                     </label>
                     <div *ngIf="currentLang == 'ar'">
-                      <p-dropdown (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCity"
+                      <p-dropdown (onChange)="onCityChanged()" [appDropdownLoading]="citiesLoading" [options]="cities" [(ngModel)]="selectedCity"
                         optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
                         formControlName="homeCityId" [filter]="true" filterBy="arabicName">
                       </p-dropdown>
                     </div>
                     <div *ngIf="currentLang == 'en'">
-                      <p-dropdown (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCity"
+                      <p-dropdown (onChange)="onCityChanged()" [appDropdownLoading]="citiesLoading" [options]="cities" [(ngModel)]="selectedCity"
                         optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
                         formControlName="homeCityId" [filter]="true" filterBy="englishName">
                       </p-dropdown>
@@ -526,13 +527,13 @@
                       }}
                     </label>
                     <div *ngIf="currentLang == 'ar'">
-                      <p-dropdown [options]="healthOffices" [(ngModel)]="selectedHealthOfficeId"
+                      <p-dropdown [appDropdownLoading]="healthOfficesLoading" [options]="healthOffices" [(ngModel)]="selectedHealthOfficeId"
                         optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
                         formControlName="homeHealthOffice" [filter]="true" filterBy="arabicName">
                       </p-dropdown>
                     </div>
                     <div *ngIf="currentLang == 'en'">
-                      <p-dropdown [options]="healthOffices" [(ngModel)]="selectedHealthOfficeId"
+                      <p-dropdown [appDropdownLoading]="healthOfficesLoading" [options]="healthOffices" [(ngModel)]="selectedHealthOfficeId"
                         optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
                         formControlName="homeHealthOffice" [filter]="true" filterBy="englishName">
                       </p-dropdown>

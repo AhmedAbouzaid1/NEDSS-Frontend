@@ -1,6 +1,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { DiseaseFormService } from 'src/app/features/home/dashboard/components/disease-special-symptoms/services/disease-form.service';
+import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -37,7 +38,8 @@ export class SidebarComponent {
   ];
   constructor(
     private router: Router,
-    private diseaseFormService: DiseaseFormService
+    private diseaseFormService: DiseaseFormService,
+    private lookupsService: LookupsGetterService
   ) {
     this.lang =
       localStorage.getItem('ls.currentLang') != undefined
@@ -54,6 +56,28 @@ export class SidebarComponent {
   }
   ngOnInit(): void {
     this.Customdisplay();
+    this.loadChartsTabVisibility();
+  }
+
+  loadChartsTabVisibility(): void {
+    this.lookupsService.getChartsTabEnabled().subscribe(
+      (result: any) => {
+        const value = result != null ? result.data : null;
+        const normalized =
+          typeof value === 'string' ? value.toLowerCase() : value;
+        const disabled = normalized === false || normalized === 'false';
+        // The charts <li> is shown by Customdisplay() via the user's permitted
+        // pages (or the admin force-show loop). When the setting is off we
+        // force it hidden regardless; when on we leave Customdisplay's result.
+        if (disabled) {
+          const el = document.getElementById('1');
+          if (el != null) {
+            el.style.setProperty('display', 'none');
+          }
+        }
+      },
+      () => {}
+    );
   }
   Customdisplay(): void {
     let userPremitedPages: any[] = JSON.parse(

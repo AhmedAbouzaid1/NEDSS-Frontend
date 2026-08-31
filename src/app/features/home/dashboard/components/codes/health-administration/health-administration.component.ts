@@ -41,6 +41,7 @@ export class HealthAdministrationComponent {
   }
   noData: boolean = true;
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -67,13 +68,16 @@ export class HealthAdministrationComponent {
 
   }
   getGovernment() {
+    this.governmentsLoading = true;
     this.healthAdministrationService.getAllGovernments().subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.governments = result.data;
       }
       this.loadingPanel = false;
+      this.governmentsLoading = false;
     }, error => {
       this.loadingPanel = false;
+      this.governmentsLoading = false;
       this.translateService.get('NEDSS.COMMON.INTERNAL_SERVER_ERROR').subscribe((res: string) => {
         this.userMsg.error(res);
       });

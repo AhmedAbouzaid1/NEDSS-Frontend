@@ -383,13 +383,11 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
 
     const ok = () =>
       this.translateService.get('NEDSS.COMMON.SENT_SUCESSFULLY').subscribe((r: string) => this.userMsg.success(r));
-    const fail = () =>
-      this.translateService.get('NEDSS.COMMON.SENT_FAILD').subscribe((r: string) => this.userMsg.error(r));
 
     if (payload.id != null) {
-      this.investigationService.updateAcuteFlaccidParalysis(payload).subscribe((r: any) => r && ok(), () => fail());
+      this.investigationService.updateAcuteFlaccidParalysis(payload).subscribe((r: any) => r && ok(), () => { });
     } else {
-      this.investigationService.addInvestigationAcuteFlaccidParalysis(payload).subscribe((r: any) => r && ok(), () => fail());
+      this.investigationService.addInvestigationAcuteFlaccidParalysis(payload).subscribe((r: any) => r && ok(), () => { });
     }
   }
 

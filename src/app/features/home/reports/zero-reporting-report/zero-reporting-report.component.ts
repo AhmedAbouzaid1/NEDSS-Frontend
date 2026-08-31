@@ -128,6 +128,10 @@ export class ZeroReportingReportComponent implements OnInit {
   LevelsEnum = LevelsEnum;
   currentUserLevel:number;
   totalCountsOfCounts:any[]=[];
+  departmentsLoading = false;
+  governmentsLoading = false;
+  healthAdministrationLoading = false;
+  caseCategoriesLoading = false;
   constructor(
     private lookUpsService: LookupsGetterService,
     private lookupsGetterService: LookupsGetterService,
@@ -265,14 +269,17 @@ export class ZeroReportingReportComponent implements OnInit {
   }
 
   getDepartments() {
+    this.departmentsLoading = true;
     this.lookUpsService.getAllDepartments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.departments = result.data;
         }
+        this.departmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.departmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -284,6 +291,7 @@ export class ZeroReportingReportComponent implements OnInit {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsGetterService.getAllGovernmentsForUser(true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -294,9 +302,11 @@ export class ZeroReportingReportComponent implements OnInit {
             englishName: 'Select',
           });
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -315,6 +325,7 @@ export class ZeroReportingReportComponent implements OnInit {
   }
 
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookUpsService
       .getPageHealthAdministrations({
         GovernmentID: governmentID,
@@ -330,9 +341,11 @@ export class ZeroReportingReportComponent implements OnInit {
               englishName: 'Select',
             });
           }
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -539,14 +552,17 @@ export class ZeroReportingReportComponent implements OnInit {
   }
 
   getCaseCategories() {
+    this.caseCategoriesLoading = true;
     this.lookUpsService.getAllCaseResultCategorys().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.Categories = result.data;
         }
+        this.caseCategoriesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.caseCategoriesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

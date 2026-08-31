@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { GeneralDataService } from '../services/general-data.service';
+import { finalize } from 'rxjs/operators';
 
 /**
  * عدم الاستدلال (Not Inferring) modal.
@@ -34,6 +35,10 @@ export class NotInferringModalComponent implements OnChanges {
   selectedHealthAdministration: any;
   selectedCity: any;
   ObjToUpdate: any;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  citiesLoading: boolean = false;
+  healthOfficesLoading: boolean = false;
 
   constructor(
     public generalDataService: GeneralDataService,
@@ -94,7 +99,11 @@ export class NotInferringModalComponent implements OnChanges {
   }
 
   getGovernments() {
-    this.lookupsService.getAllGovernments().subscribe(
+    this.governmentsLoading = true;
+    this.lookupsService
+      .getAllGovernments()
+      .pipe(finalize(() => (this.governmentsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result.data != null) {
           this.governments = [
@@ -108,8 +117,10 @@ export class NotInferringModalComponent implements OnChanges {
   }
 
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({ governmentID: governmentID })
+      .pipe(finalize(() => (this.healthAdministrationsLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result.data != null) {
@@ -121,7 +132,11 @@ export class NotInferringModalComponent implements OnChanges {
   }
 
   getCities(governmentID: any) {
-    this.lookupsService.getPageCitys({ governmentID: governmentID }).subscribe(
+    this.citiesLoading = true;
+    this.lookupsService
+      .getPageCitys({ governmentID: governmentID })
+      .pipe(finalize(() => (this.citiesLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result.data != null) {
           this.cities = result.data;
@@ -132,10 +147,12 @@ export class NotInferringModalComponent implements OnChanges {
   }
 
   getHealthOffices(healthAdministrationId: any) {
+    this.healthOfficesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationId,
       })
+      .pipe(finalize(() => (this.healthOfficesLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result.data != null) {

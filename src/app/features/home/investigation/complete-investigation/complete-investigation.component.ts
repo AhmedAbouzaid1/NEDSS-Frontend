@@ -29,7 +29,8 @@ export class CompleteInvestigationComponent implements OnInit {
     if (firstDisease && firstDisease.router) {
       this.InvestigationService.diseaseGroupID = firstDisease.diseaseGroupId;
       this.Router.navigateByUrl(
-        '/home/investigations/compelete-investigation/' + firstDisease.router
+        '/home/investigations/compelete-investigation/' + firstDisease.router,
+        { replaceUrl: true }
       );
     }
   }

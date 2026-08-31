@@ -64,7 +64,7 @@
 
       <!-- ==================== TAB NAV ==================== -->
       <ul class="nav nav-tabs fwb">
-        <li class="nav-item" *ngFor="let t of tabs">
+        <li class="nav-item" *ngFor="let t of visibleTabs">
           <a class="nav-link" style="cursor:pointer" [class.active]="activeTab === t.key"
             (click)="setTab(t.key)">{{ t.label }}</a>
         </li>
@@ -770,6 +770,106 @@
                     <table class="table table-bordered text-center">
                       <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
                       <tbody><tr><td>نعم</td><td>{{ surveySymptoms.yes }}</td></tr><tr><td>لا</td><td>{{ surveySymptoms.no }}</td></tr></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- ============================================================ -->
+          <!-- TAB 4b : المسح الميدانى 400 طفل (positive cases only)         -->
+          <!-- ============================================================ -->
+          <ng-container *ngIf="activeTab === 'survey400' && confirmedMeasles">
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">المسح الميداني - 400 طفل</div>
+                  <div class="col-lg-6"><div class="form-group"><label>تاريخ الزيارة الميدانية</label>
+                    <input type="date" class="form-control" formControlName="field400VisitDate" /></div></div>
+                  <div class="col-lg-6"><div class="form-group"><label>رقم المربع</label>
+                    <input type="text" class="form-control" formControlName="field400SquareNumber" /></div></div>
+
+                  <div class="col-12 d-flex justify-content-between align-items-center mb-2">
+                    <span class="fwb">السجلات المدخلة</span>
+                    <button type="button" class="btn btn-add-record rounded-2" (click)="addSurvey400Child()">
+                      <i class="pi pi-plus"></i> إضافة سجل جديد
+                    </button>
+                  </div>
+
+                  <div class="col-12 mb-2" *ngIf="survey400Children.length > 0">
+                    <div class="fwb mb-1">عرض السجلات</div>
+                    <div class="table-responsive">
+                      <table class="table table-bordered text-center align-middle">
+                        <thead><tr><th>#</th><th>اسم الطفل</th><th>MMR1</th><th>MMR2</th><th>أعراض الحمى والطفح</th></tr></thead>
+                        <tbody>
+                          <tr *ngFor="let s of survey400Children.controls; let i = index">
+                            <td>{{ i + 1 }}</td><td>{{ s.value.childName }}</td><td>{{ yesNo(s.value.mmr1) }}</td><td>{{ yesNo(s.value.mmr2) }}</td><td>{{ yesNo(s.value.hasSymptoms) }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-12" formArrayName="survey400Children">
+                    <div class="record-card" *ngFor="let s of survey400Children.controls; let i = index" [formGroupName]="i">
+                      <div class="record-card-head">
+                        <span class="fwb">طفل #{{ i + 1 }}</span>
+                        <div class="d-flex gap-2">
+                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(s)">
+                            <i class="pi" [ngClass]="isRowOpen(s) ? 'pi-chevron-up' : 'pi-pencil'"></i>
+                            {{ isRowOpen(s) ? 'إغلاق' : 'تعديل' }}
+                          </button>
+                          <button type="button" class="btn btn-sm btn-danger" (click)="removeSurvey400Child(i)">
+                            <i class="pi pi-trash"></i> حذف
+                          </button>
+                        </div>
+                      </div>
+
+                      <div *ngIf="!isRowOpen(s)" class="text-muted small">
+                        {{ s.value.childName || 'بدون اسم' }}
+                      </div>
+
+                      <div class="row" *ngIf="isRowOpen(s)">
+                        <div class="col-lg-4"><div class="form-group"><label>اسم الطفل</label>
+                          <input type="text" class="form-control" formControlName="childName" /></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>MMR1</label>
+                          <select class="form-control" formControlName="mmr1">
+                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
+                          </select></div></div>
+                        <div class="col-lg-3"><div class="form-group"><label>MMR2</label>
+                          <select class="form-control" formControlName="mmr2">
+                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
+                          </select></div></div>
+                        <div class="col-lg-2"><div class="form-group"><label>أعراض الحمى والطفح</label>
+                          <select class="form-control" formControlName="hasSymptoms">
+                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
+                          </select></div></div>
+                      </div>
+                    </div>
+                    <div *ngIf="survey400Children.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة طفل.</div>
+                  </div>
+
+                  <div class="col-12 title fs-6 fwb mt-3">ملخص إحصائي للسجلات المدخلة</div>
+                  <div class="col-12 mb-2">عدد السجلات: <span class="badge bg-primary">{{ survey400Count }}</span></div>
+                  <div class="col-lg-4">
+                    <div class="fwb mb-1">اختيارات MMR1</div>
+                    <table class="table table-bordered text-center">
+                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
+                      <tbody><tr><td>نعم</td><td>{{ survey400Mmr1.yes }}</td></tr><tr><td>لا</td><td>{{ survey400Mmr1.no }}</td></tr></tbody>
+                    </table>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="fwb mb-1">اختيارات MMR2</div>
+                    <table class="table table-bordered text-center">
+                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
+                      <tbody><tr><td>نعم</td><td>{{ survey400Mmr2.yes }}</td></tr><tr><td>لا</td><td>{{ survey400Mmr2.no }}</td></tr></tbody>
+                    </table>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="fwb mb-1">أعراض الحمى والطفح</div>
+                    <table class="table table-bordered text-center">
+                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
+                      <tbody><tr><td>نعم</td><td>{{ survey400Symptoms.yes }}</td></tr><tr><td>لا</td><td>{{ survey400Symptoms.no }}</td></tr></tbody>
                     </table>
                   </div>
                 </div>

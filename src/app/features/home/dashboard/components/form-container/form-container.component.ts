@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { debounceTime, distinctUntilChanged, fromEvent, map } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
@@ -47,6 +48,7 @@ export class FormContainerComponent {
   pages: number = 0;
   isEdit: boolean = false;
   containerParent: any[] = [];
+  containerParentLoading: boolean = false;
   formId: any;
   isArabic: boolean = false;
   sidebarVisible: boolean = false;
@@ -101,7 +103,10 @@ export class FormContainerComponent {
     );
   }
   getContainerParent() {
-    this.formContainerService.getAllByParentId(this.formId).subscribe(
+    this.containerParentLoading = true;
+    this.formContainerService.getAllByParentId(this.formId)
+      .pipe(finalize(() => (this.containerParentLoading = false)))
+      .subscribe(
       (res) => {
         this.containerParent = res.data;
         this.translateService

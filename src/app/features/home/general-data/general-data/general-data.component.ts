@@ -49,6 +49,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
     private ngZone: NgZone
   ) {
     this.activeTab = this.generalDataEnum.IncidentInfo;
+    this.generalDataService.resetValidationState();
 
     if (
       this.sharedDataService.patientId == null ||
@@ -75,6 +76,24 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
       this.revealSections();
       this.sharedDataService.isEditMode = false;
     }
+  }
+
+  registerNewCase(): void {
+    this.sharedDataService.patientId = 0;
+    localStorage.removeItem('patientId');
+    this.sharedDataService.setPatientObject(new PatientModel());
+    this.sharedDataService.isEditMode = false;
+    this.router
+      .navigateByUrl('/home/chart', { skipLocationChange: true })
+      .then(() => {
+        this.router
+          .navigate(['/home/general-data'], { queryParams: { clear: 1 } })
+          .then(() =>
+            document
+              .getElementById('general-data-top')
+              ?.scrollIntoView({ behavior: 'smooth' })
+          );
+      });
   }
 
   private revealSections(): void {

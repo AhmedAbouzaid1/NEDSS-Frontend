@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { DatePipe } from '@angular/common';
 import { debounceTime, distinctUntilChanged, fromEvent, map } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { MultipleDropdownSettings, SingleDropdownSettings, SortOrder } from 'src/app/core/constants';
 import { environment } from 'src/environments/environment';
 import { SortEvent } from 'primeng/api';
@@ -69,6 +70,9 @@ export class ConnectedUsersComponent {
   healthAdministrations!: any[];
   incidentSources!: any[];
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
   selectedincidentSource: any
   selectedDisase: any
   zeroInstantNotificationFilter = {
@@ -153,7 +157,11 @@ export class ConnectedUsersComponent {
   }
 
   getGovernments(setDefault?: boolean) {
-    this.lookupsService.getAllGovernments().subscribe(
+    this.governmentsLoading = true;
+    this.lookupsService
+      .getAllGovernments()
+      .pipe(finalize(() => (this.governmentsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.governments = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
@@ -218,10 +226,12 @@ export class ConnectedUsersComponent {
     // );
   }
   getHealthAdministrations(governmentID: any, setDefault?: boolean) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({
         governmentID: governmentID,
       })
+      .pipe(finalize(() => (this.healthAdministrationsLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
@@ -282,10 +292,12 @@ export class ConnectedUsersComponent {
   }
 
   getIncidentSources(healthAdministrationID: any, setDefault?: boolean) {
+    this.incidentSourcesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
         healthAdministrationID: healthAdministrationID,
       })
+      .pipe(finalize(() => (this.incidentSourcesLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {

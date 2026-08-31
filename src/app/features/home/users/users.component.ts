@@ -58,6 +58,15 @@ export class UsersComponent {
   };
   noData: boolean = true;
   loadingPanel: boolean = false;
+  organizationsLoading: boolean = false;
+  levelsLoading: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationsLoading: boolean = false;
+  branchesLoading: boolean = false;
+  areasLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
+  rolesLoading: boolean = false;
+  positionsLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -166,6 +175,7 @@ export class UsersComponent {
   }
 
   getOrganizations() {
+    this.organizationsLoading = true;
     this.lookupsGetterService.getAllOrganizations().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -176,9 +186,11 @@ export class UsersComponent {
             this.organizations.push(nat);
           });
         }
+        this.organizationsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.organizationsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -190,6 +202,7 @@ export class UsersComponent {
   }
 
   getLevels() {
+    this.levelsLoading = true;
     this.lookupsGetterService
       .getAllLevels(this.userFilter.organizationId)
       .subscribe(
@@ -202,9 +215,11 @@ export class UsersComponent {
               englishName: 'Select',
             });
           }
+          this.levelsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.levelsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -279,6 +294,7 @@ export class UsersComponent {
   }
 
   getRoles() {
+    this.rolesLoading = true;
     this.userService.getPageRoles({
       organizationId:this.userFilter.organizationId,
       levelId:this.userFilter.levelId
@@ -290,9 +306,11 @@ export class UsersComponent {
             this.roles.push(nat);
           });
         }
+        this.rolesLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.rolesLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -304,6 +322,7 @@ export class UsersComponent {
   }
 
   getPositions() {
+    this.positionsLoading = true;
     this.lookupsGetterService.getAllPositions().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -314,9 +333,11 @@ export class UsersComponent {
             this.positions.push(nat);
           });
         }
+        this.positionsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.positionsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -342,6 +363,7 @@ export class UsersComponent {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsGetterService.getAllGovernments().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -361,9 +383,11 @@ export class UsersComponent {
             }
           }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -397,6 +421,7 @@ export class UsersComponent {
   }
 
   getHealthAdministrations(governmentID: any) {
+    this.healthAdministrationsLoading = true;
     this.lookupsGetterService
       .getPageHealthAdministrations({
         governmentID: governmentID,
@@ -424,9 +449,11 @@ export class UsersComponent {
               }
             }
           }
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.healthAdministrationsLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -520,6 +547,7 @@ export class UsersComponent {
       this.SelectedgovenmentId > 0 ||
       this.SelectedBranchId > 0
     ) {
+      this.incidentSourcesLoading = true;
       this.lookupsGetterService
         .getPageIncidentSourceHospitals({
           healthAdministrationId: healthAdministrationId,
@@ -541,9 +569,11 @@ export class UsersComponent {
                 )?.id;
               }
             }
+            this.incidentSourcesLoading = false;
             this.loadingPanel = false;
           },
           (error) => {
+            this.incidentSourcesLoading = false;
             this.loadingPanel = false;
             this.translateService
               .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -557,6 +587,7 @@ export class UsersComponent {
 
   getIncidentSources(healthAdministrationId: any) {
     if (healthAdministrationId != -1) {
+      this.incidentSourcesLoading = true;
       this.lookupsGetterService
         .getPageIncidentSourceHospitals({
           healthAdministrationId: healthAdministrationId,
@@ -582,9 +613,11 @@ export class UsersComponent {
                 }
               }
             }
+            this.incidentSourcesLoading = false;
             this.loadingPanel = false;
           },
           (error) => {
+            this.incidentSourcesLoading = false;
             this.loadingPanel = false;
             this.translateService
               .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -597,6 +630,7 @@ export class UsersComponent {
   }
 
   getBranchesForUsers() {
+    this.branchesLoading = true;
     this.lookupsGetterService
       .getAllBranchesForUsers(this.userFilter.organizationId, true)
       .subscribe(
@@ -618,9 +652,11 @@ export class UsersComponent {
               this.branchSelected();
             }
           }
+          this.branchesLoading = false;
           this.loadingPanel = false;
         },
         (error) => {
+          this.branchesLoading = false;
           this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -646,6 +682,7 @@ export class UsersComponent {
   }
 
   getAreas() {
+    this.areasLoading = true;
     this.lookupsGetterService.getAllAreas(this.SelectedBranchId).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -662,9 +699,11 @@ export class UsersComponent {
             this.areaSelected();
           }
         }
+        this.areasLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.areasLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')

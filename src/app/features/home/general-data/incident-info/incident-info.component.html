@@ -7,7 +7,7 @@
             {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernmentId"
+          <p-dropdown [appDropdownLoading]="governmentsLoading" (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernmentId"
             [disabled]="!activeUSerService.getAccessibleParts?.enableGovernments"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="governments" [required]="true" [filter]="true"
@@ -18,7 +18,7 @@
                 )
             ">
           </p-dropdown>
-          <div *ngIf="!generalDataService.isIncidentGovernmentValid" class="form-text text-danger mess-color">
+          <div *ngIf="generalDataService.showValidationErrors && !generalDataService.isIncidentGovernmentValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </div>
         </div>
@@ -30,7 +30,7 @@
             {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.HEALTHADMIN" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="onHealthAdministrationChanged()" [options]="healthAdministration"
+          <p-dropdown [appDropdownLoading]="healthAdministrationLoading" (onChange)="onHealthAdministrationChanged()" [options]="healthAdministration"
             [(ngModel)]="selectedHealthAdministrationId" [disabled]="
                 !activeUSerService.getAccessibleParts?.enableDepartments
               " [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
@@ -42,7 +42,7 @@
                   )
               ">
           </p-dropdown>
-          <small *ngIf="!generalDataService.isIncidentHealthAdministrationValid"
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isIncidentHealthAdministrationValid"
             class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
@@ -57,7 +57,7 @@
             }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
+          <p-dropdown [appDropdownLoading]="branchesLoading" (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
             [disabled]="!activeUSerService.getAccessibleParts?.enableUniversities"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="branches" [required]="true" [filter]="true"
@@ -66,7 +66,7 @@
                 generalDataService.validateField(SelectedbranchId)
             ">
           </p-dropdown>
-          <small *ngIf="!generalDataService.isUniversityValid" class="form-text text-danger mess-color">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isUniversityValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -78,7 +78,7 @@
             {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_BRANCH" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
+          <p-dropdown [appDropdownLoading]="branchesLoading" (onChange)="branchSelected()" [options]="branches" [(ngModel)]="SelectedbranchId"
             [disabled]="!activeUSerService.getAccessibleParts?.enableBranches"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="branches" [required]="true" [filter]="true"
@@ -87,7 +87,7 @@
                 generalDataService.validateField(SelectedbranchId)
             ">
           </p-dropdown>
-          <small *ngIf="!generalDataService.isBranchValid" class="form-text text-danger mess-color">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isBranchValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -99,7 +99,7 @@
             {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_AREA" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="areaSelected()" [options]="areas" [(ngModel)]="SelectedareaId"
+          <p-dropdown [appDropdownLoading]="areasLoading" (onChange)="areaSelected()" [options]="areas" [(ngModel)]="SelectedareaId"
             [disabled]="!activeUSerService.getAccessibleParts?.enableAreas"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="areas" [required]="true" [filter]="true"
@@ -108,7 +108,7 @@
                 generalDataService.validateField(SelectedareaId)
             ">
           </p-dropdown>
-          <small *ngIf="!generalDataService.isAreaValid" class="form-text text-danger mess-color">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isAreaValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -122,7 +122,7 @@
             }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <p-dropdown (onChange)="onIncidentSourceChanged()" [options]="incidentSources"
+          <p-dropdown [appDropdownLoading]="incidentSourcesLoading" (onChange)="onIncidentSourceChanged()" [options]="incidentSources"
             [(ngModel)]="selectedIncidentSourceId" [disabled]="!activeUSerService.getAccessibleParts?.enableSources"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="incidentSources" [required]="true" [filter]="true"
@@ -133,7 +133,7 @@
                   )
               ">
           </p-dropdown>
-          <small *ngIf="!generalDataService.isIncidentSourceValid" class="form-text text-danger mess-color">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isIncidentSourceValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -146,6 +146,7 @@
             <span class="text-danger mess-color">*</span>
           </label>
           <p-dropdown
+            [appDropdownLoading]="departmentsLoading"
             inputId="incidentDepartment"
             (onChange)="onDepartmentChanged()"
             [options]="departments"
@@ -166,7 +167,7 @@
             "
           >
           </p-dropdown>
-          <small *ngIf="!generalDataService.isIncidentDepartmentValid" class="form-text text-danger mess-color">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isIncidentDepartmentValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -196,7 +197,7 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-          <small *ngIf="!generalDataService.isCaseDiscoveryDateValid" class="form-text text-danger mess-color">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isCaseDiscoveryDateValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -225,7 +226,7 @@
             <span class="text-danger mess-color">*</span>
           </label>
 
-          <p-dropdown (onChange)="onNationalityChanged()" [options]="nationalities"
+          <p-dropdown [appDropdownLoading]="nationalitiesLoading" (onChange)="onNationalityChanged()" [options]="nationalities"
             [(ngModel)]="selectedNationalityId"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="nationalities" [filter]="true"
@@ -236,7 +237,7 @@
                 )
             ">
           </p-dropdown>
-          <small *ngIf="!generalDataService.isNationalityValid" class="form-text text-danger mess-color">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isNationalityValid" class="form-text text-danger mess-color">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -269,7 +270,7 @@
             "
           />
           <small
-            *ngIf="!generalDataService.isCardIdValid"
+            *ngIf="generalDataService.showValidationErrors && !generalDataService.isCardIdValid"
             class="form-text text-danger mess-color"
           >
             {{ generalDataService.cardIdValidationMessage | translate }}
@@ -314,7 +315,7 @@
                   patient.incidentDepartmentId == departmentEnum.Internal
                 )
             " />
-          <small *ngIf="!generalDataService.isPassportIdValid" class="form-text text-danger">
+          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isPassportIdValid" class="form-text text-danger">
             {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
           </small>
         </div>
@@ -340,7 +341,11 @@
       <div *ngIf="Allpatients != undefined && Allpatients.length > 0"
         class="table-responsive table-none-scroll mt-4 shadow border rounded">
         <div class="row" id="myTableElementId">
-          <div class="col-lg-4 p-4 pb-0"></div>
+          <div class="col-12 px-4 pt-3 pb-2">
+            <h5 class="fw-bold mb-0">
+              {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.DUPLICATE_NATIONAL_ID_TABLE_TITLE" | translate }}
+            </h5>
+          </div>
           <div class="col-12">
             <table class="table table-hover table-striped table-sm">
               <thead>

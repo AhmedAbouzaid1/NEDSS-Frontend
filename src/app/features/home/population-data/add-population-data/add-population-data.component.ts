@@ -30,6 +30,9 @@ export class AddPopulationDataComponent implements OnInit {
   governments: any;
   years: any;
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
+  incidentSourcesLoading: boolean = false;
   healthAdministration: any;
   incidentSources: any;
   //malec: any;
@@ -112,6 +115,7 @@ export class AddPopulationDataComponent implements OnInit {
   }
 
   getGovernments() {
+    this.governmentsLoading = true;
     this.lookupsService.getAllGovernmentsForUser(true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -129,9 +133,11 @@ export class AddPopulationDataComponent implements OnInit {
           //   this.onGovernmentChanged();
           // }
         }
+        this.governmentsLoading = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.governmentsLoading = false;
         this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
@@ -144,10 +150,12 @@ export class AddPopulationDataComponent implements OnInit {
 
   getHealthAdministrationByGovId(x: any) {
     this.healthAdministration = [];
+    this.healthAdministrationLoading = true;
     this.lookupsService
       .getPageHealthAdministrationsForUsers({ governmentID: x, forSystemUser: true })
       .subscribe(
         (result: any) => {
+          this.healthAdministrationLoading = false;
           if (result != null && result != undefined) {
             this.healthAdministration = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
@@ -172,6 +180,7 @@ export class AddPopulationDataComponent implements OnInit {
           }
         },
         (error) => {
+          this.healthAdministrationLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -183,11 +192,13 @@ export class AddPopulationDataComponent implements OnInit {
 
   getRelatedIncidentSources(x: any) {
     this.incidentSources = [];
+    this.incidentSourcesLoading = true;
 
     this.lookupsService
       .getPageIncidentSourceHospitals({ healthAdministrationID: x, forSystemUser: true })
       .subscribe(
         (result: any) => {
+          this.incidentSourcesLoading = false;
           if (result != null && result != undefined) {
             this.incidentSources = [
               { id: -1, arabicName: 'إختر', englishName: 'Select' },
@@ -213,6 +224,7 @@ export class AddPopulationDataComponent implements OnInit {
           }
         },
         (error) => {
+          this.incidentSourcesLoading = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {

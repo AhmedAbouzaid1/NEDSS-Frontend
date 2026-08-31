@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { finalize } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
@@ -58,6 +59,13 @@ export class DiseaseRulesComponent implements OnInit {
 
   labCheckResults !: any[];
   selectedLabCheckResult: any;
+
+  diseasesLoading: boolean = false;
+  diseaseGroupsLoading: boolean = false;
+  caseResultCategoriesLoading: boolean = false;
+  labChecksLoading: boolean = false;
+  checkSamplesLoading: boolean = false;
+  labCheckResultsLoading: boolean = false;
 
   singleDropdownSettings = {};
   multipleDropdownSettings = {};
@@ -171,7 +179,8 @@ export class DiseaseRulesComponent implements OnInit {
   }
 
   getDiseases() {
-    this.lookupsService.getAllDiseases().subscribe((result: any) => {
+    this.diseasesLoading = true;
+    this.lookupsService.getAllDiseases().pipe(finalize(() => (this.diseasesLoading = false))).subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.diseases = result.data;
         this.AddItemInCaseOfNull(this.diseases);
@@ -183,7 +192,8 @@ export class DiseaseRulesComponent implements OnInit {
     });
   }
   getDiseaseGroups() {
-    this.lookupsService.getAllDiseaseGroups().subscribe((result: any) => {
+    this.diseaseGroupsLoading = true;
+    this.lookupsService.getAllDiseaseGroups().pipe(finalize(() => (this.diseaseGroupsLoading = false))).subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.diseaseGroups = result.data;
         this.AddItemInCaseOfNull(this.diseaseGroups);
@@ -195,7 +205,8 @@ export class DiseaseRulesComponent implements OnInit {
     });
   }
   getCaseResultCategories() {
-    this.lookupsService.getAllCaseResultCategorys().subscribe((result: any) => {
+    this.caseResultCategoriesLoading = true;
+    this.lookupsService.getAllCaseResultCategorys().pipe(finalize(() => (this.caseResultCategoriesLoading = false))).subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.caseResultCategories = result.data;
         this.AddItemInCaseOfNull(this.caseResultCategories);
@@ -207,7 +218,8 @@ export class DiseaseRulesComponent implements OnInit {
     });
   }
   getLabChecks() {
-    this.lookupsService.getAllDiseaseLabTests().subscribe((result: any) => {
+    this.labChecksLoading = true;
+    this.lookupsService.getAllDiseaseLabTests().pipe(finalize(() => (this.labChecksLoading = false))).subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.labChecks = result.data;
         this.AddItemInCaseOfNull(this.labChecks);
@@ -219,7 +231,8 @@ export class DiseaseRulesComponent implements OnInit {
     });
   }
   getLabCheckResults() {
-    this.lookupsService.getAllDiseaseLabTestResults().subscribe((result: any) => {
+    this.labCheckResultsLoading = true;
+    this.lookupsService.getAllDiseaseLabTestResults().pipe(finalize(() => (this.labCheckResultsLoading = false))).subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.labCheckResults = result.data;
         this.AddItemInCaseOfNull(this.labCheckResults);
@@ -231,7 +244,8 @@ export class DiseaseRulesComponent implements OnInit {
     });
   }
   getLabSamples() {
-    this.lookupsService.getAllDiseaseChecks().subscribe((result: any) => {
+    this.checkSamplesLoading = true;
+    this.lookupsService.getAllDiseaseChecks().pipe(finalize(() => (this.checkSamplesLoading = false))).subscribe((result: any) => {
       if (result != null && result != undefined) {
         this.checkSamples = result.data;
         this.AddItemInCaseOfNull(this.checkSamples);

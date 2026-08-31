@@ -36,7 +36,7 @@
         <div class="col-12 title fs-6 fwb">{{ "NEDSS.MONKEYPOX.CLINICAL_SYMPTOMS" | translate }}</div>
         <div class="col-lg-4 form-group">
           <label>{{ "NEDSS.MONKEYPOX.ILLNESS_GOVERNORATE_AREA" | translate }}</label>
-          <select class="form-control" formControlName="illnessGovernorateArea" (change)="calculateCompletionPercentage()">
+          <select class="form-control" [appDropdownLoading]="governoratesLoading" formControlName="illnessGovernorateArea" (change)="calculateCompletionPercentage()">
             <option [ngValue]="null"></option>
             <option *ngFor="let item of governorates" [value]="currentLang === 'ar' ? item.arabicName : item.englishName">
               {{ currentLang === 'ar' ? item.arabicName : item.englishName }}
@@ -45,7 +45,7 @@
         </div>
         <div class="col-lg-4 form-group">
           <label>{{ "NEDSS.MONKEYPOX.COMING_FROM_ABROAD_COUNTRY" | translate }}</label>
-          <select class="form-control" formControlName="comingFromAbroadCountry" (change)="calculateCompletionPercentage()">
+          <select class="form-control" [appDropdownLoading]="countriesLoading" formControlName="comingFromAbroadCountry" (change)="calculateCompletionPercentage()">
             <option [ngValue]="null"></option>
             <option *ngFor="let item of countries" [value]="currentLang === 'ar' ? item.arabicName : item.englishName">
               {{ currentLang === 'ar' ? item.arabicName : item.englishName }}

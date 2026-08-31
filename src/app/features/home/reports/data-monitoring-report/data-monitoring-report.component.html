@@ -13,7 +13,7 @@
           <span class="text-danger mess-color">*</span>
         </label>
         <div *ngIf="currentLang== 'ar'">
-          <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()" tabindex="-1"
+          <select [appDropdownLoading]="governmentsLoading" class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()" tabindex="-1"
             [(ngModel)]="selectedGovernment" aria-hidden="true" [disabled]="this.levelId!=1"
             [ngModelOptions]="{standalone: true}">
             <option value="item.id" *ngFor="let item of governments" [ngValue]="item.id"
@@ -23,7 +23,7 @@
           </select>
         </div>
         <div *ngIf="currentLang== 'en'">
-          <select class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()" tabindex="-1"
+          <select [appDropdownLoading]="governmentsLoading" class="form-control select2 select2-hidden-accessible" (change)="onGovernmentChanged()" tabindex="-1"
             [(ngModel)]="selectedGovernment" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             [disabled]="this.levelId!=1">
             <option value="item.id" *ngFor="let item of governments" [ngValue]="item.id"
@@ -42,7 +42,7 @@
         </label>
 
         <div *ngIf="currentLang== 'ar'">
-          <select class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
+          <select [appDropdownLoading]="healthAdministrationLoading" class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
             tabindex="-1" [(ngModel)]="selectedHealthAdministration" aria-hidden="true"
             [ngModelOptions]="{standalone: true}" [disabled]="this.levelId!=1 && this.levelId!=2">
             <option value="item.id" *ngFor="let item of healthAdministration" [ngValue]="item.id"
@@ -53,7 +53,7 @@
 
         </div>
         <div *ngIf="currentLang== 'en'">
-          <select class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
+          <select [appDropdownLoading]="healthAdministrationLoading" class="form-control select2 select2-hidden-accessible" (change)="onHealthAdministrationChanged()"
             tabindex="-1" [(ngModel)]="selectedHealthAdministration" aria-hidden="true"
             [ngModelOptions]="{standalone: true}" [disabled]="this.levelId!=1 && this.levelId!=2">
             <option value="item.id" *ngFor="let item of healthAdministration" [ngValue]="item.id"
@@ -74,7 +74,7 @@
         </label>
 
         <div *ngIf="currentLang== 'ar'">
-          <select class="form-control select2 select2-hidden-accessible" tabindex="-1"
+          <select [appDropdownLoading]="incidentSourcesLoading" class="form-control select2 select2-hidden-accessible" tabindex="-1"
             [(ngModel)]="selectedIncidentSource" aria-hidden="true" [ngModelOptions]="{standalone: true}"
             [disabled]="this.levelId!=1 && this.levelId!=2 && this.levelId!=3">
             <option value="item.id" *ngFor="let item of incidentSources" [ngValue]="item.id"
@@ -84,7 +84,7 @@
           </select>
         </div>
         <div *ngIf="currentLang== 'en'">
-          <select class="form-control select2 select2-hidden-accessible" [ngModelOptions]="{standalone: true}"
+          <select [appDropdownLoading]="incidentSourcesLoading" class="form-control select2 select2-hidden-accessible" [ngModelOptions]="{standalone: true}"
             tabindex="-1" [(ngModel)]="selectedIncidentSource" aria-hidden="true"
             [disabled]="this.levelId!=1 && this.levelId!=2 && this.levelId!=3">
             <option value="item.id" *ngFor="let item of incidentSources" [ngValue]="item.id"

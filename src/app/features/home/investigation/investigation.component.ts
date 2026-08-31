@@ -16,6 +16,7 @@ import {
 import { ExportService } from '../../../core/services/export.service';
 import { ExportAsConfig } from 'ngx-export-as';
 import { ActiveUserService } from 'src/app/core/services/active-user.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-investigation',
@@ -79,6 +80,13 @@ export class InvestigationComponent implements OnInit {
   noData: boolean = true;
   loadError: boolean = false;
   loadingPanel: boolean = false;
+  governmentsLoading: boolean = false;
+  healthAdministrationLoading: boolean = false;
+  departmentsLoading: boolean = false;
+  diseasesLoading: boolean = false;
+  finalDiagnosticsLoading: boolean = false;
+  caseCategoryLoading: boolean = false;
+  finalResulsLoading: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -491,7 +499,11 @@ export class InvestigationComponent implements OnInit {
     }
   }
   getGovernments() {
-    this.lookupsService.getAllGovernments().subscribe(
+    this.governmentsLoading = true;
+    this.lookupsService
+      .getAllGovernments()
+      .pipe(finalize(() => (this.governmentsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.governments = result.data;
@@ -530,7 +542,11 @@ export class InvestigationComponent implements OnInit {
   }
 
   getCaseCategory() {
-    this.lookupsService.getAllCaseResultCategorys().subscribe(
+    this.caseCategoryLoading = true;
+    this.lookupsService
+      .getAllCaseResultCategorys()
+      .pipe(finalize(() => (this.caseCategoryLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.CaseCategory = [
@@ -554,8 +570,10 @@ export class InvestigationComponent implements OnInit {
   }
 
   getHealthAdministration(governmentID: any) {
+    this.healthAdministrationLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({ governmentID: governmentID })
+      .pipe(finalize(() => (this.healthAdministrationLoading = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
@@ -597,7 +615,11 @@ export class InvestigationComponent implements OnInit {
   }
 
   getDepartments() {
-    this.lookupsService.getAllDepartments().subscribe(
+    this.departmentsLoading = true;
+    this.lookupsService
+      .getAllDepartments()
+      .pipe(finalize(() => (this.departmentsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.departments = [
@@ -633,7 +655,7 @@ export class InvestigationComponent implements OnInit {
       this.notInferringFilter.sortOrder = SortOrder.desc;
       if (typeof event.field === 'string')
         this.notInferringFilter.sortColumn = event.field;
-      this.findPatient(undefined, true);
+      this.findPatient(this.investigationForm.value, true);
     } else if (
       event.order == 1 &&
       this.notInferringFilter.sortOrder != SortOrder.asc
@@ -641,12 +663,16 @@ export class InvestigationComponent implements OnInit {
       this.notInferringFilter.sortOrder = SortOrder.asc;
       if (typeof event.field === 'string')
         this.notInferringFilter.sortColumn = event.field;
-      this.findPatient(undefined, true);
+      this.findPatient(this.investigationForm.value, true);
     }
   }
 
   getPrimaryDiagnosis() {
-    this.lookupsService.getAllDiseaseGroups().subscribe(
+    this.diseasesLoading = true;
+    this.lookupsService
+      .getAllDiseaseGroups()
+      .pipe(finalize(() => (this.diseasesLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.diseases = [
@@ -683,7 +709,11 @@ export class InvestigationComponent implements OnInit {
   }
 
   getFinalDiagonistics() {
-    this.lookupsService.getAllDiseases().subscribe(
+    this.finalDiagnosticsLoading = true;
+    this.lookupsService
+      .getAllDiseases()
+      .pipe(finalize(() => (this.finalDiagnosticsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.finalDiagnostics = [
@@ -707,7 +737,11 @@ export class InvestigationComponent implements OnInit {
   }
 
   getFinalResults() {
-    this.lookupsService.getAllFinalResults().subscribe(
+    this.finalResulsLoading = true;
+    this.lookupsService
+      .getAllFinalResults()
+      .pipe(finalize(() => (this.finalResulsLoading = false)))
+      .subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
           this.finalResuls = [
@@ -737,7 +771,7 @@ export class InvestigationComponent implements OnInit {
     if (this.notInferringFilter.pageIndex > 0) {
       this.notInferringFilter.pageIndex--;
       this.first = this.notInferringFilter.pageIndex * this.notInferringFilter.pageSize;
-      this.findPatient(undefined, true);
+      this.findPatient(this.investigationForm.value, true);
     }
   }
 
@@ -745,7 +779,7 @@ export class InvestigationComponent implements OnInit {
     if (this.hasNextPage) {
       this.notInferringFilter.pageIndex++;
       this.first = this.notInferringFilter.pageIndex * this.notInferringFilter.pageSize;
-      this.findPatient(undefined, true);
+      this.findPatient(this.investigationForm.value, true);
     }
   }
 
@@ -753,7 +787,7 @@ export class InvestigationComponent implements OnInit {
     this.notInferringFilter.pageSize = newSize;
     this.notInferringFilter.pageIndex = 0;
     this.first = 0;
-    this.findPatient();
+    this.findPatient(this.investigationForm.value);
   }
 
   exportPatiantsAsExcel() {

@@ -12,6 +12,8 @@ import { SharedModule } from 'src/app/core/shared/shared.module';
 import { NavbarComponent } from 'src/app/core/components/navbar/navbar.component';
 import { SidebarComponent } from 'src/app/core/components/sidebar/sidebar.component';
 import { ChartsDashboardComponent } from './charts-dashboard/charts-dashboard.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { ChartsDisabledComponent } from './charts-disabled/charts-disabled.component';
 import { MatIconModule } from '@angular/material/icon';
 import { RepeatedRecordsComponent } from './repeated-records/repeated-records.component';
 import { LabCasesComponent } from './lab-cases/lab-cases.component';
@@ -227,6 +229,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     NavbarComponent,
     SidebarComponent,
     ChartsDashboardComponent,
+    WelcomeComponent,
+    ChartsDisabledComponent,
     DuplicationViewComponent,
     RepeatedRecordsComponent,
     AddPopulationDataComponent,
