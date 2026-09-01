@@ -81,7 +81,7 @@
               </small> -->
             </div>
           </div>
-          <div class="col-lg-4 mt-4">
+          <div class="col-lg-3 mt-4">
             <div class="form-group">
               <label for="" class="form-label">
                 {{ "NEDSS.LAB_VIEW.ADD_PATIENT.NATIONALITY" | translate }}
@@ -89,7 +89,7 @@
               </label>
               <div *ngIf="currentLang == 'ar'">
                 <p-dropdown [appDropdownLoading]="nationalitiesLoading" (onChange)="onNationalityChanged()" [options]="nationalities"
-                  [(ngModel)]="selectedNationality" optionLabel="arabicName" optionValue="id" autoWidth="false"
+                  [(ngModel)]="selectedNationality" optionLabel="arabicName" optionValue="id" autoWidth="false" appendTo="body"
                   style="width: 100%" name="nationalities" [required]="true" [filter]="true"
                   filterBy="arabicName" (onBlur)="
                     generalDataService.isNationalityValid =
@@ -101,7 +101,7 @@
               </div>
               <div *ngIf="currentLang == 'en'">
                 <p-dropdown [appDropdownLoading]="nationalitiesLoading" (onChange)="onNationalityChanged()" [options]="nationalities"
-                  [(ngModel)]="selectedNationality" optionLabel="englishName" optionValue="id" autoWidth="false"
+                  [(ngModel)]="selectedNationality" optionLabel="englishName" optionValue="id" autoWidth="false" appendTo="body"
                   style="width: 100%" name="nationalities" [required]="true" [filter]="true"
                   filterBy="englishName" (onBlur)="
                     generalDataService.isNationalityValid =
@@ -141,7 +141,7 @@
               </small>
             </div>
           </div>
-          <div class="col-lg-4 mt-4" *ngIf="selectedNationality == NationalityEnum.Egyptian">
+          <div class="col-lg-3 mt-4" *ngIf="selectedNationality == NationalityEnum.Egyptian">
             <div class="form-group">
               <label for="" class="form-label">
                 {{ "NEDSS.LAB_VIEW.ADD_PATIENT.NATIONAL_ID" | translate }}
@@ -163,7 +163,7 @@
               </small> -->
             </div>
           </div>
-          <div class="col-lg-4 mt-4" *ngIf="
+          <div class="col-lg-3 mt-4" *ngIf="
               selectedNationality != NationalityEnum.Egyptian &&
               selectedNationality != NationalityEnum.NotSelected &&
               selectedNationality
@@ -182,7 +182,7 @@
               </small>
             </div>
           </div>
-          <div class="col-lg-4 mt-4">
+          <div class="col-lg-3 mt-4">
             <div class="form-group">
               <label for="">
                 {{ "NEDSS.LAB_VIEW.ADD_PATIENT.PHONENO1" | translate }}
@@ -199,7 +199,7 @@
               </small>
             </div>
           </div>
-          <div class="col-lg-4 mt-4">
+          <div class="col-lg-3 mt-4">
             <div class="form-group">
               <label for="">
                 {{ "NEDSS.LAB_VIEW.ADD_PATIENT.PHONENO2" | translate }}
@@ -216,14 +216,14 @@
               </label>
               <div *ngIf="currentLang == 'ar'">
                 <p-dropdown [appDropdownLoading]="governmentsLoading" (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernment"
-                  optionLabel="arabicName" optionValue="id" autoWidth="false" style="width: 100%"
+                  optionLabel="arabicName" optionValue="id" autoWidth="false" appendTo="body" style="width: 100%"
                   name="governments" [required]="true" [filter]="true" [disabled]="this.levelId != 1"
                   filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
                 <p-dropdown [appDropdownLoading]="governmentsLoading" (onChange)="onGovernmentChanged()" [options]="governments" [(ngModel)]="selectedGovernment"
-                  optionLabel="englishName" optionValue="id" autoWidth="false" style="width: 100%"
+                  optionLabel="englishName" optionValue="id" autoWidth="false" appendTo="body" style="width: 100%"
                   name="governments" [required]="true" [filter]="true" [disabled]="this.levelId != 1"
                   filterBy="englishName">
                 </p-dropdown>
@@ -242,7 +242,7 @@
               </label>
               <div *ngIf="currentLang == 'ar'">
                 <p-dropdown [appDropdownLoading]="healthAdministrationsLoading" (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations"
-                  [(ngModel)]="selectedHealthAdministration" optionLabel="arabicName" optionValue="id" autoWidth="false"
+                  [(ngModel)]="selectedHealthAdministration" optionLabel="arabicName" optionValue="id" autoWidth="false" appendTo="body"
                   style="width: 100%" name="healthAdministrations" [filter]="true"
                   [disabled]="this.levelId != 1 && this.levelId != 2" filterBy="arabicName">
                 </p-dropdown>
@@ -250,7 +250,7 @@
               <div *ngIf="currentLang == 'en'">
                 <p-dropdown [appDropdownLoading]="healthAdministrationsLoading" (onChange)="onHealthAdministrationChanged()" [options]="healthAdministrations"
                   [(ngModel)]="selectedHealthAdministration" optionLabel="englishName" optionValue="id"
-                  autoWidth="false" style="width: 100%" name="healthAdministrations" [filter]="true"
+                  autoWidth="false" appendTo="body" style="width: 100%" name="healthAdministrations" [filter]="true"
                   [disabled]="this.levelId != 1 && this.levelId != 2" filterBy="englishName">
                 </p-dropdown>
               </div>
@@ -268,13 +268,13 @@
               </label>
               <div *ngIf="currentLang == 'ar'">
                 <p-dropdown [appDropdownLoading]="citiesLoading" (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCity"
-                  optionLabel="arabicName" optionValue="id" autoWidth="false" style="width: 100%" name="cities"
+                  optionLabel="arabicName" optionValue="id" autoWidth="false" appendTo="body" style="width: 100%" name="cities"
                   [filter]="true" filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
                 <p-dropdown [appDropdownLoading]="citiesLoading" (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCity"
-                  optionLabel="englishName" optionValue="id" autoWidth="false" style="width: 100%" name="cities"
+                  optionLabel="englishName" optionValue="id" autoWidth="false" appendTo="body" style="width: 100%" name="cities"
                   [filter]="true" filterBy="englishName">
                 </p-dropdown>
               </div>
@@ -292,13 +292,13 @@
               </label>
               <div *ngIf="currentLang == 'ar'">
                 <p-dropdown [appDropdownLoading]="healthOfficesLoading" (onChange)="onHealthOfficeChanged()" [options]="healthOffices"
-                  [(ngModel)]="selectedHealthOffice" optionLabel="arabicName" optionValue="id" autoWidth="false"
+                  [(ngModel)]="selectedHealthOffice" optionLabel="arabicName" optionValue="id" autoWidth="false" appendTo="body"
                   style="width: 100%" name="healthOffices" [filter]="true" filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
                 <p-dropdown [appDropdownLoading]="healthOfficesLoading" (onChange)="onHealthOfficeChanged()" [options]="healthOffices"
-                  [(ngModel)]="selectedHealthOffice" optionLabel="englishName" optionValue="id" autoWidth="false"
+                  [(ngModel)]="selectedHealthOffice" optionLabel="englishName" optionValue="id" autoWidth="false" appendTo="body"
                   style="width: 100%" name="healthOffices" [filter]="true" filterBy="englishName">
                 </p-dropdown>
               </div>
@@ -386,15 +386,15 @@
                 </option>
               </select> -->
               <div *ngIf="currentLang == 'ar'">
-                <p-dropdown [appDropdownLoading]="diseasesLoading" (onChange)="filterdDiseaseChange()" [options]="Diseasies"
+                <p-dropdown [appDropdownLoading]="diseasesLoading" (onChange)="filterdDiseaseChange($event)" [options]="Diseasies"
                   [(ngModel)]="patientAddCheck.diseaseGroupId" optionLabel="arabicName" optionValue="id"
-                  autoWidth="false" style="width: 100%" name="Diseasies" [filter]="true" filterBy="arabicName">
+                  autoWidth="false" appendTo="body" style="width: 100%" name="Diseasies" [filter]="true" filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
-                <p-dropdown [appDropdownLoading]="diseasesLoading" (onChange)="filterdDiseaseChange()" [options]="Diseasies"
+                <p-dropdown [appDropdownLoading]="diseasesLoading" (onChange)="filterdDiseaseChange($event)" [options]="Diseasies"
                   [(ngModel)]="patientAddCheck.diseaseGroupId" optionLabel="englishName" optionValue="id"
-                  autoWidth="false" style="width: 100%" name="Diseasies" [filter]="true" filterBy="englishName">
+                  autoWidth="false" appendTo="body" style="width: 100%" name="Diseasies" [filter]="true" filterBy="englishName">
                 </p-dropdown>
               </div>
               <small *ngIf="!isDiseaseGroupValid" class="form-text text-danger mess-color">
@@ -430,7 +430,7 @@
                 <span class="text-danger mess-color">*</span>
               </label>
               <!-- <p-dropdown (onChange)="onSampleChanged()" [options]="checkSamples" [(ngModel)]="selectedCheckSample"
-              optionLabel="arabicName" optionValue="id" autoWidth="false" style="width: 100%"
+              optionLabel="arabicName" optionValue="id" autoWidth="false" appendTo="body" style="width: 100%"
               name="labChecks" [filter]="true" filterBy="arabicName">
             </p-dropdown> -->
               <ng-multiselect-dropdown [appDropdownLoading]="labSamplesLoading" [settings]="multipleDropdownSettings" [data]="checkSamples"
@@ -457,13 +457,13 @@
               </ng-multiselect-dropdown> -->
               <div *ngIf="currentLang == 'ar'">
                 <p-dropdown [appDropdownLoading]="labChecksLoading" (onChange)="onLabCheckChanged()" [options]="labChecks" [(ngModel)]="selectedLabCheck"
-                  optionLabel="arabicName" optionValue="id" autoWidth="false" style="width: 100%"
+                  optionLabel="arabicName" optionValue="id" autoWidth="false" appendTo="body" style="width: 100%"
                   name="labChecks" [filter]="true" filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
                 <p-dropdown [appDropdownLoading]="labChecksLoading" (onChange)="onLabCheckChanged()" [options]="labChecks" [(ngModel)]="selectedLabCheck"
-                  optionLabel="englishName" optionValue="id" autoWidth="false" style="width: 100%"
+                  optionLabel="englishName" optionValue="id" autoWidth="false" appendTo="body" style="width: 100%"
                   name="labChecks" [filter]="true" filterBy="englishName">
                 </p-dropdown>
               </div>
@@ -488,13 +488,13 @@
               </ng-multiselect-dropdown> -->
               <div *ngIf="currentLang == 'ar'">
                 <p-dropdown [appDropdownLoading]="labCheckResultsLoading" (onChange)="onLabCheckResultChanged()" [options]="labCheckResults"
-                  [(ngModel)]="selectedLabCheckResult" optionLabel="arabicName" optionValue="id" autoWidth="false"
+                  [(ngModel)]="selectedLabCheckResult" optionLabel="arabicName" optionValue="id" autoWidth="false" appendTo="body"
                   style="width: 100%" name="labCheckResults" [filter]="true" filterBy="arabicName">
                 </p-dropdown>
               </div>
               <div *ngIf="currentLang == 'en'">
                 <p-dropdown [appDropdownLoading]="labCheckResultsLoading" (onChange)="onLabCheckResultChanged()" [options]="labCheckResults"
-                  [(ngModel)]="selectedLabCheckResult" optionLabel="englishName" optionValue="id" autoWidth="false"
+                  [(ngModel)]="selectedLabCheckResult" optionLabel="englishName" optionValue="id" autoWidth="false" appendTo="body"
                   style="width: 100%" name="labCheckResults" [filter]="true" filterBy="englishName">
                 </p-dropdown>
               </div>
@@ -721,26 +721,28 @@
       </ng-template>
     </p-table>
   </div>
-  <div class="col-lg-12 p-0" style="margin-bottom: 50px">
-    <!-- *ngIf="!noData" -->
-    <p-paginator role="menubar" [rows]="pageSize" [totalRecords]="pages" (onPageChange)="paginate($event)"
-      [first]="first" [currentPageReportTemplate]="
-        'NEDSS.COMMON.CURRENT_PAGE_REPORT' | translate
-      " [showCurrentPageReport]="true" [rowsPerPageOptions]="[
-        10,
-        20,
-        30,
-        40,
-        50,
-        60,
-        100,
-        200,
-        500,
-        1000,
-        2000,
-        pages >= 5000 ? pages : 5000
-      ]" (click)="onPaginatorClick($event)">
-    </p-paginator>
+  <div
+    class="col-lg-12 p-0 d-flex align-items-center justify-content-between flex-wrap gap-3 px-3 py-3 border-top"
+    style="margin-bottom: 50px"
+    *ngIf="patientsFromLab != undefined && patientsFromLab.length > 0"
+  >
+    <div class="d-flex align-items-center gap-2">
+      <label class="mb-0 text-muted">{{ 'NEDSS.COMMON.ROWS_PER_PAGE' | translate }}:</label>
+      <select class="form-select" style="width: 80px" [ngModel]="filter.pageSize" (ngModelChange)="onPageSizeChange($event)" name="labPatientPageSizeSelect">
+        <option *ngFor="let size of [10, 20, 30, 50, 100, 200, 500, 1000]" [ngValue]="size">{{ size }}</option>
+      </select>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <span class="fw-bold">{{ 'NEDSS.COMMON.PAGE' | translate }} {{ filter.pageIndex + 1 }}</span>
+      <button class="btn" [ngClass]="filter.pageIndex === 0 || loadingPanel ? 'btn-light text-muted' : 'btn-outline-secondary'" [disabled]="filter.pageIndex === 0 || loadingPanel" (click)="previousPage()">
+        <i class="pi pi-angle-{{ currentLang === 'ar' ? 'right' : 'left' }}"></i>
+        {{ 'NEDSS.COMMON.PREV' | translate }}
+      </button>
+      <button class="btn" [ngClass]="!hasNextPage || loadingPanel ? 'btn-light text-muted' : 'btn-primary'" [disabled]="!hasNextPage || loadingPanel" (click)="nextPage()">
+        {{ 'NEDSS.COMMON.NEXT' | translate }}
+        <i class="pi pi-angle-{{ currentLang === 'ar' ? 'left' : 'right' }}"></i>
+      </button>
+    </div>
   </div>
 </div>
 
