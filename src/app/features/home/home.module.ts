@@ -49,6 +49,7 @@ import { MaterialModule } from 'src/app/core/shared/material-module';
 import { DuplicationViewComponent } from './repeated-records/duplicationView/duplicationView.component';
 import { DuplicationReviewComponent } from './repeated-records/duplicationReview/duplicationReview.component';
 import { AddUserComponent } from './users/components/add-user/add-user.component';
+import { UserApprovalsComponent } from './users/components/user-approvals/user-approvals.component';
 import { SearchPopulationExpectationComponent } from './population-data/search-populationExpectation/search-populationExpectation.component';
 import { PopulationIncreaseCoefficientComponent } from './population-data/population-increase-coefficient/population-increase-coefficient.component';
 import { InvestigationDetailesComponent } from './investigation/investigation-detailes/investigation-detailes.component';
@@ -250,6 +251,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     //CreateChatComponent,
     GeneralDataCompletionComponent,
     AddUserComponent,
+    UserApprovalsComponent,
     BrucellaComponent,
     MeningealComponent,
     SevereFoodPoisoningComponent,

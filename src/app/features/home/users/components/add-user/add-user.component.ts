@@ -26,6 +26,12 @@ export class AddUserComponent {
   overlayColor: string = 'rgba(255,255,255,0.5)';
   imageSrc: string = 'assets/upload-image.webp';
   adminBool: any;
+  inviteMode: boolean = false;
+  creatingInvite: boolean = false;
+  showInviteDialog: boolean = false;
+  inviteResult: { url: string; code: string; expiresAt: string } | null = null;
+  linkCopied: boolean = false;
+  codeCopied: boolean = false;
   user = {
     id: null,
     roleId: null,
@@ -144,6 +150,7 @@ export class AddUserComponent {
     )?.user?.isSuperAdmin;
     this.user.isSuperAdmin = this.adminBool ? true : false;
 
+    this.inviteMode = this.route.snapshot.queryParamMap.get('mode') === 'invite';
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id != null) {
       this.getById(this.id);
@@ -958,6 +965,10 @@ export class AddUserComponent {
       this.user.diseaseFormsIds = this.SelectedEvaluation.map((x) => x.id);
 
     if (this.validate()) {
+      if (this.inviteMode) {
+        this.createInvitation();
+        return;
+      }
       if (this.user.id == null) {
         this.userService.addUser(this.user).subscribe(
           (response: any) => {
@@ -1028,6 +1039,66 @@ export class AddUserComponent {
     } else {
       this.userMsg.error(' * يجب اضافة كل الحقول');
     }
+  }
+
+  createInvitation() {
+    if (this.creatingInvite || this.showInviteDialog) {
+      return;
+    }
+    this.creatingInvite = true;
+    const scope = {
+      roleId: this.user.roleId,
+      levelId: this.user.levelId,
+      organizationId: this.user.organizationId,
+      govenmentId: this.user.govenmentId,
+      healthAdministrationId: this.user.healthAdministrationId,
+      incidentSourceId: this.user.incidentSourceId,
+      positionId: this.user.positionId,
+      departmentId: this.user.departmentId,
+      branchId: this.user.branchId,
+      areaId: this.user.areaId,
+      userGroupId: this.user.userGroupId,
+      externalLabId: this.user.externalLabId,
+      isSuperAdmin: this.user.isSuperAdmin,
+      diseaseFormsIds: this.user.diseaseFormsIds,
+    };
+    this.userService.createInvitation(scope).subscribe(
+      (response: any) => {
+        this.creatingInvite = false;
+        const data = response?.data;
+        if (!data || !data.token) {
+          this.translateService
+            .get('NEDSS.COMMON.SENT_FAILD')
+            .subscribe((res: string) => this.userMsg.error(res));
+          return;
+        }
+        this.inviteResult = {
+          url: window.location.origin + '/#/user-onboarding/' + data.token,
+          code: data.code,
+          expiresAt: data.expiresAt,
+        };
+        this.linkCopied = false;
+        this.codeCopied = false;
+        this.showInviteDialog = true;
+      },
+      (error) => {
+        this.creatingInvite = false;
+        this.translateService
+          .get('NEDSS.COMMON.SENT_FAILD')
+          .subscribe((res: string) => this.userMsg.error(res));
+      }
+    );
+  }
+
+  copyInviteText(text: string, which: 'link' | 'code') {
+    navigator.clipboard?.writeText(text);
+    if (which === 'link') this.linkCopied = true;
+    else this.codeCopied = true;
+  }
+
+  closeInviteDialog() {
+    this.showInviteDialog = false;
+    this.router.navigateByUrl('/home/control-panel/users');
   }
 
   usernameChange() {

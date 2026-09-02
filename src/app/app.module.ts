@@ -43,6 +43,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { DatepickerMaxTodayDirective } from './datepicker-max-today.directive';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
+import { UserOnboardingComponent } from './features/user-onboarding/user-onboarding.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
@@ -72,6 +73,7 @@ export const DATE_FORMATS = {
     NgDropdownSinglComponent,
     DatepickerMaxTodayDirective,
     NetworkFailureComponent,
+    UserOnboardingComponent,
 
     // StringConverterPipe,
   ],
