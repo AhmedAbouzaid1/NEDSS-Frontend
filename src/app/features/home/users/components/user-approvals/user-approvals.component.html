@@ -1,0 +1,116 @@
+<div class="col-12 p-3">
+  <div class="card shadow color rounded">
+    <div class="card-body">
+      <h2 class="titles h5 fw-bold mb-3">
+        {{ "NEDSS.HOME.USERS.INVITE.APPROVALS_TITLE" | translate }}
+      </h2>
+
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>{{ "NEDSS.HOME.USERS.ADD_USER.NAME" | translate }}</th>
+              <th>{{ "NEDSS.HOME.USERS.ADD_USER.USER_NAME" | translate }}</th>
+              <th>{{ "NEDSS.HOME.USERS.ADD_USER.EMAIL" | translate }}</th>
+              <th>{{ "NEDSS.HOME.USERS.INVITE.STATUS" | translate }}</th>
+              <th>{{ "NEDSS.COMMON.ACTIONS" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of invitations">
+              <td>
+                <div class="ua-user">
+                  <img *ngIf="item.submittedProfilePic" [src]="item.submittedProfilePic" class="ua-avatar" alt="" />
+                  <span *ngIf="!item.submittedProfilePic" class="ua-avatar ua-avatar-fallback"><i class="pi pi-user"></i></span>
+                  <span>{{ item.submittedFullName }}</span>
+                </div>
+              </td>
+              <td>{{ item.submittedUserName }}</td>
+              <td>{{ item.submittedEmail }}</td>
+              <td>
+                <span class="status-badge status-{{ item.status }}">
+                  {{ "NEDSS.HOME.USERS.INVITE.STATUS_" + item.status | translate }}
+                </span>
+              </td>
+              <td>
+                <div class="ua-actions">
+                  <button type="button" class="ua-btn ua-view" (click)="openReview(item)">
+                    <i class="pi pi-eye"></i>
+                    {{ "NEDSS.HOME.USERS.INVITE.VIEW" | translate }}
+                  </button>
+                  <ng-container *ngIf="item.status === 2">
+                    <button type="button" class="ua-btn ua-approve" (click)="approve(item)">
+                      <i class="pi pi-check"></i>
+                      {{ "NEDSS.HOME.USERS.INVITE.APPROVE" | translate }}
+                    </button>
+                    <button type="button" class="ua-btn ua-decline" (click)="openDecline(item)">
+                      <i class="pi pi-times"></i>
+                      {{ "NEDSS.HOME.USERS.INVITE.DECLINE" | translate }}
+                    </button>
+                  </ng-container>
+                </div>
+                <span class="text-muted d-block mt-1" *ngIf="item.status === 4 && item.declineReason">
+                  {{ item.declineReason }}
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="!loading && invitations.length === 0">
+              <td colspan="5" class="text-center text-muted py-4">
+                {{ "NEDSS.COMMON.NO_CONTENT" | translate }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <p-dialog [(visible)]="declineShow" [modal]="true" [draggable]="false" [resizable]="false"
+    [style]="{ width: '30rem' }" [header]="'NEDSS.HOME.USERS.INVITE.DECLINE' | translate">
+    <div class="p-2">
+      <label class="form-label fw-bold">{{ "NEDSS.HOME.USERS.INVITE.DECLINE_REASON" | translate }}</label>
+      <textarea rows="3" class="w-100" pInputTextarea [(ngModel)]="declineReason"></textarea>
+    </div>
+    <ng-template pTemplate="footer">
+      <button class="btn btn-outline-secondary" (click)="declineShow = false">
+        {{ "NEDSS.COMMON.CANCEL" | translate }}
+      </button>
+      <button class="btn btn-danger" (click)="confirmDecline()">
+        {{ "NEDSS.HOME.USERS.INVITE.DECLINE" | translate }}
+      </button>
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog [(visible)]="reviewShow" [modal]="true" [draggable]="false" [resizable]="false"
+    [dismissableMask]="true" [style]="{ width: '32rem' }"
+    [header]="'NEDSS.HOME.USERS.INVITE.DETAILS_TITLE' | translate">
+    <div class="ua-review" *ngIf="reviewTarget">
+      <div class="ua-review-photo">
+        <img *ngIf="reviewTarget.submittedProfilePic" [src]="reviewTarget.submittedProfilePic" alt="" />
+        <span *ngIf="!reviewTarget.submittedProfilePic"><i class="pi pi-user"></i></span>
+      </div>
+      <dl class="ua-review-list">
+        <dt>{{ "NEDSS.HOME.USERS.ADD_USER.NAME" | translate }}</dt>
+        <dd>{{ reviewTarget.submittedFullName || "—" }}</dd>
+        <dt>{{ "NEDSS.HOME.USERS.ADD_USER.USER_NAME" | translate }}</dt>
+        <dd>{{ reviewTarget.submittedUserName || "—" }}</dd>
+        <dt>{{ "NEDSS.HOME.USERS.ADD_USER.EMAIL" | translate }}</dt>
+        <dd>{{ reviewTarget.submittedEmail || "—" }}</dd>
+        <dt>{{ "NEDSS.HOME.USERS.ADD_USER.MOBILE" | translate }}</dt>
+        <dd>{{ reviewTarget.submittedPhoneNo || "—" }}</dd>
+        <dt>{{ "NEDSS.HOME.USERS.ADD_USER.ADDRESS" | translate }}</dt>
+        <dd>{{ reviewTarget.submittedAddress || "—" }}</dd>
+      </dl>
+    </div>
+    <ng-template pTemplate="footer">
+      <div class="d-flex gap-2 justify-content-end" *ngIf="reviewTarget && reviewTarget.status === 2">
+        <button type="button" class="ua-btn ua-decline" (click)="reviewShow = false; openDecline(reviewTarget)">
+          {{ "NEDSS.HOME.USERS.INVITE.DECLINE" | translate }}
+        </button>
+        <button type="button" class="ua-btn ua-approve" (click)="reviewShow = false; approve(reviewTarget)">
+          {{ "NEDSS.HOME.USERS.INVITE.APPROVE" | translate }}
+        </button>
+      </div>
+    </ng-template>
+  </p-dialog>
+</div>

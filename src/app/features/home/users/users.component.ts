@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig, SortEvent } from 'primeng/api';
 import {
@@ -111,11 +112,27 @@ export class UsersComponent {
     private userService: UserService,
     private primengConfig: PrimeNGConfig,
     private exportService: ExportService,
-    private activeUserService: ActiveUserService
+    private activeUserService: ActiveUserService,
+    private router: Router
   ) {}
 
   BasicShow: boolean = false;
+  addChoiceShow: boolean = false;
   SelectedhealthAdministrationId: number = -1;
+
+  openAddChoice() {
+    this.addChoiceShow = true;
+  }
+
+  addUserMyself() {
+    this.addChoiceShow = false;
+    this.router.navigate(['/home/add-user']);
+  }
+
+  inviteUser() {
+    this.addChoiceShow = false;
+    this.router.navigate(['/home/add-user'], { queryParams: { mode: 'invite' } });
+  }
 
   showDialog() {
     this.BasicShow = true;

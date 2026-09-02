@@ -1,0 +1,130 @@
+<div class="onboarding-wrapper">
+  <div class="onboarding-card">
+
+    <div class="ob-brand">
+      <img class="ob-logo" src="Content/Images/logo.png" alt="NEDSS" />
+    </div>
+
+    <!-- Step 1: access code -->
+    <div *ngIf="step === 'code'" class="ob-step">
+      <h1 class="ob-title">{{ "NEDSS.HOME.USERS.INVITE.ONBOARD_TITLE" | translate }}</h1>
+      <p class="ob-subtitle">{{ "NEDSS.HOME.USERS.INVITE.ENTER_CODE_HINT" | translate }}</p>
+
+      <div class="ob-field">
+        <label>{{ "NEDSS.HOME.USERS.INVITE.CODE" | translate }}</label>
+        <input type="text" pInputText class="ob-code-input" autocomplete="one-time-code"
+          [(ngModel)]="code" (keyup.enter)="validateCode()" />
+      </div>
+
+      <p class="ob-error" *ngIf="errorMsg">{{ errorMsg }}</p>
+
+      <button class="ob-btn ob-btn-primary" [disabled]="!code || loading" (click)="validateCode()">
+        <i class="pi pi-spin pi-spinner" *ngIf="loading"></i>
+        {{ "NEDSS.COMMON.CONTINUE" | translate }}
+      </button>
+    </div>
+
+    <!-- Step 2: personal details -->
+    <div *ngIf="step === 'form'" class="ob-step">
+      <h1 class="ob-title">{{ "NEDSS.HOME.USERS.INVITE.DETAILS_TITLE" | translate }}</h1>
+      <p class="ob-subtitle">{{ "NEDSS.HOME.USERS.INVITE.FILL_DATA_HINT" | translate }}</p>
+
+      <div class="ob-photo">
+        <div class="ob-avatar" (click)="photoInput.click()">
+          <img *ngIf="data.profilePic" [src]="data.profilePic" alt="" />
+          <i *ngIf="!data.profilePic" class="pi pi-camera"></i>
+        </div>
+        <div class="ob-photo-actions">
+          <button type="button" class="ob-link" (click)="photoInput.click()">
+            {{ "NEDSS.HOME.USERS.INVITE.UPLOAD_PHOTO" | translate }}
+          </button>
+          <button type="button" class="ob-link ob-link-muted" *ngIf="data.profilePic" (click)="removePhoto()">
+            {{ "NEDSS.HOME.USERS.INVITE.REMOVE_PHOTO" | translate }}
+          </button>
+        </div>
+        <input #photoInput type="file" accept="image/*" hidden (change)="onPhotoSelected($event)" />
+      </div>
+
+      <div class="ob-grid">
+        <div class="ob-field ob-col-2">
+          <label>{{ "NEDSS.HOME.USERS.ADD_USER.NAME" | translate }} <span class="ob-req">*</span></label>
+          <input type="text" pInputText [(ngModel)]="data.fullName" />
+        </div>
+
+        <div class="ob-field">
+          <label>{{ "NEDSS.HOME.USERS.ADD_USER.USER_NAME" | translate }} <span class="ob-req">*</span></label>
+          <input type="text" pInputText autocomplete="username"
+            [class.ob-invalid]="usernameError || (data.userName && !userNameValid)"
+            [(ngModel)]="data.userName" (blur)="checkUsername()" />
+          <span class="ob-field-error" *ngIf="data.userName && !userNameValid">{{ "NEDSS.HOME.USERS.INVITE.USERNAME_INVALID" | translate }}</span>
+          <span class="ob-field-error" *ngIf="userNameValid && usernameError">{{ usernameError }}</span>
+        </div>
+        <div class="ob-field">
+          <label>{{ "NEDSS.HOME.USERS.ADD_USER.MOBILE" | translate }} <span class="ob-req">*</span></label>
+          <input type="text" pInputText inputmode="tel" [class.ob-invalid]="data.phoneNo && !phoneValid"
+            [(ngModel)]="data.phoneNo" />
+          <span class="ob-field-error" *ngIf="data.phoneNo && !phoneValid">{{ "NEDSS.HOME.USERS.INVITE.PHONE_INVALID" | translate }}</span>
+        </div>
+
+        <div class="ob-field ob-col-2">
+          <label>{{ "NEDSS.HOME.USERS.ADD_USER.EMAIL" | translate }} <span class="ob-req">*</span></label>
+          <input type="email" pInputText autocomplete="email"
+            [class.ob-invalid]="emailError || (data.email && !emailValid)"
+            [(ngModel)]="data.email" (blur)="checkEmail()" />
+          <span class="ob-field-error" *ngIf="data.email && !emailValid">{{ "NEDSS.HOME.USERS.INVITE.EMAIL_INVALID" | translate }}</span>
+          <span class="ob-field-error" *ngIf="emailValid && emailError">{{ emailError }}</span>
+        </div>
+
+        <div class="ob-field ob-col-2">
+          <label>{{ "NEDSS.HOME.USERS.ADD_USER.ADDRESS" | translate }}</label>
+          <input type="text" pInputText [(ngModel)]="data.address" />
+        </div>
+
+        <div class="ob-field">
+          <label>{{ "NEDSS.HOME.USERS.INVITE.PASSWORD" | translate }} <span class="ob-req">*</span></label>
+          <input type="password" pInputText autocomplete="new-password"
+            [class.ob-invalid]="data.password && !passwordValid" [(ngModel)]="data.password" />
+        </div>
+        <div class="ob-field">
+          <label>{{ "NEDSS.HOME.USERS.INVITE.CONFIRM_PASSWORD" | translate }} <span class="ob-req">*</span></label>
+          <input type="password" pInputText autocomplete="new-password"
+            [class.ob-invalid]="data.confirmPassword && !passwordsMatch" [(ngModel)]="data.confirmPassword" />
+          <span class="ob-field-error" *ngIf="data.confirmPassword && !passwordsMatch">
+            {{ "NEDSS.HOME.USERS.INVITE.PASSWORD_MISMATCH" | translate }}
+          </span>
+        </div>
+
+        <div class="ob-field ob-col-2">
+          <div class="ob-pw-rules">
+            <span class="ob-pw-rule" [class.ok]="pwLengthOk">
+              <i class="pi" [ngClass]="pwLengthOk ? 'pi-check-circle' : 'pi-circle'"></i>
+              {{ "NEDSS.HOME.USERS.INVITE.PW_RULE_LENGTH" | translate }}
+            </span>
+            <span class="ob-pw-rule" [class.ok]="pwLetterOk">
+              <i class="pi" [ngClass]="pwLetterOk ? 'pi-check-circle' : 'pi-circle'"></i>
+              {{ "NEDSS.HOME.USERS.INVITE.PW_RULE_LETTER" | translate }}
+            </span>
+            <span class="ob-pw-rule" [class.ok]="pwNumberOk">
+              <i class="pi" [ngClass]="pwNumberOk ? 'pi-check-circle' : 'pi-circle'"></i>
+              {{ "NEDSS.HOME.USERS.INVITE.PW_RULE_NUMBER" | translate }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <p class="ob-error" *ngIf="errorMsg">{{ errorMsg }}</p>
+
+      <button class="ob-btn ob-btn-primary" [disabled]="!formValid() || loading" (click)="submit()">
+        <i class="pi pi-spin pi-spinner" *ngIf="loading"></i>
+        {{ "NEDSS.HOME.USERS.INVITE.SUBMIT" | translate }}
+      </button>
+    </div>
+
+    <!-- Done -->
+    <div *ngIf="step === 'done'" class="ob-done">
+      <span class="ob-done-badge"><i class="pi pi-check"></i></span>
+      <h1 class="ob-title">{{ "NEDSS.HOME.USERS.INVITE.SUBMITTED_TITLE" | translate }}</h1>
+      <p class="ob-subtitle">{{ "NEDSS.HOME.USERS.INVITE.SUBMITTED_HINT" | translate }}</p>
+    </div>
+
+  </div>
+</div>

@@ -187,7 +187,7 @@ export class AddLabPatientComponent {
     endDate: null,
     passportNo: null,
     relativeTypeId: null,
-    pageIndex: 1,
+    pageIndex: 0,
     pageSize: 10,
     filterType: 1,
     diseaseGroupId: null,
@@ -208,6 +208,7 @@ export class AddLabPatientComponent {
   pages: number = 0;
   pageIndex: number = 1;
   pageSize: number = 10;
+  hasNextPage: boolean = false;
   visible: boolean = false;
   constructor(
     private translateService: TranslateService,
@@ -321,7 +322,10 @@ export class AddLabPatientComponent {
       }
     );
   }
-  filterdDiseaseChange() {
+  filterdDiseaseChange(event?: any) {
+    if (event && event.value !== undefined) {
+      this.patientAddCheck.diseaseGroupId = event.value;
+    }
     this.selectedCheckSample = [];
     this.selectedLabCheck = null;
     this.selectedLabCheckResult = null;
@@ -704,6 +708,12 @@ export class AddLabPatientComponent {
   }
 
   async getLabSamples(id: number) {
+    if (id == null || id <= 0) {
+      this.checkSamples = [];
+      this.selectedCheckSample = [];
+      this.labSamplesLoading = false;
+      return;
+    }
     this.labSamplesLoading = true;
     this.lookupsService
       .GetByPatientId(id)
@@ -1180,15 +1190,15 @@ export class AddLabPatientComponent {
         this.patientsFromLab = response?.data ?? [];
         if (this.patientsFromLab.length == 0) {
           this.noPatientData = true;
-          this.pages = 0;
+          this.hasNextPage = false;
           this.translateService
             .get('NOUR.NO_RESULTS')
             .subscribe((msg) => this.userMsg.warn(msg));
         } else {
           this.noPatientData = false;
           this.pageSize = this.filter.pageSize;
-          this.pages = response.data[0].totalCount;
-          this.last = this.pageIndex * this.pageSize;
+          this.hasNextPage = response.data[0]?.hasNextPage === true;
+          this.last = this.filter.pageIndex * this.filter.pageSize;
         }
       },
         (error) => {
@@ -1203,14 +1213,27 @@ export class AddLabPatientComponent {
   }
 
 
-  paginate(event: any) {
-    this.first = event.first;
-    this.last = event.last;
-    //add one as primeng pagination is zero based ,so we convert it to one based to fit with the API
-    this.pageIndex = event.page + 1;
-    this.pageSize = event.rows;
-    this.filter.pageIndex = event.page + 1;
-    this.filter.pageSize = event.rows;
+  previousPage() {
+    if (this.filter.pageIndex > 0) {
+      this.filter.pageIndex--;
+      this.first = this.filter.pageIndex * this.filter.pageSize;
+      this.search(false);
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.filter.pageIndex++;
+      this.first = this.filter.pageIndex * this.filter.pageSize;
+      this.search(false);
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.filter.pageSize = newSize;
+    this.pageSize = newSize;
+    this.filter.pageIndex = 0;
+    this.first = 0;
     this.search(false);
   }
 
@@ -1229,9 +1252,6 @@ export class AddLabPatientComponent {
       this.delay = false;
       clearTimeout(this.timer);
     }, 0);
-  }
-  onPaginatorClick(event: MouseEvent) {
-    event.preventDefault(); // Prevent the default behavior
   }
 
 

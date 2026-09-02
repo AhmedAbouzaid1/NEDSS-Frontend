@@ -85,8 +85,8 @@ export class ZeroReportComponent {
   zeroInstantNotificationFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortOrder: SortOrder.asc,
-    sortColumn: 'GovernmentName',
+    sortOrder: SortOrder.desc,
+    sortColumn: 'Id',
     searchText: '',
     isZero: true,
     firstTime: false,
@@ -95,6 +95,9 @@ export class ZeroReportComponent {
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
 
   noData: boolean = true;
+  hasNextPage: boolean = false;
+  listLoading: boolean = false;
+  listLoaded: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -542,6 +545,7 @@ export class ZeroReportComponent {
 
   getZeroInstantNotifications(firstTime?: boolean) {
     this.loadingPanel = true;
+    this.listLoading = true;
     this.zeroInstantNotificationFilter.firstTime = firstTime;
     this.zeroInstantNotificationService
       .getPageNotifications(this.zeroInstantNotificationFilter)
@@ -555,10 +559,11 @@ export class ZeroReportComponent {
             ) {
               this.noData = true;
               this.pages = 0;
+              this.hasNextPage = false;
               this.event = true;
             } else {
               this.noData = false;
-              this.pages = result.data[0].totalCount;
+              this.hasNextPage = result.data[0]?.hasNextPage === true;
               this.last =
                 this.zeroInstantNotificationFilter.pageIndex *
                 this.zeroInstantNotificationFilter.pageSize;
@@ -566,9 +571,13 @@ export class ZeroReportComponent {
             }
           }
           this.loadingPanel = false;
+          this.listLoading = false;
+          this.listLoaded = true;
         },
         (error) => {
           this.loadingPanel = false;
+          this.listLoading = false;
+          this.listLoaded = true;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -829,6 +838,33 @@ export class ZeroReportComponent {
     this.last = event.last;
     this.zeroInstantNotificationFilter.pageIndex = event.page;
     this.zeroInstantNotificationFilter.pageSize = event.rows;
+    this.getZeroInstantNotifications();
+  }
+
+  previousPage() {
+    if (this.zeroInstantNotificationFilter.pageIndex > 0) {
+      this.zeroInstantNotificationFilter.pageIndex--;
+      this.first =
+        this.zeroInstantNotificationFilter.pageIndex *
+        this.zeroInstantNotificationFilter.pageSize;
+      this.getZeroInstantNotifications();
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.zeroInstantNotificationFilter.pageIndex++;
+      this.first =
+        this.zeroInstantNotificationFilter.pageIndex *
+        this.zeroInstantNotificationFilter.pageSize;
+      this.getZeroInstantNotifications();
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.zeroInstantNotificationFilter.pageSize = newSize;
+    this.zeroInstantNotificationFilter.pageIndex = 0;
+    this.first = 0;
     this.getZeroInstantNotifications();
   }
 

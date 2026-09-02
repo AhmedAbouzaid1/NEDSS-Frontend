@@ -11,10 +11,42 @@
               <h2 class="titles h5 fw-bold">
                 {{ "NEDSS.HOME.USERS.SHOW_USERS" | translate }}
               </h2>
-              <a routerLink="/home/add-user" class="btn bg rouded-4 text-light">
+              <button (click)="openAddChoice()" class="btn bg rouded-4 text-light">
                 {{ "NEDSS.HOME.USERS.ADD_USR" | translate }} +
-              </a>
+              </button>
             </header>
+
+            <p-dialog [(visible)]="addChoiceShow" [modal]="true" [draggable]="false"
+              [resizable]="false" [dismissableMask]="true" [showHeader]="false"
+              [style]="{ width: '32rem' }" styleClass="add-method-dialog">
+              <div class="amd-body">
+                <button type="button" class="amd-close" (click)="addChoiceShow = false"
+                  [attr.aria-label]="'NEDSS.COMMON.CANCEL' | translate">
+                  <i class="pi pi-times"></i>
+                </button>
+
+                <div class="amd-head">
+                  <h3 class="amd-title">{{ "NEDSS.HOME.USERS.INVITE.ADD_TITLE" | translate }}</h3>
+                  <p class="amd-subtitle">{{ "NEDSS.HOME.USERS.INVITE.ADD_SUBTITLE" | translate }}</p>
+                </div>
+
+                <button type="button" class="amd-option" (click)="addUserMyself()">
+                  <span class="amd-option-icon"><i class="pi pi-user-edit"></i></span>
+                  <span class="amd-option-text">
+                    <span class="amd-option-title">{{ "NEDSS.HOME.USERS.INVITE.ENTER_MYSELF" | translate }}</span>
+                    <span class="amd-option-desc">{{ "NEDSS.HOME.USERS.INVITE.ENTER_MYSELF_DESC" | translate }}</span>
+                  </span>
+                </button>
+
+                <button type="button" class="amd-option" (click)="inviteUser()">
+                  <span class="amd-option-icon"><i class="pi pi-send"></i></span>
+                  <span class="amd-option-text">
+                    <span class="amd-option-title">{{ "NEDSS.HOME.USERS.INVITE.INVITE_USER" | translate }}</span>
+                    <span class="amd-option-desc">{{ "NEDSS.HOME.USERS.INVITE.INVITE_USER_DESC" | translate }}</span>
+                  </span>
+                </button>
+              </div>
+            </p-dialog>
 
             <div class="row m-0">
               <div class="col-lg-4 mb-3">

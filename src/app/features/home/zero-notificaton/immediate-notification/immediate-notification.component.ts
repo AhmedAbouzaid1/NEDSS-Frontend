@@ -106,8 +106,8 @@ export class ImmediateNotificationComponent {
   immediateNotificationFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortOrder: SortOrder.asc,
-    sortColumn: 'GovernmentName',
+    sortOrder: SortOrder.desc,
+    sortColumn: 'Id',
     searchText: '',
     isZero: false,
   };
@@ -116,6 +116,9 @@ export class ImmediateNotificationComponent {
   selectedGovernment: number = -1;
   dir: string;
   noData: boolean = true;
+  hasNextPage: boolean = false;
+  listLoading: boolean = false;
+  listLoaded: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -651,6 +654,7 @@ export class ImmediateNotificationComponent {
 
   getImmediateNotifications() {
     this.loadingPanel = true;
+    this.listLoading = true;
     this.immediateNotificationService
       .getPageNotifications(this.immediateNotificationFilter)
       .subscribe(
@@ -658,23 +662,28 @@ export class ImmediateNotificationComponent {
           if (result != null && result != undefined) {
             this.immediateNotifications = result.data;
             if (
-              this.immediateNotifications != undefined &&
+            this.immediateNotifications != undefined &&
               this.immediateNotifications.length == 0
             ) {
               this.noData = true;
               this.pages = 0;
+              this.hasNextPage = false;
             } else {
               this.noData = false;
-              this.pages = result.data[0].totalCount;
+              this.hasNextPage = result.data[0]?.hasNextPage === true;
               this.last =
                 this.immediateNotificationFilter.pageIndex *
                 this.immediateNotificationFilter.pageSize;
             }
           }
           this.loadingPanel = false;
+          this.listLoading = false;
+          this.listLoaded = true;
         },
         (error) => {
           this.loadingPanel = false;
+          this.listLoading = false;
+          this.listLoaded = true;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -1210,6 +1219,33 @@ export class ImmediateNotificationComponent {
     this.last = event.last;
     this.immediateNotificationFilter.pageIndex = event.page;
     this.immediateNotificationFilter.pageSize = event.rows;
+    this.getImmediateNotifications();
+  }
+
+  previousPage() {
+    if (this.immediateNotificationFilter.pageIndex > 0) {
+      this.immediateNotificationFilter.pageIndex--;
+      this.first =
+        this.immediateNotificationFilter.pageIndex *
+        this.immediateNotificationFilter.pageSize;
+      this.getImmediateNotifications();
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.immediateNotificationFilter.pageIndex++;
+      this.first =
+        this.immediateNotificationFilter.pageIndex *
+        this.immediateNotificationFilter.pageSize;
+      this.getImmediateNotifications();
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.immediateNotificationFilter.pageSize = newSize;
+    this.immediateNotificationFilter.pageIndex = 0;
+    this.first = 0;
     this.getImmediateNotifications();
   }
 
