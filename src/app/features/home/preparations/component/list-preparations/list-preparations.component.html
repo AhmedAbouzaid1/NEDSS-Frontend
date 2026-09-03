@@ -474,11 +474,15 @@
         </div>
       </div>
       <div class="row" *ngIf="loadError">
-        <div class="no-data content-center">
-          <span class="text-danger">{{ "NEDSS.COMMON.COULD_NOT_LOAD_RESULTS" | translate }}</span>
-          <button type="button" class="btn btn-outline-primary btn-sm mt-2" (click)="search()">{{ "NEDSS.COMMON.TRY_AGAIN" | translate }}</button>
-        </div>
-      </div>
+  <div class="load-error-panel">
+    <span class="load-error-icon"><i class="pi pi-exclamation-triangle"></i></span>
+    <p class="load-error-text">{{ "NEDSS.COMMON.COULD_NOT_LOAD_RESULTS" | translate }}</p>
+    <button type="button" class="load-error-retry" (click)="search()">
+      <i class="pi pi-refresh"></i>
+      {{ "NEDSS.COMMON.TRY_AGAIN" | translate }}
+    </button>
+  </div>
+</div>
     </div>
     <div class="col-11 col-md-12" style="margin-bottom: 4px">
       <p-paginator
