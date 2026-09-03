@@ -1074,7 +1074,16 @@
       </tbody>
     </table> -->
   </div>
-  <div class="row" *ngIf="loadError"><div class="no-data content-center"><span class="text-danger">{{ "NEDSS.COMMON.COULD_NOT_LOAD_RESULTS" | translate }}</span><button type="button" class="btn btn-outline-primary btn-sm mt-2" (click)="search()">{{ "NEDSS.COMMON.TRY_AGAIN" | translate }}</button></div></div>
+  <div class="row" *ngIf="loadError">
+  <div class="load-error-panel">
+    <span class="load-error-icon"><i class="pi pi-exclamation-triangle"></i></span>
+    <p class="load-error-text">{{ "NEDSS.COMMON.COULD_NOT_LOAD_RESULTS" | translate }}</p>
+    <button type="button" class="load-error-retry" (click)="search()">
+      <i class="pi pi-refresh"></i>
+      {{ "NEDSS.COMMON.TRY_AGAIN" | translate }}
+    </button>
+  </div>
+</div>
   <div class="col-lg-12 p-0 d-flex align-items-center justify-content-between flex-wrap gap-3 px-3 py-3 border-top" *ngIf="!noData && !loadError">
     <div class="d-flex align-items-center gap-2">
       <label class="mb-0 text-muted">{{ 'NEDSS.COMMON.ROWS_PER_PAGE' | translate }}:</label>
