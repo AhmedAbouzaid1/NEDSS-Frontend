@@ -28,7 +28,7 @@ export class IncidentSourceComponent {
     governmentID: null,
     healthAdministrationID: null,
     incidentSourceTypeID: null,
-    // reportingOrResidence: null,
+    reportingOrResidence: null,
     organizationID: null,
     // dependencyID: null,
   };
@@ -49,7 +49,7 @@ export class IncidentSourceComponent {
     governmentID: null,
     healthAdministrationID: null,
     incidentSourceTypeID: null,
-    // reportingOrResidence: null,
+    reportingOrResidence: null,
     organizationID: null,
     // dependencyID: null,
     isGetWithAll: false
@@ -226,7 +226,7 @@ export class IncidentSourceComponent {
     this.incidentSourceFilter.governmentID = this.incidentSource.governmentID;
     this.incidentSourceFilter.healthAdministrationID = this.incidentSource.healthAdministrationID;
     this.incidentSourceFilter.organizationID = this.incidentSource.organizationID;
-    // this.incidentSourceFilter.reportingOrResidence = this.incidentSource.reportingOrResidence;
+    this.incidentSourceFilter.reportingOrResidence = this.incidentSource.reportingOrResidence;
     this.incidentSourceFilter.incidentSourceTypeID = this.incidentSource.incidentSourceTypeID;
 
     this.getIncidentSources();
@@ -314,7 +314,7 @@ export class IncidentSourceComponent {
                 governmentID: null,
                 healthAdministrationID: null,
                 incidentSourceTypeID: null,
-                // reportingOrResidence: null,
+                reportingOrResidence: null,
                 organizationID: null,
                 // dependencyID: null,
               };
@@ -439,7 +439,7 @@ export class IncidentSourceComponent {
               governmentID: null,
               healthAdministrationID: null,
               incidentSourceTypeID: null,
-              // reportingOrResidence: null,
+              reportingOrResidence: null,
               organizationID: null,
               // dependencyID: null,
             };
@@ -528,9 +528,11 @@ export class IncidentSourceComponent {
     this.underDeleting.arabicName = ele.arabicName;
   }
 
-  // getreportingOrResidenceType(code: number): any {
-  //   return this.TypereportingOrResidence[code].arabicName;
-  // }
+  getreportingOrResidenceType(value: number): string {
+    if (value === null || value === undefined) return '';
+    const match = this.TypereportingOrResidence.find((o) => o.id === value);
+    return match ? match.arabicName : '';
+  }
 
   codeChange() {
 

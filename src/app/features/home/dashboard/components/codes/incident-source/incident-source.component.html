@@ -303,6 +303,24 @@
               </select> -->
             </div>
           </div>
+          <div class="col-lg-4 mt-3">
+            <div class="form-group">
+              <label for="">
+                {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_reportingOrResidenceType" | translate }}
+              </label>
+              <p-dropdown
+                  [options]="TypereportingOrResidence"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="reportingOrResidence"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="incidentSource.reportingOrResidence"
+                >
+              </p-dropdown>
+            </div>
+          </div>
         </div>
         <!-- end of third row incidentSourceType -->
       </div>
@@ -385,12 +403,12 @@
                 }}</span>
                 <p-sortIcon field="englishName"></p-sortIcon>
               </th>
-              <!-- <th>
+              <th>
                 <span>{{
                   "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_reportingOrResidenceType"
                     | translate
                 }}</span>
-              </th> -->
+              </th>
               <th>
                 <span>{{
                   "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
@@ -432,16 +450,9 @@
                   "
                 ></span>
               </td>
-              <!-- <td>
-                <span
-                  [innerHTML]="
-                    getreportingOrResidenceType(item.reportingOrResidence)
-                      | highlighter
-                        : incidentSourceFilter.searchText
-                        : 'partial'
-                  "
-                ></span>
-              </td> -->
+              <td>
+                <span>{{ getreportingOrResidenceType(item.reportingOrResidence) }}</span>
+              </td>
               <td>
                 <a
                   (click)="getById(item.id)"
