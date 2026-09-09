@@ -31,6 +31,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     MatNativeDateModule,
     DropdownModule,
     NgbNavModule,
+    DialogModule,
   ],
   providers: [
     DiseaseFieldListResolver,

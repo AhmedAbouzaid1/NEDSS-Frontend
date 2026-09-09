@@ -17,6 +17,7 @@ import { NoFutureDateDirective } from './directives/no-future-date.directive';
 import { ClearInvalidMinDateDirective } from './directives/clear-invalid-min-date.directive';
 import { ScrollIntoViewOnResultsDirective } from './directives/scroll-into-view-on-results.directive';
 import { DropdownLoadingDirective } from './directives/dropdown-loading.directive';
+import { DropdownNoAutofocusFilterDirective } from './directives/dropdown-no-autofocus-filter.directive';
 @NgModule({
   declarations: [
     PageLoadingComponent,
@@ -33,6 +34,7 @@ import { DropdownLoadingDirective } from './directives/dropdown-loading.directiv
     ClearInvalidMinDateDirective,
     ScrollIntoViewOnResultsDirective,
     DropdownLoadingDirective,
+    DropdownNoAutofocusFilterDirective,
   ],
   imports: [CommonModule, SidebarModule, TranslateModule, ReactiveFormsModule, FormsModule],
   exports: [
@@ -49,6 +51,7 @@ import { DropdownLoadingDirective } from './directives/dropdown-loading.directiv
     ClearInvalidMinDateDirective,
     ScrollIntoViewOnResultsDirective,
     DropdownLoadingDirective,
+    DropdownNoAutofocusFilterDirective,
   ],
 })
 export class SharedModule { }
