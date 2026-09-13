@@ -292,7 +292,10 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
 
         if (this.patient.relationShipDegreeId == null)
           this.patient.relationShipDegreeId = 0;
-        if (this.patient.nationalId != null) {
+        if (
+          this.patient.nationalId != null &&
+          this.patient.relationShipDegreeId == RelativeEnum.Himself
+        ) {
           this.getGender(this.patient.nationalId);
         }
         this.levelId = JSON.parse(
