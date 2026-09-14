@@ -179,8 +179,16 @@
     </div>
 </div>
 
+<!--Start Report Message -->
+<div *ngIf="reportMessage" class="mt-4 pb-4 pt-4 box border0 clear hide-print">
+    <div align="center" class="alert alert-warning m-3">
+        {{ reportMessage }}
+    </div>
+</div>
+<!--End Report Message -->
+
 <!--Start No Data -->
-<div *ngIf="!showTableData || tableData === null" class="mt-4 pb-4 pt-4 box border0 clear hide-print">
+<div *ngIf="(!showTableData || tableData === null) && !reportMessage" class="mt-4 pb-4 pt-4 box border0 clear hide-print">
     <div align="center" class="color">
         {{ "NEDSS.REPORTS.NothingToPreview" | translate }}<br />
         <br />

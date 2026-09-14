@@ -31,8 +31,8 @@ export class HealthOfficeComponent {
   healthOfficeFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortColumn: '',
-    sortOrder: '',
+    sortColumn: 'code',
+    sortOrder: 'desc',
     searchText: '',
   };
   noData: boolean = true;
@@ -42,7 +42,23 @@ export class HealthOfficeComponent {
   last: number = 0;
   pages: number = 0;
 
-  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
+  private searchWired = false;
+  @ViewChild('searchInput') set searchInput(el: ElementRef) {
+    if (el && !this.searchWired) {
+      this.searchWired = true;
+      fromEvent(el.nativeElement, 'keyup')
+        .pipe(
+          map((event: any) => {
+            return event.target.value;
+          }),
+          debounceTime(environment.DebounceWaiting),
+          distinctUntilChanged()
+        )
+        .subscribe(() => {
+          this.search();
+        });
+    }
+  }
   messageService: any;
 
   constructor(
@@ -54,18 +70,6 @@ export class HealthOfficeComponent {
   ngOnInit() {
     this.getHealthOffices();
     this.getCitys();
-
-    fromEvent(this.searchInput.nativeElement, 'keyup')
-      .pipe(
-        map((event: any) => {
-          return event.target.value;
-        }),
-        debounceTime(environment.DebounceWaiting),
-        distinctUntilChanged()
-      )
-      .subscribe(() => {
-        this.search();
-      });
   }
   getCitys() {
     this.citysLoading = true;

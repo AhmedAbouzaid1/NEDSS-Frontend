@@ -36,8 +36,8 @@ export class DepartmentComponent implements OnInit {
   departmentFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortColumn: '',
-    sortOrder: '',
+    sortColumn: 'code',
+    sortOrder: 'desc',
     searchText: '',
     code: "",
     arabicName: "",
@@ -55,7 +55,23 @@ export class DepartmentComponent implements OnInit {
   ArabicValidationMsg: string = '';
   EnglishNameValidationMsg: string = '';
 
-  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
+  private searchWired = false;
+  @ViewChild('searchInput') set searchInput(el: ElementRef) {
+    if (el && !this.searchWired) {
+      this.searchWired = true;
+      fromEvent(el.nativeElement, 'keyup')
+        .pipe(
+          map((event: any) => {
+            return event.target.value;
+          }),
+          debounceTime(environment.DebounceWaiting),
+          distinctUntilChanged()
+        )
+        .subscribe(() => {
+          this.search();
+        });
+    }
+  }
 
   constructor(
     private departmentService: LookupsGetterService,
@@ -67,17 +83,6 @@ export class DepartmentComponent implements OnInit {
   ngOnInit() {
     this.getDepartments();
     this.getGovernments();
-    fromEvent(this.searchInput.nativeElement, 'keyup')
-      .pipe(
-        map((event: any) => {
-          return event.target.value;
-        }),
-        debounceTime(environment.DebounceWaiting),
-        distinctUntilChanged()
-      )
-      .subscribe(() => {
-        this.search();
-      });
   }
   singleDropdownSettings = {
     singleSelection: true,

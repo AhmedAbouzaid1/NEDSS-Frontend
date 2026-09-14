@@ -79,7 +79,6 @@ export class LookupsGetterService {
   private LevelURL: string = environment.baseApiUrl + 'Level/';
   private BranchURL: string = environment.baseApiUrl + 'Branch/';
   private AreaURL: string = environment.baseApiUrl + 'Area/';
-  private DependencyURL: string = environment.baseApiUrl + 'Dependency/';
   private ChartsApiUrl: string =
     environment.baseApiUrl + 'ChartsApiControllers/';
   private ReportsApiUrl: string = environment.baseApiUrl + 'Reporting/';
@@ -1038,26 +1037,6 @@ export class LookupsGetterService {
   }
   addDisease(Disease: any) {
     return this.APIs.post(this.DiseaseControllerURL + 'Add', Disease);
-  }
-  ///#endregion
-  ///#region  DiseaseLookup
-  getAllDependencys() {
-    return this.APIs.get(this.DependencyURL + 'GetAll');
-  }
-  getPageDependencys(DependencyFilter: any) {
-    return this.APIs.create(this.DependencyURL + 'GetPage', DependencyFilter);
-  }
-  deleteDependency(id: number) {
-    return this.APIs.delete(this.DependencyURL + 'Delete?id=' + id);
-  }
-  getDependencyById(id: number) {
-    return this.APIs.get(this.DependencyURL + 'GetById?id=' + id);
-  }
-  updateDependency(Dependency: any) {
-    return this.APIs.update(this.DependencyURL + 'Update', Dependency);
-  }
-  addDependency(Dependency: any) {
-    return this.APIs.post(this.DependencyURL + 'Add', Dependency);
   }
   ///#endregion
 

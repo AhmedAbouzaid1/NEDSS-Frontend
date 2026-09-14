@@ -10,11 +10,8 @@ export const environment = {
   CardListPageSize: 12,
   GridListPageSize: 10,
   DebounceWaiting: 1000,
-  //baseApiUrl: 'https://192.168.1.200:49864/',
-  baseApiUrl: 'http://snosey-002-site1.atempurl.com/',
-  // baseApiUrl: 'https://localhost:4313/',
-  //chatApiUrl: 'https://192.168.1.200:49864/',
-  chatApiUrl: 'http://snosey-002-site1.atempurl.com/',
+  baseApiUrl: '/nedss-api/',
+  chatApiUrl: '/nedss-api/',
   encryptionKey: '#$%(*gHj18)%$#@R',
   DashboardRefreshInterval: 300000,
   operationRoomPageSize: 3,
@@ -33,7 +30,7 @@ export const environment = {
     measurementId: 'G-JVR9H23EMT',
   },
   dateFormate: 'dd/MM/yyyy',
-  DUPLICATED_REQUEST_STATUS_CODE: -2,
+
   geaographical: {
     lowColor: '#CAD2D5',
     highColor: '#81C0BF',

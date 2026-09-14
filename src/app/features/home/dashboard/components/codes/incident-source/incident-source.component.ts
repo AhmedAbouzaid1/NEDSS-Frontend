@@ -40,8 +40,8 @@ export class IncidentSourceComponent {
   incidentSourceFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortColumn: '',
-    sortOrder: '',
+    sortColumn: 'code',
+    sortOrder: 'desc',
     searchText: '',
     code: null,
     arabicName: "",
@@ -70,7 +70,23 @@ export class IncidentSourceComponent {
   EnglishNameValidationMsg: string = '';
   isUpdate: boolean = false;
   updateHealthAdministrationID: number | null = null;
-  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
+  private searchWired = false;
+  @ViewChild('searchInput') set searchInput(el: ElementRef) {
+    if (el && !this.searchWired) {
+      this.searchWired = true;
+      fromEvent(el.nativeElement, 'keyup')
+        .pipe(
+          map((event: any) => {
+            return event.target.value;
+          }),
+          debounceTime(environment.DebounceWaiting),
+          distinctUntilChanged()
+        )
+        .subscribe(() => {
+          this.search();
+        });
+    }
+  }
 
   constructor(
     private incidentSourceService: LookupsGetterService,
@@ -84,17 +100,6 @@ export class IncidentSourceComponent {
     this.getIncidentSources();
     this.getOrganization();
     // this.getDependencys();
-    fromEvent(this.searchInput.nativeElement, 'keyup')
-      .pipe(
-        map((event: any) => {
-          return event.target.value;
-        }),
-        debounceTime(environment.DebounceWaiting),
-        distinctUntilChanged()
-      )
-      .subscribe(() => {
-        this.search();
-      });
   }
 
   getOrganization() {

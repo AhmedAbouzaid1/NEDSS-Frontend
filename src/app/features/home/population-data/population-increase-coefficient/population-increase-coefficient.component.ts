@@ -73,7 +73,6 @@ export class PopulationIncreaseCoefficientComponent implements OnInit {
   first: number = 0;
   last: number = 0;
   pages: number = 0;
-  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
 
 
   selectedhealthAdministration: any;
@@ -109,19 +108,6 @@ export class PopulationIncreaseCoefficientComponent implements OnInit {
 
     this.getLookups();
     this.getPagePopulations();
-
-
-    fromEvent(this.searchInput.nativeElement, 'keyup')
-      .pipe(
-        map((event: any) => {
-          return event.target.value;
-        }),
-        debounceTime(environment.DebounceWaiting),
-        distinctUntilChanged()
-      )
-      .subscribe(() => {
-        this.search();
-      });
 
     this.translateService.get('NEDSS.HOME.POPULATION_DATA.POPULATION_INCREASE_COE').subscribe(res => {
       this.screenName = res;
