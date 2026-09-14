@@ -29,100 +29,110 @@
   </div>
 </div> -->
 
-<main class="login">
+<main class="login-page">
   <h1 class="visually-hidden">{{ "NEDSS.HOME.LOGIN.LOGIN" | translate }}</h1>
-  <div class="container">
-    <div class="d-flex justify-content-center">
-      <div>
-        <img src="../../../Content/Images/logo.png" class="logo img-fluid mt-5" width="100" height="100"
-          alt="{{ 'NEDSS.HOME.LOGIN.SYSTEM_LOGO_ALT' | translate }}">
-      </div>
-      <div>
-        <img src="../../../Content/Images/mohp.png" class="logo img-fluid mt-5" width="100" height="100"
-          alt="{{ 'NEDSS.HOME.LOGIN.MINISTRY_LOGO_ALT' | translate }}">
+  <header class="login-header">
+    <div class="login-header__group login-header__group--main">
+      <img src="../../../Content/Images/mohp.png" class="login-header__logo"
+        alt="{{ 'NEDSS.HOME.LOGIN.MINISTRY_LOGO_ALT' | translate }}" width="82" height="82">
+      <div class="login-header__titles">
+        <span class="login-header__title">{{ "NEDSS.HOME.LOGIN.HEADER_SECTOR" | translate }}</span>
+        <span class="login-header__subtitle">{{ "NEDSS.HOME.LOGIN.HEADER_ADMIN" | translate }}</span>
       </div>
     </div>
-  </div>
-  <div class="container">
-    <div class="row">
-
-      <div class="col-lg-3"></div>
-      <div class="col-lg-6 mt-5 ">
-        <div class="card shadow color rounded m-auto bg-light rounded-2">
-          <!-- <div class="card-header">
-                        <p class="fwb color text-center mt-4">تسجيل الدخول</p>
-                    </div> -->
-          <form [formGroup]="LoginForm" (ngSubmit)="login(LoginForm)">
-            <div class="card-body bg-light rounded-2">
-              <div class="row text-muted fwb">
-                <div class="col-lg-6">
-                  <!-- <div class="form-group">
-                                      <label for="">البريد الإلكتروني</label>
-                                      <input type="email"  #name type="email" formControlName="email" class="form-control">
-                                      <small *ngIf="LoginForm.controls['email'].touched &&
-                                        LoginForm.controls['email'].errors" class="form-text  text-danger">البريد الإلكتروني غير صحيح
-                                      </small>
-                                  </div>
-                                  -->
-                  <div class="form-group">
-                    <label for="loginUsername"> {{"NEDSS.HOME.LOGIN.USERNAME" | translate}}</label>
-
-                    <input id="loginUsername" #name type="text" formControlName="username" class="form-control">
-                    <small *ngIf="LoginForm.controls['username'].touched &&
-                                      LoginForm.controls['username'].errors" class="form-text  text-danger">
-                      {{"NEDSS.HOME.LOGIN.USERNAME_ERROR" | translate}}
-                    </small>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="loginPassword"> {{"NEDSS.HOME.LOGIN.PASSWORD" | translate}}</label>
-                    <input id="loginPassword" #password type="password" formControlName="password" class="form-control">
-                    <small *ngIf="LoginForm.controls['password'].touched &&
-                                      LoginForm.controls['password'].errors" class="form-text  text-danger">
-                      {{"NEDSS.HOME.LOGIN.PASS_MANDATORY" | translate}}</small>
-                  </div>
-                </div>
-                <div class="col-lg-12 text-start py-0">
-                  <a href="#" class="color" (click)="forgotPassword()"><small>{{"NEDSS.HOME.LOGIN.FORGET_PASSWORD" |
-                      translate}}</small></a>
-                </div>
-              </div>
-            </div>
-
-            <div class="card-footer bg-transparent">
-              <div class="row w-100">
-                <div class="col-5">
-                  <div class="row">
-                    <div class="col-lg-5">
-                      <label for="select1" class="mt-2 fs-7">{{"NEDSS.HOME.LOGIN.CHOOSE_LANGUAGE" | translate}}</label>
-                    </div>
-                    <div class="col-lg-7">
-                      <select name="select1" id="select1" class="pl-1 pr-1 form-control form-control-sm"
-                        (change)="langChanged()" [(ngModel)]="language" [ngModelOptions]="{standalone: true}">
-                        <option *ngFor="let lang of appLanguages" [value]="lang.code">{{ lang.name}}</option>
-                      </select>
-                    </div>
-                  </div>
-
-
-                </div>
-                <div class="col-2"></div>
-                <div class="col-5 p-0">
-                  <button type="submit" class="btn bg d-block w-100 btn-lg text-white rounded-4 btn-primary">
-                    {{"NEDSS.HOME.LOGIN.LOGIN" | translate}}</button>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="text-center">
-          <small class="mt-4 d-block text-light copyrights"
-            [innerHTML]="'NEDSS.HOME.LOGIN.RIGHTS_RESERVED' | translate"></small>
-        </div>
+    <span class="login-header__divider"></span>
+    <div class="login-header__group login-header__group--gov">
+      <div class="login-header__titles login-header__titles--gov">
+        <span class="login-header__title">{{ "NEDSS.HOME.LOGIN.HEADER_REPUBLIC" | translate }}</span>
+        <span class="login-header__subtitle">{{ "NEDSS.HOME.LOGIN.HEADER_MINISTRY" | translate }}</span>
+      </div>
+      <img *ngIf="!emblemMissing" src="../../../Content/Images/egypt-emblem.png"
+        class="login-header__emblem" width="64" height="74" (error)="emblemMissing = true"
+        [alt]="'NEDSS.HOME.LOGIN.EMBLEM_ALT' | translate">
+      <div *ngIf="emblemMissing" class="login-header__emblem login-header__emblem--placeholder" role="img"
+        [attr.aria-label]="'NEDSS.HOME.LOGIN.EMBLEM_ALT' | translate">
+        <i class="bi bi-image"></i>
       </div>
     </div>
-  </div>
+  </header>
+  <section class="login-shell">
+    <div class="login-card">
+      <span class="login-card__badge">
+        <svg class="login-card__badge-icon" viewBox="0 0 52 60" aria-hidden="true">
+          <defs>
+            <linearGradient id="loginBadgeGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2e7bc4" />
+              <stop offset="1" stop-color="#1c5fa8" />
+            </linearGradient>
+          </defs>
+          <path d="M26 2 48 10V29C48 44 39 54 26 59 13 54 4 44 4 29V10Z" fill="url(#loginBadgeGrad)" />
+          <g fill="#ffffff">
+            <rect x="15.5" y="31" width="6" height="13" rx="1.6" />
+            <rect x="23" y="24" width="6" height="20" rx="1.6" />
+            <rect x="30.5" y="18" width="6" height="26" rx="1.6" />
+          </g>
+        </svg>
+      </span>
+      <h2 class="login-card__welcome">{{ "NEDSS.HOME.LOGIN.WELCOME" | translate }}</h2>
+      <p class="login-card__hint">{{ "NEDSS.HOME.LOGIN.PLEASE_LOGIN" | translate }}</p>
+
+      <form [formGroup]="LoginForm" (ngSubmit)="login(LoginForm)" novalidate>
+        <div class="login-field">
+          <input id="loginUsername" #name type="text" formControlName="username"
+            class="login-field__input" autocomplete="username"
+            placeholder="{{ 'NEDSS.HOME.LOGIN.USERNAME' | translate }}">
+          <i class="bi bi-envelope-fill login-field__icon"></i>
+        </div>
+        <small *ngIf="LoginForm.controls['username'].touched && LoginForm.controls['username'].errors"
+          class="login-field__error">{{ "NEDSS.HOME.LOGIN.USERNAME_ERROR" | translate }}</small>
+
+        <div class="login-field">
+          <input id="loginPassword" #password [type]="showPassword ? 'text' : 'password'"
+            formControlName="password" class="login-field__input" autocomplete="current-password"
+            placeholder="{{ 'NEDSS.HOME.LOGIN.PASSWORD' | translate }}">
+          <i class="bi bi-lock-fill login-field__icon"></i>
+          <button type="button" class="login-field__toggle" (click)="showPassword = !showPassword"
+            [attr.aria-label]="'NEDSS.HOME.LOGIN.PASSWORD' | translate">
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </button>
+        </div>
+        <small *ngIf="LoginForm.controls['password'].touched && LoginForm.controls['password'].errors"
+          class="login-field__error">{{ "NEDSS.HOME.LOGIN.PASS_MANDATORY" | translate }}</small>
+
+        <div class="login-card__forgot">
+          <a href="#" (click)="forgotPassword()">{{ "NEDSS.HOME.LOGIN.FORGET_PASSWORD" | translate }}</a>
+        </div>
+
+        <button type="submit" class="login-submit" [disabled]="loading">
+          <span *ngIf="loading" class="login-spinner" aria-hidden="true"></span>
+          <ng-container *ngIf="!loading">
+            <i class="bi bi-box-arrow-in-right"></i>
+            <span>{{ "NEDSS.HOME.LOGIN.LOGIN" | translate }}</span>
+          </ng-container>
+        </button>
+
+        <div class="login-lang">
+          <label for="select1" class="login-lang__label">
+            <i class="bi bi-globe2"></i>
+            {{ "NEDSS.HOME.LOGIN.LANGUAGE" | translate }}
+          </label>
+          <select name="select1" id="select1" class="login-lang__select" (change)="langChanged()"
+            [(ngModel)]="language" [ngModelOptions]="{standalone: true}">
+            <option *ngFor="let lang of appLanguages" [value]="lang.code">{{ lang.code === 'ar' ? 'العربية' : (lang.code === 'en' ? 'English' : lang.name) }}</option>
+          </select>
+        </div>
+      </form>
+    </div>
+  </section>
+  <footer class="login-footer">
+    <img src="../../../Content/Images/logo.png" class="login-footer__logo"
+      alt="{{ 'NEDSS.HOME.LOGIN.DES_LOGO_ALT' | translate }}" width="70" height="70">
+    <div class="login-footer__titles">
+      <span class="login-footer__title">{{ "NEDSS.HOME.LOGIN.FOOTER_ORG" | translate }}</span>
+      <span class="login-footer__subtitle">{{ "NEDSS.HOME.LOGIN.FOOTER_SECTOR" | translate }}</span>
+      <span class="login-footer__subtitle">{{ "NEDSS.HOME.LOGIN.FOOTER_MINISTRY" | translate }}</span>
+    </div>
+  </footer>
 </main>
 
 

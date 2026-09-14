@@ -26,10 +26,33 @@ $(function () {
   //     $(".main-container").removeClass("nav-collapsed");
   //   }
 
-  $(".menu-toggles").on("click", function () {
+  var mobileNavQuery = "(max-width: 991.98px)";
+
+  function closeMobileNav() {
+    $(".main-container").addClass("nav-collapsed");
+    $(".menu-toggles .bi").removeClass("bi-x-circle");
+  }
+
+  $(document).on("click", ".menu-toggles", function () {
     $(".main-container").toggleClass("nav-collapsed");
     $(".menu-toggles .bi").toggleClass("bi-x-circle");
     return false;
+  });
+
+  $(document).on("click", "#rightNav nav a", function () {
+    if (window.matchMedia(mobileNavQuery).matches) {
+      closeMobileNav();
+    }
+  });
+
+  $(document).on("click", function (e) {
+    if (
+      window.matchMedia(mobileNavQuery).matches &&
+      !$(".main-container").hasClass("nav-collapsed") &&
+      !$(e.target).closest("#rightNav, .menu-toggles").length
+    ) {
+      closeMobileNav();
+    }
   });
 
   /*$(".events-toggle") . click( function () {

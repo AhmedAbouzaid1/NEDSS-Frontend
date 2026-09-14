@@ -954,7 +954,9 @@ export class GeneralDataService {
       patient.patientHospitalNo
     );
     this.isDoctorNameValid = this.validateDoctorName(patient.doctorName, false);
-    this.isPatientDiseasesValid = this.validateField(patient.patientDiseases);
+    this.isPatientDiseasesValid =
+      this.validateField(patient.patientDiseases) &&
+      patient.patientDiseases.length > 0;
     this.isInfectionDateValid =
       this.validateField(patient.infectionDate) ||
       patient.incidentDepartmentId != 1;

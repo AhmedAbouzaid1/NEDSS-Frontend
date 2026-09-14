@@ -39,6 +39,9 @@ export class AuthComponent {
   ];
 
   language: any;
+  showPassword = false;
+  emblemMissing = false;
+  loading = false;
 
   @ViewChild('name') nameInput!: ElementRef<HTMLInputElement>;
   @ViewChild('password') passwordInput!: ElementRef<HTMLInputElement>;
@@ -163,12 +166,14 @@ export class AuthComponent {
           this.userMsg.warn(msg);
         });
     } else {
+      this.loading = true;
       if (this.isOnline()) {
         this.authService
           .login(form.value.username, form.value.password)
           .subscribe(
             (res: any) => {
               if (res.messages.length > 0) {
+                this.loading = false;
                 this.userMsg.warn(res.messages[0]);
                 //here
                 // this.translate
@@ -183,6 +188,7 @@ export class AuthComponent {
                   JSON.stringify(res.data[0])
                 );
                 if (res.data[0].isFirstLogin == true && res.statusCode == 200) {
+                  this.loading = false;
                   this.visible = true;
                   this.authService.setUserLoggedIn(true);
                 } else {
@@ -220,6 +226,7 @@ export class AuthComponent {
               }
             },
             (error: any) => {
+              this.loading = false;
               this.userMsg.error('حدث خطأ ما ');
             }
           );
@@ -253,6 +260,7 @@ export class AuthComponent {
             .then(() => window.location.reload());
           // window.open('/#/home/general-data/incident-info', '_self')
         } else {
+          this.loading = false;
           this.translate
             .get('NEDSS.HOME.LOGIN.WRONG_USERNAME_OR_PASSWORD')
             .subscribe((res: string) => {

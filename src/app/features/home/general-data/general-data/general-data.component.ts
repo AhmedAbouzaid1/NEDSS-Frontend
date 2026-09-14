@@ -13,6 +13,7 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
 import { DiseaseSpecialSymptomsService } from '../../dashboard/components/disease-special-symptoms/services/disease-special-symptoms.service';
 import { Observable, Subscription } from 'rxjs';
 import { GeneralDataEnum } from '../models/general-data.eums';
+import { PagePermissionService } from 'src/app/core/services/page-permission.service';
 
 @Component({
   selector: 'app-general-data',
@@ -34,6 +35,16 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
   isLoadingData: boolean = true;
   sectionsReady = [true, false, false, false, false];
   private lastAuxiliaryHydratedPatientId: number | null = null;
+
+  private readonly LAB_SAMPLE_PAGE_IDS = [51, 8];
+  private readonly INVESTIGATION_PAGE_ID = 10;
+  private readonly GENERAL_DATA_PAGE_ID = 2;
+  postSaveDialogVisible = false;
+  savedPatientId: number | null = null;
+  canEnterLabSample = false;
+  canFillInvestigation = false;
+  canEnterAnotherPatient = false;
+
   constructor(
     private generalDataService: GeneralDataService,
     private translateService: TranslateService,
@@ -46,7 +57,8 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
     private datePipe: DatePipe,
     private diseaseSpecialSymptomsService: DiseaseSpecialSymptomsService,
     private investigaion: InvestigationService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private pagePermission: PagePermissionService
   ) {
     this.activeTab = this.generalDataEnum.IncidentInfo;
     this.generalDataService.resetValidationState();
@@ -84,7 +96,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
     this.sharedDataService.setPatientObject(new PatientModel());
     this.sharedDataService.isEditMode = false;
     this.router
-      .navigateByUrl('/home/chart', { skipLocationChange: true })
+      .navigateByUrl('/home/redirect', { skipLocationChange: true })
       .then(() => {
         this.router
           .navigate(['/home/general-data'], { queryParams: { clear: 1 } })
@@ -500,13 +512,8 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
                 // window.location.href =
                 //   '/#/home/general-data/incident-info?clear=1';
               }
-              this.router
-                .navigateByUrl('/home/chart', { skipLocationChange: true })
-                .then(() => {
-                  this.router.navigate(['/home/general-data'], {
-                    queryParams: { clear: 1 },
-                  }).then(() => document.getElementById('general-data-top')?.scrollIntoView({ behavior: 'smooth' }));
-                });
+              this.savedPatientId = response?.data?.id ?? null;
+              this.openPostSaveDialog();
             },
             (error) => {
               this.translateService
@@ -588,6 +595,52 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
           });
       }
     }
+  }
+
+  private openPostSaveDialog() {
+    this.canEnterLabSample = this.pagePermission.canAccessPage(
+      this.LAB_SAMPLE_PAGE_IDS
+    );
+    this.canFillInvestigation = this.pagePermission.canAccessPage(
+      this.INVESTIGATION_PAGE_ID
+    );
+    this.canEnterAnotherPatient = this.pagePermission.canAccessPage(
+      this.GENERAL_DATA_PAGE_ID
+    );
+    this.postSaveDialogVisible = true;
+  }
+
+  goToLabSample() {
+    this.postSaveDialogVisible = false;
+    this.router.navigate(['/home/add-checks', this.savedPatientId]);
+  }
+
+  goToInvestigation() {
+    this.postSaveDialogVisible = false;
+    this.router.navigate([
+      '/home/investigations/investigation-detailes',
+      this.savedPatientId,
+    ]);
+  }
+
+  enterAnotherPatient() {
+    this.postSaveDialogVisible = false;
+    this.router
+      .navigateByUrl('/home/redirect', { skipLocationChange: true })
+      .then(() => {
+        this.router
+          .navigate(['/home/general-data'], { queryParams: { clear: 1 } })
+          .then(() =>
+            document
+              .getElementById('general-data-top')
+              ?.scrollIntoView({ behavior: 'smooth' })
+          );
+      });
+  }
+
+  goToHome() {
+    this.postSaveDialogVisible = false;
+    this.router.navigate(['/home/welcome']);
   }
 
   private showMissingFieldError(fieldLabelKey: string) {
