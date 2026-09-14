@@ -28,8 +28,8 @@ export class NationalityComponent {
   nationalityFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortColumn: '',
-    sortOrder: '',
+    sortColumn: 'code',
+    sortOrder: 'desc',
     searchText: '',
     code: "",
     arabicName: "",
@@ -44,7 +44,23 @@ export class NationalityComponent {
   ArabicValidationMsg: string = '';
   EnglishNameValidationMsg: string = '';
 
-  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
+  private searchWired = false;
+  @ViewChild('searchInput') set searchInput(el: ElementRef) {
+    if (el && !this.searchWired) {
+      this.searchWired = true;
+      fromEvent(el.nativeElement, 'keyup')
+        .pipe(
+          map((event: any) => {
+            return event.target.value;
+          }),
+          debounceTime(environment.DebounceWaiting),
+          distinctUntilChanged()
+        )
+        .subscribe(() => {
+          this.search();
+        });
+    }
+  }
 
   constructor(
     private nationalityService: LookupsGetterService,
@@ -54,17 +70,6 @@ export class NationalityComponent {
 
   ngOnInit() {
     this.getNationalitys();
-    fromEvent(this.searchInput.nativeElement, 'keyup')
-      .pipe(
-        map((event: any) => {
-          return event.target.value;
-        }),
-        debounceTime(environment.DebounceWaiting),
-        distinctUntilChanged()
-      )
-      .subscribe(() => {
-        this.search();
-      });
   }
 
   search() {

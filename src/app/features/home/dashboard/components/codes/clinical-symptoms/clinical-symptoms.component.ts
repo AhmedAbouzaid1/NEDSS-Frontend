@@ -31,8 +31,8 @@ export class ClinicalSymptomsCodesComponent implements OnInit, OnDestroy {
   clinicalSymptomFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortColumn: '',
-    sortOrder: '',
+    sortColumn: 'code',
+    sortOrder: 'desc',
     searchText: '',
     code: '',
     arabicName: '',

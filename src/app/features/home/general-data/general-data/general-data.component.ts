@@ -1,6 +1,6 @@
 import { InvestigationService } from './../../investigation/services/investigation.service';
 import { GeneralDataService } from './../services/general-data.service';
-import { Component, ElementRef, Input, NgZone, OnDestroy, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, ElementRef, HostBinding, HostListener, Input, NgZone, OnDestroy, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { SharedDataService } from '../services/shared-data.service';
@@ -25,6 +25,8 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
   @ViewChild('saveButtonSentinel') saveButtonSentinel: ElementRef;
   loadingPanel: boolean = false;
   hasScrolledToButton = false;
+  @HostBinding('class.keyboard-open') keyboardOpen = false;
+  private keyboardBlurTimer: any;
   private saveBarObserver: IntersectionObserver;
   private saveBarObserverAttached = false;
   patient: PatientModel = new PatientModel();
@@ -58,7 +60,8 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
     private diseaseSpecialSymptomsService: DiseaseSpecialSymptomsService,
     private investigaion: InvestigationService,
     private ngZone: NgZone,
-    private pagePermission: PagePermissionService
+    private pagePermission: PagePermissionService,
+    private hostRef: ElementRef
   ) {
     this.activeTab = this.generalDataEnum.IncidentInfo;
     this.generalDataService.resetValidationState();
@@ -149,6 +152,56 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
       { threshold: 0 },
     );
     this.saveBarObserver.observe(this.saveButtonSentinel.nativeElement);
+  }
+
+  private isMobileView(): boolean {
+    return typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(max-width: 767.98px)').matches;
+  }
+
+  private isFieldControl(el: HTMLElement | null): boolean {
+    if (!el) return false;
+    const tag = el.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' ||
+      el.isContentEditable === true;
+  }
+
+  @HostListener('focusin', ['$event'])
+  onFieldFocusIn(event: FocusEvent): void {
+    if (!this.isMobileView()) return;
+    const target = event.target as HTMLElement;
+    if (!this.isFieldControl(target)) return;
+    clearTimeout(this.keyboardBlurTimer);
+    this.keyboardOpen = true;
+    setTimeout(() => {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  }
+
+  @HostListener('focusout')
+  onFieldFocusOut(): void {
+    if (!this.isMobileView()) return;
+    clearTimeout(this.keyboardBlurTimer);
+    this.keyboardBlurTimer = setTimeout(() => {
+      this.keyboardOpen = false;
+    }, 250);
+  }
+
+  private scrollToFirstError(): void {
+    if (!this.isMobileView()) return;
+    setTimeout(() => {
+      const host = this.hostRef?.nativeElement as HTMLElement;
+      if (!host) return;
+      const err = host.querySelector(
+        '.form-text.text-danger'
+      ) as HTMLElement | null;
+      if (!err) return;
+      const target =
+        (err.closest('.form-group, .form-outline, [class*="col-"]') as HTMLElement) ||
+        err;
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 120);
   }
 
   getDiseases() {
@@ -451,6 +504,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
       const missingFieldLabel = this.generalDataService.getFirstInvalidFieldLabel(this.patient);
       if (missingFieldLabel) {
         this.showMissingFieldError(missingFieldLabel);
+        this.scrollToFirstError();
         return;
       }
       this.loadingPanel = true;
@@ -587,6 +641,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
         this.generalDataService.getFirstInvalidFieldLabel(this.patient);
       if (missingFieldLabel) {
         this.showMissingFieldError(missingFieldLabel);
+        this.scrollToFirstError();
       } else {
         this.translateService
           .get('NEDSS.COMMON.FILL_REQUIRED')
@@ -791,6 +846,7 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
       this.routerSubscription.unsubscribe();
     }
     this.saveBarObserver?.disconnect();
+    clearTimeout(this.keyboardBlurTimer);
   }
   public get generalDataEnum(): typeof GeneralDataEnum {
     return GeneralDataEnum;

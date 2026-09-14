@@ -41,7 +41,6 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { IncidentSourceTypeComponent } from './incident-source-type/incident-source-type.component';
 import { PositionComponent } from './position/position.component';
 import { OrganizationComponent } from './organization/organization.component';
-import { DependencyComponent } from './dependency/dependency.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { DashBoardControlersComponent } from './dashBoard-Controlers/dashBoard-Controlers.component';
 import { InputTextModule } from 'primeng/inputtext';
@@ -59,7 +58,6 @@ import { InputTextModule } from 'primeng/inputtext';
     PatientJobComponent,
     DeviceTypeComponent,
     DeviceCategoryComponent,
-    DependencyComponent,
     OrganizationComponent,
     DiseaseCategoryComponent,
     DiseaseGroupComponent,

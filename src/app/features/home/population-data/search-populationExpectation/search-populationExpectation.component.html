@@ -112,7 +112,13 @@
                 "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.YEAR"
                   | translate
               }}</label>
-              <select name="" id="" class="form-control" formControlName="year">
+              <select
+                name=""
+                id=""
+                class="form-control"
+                formControlName="year"
+                (change)="onBaseYearChange()"
+              >
                 <option *ngFor="let year of years" [value]="year">
                   {{ year }}
                 </option>
@@ -131,10 +137,18 @@
                 class="form-control"
                 formControlName="expectedYear"
               >
-                <option *ngFor="let year of years" [value]="year">
+                <option *ngFor="let year of predictionYears" [value]="year">
                   {{ year }}
                 </option>
               </select>
+            </div>
+          </div>
+          <div class="col-lg-12" *ngIf="factorChecked && !hasFactor">
+            <div class="alert alert-warning mb-0" role="alert">
+              {{
+                "NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.NO_FACTOR"
+                  | translate
+              }}
             </div>
           </div>
         </div>
@@ -455,7 +469,7 @@
                 formControlName="newYear"
                 (change)="yearChange()"
               >
-                <option *ngFor="let year of years" [value]="year">
+                <option *ngFor="let year of driftPredictionYears" [value]="year">
                   {{ year }}
                 </option>
               </select>

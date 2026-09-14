@@ -28,8 +28,8 @@ export class PatientJobCategoryComponent {
   patientJobCategoryFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortColumn: '',
-    sortOrder: '',
+    sortColumn: 'code',
+    sortOrder: 'desc',
     searchText: '',
     code: "",
     arabicName: "",
@@ -43,7 +43,23 @@ export class PatientJobCategoryComponent {
   codeValidationMsg: string = '';
   ArabicValidationMsg: string = '';
   EnglishNameValidationMsg: string = '';
-  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
+  private searchWired = false;
+  @ViewChild('searchInput') set searchInput(el: ElementRef) {
+    if (el && !this.searchWired) {
+      this.searchWired = true;
+      fromEvent(el.nativeElement, 'keyup')
+        .pipe(
+          map((event: any) => {
+            return event.target.value;
+          }),
+          debounceTime(environment.DebounceWaiting),
+          distinctUntilChanged()
+        )
+        .subscribe(() => {
+          this.search();
+        });
+    }
+  }
 
   constructor(
     private patientJobCategoryService: LookupsGetterService,
@@ -53,17 +69,6 @@ export class PatientJobCategoryComponent {
 
   ngOnInit() {
     this.getPatientJobCategorys();
-    fromEvent(this.searchInput.nativeElement, 'keyup')
-      .pipe(
-        map((event: any) => {
-          return event.target.value;
-        }),
-        debounceTime(environment.DebounceWaiting),
-        distinctUntilChanged()
-      )
-      .subscribe(() => {
-        this.search();
-      });
   }
 
   search() {

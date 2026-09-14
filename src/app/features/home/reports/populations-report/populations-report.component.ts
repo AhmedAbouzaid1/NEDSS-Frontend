@@ -35,6 +35,7 @@ export class PopulationsReportComponent implements OnInit {
   populationReport: any;
   tableData!: PopulationReportResponse;
   showTableData: boolean = false;
+  reportMessage: string = '';
   currentUserLevel:number;
   constructor(
     private lookupsService: LookupsGetterService,
@@ -175,15 +176,23 @@ export class PopulationsReportComponent implements OnInit {
     }
 
     this.buildReportObject();
+    this.reportMessage = '';
 
     this.lookupsService.getPopulationsReport(this.populationReport).subscribe({
       next: (data) => {
-        if (data != null && data != undefined) {
+        const result = data?.data;
+        if (result?.message) {
+          this.showTableData = false;
+          this.tableData = null;
+          this.reportMessage = result.message;
+        } else if (result != null && result != undefined) {
           this.showTableData = true;
-          this.tableData = data.data;
+          this.tableData = result;
+          this.reportMessage = '';
         } else {
           this.showTableData = false;
           this.tableData = null;
+          this.reportMessage = '';
         }
       },
       error: (error) => {

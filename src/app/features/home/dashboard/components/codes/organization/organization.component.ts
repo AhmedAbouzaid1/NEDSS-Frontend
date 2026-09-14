@@ -29,8 +29,8 @@ export class OrganizationComponent implements OnInit {
   organizationFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortColumn: "",
-    sortOrder: "",
+    sortColumn: 'code',
+    sortOrder: 'desc',
     searchText: "",
     code: "",
     arabicName: "",
