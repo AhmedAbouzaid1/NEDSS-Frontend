@@ -265,15 +265,16 @@ export class ConnectedUsersComponent {
       this.zeroInstantNotification.healthAdministrationId = this.selectedHealthAdministrationId;
       this.selectedIncidentSourceId = -1;
       this.zeroInstantNotification.incidentSourceId = null;
+      this.getIncidentSources(
+        this.zeroInstantNotification.healthAdministrationId
+      );
     }
     else {
       this.zeroInstantNotification.healthAdministrationId = null;
       this.incidentSources = [];
       this.selectedIncidentSourceId = null;
+      this.zeroInstantNotification.incidentSourceId = null;
     }
-    this.getIncidentSources(
-      this.zeroInstantNotification.healthAdministrationId
-    );
     this.getUsers();
   }
   onIncidentSourceChanged() {
@@ -527,9 +528,9 @@ export class ConnectedUsersComponent {
   paginate(event: any) {
     this.first = event.first;
     this.last = event.last;
-    this.zeroInstantNotificationFilter.pageIndex = event.page;
-    this.zeroInstantNotificationFilter.pageSize = event.rows;
-    this.getZeroInstantNotifications();
+    this.userFilter.pageIndex = event.page;
+    this.userFilter.pageSize = event.rows;
+    this.getUsers();
   }
 
   delete(id: number) {
