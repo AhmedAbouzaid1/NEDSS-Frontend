@@ -71,6 +71,7 @@ export class GeneralDataService {
       ['patientDiseases', 'PatientDiseases'],
       ['finalDiagonisticsData', 'FinalDiagonisticsData'],
       ['finalDiagonistics', 'FinalDiagonistics'],
+      ['finalDiagonisticsByTicket', 'FinalDiagonisticsByTicket'],
       ['feverSymptoms', 'FeverSymptoms'],
       ['chronicDiseasesIds', 'ChronicDiseasesIds'],
       ['finalResultId', 'FinalResultId'],
