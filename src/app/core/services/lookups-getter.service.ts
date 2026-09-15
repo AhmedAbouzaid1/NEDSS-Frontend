@@ -6,7 +6,7 @@ import { ChatFilter } from 'src/app/models/chat-filter';
 import { Result } from 'src/app/features/Result';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
+import { shareReplay, map } from 'rxjs/operators';
 import { dispatch } from '../../../../node_modules/@types/d3';
 import { SystemUserMainDataFilter } from 'src/app/features/home/epidemiological-thresholds/epidemiological-thresholds-users/Model/system-user-main-data-filter';
 
@@ -2234,6 +2234,20 @@ export class LookupsGetterService {
 
   getDataDaysLimit() {
     return this.APIs.get(this.appSettingsApiUrl + 'Get/7');
+  }
+
+  private dataDaysLimit$: Observable<number>;
+  getDataDaysLimitValue(): Observable<number> {
+    if (!this.dataDaysLimit$) {
+      this.dataDaysLimit$ = this.getDataDaysLimit().pipe(
+        map((result: any) => {
+          const parsed = parseInt(result?.data);
+          return !isNaN(parsed) && parsed > 0 ? parsed : 90;
+        }),
+        shareReplay(1)
+      );
+    }
+    return this.dataDaysLimit$;
   }
 
   updateDataDaysLimit(daysLimitEntity: any) {
