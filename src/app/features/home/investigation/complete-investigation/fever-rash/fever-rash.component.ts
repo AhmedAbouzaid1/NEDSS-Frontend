@@ -50,11 +50,11 @@ export class FeverRashComponent implements OnInit {
   private openRows = new Set<AbstractControl>();
 
   private arrayKeys = ['caseMovements', 'previousCases', 'generalContacts', 'pregnantContacts', 'surveyChildren', 'survey400Children'];
-  private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage'];
+  private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage', 'caseCodeDisplay'];
 
   // Scalar date controls (formatted to yyyy-MM-dd on load).
   private dateFields = new Set([
-    'reportDate', 'homeVisitDate', 'measlesLastDoseDate', 'mmrLastDoseDate', 'mrLastDoseDate',
+    'reportDate', 'homeVisitDate', 'rashDate', 'measlesLastDoseDate', 'mmrLastDoseDate', 'mrLastDoseDate',
     'coverageVisitDate', 'lastCaseDateAdmin', 'lastCaseDateDirectorate', 'fieldVisitDate',
     'field400VisitDate',
     'committeeSpecialistDate', 'adminOfficerDate', 'directorateOfficerDate',
@@ -82,10 +82,18 @@ export class FeverRashComponent implements OnInit {
       investigationCompletePercentage: new FormControl(),
 
       // Header
+      caseCodeDisplay: new FormControl(),
       reportDate: new FormControl(),
       homeVisitDate: new FormControl(),
 
       // Tab 1 - case field investigation
+      approximateDiagnosis: new FormControl(),
+      rashDate: new FormControl(),
+      epiLinked: new FormControl(),
+      linkedCaseConfirmation: new FormControl(),
+      linkedCaseCode: new FormControl(),
+      linkedCaseName: new FormControl(),
+      linkedCaseKinship: new FormControl(),
       caseVaccinationStatus: new FormControl(),
       measlesRoutineDoses: new FormControl(),
       measlesCampaignDoses: new FormControl(),
@@ -250,6 +258,7 @@ export class FeverRashComponent implements OnInit {
       patch[key] = this.dateFields.has(key) && v[key] ? this.d(v[key]) : v[key];
     });
     this.feverRashForm.patchValue(patch);
+    this.feverRashForm.controls['caseCodeDisplay'].setValue(v.caseCode ?? null);
 
     this.parseJsonInto(v.caseMovementsJson, (m) => this.caseMovements.push(this.buildCaseMovement(m)));
     this.parseJsonInto(v.previousCasesJson, (p) => this.previousCases.push(this.buildPreviousCase(p)));

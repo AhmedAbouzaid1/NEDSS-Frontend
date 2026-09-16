@@ -773,17 +773,22 @@ export class UsersComponent {
   }
 
   sort(event: SortEvent) {
-    if (event.order == -1 && this.userFilter.sortOrder != SortOrder.desc) {
-      this.userFilter.sortOrder = SortOrder.desc;
-      if (typeof event.field === 'string')
-        this.userFilter.sortColumn = event.field;
-      this.getUsers();
-    } else if (event.order == 1 && this.userFilter.sortOrder != SortOrder.asc) {
-      this.userFilter.sortOrder = SortOrder.asc;
-      if (typeof event.field === 'string')
-        this.userFilter.sortColumn = event.field;
-      this.getUsers();
+    const order = event.order == -1 ? SortOrder.desc : SortOrder.asc;
+    const field =
+      typeof event.field === 'string'
+        ? event.field
+        : this.userFilter.sortColumn;
+    if (
+      this.userFilter.sortColumn == field &&
+      this.userFilter.sortOrder == order
+    ) {
+      return;
     }
+    this.userFilter.sortColumn = field;
+    this.userFilter.sortOrder = order;
+    this.userFilter.pageIndex = 0;
+    this.first = 0;
+    this.getUsers();
   }
 
   paginate(event: any) {

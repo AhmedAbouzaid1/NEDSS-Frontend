@@ -659,29 +659,58 @@
       [style.direction]="dir"
       [value]="users"
       [paginator]="false"
+      [customSort]="true"
+      (onSort)="sort($event)"
     >
       <ng-template pTemplate="header">
         <tr>
-          <th>
+          <th pSortableColumn="fullName">
             <span>{{ "NEDSS.HOME.USERS.NAME" | translate }}</span>
+            <p-sortIcon field="fullName"></p-sortIcon>
           </th>
-          <th>
+          <th pSortableColumn="userName">
             <span>{{ "NEDSS.HOME.USERS.USER_NAME" | translate }}</span>
+            <p-sortIcon field="userName"></p-sortIcon>
           </th>
-          <th>
+          <th pSortableColumn="organizationName">
+            <span>{{ "NEDSS.HOME.USERS.ORGANIZATION" | translate }}</span>
+            <p-sortIcon field="organizationName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="govenmentName">
             <span>{{ "NEDSS.HOME.USERS.GOVERNEMENT" | translate }}</span>
+            <p-sortIcon field="govenmentName"></p-sortIcon>
           </th>
-          <th>
-            {{ "NEDSS.HOME.USERS.POSITION" | translate }}
+          <th pSortableColumn="healthAdministrationName">
+            <span>{{ "NEDSS.HOME.USERS.HEALTHADMIN" | translate }}</span>
+            <p-sortIcon field="healthAdministrationName"></p-sortIcon>
           </th>
-          <th>
+          <th pSortableColumn="branchName">
+            <span>{{ "NEDSS.HOME.USERS.BRANCH" | translate }}</span>
+            <p-sortIcon field="branchName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="areaName">
+            <span>{{ "NEDSS.HOME.USERS.AREA" | translate }}</span>
+            <p-sortIcon field="areaName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="incidentSourceName">
+            <span>{{ "NEDSS.HOME.USERS.INCEIDENT_SOURCE" | translate }}</span>
+            <p-sortIcon field="incidentSourceName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="positionName">
+            <span>{{ "NEDSS.HOME.USERS.POSITION" | translate }}</span>
+            <p-sortIcon field="positionName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="levelName">
             <span>{{ "NEDSS.HOME.USERS.LEVEL" | translate }}</span>
+            <p-sortIcon field="levelName"></p-sortIcon>
           </th>
-          <th>
+          <th pSortableColumn="roleName">
             <span>{{ "NEDSS.HOME.USERS.ADD_USER.ROLE" | translate }}</span>
+            <p-sortIcon field="roleName"></p-sortIcon>
           </th>
-          <th>
+          <th pSortableColumn="phoneNo">
             <span>{{ "NEDSS.HOME.USERS.MOBILE" | translate }}</span>
+            <p-sortIcon field="phoneNo"></p-sortIcon>
           </th>
           <th class="exclude-pdf">
             <span>{{ "NEDSS.COMMON.ACTIONS" | translate }}</span>
@@ -697,7 +726,22 @@
             <span [innerHTML]="item.userName"></span>
           </td>
           <td>
+            <span [innerHTML]="item.organizationName"></span>
+          </td>
+          <td>
             <span [innerHTML]="item.govenmentName"></span>
+          </td>
+          <td>
+            <span [innerHTML]="item.healthAdministrationName"></span>
+          </td>
+          <td>
+            <span [innerHTML]="item.branchName"></span>
+          </td>
+          <td>
+            <span [innerHTML]="item.areaName"></span>
+          </td>
+          <td>
+            <span [innerHTML]="item.incidentSourceName"></span>
           </td>
           <td>
             <span [innerHTML]="item.positionName"></span>
