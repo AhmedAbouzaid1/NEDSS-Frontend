@@ -5,6 +5,7 @@ import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
+import { PagePermissionService } from '../../../../../core/services/page-permission.service';
 
 @Component({
   selector: 'app-fever-rash',
@@ -41,9 +42,22 @@ export class FeverRashComponent implements OnInit {
     { key: 'followup', label: 'متابعة الحالة بعد 28 يوم' },
   ];
 
+  // Each field-survey tab needs the investigations permission or its own dedicated permission.
+  private readonly INVESTIGATION_PAGE_ID = 10;
+  private readonly SURVEY30_PAGE_ID = 200;
+  private readonly SURVEY400_PAGE_ID = 201;
+  canAccessSurvey30 = false;
+  canAccessSurvey400 = false;
+  // A user granted only the survey permission(s) (no full investigations permission) sees just the survey tabs.
+  surveyOnly = false;
+
   // The 400-children tab only appears for confirmed measles / rubella cases.
   get visibleTabs() {
-    return this.tabs.filter((t) => t.key !== 'survey400' || this.confirmedMeasles);
+    return this.tabs.filter((t) => {
+      if (t.key === 'survey') return this.canAccessSurvey30;
+      if (t.key === 'survey400') return this.canAccessSurvey400 && this.confirmedMeasles;
+      return !this.surveyOnly;
+    });
   }
 
   // Expand/collapse state for the card-based grids (case movements, previous cases).
@@ -65,10 +79,27 @@ export class FeverRashComponent implements OnInit {
     private datePipe: DatePipe,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
-    private generalDataService: GeneralDataService
+    private generalDataService: GeneralDataService,
+    private pagePermission: PagePermissionService
   ) { }
 
   ngOnInit() {
+    this.canAccessSurvey30 = this.pagePermission.canAccessPage([
+      this.INVESTIGATION_PAGE_ID,
+      this.SURVEY30_PAGE_ID,
+    ]);
+    this.canAccessSurvey400 = this.pagePermission.canAccessPage([
+      this.INVESTIGATION_PAGE_ID,
+      this.SURVEY400_PAGE_ID,
+    ]);
+    this.surveyOnly =
+      !this.pagePermission.isAdmin() &&
+      this.pagePermission.hasExplicitPage([this.SURVEY30_PAGE_ID, this.SURVEY400_PAGE_ID]) &&
+      !this.pagePermission.hasExplicitPage(this.INVESTIGATION_PAGE_ID);
+    if (this.surveyOnly) {
+      this.activeTab = this.canAccessSurvey30 ? 'survey' : 'survey400';
+    }
+
     this.patientName =
       (this.investigationService.patient?.firstName || '') + ' ' +
       (this.investigationService.patient?.secondName || '') + ' ' +
@@ -204,7 +235,11 @@ export class FeverRashComponent implements OnInit {
       texts.push(`${d?.caseResultCategory ?? ''} ${d?.finalResult ?? ''}`);
     });
     this.confirmedMeasles = texts.some((t) => t.includes('حصبة') && t.includes('مؤكد'));
-    if (!this.confirmedMeasles && this.activeTab === 'survey400') this.activeTab = 'field';
+    if (!this.confirmedMeasles && this.activeTab === 'survey400') {
+      this.activeTab = this.surveyOnly
+        ? (this.canAccessSurvey30 ? 'survey' : 'survey400')
+        : 'field';
+    }
   }
 
   private ageUnit(ageTypeId: number): string {
