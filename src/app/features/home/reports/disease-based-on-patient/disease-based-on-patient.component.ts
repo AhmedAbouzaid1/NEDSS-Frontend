@@ -844,18 +844,21 @@ export class DiseaseBasedOnPatientComponent implements OnInit {
   generateReportToExcel() {
     this.lookUpsService
       .ExportPatientReportToExcel({
-        governmentsIds: this.selectedgovernment.map((x) => x.id),
-        HomeGovernmentsIds: this.selectedHomeGovernment.map((x) => x.id),
-        healthAdministrationsIds: this.selectedhealthAdministration.map(
+        governmentsIds: this.selectedgovernment?.map((x) => x.id),
+        departmentsIds: this.selectedDepartments?.map((x) => x.id),
+        reportLocationType: this.selectedLocationType,
+        diagnosisType: this.selectedDiagnosisType,
+        HomeGovernmentsIds: this.selectedHomeGovernment?.map((x) => x.id),
+        healthAdministrationsIds: this.selectedhealthAdministration?.map(
           (x) => x.id
         ),
-        HomeHealthAdministrationsIds: this.selectedHomeHealthAdministration.map(
+        HomeHealthAdministrationsIds: this.selectedHomeHealthAdministration?.map(
           (x) => x.id
         ),
-        incidentSourcesIds: this.selectedIncidentSource.map((x) => x.id),
-        HomeHealthOfficesIds: this.selectedHomeIncidentSource.map((x) => x.id),
-        diseasesIds: this.selectedDiseases.map((x) => x.id),
-        diseaseGroupsIds: this.selectedPrimaryDiseases.map((x) => x.id),
+        incidentSourcesIds: this.selectedIncidentSource?.map((x) => x.id),
+        HomeHealthOfficesIds: this.selectedHomeIncidentSource?.map((x) => x.id),
+        diseasesIds: this.selectedDiseases?.map((x) => x.id),
+        diseaseGroupsIds: this.selectedPrimaryDiseases?.map((x) => x.id),
         reportType: ReportsEnum.DiseaseBasedOnPatientReport,
         fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
         toDate: this.datePipe.transform(this.toDate, 'yyyy-MM-dd'),
