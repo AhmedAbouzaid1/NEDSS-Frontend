@@ -55,7 +55,7 @@ export class AddUserComponent {
     areaId: null,
     diseaseFormsIds: [],
     active: true,
-    isSuperAdmin: true,
+    isSuperAdmin: false,
     notActiveReason: null,
   };
   users!: any[];
@@ -148,7 +148,7 @@ export class AddUserComponent {
     this.adminBool = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     )?.user?.isSuperAdmin;
-    this.user.isSuperAdmin = this.adminBool ? true : false;
+    this.user.isSuperAdmin = false;
 
     this.inviteMode = this.route.snapshot.queryParamMap.get('mode') === 'invite';
     this.id = this.route.snapshot.paramMap.get('id');
