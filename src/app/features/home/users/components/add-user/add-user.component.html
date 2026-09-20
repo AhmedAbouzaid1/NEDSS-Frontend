@@ -870,31 +870,43 @@
       </div>
       <div class="row" *ngIf="!inviteMode">
         <div class="col-lg-4 mb-3">
-          <div>
-            <span class="d-block mb-2">
-              {{
-                "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ADDIMAGE"
-                  | translate
-              }}
-            </span>
-            <div class="add-img-wrapper">
+          <div class="avatar-uploader">
+            <div class="avatar-frame" (click)="userImg.click()">
               <img
+                *ngIf="hasUserImage"
                 [src]="imageSrc"
                 (load)="handleImageLoad()"
                 (error)="handleImageError()"
                 [class.loaded]="imageLoaded"
-                class="img-fluid"
-                alt="upload image"
-                (click)="userImg.click()"
+                alt="user image"
               />
+              <div *ngIf="!hasUserImage" class="avatar-placeholder">
+                <i class="pi pi-camera"></i>
+              </div>
+              <div class="avatar-overlay">
+                <i class="pi pi-camera"></i>
+              </div>
+            </div>
+            <div class="avatar-actions">
+              <button type="button" class="avatar-link" (click)="userImg.click()">
+                {{
+                  "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ADDIMAGE"
+                    | translate
+                }}
+              </button>
+              <button
+                type="button"
+                class="avatar-link avatar-link-muted"
+                *ngIf="hasUserImage"
+                (click)="removeUserImage()"
+              >
+                {{ "NEDSS.HOME.USERS.INVITE.REMOVE_PHOTO" | translate }}
+              </button>
             </div>
             <input
               type="file"
               #userImg
-              name=""
-              id=""
               accept="image/*"
-              class="bg-dark"
               (change)="handleInputChange($event)"
               hidden
             />

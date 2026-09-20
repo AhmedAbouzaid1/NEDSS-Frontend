@@ -326,6 +326,14 @@ export class AddUserComponent {
   handleImageError() {
     this.imageSrc = 'assets/upload-image.webp';
   }
+  get hasUserImage(): boolean {
+    return !!this.imageSrc && this.imageSrc !== 'assets/upload-image.webp';
+  }
+  removeUserImage() {
+    this.imageSrc = 'assets/upload-image.webp';
+    this.user.profilePic = '';
+    this.imageLoaded = false;
+  }
 
   handleImageLoad() {
     this.imageLoaded = true;

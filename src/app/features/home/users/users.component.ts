@@ -58,6 +58,8 @@ export class UsersComponent {
     isSuperAdmin: null,
   };
   noData: boolean = true;
+  showImagePreview: boolean = false;
+  previewImage: string | null = null;
   loadingPanel: boolean = false;
   organizationsLoading: boolean = false;
   levelsLoading: boolean = false;
@@ -144,6 +146,12 @@ export class UsersComponent {
 
   public get organizationsEnum(): typeof OrganizationsEnum {
     return OrganizationsEnum;
+  }
+
+  openImagePreview(image: string | null) {
+    if (!image) return;
+    this.previewImage = image;
+    this.showImagePreview = true;
   }
 
   ngOnInit() {

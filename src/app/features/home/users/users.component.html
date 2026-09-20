@@ -48,6 +48,23 @@
               </div>
             </p-dialog>
 
+            <p-dialog
+              [(visible)]="showImagePreview"
+              [modal]="true"
+              [dismissableMask]="true"
+              [draggable]="false"
+              [resizable]="false"
+              [style]="{ width: 'auto', maxWidth: '90vw' }"
+              styleClass="image-preview-dialog"
+            >
+              <img
+                *ngIf="previewImage"
+                [src]="previewImage"
+                alt=""
+                class="image-preview-img"
+              />
+            </p-dialog>
+
             <div class="row m-0">
               <div class="col-lg-4 mb-3">
                 <div class="form-group">
@@ -719,7 +736,22 @@
       <ng-template pTemplate="body" let-item>
         <tr>
           <td>
-            <span [innerHTML]="item.fullName"></span>
+            <div class="user-cell">
+              <span
+                class="user-avatar"
+                [class.clickable]="item.profilePic"
+                (click)="openImagePreview(item.profilePic)"
+              >
+                <img
+                  *ngIf="item.profilePic"
+                  [src]="item.profilePic"
+                  alt=""
+                  (error)="item.profilePic = null"
+                />
+                <i *ngIf="!item.profilePic" class="pi pi-user"></i>
+              </span>
+              <span [innerHTML]="item.fullName"></span>
+            </div>
           </td>
           <td>
             <span [innerHTML]="item.userName"></span>
