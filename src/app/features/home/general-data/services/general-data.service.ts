@@ -1214,6 +1214,14 @@ export class GeneralDataService {
     this.firstNameValidationMessage = this.validateFirstNamePattern(name, isRequired);
     return this.firstNameValidationMessage === '';
   }
+
+  validateSearchFullName(name: string, isRequired: boolean): boolean {
+    if (!this.validateEmptyField(name)) {
+      return !isRequired;
+    }
+    const namePattern = /^[A-Za-z؀-ۿ ]{3,25}$/;
+    return namePattern.test(name);
+  }
   validateBirthDate(birthDate: string, isRequired: boolean): boolean {
     this.birthDateValidationMessage = this.validBirthDate(
       birthDate,

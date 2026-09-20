@@ -215,7 +215,7 @@ export class InvestigationComponent implements OnInit {
 
   validate(): boolean {
     return (
-      this.generalDataService.validateFirstName(
+      this.generalDataService.validateSearchFullName(
         this.investigationForm.controls.fullName.value,
         false
       ) &&
