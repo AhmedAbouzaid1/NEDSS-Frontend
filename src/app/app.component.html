@@ -55,6 +55,8 @@
     <h3 class="pw-change__title">
       {{ (pwGateMode === 'first'
             ? 'NEDSS.HOME.CHANGE_PASSWORD.FORCE_TITLE_FIRST'
+            : pwGateMode === 'warning'
+            ? 'NEDSS.HOME.CHANGE_PASSWORD.FORCE_TITLE_WARNING'
             : 'NEDSS.HOME.CHANGE_PASSWORD.FORCE_TITLE_EXPIRY') | translate }}
     </h3>
     <p class="pw-change__msg">
@@ -71,6 +73,13 @@
     <app-change-password [prefillDefaultPassword]="pwGateMode === 'first'"></app-change-password>
     <button type="button" class="btn bg text-white w-100 rounded-2 pw-change__submit" (click)="onPasswordGateSubmit()">
       {{ "NEDSS.COMMON.SAVE" | translate }}
+    </button>
+    <button *ngIf="pwGateMode === 'warning'" type="button"
+      class="btn btn-outline-secondary w-100 rounded-2 mt-2 pw-change__later" (click)="skipPasswordGate()">
+      {{ lang === 'ar' ? 'لاحقاً' : 'Later' }}
+    </button>
+    <button type="button" class="btn w-100 rounded-2 mt-2 pw-change__logout" (click)="logoutFromPasswordGate()">
+      {{ "NEDSS.HOME.NAV_BAR.LOGOUT" | translate }}
     </button>
   </div>
 </p-dialog>

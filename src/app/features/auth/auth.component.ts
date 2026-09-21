@@ -188,16 +188,15 @@ export class AuthComponent {
                   JSON.stringify(res.data[0])
                 );
                 const d = res.data[0];
-                const daysLeft = d.passwordExpiresInDays;
-                const inWarning =
-                  daysLeft != null && daysLeft > 0 && daysLeft <= 3;
                 const mustChange =
-                  d.isFirstLogin == true ||
-                  d.passwordExpired == true ||
-                  inWarning;
+                  d.isFirstLogin == true || d.passwordExpired == true;
                 if (mustChange && res.statusCode == 200) {
                   this.loading = false;
+                  this.localizationService.changeLanguage(this.language);
+                  this.translate.use(this.language);
                   this.authService.setUserLoggedIn(true);
+                  const target = this.getReturnUrl() || '/home/welcome';
+                  this.router.navigateByUrl(target);
                 } else {
                   this.localizationService.changeLanguage(this.language);
                   this.translate.use(this.language);

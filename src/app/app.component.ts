@@ -42,6 +42,7 @@ export class AppComponent {
   pwGateVisible = false;
   pwGateMode: 'first' | 'expired' | 'warning' = 'first';
   pwGateDaysLeft: number | null = null;
+  private pwGateSkipped = false;
   @ViewChild(ChangePasswordComponent) pwGateForm: ChangePasswordComponent;
 
   constructor(
@@ -114,6 +115,7 @@ export class AppComponent {
       } else {
         idle.stop();
         this.pwGateVisible = false;
+        this.pwGateSkipped = false;
       }
     });
 
@@ -136,9 +138,15 @@ export class AppComponent {
       return;
     }
     const info = this.session.getPasswordChangeInfo();
-    this.pwGateVisible = info.mustChange;
     this.pwGateMode = info.mode;
     this.pwGateDaysLeft = info.daysLeft;
+    this.pwGateVisible = info.mustChange && !(this.pwGateSkipped && info.mode === 'warning');
+  }
+
+  skipPasswordGate() {
+    if (this.pwGateMode !== 'warning') return;
+    this.pwGateSkipped = true;
+    this.pwGateVisible = false;
   }
 
   onPasswordGateSubmit() {
@@ -224,6 +232,11 @@ export class AppComponent {
   }
 
   logout() {
+    this.finishLogout();
+  }
+
+  logoutFromPasswordGate() {
+    this.pwGateVisible = false;
     this.finishLogout();
   }
 

@@ -11,6 +11,7 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
 export class PasswordExpiryDaysComponent {
   isValid: boolean = true;
   expiryDays: number = 15;
+  enabled: boolean = false;
   currentLang: string = 'ar';
 
   constructor(
@@ -26,6 +27,18 @@ export class PasswordExpiryDaysComponent {
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
     this.getPasswordExpiryDays();
+    this.getPasswordExpiryEnabled();
+  }
+
+  getPasswordExpiryEnabled() {
+    this.lookupsService.getPasswordExpiryEnabled().subscribe(
+      (result: any) => {
+        if (result != null && result != undefined && result.data != null) {
+          this.enabled = String(result.data).toLowerCase() === 'true';
+        }
+      },
+      () => {}
+    );
   }
 
   getPasswordExpiryDays() {
@@ -49,27 +62,43 @@ export class PasswordExpiryDaysComponent {
   }
 
   save() {
-    if (!this.validate()) {
+    if (this.enabled && !this.validate()) {
       return;
     }
+    this.isValid = true;
     this.lookupsService
-      .updatePasswordExpiryDays({ daysLimit: this.expiryDays })
+      .updatePasswordExpiryEnabled({ enabled: this.enabled })
       .subscribe(
         () => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_SUCESSFULLY')
-            .subscribe((res: string) => {
-              this.userMsg.success(res);
-            });
+          if (this.enabled) {
+            this.lookupsService
+              .updatePasswordExpiryDays({ daysLimit: this.expiryDays })
+              .subscribe(
+                () => this.showSaveSuccess(),
+                () => this.showSaveError()
+              );
+          } else {
+            this.showSaveSuccess();
+          }
         },
-        () => {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
+        () => this.showSaveError()
       );
+  }
+
+  private showSaveSuccess() {
+    this.translateService
+      .get('NEDSS.COMMON.SENT_SUCESSFULLY')
+      .subscribe((res: string) => {
+        this.userMsg.success(res);
+      });
+  }
+
+  private showSaveError() {
+    this.translateService
+      .get('NEDSS.COMMON.SENT_FAILD')
+      .subscribe((res: string) => {
+        this.userMsg.error(res);
+      });
   }
 
   onNumberKeyPress(event: KeyboardEvent): void {
@@ -81,7 +110,7 @@ export class PasswordExpiryDaysComponent {
 
   validate(): boolean {
     this.expiryDays = parseInt(this.expiryDays.toString());
-    if (isNaN(this.expiryDays) || this.expiryDays < 0) {
+    if (isNaN(this.expiryDays) || this.expiryDays < 5) {
       this.isValid = false;
       return false;
     }

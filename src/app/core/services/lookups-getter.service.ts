@@ -2277,5 +2277,13 @@ export class LookupsGetterService {
   updatePasswordExpiryDays(daysLimitEntity: any) {
     return this.APIs.create(this.appSettingsApiUrl + 'SetPasswordExpiryDays', daysLimitEntity);
   }
+
+  getPasswordExpiryEnabled() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/11');
+  }
+
+  updatePasswordExpiryEnabled(enabledEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetPasswordExpiryEnabled', enabledEntity);
+  }
   //end region
 }
