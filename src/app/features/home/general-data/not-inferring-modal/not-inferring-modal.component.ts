@@ -16,25 +16,47 @@ import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-not-inferring-modal',
   templateUrl: './not-inferring-modal.component.html',
+  styles: [
+    `
+      .ni-warning-btn {
+        background-color: #ffc107 !important;
+        border-color: #ffc107 !important;
+        color: #212529 !important;
+      }
+      .ni-warning-btn:hover,
+      .ni-warning-btn:focus,
+      .ni-warning-btn:active {
+        background-color: #e0a800 !important;
+        border-color: #d39e00 !important;
+        color: #212529 !important;
+      }
+    `,
+  ],
 })
 export class NotInferringModalComponent implements OnChanges {
   @Input() patient: any;
 
   notFoundForm: FormGroup;
   currentLang: string;
-  phone: any;
-  Address: any;
   governments: any;
   healthAdministrations: any[];
   cities: any[];
   healthOffices: any[];
-  selectedGovernmentId: any;
-  selectedHealthAdministrationId: any;
-  selectedCityId: any;
-  selectedHealthOfficeId: any;
-  selectedHealthAdministration: any;
-  selectedCity: any;
+  effectiveGovernmentId: any;
   ObjToUpdate: any;
+
+  // Set when the case already carries a recorded عدم الاستدلال (not-inferring)
+  // reason, so the trigger button can render distinctly.
+  hasNotInferringData: boolean = false;
+  notInferringReasonKey: string = '';
+
+  private readonly reasonKeys: { [key: number]: string } = {
+    1: 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.NUMBER',
+    2: 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ADDRESS',
+    3: 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.OTHER',
+    4: 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.EDITGOVERNMENT',
+    5: 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.EDITOTHERADMININSAMEGOVR',
+  };
   governmentsLoading: boolean = false;
   healthAdministrationsLoading: boolean = false;
   citiesLoading: boolean = false;
@@ -61,32 +83,56 @@ export class NotInferringModalComponent implements OnChanges {
         : 'ar';
 
     const p: any = this.patient ?? {};
+
+    // Surface any previously recorded عدم الاستدلال reason on the trigger button.
+    this.hasNotInferringData = p.misInvistegationType > 0;
+    this.notInferringReasonKey = this.hasNotInferringData
+      ? this.reasonKeys[p.misInvistegationType] ?? ''
+      : '';
+
+    // Prefer the corrected (New*) values recorded during a prior not-inferring
+    // save so the modal shows what was actually saved; fall back to the case's
+    // current values otherwise.
+    const savedType =
+      p.misInvistegationType > 0 ? String(p.misInvistegationType) : null;
+    const homeGovernmentId =
+      p.newHomeGovernmentId > 0 ? p.newHomeGovernmentId : p.homeGovernmentId;
+    const homeHealthAdministrationId =
+      p.newHomeHealthAdministrationId > 0
+        ? p.newHomeHealthAdministrationId
+        : p.homeHealthAdministrationId;
+    const homeCityId = p.newHomeCityId > 0 ? p.newHomeCityId : p.homeCityId;
+    const homeHealthOfficeId =
+      p.newHomeHealthOfficeId > 0
+        ? p.newHomeHealthOfficeId
+        : p.homeHealthOfficeId;
+
+    // For "same governorate, other administration" (type 5) the government
+    // dropdown is hidden, so fall back to the case's incident governorate when
+    // the home governorate isn't set - otherwise the administrations list would
+    // stay empty and the user couldn't pick another administration.
+    this.effectiveGovernmentId =
+      homeGovernmentId > 0 ? homeGovernmentId : p.incidentGovernmentId;
+
     this.notFoundForm = new FormGroup({
       patientId: new FormControl(p.id),
-      notInvestigationType: new FormControl(),
-      notInvestigationReason: new FormControl(),
-      homeGovernmentId: new FormControl(),
-      homeCityId: new FormControl(),
-      homeHealthAdministration: new FormControl(),
-      homeHealthOffice: new FormControl(),
-      phoneNo1: new FormControl(),
-      livingAddress: new FormControl(),
+      notInvestigationType: new FormControl(savedType),
+      notInvestigationReason: new FormControl(p.misInvistegationReason),
+      homeGovernmentId: new FormControl(this.effectiveGovernmentId),
+      homeCityId: new FormControl(homeCityId),
+      homeHealthAdministration: new FormControl(homeHealthAdministrationId),
+      homeHealthOffice: new FormControl(homeHealthOfficeId),
+      phoneNo1: new FormControl(p.newPhoneNo1 ?? p.phoneNo1),
+      livingAddress: new FormControl(p.newLivingAddress ?? p.livingAddress),
     });
 
-    this.phone = p.phoneNo1;
-    this.Address = p.livingAddress;
-    this.selectedGovernmentId = p.homeGovernmentId;
-    this.selectedHealthAdministrationId = p.homeHealthAdministrationId;
-    this.selectedCityId = p.homeCityId;
-    this.selectedHealthOfficeId = p.homeHealthOfficeId;
-
     this.getGovernments();
-    if (this.selectedGovernmentId > 0) {
-      this.getHealthAdministration(this.selectedGovernmentId);
-      this.getCities(this.selectedGovernmentId);
+    if (this.effectiveGovernmentId > 0) {
+      this.getHealthAdministration(this.effectiveGovernmentId);
+      this.getCities(this.effectiveGovernmentId);
     }
-    if (this.selectedHealthAdministrationId > 0) {
-      this.getHealthOffices(this.selectedHealthAdministrationId);
+    if (homeHealthAdministrationId > 0) {
+      this.getHealthOffices(homeHealthAdministrationId);
     }
   }
 
@@ -164,18 +210,29 @@ export class NotInferringModalComponent implements OnChanges {
   }
 
   onGovernmentChanged() {
-    if (this.selectedGovernmentId > 0) {
-      this.getHealthAdministration(this.selectedGovernmentId);
-      this.getCities(this.selectedGovernmentId);
+    const governmentId = this.notFoundForm.value.homeGovernmentId;
+    this.notFoundForm.patchValue({
+      homeHealthAdministration: null,
+      homeCityId: null,
+      homeHealthOffice: null,
+    });
+    this.healthOffices = [];
+    if (governmentId > 0) {
+      this.effectiveGovernmentId = governmentId;
+      this.getHealthAdministration(governmentId);
+      this.getCities(governmentId);
     } else {
       this.healthAdministrations = [];
-      this.selectedHealthAdministration = null;
+      this.cities = [];
     }
   }
 
   onHealthAdministrationChanged() {
-    if (this.selectedHealthAdministration) {
-      this.getHealthOffices(this.selectedHealthAdministration);
+    const healthAdministrationId =
+      this.notFoundForm.value.homeHealthAdministration;
+    this.notFoundForm.patchValue({ homeHealthOffice: null });
+    if (healthAdministrationId > 0) {
+      this.getHealthOffices(healthAdministrationId);
     } else {
       this.healthOffices = [];
     }
@@ -184,15 +241,38 @@ export class NotInferringModalComponent implements OnChanges {
   onCityChanged() {}
 
   updateInvestigatio() {
+    const value = this.notFoundForm.value;
+    const type = Number(value.notInvestigationType);
+
+    // Only send the fields relevant to the chosen reason so an unrelated field
+    // never overwrites the case's stored data (the backend keeps existing
+    // values for any field it receives as null).
     this.ObjToUpdate = {
-      ...this.notFoundForm.value,
       patientId: this.patient?.id,
+      notInvestigationType: type,
+      notInvestigationReason: value.notInvestigationReason,
     };
+
+    if (type === 1) {
+      this.ObjToUpdate.phoneNo1 = value.phoneNo1;
+    } else if (type === 2) {
+      this.ObjToUpdate.livingAddress = value.livingAddress;
+    } else if (type === 4 || type === 5) {
+      this.ObjToUpdate.homeGovernmentId =
+        type === 5 ? this.effectiveGovernmentId : value.homeGovernmentId;
+      this.ObjToUpdate.homeHealthAdministration = value.homeHealthAdministration;
+      this.ObjToUpdate.homeCityId = value.homeCityId;
+      this.ObjToUpdate.homeHealthOffice = value.homeHealthOffice;
+    }
 
     this.generalDataService.updateInvestigation(this.ObjToUpdate).subscribe(
       (res: any) => {
         if (res != null) {
-          this.notFoundForm.patchValue({ notInvestigationType: null });
+          this.hasNotInferringData = type > 0;
+          this.notInferringReasonKey = this.reasonKeys[type] ?? '';
+          if (this.patient) {
+            this.patient.misInvistegationType = type;
+          }
           this.userMsg.success('تم تحديث البيانات بنجاح');
         } else {
           this.userMsg.error('حدث خطأ اثناء تحديث البيانات');

@@ -43,8 +43,11 @@ export class UserHelpComponent implements OnInit {
   }
 
   showHelp(){
-   return this.http.get(`${environment.baseApiUrl}OptionsHelp/GetById?id=${this.showHelpId.value}`).subscribe({
-        next: (res : any)=>{console.log(res);this.specificHelp = res.data[0]},
+   if (this.showHelpId.value == null) {
+        return;
+   }
+   this.http.get(`${environment.baseApiUrl}OptionsHelp/GetById?id=${this.showHelpId.value}`).subscribe({
+        next: (res : any)=>{this.specificHelp = res?.data?.[0] ?? new HelpModel()},
         error:(err)=>{console.log(err);
         }
     })

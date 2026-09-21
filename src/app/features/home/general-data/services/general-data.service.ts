@@ -118,6 +118,7 @@ export class GeneralDataService {
       const fs = d.feverSymptoms;
       alias(fs, 'id', 'Id');
       alias(fs, 'patientId', 'PatientId');
+      alias(fs, 'feverDate', 'FeverDate');
       alias(fs, 'feverDuration', 'FeverDuration');
       alias(fs, 'feverMaxTemp', 'FeverMaxTemp');
       alias(fs, 'feverDurationType', 'FeverDurationType');
@@ -611,7 +612,7 @@ export class GeneralDataService {
     this.isPassportIdValid = this.checkPassportIdValid(
       patient.nationalityId,
       patient.passportNo,
-      patient.incidentDepartmentId == DepartmentEnum.Internal || patient.incidentDepartmentId == DepartmentEnum.ICU
+      patient.incidentDepartmentId == DepartmentEnum.Internal
     );
 
     var validationResults = [
@@ -711,7 +712,7 @@ export class GeneralDataService {
       patient.familyName,
       false
     );
-    const phoneRequired = patient.incidentDepartmentId == DepartmentEnum.Internal || patient.incidentDepartmentId == DepartmentEnum.ICU;
+    const phoneRequired = patient.incidentDepartmentId == DepartmentEnum.Internal;
     this.isPhoneNumber1Valid = this.validatePhoneNumber1(
       patient.phoneNo1,
       phoneRequired
@@ -738,7 +739,8 @@ export class GeneralDataService {
       this.isAgeTypeValid,
       this.isPassportValid ||
       this.isNationalValid ||
-      patient.incidentDepartmentId != 1,
+      (patient.incidentDepartmentId != DepartmentEnum.Internal &&
+        patient.incidentDepartmentId != DepartmentEnum.ICU),
     ];
 
     return validationResults.findIndex((result) => result == false);
@@ -1213,6 +1215,14 @@ export class GeneralDataService {
     this.firstNameValidationMessage = this.validateFirstNamePattern(name, isRequired);
     return this.firstNameValidationMessage === '';
   }
+
+  validateSearchFullName(name: string, isRequired: boolean): boolean {
+    if (!this.validateEmptyField(name)) {
+      return !isRequired;
+    }
+    const namePattern = /^[A-Za-z؀-ۿ ]{3,25}$/;
+    return namePattern.test(name);
+  }
   validateBirthDate(birthDate: string, isRequired: boolean): boolean {
     this.birthDateValidationMessage = this.validBirthDate(
       birthDate,
@@ -1374,7 +1384,8 @@ export class GeneralDataService {
     const idsOk =
       this.isPassportValid ||
       this.isNationalValid ||
-      patient?.incidentDepartmentId != 1;
+      (patient?.incidentDepartmentId != DepartmentEnum.Internal &&
+        patient?.incidentDepartmentId != DepartmentEnum.ICU);
     if (!idsOk) {
       return patient?.nationalityId == NationalityEnum.Egyptian
         ? 'NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONAL_ID'

@@ -44,3 +44,42 @@
     <router-outlet></router-outlet>
   </section>
 </div>
+
+<p-dialog [visible]="pwGateVisible" [draggable]="false" [resizable]="false" [showHeader]="false"
+  [closable]="false" [closeOnEscape]="false" [modal]="true" styleClass="pw-change-dialog"
+  [style]="{ width: '440px', maxWidth: '94vw' }" [breakpoints]="{ '600px': '94vw' }">
+  <div class="pw-change" [dir]="lang === 'ar' ? 'rtl' : 'ltr'">
+    <div class="pw-change__icon" [class.pw-change__icon--danger]="pwGateMode !== 'first'">
+      <i class="pi" [ngClass]="pwGateMode === 'first' ? 'pi-lock' : 'pi-exclamation-triangle'"></i>
+    </div>
+    <h3 class="pw-change__title">
+      {{ (pwGateMode === 'first'
+            ? 'NEDSS.HOME.CHANGE_PASSWORD.FORCE_TITLE_FIRST'
+            : pwGateMode === 'warning'
+            ? 'NEDSS.HOME.CHANGE_PASSWORD.FORCE_TITLE_WARNING'
+            : 'NEDSS.HOME.CHANGE_PASSWORD.FORCE_TITLE_EXPIRY') | translate }}
+    </h3>
+    <p class="pw-change__msg">
+      <ng-container [ngSwitch]="pwGateMode">
+        <span *ngSwitchCase="'first'">{{ 'NEDSS.HOME.CHANGE_PASSWORD.FORCE_MSG_FIRST' | translate }}</span>
+        <span *ngSwitchCase="'expired'">{{ 'NEDSS.HOME.CHANGE_PASSWORD.FORCE_MSG_EXPIRED' | translate }}</span>
+        <span *ngSwitchCase="'warning'">
+          {{ lang === 'ar'
+            ? 'ستنتهي صلاحية كلمة المرور خلال ' + pwGateDaysLeft + ' يوم. يجب تغييرها الآن للمتابعة.'
+            : 'Your password expires in ' + pwGateDaysLeft + ' day(s). You must change it now to continue.' }}
+        </span>
+      </ng-container>
+    </p>
+    <app-change-password [prefillDefaultPassword]="pwGateMode === 'first'"></app-change-password>
+    <button type="button" class="btn bg text-white w-100 rounded-2 pw-change__submit" (click)="onPasswordGateSubmit()">
+      {{ "NEDSS.COMMON.SAVE" | translate }}
+    </button>
+    <button *ngIf="pwGateMode === 'warning'" type="button"
+      class="btn btn-outline-secondary w-100 rounded-2 mt-2 pw-change__later" (click)="skipPasswordGate()">
+      {{ lang === 'ar' ? 'لاحقاً' : 'Later' }}
+    </button>
+    <button type="button" class="btn w-100 rounded-2 mt-2 pw-change__logout" (click)="logoutFromPasswordGate()">
+      {{ "NEDSS.HOME.NAV_BAR.LOGOUT" | translate }}
+    </button>
+  </div>
+</p-dialog>

@@ -1,6 +1,6 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { observeOn, asyncScheduler, combineLatest, map } from 'rxjs';
-import { Router } from '@angular/router';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { observeOn, asyncScheduler, combineLatest, map, filter } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
 import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +9,8 @@ import { PartialLoadingService } from './core/components/partial-loading/partial
 import { UiLoadingService } from './core/services/ui-loading.service';
 import { PwaUpdateService } from './core/services/pwa-update.service';
 import { SessionService } from './core/services/session.service';
+import { UserMessageService } from './core/services/user.message.service';
+import { ChangePasswordComponent } from './features/auth/change-password/change-password.component';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +18,8 @@ import { SessionService } from './core/services/session.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  private readonly idleSeconds = 25 * 60;
-  private readonly timeoutWarningSeconds = 5 * 60;
+  private readonly idleSeconds = 4 * 60;
+  private readonly timeoutWarningSeconds = 1 * 60;
 
   title = 'app-structure';
   lang: any;
@@ -37,6 +39,12 @@ export class AppComponent {
   sessionCountdown = this.timeoutWarningSeconds;
   private warningSoundPlayed = false;
 
+  pwGateVisible = false;
+  pwGateMode: 'first' | 'expired' | 'warning' = 'first';
+  pwGateDaysLeft: number | null = null;
+  private pwGateSkipped = false;
+  @ViewChild(ChangePasswordComponent) pwGateForm: ChangePasswordComponent;
+
   constructor(
     private translate: TranslateService,
     private idle: Idle,
@@ -47,6 +55,7 @@ export class AppComponent {
     private uiLoadingService: UiLoadingService,
     private pwaUpdateService: PwaUpdateService,
     private session: SessionService,
+    private userMsg: UserMessageService,
     private ngZone: NgZone
   ) {
     this.pwaUpdateService.init();
@@ -57,8 +66,6 @@ export class AppComponent {
     this.translate.setDefaultLang(this.lang);
     translate.use(this.lang);
 
-    // @ng-idle is the single auto-logout mechanism. Warn after 25 minutes of
-    // inactivity, then keep the session open for 5 more minutes.
     idle.setIdle(this.idleSeconds);
     idle.setTimeout(this.timeoutWarningSeconds);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
@@ -93,18 +100,28 @@ export class AppComponent {
     });
 
     this.ngZone.runOutsideAngular(() => {
-      keepalive.interval(15);
-      keepalive.onPing.subscribe(() => (this.lastPing = new Date()));
+      keepalive.interval(30);
+      keepalive.onPing.subscribe(() => {
+        this.lastPing = new Date();
+        this.tryRefreshToken();
+      });
     });
 
     this.authService.getUserLoggedIn().subscribe((userLoggedIn) => {
       if (userLoggedIn) {
         idle.watch();
         this.timedOut = false;
+        this.evaluatePasswordGate();
       } else {
         idle.stop();
+        this.pwGateVisible = false;
+        this.pwGateSkipped = false;
       }
     });
+
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => this.evaluatePasswordGate());
 
     if (this.session.isValid()) {
       this.authService.setUserLoggedIn(true);
@@ -112,6 +129,74 @@ export class AppComponent {
       this.session.clearSession();
     }
 
+    this.evaluatePasswordGate();
+  }
+
+  private evaluatePasswordGate() {
+    if (!this.session.isValid()) {
+      this.pwGateVisible = false;
+      return;
+    }
+    const info = this.session.getPasswordChangeInfo();
+    this.pwGateMode = info.mode;
+    this.pwGateDaysLeft = info.daysLeft;
+    this.pwGateVisible = info.mustChange && !(this.pwGateSkipped && info.mode === 'warning');
+  }
+
+  skipPasswordGate() {
+    if (this.pwGateMode !== 'warning') return;
+    this.pwGateSkipped = true;
+    this.pwGateVisible = false;
+  }
+
+  onPasswordGateSubmit() {
+    const form = this.pwGateForm?.changePasswordForm;
+    if (!form || !form.valid) {
+      this.translate
+        .get('NEDSS.HOME.CHANGE_PASSWORD.CURRENT_PASSWORD_EMPTY')
+        .subscribe((res: string) => this.userMsg.warn(res));
+      return;
+    }
+    if (form.value.newPassword != form.value.confirmPassword) {
+      this.translate
+        .get('NEDSS.HOME.CHANGE_PASSWORD.INCORRECT_NEW_AND_CONFIRM')
+        .subscribe((res: string) => this.userMsg.warn(res));
+      return;
+    }
+    if (!this.pwGateForm.isNewPasswordValid()) {
+      this.translate
+        .get('NEDSS.HOME.CHANGE_PASSWORD.RULES_NOT_MET')
+        .subscribe((res: string) => this.userMsg.warn(res));
+      return;
+    }
+    this.authService.changePassword(form.value).subscribe(
+      (res: any) => {
+        if (res.messages && res.messages.length > 0) {
+          this.userMsg.error(res.messages[0]);
+          return;
+        }
+        this.translate
+          .get('NEDSS.HOME.CHANGE_PASSWORD.SUCCESSFUL_CHANGE_PASSWORD')
+          .subscribe((msg: string) => this.userMsg.success(msg));
+        this.session.clearPasswordChangeRequirement();
+        this.pwGateVisible = false;
+        setTimeout(() => {
+          this.router
+            .navigateByUrl('/home/welcome')
+            .then(() => window.location.reload());
+        }, 1600);
+      },
+      (err: any) => {
+        const msg = err?.error?.messages?.[0] || err?.error?.Messages?.[0];
+        if (msg) {
+          this.userMsg.error(msg);
+        } else {
+          this.translate
+            .get('NEDSS.HOME.CHANGE_PASSWORD.SOMETHING_WENT_WRONG')
+            .subscribe((res: string) => this.userMsg.error(res));
+        }
+      }
+    );
   }
 
   reset() {
@@ -121,7 +206,37 @@ export class AppComponent {
     this.timedOut = false;
   }
 
+  private refreshingToken = false;
+  private readonly refreshThresholdMs = 2 * 60 * 1000;
+  private tryRefreshToken() {
+    if (this.refreshingToken) {
+      return;
+    }
+    const msLeft = this.session.getMillisUntilExpiry();
+    if (msLeft == null || msLeft > this.refreshThresholdMs || msLeft <= 0) {
+      return;
+    }
+    this.refreshingToken = true;
+    this.authService.refreshToken().subscribe({
+      next: (res: any) => {
+        const token = res?.data?.[0]?.token ?? res?.data?.token;
+        if (token) {
+          this.session.updateToken(token);
+        }
+        this.refreshingToken = false;
+      },
+      error: () => {
+        this.refreshingToken = false;
+      },
+    });
+  }
+
   logout() {
+    this.finishLogout();
+  }
+
+  logoutFromPasswordGate() {
+    this.pwGateVisible = false;
     this.finishLogout();
   }
 

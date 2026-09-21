@@ -23,6 +23,8 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
 
   FEVERStatus: boolean = true;
 
+  maxDate: Date = new Date();
+
   FEVER_DURATION_DAYS: string;
 
   feverDurationTypes: any[] = [
@@ -262,7 +264,8 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
 
           const selectedIds = new Set<number>();
           const isExternal =
-            this.patient?.incidentDepartmentId === DepartmentEnum.External;
+            this.patient?.incidentDepartmentId != null &&
+            this.patient?.incidentDepartmentId !== DepartmentEnum.Internal;
 
           responses.forEach((response: any, index: number) => {
             const mappings = Array.isArray(response?.data) ? response.data : [];

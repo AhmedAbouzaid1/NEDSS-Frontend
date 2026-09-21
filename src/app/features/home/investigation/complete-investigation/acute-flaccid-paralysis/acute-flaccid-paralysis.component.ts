@@ -49,7 +49,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     'caseMovements', 'previousCases', 'highRiskAreas', 'healthFacilityVisits',
     'routineVaccinations', 'campaigns', 'surveyChildren', 'aggregatedCases', 'followupCommittee',
   ];
-  private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage'];
+  private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage', 'caseCodeDisplay'];
 
   private dateFields = new Set([
     'homeVisitDate', 'entryDate', 'paralysisOnsetDate',
@@ -78,6 +78,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       investigationCompletePercentage: new FormControl(),
 
       // Header
+      caseCodeDisplay: new FormControl(),
       homeVisitDate: new FormControl(),
       entryDate: new FormControl(),
 
@@ -187,6 +188,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       patch[key] = this.dateFields.has(key) && v[key] ? this.d(v[key]) : v[key];
     });
     this.form.patchValue(patch);
+    this.form.controls['caseCodeDisplay'].setValue(v.caseCode ?? null);
 
     this.parseInto(v.caseMovementsJson, (x) => this.caseMovements.push(this.buildCaseMovement(x)));
     this.parseInto(v.previousCasesJson, (x) => this.previousCases.push(this.buildPreviousCase(x)));

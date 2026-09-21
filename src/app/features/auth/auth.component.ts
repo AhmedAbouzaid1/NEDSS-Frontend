@@ -187,10 +187,16 @@ export class AuthComponent {
                   'ls.authorizationData',
                   JSON.stringify(res.data[0])
                 );
-                if (res.data[0].isFirstLogin == true && res.statusCode == 200) {
+                const d = res.data[0];
+                const mustChange =
+                  d.isFirstLogin == true || d.passwordExpired == true;
+                if (mustChange && res.statusCode == 200) {
                   this.loading = false;
-                  this.visible = true;
+                  this.localizationService.changeLanguage(this.language);
+                  this.translate.use(this.language);
                   this.authService.setUserLoggedIn(true);
+                  const target = this.getReturnUrl() || '/home/welcome';
+                  this.router.navigateByUrl(target);
                 } else {
                   this.localizationService.changeLanguage(this.language);
                   this.translate.use(this.language);
@@ -281,6 +287,8 @@ export class AuthComponent {
   confirmPassword: null;
   chngPassword() { }
   visible;
+  passwordDialogMode: 'first' | 'expired' | 'warning' = 'first';
+  passwordDaysLeft: number | null = null;
 
   onFireModel() {
     this.visible = true;
@@ -318,6 +326,10 @@ export class AuthComponent {
                   this.userMsg.success(msg);
                 });
               this.visible = false;
+              const target = this.getReturnUrl() || '/home/welcome';
+              this.router
+                .navigateByUrl(target)
+                .then(() => window.location.reload());
             }
           },
           (err) => {

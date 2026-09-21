@@ -6,7 +6,7 @@ import { ChatFilter } from 'src/app/models/chat-filter';
 import { Result } from 'src/app/features/Result';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
+import { shareReplay, map } from 'rxjs/operators';
 import { dispatch } from '../../../../node_modules/@types/d3';
 import { SystemUserMainDataFilter } from 'src/app/features/home/epidemiological-thresholds/epidemiological-thresholds-users/Model/system-user-main-data-filter';
 
@@ -2236,6 +2236,20 @@ export class LookupsGetterService {
     return this.APIs.get(this.appSettingsApiUrl + 'Get/7');
   }
 
+  private dataDaysLimit$: Observable<number>;
+  getDataDaysLimitValue(): Observable<number> {
+    if (!this.dataDaysLimit$) {
+      this.dataDaysLimit$ = this.getDataDaysLimit().pipe(
+        map((result: any) => {
+          const parsed = parseInt(result?.data);
+          return !isNaN(parsed) && parsed > 0 ? parsed : 90;
+        }),
+        shareReplay(1)
+      );
+    }
+    return this.dataDaysLimit$;
+  }
+
   updateDataDaysLimit(daysLimitEntity: any) {
     return this.APIs.create(this.appSettingsApiUrl + 'SetDataDaysLimit', daysLimitEntity);
   }
@@ -2254,6 +2268,22 @@ export class LookupsGetterService {
 
   updateChartsTabEnabled(chartsTabEntity: any) {
     return this.APIs.create(this.appSettingsApiUrl + 'SetChartsTabEnabled', chartsTabEntity);
+  }
+
+  getPasswordExpiryDays() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/10');
+  }
+
+  updatePasswordExpiryDays(daysLimitEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetPasswordExpiryDays', daysLimitEntity);
+  }
+
+  getPasswordExpiryEnabled() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/11');
+  }
+
+  updatePasswordExpiryEnabled(enabledEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetPasswordExpiryEnabled', enabledEntity);
   }
   //end region
 }

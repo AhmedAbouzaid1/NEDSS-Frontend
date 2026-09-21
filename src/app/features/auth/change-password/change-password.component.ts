@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  evaluatePasswordRules,
+  passwordRulesMet,
+} from 'src/app/core/utils/password-rules';
 
 @Component({
   selector: 'app-change-password',
@@ -8,8 +12,28 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ChangePasswordComponent implements OnInit {
 
+  @Input() prefillDefaultPassword: boolean = true;
   changePasswordForm:FormGroup
+  show = { current: false, next: false, confirm: false };
   constructor(private fb:FormBuilder) { }
+
+  toggle(field: 'current' | 'next' | 'confirm') {
+    this.show[field] = !this.show[field];
+  }
+
+  get rules() {
+    return evaluatePasswordRules(
+      this.changePasswordForm?.value.newPassword,
+      this.changePasswordForm?.value.currentPassword
+    );
+  }
+
+  isNewPasswordValid(): boolean {
+    return passwordRulesMet(
+      this.changePasswordForm?.value.newPassword,
+      this.changePasswordForm?.value.currentPassword
+    );
+  }
 
   ngOnInit() {
     this.initialForm()
@@ -17,7 +41,7 @@ export class ChangePasswordComponent implements OnInit {
 
   initialForm(){
     this.changePasswordForm = this.fb.group({
-      currentPassword : ['Nedss2023',Validators.required],
+      currentPassword : [this.prefillDefaultPassword ? 'Nedss2023' : '',Validators.required],
       newPassword: ['',Validators.required],
       confirmPassword:['',Validators.required]
     })

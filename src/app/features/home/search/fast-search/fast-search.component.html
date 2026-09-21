@@ -440,6 +440,7 @@
                   )
               "
               (keypress)="generalDataService.onNameKeyPress($event)"
+              (input)="generalDataService.normalizeNameInput($event)"
               #fullnameInput
             />
             <small
@@ -712,7 +713,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4 mb-4" *ngIf="selectedNationalityId == NationalityEnum.Egyptian">
+        <div class="col-lg-4 mb-4" *ngIf="!selectedNationalityId || selectedNationalityId == NationalityEnum.NotSelected || selectedNationalityId == NationalityEnum.Egyptian">
           <div class="form-group">
             <label for="nationalId">
               {{ "NEDSS.EVENTS.NATIONAL_ID" | translate }}
@@ -1074,6 +1075,7 @@
       </tbody>
     </table> -->
   </div>
+  <app-recent-days-note></app-recent-days-note>
   <div class="row" *ngIf="loadError">
   <div class="load-error-panel">
     <span class="load-error-icon"><i class="pi pi-exclamation-triangle"></i></span>

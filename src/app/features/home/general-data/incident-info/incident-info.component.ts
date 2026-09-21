@@ -624,7 +624,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
         this.patient.incidentDepartmentId = this.selectedDepartmentId;
       }
       this.patient.hiddenInsideDepartment =
-        this.selectedDepartmentId == DepartmentEnum.External ? true : false;
+        this.selectedDepartmentId != DepartmentEnum.Internal;
     } else this.patient.incidentDepartmentId = null;
     if (this.patient.nationalId == null) {
       this.patient.age = null;

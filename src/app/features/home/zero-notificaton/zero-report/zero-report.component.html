@@ -441,7 +441,7 @@
               </div>
 
               <div
-                class="col-lg-3 mb-3"
+                class="col-lg-6 mb-3"
                 *ngIf="activeUSerService.getAccessibleParts?.showSources"
               >
                 <div class="form-group">
@@ -453,24 +453,26 @@
                     <span class="text-danger">*</span>
                   </label>
                   <div *ngIf="currentLang == 'ar'">
-                    <p-dropdown
+                    <p-multiSelect
                       [appDropdownLoading]="incidentSourcesLoading"
-                      (onChange)="incidentSourcesSelected()"
+                      (onChange)="onIncidentSourcesChanged()"
                       [options]="incidentSources"
-                      [(ngModel)]="selectedincidentSource"
+                      [(ngModel)]="selectedIncidentSources"
                       [disabled]="
                         !activeUSerService.getAccessibleParts?.enableSources
                       "
+                      display="chip"
                       optionLabel="arabicName"
                       optionValue="id"
-                      autoWidth="false"
                       [style]="{ width: '100%' }"
+                      styleClass="nedss-ms"
+                      panelStyleClass="nedss-ms-panel"
                       name="incidentSources"
-                      [required]="true"
                       [filter]="true"
                       filterBy="arabicName"
+                      [placeholder]="'NEDSS.COMMON.SELECT' | translate"
                     >
-                    </p-dropdown>
+                    </p-multiSelect>
                     <!-- <select
                       class="form-control select2 select2-hidden-accessible"
                       (change)="incidentSourcesSelected()"
@@ -495,24 +497,26 @@
                     </select> -->
                   </div>
                   <div *ngIf="currentLang == 'en'">
-                    <p-dropdown
+                    <p-multiSelect
                       [appDropdownLoading]="incidentSourcesLoading"
-                      (onChange)="incidentSourcesSelected()"
+                      (onChange)="onIncidentSourcesChanged()"
                       [options]="incidentSources"
-                      [(ngModel)]="selectedincidentSource"
+                      [(ngModel)]="selectedIncidentSources"
                       [disabled]="
                         !activeUSerService.getAccessibleParts?.enableSources
                       "
+                      display="chip"
                       optionLabel="englishName"
                       optionValue="id"
-                      autoWidth="false"
                       [style]="{ width: '100%' }"
+                      styleClass="nedss-ms"
+                      panelStyleClass="nedss-ms-panel"
                       name="incidentSources"
-                      [required]="true"
                       [filter]="true"
                       filterBy="englishName"
+                      [placeholder]="'NEDSS.COMMON.SELECT' | translate"
                     >
-                    </p-dropdown>
+                    </p-multiSelect>
                     <!-- <select
                       class="form-control select2 select2-hidden-accessible"
                       (change)="incidentSourcesSelected()"

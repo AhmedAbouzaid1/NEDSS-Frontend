@@ -215,7 +215,7 @@ export class InvestigationComponent implements OnInit {
 
   validate(): boolean {
     return (
-      this.generalDataService.validateFirstName(
+      this.generalDataService.validateSearchFullName(
         this.investigationForm.controls.fullName.value,
         false
       ) &&
@@ -285,8 +285,11 @@ export class InvestigationComponent implements OnInit {
         formObj.department = null;
       }
 
-      if (this.selectedDiseaseId != null && this.selectedDiseaseId != -1) {
-        formObj.patientDiseases = [this.selectedDiseaseId];
+      if (
+        this.selectedDiseaseGroupId != null &&
+        this.selectedDiseaseGroupId != -1
+      ) {
+        formObj.patientDiseases = [this.selectedDiseaseGroupId];
       } else {
         formObj.patientDiseases = [];
       }

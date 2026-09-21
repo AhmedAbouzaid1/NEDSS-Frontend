@@ -335,6 +335,12 @@ export class NavbarComponent implements OnInit {
         .subscribe((msg) => {
           this.userMsg.warn(msg);
         });
+    } else if (!this.changePasswordComponent.isNewPasswordValid()) {
+      this.translate
+        .get('NEDSS.HOME.CHANGE_PASSWORD.RULES_NOT_MET')
+        .subscribe((msg) => {
+          this.userMsg.warn(msg);
+        });
     } else if (this.changePasswordComponent.changePasswordForm.valid) {
       this.auth
         .changePassword(this.changePasswordComponent.changePasswordForm.value)
@@ -352,11 +358,17 @@ export class NavbarComponent implements OnInit {
             }
           },
           (err) => {
-            this.translate
-              .get('NEDSS.HOME.CHANGE_PASSWORD.SOMETHING_WENT_WRONG')
-              .subscribe((msg) => {
-                this.userMsg.error(msg);
-              });
+            const backendMsg =
+              err?.error?.messages?.[0] || err?.error?.Messages?.[0];
+            if (backendMsg) {
+              this.userMsg.error(backendMsg);
+            } else {
+              this.translate
+                .get('NEDSS.HOME.CHANGE_PASSWORD.SOMETHING_WENT_WRONG')
+                .subscribe((msg) => {
+                  this.userMsg.error(msg);
+                });
+            }
           }
         );
     } else {

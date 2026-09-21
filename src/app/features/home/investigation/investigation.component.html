@@ -265,9 +265,10 @@
                 pInputText
                 formControlName="fullName"
                 (keypress)="generalDataService.onNameKeyPress($event)"
+                (input)="generalDataService.normalizeNameInput($event)"
                 (blur)="
                   generalDataService.isFirstNameValid =
-                    generalDataService.validateFirstName(
+                    generalDataService.validateSearchFullName(
                       investigationForm.controls.fullName.value,
                       false
                     )
@@ -920,6 +921,7 @@
   </div>
 </div>
     </div>
+    <app-recent-days-note></app-recent-days-note>
     <div class="col-11 col-lg-12 d-flex align-items-center justify-content-between flex-wrap gap-3 px-3 py-3 border-top" *ngIf="!noData">
       <div class="d-flex align-items-center gap-2">
         <label class="mb-0 text-muted">{{ 'NEDSS.COMMON.ROWS_PER_PAGE' | translate }}:</label>

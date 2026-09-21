@@ -30,4 +30,10 @@ export class PagePermissionService {
     const ids = Array.isArray(pageId) ? pageId : [pageId];
     return ids.some((id) => permitted.has(String(id)));
   }
+
+  hasExplicitPage(pageId: number | string | Array<number | string>): boolean {
+    const permitted = this.permittedPageIds();
+    const ids = Array.isArray(pageId) ? pageId : [pageId];
+    return ids.some((id) => permitted.has(String(id)));
+  }
 }

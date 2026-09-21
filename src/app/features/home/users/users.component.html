@@ -48,6 +48,23 @@
               </div>
             </p-dialog>
 
+            <p-dialog
+              [(visible)]="showImagePreview"
+              [modal]="true"
+              [dismissableMask]="true"
+              [draggable]="false"
+              [resizable]="false"
+              [style]="{ width: 'auto', maxWidth: '90vw' }"
+              styleClass="image-preview-dialog"
+            >
+              <img
+                *ngIf="previewImage"
+                [src]="previewImage"
+                alt=""
+                class="image-preview-img"
+              />
+            </p-dialog>
+
             <div class="row m-0">
               <div class="col-lg-4 mb-3">
                 <div class="form-group">
@@ -659,26 +676,57 @@
       [style.direction]="dir"
       [value]="users"
       [paginator]="false"
+      [customSort]="true"
+      (onSort)="sort($event)"
     >
       <ng-template pTemplate="header">
         <tr>
-          <th>
+          <th pSortableColumn="fullName">
             <span>{{ "NEDSS.HOME.USERS.NAME" | translate }}</span>
+            <p-sortIcon field="fullName"></p-sortIcon>
           </th>
-          <th>
+          <th pSortableColumn="userName">
             <span>{{ "NEDSS.HOME.USERS.USER_NAME" | translate }}</span>
+            <p-sortIcon field="userName"></p-sortIcon>
           </th>
-          <th>
+          <th pSortableColumn="organizationName">
+            <span>{{ "NEDSS.HOME.USERS.ORGANIZATION" | translate }}</span>
+            <p-sortIcon field="organizationName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="govenmentName">
             <span>{{ "NEDSS.HOME.USERS.GOVERNEMENT" | translate }}</span>
+            <p-sortIcon field="govenmentName"></p-sortIcon>
           </th>
-          <th>
-            {{ "NEDSS.HOME.USERS.POSITION" | translate }}
+          <th pSortableColumn="healthAdministrationName">
+            <span>{{ "NEDSS.HOME.USERS.HEALTHADMIN" | translate }}</span>
+            <p-sortIcon field="healthAdministrationName"></p-sortIcon>
           </th>
-          <th>
+          <th pSortableColumn="branchName">
+            <span>{{ "NEDSS.HOME.USERS.BRANCH" | translate }}</span>
+            <p-sortIcon field="branchName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="areaName">
+            <span>{{ "NEDSS.HOME.USERS.AREA" | translate }}</span>
+            <p-sortIcon field="areaName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="incidentSourceName">
+            <span>{{ "NEDSS.HOME.USERS.INCEIDENT_SOURCE" | translate }}</span>
+            <p-sortIcon field="incidentSourceName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="positionName">
+            <span>{{ "NEDSS.HOME.USERS.POSITION" | translate }}</span>
+            <p-sortIcon field="positionName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="levelName">
             <span>{{ "NEDSS.HOME.USERS.LEVEL" | translate }}</span>
+            <p-sortIcon field="levelName"></p-sortIcon>
           </th>
           <th>
+            <span>{{ "NEDSS.HOME.USERS.ADD_USER.ROLE" | translate }}</span>
+          </th>
+          <th pSortableColumn="phoneNo">
             <span>{{ "NEDSS.HOME.USERS.MOBILE" | translate }}</span>
+            <p-sortIcon field="phoneNo"></p-sortIcon>
           </th>
           <th class="exclude-pdf">
             <span>{{ "NEDSS.COMMON.ACTIONS" | translate }}</span>
@@ -688,19 +736,52 @@
       <ng-template pTemplate="body" let-item>
         <tr>
           <td>
-            <span [innerHTML]="item.fullName"></span>
+            <div class="user-cell">
+              <span
+                class="user-avatar"
+                [class.clickable]="item.profilePic"
+                (click)="openImagePreview(item.profilePic)"
+              >
+                <img
+                  *ngIf="item.profilePic"
+                  [src]="item.profilePic"
+                  alt=""
+                  (error)="item.profilePic = null"
+                />
+                <i *ngIf="!item.profilePic" class="pi pi-user"></i>
+              </span>
+              <span [innerHTML]="item.fullName"></span>
+            </div>
           </td>
           <td>
             <span [innerHTML]="item.userName"></span>
           </td>
           <td>
+            <span [innerHTML]="item.organizationName"></span>
+          </td>
+          <td>
             <span [innerHTML]="item.govenmentName"></span>
+          </td>
+          <td>
+            <span [innerHTML]="item.healthAdministrationName"></span>
+          </td>
+          <td>
+            <span [innerHTML]="item.branchName"></span>
+          </td>
+          <td>
+            <span [innerHTML]="item.areaName"></span>
+          </td>
+          <td>
+            <span [innerHTML]="item.incidentSourceName"></span>
           </td>
           <td>
             <span [innerHTML]="item.positionName"></span>
           </td>
           <td>
             <span [innerHTML]="item.levelName"></span>
+          </td>
+          <td>
+            <span [innerHTML]="item.roleNames?.join(', ')"></span>
           </td>
 
           <td>
