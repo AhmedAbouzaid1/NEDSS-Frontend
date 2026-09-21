@@ -118,7 +118,7 @@ export class FeverRashComponent implements OnInit {
       homeVisitDate: new FormControl(),
 
       // Tab 1 - case field investigation
-      approximateDiagnosis: new FormControl(),
+      differentialDiagnosis: new FormControl(),
       rashDate: new FormControl(),
       epiLinked: new FormControl(),
       linkedCaseConfirmation: new FormControl(),

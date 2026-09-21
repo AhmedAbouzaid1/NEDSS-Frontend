@@ -56,6 +56,7 @@ import { PeriodOfCardsComponent } from './components/period-of-cards/period-of-c
 import { DiseaseClinicalSymptomsMappingComponent } from './components/controlPanel/disease-clinical-symptoms-mapping/disease-clinical-symptoms-mapping.component';
 import { DataFetchDaysComponent } from './components/controlPanel/data-fetch-days/data-fetch-days.component';
 import { ChartsTabVisibilityComponent } from './components/controlPanel/charts-tab-visibility/charts-tab-visibility.component';
+import { PasswordExpiryDaysComponent } from './components/controlPanel/password-expiry-days/password-expiry-days.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -95,6 +96,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     DiseaseClinicalSymptomsMappingComponent,
     DataFetchDaysComponent,
     ChartsTabVisibilityComponent,
+    PasswordExpiryDaysComponent,
   ],
   imports: [
     CommonModule,

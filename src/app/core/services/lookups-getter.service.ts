@@ -2269,5 +2269,13 @@ export class LookupsGetterService {
   updateChartsTabEnabled(chartsTabEntity: any) {
     return this.APIs.create(this.appSettingsApiUrl + 'SetChartsTabEnabled', chartsTabEntity);
   }
+
+  getPasswordExpiryDays() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/10');
+  }
+
+  updatePasswordExpiryDays(daysLimitEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetPasswordExpiryDays', daysLimitEntity);
+  }
   //end region
 }

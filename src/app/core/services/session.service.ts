@@ -81,6 +81,44 @@ export class SessionService {
     } catch {}
   }
 
+  /** Whether the current session requires a forced password change (first login, expired, or within the 3-day warning). */
+  getPasswordChangeInfo(): {
+    mustChange: boolean;
+    mode: 'first' | 'expired' | 'warning';
+    daysLeft: number | null;
+  } {
+    const s = this.getSession();
+    if (!s) {
+      return { mustChange: false, mode: 'first', daysLeft: null };
+    }
+    const first = s.isFirstLogin === true;
+    const expired = s.passwordExpired === true;
+    const daysLeft =
+      typeof s.passwordExpiresInDays === 'number'
+        ? s.passwordExpiresInDays
+        : null;
+    const warning = daysLeft != null && daysLeft > 0 && daysLeft <= 3;
+    return {
+      mustChange: first || expired || warning,
+      mode: first ? 'first' : expired ? 'expired' : 'warning',
+      daysLeft,
+    };
+  }
+
+  /** Clear the forced-password-change flags on the stored session (after a successful change). */
+  clearPasswordChangeRequirement(): void {
+    const s = this.getSession();
+    if (!s) {
+      return;
+    }
+    s.isFirstLogin = false;
+    s.passwordExpired = false;
+    s.passwordExpiresInDays = null;
+    try {
+      localStorage.setItem(SessionService.AUTH_KEY, JSON.stringify(s));
+    } catch {}
+  }
+
   clearSession(): void {
     localStorage.removeItem(SessionService.AUTH_KEY);
   }

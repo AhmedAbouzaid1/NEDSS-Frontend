@@ -25,7 +25,8 @@ import { ForgetPasswordComponent } from './forget-password/forget-password/forge
     FormsModule,
     ReactiveFormsModule,
     DialogModule
-  ]
+  ],
+  exports: [ChangePasswordComponent, DialogModule]
 })
 export class AuthModule { }
 export function createTranslateLoader(http: HttpClient) {

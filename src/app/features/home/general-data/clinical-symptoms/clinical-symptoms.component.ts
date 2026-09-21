@@ -23,6 +23,8 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
 
   FEVERStatus: boolean = true;
 
+  maxDate: Date = new Date();
+
   FEVER_DURATION_DAYS: string;
 
   feverDurationTypes: any[] = [

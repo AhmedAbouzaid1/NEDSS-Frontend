@@ -1,6 +1,6 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { observeOn, asyncScheduler, combineLatest, map } from 'rxjs';
-import { Router } from '@angular/router';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { observeOn, asyncScheduler, combineLatest, map, filter } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
 import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +9,8 @@ import { PartialLoadingService } from './core/components/partial-loading/partial
 import { UiLoadingService } from './core/services/ui-loading.service';
 import { PwaUpdateService } from './core/services/pwa-update.service';
 import { SessionService } from './core/services/session.service';
+import { UserMessageService } from './core/services/user.message.service';
+import { ChangePasswordComponent } from './features/auth/change-password/change-password.component';
 
 @Component({
   selector: 'app-root',
@@ -37,6 +39,11 @@ export class AppComponent {
   sessionCountdown = this.timeoutWarningSeconds;
   private warningSoundPlayed = false;
 
+  pwGateVisible = false;
+  pwGateMode: 'first' | 'expired' | 'warning' = 'first';
+  pwGateDaysLeft: number | null = null;
+  @ViewChild(ChangePasswordComponent) pwGateForm: ChangePasswordComponent;
+
   constructor(
     private translate: TranslateService,
     private idle: Idle,
@@ -47,6 +54,7 @@ export class AppComponent {
     private uiLoadingService: UiLoadingService,
     private pwaUpdateService: PwaUpdateService,
     private session: SessionService,
+    private userMsg: UserMessageService,
     private ngZone: NgZone
   ) {
     this.pwaUpdateService.init();
@@ -102,10 +110,16 @@ export class AppComponent {
       if (userLoggedIn) {
         idle.watch();
         this.timedOut = false;
+        this.evaluatePasswordGate();
       } else {
         idle.stop();
+        this.pwGateVisible = false;
       }
     });
+
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => this.evaluatePasswordGate());
 
     if (this.session.isValid()) {
       this.authService.setUserLoggedIn(true);
@@ -113,6 +127,68 @@ export class AppComponent {
       this.session.clearSession();
     }
 
+    this.evaluatePasswordGate();
+  }
+
+  private evaluatePasswordGate() {
+    if (!this.session.isValid()) {
+      this.pwGateVisible = false;
+      return;
+    }
+    const info = this.session.getPasswordChangeInfo();
+    this.pwGateVisible = info.mustChange;
+    this.pwGateMode = info.mode;
+    this.pwGateDaysLeft = info.daysLeft;
+  }
+
+  onPasswordGateSubmit() {
+    const form = this.pwGateForm?.changePasswordForm;
+    if (!form || !form.valid) {
+      this.translate
+        .get('NEDSS.HOME.CHANGE_PASSWORD.CURRENT_PASSWORD_EMPTY')
+        .subscribe((res: string) => this.userMsg.warn(res));
+      return;
+    }
+    if (form.value.newPassword != form.value.confirmPassword) {
+      this.translate
+        .get('NEDSS.HOME.CHANGE_PASSWORD.INCORRECT_NEW_AND_CONFIRM')
+        .subscribe((res: string) => this.userMsg.warn(res));
+      return;
+    }
+    if (!this.pwGateForm.isNewPasswordValid()) {
+      this.translate
+        .get('NEDSS.HOME.CHANGE_PASSWORD.RULES_NOT_MET')
+        .subscribe((res: string) => this.userMsg.warn(res));
+      return;
+    }
+    this.authService.changePassword(form.value).subscribe(
+      (res: any) => {
+        if (res.messages && res.messages.length > 0) {
+          this.userMsg.error(res.messages[0]);
+          return;
+        }
+        this.translate
+          .get('NEDSS.HOME.CHANGE_PASSWORD.SUCCESSFUL_CHANGE_PASSWORD')
+          .subscribe((msg: string) => this.userMsg.success(msg));
+        this.session.clearPasswordChangeRequirement();
+        this.pwGateVisible = false;
+        setTimeout(() => {
+          this.router
+            .navigateByUrl('/home/welcome')
+            .then(() => window.location.reload());
+        }, 1600);
+      },
+      (err: any) => {
+        const msg = err?.error?.messages?.[0] || err?.error?.Messages?.[0];
+        if (msg) {
+          this.userMsg.error(msg);
+        } else {
+          this.translate
+            .get('NEDSS.HOME.CHANGE_PASSWORD.SOMETHING_WENT_WRONG')
+            .subscribe((res: string) => this.userMsg.error(res));
+        }
+      }
+    );
   }
 
   reset() {

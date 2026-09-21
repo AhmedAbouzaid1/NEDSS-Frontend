@@ -95,6 +95,7 @@ export class PatientModel {
 export class FeverSymptoms {
   id?: number;
   patientId?: number;
+  feverDate?: string;
   feverDuration?: number;
   feverDurationType?: number;
   feverMaxTemp?: number;

@@ -118,6 +118,7 @@ export class GeneralDataService {
       const fs = d.feverSymptoms;
       alias(fs, 'id', 'Id');
       alias(fs, 'patientId', 'PatientId');
+      alias(fs, 'feverDate', 'FeverDate');
       alias(fs, 'feverDuration', 'FeverDuration');
       alias(fs, 'feverMaxTemp', 'FeverMaxTemp');
       alias(fs, 'feverDurationType', 'FeverDurationType');
