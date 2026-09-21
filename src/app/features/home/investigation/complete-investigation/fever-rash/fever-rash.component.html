@@ -90,8 +90,21 @@
                 <div class="row">
                   <div class="col-lg-3 col-md-6">
                     <div class="form-group">
-                      <label class="fwb">تاريخ الطفح</label>
-                      <input type="date" class="form-control" formControlName="rashDate" />
+                      <label class="fwb">تاريخ الطفح<span *ngIf="feverDate"> (لا يسبق تاريخ الحمى {{ feverDate }})</span></label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        formControlName="rashDate"
+                        [min]="feverDate"
+                        [max]="today"
+                        [class.is-invalid]="feverRashForm.get('rashDate')?.hasError('rashBeforeFever') || feverRashForm.get('rashDate')?.hasError('rashInFuture')"
+                      />
+                      <div class="invalid-feedback d-block" *ngIf="feverRashForm.get('rashDate')?.hasError('rashInFuture')">
+                        تاريخ الطفح لا يمكن أن يكون في المستقبل
+                      </div>
+                      <div class="invalid-feedback d-block" *ngIf="feverRashForm.get('rashDate')?.hasError('rashBeforeFever')">
+                        تاريخ الطفح لا يمكن أن يكون قبل تاريخ الحمى ({{ feverDate }})
+                      </div>
                     </div>
                   </div>
                   <div class="col-lg-4 col-md-6">

@@ -22,6 +22,11 @@ export class FeverRashComponent implements OnInit {
   feverRashForm: FormGroup;
   currentId: any;
   patientName: string;
+
+  // Fever date from the general report (الابلاغ العام); rash date cannot be before it.
+  feverDate: string | null = null;
+  // Upper bound for date inputs: rash date cannot be in the future.
+  today: string = '';
   patientAgeLabel: string = '';
   patientSexLabel: string = '';
 
@@ -84,6 +89,7 @@ export class FeverRashComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.today = this.todayStr();
     this.canAccessSurvey30 = this.pagePermission.canAccessPage([
       this.INVESTIGATION_PAGE_ID,
       this.SURVEY30_PAGE_ID,
@@ -119,7 +125,7 @@ export class FeverRashComponent implements OnInit {
 
       // Tab 1 - case field investigation
       differentialDiagnosis: new FormControl(),
-      rashDate: new FormControl(),
+      rashDate: new FormControl(null, this.rashDateNotBeforeFever),
       epiLinked: new FormControl(),
       linkedCaseConfirmation: new FormControl(),
       linkedCaseCode: new FormControl(),
@@ -211,6 +217,16 @@ export class FeverRashComponent implements OnInit {
     this.loadExistingRecord();
   }
 
+  // Rash date (تاريخ الطفح) may not be earlier than the fever date (تاريخ الحمى) from the general
+  // report, nor a future date.
+  private rashDateNotBeforeFever = (control: AbstractControl) => {
+    const rash = control.value;
+    if (!rash) return null;
+    if (rash > this.todayStr()) return { rashInFuture: true };
+    if (this.feverDate && rash < this.feverDate) return { rashBeforeFever: true };
+    return null;
+  };
+
   // ===================== Header from patient data =====================
   private loadPatientHeader() {
     if (!this.currentId) return;
@@ -222,6 +238,8 @@ export class FeverRashComponent implements OnInit {
       if (p.homeVisitDate && !this.feverRashForm.value.homeVisitDate) {
         this.feverRashForm.controls['homeVisitDate'].setValue(this.d(p.homeVisitDate));
       }
+      this.feverDate = this.d(p.feverSymptoms?.feverDate);
+      this.feverRashForm.controls['rashDate'].updateValueAndValidity();
       this.evaluateConfirmedMeasles(p);
     });
   }
@@ -586,6 +604,16 @@ export class FeverRashComponent implements OnInit {
 
   // ===================== Save =====================
   save() {
+    const rashCtrl = this.feverRashForm.controls['rashDate'];
+    rashCtrl.markAsTouched();
+    if (rashCtrl.hasError('rashInFuture')) {
+      this.userMsg.error('تاريخ الطفح لا يمكن أن يكون في المستقبل');
+      return;
+    }
+    if (rashCtrl.hasError('rashBeforeFever')) {
+      this.userMsg.error(`تاريخ الطفح لا يمكن أن يكون قبل تاريخ الحمى (${this.feverDate})`);
+      return;
+    }
     this.feverRashForm.controls['diseaseGroupID'].setValue(this.investigationService.diseaseGroupID);
     this.calculateCompletionPercentage();
     this.feverRashForm.controls['investigationCompletePercentage'].setValue(
