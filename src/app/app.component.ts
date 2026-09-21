@@ -16,8 +16,8 @@ import { SessionService } from './core/services/session.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  private readonly idleSeconds = 25 * 60;
-  private readonly timeoutWarningSeconds = 5 * 60;
+  private readonly idleSeconds = 4 * 60;
+  private readonly timeoutWarningSeconds = 1 * 60;
 
   title = 'app-structure';
   lang: any;
@@ -57,8 +57,6 @@ export class AppComponent {
     this.translate.setDefaultLang(this.lang);
     translate.use(this.lang);
 
-    // @ng-idle is the single auto-logout mechanism. Warn after 25 minutes of
-    // inactivity, then keep the session open for 5 more minutes.
     idle.setIdle(this.idleSeconds);
     idle.setTimeout(this.timeoutWarningSeconds);
     // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
@@ -93,8 +91,11 @@ export class AppComponent {
     });
 
     this.ngZone.runOutsideAngular(() => {
-      keepalive.interval(15);
-      keepalive.onPing.subscribe(() => (this.lastPing = new Date()));
+      keepalive.interval(30);
+      keepalive.onPing.subscribe(() => {
+        this.lastPing = new Date();
+        this.tryRefreshToken();
+      });
     });
 
     this.authService.getUserLoggedIn().subscribe((userLoggedIn) => {
@@ -119,6 +120,31 @@ export class AppComponent {
     this.idle.watch();
     //xthis.idleState = 'Started.';
     this.timedOut = false;
+  }
+
+  private refreshingToken = false;
+  private readonly refreshThresholdMs = 2 * 60 * 1000;
+  private tryRefreshToken() {
+    if (this.refreshingToken) {
+      return;
+    }
+    const msLeft = this.session.getMillisUntilExpiry();
+    if (msLeft == null || msLeft > this.refreshThresholdMs || msLeft <= 0) {
+      return;
+    }
+    this.refreshingToken = true;
+    this.authService.refreshToken().subscribe({
+      next: (res: any) => {
+        const token = res?.data?.[0]?.token ?? res?.data?.token;
+        if (token) {
+          this.session.updateToken(token);
+        }
+        this.refreshingToken = false;
+      },
+      error: () => {
+        this.refreshingToken = false;
+      },
+    });
   }
 
   logout() {

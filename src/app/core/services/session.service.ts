@@ -59,6 +59,28 @@ export class SessionService {
     return exp != null && Date.now() >= exp;
   }
 
+  /** Milliseconds until the JWT expires (negative if already expired), or null if unknown. */
+  getMillisUntilExpiry(): number | null {
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+    const exp = this.getTokenExpiryMs(token);
+    return exp == null ? null : exp - Date.now();
+  }
+
+  /** Replace only the token on the stored session, keeping the rest of the payload. */
+  updateToken(token: string): void {
+    const current = this.getSession();
+    if (!current || !token) {
+      return;
+    }
+    current.token = token;
+    try {
+      localStorage.setItem(SessionService.AUTH_KEY, JSON.stringify(current));
+    } catch {}
+  }
+
   clearSession(): void {
     localStorage.removeItem(SessionService.AUTH_KEY);
   }

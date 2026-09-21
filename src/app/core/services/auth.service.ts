@@ -38,6 +38,10 @@ export class AuthService {
     return this.APIs.post(this.AuthControllerURL + "Logout", {});
   }
 
+  refreshToken() {
+    return this.APIs.post(this.AuthControllerURL + "RefreshToken", {});
+  }
+
   changePassword(data) {
     return this.APIs.post(this.AuthControllerURL + "ChangePassword", data)
   }
