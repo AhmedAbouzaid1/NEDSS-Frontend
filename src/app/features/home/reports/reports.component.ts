@@ -68,10 +68,6 @@ export class ReportsComponent {
       labelKey: 'NEDSS.REPORTS_LABELS.MonitorUnitsPeparationsReport',
     },
     {
-      route: '/home/epidemiologicalThresholds-report',
-      labelKey: 'NEDSS.REPORTS_LABELS.EpidemiologicalThresholdsSourcesReport',
-    },
-    {
       route: '/home/monitor-units-report',
       labelKey: 'NEDSS.REPORTS_LABELS.MonitorUnitsReport',
     },

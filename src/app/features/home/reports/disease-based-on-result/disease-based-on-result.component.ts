@@ -195,28 +195,10 @@ export class DiseaseBasedOnResultComponent implements OnInit {
   }
 
   exportToPdf() {
-    // this.loadingPanel = true;
-    var element = document.getElementById('pdfTable');
-    var clonedElement = element.cloneNode(true) as HTMLElement;
-    clonedElement.style.display = 'block';
-
-    var opt = {
-      margin: 0,
-      filename: 'تقرير الامراض طبقا للنتيجة',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      pagebreak: { mode: 'always', after: ['#break'] },
-      jsPDF: { unit: 'cm', format: 'a4', orientation: 'landscape' },
-    };
-    const self = this;
-    html2pdf()
-      .set(opt)
-      .from(clonedElement)
-      .save()
-      .then(function () {
-        // self.loadingPanel = false;
-        clonedElement.remove();
-      });
+    this.loadingPanel = true;
+    this.exportService
+      .exportElementByIdAsPdf('pdfTable', 'تقرير الامراض طبقا للنتيجة')
+      .finally(() => (this.loadingPanel = false));
   }
 
   getIncidentSources(healthAdministrationIDs: any[]) {
@@ -844,45 +826,23 @@ export class DiseaseBasedOnResultComponent implements OnInit {
   }
 
   generateReportToExcel() {
-    this.lookUpsService
-      .ExportDiseasesReportToExcel({
-        governmentsIds: this.selectedgovernment.map((x) => x.id),
-        HomeGovernmentsIds: this.selectedHomeGovernment.map((x) => x.id),
-        healthAdministrationsIds: this.selectedhealthAdministration.map(
-          (x) => x.id
-        ),
-        HomeHealthAdministrationsIds: this.selectedHomeHealthAdministration.map(
-          (x) => x.id
-        ),
-        incidentSourcesIds: this.selectedIncidentSource.map((x) => x.id),
-        HomeHealthOfficesIds: this.selectedHomeIncidentSource.map((x) => x.id),
-        diseasesIds: this.selectedDiseases.map((x) => x.id),
-        diseaseGroupsIds: this.selectedPrimaryDiseases.map((x) => x.id),
-        reportType: ReportsEnum.DiseaseBasedOnResultReport,
-        fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
-        toDate: this.datePipe.transform(this.toDate, 'yyyy-MM-dd'),
-      })
-      .subscribe((res) => {
-        if (res?.data) {
-          const response = res?.data;
-          let file = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${response}`;
-          const fileName = 'تقرير الامراض طبقا للنتيجة.xlsx';
-          saveAs(file, fileName);
-          this.userMsg.success('تمت التنزيل بنجاح');
-          this.nodata = false;
-        } else {
-          this.nodata = true;
-        }
-      });
+    this.loadingPanel = true;
+    setTimeout(() => {
+      const ok = this.exportService.exportElementTableAsExcel(
+        'pdfTable',
+        'تقرير الامراض طبقا للنتيجة'
+      );
+      if (!ok) {
+        this.translateService
+          .get('NEDSS.REPORTS.NothingToPreview')
+          .subscribe((res: string) => this.userMsg.warn(res));
+      }
+      this.loadingPanel = false;
+    }, 0);
   }
 
   print() {
-    var element = document.getElementById('pdfTable');
-    var clonedElement = element.cloneNode(true) as HTMLElement;
-    clonedElement.style.display = 'block';
-    setTimeout(() => {
-      window.print();
-    }, 2000);
+    this.exportService.printElementById('pdfTable');
   }
 
   changeReportLocationTypeRadio()

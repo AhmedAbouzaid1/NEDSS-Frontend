@@ -285,8 +285,11 @@ export class InvestigationComponent implements OnInit {
         formObj.department = null;
       }
 
-      if (this.selectedDiseaseId != null && this.selectedDiseaseId != -1) {
-        formObj.patientDiseases = [this.selectedDiseaseId];
+      if (
+        this.selectedDiseaseGroupId != null &&
+        this.selectedDiseaseGroupId != -1
+      ) {
+        formObj.patientDiseases = [this.selectedDiseaseGroupId];
       } else {
         formObj.patientDiseases = [];
       }

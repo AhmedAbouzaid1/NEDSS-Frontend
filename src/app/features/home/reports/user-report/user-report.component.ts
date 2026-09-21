@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ExportService } from 'src/app/core/services/export.service';
 import { MultipleDropdownSettings } from 'src/app/core/constants';
 import { Organiztion } from '../../chat/Models/organiztion';
 import { GovernmentDTO } from '../../chat/Models/government-dto';
@@ -61,6 +62,7 @@ export class UserReportComponent implements OnInit {
   positions: any[];
   selectedPositions: any;
 
+  @ViewChild('reportTable') reportTable: ElementRef;
   tableData: any;
   showTableData: boolean = false;
   multipleDropdownSettings = {
@@ -83,7 +85,8 @@ export class UserReportComponent implements OnInit {
     private userMsg: UserMessageService,
     private translateService: TranslateService,
     private userService: UserService,
-    public generalDataService: GeneralDataService
+    public generalDataService: GeneralDataService,
+    private exportService: ExportService
   ) {
     this.getLanguageConfiguration();
   }
@@ -569,27 +572,33 @@ export class UserReportComponent implements OnInit {
     userReportDto.positionsIds = this.selectedPositions?.map((g) => g.id);
     userReportDto.departmentsIds = this.selectedDepartments?.map((g) => g.id);
 
+    this.loadingPanel = true;
     this.lookupsService.getUsersReport(userReportDto).subscribe({
       next: (response) => {
         this.tableData = response.data;
         this.showTableData = true;
       },
       error: (error) => {
+        this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.SENT_FAILD')
           .subscribe((res: string) => {
             this.userMsg.error(res);
           });
       },
-      complete: () => {},
+      complete: () => {
+        this.loadingPanel = false;
+      },
     });
   }
 
   exportToPdf() {
-    // this.loadingPanel = true;
     var element = document.getElementById('pdfTable');
-    var clonedElement = element.cloneNode(true) as HTMLElement;
-    clonedElement.style.display = 'block';
+    if (!element) return;
+
+    const previousDisplay = element.style.display;
+    element.style.display = 'block';
+    this.loadingPanel = true;
 
     var opt = {
       margin: 0,
@@ -599,56 +608,52 @@ export class UserReportComponent implements OnInit {
       pagebreak: { mode: 'always', after: ['#break'] },
       jsPDF: { unit: 'cm', format: 'a3', orientation: 'landscape' },
     };
-    const self = this;
-    html2pdf()
-      .set(opt)
-      .from(clonedElement)
-      .save()
-      .then(function () {
-        // self.loadingPanel = false;
-        clonedElement.remove();
-      });
+    const restore = () => {
+      element.style.display = previousDisplay || 'none';
+      this.loadingPanel = false;
+    };
+    html2pdf().set(opt).from(element).save().then(restore).catch(restore);
   }
 
   print() {
     var element = document.getElementById('pdfTable');
-    var clonedElement = element.cloneNode(true) as HTMLElement;
-    clonedElement.style.display = 'block';
+    if (!element) return;
+
+    const previousDisplay = element.style.display;
+    element.style.display = 'block';
+    this.loadingPanel = true;
+
+    const cleanup = () => {
+      element.style.display = previousDisplay || 'none';
+      this.loadingPanel = false;
+      window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
+
     setTimeout(() => {
+      this.loadingPanel = false;
       window.print();
-    }, 2000);
+    }, 400);
   }
 
   generateReportToExcel() {
-    this.lookupsService.ExportDiseasesReportToExcel({
-      //   governmentsIds: this.selectedgovernment.map((x) => x.id),
-      //   HomeGovernmentsIds: this.selectedHomeGovernment.map((x) => x.id),
-      //   healthAdministrationsIds: this.selectedhealthAdministration.map(
-      //     (x) => x.id
-      //   ),
-      //   HomeHealthAdministrationsIds: this.selectedHomeHealthAdministration.map(
-      //     (x) => x.id
-      //   ),
-      //   incidentSourcesIds: this.selectedIncidentSource.map((x) => x.id),
-      //   HomeHealthOfficesIds: this.selectedHomeIncidentSource.map((x) => x.id),
-      //   diseasesIds: this.selectedDiseases.map((x) => x.id),
-      //   diseaseGroupsIds: this.selectedPrimaryDiseases.map((x) => x.id),
-      //   reportType: ReportsEnum.DiseaseBasedOnGenederReport,
-      //   fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
-      //   toDate: this.datePipe.transform(this.toDate, 'yyyy-MM-dd'),
-      // })
-      // .subscribe((res) => {
-      //   if (res?.data) {
-      //     const response = res?.data;
-      //     let file = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${response}`;
-      //     const fileName = 'تقرير الامراض طبقا للنوع.xlsx';
-      //     saveAs(file, fileName);
-      //     this.userMsg.success('تمت التنزيل بنجاح');
-      //     this.nodata = false;
-      //   } else {
-      //     this.nodata = true;
-      //   }
-    });
+    if (!this.reportTable || !this.tableData?.usersData?.length) {
+      this.translateService
+        .get('NEDSS.REPORTS.NothingToPreview')
+        .subscribe((res: string) => this.userMsg.warn(res));
+      return;
+    }
+    this.loadingPanel = true;
+    setTimeout(() => {
+      try {
+        this.exportService.exportTableAsExcel(
+          this.reportTable,
+          'تقرير المستخدمين'
+        );
+      } finally {
+        this.loadingPanel = false;
+      }
+    }, 0);
   }
 
   //#region Valdiation
