@@ -39,6 +39,9 @@ export class AuthComponent {
   ];
 
   language: any;
+  showPassword = false;
+  emblemMissing = false;
+  loading = false;
 
   @ViewChild('name') nameInput!: ElementRef<HTMLInputElement>;
   @ViewChild('password') passwordInput!: ElementRef<HTMLInputElement>;
@@ -163,12 +166,14 @@ export class AuthComponent {
           this.userMsg.warn(msg);
         });
     } else {
+      this.loading = true;
       if (this.isOnline()) {
         this.authService
           .login(form.value.username, form.value.password)
           .subscribe(
             (res: any) => {
               if (res.messages.length > 0) {
+                this.loading = false;
                 this.userMsg.warn(res.messages[0]);
                 //here
                 // this.translate
@@ -182,9 +187,16 @@ export class AuthComponent {
                   'ls.authorizationData',
                   JSON.stringify(res.data[0])
                 );
-                if (res.data[0].isFirstLogin == true && res.statusCode == 200) {
-                  this.visible = true;
+                const d = res.data[0];
+                const mustChange =
+                  d.isFirstLogin == true || d.passwordExpired == true;
+                if (mustChange && res.statusCode == 200) {
+                  this.loading = false;
+                  this.localizationService.changeLanguage(this.language);
+                  this.translate.use(this.language);
                   this.authService.setUserLoggedIn(true);
+                  const target = this.getReturnUrl() || '/home/welcome';
+                  this.router.navigateByUrl(target);
                 } else {
                   this.localizationService.changeLanguage(this.language);
                   this.translate.use(this.language);
@@ -220,6 +232,7 @@ export class AuthComponent {
               }
             },
             (error: any) => {
+              this.loading = false;
               this.userMsg.error('حدث خطأ ما ');
             }
           );
@@ -253,6 +266,7 @@ export class AuthComponent {
             .then(() => window.location.reload());
           // window.open('/#/home/general-data/incident-info', '_self')
         } else {
+          this.loading = false;
           this.translate
             .get('NEDSS.HOME.LOGIN.WRONG_USERNAME_OR_PASSWORD')
             .subscribe((res: string) => {
@@ -273,6 +287,8 @@ export class AuthComponent {
   confirmPassword: null;
   chngPassword() { }
   visible;
+  passwordDialogMode: 'first' | 'expired' | 'warning' = 'first';
+  passwordDaysLeft: number | null = null;
 
   onFireModel() {
     this.visible = true;
@@ -310,6 +326,10 @@ export class AuthComponent {
                   this.userMsg.success(msg);
                 });
               this.visible = false;
+              const target = this.getReturnUrl() || '/home/welcome';
+              this.router
+                .navigateByUrl(target)
+                .then(() => window.location.reload());
             }
           },
           (err) => {

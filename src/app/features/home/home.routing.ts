@@ -25,6 +25,7 @@ import { DuplicationViewComponent } from './repeated-records/duplicationView/dup
 import { DuplicationReviewComponent } from './repeated-records/duplicationReview/duplicationReview.component';
 import { ChatComponent } from './chat/chat.component';
 import { AddUserComponent } from './users/components/add-user/add-user.component';
+import { UserApprovalsComponent } from './users/components/user-approvals/user-approvals.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
 import { AddPopulationDataComponent } from './population-data/add-population-data/add-population-data.component';
 import { AuthGuard } from 'src/app/core/guards/auth.guard.service';
@@ -821,6 +822,12 @@ const routes: Routes = [
       {
         path: 'add-user',
         component: AddUserComponent,
+        canActivate: [AuthGuard, NavigationGuard],
+        data: { types: [3] },
+      },
+      {
+        path: 'user-approvals',
+        component: UserApprovalsComponent,
         canActivate: [AuthGuard, NavigationGuard],
         data: { types: [3] },
       },

@@ -29,9 +29,10 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       return this.patient.caseResultCategory;
     }
     const data = this.patient?.finalDiagonisticsData;
-    return data && data.length
-      ? data.map((d) => d.caseResultCategory).filter((x) => !!x).join(' , ')
-      : '';
+    if (data && data.length) {
+      return data.map((d) => d.caseResultCategory).filter((x) => !!x).join(' , ');
+    }
+    return this.selectedInitialDiagnosisNames() ? this.suspectedLabel : '';
   }
 
   get finalDiagnosisDisplay(): string {
@@ -39,9 +40,26 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
       return this.patient.finalDiagonistics;
     }
     const data = this.patient?.finalDiagonisticsData;
-    return data && data.length
-      ? data.map((d) => d.finalResult).filter((x) => !!x).join(' , ')
-      : '';
+    if (data && data.length) {
+      return data.map((d) => d.finalResult).filter((x) => !!x).join(' , ');
+    }
+    return this.selectedInitialDiagnosisNames();
+  }
+
+  get suspectedLabel(): string {
+    return this.currentLang === 'ar' ? 'مشتبه' : 'Suspected';
+  }
+
+  private selectedInitialDiagnosisNames(): string {
+    if (!this.selectedDiseases || !this.selectedDiseases.length) {
+      return '';
+    }
+    return this.selectedDiseases
+      .map((d: any) =>
+        this.currentLang === 'ar' ? d.arabicName : d.englishName
+      )
+      .filter((x: string) => !!x)
+      .join(' , ');
   }
 
   levelId: any;

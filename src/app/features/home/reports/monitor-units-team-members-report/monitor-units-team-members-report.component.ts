@@ -6,6 +6,7 @@ import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { GeneralDataService } from '../../general-data/services/general-data.service';
 import { DatePipe } from '@angular/common';
 import * as html2pdf from 'html2pdf.js';
+import { ExportService } from 'src/app/core/services/export.service';
 @Component({
   selector: 'app-monitor-units-team-members-report',
   templateUrl: './monitor-units-team-members-report.component.html',
@@ -37,6 +38,7 @@ export class MonitorUnitsTeamMembersReportComponent {
     private userMsg: UserMessageService,
     public generalDataService: GeneralDataService,
     private datePipe: DatePipe,
+    private exportService: ExportService,
   ) {
     this.getGovernments();
     this.getUserLevelFromLocalStorage();
@@ -172,43 +174,28 @@ export class MonitorUnitsTeamMembersReportComponent {
 
 
   //#region Printing And exporting to pdf
-  exportToPdf(){
-    // this.loadingPanel = true;
-    var element = document.getElementById('pdfTable');
-    var clonedElement = element.cloneNode(true) as HTMLElement;
-    clonedElement.style.display = 'block';
-
-    var opt = {
-      margin: 0,
-      filename: 'تقرير فريق الترصد',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 1, useCORS: true },
-      pagebreak: { mode: 'always', after: ['#break'] },
-      jsPDF: { unit: 'cm', format: 'a4', orientation: 'landscape' },
-    };
-    const self = this;
-    html2pdf()
-      .set(opt)
-      .from(clonedElement)
-      .save()
-      .then(function () {
-        // self.loadingPanel = false;
-        clonedElement.remove();
-      });
+  exportToPdf() {
+    this.loadingPanel = true;
+    this.exportService
+      .exportElementByIdAsPdf('pdfTable', 'تقرير فريق الترصد')
+      .finally(() => (this.loadingPanel = false));
   }
 
   print() {
-    var element = document.getElementById('pdfTable');
-    var clonedElement = element.cloneNode(true) as HTMLElement;
-    clonedElement.style.display = 'block';
-    setTimeout(() => {
-      window.print();
-    }, 2000);
+    this.exportService.printElementById('pdfTable');
   }
 
-  generateReportToExcel()
-  {
-
+  generateReportToExcel() {
+    this.loadingPanel = true;
+    setTimeout(() => {
+      const ok = this.exportService.exportElementTableAsExcel('pdfTable', 'تقرير فريق الترصد');
+      if (!ok) {
+        this.translateService
+          .get('NEDSS.REPORTS.NothingToPreview')
+          .subscribe((res: string) => this.userMsg.warn(res));
+      }
+      this.loadingPanel = false;
+    }, 0);
   }
   //#endregion
 

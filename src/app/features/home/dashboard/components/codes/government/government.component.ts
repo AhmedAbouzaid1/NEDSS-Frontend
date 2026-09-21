@@ -32,8 +32,8 @@ export class GovernmentComponent implements OnInit {
   governmentFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortColumn: "",
-    sortOrder: "",
+    sortColumn: 'code',
+    sortOrder: 'desc',
     searchText: "",
     code: "",
     arabicName: "",

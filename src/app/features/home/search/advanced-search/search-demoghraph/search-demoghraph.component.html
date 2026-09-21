@@ -9,7 +9,7 @@
           <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.firstName" (blur)="
               generalDataService.isFirstNameValid =
                 generalDataService.validateFirstName(fullnameInput.value, false)
-            " (keypress)="generalDataService.onNameKeyPress($event)" #fullnameInput />
+            " (keypress)="generalDataService.onNameKeyPress($event)" (input)="generalDataService.normalizeNameInput($event)" #fullnameInput />
           <small *ngIf="!generalDataService.isFirstNameValid" class="form-text text-danger mess-color">
             {{ generalDataService.firstNameValidationMessage | translate }}
           </small>
@@ -24,7 +24,7 @@
           <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.secondName" (blur)="
               generalDataService.isSecondNameValid =
                 generalDataService.validateSecondName(patient.secondName, false)
-            " (keypress)="generalDataService.onNameKeyPress($event)" />
+            " (keypress)="generalDataService.onNameKeyPress($event)" (input)="generalDataService.normalizeNameInput($event)" />
           <small *ngIf="!generalDataService.isSecondNameValid" class="form-text text-danger mess-color">
             {{ generalDataService.secondNameValidationMessage | translate }}
           </small>
@@ -39,7 +39,7 @@
           <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.thirdName" (blur)="
               generalDataService.isThirdNameValid =
                 generalDataService.validateThirdName(patient.thirdName, false)
-            " (keypress)="generalDataService.onNameKeyPress($event)" />
+            " (keypress)="generalDataService.onNameKeyPress($event)" (input)="generalDataService.normalizeNameInput($event)" />
           <small *ngIf="!generalDataService.isThirdNameValid" class="form-text text-danger mess-color">
             {{ generalDataService.thirdNameValidationMessage | translate }}
           </small>
@@ -54,7 +54,7 @@
           <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.familyName" (blur)="
               generalDataService.isFamilyNameValid =
                 generalDataService.validateFamilyName(patient.familyName, false)
-            " (keypress)="generalDataService.onNameKeyPress($event)" />
+            " (keypress)="generalDataService.onNameKeyPress($event)" (input)="generalDataService.normalizeNameInput($event)" />
           <small *ngIf="!generalDataService.isFamilyNameValid" class="form-text text-danger mess-color">
             {{ generalDataService.familyNameValidationMessage | translate }}
           </small>

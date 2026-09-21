@@ -87,7 +87,7 @@
             {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO1" | translate }}
             <span *ngIf="isPhoneRequired" class="text-danger">*</span>
           </label>
-          <input type="text" name="phoneNo1" [(ngModel)]="patient.phoneNo1" #phoneNo1="ngModel" pInputText class="w-100"
+          <input type="text" inputmode="tel" autocomplete="tel" name="phoneNo1" [(ngModel)]="patient.phoneNo1" #phoneNo1="ngModel" pInputText class="w-100"
             (keypress)="generalDataService.onPhoneNumberKeyPress($event)" (blur)="
               generalDataService.isPhoneNumber1Valid =
                 generalDataService.validatePhoneNumber1(patient.phoneNo1, isPhoneRequired)
@@ -117,7 +117,7 @@
           <label for="" class="form-label">
             {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO2" | translate }}
           </label>
-          <input type="text" name="phoneNo2" [(ngModel)]="patient.phoneNo2" #phoneNo2="ngModel" pInputText class="w-100"
+          <input type="text" inputmode="tel" autocomplete="tel" name="phoneNo2" [(ngModel)]="patient.phoneNo2" #phoneNo2="ngModel" pInputText class="w-100"
             (keypress)="generalDataService.onPhoneNumberKeyPress($event)" />
         </div>
       </div>
@@ -191,7 +191,7 @@
             {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGE" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <input type="text" name="age" [disabled]="disableFieldsDueToNationalId()"
+          <input type="text" inputmode="numeric" name="age" [disabled]="disableFieldsDueToNationalId()"
             [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
             [(ngModel)]="patient.age" #age="ngModel" pInputText class="w-100" (keypress)="onNumberKeyPress($event)"
             (blur)="

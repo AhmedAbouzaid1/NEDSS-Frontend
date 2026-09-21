@@ -2,6 +2,7 @@ import { BaseAPIService } from 'src/app/core/services/BaseAPI.service';
 import { ElementRef, Injectable } from '@angular/core';
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import * as XLSX from 'xlsx';
+import * as html2pdf from 'html2pdf.js';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,69 @@ export class ExportService {
   };
 
   constructor(private exportAsService: ExportAsService) { }
+
+  exportElementByIdAsPdf(
+    elementId: string,
+    filename: string,
+    options?: any
+  ): Promise<void> {
+    const element = document.getElementById(elementId);
+    if (!element) return Promise.resolve();
+
+    const previousDisplay = element.style.display;
+    element.style.display = 'block';
+
+    const opt = options ?? {
+      margin: 0,
+      filename: filename,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 1, useCORS: true },
+      pagebreak: { mode: 'always', after: ['#break'] },
+      jsPDF: { unit: 'cm', format: 'a3', orientation: 'landscape' },
+    };
+
+    const restore = () => {
+      element.style.display = previousDisplay || 'none';
+    };
+
+    return html2pdf().set(opt).from(element).save().then(restore).catch(restore);
+  }
+
+  printElementById(elementId: string) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    const previousDisplay = element.style.display;
+    element.style.display = 'block';
+
+    const cleanup = () => {
+      element.style.display = previousDisplay || 'none';
+      window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
+
+    setTimeout(() => window.print(), 300);
+  }
+
+  exportElementTableAsExcel(elementId: string, filename: string): boolean {
+    const container = document.getElementById(elementId);
+    let table =
+      container?.tagName === 'TABLE'
+        ? (container as HTMLTableElement)
+        : (container?.querySelector('table') as HTMLTableElement | null);
+    if (!table) {
+      table = document.querySelector(
+        '.table-scroll table'
+      ) as HTMLTableElement | null;
+    }
+    if (!table) return false;
+
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(table);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, filename + '.xlsx');
+    return true;
+  }
 
   exportTableAsExcel(tableElement: ElementRef, filename: string) {
     let element = this.getElementToExport(tableElement, filename);

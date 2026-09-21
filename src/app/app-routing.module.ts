@@ -3,8 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChangePasswordComponent } from './features/auth/change-password/change-password.component';
 import { ForgetPasswordComponent } from './features/auth/forget-password/forget-password/forget-password.component';
 import { NetworkFailureComponent } from './features/errors/network-failure/network-failure.component';
+import { UserOnboardingComponent } from './features/user-onboarding/user-onboarding.component';
 
 const routes: Routes = [
+  { path: 'user-onboarding/:token', component: UserOnboardingComponent },
   {
     path: '',
 

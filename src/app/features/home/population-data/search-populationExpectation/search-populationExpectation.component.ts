@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { SearchPopulationService } from './Services/searchPopulationService.service';
+import { PopulationCoefficientService } from '../population-increase-coefficient/Services/populationCoefficient.service';
 import { PopulationDto } from './models/PopulationDto';
 import { ExportService } from '../../../../core/services/export.service';
 import { SingleDropdownSettings } from 'src/app/core/constants';
@@ -66,9 +67,13 @@ export class SearchPopulationExpectationComponent implements OnInit {
   totalRecords:number = 0;
   yearSubmtionDesable: boolean = true;
   selectedhealthAdministrationId: number;
+  factorChecked: boolean = false;
+  hasFactor: boolean = true;
+  currentYear: number = new Date().getFullYear();
   constructor(private lookupsService: LookupsGetterService, private translateService: TranslateService,
     private searchPopulationService: SearchPopulationService, private userMsg: UserMessageService,
-    private exportService: ExportService) { }
+    private exportService: ExportService,
+    private populationCoefficientService: PopulationCoefficientService) { }
 
   ngOnInit() {
 
@@ -96,8 +101,7 @@ export class SearchPopulationExpectationComponent implements OnInit {
     });
     this.getLookups();
 
-    let nextYear = new Date().getFullYear();
-    for (let i = nextYear; i < nextYear + 10; i++) {
+    for (let i = this.currentYear; i > this.currentYear - 10; i--) {
       this.years.push(i);
     }
 
@@ -139,7 +143,74 @@ export class SearchPopulationExpectationComponent implements OnInit {
     )
   }
 
+  get predictionYears(): number[] {
+    const base = +this.populationExpectationForm?.value?.year;
+    if (!base) {
+      return [];
+    }
+    const result: number[] = [];
+    for (let y = base + 1; y <= this.currentYear + 10; y++) {
+      result.push(y);
+    }
+    return result;
+  }
+
+  get driftPredictionYears(): number[] {
+    const base = +this.calculateForm?.value?.year;
+    if (!base) {
+      return [];
+    }
+    const result: number[] = [];
+    for (let y = base + 1; y <= this.currentYear + 10; y++) {
+      result.push(y);
+    }
+    return result;
+  }
+
+  onBaseYearChange() {
+    const base = +this.populationExpectationForm.value.year;
+    const expected = +this.populationExpectationForm.value.expectedYear;
+    if (expected && (!base || expected <= base)) {
+      this.populationExpectationForm.patchValue({ expectedYear: null });
+    }
+  }
+
+  checkFactorAvailability() {
+    if (this.selectedGovernment == null || this.selectedGovernment <= 0) {
+      this.factorChecked = false;
+      this.hasFactor = true;
+      return;
+    }
+    const filter = {
+      governmentID: this.selectedGovernment,
+      healthAdministrationID: this.selectedhealthAdministrationId > 0 ? this.selectedhealthAdministrationId : 0,
+      pageSize: 5000,
+      pageIndex: 0,
+    };
+    this.populationCoefficientService.getPagePopulations(filter).subscribe(
+      (res: any) => {
+        const list = res?.data ?? [];
+        this.hasFactor = list.some((x: any) => x.increaseRate != null && x.increaseRate > 0);
+        this.factorChecked = true;
+      },
+      () => {
+        this.factorChecked = false;
+        this.hasFactor = true;
+      }
+    );
+  }
+
   findPopulation() {
+    const base = +this.populationExpectationForm.value.year;
+    const expected = +this.populationExpectationForm.value.expectedYear;
+    if (base && expected && expected <= base) {
+      this.translateService
+        .get('NEDSS.HOME.POPULATION_DATA.POPULATION_EXPECTATION.EXPECTED_YEAR_AFTER')
+        .subscribe((res: string) => {
+          this.userMsg.warn(res);
+        });
+      return;
+    }
     if (this.selectedGovernment != null && this.selectedGovernment > 0) {
       this.populationExpectationForm.value.governmentID = this.selectedGovernment;
     }
@@ -323,6 +394,7 @@ export class SearchPopulationExpectationComponent implements OnInit {
     this.populationExpectationForm.value.homeGovernmentId = this.selectedGovernment;
     this.getHealthAdministration(this.populationExpectationForm.value.homeGovernmentId);
     this.selectedAdministrationId = -1;
+    this.checkFactorAvailability();
   }
   governmentDSelected() {
     this.populationExpectationForm.value.homeGovernmentId = null
@@ -333,6 +405,7 @@ export class SearchPopulationExpectationComponent implements OnInit {
   }
   healthAdministrationSelected() {
     this.populationExpectationForm.value.healthAdministrationID = this.selectedhealthAdministrationId
+    this.checkFactorAvailability();
   }
   healthAdministrationDSelected() {
     this.populationExpectationForm.value.healthAdministrationID = null

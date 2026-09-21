@@ -17,6 +17,7 @@ import { TableModule } from 'primeng/table';
 import { MaterialModule } from 'src/app/core/shared/material-module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   providers: [DatePipe],
@@ -41,6 +42,7 @@ import { InputTextModule } from 'primeng/inputtext';
     ZeroNotificatonRoutingModule,
     NgMultiSelectDropDownModule,
     InputTextModule,
+    MultiSelectModule,
   ],
 })
 export class ZeroNotificatonModule {}

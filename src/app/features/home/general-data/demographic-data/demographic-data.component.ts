@@ -94,8 +94,7 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
   }
 
   get isPhoneRequired(): boolean {
-    return this.patient?.incidentDepartmentId == DepartmentEnum.Internal
-      || this.patient?.incidentDepartmentId == DepartmentEnum.ICU;
+    return this.patient?.incidentDepartmentId == DepartmentEnum.Internal;
   }
 
 

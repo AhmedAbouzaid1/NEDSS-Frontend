@@ -89,6 +89,15 @@ export class SidebarComponent {
         menuItem.style.setProperty('display', 'block');
       }
     });
+    const hasSurveyPermission = userPremitedPages.some(
+      (p) => p.id == 200 || p.id == 201
+    );
+    if (hasSurveyPermission) {
+      const investigationsMenu = document.getElementById('10');
+      if (investigationsMenu != null) {
+        investigationsMenu.style.setProperty('display', 'block');
+      }
+    }
     let userName = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     ).userName;

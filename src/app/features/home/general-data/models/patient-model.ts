@@ -70,6 +70,7 @@ export class PatientModel {
   patientDiseases!: PatientDiseases[];
   finalDiagonisticsData!: FinalDiagonistics[];
   finalDiagonistics?: string;
+  finalDiagonisticsByTicket?: string;
   feverSymptoms?: FeverSymptoms;
   clinicalSymptomIds?: number[];
 
@@ -94,6 +95,7 @@ export class PatientModel {
 export class FeverSymptoms {
   id?: number;
   patientId?: number;
+  feverDate?: string;
   feverDuration?: number;
   feverDurationType?: number;
   feverMaxTemp?: number;

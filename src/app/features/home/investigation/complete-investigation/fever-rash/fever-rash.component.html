@@ -28,6 +28,12 @@
             </div>
           </div>
           <div class="row align-items-end">
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label class="fwb">كود الحالة</label>
+                <input type="text" class="form-control fwb" formControlName="caseCodeDisplay" readonly />
+              </div>
+            </div>
             <div class="col-lg-4 col-md-6">
               <div class="form-group">
                 <label class="fwb">اسم الحالة</label>
@@ -77,6 +83,124 @@
           <!-- TAB 1 : التقصى الميدانى للحالة (images 2,3,4,5)               -->
           <!-- ============================================================ -->
           <ng-container *ngIf="activeTab === 'field'">
+
+            <!-- Presumptive diagnosis + rash date -->
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-lg-3 col-md-6">
+                    <div class="form-group">
+                      <label class="fwb">تاريخ الطفح<span *ngIf="feverDate"> (لا يسبق تاريخ الحمى {{ feverDate }})</span></label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        formControlName="rashDate"
+                        [min]="feverDate"
+                        [max]="today"
+                        [class.is-invalid]="feverRashForm.get('rashDate')?.hasError('rashBeforeFever') || feverRashForm.get('rashDate')?.hasError('rashInFuture')"
+                      />
+                      <div class="invalid-feedback d-block" *ngIf="feverRashForm.get('rashDate')?.hasError('rashInFuture')">
+                        تاريخ الطفح لا يمكن أن يكون في المستقبل
+                      </div>
+                      <div class="invalid-feedback d-block" *ngIf="feverRashForm.get('rashDate')?.hasError('rashBeforeFever')">
+                        تاريخ الطفح لا يمكن أن يكون قبل تاريخ الحمى ({{ feverDate }})
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6">
+                    <div class="form-group">
+                      <label class="fwb">التشخيص التفريقي</label>
+                      <select class="form-control" formControlName="differentialDiagnosis">
+                        <option [ngValue]="null">اختر...</option>
+                        <option [ngValue]="1">حصبة</option>
+                        <option [ngValue]="2">حصبة ألمانى</option>
+                        <option [ngValue]="3">التهاب بالجلد "فيروسى"</option>
+                        <option [ngValue]="4">اثر جانبى بعد التطعيم</option>
+                        <option [ngValue]="5">حمى قرمزية</option>
+                        <option [ngValue]="6">نقص المناعة</option>
+                        <option [ngValue]="7">داء الفطط</option>
+                        <option [ngValue]="8">طفيلية وردية</option>
+                        <option [ngValue]="9">عدوى بكتيرية</option>
+                        <option [ngValue]="10">كواساكى</option>
+                        <option [ngValue]="11">متلازمة جونسون</option>
+                        <option [ngValue]="12">حمى الدنج</option>
+                        <option [ngValue]="13">متلازمة الفم واليد والقدم</option>
+                        <option [ngValue]="14">حمرة</option>
+                        <option [ngValue]="15">حمى موسمية</option>
+                        <option [ngValue]="16">التهاب بالمخ</option>
+                        <option [ngValue]="17">حساسية جلدية</option>
+                        <option [ngValue]="18">حساسية طعام</option>
+                        <option [ngValue]="19">حساسية حشرية</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Epidemiologically linked case -->
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-lg-4 col-md-6">
+                    <div class="form-group">
+                      <label class="fwb">هل الحالة مرتبطة وبائياً؟</label>
+                      <div class="d-flex gap-4 align-items-center">
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="epiLinked" [value]="1" /> نعم</label>
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="epiLinked" [value]="2" /> لا</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6">
+                    <div class="form-group">
+                      <label class="fwb">تأكيد الحالة المرتبطة</label>
+                      <div class="d-flex gap-4 align-items-center">
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="linkedCaseConfirmation" [value]="1" /> مؤكدة معملياً</label>
+                        <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="linkedCaseConfirmation" [value]="2" /> غير مؤكدة معملياً</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6">
+                    <div class="form-group">
+                      <label class="fwb">صلة القرابة</label>
+                      <select class="form-control" formControlName="linkedCaseKinship">
+                        <option [ngValue]="null">اختر...</option>
+                        <option [ngValue]="1">أخ</option>
+                        <option [ngValue]="2">أخت</option>
+                        <option [ngValue]="3">آخر</option>
+                        <option [ngValue]="4">ابن</option>
+                        <option [ngValue]="5">ابنة</option>
+                        <option [ngValue]="6">جار</option>
+                        <option [ngValue]="7">جد</option>
+                        <option [ngValue]="8">جدة</option>
+                        <option [ngValue]="9">خال</option>
+                        <option [ngValue]="10">خالة</option>
+                        <option [ngValue]="11">زوج</option>
+                        <option [ngValue]="12">زوجة</option>
+                        <option [ngValue]="13">صديق</option>
+                        <option [ngValue]="14">عم</option>
+                        <option [ngValue]="15">عمة</option>
+                        <option [ngValue]="16">والد</option>
+                        <option [ngValue]="17">والدة</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-12 title fs-6 fwb mt-2">بيانات الحالة المرتبطة</div>
+                  <div class="col-lg-4 col-md-6">
+                    <div class="form-group">
+                      <label class="fwb">كود الحالة</label>
+                      <input type="text" class="form-control" formControlName="linkedCaseCode" />
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6">
+                    <div class="form-group">
+                      <label class="fwb">اسم الحالة</label>
+                      <input type="text" class="form-control" formControlName="linkedCaseName" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <!-- Vaccination status (image 2) -->
             <div class="row color">
@@ -680,7 +804,7 @@
           <!-- ============================================================ -->
           <!-- TAB 4 : المسح الميدانى 30 طفل (image 9)                       -->
           <!-- ============================================================ -->
-          <ng-container *ngIf="activeTab === 'survey'">
+          <ng-container *ngIf="activeTab === 'survey' && canAccessSurvey30">
             <div class="row color">
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">
@@ -780,7 +904,7 @@
           <!-- ============================================================ -->
           <!-- TAB 4b : المسح الميدانى 400 طفل (positive cases only)         -->
           <!-- ============================================================ -->
-          <ng-container *ngIf="activeTab === 'survey400' && confirmedMeasles">
+          <ng-container *ngIf="activeTab === 'survey400' && confirmedMeasles && canAccessSurvey400">
             <div class="row color">
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">

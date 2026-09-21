@@ -2663,3 +2663,91 @@ mdc-floating-label .mat-mdc-floating-label .ng-tns-c40-1 .ng-star-inserted {
     padding-right: 10px;
   }
 }
+
+.mobile-nav-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  padding: 2px 10px;
+  margin-inline: 8px;
+  cursor: pointer;
+}
+
+.mobile-nav-toggle .bi {
+  font-size: 22px !important;
+}
+
+@media screen and (max-width: 991.98px) {
+  .mobile-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .main-container:has(#rightNav) {
+    display: block;
+    overflow-x: hidden;
+  }
+
+  .main-container .main-page,
+  .main-container.nav-collapsed .main-page {
+    width: 100% !important;
+  }
+
+  .main-container #rightNav,
+  .main-container.nav-collapsed #rightNav {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    z-index: 1050;
+    width: 80vw !important;
+    max-width: 300px;
+    height: 100vh !important;
+    overflow-y: auto;
+    box-shadow: 0 0 28px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+  }
+
+  #rightNav.ar {
+    right: 0;
+    left: auto;
+  }
+
+  #rightNav.en {
+    left: 0;
+    right: auto;
+  }
+
+  .main-container.nav-collapsed #rightNav.ar {
+    transform: translateX(100%);
+    box-shadow: none;
+  }
+
+  .main-container.nav-collapsed #rightNav.en {
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+
+  .main-container:not(.nav-collapsed) #rightNav {
+    transform: translateX(0);
+  }
+
+  .main-container:not(.nav-collapsed) #rightNav .menu-text {
+    display: inline-block !important;
+  }
+
+  .main-container:not(.nav-collapsed)::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1040;
+    background: rgba(0, 0, 0, 0.45);
+  }
+}

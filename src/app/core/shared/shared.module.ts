@@ -17,8 +17,12 @@ import { NoFutureDateDirective } from './directives/no-future-date.directive';
 import { ClearInvalidMinDateDirective } from './directives/clear-invalid-min-date.directive';
 import { ScrollIntoViewOnResultsDirective } from './directives/scroll-into-view-on-results.directive';
 import { DropdownLoadingDirective } from './directives/dropdown-loading.directive';
+import { DropdownNoAutofocusFilterDirective } from './directives/dropdown-no-autofocus-filter.directive';
+import { NoNegativeNumberDirective } from './directives/no-negative-number.directive';
+import { RecentDaysNoteComponent } from './components/recent-days-note/recent-days-note.component';
 @NgModule({
   declarations: [
+    RecentDaysNoteComponent,
     PageLoadingComponent,
     PartialLoadingComponent,
     LoaderComponent,
@@ -33,9 +37,12 @@ import { DropdownLoadingDirective } from './directives/dropdown-loading.directiv
     ClearInvalidMinDateDirective,
     ScrollIntoViewOnResultsDirective,
     DropdownLoadingDirective,
+    DropdownNoAutofocusFilterDirective,
+    NoNegativeNumberDirective,
   ],
   imports: [CommonModule, SidebarModule, TranslateModule, ReactiveFormsModule, FormsModule],
   exports: [
+    RecentDaysNoteComponent,
     PageLoadingComponent,
     PartialLoadingComponent,
     LoaderComponent,
@@ -49,6 +56,8 @@ import { DropdownLoadingDirective } from './directives/dropdown-loading.directiv
     ClearInvalidMinDateDirective,
     ScrollIntoViewOnResultsDirective,
     DropdownLoadingDirective,
+    DropdownNoAutofocusFilterDirective,
+    NoNegativeNumberDirective,
   ],
 })
 export class SharedModule { }

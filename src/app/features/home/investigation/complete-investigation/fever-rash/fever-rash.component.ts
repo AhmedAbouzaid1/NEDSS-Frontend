@@ -5,6 +5,7 @@ import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
+import { PagePermissionService } from '../../../../../core/services/page-permission.service';
 
 @Component({
   selector: 'app-fever-rash',
@@ -21,6 +22,11 @@ export class FeverRashComponent implements OnInit {
   feverRashForm: FormGroup;
   currentId: any;
   patientName: string;
+
+  // Fever date from the general report (الابلاغ العام); rash date cannot be before it.
+  feverDate: string | null = null;
+  // Upper bound for date inputs: rash date cannot be in the future.
+  today: string = '';
   patientAgeLabel: string = '';
   patientSexLabel: string = '';
 
@@ -41,20 +47,33 @@ export class FeverRashComponent implements OnInit {
     { key: 'followup', label: 'متابعة الحالة بعد 28 يوم' },
   ];
 
+  // Each field-survey tab needs the investigations permission or its own dedicated permission.
+  private readonly INVESTIGATION_PAGE_ID = 10;
+  private readonly SURVEY30_PAGE_ID = 200;
+  private readonly SURVEY400_PAGE_ID = 201;
+  canAccessSurvey30 = false;
+  canAccessSurvey400 = false;
+  // A user granted only the survey permission(s) (no full investigations permission) sees just the survey tabs.
+  surveyOnly = false;
+
   // The 400-children tab only appears for confirmed measles / rubella cases.
   get visibleTabs() {
-    return this.tabs.filter((t) => t.key !== 'survey400' || this.confirmedMeasles);
+    return this.tabs.filter((t) => {
+      if (t.key === 'survey') return this.canAccessSurvey30;
+      if (t.key === 'survey400') return this.canAccessSurvey400 && this.confirmedMeasles;
+      return !this.surveyOnly;
+    });
   }
 
   // Expand/collapse state for the card-based grids (case movements, previous cases).
   private openRows = new Set<AbstractControl>();
 
   private arrayKeys = ['caseMovements', 'previousCases', 'generalContacts', 'pregnantContacts', 'surveyChildren', 'survey400Children'];
-  private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage'];
+  private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage', 'caseCodeDisplay'];
 
   // Scalar date controls (formatted to yyyy-MM-dd on load).
   private dateFields = new Set([
-    'reportDate', 'homeVisitDate', 'measlesLastDoseDate', 'mmrLastDoseDate', 'mrLastDoseDate',
+    'reportDate', 'homeVisitDate', 'rashDate', 'measlesLastDoseDate', 'mmrLastDoseDate', 'mrLastDoseDate',
     'coverageVisitDate', 'lastCaseDateAdmin', 'lastCaseDateDirectorate', 'fieldVisitDate',
     'field400VisitDate',
     'committeeSpecialistDate', 'adminOfficerDate', 'directorateOfficerDate',
@@ -65,10 +84,28 @@ export class FeverRashComponent implements OnInit {
     private datePipe: DatePipe,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
-    private generalDataService: GeneralDataService
+    private generalDataService: GeneralDataService,
+    private pagePermission: PagePermissionService
   ) { }
 
   ngOnInit() {
+    this.today = this.todayStr();
+    this.canAccessSurvey30 = this.pagePermission.canAccessPage([
+      this.INVESTIGATION_PAGE_ID,
+      this.SURVEY30_PAGE_ID,
+    ]);
+    this.canAccessSurvey400 = this.pagePermission.canAccessPage([
+      this.INVESTIGATION_PAGE_ID,
+      this.SURVEY400_PAGE_ID,
+    ]);
+    this.surveyOnly =
+      !this.pagePermission.isAdmin() &&
+      this.pagePermission.hasExplicitPage([this.SURVEY30_PAGE_ID, this.SURVEY400_PAGE_ID]) &&
+      !this.pagePermission.hasExplicitPage(this.INVESTIGATION_PAGE_ID);
+    if (this.surveyOnly) {
+      this.activeTab = this.canAccessSurvey30 ? 'survey' : 'survey400';
+    }
+
     this.patientName =
       (this.investigationService.patient?.firstName || '') + ' ' +
       (this.investigationService.patient?.secondName || '') + ' ' +
@@ -82,10 +119,18 @@ export class FeverRashComponent implements OnInit {
       investigationCompletePercentage: new FormControl(),
 
       // Header
+      caseCodeDisplay: new FormControl(),
       reportDate: new FormControl(),
       homeVisitDate: new FormControl(),
 
       // Tab 1 - case field investigation
+      differentialDiagnosis: new FormControl(),
+      rashDate: new FormControl(null, this.rashDateNotBeforeFever),
+      epiLinked: new FormControl(),
+      linkedCaseConfirmation: new FormControl(),
+      linkedCaseCode: new FormControl(),
+      linkedCaseName: new FormControl(),
+      linkedCaseKinship: new FormControl(),
       caseVaccinationStatus: new FormControl(),
       measlesRoutineDoses: new FormControl(),
       measlesCampaignDoses: new FormControl(),
@@ -172,6 +217,16 @@ export class FeverRashComponent implements OnInit {
     this.loadExistingRecord();
   }
 
+  // Rash date (تاريخ الطفح) may not be earlier than the fever date (تاريخ الحمى) from the general
+  // report, nor a future date.
+  private rashDateNotBeforeFever = (control: AbstractControl) => {
+    const rash = control.value;
+    if (!rash) return null;
+    if (rash > this.todayStr()) return { rashInFuture: true };
+    if (this.feverDate && rash < this.feverDate) return { rashBeforeFever: true };
+    return null;
+  };
+
   // ===================== Header from patient data =====================
   private loadPatientHeader() {
     if (!this.currentId) return;
@@ -183,6 +238,8 @@ export class FeverRashComponent implements OnInit {
       if (p.homeVisitDate && !this.feverRashForm.value.homeVisitDate) {
         this.feverRashForm.controls['homeVisitDate'].setValue(this.d(p.homeVisitDate));
       }
+      this.feverDate = this.d(p.feverSymptoms?.feverDate);
+      this.feverRashForm.controls['rashDate'].updateValueAndValidity();
       this.evaluateConfirmedMeasles(p);
     });
   }
@@ -196,7 +253,11 @@ export class FeverRashComponent implements OnInit {
       texts.push(`${d?.caseResultCategory ?? ''} ${d?.finalResult ?? ''}`);
     });
     this.confirmedMeasles = texts.some((t) => t.includes('حصبة') && t.includes('مؤكد'));
-    if (!this.confirmedMeasles && this.activeTab === 'survey400') this.activeTab = 'field';
+    if (!this.confirmedMeasles && this.activeTab === 'survey400') {
+      this.activeTab = this.surveyOnly
+        ? (this.canAccessSurvey30 ? 'survey' : 'survey400')
+        : 'field';
+    }
   }
 
   private ageUnit(ageTypeId: number): string {
@@ -250,6 +311,7 @@ export class FeverRashComponent implements OnInit {
       patch[key] = this.dateFields.has(key) && v[key] ? this.d(v[key]) : v[key];
     });
     this.feverRashForm.patchValue(patch);
+    this.feverRashForm.controls['caseCodeDisplay'].setValue(v.caseCode ?? null);
 
     this.parseJsonInto(v.caseMovementsJson, (m) => this.caseMovements.push(this.buildCaseMovement(m)));
     this.parseJsonInto(v.previousCasesJson, (p) => this.previousCases.push(this.buildPreviousCase(p)));
@@ -542,6 +604,16 @@ export class FeverRashComponent implements OnInit {
 
   // ===================== Save =====================
   save() {
+    const rashCtrl = this.feverRashForm.controls['rashDate'];
+    rashCtrl.markAsTouched();
+    if (rashCtrl.hasError('rashInFuture')) {
+      this.userMsg.error('تاريخ الطفح لا يمكن أن يكون في المستقبل');
+      return;
+    }
+    if (rashCtrl.hasError('rashBeforeFever')) {
+      this.userMsg.error(`تاريخ الطفح لا يمكن أن يكون قبل تاريخ الحمى (${this.feverDate})`);
+      return;
+    }
     this.feverRashForm.controls['diseaseGroupID'].setValue(this.investigationService.diseaseGroupID);
     this.calculateCompletionPercentage();
     this.feverRashForm.controls['investigationCompletePercentage'].setValue(

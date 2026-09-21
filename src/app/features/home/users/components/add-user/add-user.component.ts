@@ -1,5 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { SingleDropdownSettings } from 'src/app/core/constants';
 import { OrganizationsEnum } from '../../models/organizations.enum';
@@ -26,9 +27,15 @@ export class AddUserComponent {
   overlayColor: string = 'rgba(255,255,255,0.5)';
   imageSrc: string = 'assets/upload-image.webp';
   adminBool: any;
+  inviteMode: boolean = false;
+  creatingInvite: boolean = false;
+  showInviteDialog: boolean = false;
+  inviteResult: { url: string; code: string; expiresAt: string } | null = null;
+  linkCopied: boolean = false;
+  codeCopied: boolean = false;
   user = {
     id: null,
-    roleId: null,
+    roleIds: [],
     govenmentId: null,
     healthAdministrationId: null,
     incidentSourceId: null,
@@ -49,7 +56,7 @@ export class AddUserComponent {
     areaId: null,
     diseaseFormsIds: [],
     active: true,
-    isSuperAdmin: true,
+    isSuperAdmin: false,
     notActiveReason: null,
   };
   users!: any[];
@@ -86,7 +93,7 @@ export class AddUserComponent {
   SelectedareaId: any;
   SelectedhealthAdministrationId: any;
   SelectedincidentSource;
-  Selectedrole: any;
+  Selectedroles: any[] = [];
   SelectedpositionId: any;
   SelecteddepartmentId: any;
   SelectedEvaluation: any;
@@ -142,8 +149,9 @@ export class AddUserComponent {
     this.adminBool = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     )?.user?.isSuperAdmin;
-    this.user.isSuperAdmin = this.adminBool ? true : false;
+    this.user.isSuperAdmin = false;
 
+    this.inviteMode = this.route.snapshot.queryParamMap.get('mode') === 'invite';
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id != null) {
       this.getById(this.id);
@@ -200,15 +208,10 @@ export class AddUserComponent {
       (result: any) => {
         if (result != null && result != undefined) {
           this.roles = result.data;
-          this.roles.unshift({
-            id: null,
-            arabicName: 'إختر',
-            englishName: 'Select',
-          });
-          if (this.user.roleId) {
-            this.Selectedrole = this.roles.find(
-              (x) => x.id === this.user.roleId
-            )?.id;
+          if (this.user.roleIds && this.user.roleIds.length) {
+            this.Selectedroles = this.user.roleIds.filter((id) =>
+              this.roles.some((x) => x.id === id)
+            );
             this.rolesSelected();
           }
         }
@@ -227,27 +230,42 @@ export class AddUserComponent {
     );
   }
   rolesSelected() {
-    if (this.Selectedrole != null) {
-      this.user.roleId = this.Selectedrole;
-      this.getSystemPages(this.user.roleId);
-      this.getAlRolelDiseases(this.user.roleId);
-      this.GetAllUserRoleSelectedDiseases(this.user.roleId);
+    this.user.roleIds = this.Selectedroles ? [...this.Selectedroles] : [];
+    if (this.user.roleIds.length) {
+      this.getSystemPages(this.user.roleIds);
+      this.getAlRolelDiseases(this.user.roleIds);
+      this.GetAllUserRoleSelectedDiseases(this.user.roleIds);
+    } else {
+      this.systemPages = null;
+      this.diseases = null;
+      this.selectedDiseases = null;
     }
     this.isRoleValid = this.checkRoleValid();
   }
-  rolesDeSelected() {
-    this.user.roleId = null;
-    this.isRoleValid = this.checkRoleValid();
-    this.systemPages = null;
-    this.diseases = null;
-    this.selectedDiseases = null;
-  }
-  getSystemPages(roleId) {
-    this.usersRolesPermissionService.GetAllUserSystemPages(roleId).subscribe(
-      (result: any) => {
-        if (result != null && result != undefined) {
-          this.systemPages = result.data;
+  private mergeById(lists: any[][]): any[] {
+    const merged: any[] = [];
+    const seen = new Set<any>();
+    lists.forEach((list) => {
+      (list || []).forEach((item) => {
+        if (!seen.has(item.id)) {
+          seen.add(item.id);
+          merged.push(item);
         }
+      });
+    });
+    return merged;
+  }
+  getSystemPages(roleIds) {
+    const ids = Array.isArray(roleIds) ? roleIds : [roleIds];
+    if (!ids.length) {
+      this.systemPages = null;
+      return;
+    }
+    forkJoin(
+      ids.map((id) => this.usersRolesPermissionService.GetAllUserSystemPages(id))
+    ).subscribe(
+      (results: any[]) => {
+        this.systemPages = this.mergeById(results.map((r) => r?.data));
         this.loadingPanel = false;
       },
       (error) => {
@@ -260,12 +278,17 @@ export class AddUserComponent {
       }
     );
   }
-  getAlRolelDiseases(roleId) {
-    this.usersRolesPermissionService.GetAllUserRoleDiseases(roleId).subscribe(
-      (result: any) => {
-        if (result != null && result != undefined) {
-          this.diseases = result.data;
-        }
+  getAlRolelDiseases(roleIds) {
+    const ids = Array.isArray(roleIds) ? roleIds : [roleIds];
+    if (!ids.length) {
+      this.diseases = null;
+      return;
+    }
+    forkJoin(
+      ids.map((id) => this.usersRolesPermissionService.GetAllUserRoleDiseases(id))
+    ).subscribe(
+      (results: any[]) => {
+        this.diseases = this.mergeById(results.map((r) => r?.data));
         this.loadingPanel = false;
       },
       (error) => {
@@ -303,30 +326,43 @@ export class AddUserComponent {
   handleImageError() {
     this.imageSrc = 'assets/upload-image.webp';
   }
+  get hasUserImage(): boolean {
+    return !!this.imageSrc && this.imageSrc !== 'assets/upload-image.webp';
+  }
+  removeUserImage() {
+    this.imageSrc = 'assets/upload-image.webp';
+    this.user.profilePic = '';
+    this.imageLoaded = false;
+  }
 
   handleImageLoad() {
     this.imageLoaded = true;
     this.iconColor = this.overlayColor;
   }
-  GetAllUserRoleSelectedDiseases(roleId) {
-    this.usersRolesPermissionService
-      .GetAllUserRoleSelectedDiseases(roleId)
-      .subscribe(
-        (result: any) => {
-          if (result != null && result != undefined) {
-            this.selectedDiseases = result.data;
-          }
-          this.loadingPanel = false;
-        },
-        (error) => {
-          this.loadingPanel = false;
-          this.translateService
-            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
-      );
+  GetAllUserRoleSelectedDiseases(roleIds) {
+    const ids = Array.isArray(roleIds) ? roleIds : [roleIds];
+    if (!ids.length) {
+      this.selectedDiseases = null;
+      return;
+    }
+    forkJoin(
+      ids.map((id) =>
+        this.usersRolesPermissionService.GetAllUserRoleSelectedDiseases(id)
+      )
+    ).subscribe(
+      (results: any[]) => {
+        this.selectedDiseases = this.mergeById(results.map((r) => r?.data));
+        this.loadingPanel = false;
+      },
+      (error) => {
+        this.loadingPanel = false;
+        this.translateService
+          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+          .subscribe((res: string) => {
+            this.userMsg.error(res);
+          });
+      }
+    );
   }
   getPositions() {
     this.positionsLoading = true;
@@ -947,7 +983,7 @@ export class AddUserComponent {
     if (this.SelectedincidentSource)
       this.user.incidentSourceId = this.SelectedincidentSource;
 
-    if (this.Selectedrole) this.user.roleId = this.Selectedrole;
+    if (this.Selectedroles) this.user.roleIds = [...this.Selectedroles];
 
     if (this.SelectedpositionId) this.user.positionId = this.SelectedpositionId;
 
@@ -958,6 +994,10 @@ export class AddUserComponent {
       this.user.diseaseFormsIds = this.SelectedEvaluation.map((x) => x.id);
 
     if (this.validate()) {
+      if (this.inviteMode) {
+        this.createInvitation();
+        return;
+      }
       if (this.user.id == null) {
         this.userService.addUser(this.user).subscribe(
           (response: any) => {
@@ -988,7 +1028,7 @@ export class AddUserComponent {
                 });
               this.user = {
                 id: null,
-                roleId: null,
+                roleIds: [],
                 govenmentId: null,
                 areaId: null,
                 healthAdministrationId: null,
@@ -1030,6 +1070,66 @@ export class AddUserComponent {
     }
   }
 
+  createInvitation() {
+    if (this.creatingInvite || this.showInviteDialog) {
+      return;
+    }
+    this.creatingInvite = true;
+    const scope = {
+      roleIds: this.user.roleIds,
+      levelId: this.user.levelId,
+      organizationId: this.user.organizationId,
+      govenmentId: this.user.govenmentId,
+      healthAdministrationId: this.user.healthAdministrationId,
+      incidentSourceId: this.user.incidentSourceId,
+      positionId: this.user.positionId,
+      departmentId: this.user.departmentId,
+      branchId: this.user.branchId,
+      areaId: this.user.areaId,
+      userGroupId: this.user.userGroupId,
+      externalLabId: this.user.externalLabId,
+      isSuperAdmin: this.user.isSuperAdmin,
+      diseaseFormsIds: this.user.diseaseFormsIds,
+    };
+    this.userService.createInvitation(scope).subscribe(
+      (response: any) => {
+        this.creatingInvite = false;
+        const data = response?.data;
+        if (!data || !data.token) {
+          this.translateService
+            .get('NEDSS.COMMON.SENT_FAILD')
+            .subscribe((res: string) => this.userMsg.error(res));
+          return;
+        }
+        this.inviteResult = {
+          url: window.location.origin + '/#/user-onboarding/' + data.token,
+          code: data.code,
+          expiresAt: data.expiresAt,
+        };
+        this.linkCopied = false;
+        this.codeCopied = false;
+        this.showInviteDialog = true;
+      },
+      (error) => {
+        this.creatingInvite = false;
+        this.translateService
+          .get('NEDSS.COMMON.SENT_FAILD')
+          .subscribe((res: string) => this.userMsg.error(res));
+      }
+    );
+  }
+
+  copyInviteText(text: string, which: 'link' | 'code') {
+    navigator.clipboard?.writeText(text);
+    if (which === 'link') this.linkCopied = true;
+    else this.codeCopied = true;
+  }
+
+  closeInviteDialog() {
+    this.showInviteDialog = false;
+    this.router.navigateByUrl('/home/control-panel/users');
+  }
+
   usernameChange() {
     this.usernameValidationMsg = '';
   }
@@ -1049,7 +1149,7 @@ export class AddUserComponent {
             });
           this.user = {
             id: null,
-            roleId: null,
+            roleIds: [],
             profilePic: '',
             govenmentId: null,
             healthAdministrationId: null,
@@ -1102,8 +1202,8 @@ export class AddUserComponent {
           this.getPositions();
           this.getOrganizations();
           this.getDepartments();
-          this.getSystemPages(this.user.roleId);
-          this.getAlRolelDiseases(this.user.roleId);
+          this.getSystemPages(this.user.roleIds);
+          this.getAlRolelDiseases(this.user.roleIds);
           this.getDiseases();
 
           this.loadingPanel = false;
@@ -1159,7 +1259,8 @@ export class AddUserComponent {
   checkIncidentSourceValid = () =>
     (this.user.incidentSourceId !== null && !this.disableSources) ||
     this.disableSources;
-  checkRoleValid = () => this.user.roleId !== null;
+  checkRoleValid = () =>
+    Array.isArray(this.user.roleIds) && this.user.roleIds.length > 0;
 
   exportPatientsAsPdf() {
     this.exportService.exportTableAsPdf(this.tableElement, this.user.fullName);

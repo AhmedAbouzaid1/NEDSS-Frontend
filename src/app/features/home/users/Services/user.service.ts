@@ -14,8 +14,45 @@ export class UserService {
   private RoleUrl: string = environment.baseApiUrl + 'Role/';
 
   private DiseasesUrl: string = environment.baseApiUrl + 'DiseaseForm/';
+  private InviteUrl: string = environment.baseApiUrl + 'UserInvitation/';
 
   constructor(private APIs: BaseAPIService) {}
+
+  createInvitation(scope: any) {
+    return this.APIs.post(this.InviteUrl + 'CreateInvitation', scope);
+  }
+  validateInvitation(payload: { token: string; code: string }) {
+    return this.APIs.post(this.InviteUrl + 'ValidateInvitation', payload);
+  }
+  submitInvitation(payload: any) {
+    return this.APIs.post(this.InviteUrl + 'SubmitInvitation', payload);
+  }
+  checkInvitationAvailability(payload: {
+    token: string;
+    code: string;
+    userName?: string;
+    email?: string;
+  }) {
+    return this.APIs.post(this.InviteUrl + 'CheckAvailability', payload);
+  }
+  getInvitations() {
+    return this.APIs.get(this.InviteUrl + 'GetInvitations');
+  }
+  approveInvitation(invitationId: number) {
+    return this.APIs.post(
+      this.InviteUrl + 'ApproveInvitation?invitationId=' + invitationId,
+      {}
+    );
+  }
+  declineInvitation(payload: { invitationId: number; reason: string }) {
+    return this.APIs.post(this.InviteUrl + 'DeclineInvitation', payload);
+  }
+  revokeInvitation(invitationId: number) {
+    return this.APIs.post(
+      this.InviteUrl + 'RevokeInvitation?invitationId=' + invitationId,
+      {}
+    );
+  }
 
   getAllDiseaseField() {
     return this.APIs.get(this.DiseasesUrl + 'GetAll');

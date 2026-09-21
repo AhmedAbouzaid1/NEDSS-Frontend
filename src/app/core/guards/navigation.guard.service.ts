@@ -172,13 +172,18 @@ export class NavigationGuard {
     this.filterdData = this.AllRouts.filter(
       (m) => m.Comingroute == (route.url[0] != null ? route.url[0].path : '')
     );
+    const requiredPageId =
+      this.filterdData[0] != null ? this.filterdData[0].id : 0;
+    const surveyGrantsInvestigations =
+      requiredPageId == 10 &&
+      (userPremitedPagesIds.includes(200) ||
+        userPremitedPagesIds.includes(201));
     if (
-      !userPremitedPagesIds.includes(
-        this.filterdData[0] != null ? this.filterdData[0].id : 0
-      )
+      !userPremitedPagesIds.includes(requiredPageId) &&
+      !surveyGrantsInvestigations
     ) {
       this.userMsg.error('انت ليس لديك صلاحية الدخول');
-      this.router.navigateByUrl('/home/chart');
+      this.router.navigateByUrl('/home/welcome');
       return of(false);
     }
     return of(true);

@@ -138,8 +138,11 @@ export const MaritalStatus = [
   { id: null, arabicName: '--', englishName: '--' },
   { id: 1, arabicName: 'أعزب', englishName: 'Single' },
   { id: 2, arabicName: 'متزوج', englishName: 'Married' },
-  { id: 3, arabicName: 'أرمل/ة', englishName: 'Widow' },
-  { id: 4, arabicName: 'مطلق/ة', englishName: 'Divorced' },
+  { id: 3, arabicName: 'مطلق/ة', englishName: 'Divorced' },
+  { id: 4, arabicName: 'أرمل/ة', englishName: 'Widowed' },
+  { id: 5, arabicName: 'لا ينطبق', englishName: 'Not Applicable' },
+  { id: 6, arabicName: 'غير معروف', englishName: 'Unknown' },
+  { id: 99, arabicName: 'غير محدد', englishName: 'Blank' },
 ];
 
 export const EducationPhase = [
@@ -361,9 +364,12 @@ export const cerebrospinalFluidbloodfarm = [
 ];
 // reportingOrResidence
 export const TypereportingOrResidence = [
-  { id: 0, arabicName: 'الكل' },
-  { id: 1, arabicName: 'مصدر ابلاغ' },
-  { id: 2, arabicName: 'مكتب صحه' },
+  { id: -1, arabicName: 'إختر', englishName: 'Select' },
+  { id: 1, arabicName: 'مصدر إبلاغ', englishName: 'Reporting source' },
+  { id: 2, arabicName: 'محل سكن', englishName: 'Residence' },
+  { id: 3, arabicName: 'مصدر إبلاغ ومحل سكن', englishName: 'Reporting source and residence' },
+  { id: 4, arabicName: 'ليس مصدر إبلاغ ولا محل سكن', englishName: 'Neither reporting source nor residence' },
+  { id: 0, arabicName: 'غير محدد', englishName: 'Unspecified' },
 ];
 export const typeEstablishment = [
   { id: null, arabicName: '--' },

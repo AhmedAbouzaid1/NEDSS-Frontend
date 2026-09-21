@@ -22,6 +22,27 @@
     <div class="col-12 col-sm-12 col-md-6 col-lg-3">
       <div class="form-group">
         <label for="">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_DATE" | translate }}
+        </label>
+        <mat-form-field appearance="fill">
+          <mat-label>
+            {{ "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate }}
+          </mat-label>
+          <input
+            [max]="maxDate"
+            matInput
+            [matDatepicker]="feverDatePicker"
+            [(ngModel)]="patient.feverSymptoms.feverDate"
+            name="feverDate"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="feverDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #feverDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+      <div class="form-group">
+        <label for="">
           {{ "NOUR.word143" | translate }}
           <span *ngIf="!!patient.feverSymptoms.feverDuration" class="text-danger mess-color">*</span>
           <span class="text-muted"> </span>
@@ -30,6 +51,7 @@
           [(ngModel)]="patient.feverSymptoms.feverDuration"
           name="feverDuration"
           type="number"
+          inputmode="numeric"
           class="form-control w-100"
           [required]="!FEVERStatus"
           pInputText
@@ -87,6 +109,7 @@
         <input
           [(ngModel)]="patient.feverSymptoms.feverMaxTemp"
           type="number"
+          inputmode="decimal"
           step="0.1"
           class="form-control feverMaxTemptyle mt-1 w-100"
           [required]="!!patient.feverSymptoms.feverDuration"

@@ -172,3 +172,115 @@
     {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.SAVE"| translate }}
   </button>
 </div> -->
+
+<p-dialog
+  [(visible)]="postSaveDialogVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="false"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [showHeader]="false"
+  [style]="{ width: '38rem', 'max-width': '94vw' }"
+  styleClass="post-save-dialog"
+>
+  <div class="post-save">
+    <div class="post-save__badge">
+      <i class="bi bi-check-lg"></i>
+    </div>
+
+    <h3 class="post-save__title">
+      {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.POST_SAVE.TITLE" | translate }}
+    </h3>
+    <p class="post-save__subtitle">
+      {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.POST_SAVE.SUBTITLE" | translate }}
+    </p>
+
+    <div class="post-save__options">
+      <button
+        type="button"
+        *ngIf="canEnterLabSample"
+        class="post-save__option"
+        (click)="goToLabSample()"
+      >
+        <span class="post-save__icon post-save__icon--lab">
+          <i class="bi bi-clipboard2-pulse"></i>
+        </span>
+        <span class="post-save__text">
+          <span class="post-save__option-title">{{
+            "NEDSS.HOME.GENERAL_DATA_COMPLETION.POST_SAVE.LAB_SAMPLE" | translate
+          }}</span>
+          <span class="post-save__option-desc">{{
+            "NEDSS.HOME.GENERAL_DATA_COMPLETION.POST_SAVE.LAB_SAMPLE_DESC"
+              | translate
+          }}</span>
+        </span>
+        <i class="bi bi-chevron-left post-save__chevron"></i>
+      </button>
+
+      <button
+        type="button"
+        *ngIf="canFillInvestigation"
+        class="post-save__option"
+        (click)="goToInvestigation()"
+      >
+        <span class="post-save__icon post-save__icon--inv">
+          <i class="bi bi-clipboard2-data"></i>
+        </span>
+        <span class="post-save__text">
+          <span class="post-save__option-title">{{
+            "NEDSS.HOME.GENERAL_DATA_COMPLETION.POST_SAVE.INVESTIGATION"
+              | translate
+          }}</span>
+          <span class="post-save__option-desc">{{
+            "NEDSS.HOME.GENERAL_DATA_COMPLETION.POST_SAVE.INVESTIGATION_DESC"
+              | translate
+          }}</span>
+        </span>
+        <i class="bi bi-chevron-left post-save__chevron"></i>
+      </button>
+
+      <button
+        type="button"
+        *ngIf="canEnterAnotherPatient"
+        class="post-save__option"
+        (click)="enterAnotherPatient()"
+      >
+        <span class="post-save__icon post-save__icon--new">
+          <i class="bi bi-person-plus"></i>
+        </span>
+        <span class="post-save__text">
+          <span class="post-save__option-title">{{
+            "NEDSS.HOME.GENERAL_DATA_COMPLETION.POST_SAVE.ANOTHER_PATIENT"
+              | translate
+          }}</span>
+          <span class="post-save__option-desc">{{
+            "NEDSS.HOME.GENERAL_DATA_COMPLETION.POST_SAVE.ANOTHER_PATIENT_DESC"
+              | translate
+          }}</span>
+        </span>
+        <i class="bi bi-chevron-left post-save__chevron"></i>
+      </button>
+
+      <button
+        type="button"
+        class="post-save__option"
+        (click)="goToHome()"
+      >
+        <span class="post-save__icon post-save__icon--home">
+          <i class="bi bi-house-door"></i>
+        </span>
+        <span class="post-save__text">
+          <span class="post-save__option-title">{{
+            "NEDSS.HOME.GENERAL_DATA_COMPLETION.POST_SAVE.HOME" | translate
+          }}</span>
+          <span class="post-save__option-desc">{{
+            "NEDSS.HOME.GENERAL_DATA_COMPLETION.POST_SAVE.HOME_DESC" | translate
+          }}</span>
+        </span>
+        <i class="bi bi-chevron-left post-save__chevron"></i>
+      </button>
+    </div>
+  </div>
+</p-dialog>

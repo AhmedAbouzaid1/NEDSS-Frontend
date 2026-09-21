@@ -9,7 +9,7 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { SharedDataService } from '../../general-data/services/shared-data.service';
 import { SortEvent } from 'primeng/api';
-import { fromEvent, map, debounceTime, distinctUntilChanged } from 'rxjs';
+import { fromEvent, map, debounceTime, distinctUntilChanged, forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ZeroInstantNotificationService } from '../Services/zero-instant-notification.service';
 import { DatePipe } from '@angular/common';
@@ -81,12 +81,13 @@ export class ZeroReportComponent {
   branchesLoading: boolean = false;
   areasLoading: boolean = false;
   selectedincidentSource: any;
+  selectedIncidentSources: any[] = [];
   selectedDisase: any;
   zeroInstantNotificationFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortOrder: SortOrder.asc,
-    sortColumn: 'GovernmentName',
+    sortOrder: SortOrder.desc,
+    sortColumn: 'Id',
     searchText: '',
     isZero: true,
     firstTime: false,
@@ -95,6 +96,9 @@ export class ZeroReportComponent {
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
 
   noData: boolean = true;
+  hasNextPage: boolean = false;
+  listLoading: boolean = false;
+  listLoaded: boolean = false;
   first: number = 0;
   last: number = 0;
   pages: number = 0;
@@ -412,6 +416,7 @@ export class ZeroReportComponent {
     this.healthAdministrations = null;
     this.zeroInstantNotification.healthAdministrationId = null;
     this.selectedincidentSource = null;
+    this.selectedIncidentSources = [];
     this.incidentSources = null;
   }
   getHealthAdministrations(governmentID: any, setDefault?: boolean) {
@@ -473,8 +478,8 @@ export class ZeroReportComponent {
   healthAdministrationDSelected() {
     this.zeroInstantNotification.healthAdministrationId = null;
     this.selectedincidentSource = null;
+    this.selectedIncidentSources = [];
     this.incidentSources = null;
-    this.selectedincidentSource = null;
   }
 
   getIncidentSources(healthAdministrationID: any, setDefault?: boolean) {
@@ -490,31 +495,8 @@ export class ZeroReportComponent {
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
-            this.incidentSources = [
-              { id: -1, arabicName: 'إختر', englishName: 'Select' },
-            ];
-            result.data.forEach((gov) => {
-              this.incidentSources.push(gov);
-            });
-
-            if (this.zeroInstantNotification.incidentSourceId != null) {
-              this.selectedincidentSource =
-                this.zeroInstantNotification.incidentSourceId;
-            } else if (
-              JSON.parse(localStorage.getItem('ls.authorizationData')).user
-                .incidentSourceId != null
-            ) {
-              setTimeout(() => {
-                this.selectedincidentSource = JSON.parse(
-                  localStorage.getItem('ls.authorizationData')
-                ).user.incidentSourceId;
-                if (this.selectedincidentSource != null) {
-                  this.incidentSourcesSelected();
-                }
-              }, 200);
-            } else {
-              this.selectedincidentSource = -1;
-            }
+            this.incidentSources = result.data;
+            this.setDefaultIncidentSources();
           }
           this.incidentSourcesLoading = false;
           this.loadingPanel = false;
@@ -531,6 +513,26 @@ export class ZeroReportComponent {
       );
   }
 
+  setDefaultIncidentSources() {
+    if (this.zeroInstantNotification.incidentSourceId != null) {
+      this.selectedIncidentSources = [
+        this.zeroInstantNotification.incidentSourceId,
+      ];
+    } else {
+      const ownSource = JSON.parse(
+        localStorage.getItem('ls.authorizationData')
+      )?.user?.incidentSourceId;
+      this.selectedIncidentSources = ownSource != null ? [ownSource] : [];
+    }
+    this.onIncidentSourcesChanged();
+  }
+
+  onIncidentSourcesChanged() {
+    this.isIncidentSourceValid =
+      !this.activeUSerService.getAccessibleParts?.showSources ||
+      (this.selectedIncidentSources?.length ?? 0) > 0;
+  }
+
   search() {
     this.first = 0;
     this.zeroInstantNotificationFilter.pageIndex = 0;
@@ -542,6 +544,7 @@ export class ZeroReportComponent {
 
   getZeroInstantNotifications(firstTime?: boolean) {
     this.loadingPanel = true;
+    this.listLoading = true;
     this.zeroInstantNotificationFilter.firstTime = firstTime;
     this.zeroInstantNotificationService
       .getPageNotifications(this.zeroInstantNotificationFilter)
@@ -555,10 +558,11 @@ export class ZeroReportComponent {
             ) {
               this.noData = true;
               this.pages = 0;
+              this.hasNextPage = false;
               this.event = true;
             } else {
               this.noData = false;
-              this.pages = result.data[0].totalCount;
+              this.hasNextPage = result.data[0]?.hasNextPage === true;
               this.last =
                 this.zeroInstantNotificationFilter.pageIndex *
                 this.zeroInstantNotificationFilter.pageSize;
@@ -566,9 +570,13 @@ export class ZeroReportComponent {
             }
           }
           this.loadingPanel = false;
+          this.listLoading = false;
+          this.listLoaded = true;
         },
         (error) => {
           this.loadingPanel = false;
+          this.listLoading = false;
+          this.listLoaded = true;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -640,6 +648,9 @@ export class ZeroReportComponent {
         if (this.zeroInstantNotification.incidentSourceId > 0) {
           this.selectedincidentSource =
             this.zeroInstantNotification.incidentSourceId;
+          this.selectedIncidentSources = [
+            this.zeroInstantNotification.incidentSourceId,
+          ];
         }
       },
       () => {
@@ -706,63 +717,93 @@ export class ZeroReportComponent {
     }
   }
   save() {
-    if (this.validateRequiredData()) {
-      if (this.zeroInstantNotification.id == null) {
-        this.zeroInstantNotificationService
-          .addZeroInstantNotification(this.zeroInstantNotification)
-          .subscribe(
-            (response: any) => {
-              if (response) {
-                this.translateService
-                  .get('NEDSS.COMMON.SENT_SUCESSFULLY')
-                  .subscribe((res: string) => {
-                    this.userMsg.success(res);
-                  });
-                this.getZeroInstantNotifications();
-                this.resetForm();
-                this.zeroInstantNotification = {
-                  id: null,
-                  isZero: null,
-                  diseasesIds: [],
-                  governmentId: !this.activeUSerService.getAccessibleParts
-                    ?.enableGovernments
-                    ? this.zeroInstantNotification.governmentId
-                    : null,
-                  healthAdministrationId: !this.activeUSerService
-                    .getAccessibleParts?.enableDepartments
-                    ? this.zeroInstantNotification.healthAdministrationId
-                    : -1,
-                  branchId: !this.activeUSerService.getAccessibleParts
-                    ?.enableBranches
-                    ? this.zeroInstantNotification.branchId
-                    : null,
-                  areaId: !this.activeUSerService.getAccessibleParts?.showAreas
-                    ? this.zeroInstantNotification.areaId
-                    : null,
-                  incidentSourceId: !this.activeUSerService.getAccessibleParts
-                    ?.enableSources
-                    ? this.zeroInstantNotification.incidentSourceId
-                    : null,
-                  casesPartioning: null,
-                  maleCount: null,
-                  femaleCount: null,
-                  fromDate: null,
-                  toDate: null,
-                };
-              }
-            },
-            (error) => {
-              this.translateService
-                .get('NEDSS.COMMON.SENT_FAILD')
-                .subscribe((res: string) => {
-                  this.userMsg.error(res);
-                });
-            }
-          );
-      } else this.update();
-    } else {
+    if (!this.validateRequiredData()) {
       this.userMsg.error('يجب ادخال كل الحقول');
+      return;
     }
+
+    if (this.zeroInstantNotification.id != null) {
+      if (this.selectedIncidentSources?.length) {
+        this.zeroInstantNotification.incidentSourceId =
+          this.selectedIncidentSources[0];
+      }
+      this.update();
+      return;
+    }
+
+    const showSources =
+      this.activeUSerService.getAccessibleParts?.showSources;
+    const sources = (this.selectedIncidentSources || []).filter(
+      (id) => id != null && id !== -1
+    );
+
+    const payloads =
+      showSources && sources.length
+        ? sources.map((sid) => ({
+            ...this.zeroInstantNotification,
+            incidentSourceId: sid,
+          }))
+        : [
+            {
+              ...this.zeroInstantNotification,
+              incidentSourceId:
+                this.zeroInstantNotification.incidentSourceId ?? null,
+            },
+          ];
+
+    this.loadingPanel = true;
+    forkJoin(
+      payloads.map((p) =>
+        this.zeroInstantNotificationService.addZeroInstantNotification(p)
+      )
+    ).subscribe({
+      next: () => {
+        this.translateService
+          .get('NEDSS.COMMON.SENT_SUCESSFULLY')
+          .subscribe((res: string) => {
+            this.userMsg.success(res);
+          });
+        this.getZeroInstantNotifications();
+        this.resetForm();
+        this.selectedIncidentSources = [];
+        this.zeroInstantNotification = {
+          id: null,
+          isZero: null,
+          diseasesIds: [],
+          governmentId: !this.activeUSerService.getAccessibleParts
+            ?.enableGovernments
+            ? this.zeroInstantNotification.governmentId
+            : null,
+          healthAdministrationId: !this.activeUSerService.getAccessibleParts
+            ?.enableDepartments
+            ? this.zeroInstantNotification.healthAdministrationId
+            : -1,
+          branchId: !this.activeUSerService.getAccessibleParts?.enableBranches
+            ? this.zeroInstantNotification.branchId
+            : null,
+          areaId: !this.activeUSerService.getAccessibleParts?.showAreas
+            ? this.zeroInstantNotification.areaId
+            : null,
+          incidentSourceId: null,
+          casesPartioning: null,
+          maleCount: null,
+          femaleCount: null,
+          fromDate: null,
+          toDate: null,
+        };
+      },
+      error: () => {
+        this.loadingPanel = false;
+        this.translateService
+          .get('NEDSS.COMMON.SENT_FAILD')
+          .subscribe((res: string) => {
+            this.userMsg.error(res);
+          });
+      },
+      complete: () => {
+        this.loadingPanel = false;
+      },
+    });
   }
 
   update() {
@@ -832,6 +873,33 @@ export class ZeroReportComponent {
     this.getZeroInstantNotifications();
   }
 
+  previousPage() {
+    if (this.zeroInstantNotificationFilter.pageIndex > 0) {
+      this.zeroInstantNotificationFilter.pageIndex--;
+      this.first =
+        this.zeroInstantNotificationFilter.pageIndex *
+        this.zeroInstantNotificationFilter.pageSize;
+      this.getZeroInstantNotifications();
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.zeroInstantNotificationFilter.pageIndex++;
+      this.first =
+        this.zeroInstantNotificationFilter.pageIndex *
+        this.zeroInstantNotificationFilter.pageSize;
+      this.getZeroInstantNotifications();
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.zeroInstantNotificationFilter.pageSize = newSize;
+    this.zeroInstantNotificationFilter.pageIndex = 0;
+    this.first = 0;
+    this.getZeroInstantNotifications();
+  }
+
   delete(id: number) {
     this.zeroInstantNotificationService.deleteNotification(id).subscribe(
       (result: any) => {
@@ -895,10 +963,9 @@ export class ZeroReportComponent {
     }
   }
 
-    if (this.selectedincidentSource) {
-      this.isIncidentSourceValid = this.generalDataService.validateField(
-        this.zeroInstantNotification.incidentSourceId
-      );
+    if (this.activeUSerService.getAccessibleParts?.showSources) {
+      this.isIncidentSourceValid =
+        (this.selectedIncidentSources?.length ?? 0) > 0;
     }
 
     if (this.SelectedbranchId) {
@@ -1083,31 +1150,8 @@ export class ZeroReportComponent {
     }).subscribe({
       next:(result) => {
         if (result != null && result != undefined) {
-          this.incidentSources = [
-            { id: -1, arabicName: 'إختر', englishName: 'Select' },
-          ];
-          result.data.forEach((gov) => {
-            this.incidentSources.push(gov);
-          });
-
-          if (this.zeroInstantNotification.incidentSourceId != null) {
-            this.selectedincidentSource =
-              this.zeroInstantNotification.incidentSourceId;
-          } else if (
-            JSON.parse(localStorage.getItem('ls.authorizationData')).user
-              .incidentSourceId != null
-          ) {
-            setTimeout(() => {
-              this.selectedincidentSource = JSON.parse(
-                localStorage.getItem('ls.authorizationData')
-              ).user.incidentSourceId;
-              if (this.selectedincidentSource != null) {
-                this.incidentSourcesSelected();
-              }
-            }, 200);
-          } else {
-            this.selectedincidentSource = -1;
-          }
+          this.incidentSources = result.data;
+          this.setDefaultIncidentSources();
         }
         this.incidentSourcesLoading = false;
         this.loadingPanel = false;

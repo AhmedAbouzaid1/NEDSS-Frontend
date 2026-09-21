@@ -19,11 +19,13 @@
                 {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_CODE" | translate }}
                 <span class="text-danger mess-color">*</span>
               </label>
-              <input type="text" 
-              pInputText 
-              [(ngModel)]="incidentSource.code" 
+              <input type="text"
+              pInputText
+              [(ngModel)]="incidentSource.code"
               [style]="{ width: '100%' }"
               name="code"
+              #code="ngModel"
+              required
               />
               <!-- <input
                 type="text"
@@ -303,6 +305,24 @@
               </select> -->
             </div>
           </div>
+          <div class="col-lg-4 mt-3">
+            <div class="form-group">
+              <label for="">
+                {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_reportingOrResidenceType" | translate }}
+              </label>
+              <p-dropdown
+                  [options]="TypereportingOrResidence"
+                  optionLabel="arabicName"
+                  optionValue="id"
+                  autoWidth="false"
+                  [style]="{ width: '100%' }"
+                  name="reportingOrResidence"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="incidentSource.reportingOrResidence"
+                >
+              </p-dropdown>
+            </div>
+          </div>
         </div>
         <!-- end of third row incidentSourceType -->
       </div>
@@ -342,7 +362,9 @@
               name=""
               id=""
               class="form-control"
+              [(ngModel)]="incidentSourceFilter.searchText"
               placeholder=" {{ 'NEDSS.COMMON.SEARCH' | translate }} ..."
+              #searchInput
             />
           </div>
           <div class="col-4 pt-3">
@@ -358,8 +380,8 @@
           [value]="incidentSources"
           (sortFunction)="sort($event)"
           [customSort]="true"
-          [sortField]="'arabicName'"
-          [sortOrder]="1"
+          [sortField]="'code'"
+          [sortOrder]="-1"
           [paginator]="false"
         >
           <ng-template pTemplate="header">
@@ -385,12 +407,12 @@
                 }}</span>
                 <p-sortIcon field="englishName"></p-sortIcon>
               </th>
-              <!-- <th>
+              <th>
                 <span>{{
                   "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_reportingOrResidenceType"
                     | translate
                 }}</span>
-              </th> -->
+              </th>
               <th>
                 <span>{{
                   "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_TABLE_ACTIONS"
@@ -432,16 +454,9 @@
                   "
                 ></span>
               </td>
-              <!-- <td>
-                <span
-                  [innerHTML]="
-                    getreportingOrResidenceType(item.reportingOrResidence)
-                      | highlighter
-                        : incidentSourceFilter.searchText
-                        : 'partial'
-                  "
-                ></span>
-              </td> -->
+              <td>
+                <span>{{ getreportingOrResidenceType(item.reportingOrResidence) }}</span>
+              </td>
               <td>
                 <a
                   (click)="getById(item.id)"

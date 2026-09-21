@@ -292,7 +292,10 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
 
         if (this.patient.relationShipDegreeId == null)
           this.patient.relationShipDegreeId = 0;
-        if (this.patient.nationalId != null) {
+        if (
+          this.patient.nationalId != null &&
+          this.patient.relationShipDegreeId == RelativeEnum.Himself
+        ) {
           this.getGender(this.patient.nationalId);
         }
         this.levelId = JSON.parse(
@@ -621,7 +624,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
         this.patient.incidentDepartmentId = this.selectedDepartmentId;
       }
       this.patient.hiddenInsideDepartment =
-        this.selectedDepartmentId == DepartmentEnum.External ? true : false;
+        this.selectedDepartmentId != DepartmentEnum.Internal;
     } else this.patient.incidentDepartmentId = null;
     if (this.patient.nationalId == null) {
       this.patient.age = null;
@@ -829,6 +832,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
         areaId: this.SelectedareaId,
         governmentID: governmentID,
         forSystemUser: governmentID ? true : null,
+        forHome: false,
       })
       .pipe(finalize(() => (this.incidentSourcesLoading = false)))
       .subscribe(

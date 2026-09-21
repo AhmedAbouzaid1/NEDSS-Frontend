@@ -29,7 +29,6 @@ import { IncidentSourceTypeComponent } from './incident-source-type/incident-sou
 import { PositionComponent } from './position/position.component';
 import { NavigationGuard } from 'src/app/core/guards/navigation.guard.service';
 import { OrganizationComponent } from './organization/organization.component';
-import { DependencyComponent } from './dependency/dependency.component';
 
 import { DashBoardControlersComponent } from './dashBoard-Controlers/dashBoard-Controlers.component';
 import { ClinicalSymptomsCodesComponent } from './clinical-symptoms/clinical-symptoms.component';
@@ -52,7 +51,6 @@ const routes: Routes = [
     { path: 'government', component: GovernmentComponent ,canActivate: [NavigationGuard]},
     { path: 'organization', component: OrganizationComponent ,canActivate: [NavigationGuard]},
     { path: 'dashBoardControlers', component: DashBoardControlersComponent ,canActivate: [NavigationGuard]},
-    { path: 'dependency', component: DependencyComponent ,canActivate: [NavigationGuard]},
     { path: 'health-administration', component: HealthAdministrationComponent ,canActivate: [NavigationGuard]},
     { path: 'health-office', component: HealthOfficeComponent ,canActivate: [NavigationGuard]},
     { path: 'incident-source', component: IncidentSourceComponent ,canActivate: [NavigationGuard]},

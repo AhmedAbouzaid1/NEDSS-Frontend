@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig, SortEvent } from 'primeng/api';
 import {
@@ -57,6 +58,8 @@ export class UsersComponent {
     isSuperAdmin: null,
   };
   noData: boolean = true;
+  showImagePreview: boolean = false;
+  previewImage: string | null = null;
   loadingPanel: boolean = false;
   organizationsLoading: boolean = false;
   levelsLoading: boolean = false;
@@ -111,11 +114,27 @@ export class UsersComponent {
     private userService: UserService,
     private primengConfig: PrimeNGConfig,
     private exportService: ExportService,
-    private activeUserService: ActiveUserService
+    private activeUserService: ActiveUserService,
+    private router: Router
   ) {}
 
   BasicShow: boolean = false;
+  addChoiceShow: boolean = false;
   SelectedhealthAdministrationId: number = -1;
+
+  openAddChoice() {
+    this.addChoiceShow = true;
+  }
+
+  addUserMyself() {
+    this.addChoiceShow = false;
+    this.router.navigate(['/home/add-user']);
+  }
+
+  inviteUser() {
+    this.addChoiceShow = false;
+    this.router.navigate(['/home/add-user'], { queryParams: { mode: 'invite' } });
+  }
 
   showDialog() {
     this.BasicShow = true;
@@ -127,6 +146,12 @@ export class UsersComponent {
 
   public get organizationsEnum(): typeof OrganizationsEnum {
     return OrganizationsEnum;
+  }
+
+  openImagePreview(image: string | null) {
+    if (!image) return;
+    this.previewImage = image;
+    this.showImagePreview = true;
   }
 
   ngOnInit() {
@@ -756,17 +781,22 @@ export class UsersComponent {
   }
 
   sort(event: SortEvent) {
-    if (event.order == -1 && this.userFilter.sortOrder != SortOrder.desc) {
-      this.userFilter.sortOrder = SortOrder.desc;
-      if (typeof event.field === 'string')
-        this.userFilter.sortColumn = event.field;
-      this.getUsers();
-    } else if (event.order == 1 && this.userFilter.sortOrder != SortOrder.asc) {
-      this.userFilter.sortOrder = SortOrder.asc;
-      if (typeof event.field === 'string')
-        this.userFilter.sortColumn = event.field;
-      this.getUsers();
+    const order = event.order == -1 ? SortOrder.desc : SortOrder.asc;
+    const field =
+      typeof event.field === 'string'
+        ? event.field
+        : this.userFilter.sortColumn;
+    if (
+      this.userFilter.sortColumn == field &&
+      this.userFilter.sortOrder == order
+    ) {
+      return;
     }
+    this.userFilter.sortColumn = field;
+    this.userFilter.sortOrder = order;
+    this.userFilter.pageIndex = 0;
+    this.first = 0;
+    this.getUsers();
   }
 
   paginate(event: any) {

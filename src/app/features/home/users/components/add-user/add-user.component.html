@@ -34,7 +34,7 @@
   <div class="card shadow color mb-4">
     <div class="card-body">
       <div class="row" #myTableElementId>
-        <div class="col-lg-4 col-md-6 mb-3">
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!inviteMode">
           <div class="form-group">
             <label for="fullName">
               {{ "NEDSS.HOME.USERS.ADD_USER.NAME" | translate
@@ -79,7 +79,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4 col-md-6 mb-3">
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!inviteMode">
           <div class="form-group">
             <label for="phoneNo">
               {{ "NEDSS.HOME.USERS.ADD_USER.MOBILE" | translate }}
@@ -106,7 +106,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4 col-md-6 mb-3">
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!inviteMode">
           <div class="form-group">
             <label for="">
               {{ "NEDSS.HOME.USERS.ADD_USER.ADDRESS" | translate }}
@@ -122,7 +122,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4 col-md-6 mb-3">
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!inviteMode">
           <div class="form-group">
             <label for="userName">
               {{ "NEDSS.HOME.USERS.ADD_USER.USER_NAME" | translate }}
@@ -170,7 +170,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4 col-md-6 mb-3">
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!inviteMode">
           <div class="form-group">
             <label for="email">
               {{ "NEDSS.HOME.USERS.ADD_USER.EMAIL" | translate }}
@@ -648,36 +648,40 @@
             >
             </ng-multiselect-dropdown> -->
             <div *ngIf="currentLang == 'ar'">
-              <p-dropdown
+              <p-multiSelect
                 (onChange)="rolesSelected()"
                 [options]="roles"
-                [(ngModel)]="Selectedrole"
+                [(ngModel)]="Selectedroles"
                 optionLabel="arabicName"
                 optionValue="id"
-                autoWidth="false"
+                display="chip"
                 [style]="{ width: '100%' }"
+                styleClass="nedss-ms"
+                panelStyleClass="nedss-ms-panel"
                 name="roles"
-                [required]="true"
                 [filter]="true"
                 filterBy="arabicName"
+                [placeholder]="'NEDSS.COMMON.SELECT' | translate"
               >
-              </p-dropdown>
+              </p-multiSelect>
             </div>
             <div *ngIf="currentLang == 'en'">
-              <p-dropdown
+              <p-multiSelect
                 (onChange)="rolesSelected()"
                 [options]="roles"
-                [(ngModel)]="Selectedrole"
+                [(ngModel)]="Selectedroles"
                 optionLabel="englishName"
                 optionValue="id"
-                autoWidth="false"
+                display="chip"
                 [style]="{ width: '100%' }"
+                styleClass="nedss-ms"
+                panelStyleClass="nedss-ms-panel"
                 name="roles"
-                [required]="true"
                 [filter]="true"
                 filterBy="englishName"
+                [placeholder]="'NEDSS.COMMON.SELECT' | translate"
               >
-              </p-dropdown>
+              </p-multiSelect>
             </div>
             <div *ngIf="!isRoleValid" class="form-text text-danger mess-color">
               {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
@@ -864,33 +868,45 @@
           </div>
         </div> -->
       </div>
-      <div class="row">
+      <div class="row" *ngIf="!inviteMode">
         <div class="col-lg-4 mb-3">
-          <div>
-            <span class="d-block mb-2">
-              {{
-                "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ADDIMAGE"
-                  | translate
-              }}
-            </span>
-            <div class="add-img-wrapper">
+          <div class="avatar-uploader">
+            <div class="avatar-frame" (click)="userImg.click()">
               <img
+                *ngIf="hasUserImage"
                 [src]="imageSrc"
                 (load)="handleImageLoad()"
                 (error)="handleImageError()"
                 [class.loaded]="imageLoaded"
-                class="img-fluid"
-                alt="upload image"
-                (click)="userImg.click()"
+                alt="user image"
               />
+              <div *ngIf="!hasUserImage" class="avatar-placeholder">
+                <i class="pi pi-camera"></i>
+              </div>
+              <div class="avatar-overlay">
+                <i class="pi pi-camera"></i>
+              </div>
+            </div>
+            <div class="avatar-actions">
+              <button type="button" class="avatar-link" (click)="userImg.click()">
+                {{
+                  "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ADDIMAGE"
+                    | translate
+                }}
+              </button>
+              <button
+                type="button"
+                class="avatar-link avatar-link-muted"
+                *ngIf="hasUserImage"
+                (click)="removeUserImage()"
+              >
+                {{ "NEDSS.HOME.USERS.INVITE.REMOVE_PHOTO" | translate }}
+              </button>
             </div>
             <input
               type="file"
               #userImg
-              name=""
-              id=""
               accept="image/*"
-              class="bg-dark"
               (change)="handleInputChange($event)"
               hidden
             />
@@ -900,10 +916,10 @@
       <div class="d-flex align-items-center justify-content-end gap-3 mt-4">
         <button
           type="submit"
-          [disabled]="userForm.invalid"
+          [disabled]="userForm.invalid || creatingInvite"
           class="btn bg text-white rounded-2"
         >
-          {{ "NEDSS.COMMON.SAVE" | translate }}
+          {{ (inviteMode ? "NEDSS.HOME.USERS.INVITE.GENERATE_LINK" : "NEDSS.COMMON.SAVE") | translate }}
         </button>
         <button
           type="button"
@@ -913,6 +929,39 @@
           {{ "NEDSS.COMMON.CANCEL" | translate }}
         </button>
       </div>
+
+      <p-dialog [(visible)]="showInviteDialog" [modal]="true" [closable]="false"
+        [draggable]="false" [resizable]="false" [style]="{ width: '34rem' }"
+        [header]="'NEDSS.HOME.USERS.INVITE.SHARE_TITLE' | translate">
+        <div class="p-2" *ngIf="inviteResult">
+          <p class="text-muted">{{ "NEDSS.HOME.USERS.INVITE.SHARE_HINT" | translate }}</p>
+
+          <label class="form-label fw-bold mt-2">{{ "NEDSS.HOME.USERS.INVITE.LINK" | translate }}</label>
+          <div class="d-flex gap-2">
+            <input type="text" class="w-100 invite-cred" pInputText readonly [value]="inviteResult.url" />
+            <button class="btn btn-outline-secondary" (click)="copyInviteText(inviteResult.url, 'link')">
+              {{ (linkCopied ? "NEDSS.HOME.USERS.INVITE.COPIED" : "NEDSS.HOME.USERS.INVITE.COPY") | translate }}
+            </button>
+          </div>
+
+          <label class="form-label fw-bold mt-3">{{ "NEDSS.HOME.USERS.INVITE.CODE" | translate }}</label>
+          <div class="d-flex gap-2">
+            <input type="text" class="w-100 invite-cred" pInputText readonly [value]="inviteResult.code" />
+            <button class="btn btn-outline-secondary" (click)="copyInviteText(inviteResult.code, 'code')">
+              {{ (codeCopied ? "NEDSS.HOME.USERS.INVITE.COPIED" : "NEDSS.HOME.USERS.INVITE.COPY") | translate }}
+            </button>
+          </div>
+
+          <p class="text-danger mt-3 mb-0">
+            {{ "NEDSS.HOME.USERS.INVITE.EXPIRES_NOTE" | translate }}
+          </p>
+        </div>
+        <ng-template pTemplate="footer">
+          <button class="btn bg text-white rounded-2" (click)="closeInviteDialog()">
+            {{ "NEDSS.COMMON.DONE" | translate }}
+          </button>
+        </ng-template>
+      </p-dialog>
     </div>
   </div>
 

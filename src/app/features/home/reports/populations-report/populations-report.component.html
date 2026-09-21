@@ -179,8 +179,16 @@
     </div>
 </div>
 
+<!--Start Report Message -->
+<div *ngIf="reportMessage" class="mt-4 pb-4 pt-4 box border0 clear hide-print">
+    <div align="center" class="alert alert-warning m-3">
+        {{ reportMessage }}
+    </div>
+</div>
+<!--End Report Message -->
+
 <!--Start No Data -->
-<div *ngIf="!showTableData || tableData === null" class="mt-4 pb-4 pt-4 box border0 clear hide-print">
+<div *ngIf="(!showTableData || tableData === null) && !reportMessage" class="mt-4 pb-4 pt-4 box border0 clear hide-print">
     <div align="center" class="color">
         {{ "NEDSS.REPORTS.NothingToPreview" | translate }}<br />
         <br />
@@ -213,6 +221,7 @@
             ><span class="pi pi-file-excel button-export"></span></a>
         </div>
     </div>
+    <div class="table-scroll">
     <table
         [style.direction]="dir"
         class="table table-hover table-striped table-sm mb-0">
@@ -327,6 +336,7 @@
             </tr>
         </tfoot>
     </table>
+    </div>
     </div>
 <!-- End Table -->
 

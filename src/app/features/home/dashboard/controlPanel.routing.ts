@@ -33,6 +33,7 @@ import { AddUpdateContainerFieldComponent } from './components/add-update-contai
 import { PeriodOfCardsComponent } from './components/period-of-cards/period-of-cards.component';
 import { DataFetchDaysComponent } from './components/controlPanel/data-fetch-days/data-fetch-days.component';
 import { ChartsTabVisibilityComponent } from './components/controlPanel/charts-tab-visibility/charts-tab-visibility.component';
+import { PasswordExpiryDaysComponent } from './components/controlPanel/password-expiry-days/password-expiry-days.component';
 
 const routes: Routes = [
   { path: '', component: ControlPanelComponent },
@@ -194,6 +195,11 @@ const routes: Routes = [
   {
     path: 'charts-tab-visibility',
     component: ChartsTabVisibilityComponent,
+    canActivate: [NavigationGuard],
+  },
+  {
+    path: 'password-expiry-days',
+    component: PasswordExpiryDaysComponent,
     canActivate: [NavigationGuard],
   },
 ];
