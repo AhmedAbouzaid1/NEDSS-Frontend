@@ -54,7 +54,7 @@
         </div>
         <div class="col-lg-4 form-group">
           <label>{{ "NEDSS.MONKEYPOX.SYMPTOMS_ONSET_DATE" | translate }}</label>
-          <input type="date" formControlName="symptomsOnsetDate" [class]="'form-control-' + currentLang" (blur)="calculateCompletionPercentage()" />
+          <app-date-field formControlName="symptomsOnsetDate" (blurred)="calculateCompletionPercentage()"></app-date-field>
         </div>
         <div class="col-lg-4 form-group">
           <label>{{ "NEDSS.MONKEYPOX.HAS_SKIN_RASH" | translate }}</label>
@@ -66,7 +66,7 @@
         </div>
         <div class="col-lg-4 form-group">
           <label>{{ "NEDSS.MONKEYPOX.SKIN_RASH_ONSET_DATE" | translate }}</label>
-          <input type="date" formControlName="skinRashOnsetDate" [class]="'form-control-' + currentLang" placeholder="mm/dd/yyyy" (blur)="calculateCompletionPercentage()" />
+          <app-date-field formControlName="skinRashOnsetDate" (blurred)="calculateCompletionPercentage()"></app-date-field>
         </div>
         <div class="col-lg-4 form-group">
           <label>{{ "NEDSS.MONKEYPOX.SKIN_RASH_TYPE" | translate }}</label>
@@ -82,7 +82,7 @@
         </div>
         <div class="col-lg-6 form-group">
           <label>{{ "NEDSS.MONKEYPOX.FEVER_ONSET_DATE" | translate }}</label>
-          <input type="date" formControlName="feverOnsetDate" [class]="'form-control-' + currentLang" (blur)="calculateCompletionPercentage()" />
+          <app-date-field formControlName="feverOnsetDate" (blurred)="calculateCompletionPercentage()"></app-date-field>
         </div>
       </div>
 
@@ -153,7 +153,7 @@
         <ng-container>
           <div class="col-lg-6 form-group"><label>{{ "NEDSS.MONKEYPOX.CONTACT_PERSON_NAME" | translate }}</label><input formControlName="contactPersonName" class="form-control" (blur)="calculateCompletionPercentage()" /></div>
           <div class="col-lg-3 form-group"><label>{{ "NEDSS.MONKEYPOX.CONTACT_RELATIONSHIP" | translate }}</label><input formControlName="contactRelationship" class="form-control" (blur)="calculateCompletionPercentage()" /></div>
-          <div class="col-lg-3 form-group"><label>{{ "NEDSS.MONKEYPOX.CONTACT_DATE" | translate }}</label><input type="date" formControlName="contactDate" [class]="'form-control-' + currentLang" (blur)="calculateCompletionPercentage()" /></div>
+          <div class="col-lg-3 form-group"><label>{{ "NEDSS.MONKEYPOX.CONTACT_DATE" | translate }}</label><app-date-field formControlName="contactDate" (blurred)="calculateCompletionPercentage()"></app-date-field></div>
           <div class="col-lg-6 form-group"><label>{{ "NEDSS.MONKEYPOX.TOUCHED_PATIENT_BODY_OR_BELONGINGS" | translate }}</label><select formControlName="touchedPatientBodyOrBelongings" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></div>
         </ng-container>
         <div class="col-lg-6 form-group"><label>{{ "NEDSS.MONKEYPOX.ANIMAL_CONTACT" | translate }}</label><select formControlName="animalContact" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></div>
@@ -163,7 +163,7 @@
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.ANIMAL_SKIN_RASH_OR_ULCERS" | translate }}</label><select formControlName="animalSkinRashOrUlcers" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></div>
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.TOUCHED_DEAD_ANIMAL" | translate }}</label><select formControlName="touchedDeadAnimal" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></div>
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.DEAD_ANIMAL_TYPE" | translate }}</label><input formControlName="deadAnimalType" class="form-control" (blur)="calculateCompletionPercentage()" /></div>
-          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.DEAD_ANIMAL_CONTACT_DATE" | translate }}</label><input type="date" formControlName="deadAnimalContactDate" [class]="'form-control-' + currentLang" (blur)="calculateCompletionPercentage()" /></div>
+          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.DEAD_ANIMAL_CONTACT_DATE" | translate }}</label><app-date-field formControlName="deadAnimalContactDate" (blurred)="calculateCompletionPercentage()"></app-date-field></div>
           <div class="col-lg-12 form-group">
             <label>{{ "NEDSS.MONKEYPOX.CONTACT_TYPE" | translate }}</label>
             <textarea
@@ -187,8 +187,8 @@
         <div class="col-lg-6 form-group"><label>{{ "NEDSS.MONKEYPOX.TRAVELED_ABROAD_3WEEKS" | translate }}</label><select formControlName="traveledAbroad3weeks" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></div>
         <ng-container>
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.TRAVEL_DESTINATION_COUNTRY" | translate }}</label><input formControlName="travelDestinationCountry" class="form-control" (blur)="calculateCompletionPercentage()" /></div>
-          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.TRAVEL_DATE" | translate }}</label><input type="date" formControlName="travelDate" [class]="'form-control-' + currentLang" (blur)="calculateCompletionPercentage()" /></div>
-          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.RETURN_DATE" | translate }}</label><input type="date" formControlName="returnDate" [class]="'form-control-' + currentLang" (blur)="calculateCompletionPercentage()" /></div>
+          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.TRAVEL_DATE" | translate }}</label><app-date-field formControlName="travelDate" (blurred)="calculateCompletionPercentage()"></app-date-field></div>
+          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.RETURN_DATE" | translate }}</label><app-date-field formControlName="returnDate" (blurred)="calculateCompletionPercentage()"></app-date-field></div>
         </ng-container>
         <div class="col-lg-6 form-group"><label>{{ "NEDSS.MONKEYPOX.TRAVELED_DOMESTICALLY_DURING_ILLNESS" | translate }}</label><select formControlName="traveledDomesticallyDuringIllness" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></div>
         <div class="col-lg-12" formArrayName="domesticTravelLocations">
@@ -211,7 +211,7 @@
       <div class="row mt-2">
         <div class="col-12 title fs-6 fwb">{{ "NEDSS.MONKEYPOX.LABORATORY_SAMPLES" | translate }}</div>
         <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.SAMPLE_COLLECTED" | translate }}</label><select formControlName="sampleCollected" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></div>
-        <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.SAMPLE_COLLECTION_DATE" | translate }}</label><input type="date" formControlName="sampleCollectionDate" [class]="'form-control-' + currentLang" (blur)="calculateCompletionPercentage()" /></div>
+        <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.SAMPLE_COLLECTION_DATE" | translate }}</label><app-date-field formControlName="sampleCollectionDate" (blurred)="calculateCompletionPercentage()"></app-date-field></div>
         <div class="col-lg-12">
           <label>{{ "NEDSS.MONKEYPOX.SAMPLE_TYPE" | translate }}</label>
           <div class="row">
@@ -232,12 +232,12 @@
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.HOSPITAL_TYPE" | translate }}</label><select formControlName="hospitalType" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.MONKEYPOX.HOSPITAL_TYPE_1" | translate }}</option><option [ngValue]="2">{{ "NEDSS.MONKEYPOX.HOSPITAL_TYPE_2" | translate }}</option><option [ngValue]="3">{{ "NEDSS.MONKEYPOX.HOSPITAL_TYPE_3" | translate }}</option></select></div>
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.ADMITTED_TO_WARD" | translate }}</label><select formControlName="admittedToWard" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option [ngValue]="1">{{ "NEDSS.COMMON.YES" | translate }}</option><option [ngValue]="2">{{ "NEDSS.COMMON.NO" | translate }}</option></select></div>
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.WARD_HOSPITAL_NAME" | translate }}</label><input formControlName="wardHospitalName" class="form-control" (blur)="calculateCompletionPercentage()" /></div>
-          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.ADMISSION_DATE" | translate }}</label><input type="date" formControlName="admissionDate" [class]="'form-control-' + currentLang" (blur)="calculateCompletionPercentage()" /></div>
-          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.DISCHARGE_DATE" | translate }}</label><input type="date" formControlName="dischargeDate" [class]="'form-control-' + currentLang" (blur)="calculateCompletionPercentage()" /></div>
+          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.ADMISSION_DATE" | translate }}</label><app-date-field formControlName="admissionDate" (blurred)="calculateCompletionPercentage()"></app-date-field></div>
+          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.DISCHARGE_DATE" | translate }}</label><app-date-field formControlName="dischargeDate" (blurred)="calculateCompletionPercentage()"></app-date-field></div>
         </ng-container>
         <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.PATIENT_STATUS" | translate }}</label><select formControlName="patientStatus" class="form-control" (change)="calculateCompletionPercentage()"><option [ngValue]="null"></option><option value="alive">{{ "NEDSS.MONKEYPOX.PATIENT_STATUS_ALIVE" | translate }}</option><option value="deceased">{{ "NEDSS.MONKEYPOX.PATIENT_STATUS_DECEASED" | translate }}</option></select></div>
         <ng-container>
-          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.DEATH_DATE_CONFIRMED" | translate }}</label><input type="date" formControlName="deathDateConfirmed" [class]="'form-control-' + currentLang" (blur)="calculateCompletionPercentage()" /></div>
+          <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.DEATH_DATE_CONFIRMED" | translate }}</label><app-date-field formControlName="deathDateConfirmed" (blurred)="calculateCompletionPercentage()"></app-date-field></div>
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.DEATH_PLACE" | translate }}</label><input formControlName="deathPlace" class="form-control" (blur)="calculateCompletionPercentage()" /></div>
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.BURIAL_PLACE_VILLAGE" | translate }}</label><input formControlName="burialPlaceVillage" class="form-control" (blur)="calculateCompletionPercentage()" /></div>
           <div class="col-lg-4 form-group"><label>{{ "NEDSS.MONKEYPOX.BURIAL_PLACE_CITY" | translate }}</label><input formControlName="burialPlaceCity" class="form-control" (blur)="calculateCompletionPercentage()" /></div>

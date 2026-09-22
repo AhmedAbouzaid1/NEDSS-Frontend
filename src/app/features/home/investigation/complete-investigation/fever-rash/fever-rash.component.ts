@@ -44,7 +44,7 @@ export class FeverRashComponent implements OnInit {
     { key: 'unit', label: 'التقصى على مستوى الوحدة الصحية' },
     { key: 'survey', label: 'المسح الميدانى 30 طفل' },
     { key: 'survey400', label: 'المسح الميداني 400 طفل' },
-    { key: 'followup', label: 'متابعة الحالة بعد 28 يوم' },
+    { key: 'followup', label: 'متابعة الحالة بعد 21 يوم' },
   ];
 
   // Each field-survey tab needs the investigations permission or its own dedicated permission.
@@ -141,6 +141,7 @@ export class FeverRashComponent implements OnInit {
       mrRoutineDoses: new FormControl(),
       mrCampaignDoses: new FormControl(),
       mrLastDoseDate: new FormControl(),
+      noCaseMovements: new FormControl(false),
       caseMovements: new FormArray([]),
       hasPreviousCases: new FormControl(),
       previousCases: new FormArray([]),
@@ -156,20 +157,28 @@ export class FeverRashComponent implements OnInit {
       coverageVisitDate: new FormControl(),
       coverageMonth: new FormControl(),
       covUnitRoutineMmr1Target: new FormControl(),
+      covUnitRoutineMmr1Vaccinated: new FormControl(),
       covUnitRoutineMmr1Rate: new FormControl(),
       covUnitRoutineMmr2Target: new FormControl(),
+      covUnitRoutineMmr2Vaccinated: new FormControl(),
       covUnitRoutineMmr2Rate: new FormControl(),
       covUnitCampaignMmr1Target: new FormControl(),
+      covUnitCampaignMmr1Vaccinated: new FormControl(),
       covUnitCampaignMmr1Rate: new FormControl(),
       covUnitCampaignMmr2Target: new FormControl(),
+      covUnitCampaignMmr2Vaccinated: new FormControl(),
       covUnitCampaignMmr2Rate: new FormControl(),
       covAdminRoutineMmr1Target: new FormControl(),
+      covAdminRoutineMmr1Vaccinated: new FormControl(),
       covAdminRoutineMmr1Rate: new FormControl(),
       covAdminRoutineMmr2Target: new FormControl(),
+      covAdminRoutineMmr2Vaccinated: new FormControl(),
       covAdminRoutineMmr2Rate: new FormControl(),
       covAdminCampaignMmr1Target: new FormControl(),
+      covAdminCampaignMmr1Vaccinated: new FormControl(),
       covAdminCampaignMmr1Rate: new FormControl(),
       covAdminCampaignMmr2Target: new FormControl(),
+      covAdminCampaignMmr2Vaccinated: new FormControl(),
       covAdminCampaignMmr2Rate: new FormControl(),
       lastCaseDateAdmin: new FormControl(),
       lastCaseDateDirectorate: new FormControl(),
@@ -296,7 +305,7 @@ export class FeverRashComponent implements OnInit {
 
   // Start each card grid with one empty record when none were loaded.
   private ensureDefaultRows() {
-    if (this.caseMovements.length === 0) this.addCaseMovement();
+    if (!this.feverRashForm.get('noCaseMovements')?.value && this.caseMovements.length === 0) this.addCaseMovement();
     if (this.previousCases.length === 0) this.addPreviousCase();
     if (this.generalContacts.length === 0) this.addGeneralContact();
     if (this.surveyChildren.length === 0) this.addSurveyChild();
@@ -435,6 +444,14 @@ export class FeverRashComponent implements OnInit {
   removeCaseMovement(i: number) {
     this.openRows.delete(this.caseMovements.at(i));
     this.caseMovements.removeAt(i);
+  }
+  onNoMovementsChange() {
+    if (this.feverRashForm.get('noCaseMovements')?.value) {
+      this.caseMovements.controls.forEach((c) => this.openRows.delete(c));
+      this.caseMovements.clear();
+    } else if (this.caseMovements.length === 0) {
+      this.addCaseMovement();
+    }
   }
 
   addPreviousCase() {
@@ -601,6 +618,25 @@ export class FeverRashComponent implements OnInit {
   get survey400Mmr1() { return this.survey400YesNo('mmr1'); }
   get survey400Mmr2() { return this.survey400YesNo('mmr2'); }
   get survey400Symptoms() { return this.survey400YesNo('hasSymptoms'); }
+
+  updateCoverageRate(targetKey: string, vaccinatedKey: string, rateKey: string): void {
+    const form = this.feverRashForm;
+    const targetRaw = form.get(targetKey)?.value;
+    const vaccinatedRaw = form.get(vaccinatedKey)?.value;
+    const target = targetRaw === null || targetRaw === '' ? NaN : Number(targetRaw);
+    let vaccinated = vaccinatedRaw === null || vaccinatedRaw === '' ? NaN : Number(vaccinatedRaw);
+
+    if (!isNaN(vaccinated) && !isNaN(target) && vaccinated > target) {
+      vaccinated = target;
+      form.get(vaccinatedKey)?.setValue(target, { emitEvent: false });
+    }
+
+    if (!isNaN(vaccinated) && !isNaN(target) && target > 0) {
+      form.get(rateKey)?.setValue(Math.round((vaccinated / target) * 100), { emitEvent: false });
+    } else {
+      form.get(rateKey)?.setValue(null, { emitEvent: false });
+    }
+  }
 
   // ===================== Save =====================
   save() {

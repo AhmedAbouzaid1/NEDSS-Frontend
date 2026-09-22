@@ -14,12 +14,15 @@ import { SidebarModule } from 'primeng/sidebar';
 import { RedirectComponent } from './components/redirect/redirect.component';
 import { AttachemntNamePipe } from '../Pipes/attachemnt-name.pipe';
 import { NoFutureDateDirective } from './directives/no-future-date.directive';
+import { NoFutureNativeDateDirective } from './directives/no-future-native-date.directive';
 import { ClearInvalidMinDateDirective } from './directives/clear-invalid-min-date.directive';
 import { ScrollIntoViewOnResultsDirective } from './directives/scroll-into-view-on-results.directive';
 import { DropdownLoadingDirective } from './directives/dropdown-loading.directive';
 import { DropdownNoAutofocusFilterDirective } from './directives/dropdown-no-autofocus-filter.directive';
 import { NoNegativeNumberDirective } from './directives/no-negative-number.directive';
 import { RecentDaysNoteComponent } from './components/recent-days-note/recent-days-note.component';
+import { MaterialModule } from './material-module';
+import { DateFieldComponent } from './components/date-field/date-field.component';
 @NgModule({
   declarations: [
     RecentDaysNoteComponent,
@@ -34,13 +37,15 @@ import { RecentDaysNoteComponent } from './components/recent-days-note/recent-da
     RedirectComponent,
     AttachemntNamePipe,
     NoFutureDateDirective,
+    NoFutureNativeDateDirective,
     ClearInvalidMinDateDirective,
     ScrollIntoViewOnResultsDirective,
     DropdownLoadingDirective,
     DropdownNoAutofocusFilterDirective,
     NoNegativeNumberDirective,
+    DateFieldComponent,
   ],
-  imports: [CommonModule, SidebarModule, TranslateModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, SidebarModule, TranslateModule, ReactiveFormsModule, FormsModule, MaterialModule],
   exports: [
     RecentDaysNoteComponent,
     PageLoadingComponent,
@@ -53,11 +58,13 @@ import { RecentDaysNoteComponent } from './components/recent-days-note/recent-da
     BuildFormComponent,
     AttachemntNamePipe,
     NoFutureDateDirective,
+    NoFutureNativeDateDirective,
     ClearInvalidMinDateDirective,
     ScrollIntoViewOnResultsDirective,
     DropdownLoadingDirective,
     DropdownNoAutofocusFilterDirective,
     NoNegativeNumberDirective,
+    DateFieldComponent,
   ],
 })
 export class SharedModule { }

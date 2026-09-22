@@ -1,0 +1,21 @@
+<label *ngIf="label">
+  {{ label }}
+  <span *ngIf="required" class="text-danger mess-color">*</span>
+</label>
+<mat-form-field appearance="fill">
+  <mat-label>{{ "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate }}</mat-label>
+  <input
+    matInput
+    [matDatepicker]="picker"
+    [value]="value"
+    [min]="minDate"
+    [max]="maxDate"
+    [disabled]="disabled"
+    [required]="required"
+    [attr.tabindex]="tabindex"
+    (dateChange)="onPickerChange($event)"
+    (blur)="onBlur()"
+  />
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
