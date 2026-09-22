@@ -55,13 +55,13 @@
             <div class="col-lg-2 col-md-6">
               <div class="form-group">
                 <label class="fwb">تاريخ التقرير</label>
-                <input type="date" class="form-control" formControlName="reportDate" />
+                <app-date-field formControlName="reportDate"></app-date-field>
               </div>
             </div>
             <div class="col-lg-2 col-md-6">
               <div class="form-group">
                 <label class="fwb">تاريخ زيارة منزل الحالة</label>
-                <input type="date" class="form-control" formControlName="homeVisitDate" />
+                <app-date-field formControlName="homeVisitDate"></app-date-field>
               </div>
             </div>
           </div>
@@ -91,14 +91,7 @@
                   <div class="col-lg-3 col-md-6">
                     <div class="form-group">
                       <label class="fwb">تاريخ الطفح<span *ngIf="feverDate"> (لا يسبق تاريخ الحمى {{ feverDate }})</span></label>
-                      <input
-                        type="date"
-                        class="form-control"
-                        formControlName="rashDate"
-                        [min]="feverDate"
-                        [max]="today"
-                        [class.is-invalid]="feverRashForm.get('rashDate')?.hasError('rashBeforeFever') || feverRashForm.get('rashDate')?.hasError('rashInFuture')"
-                      />
+                      <app-date-field formControlName="rashDate" [min]="feverDate" [max]="today"></app-date-field>
                       <div class="invalid-feedback d-block" *ngIf="feverRashForm.get('rashDate')?.hasError('rashInFuture')">
                         تاريخ الطفح لا يمكن أن يكون في المستقبل
                       </div>
@@ -240,21 +233,21 @@
                           <td>Measles</td>
                           <td><input type="number" class="form-control" formControlName="measlesRoutineDoses" /></td>
                           <td><input type="number" class="form-control" formControlName="measlesCampaignDoses" /></td>
-                          <td><input type="date" class="form-control" formControlName="measlesLastDoseDate" /></td>
+                          <td><app-date-field formControlName="measlesLastDoseDate"></app-date-field></td>
                           <td class="fwb">{{ (+feverRashForm.value.measlesRoutineDoses || 0) + (+feverRashForm.value.measlesCampaignDoses || 0) }}</td>
                         </tr>
                         <tr>
                           <td>MMR</td>
                           <td><input type="number" class="form-control" formControlName="mmrRoutineDoses" /></td>
                           <td><input type="number" class="form-control" formControlName="mmrCampaignDoses" /></td>
-                          <td><input type="date" class="form-control" formControlName="mmrLastDoseDate" /></td>
+                          <td><app-date-field formControlName="mmrLastDoseDate"></app-date-field></td>
                           <td class="fwb">{{ (+feverRashForm.value.mmrRoutineDoses || 0) + (+feverRashForm.value.mmrCampaignDoses || 0) }}</td>
                         </tr>
                         <tr>
                           <td>MR</td>
                           <td><input type="number" class="form-control" formControlName="mrRoutineDoses" /></td>
                           <td><input type="number" class="form-control" formControlName="mrCampaignDoses" /></td>
-                          <td><input type="date" class="form-control" formControlName="mrLastDoseDate" /></td>
+                          <td><app-date-field formControlName="mrLastDoseDate"></app-date-field></td>
                           <td class="fwb">{{ (+feverRashForm.value.mrRoutineDoses || 0) + (+feverRashForm.value.mrCampaignDoses || 0) }}</td>
                         </tr>
                       </tbody>
@@ -311,7 +304,7 @@
 
                       <div class="row" *ngIf="isRowOpen(m)">
                         <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة</label>
-                          <input type="date" class="form-control" formControlName="visitDate" /></div></div>
+                          <app-date-field formControlName="visitDate"></app-date-field></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>مكان المخالطة</label>
                           <select class="form-control" formControlName="contactPlace">
                             <option [ngValue]="null">اختر...</option>
@@ -404,7 +397,7 @@
                           <div class="col-lg-4"><div class="form-group"><label>اسم المخالط</label>
                             <input type="text" class="form-control" formControlName="contactName" /></div></div>
                           <div class="col-lg-4"><div class="form-group"><label>تاريخ ظهور الطفح</label>
-                            <input type="date" class="form-control" formControlName="rashOnsetDate" /></div></div>
+                            <app-date-field formControlName="rashOnsetDate"></app-date-field></div></div>
                           <div class="col-lg-4"><div class="form-group"><label>صلة القرابة</label>
                             <select class="form-control" formControlName="kinship">
                               <option [ngValue]="null">اختر...</option>
@@ -433,7 +426,7 @@
                               <option [ngValue]="3">غير مستحق</option><option [ngValue]="4">غير معروف</option>
                             </select></div></div>
                           <div class="col-lg-4"><div class="form-group"><label>تاريخ المخالطة</label>
-                            <input type="date" class="form-control" formControlName="contactDate" /></div></div>
+                            <app-date-field formControlName="contactDate"></app-date-field></div></div>
                         </div>
                       </div>
                       <div *ngIf="previousCases.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة سجل.</div>
@@ -530,16 +523,16 @@
                             <option [ngValue]="7">وسائل النقل</option>
                           </select></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع1</label>
-                          <input type="date" class="form-control" formControlName="visitWeek1" /></div></div>
+                          <app-date-field formControlName="visitWeek1"></app-date-field></div></div>
                         <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek1" /> أعراض أسبوع1</label></div>
                         <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع2</label>
-                          <input type="date" class="form-control" formControlName="visitWeek2" /></div></div>
+                          <app-date-field formControlName="visitWeek2"></app-date-field></div></div>
                         <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek2" /> أعراض أسبوع2</label></div>
                         <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع3</label>
-                          <input type="date" class="form-control" formControlName="visitWeek3" /></div></div>
+                          <app-date-field formControlName="visitWeek3"></app-date-field></div></div>
                         <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek3" /> أعراض أسبوع3</label></div>
                         <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع4</label>
-                          <input type="date" class="form-control" formControlName="visitWeek4" /></div></div>
+                          <app-date-field formControlName="visitWeek4"></app-date-field></div></div>
                         <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek4" /> أعراض أسبوع4</label></div>
                       </div>
                     </div>
@@ -623,7 +616,7 @@
                           <div class="col-lg-2"><div class="form-group"><label>السن</label>
                             <input type="number" class="form-control" formControlName="age" /></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>تاريخ ظهور الطفح</label>
-                            <input type="date" class="form-control" formControlName="rashOnsetDate" /></div></div>
+                            <app-date-field formControlName="rashOnsetDate"></app-date-field></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>صلة القرابة</label>
                             <select class="form-control" formControlName="kinship">
                               <option [ngValue]="null">اختر...</option>
@@ -652,34 +645,34 @@
                               <option [ngValue]="3">غير مستحق</option><option [ngValue]="4">غير معروف</option>
                             </select></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>تاريخ المخالطة</label>
-                            <input type="date" class="form-control" formControlName="contactDate" /></div></div>
+                            <app-date-field formControlName="contactDate"></app-date-field></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>أسبوع الحمل</label>
                             <input type="number" class="form-control" formControlName="pregnancyWeeks" /></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة1</label>
-                            <input type="date" class="form-control" formControlName="sample1Date" /></div></div>
+                            <app-date-field formControlName="sample1Date"></app-date-field></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة1</label>
                             <input type="text" class="form-control" formControlName="sample1Result" /></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة2</label>
-                            <input type="date" class="form-control" formControlName="sample2Date" /></div></div>
+                            <app-date-field formControlName="sample2Date"></app-date-field></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة2</label>
                             <input type="text" class="form-control" formControlName="sample2Result" /></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة المولود</label>
-                            <input type="date" class="form-control" formControlName="newbornSampleDate" /></div></div>
+                            <app-date-field formControlName="newbornSampleDate"></app-date-field></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة المولود</label>
                             <input type="text" class="form-control" formControlName="newbornSampleResult" /></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع1</label>
-                            <input type="date" class="form-control" formControlName="visitWeek1" /></div></div>
+                            <app-date-field formControlName="visitWeek1"></app-date-field></div></div>
                           <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض1 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek1" /></label></div>
                           <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع2</label>
-                            <input type="date" class="form-control" formControlName="visitWeek2" /></div></div>
+                            <app-date-field formControlName="visitWeek2"></app-date-field></div></div>
                           <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض2 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek2" /></label></div>
                           <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع3</label>
-                            <input type="date" class="form-control" formControlName="visitWeek3" /></div></div>
+                            <app-date-field formControlName="visitWeek3"></app-date-field></div></div>
                           <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض3 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek3" /></label></div>
                           <div class="col-lg-4">
                             <div class="row">
                               <div class="col-lg-9"><div class="form-group"><label>زيارة أسبوع4</label>
-                                <input type="date" class="form-control" formControlName="visitWeek4" /></div></div>
+                                <app-date-field formControlName="visitWeek4"></app-date-field></div></div>
                               <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض4 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek4" /></label></div>
                             </div>
                           </div>
@@ -701,7 +694,7 @@
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ زيارة الوحدة</label>
-                    <input type="date" class="form-control" formControlName="coverageVisitDate" /></div></div>
+                    <app-date-field formControlName="coverageVisitDate"></app-date-field></div></div>
                   <div class="col-lg-6"><div class="form-group"><label>شهر نسب التغطية</label>
                     <select class="form-control" formControlName="coverageMonth">
                       <option [ngValue]="null">اختر...</option>
@@ -764,9 +757,9 @@
                   </div>
 
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالإدارة</label>
-                    <input type="date" class="form-control" formControlName="lastCaseDateAdmin" /></div></div>
+                    <app-date-field formControlName="lastCaseDateAdmin"></app-date-field></div></div>
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالمديرية</label>
-                    <input type="date" class="form-control" formControlName="lastCaseDateDirectorate" /></div></div>
+                    <app-date-field formControlName="lastCaseDateDirectorate"></app-date-field></div></div>
 
                   <div class="col-lg-4">
                     <div class="form-group"><label>هل يوجد حالات مؤكدة خلال الشهر السابق؟</label>
@@ -810,7 +803,7 @@
                 <div class="row">
                   <div class="col-12 title fs-6 fwb">المسح الميداني - 30 طفل</div>
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ الزيارة الميدانية</label>
-                    <input type="date" class="form-control" formControlName="fieldVisitDate" /></div></div>
+                    <app-date-field formControlName="fieldVisitDate"></app-date-field></div></div>
                   <div class="col-lg-6"><div class="form-group"><label>رقم المربع</label>
                     <input type="text" class="form-control" formControlName="fieldSquareNumber" /></div></div>
 
@@ -910,7 +903,7 @@
                 <div class="row">
                   <div class="col-12 title fs-6 fwb">المسح الميداني - 400 طفل</div>
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ الزيارة الميدانية</label>
-                    <input type="date" class="form-control" formControlName="field400VisitDate" /></div></div>
+                    <app-date-field formControlName="field400VisitDate"></app-date-field></div></div>
                   <div class="col-lg-6"><div class="form-group"><label>رقم المربع</label>
                     <input type="text" class="form-control" formControlName="field400SquareNumber" /></div></div>
 
@@ -1058,9 +1051,9 @@
                         </tr>
                         <tr>
                           <td class="fwb">التاريخ</td>
-                          <td><input type="date" class="form-control" formControlName="committeeSpecialistDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="adminOfficerDate" /></td>
-                          <td><input type="date" class="form-control" formControlName="directorateOfficerDate" /></td>
+                          <td><app-date-field formControlName="committeeSpecialistDate"></app-date-field></td>
+                          <td><app-date-field formControlName="adminOfficerDate"></app-date-field></td>
+                          <td><app-date-field formControlName="directorateOfficerDate"></app-date-field></td>
                         </tr>
                       </tbody>
                     </table>

@@ -39,7 +39,7 @@ import { HomeModule } from './features/home/home.module';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgDropdownSinglComponent } from './core/components/ng-dropdown-singl/ng-dropdown-singl.component';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { DatepickerMaxTodayDirective } from './datepicker-max-today.directive';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
@@ -138,6 +138,7 @@ export const DATE_FORMATS = {
       provide: MAT_DATE_FORMATS,
       useValue: DATE_FORMATS,
     },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
