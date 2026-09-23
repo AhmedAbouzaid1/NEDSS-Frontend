@@ -91,7 +91,7 @@
                   <div class="col-lg-3 col-md-6">
                     <div class="form-group">
                       <label class="fwb">تاريخ الطفح</label>
-                      <app-date-field formControlName="rashDate" [min]="rashMinDate" [max]="rashMaxDate"></app-date-field>
+                      <app-date-field class="date-with-note" formControlName="rashDate" [min]="rashMinDate" [max]="rashMaxDate"></app-date-field>
                       <small class="form-text text-muted d-block">
                         بعد تاريخ الحمى{{ feverDate ? ' ' + feverDate : '' }} وقبل أو في نفس يوم اكتشاف الحالة{{ caseDiscoveryDate ? ' ' + caseDiscoveryDate : '' }}
                       </small>
@@ -411,7 +411,11 @@
                           <div class="col-lg-4"><div class="form-group"><label>اسم المخالط</label>
                             <input type="text" class="form-control" formControlName="contactName" /></div></div>
                           <div class="col-lg-4"><div class="form-group"><label>تاريخ ظهور الطفح</label>
-                            <app-date-field formControlName="rashOnsetDate"></app-date-field></div></div>
+                            <app-date-field class="date-with-note" formControlName="rashOnsetDate" [max]="previousCaseMaxDate"></app-date-field>
+                            <small class="form-text text-muted d-block">قبل تاريخ طفح الحالة{{ caseRashDate ? ' ' + caseRashDate : '' }}</small>
+                            <small *ngIf="isBeforeCaseRashInvalid(p.value.rashOnsetDate)" class="form-text text-danger mess-color d-block">
+                              تاريخ ظهور الطفح يجب أن يكون قبل تاريخ طفح الحالة ({{ caseRashDate }})
+                            </small></div></div>
                           <div class="col-lg-4"><div class="form-group"><label>صلة القرابة</label>
                             <select class="form-control" formControlName="kinship">
                               <option [ngValue]="null">اختر...</option>
@@ -440,7 +444,11 @@
                               <option [ngValue]="3">غير مستحق</option><option [ngValue]="4">غير معروف</option>
                             </select></div></div>
                           <div class="col-lg-4"><div class="form-group"><label>تاريخ المخالطة</label>
-                            <app-date-field formControlName="contactDate"></app-date-field></div></div>
+                            <app-date-field class="date-with-note" formControlName="contactDate" [max]="previousCaseMaxDate"></app-date-field>
+                            <small class="form-text text-muted d-block">قبل تاريخ طفح الحالة{{ caseRashDate ? ' ' + caseRashDate : '' }}</small>
+                            <small *ngIf="isBeforeCaseRashInvalid(p.value.contactDate)" class="form-text text-danger mess-color d-block">
+                              تاريخ المخالطة يجب أن يكون قبل تاريخ طفح الحالة ({{ caseRashDate }})
+                            </small></div></div>
                         </div>
                       </div>
                       <div *ngIf="previousCases.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة سجل.</div>
@@ -663,11 +671,19 @@
                           <div class="col-lg-3"><div class="form-group"><label>أسبوع الحمل</label>
                             <input type="number" class="form-control" formControlName="pregnancyWeeks" /></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة1</label>
-                            <app-date-field formControlName="sample1Date"></app-date-field></div></div>
+                            <app-date-field class="date-with-note" formControlName="sample1Date" [min]="caseDiscoveryDate"></app-date-field>
+                            <small class="form-text text-muted d-block">في نفس يوم اكتشاف الحالة أو بعده{{ caseDiscoveryDate ? ' ' + caseDiscoveryDate : '' }}</small>
+                            <small *ngIf="isBeforeDiscoveryInvalid(contact.value.sample1Date)" class="form-text text-danger mess-color d-block">
+                              تاريخ عينة1 لا يمكن أن يكون قبل تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }})
+                            </small></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة1</label>
                             <input type="text" class="form-control" formControlName="sample1Result" /></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة2</label>
-                            <app-date-field formControlName="sample2Date"></app-date-field></div></div>
+                            <app-date-field class="date-with-note" formControlName="sample2Date" [min]="caseDiscoveryDate"></app-date-field>
+                            <small class="form-text text-muted d-block">في نفس يوم اكتشاف الحالة أو بعده{{ caseDiscoveryDate ? ' ' + caseDiscoveryDate : '' }}</small>
+                            <small *ngIf="isBeforeDiscoveryInvalid(contact.value.sample2Date)" class="form-text text-danger mess-color d-block">
+                              تاريخ عينة2 لا يمكن أن يكون قبل تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }})
+                            </small></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة2</label>
                             <input type="text" class="form-control" formControlName="sample2Result" /></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>تاريخ عينة المولود</label>

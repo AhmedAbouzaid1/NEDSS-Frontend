@@ -657,6 +657,43 @@ export class FeverRashComponent implements OnInit {
     }
   }
 
+  get caseRashDate(): string | null {
+    return this.d(this.feverRashForm?.get('rashDate')?.value);
+  }
+
+  get previousCaseMaxDate(): string | null {
+    const rash = this.caseRashDate;
+    if (!rash) return null;
+    const prev = new Date(rash + 'T00:00:00');
+    prev.setDate(prev.getDate() - 1);
+    return this.d(prev);
+  }
+
+  isBeforeCaseRashInvalid(value: any): boolean {
+    const date = this.d(value);
+    const rash = this.caseRashDate;
+    return !!date && !!rash && date >= rash;
+  }
+
+  isBeforeDiscoveryInvalid(value: any): boolean {
+    const date = this.d(value);
+    return !!date && !!this.caseDiscoveryDate && date < this.caseDiscoveryDate;
+  }
+
+  private hasInvalidPregnantSampleDates(): boolean {
+    if (this.feverRashForm.value.hasPregnantContacts !== 1) return false;
+    return this.pregnantContacts.controls.some(
+      (c) => this.isBeforeDiscoveryInvalid(c.value.sample1Date) || this.isBeforeDiscoveryInvalid(c.value.sample2Date)
+    );
+  }
+
+  private hasInvalidPreviousCaseDates(): boolean {
+    if (this.feverRashForm.value.hasPreviousCases !== 1) return false;
+    return this.previousCases.controls.some(
+      (c) => this.isBeforeCaseRashInvalid(c.value.rashOnsetDate) || this.isBeforeCaseRashInvalid(c.value.contactDate)
+    );
+  }
+
   // ===================== Save =====================
   save() {
     const rashCtrl = this.feverRashForm.controls['rashDate'];
@@ -671,6 +708,14 @@ export class FeverRashComponent implements OnInit {
     }
     if (rashCtrl.hasError('rashAfterDiscovery')) {
       this.userMsg.error(`تاريخ الطفح يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    if (this.hasInvalidPregnantSampleDates()) {
+      this.userMsg.error(`في حصر المخالطين: تاريخ عينة المخالطة الحامل لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    if (this.hasInvalidPreviousCaseDates()) {
+      this.userMsg.error(`في خط سير الحالات السابقة: تاريخ ظهور الطفح وتاريخ المخالطة يجب أن يكونا قبل تاريخ طفح الحالة (${this.caseRashDate})`);
       return;
     }
     this.feverRashForm.controls['diseaseGroupID'].setValue(this.investigationService.diseaseGroupID);
