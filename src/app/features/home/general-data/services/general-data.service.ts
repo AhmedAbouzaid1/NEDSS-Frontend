@@ -514,6 +514,7 @@ export class GeneralDataService {
     this.isHomeHealthOfficeIdValid = true;
     this.isAdressValid = true;
     this.isFeverDurationValid = true;
+    this.isFeverDateValid = true;
     this.isFeverMaxTemperatureValid = true;
     this.isFeverDurationTypeValid = true;
     this.isChronicDiseaseValid = true;
@@ -521,6 +522,7 @@ export class GeneralDataService {
     this.isDoctorNameValid = true;
     this.isPatientDiseasesValid = true;
     this.isInfectionDateValid = true;
+    this.isInfectionDateNotAfterDiscoveryValid = true;
     this.isHospitalEntryDateValid = true;
   }
 
@@ -849,6 +851,7 @@ export class GeneralDataService {
 
   //#region "Clinical Symptoms"
   isFeverDurationValid: boolean = true;
+  isFeverDateValid: boolean = true;
   isFeverMaxTemperatureValid: boolean = true;
   isGeneralSymptomsValid: boolean = true;
   isGASTROLINTESTINALSympotomsValid: boolean = true;
@@ -870,6 +873,10 @@ export class GeneralDataService {
         this.validateFeverMaxTemperature(
           patient.feverSymptoms.feverMaxTemp
         );
+      this.isFeverDateValid = this.checkFeverDateNotAfterDiscovery(
+        patient.feverSymptoms.feverDate,
+        patient.caseDiscoveryDate
+      );
       this.isChronicDiseaseValid = this.validateChronicDisease(
         patient.chronicDiseasesIds,
         patient.anotherChronicDisease,
@@ -887,6 +894,7 @@ export class GeneralDataService {
 
       var validationResults = [
         this.isFeverDurationValid,
+        this.isFeverDateValid,
         this.isFeverMaxTemperatureValid,
         this.isGeneralSymptomsValid,
         this.isGASTROLINTESTINALSympotomsValid,
@@ -947,6 +955,7 @@ export class GeneralDataService {
   isDoctorNameValid: boolean = true;
   isPatientDiseasesValid: boolean = true;
   isInfectionDateValid: boolean = true;
+  isInfectionDateNotAfterDiscoveryValid: boolean = true;
   isHospitalEntryDateValid: boolean = true;
   isSpecialLabNameValid: boolean = true;
 
@@ -963,6 +972,10 @@ export class GeneralDataService {
     this.isInfectionDateValid =
       this.validateField(patient.infectionDate) ||
       patient.incidentDepartmentId != 1;
+    this.isInfectionDateNotAfterDiscoveryValid = this.checkFeverDateNotAfterDiscovery(
+      patient.infectionDate,
+      patient.caseDiscoveryDate
+    );
     this.isHospitalEntryDateValid =
       this.validateField(patient.hospitalEntryDate) ||
       patient.incidentDepartmentId != 1;
@@ -975,6 +988,7 @@ export class GeneralDataService {
       this.isDoctorNameValid,
       this.isPatientDiseasesValid,
       this.isInfectionDateValid,
+      this.isInfectionDateNotAfterDiscoveryValid,
       this.isHospitalEntryDateValid,
       this.isSpecialLabNameValid,
     ];
@@ -1406,8 +1420,24 @@ export class GeneralDataService {
     return failed ? failed[1] : null;
   }
 
+  toYmdDate(value: any): string | null {
+    if (value == null || value === '') return null;
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return null;
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${mm}-${dd}`;
+  }
+
+  checkFeverDateNotAfterDiscovery(feverDate: any, caseDiscoveryDate: any): boolean {
+    const fever = this.toYmdDate(feverDate);
+    const discovery = this.toYmdDate(caseDiscoveryDate);
+    return !fever || !discovery || fever <= discovery;
+  }
+
   getClinicalSymptomsInvalidFieldLabel(patient: any): string | null {
     const items: Array<[boolean, string]> = [
+      [this.isFeverDateValid, 'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_DATE'],
       [this.isFeverMaxTemperatureValid, 'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_MAX_TEMP'],
     ];
     const failed = items.find(([valid]) => !valid);
@@ -1418,6 +1448,7 @@ export class GeneralDataService {
     const items: Array<[boolean, string]> = [
       [this.isPatientDiseasesValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES'],
       [this.isInfectionDateValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE'],
+      [this.isInfectionDateNotAfterDiscoveryValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE'],
       [this.isHospitalEntryDateValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALENTRYDATE'],
       [this.isPatientHospitalNoValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.PATIENT_HOSPITAL_NO'],
       [this.isDoctorNameValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DOCTOR_NAME'],

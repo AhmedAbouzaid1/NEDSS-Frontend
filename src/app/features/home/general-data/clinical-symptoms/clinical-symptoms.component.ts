@@ -25,6 +25,30 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
 
   maxDate: Date = new Date();
 
+  private feverMaxDateKey: string | null = null;
+  private feverMaxDateValue: Date = this.maxDate;
+
+  get feverMaxDate(): Date {
+    const key = this.generalDataService.toYmdDate(this.patient?.caseDiscoveryDate);
+    if (key !== this.feverMaxDateKey) {
+      this.feverMaxDateKey = key;
+      const discovery = key ? new Date(key + 'T00:00:00') : null;
+      this.feverMaxDateValue = discovery && discovery < this.maxDate ? discovery : this.maxDate;
+    }
+    return this.feverMaxDateValue;
+  }
+
+  get caseDiscoveryDateLabel(): string | null {
+    return this.generalDataService.toYmdDate(this.patient?.caseDiscoveryDate);
+  }
+
+  get isFeverDateAfterDiscovery(): boolean {
+    return !this.generalDataService.checkFeverDateNotAfterDiscovery(
+      this.patient?.feverSymptoms?.feverDate,
+      this.patient?.caseDiscoveryDate
+    );
+  }
+
   FEVER_DURATION_DAYS: string;
 
   feverDurationTypes: any[] = [

@@ -24,12 +24,12 @@
         <label for="">
           {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_DATE" | translate }}
         </label>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="date-with-note">
           <mat-label>
             {{ "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate }}
           </mat-label>
           <input
-            [max]="maxDate"
+            [max]="feverMaxDate"
             matInput
             [matDatepicker]="feverDatePicker"
             [(ngModel)]="patient.feverSymptoms.feverDate"
@@ -38,6 +38,12 @@
           <mat-datepicker-toggle matIconSuffix [for]="feverDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #feverDatePicker></mat-datepicker>
         </mat-form-field>
+        <small class="form-text text-muted d-block">
+          قبل أو في نفس يوم اكتشاف الحالة{{ caseDiscoveryDateLabel ? ' ' + caseDiscoveryDateLabel : '' }}
+        </small>
+        <small *ngIf="isFeverDateAfterDiscovery" class="form-text text-danger mess-color d-block">
+          تاريخ الحمى يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة ({{ caseDiscoveryDateLabel }})
+        </small>
       </div>
     </div>
     <div class="col-12 col-sm-12 col-md-6 col-lg-3">

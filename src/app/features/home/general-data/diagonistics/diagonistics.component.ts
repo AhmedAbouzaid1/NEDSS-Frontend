@@ -20,6 +20,30 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   minDate = new Date(1900, 0, 1);
   maxDate = new Date();
 
+  private infectionMaxDateKey: string | null = null;
+  private infectionMaxDateValue: Date = this.maxDate;
+
+  get infectionMaxDate(): Date {
+    const key = this.generalDataService.toYmdDate(this.patient?.caseDiscoveryDate);
+    if (key !== this.infectionMaxDateKey) {
+      this.infectionMaxDateKey = key;
+      const discovery = key ? new Date(key + 'T00:00:00') : null;
+      this.infectionMaxDateValue = discovery && discovery < this.maxDate ? discovery : this.maxDate;
+    }
+    return this.infectionMaxDateValue;
+  }
+
+  get caseDiscoveryDateLabel(): string | null {
+    return this.generalDataService.toYmdDate(this.patient?.caseDiscoveryDate);
+  }
+
+  get isInfectionDateAfterDiscovery(): boolean {
+    return !this.generalDataService.checkFeverDateNotAfterDiscovery(
+      this.patient?.infectionDate,
+      this.patient?.caseDiscoveryDate
+    );
+  }
+
   patient: PatientModel = new PatientModel();
   private diseasesInitializedFromPatient = false;
   private lastSyncedPatientId: number | null = null;

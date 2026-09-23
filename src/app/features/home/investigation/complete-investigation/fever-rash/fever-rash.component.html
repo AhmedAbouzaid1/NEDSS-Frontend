@@ -90,13 +90,22 @@
                 <div class="row">
                   <div class="col-lg-3 col-md-6">
                     <div class="form-group">
-                      <label class="fwb">تاريخ الطفح<span *ngIf="feverDate"> (لا يسبق تاريخ الحمى {{ feverDate }})</span></label>
-                      <app-date-field formControlName="rashDate" [min]="feverDate" [max]="today"></app-date-field>
+                      <label class="fwb">تاريخ الطفح</label>
+                      <app-date-field formControlName="rashDate" [min]="rashMinDate" [max]="rashMaxDate"></app-date-field>
+                      <small class="form-text text-muted d-block">
+                        بعد تاريخ الحمى{{ feverDate ? ' ' + feverDate : '' }} وقبل أو في نفس يوم اكتشاف الحالة{{ caseDiscoveryDate ? ' ' + caseDiscoveryDate : '' }}
+                      </small>
+                      <div class="invalid-feedback d-block" *ngIf="feverDate && caseDiscoveryDate && caseDiscoveryDate <= feverDate">
+                        لا يوجد تاريخ طفح صالح: تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }}) ليس بعد تاريخ الحمى ({{ feverDate }})، يرجى مراجعة الإبلاغ العام
+                      </div>
                       <div class="invalid-feedback d-block" *ngIf="feverRashForm.get('rashDate')?.hasError('rashInFuture')">
                         تاريخ الطفح لا يمكن أن يكون في المستقبل
                       </div>
                       <div class="invalid-feedback d-block" *ngIf="feverRashForm.get('rashDate')?.hasError('rashBeforeFever')">
-                        تاريخ الطفح لا يمكن أن يكون قبل تاريخ الحمى ({{ feverDate }})
+                        تاريخ الطفح يجب أن يكون بعد تاريخ الحمى ({{ feverDate }})
+                      </div>
+                      <div class="invalid-feedback d-block" *ngIf="feverRashForm.get('rashDate')?.hasError('rashAfterDiscovery')">
+                        تاريخ الطفح يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }})
                       </div>
                     </div>
                   </div>

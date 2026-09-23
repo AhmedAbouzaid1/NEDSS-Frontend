@@ -79,13 +79,13 @@
                 }}
                 <span *ngIf="patient.incidentDepartmentId == 1" class="text-danger mess-color">*</span>
               </label>
-              <mat-form-field appearance="fill">
+              <mat-form-field appearance="fill" class="date-with-note">
                 <mat-label>
                   {{
                   "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
                   }}
                 </mat-label>
-                <input [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker"
+                <input [min]="minDate" [max]="infectionMaxDate" matInput [matDatepicker]="picker"
                   [(ngModel)]="patient.infectionDate" (blur)="
                     generalDataService.isInfectionDateValid =
                       generalDataService.validateField(patient.infectionDate) ||
@@ -94,8 +94,14 @@
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
+              <small class="form-text text-muted d-block">
+                قبل أو في نفس يوم اكتشاف الحالة{{ caseDiscoveryDateLabel ? ' ' + caseDiscoveryDateLabel : '' }}
+              </small>
               <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isInfectionDateValid" class="form-text text-danger mess-color">
                 {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small>
+              <small *ngIf="isInfectionDateAfterDiscovery" class="form-text text-danger mess-color d-block">
+                تاريخ بداية الأعراض يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة ({{ caseDiscoveryDateLabel }})
               </small>
             </div>
           </div>
