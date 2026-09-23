@@ -103,6 +103,7 @@ import { DiseaseBasedOnResultComponent } from './reports/disease-based-on-result
 import { DiseaseBasedOnDiagnosisComponent } from './reports/disease-based-on-diagnosis/disease-based-on-diagnosis.component';
 import { DiseaseBasedOnAgeComponent } from './reports/disease-based-on-age/disease-based-on-age.component';
 import { DiseaseBasedOnPatientComponent } from './reports/disease-based-on-patient/disease-based-on-patient.component';
+import { InvestigationFormsReportComponent } from './reports/investigation-forms-report/investigation-forms-report.component';
 import { MergeRepeatedRecordsComponent } from './repeated-records/merge-repeated-records/merge-repeated-records.component';
 import { UserReportComponent } from './reports/user-report/user-report.component';
 import { DiseasesRulesReportComponent } from './reports/diseases-rules-report/diseases-rules-report.component';
@@ -678,6 +679,12 @@ const routes: Routes = [
       {
         path: 'disease-based-on-patient',
         component: DiseaseBasedOnPatientComponent,
+      },
+      {
+        path: 'investigation-forms-report',
+        component: InvestigationFormsReportComponent,
+        canActivate: [AuthGuard, NavigationGuard],
+        data: { types: [3] },
       },
       {
         path: 'zero-reporting-report',
