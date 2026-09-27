@@ -501,6 +501,7 @@ export class GeneralDataService {
     this.isThirdNameValid = true;
     this.isFamilyNameValid = true;
     this.isPhoneNumber1Valid = true;
+    this.isPhoneNumber2Valid = true;
     this.livingAddressValid = true;
     this.isGenderValid = true;
     this.isAgeTypeValid = true;
@@ -700,6 +701,7 @@ export class GeneralDataService {
   isThirdNameValid: boolean = true;
   isFamilyNameValid: boolean = true;
   isPhoneNumber1Valid: boolean = true;
+  isPhoneNumber2Valid: boolean = true;
   livingAddressValid: boolean = true;
   isGenderValid: boolean = true;
   isAgeTypeValid: boolean = true;
@@ -732,7 +734,13 @@ export class GeneralDataService {
     const phoneRequired = patient.incidentDepartmentId == DepartmentEnum.Internal;
     this.isPhoneNumber1Valid = this.validatePhoneNumber1(
       patient.phoneNo1,
-      phoneRequired
+      phoneRequired,
+      this.phoneMode(patient.isPhoneNo1International ?? this.isInternationalPhoneFormat(patient.phoneNo1))
+    );
+    this.isPhoneNumber2Valid = this.validatePhoneNumber2(
+      patient.phoneNo2,
+      false,
+      this.phoneMode(patient.isPhoneNo2International ?? this.isInternationalPhoneFormat(patient.phoneNo2))
     );
     this.livingAddressValid = this.validatePhoneNumber1(
       patient.livingAddress,
@@ -752,6 +760,7 @@ export class GeneralDataService {
       this.isThirdNameValid,
       this.isFamilyNameValid,
       this.isPhoneNumber1Valid,
+      this.isPhoneNumber2Valid,
       //this.livingAddressValid,
       this.isGenderValid,
       this.isAgeValid,
@@ -1221,28 +1230,74 @@ export class GeneralDataService {
     }
   }
 
-  validatePhoneNumber1(phoneNo, isRequired) {
+  validatePhoneNumber1(phoneNo, isRequired, mode: 'international' | 'local' | null = null) {
     this.phoneNo1ValidationMessage = this.validatePhoneNumber(
       phoneNo,
-      isRequired
+      isRequired,
+      mode
     );
     return this.phoneNo1ValidationMessage === '';
   }
 
-  validatePhoneNumber2(phoneNo, isRequired) {
+  validatePhoneNumber2(phoneNo, isRequired, mode: 'international' | 'local' | null = null) {
     this.phoneNo2ValidationMessage = this.validatePhoneNumber(
       phoneNo,
-      isRequired
+      isRequired,
+      mode
     );
     return this.phoneNo2ValidationMessage === '';
   }
 
-  validatePhoneNumber(phoneNo: string, isRequired: boolean): string {
+  isInternationalPhoneFormat(phoneNo: any): boolean {
+    const value = phoneNo?.toString().trim();
+    return !!value && /^(\+|00)/.test(value) && !/^(\+20|0020)/.test(value);
+  }
+
+  validateInternationalPhoneNumber(phoneNo: string): string {
+    const value = phoneNo.toString().trim();
+    if (/^(\+20|0020)/.test(value)) {
+      return 'رقم مصري: قم بإلغاء اختيار "رقم دولي" وأدخله كرقم محلي';
+    }
+    if (!/^(\+|00)[1-9]\d{6,14}$/.test(value)) {
+      return 'رقم دولي غير صحيح: يبدأ بـ + أو 00 ثم كود الدولة والرقم (8 إلى 15 رقم)';
+    }
+    return '';
+  }
+
+  phoneMode(isInternational: boolean): 'international' | 'local' {
+    return isInternational ? 'international' : 'local';
+  }
+
+  toLocalPhoneNumber(phoneNo: any): string {
+    const value = phoneNo?.toString().trim() ?? '';
+    const match = value.match(/^(?:\+2|002)(01\d{9})$/);
+    return match ? match[1] : value;
+  }
+
+  validateLocalPhoneNumber(phoneNo: string): string {
+    const value = phoneNo.toString().trim();
+    if (!/^\d{11}$/.test(value)) {
+      return 'NEDSS.LAB_VIEW.ADD_PATIENT.PHONE_NO_NOT_11';
+    }
+    if (!/^01[0125]\d{8}$/.test(value)) {
+      return 'NEDSS.COMMON.INVALID_PHONE_FORMAT';
+    }
+    return '';
+  }
+
+  validatePhoneNumber(phoneNo: string, isRequired: boolean, mode: 'international' | 'local' | null = null): string {
     if (!this.validateEmptyField(phoneNo)) {
       if (isRequired) {
         return 'NEDSS.COMMON.FILEDREQUIRED';
       }
       return '';
+    }
+
+    if (mode === 'international') {
+      return this.validateInternationalPhoneNumber(phoneNo);
+    }
+    if (mode === 'local') {
+      return this.validateLocalPhoneNumber(phoneNo);
     }
 
     let phonePattern = /^(\+201|01|00201)[0-2,5]{1}[0-9]{8}/;
@@ -1271,6 +1326,32 @@ export class GeneralDataService {
       .trim()
       .replace(/^(\+2|002)/, '');
     if (trimmedPhoneNumber.length >= 11) {
+      event.preventDefault();
+    }
+  }
+
+  onLocalPhoneKeyPress(event: KeyboardEvent): void {
+    const input = event.target as HTMLInputElement;
+    if (!/^\d$/.test(event.key)) {
+      event.preventDefault();
+      return;
+    }
+    const selected = (input.selectionEnd ?? 0) - (input.selectionStart ?? 0);
+    if (input.value.length - selected >= 11) {
+      event.preventDefault();
+    }
+  }
+
+  onInternationalPhoneKeyPress(event: KeyboardEvent): void {
+    const input = event.target as HTMLInputElement;
+    const inputKey = event.key;
+    const atStart = input.selectionStart === 0 && !input.value.includes('+');
+    if (inputKey === '+' ? !atStart : isNaN(Number(inputKey)) || inputKey === ' ') {
+      event.preventDefault();
+      return;
+    }
+    const selected = (input.selectionEnd ?? 0) - (input.selectionStart ?? 0);
+    if (input.value.length - selected >= 17) {
       event.preventDefault();
     }
   }
@@ -1437,7 +1518,12 @@ export class GeneralDataService {
       [this.isSecondNameValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.SECOND_NAME'],
       [this.isThirdNameValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.THIRD_NAME'],
       [this.isFamilyNameValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.FAMILY_NAME'],
-      [this.isPhoneNumber1Valid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO1'],
+      [this.isPhoneNumber1Valid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO1',
+        this.phoneNo1ValidationMessage && this.phoneNo1ValidationMessage !== 'NEDSS.COMMON.FILEDREQUIRED'
+          ? this.translate.instant(this.phoneNo1ValidationMessage)
+          : undefined],
+      [this.isPhoneNumber2Valid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO2',
+        this.phoneNo2ValidationMessage ? this.translate.instant(this.phoneNo2ValidationMessage) : undefined],
       [this.isGenderValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.GENDER'],
       [this.isAgeValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGE'],
       [this.isAgeTypeValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGETYPE'],

@@ -347,19 +347,30 @@
                         <div class="col-lg-6"><div class="form-group"><label>العنوان بالتفصيل</label>
                           <input type="text" class="form-control" formControlName="address" /></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>عدد المخالطين المباشرين</label>
-                          <input type="number" class="form-control" formControlName="directContactsCount" /></div></div>
+                          <input type="number" class="form-control bg-light" formControlName="directContactsCount" readonly tabindex="-1" />
+                          <small class="form-text text-muted d-block">إجمالى من لديهم أعراض + إجمالى لا يوجد أعراض (يُحسب تلقائياً)</small></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>إجمالى من لديهم أعراض</label>
-                          <input type="number" class="form-control" formControlName="symptomaticCount" /></div></div>
+                          <input type="number" min="0" step="1" class="form-control" formControlName="symptomaticCount" />
+                          <small *ngIf="movementCountInvalid(m, 'symptomaticCount')" class="form-text text-danger mess-color d-block">رقم صحيح 0 أو أكثر</small></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>إجمالى لا يوجد أعراض</label>
-                          <input type="number" class="form-control" formControlName="noSymptomsCount" /></div></div>
+                          <input type="number" min="0" step="1" class="form-control" formControlName="noSymptomsCount" />
+                          <small *ngIf="movementCountInvalid(m, 'noSymptomsCount')" class="form-text text-danger mess-color d-block">رقم صحيح 0 أو أكثر</small></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>متطعم</label>
-                          <input type="number" class="form-control" formControlName="vaccinatedCount" /></div></div>
+                          <input type="number" min="0" step="1" class="form-control" formControlName="vaccinatedCount" />
+                          <small *ngIf="movementCountInvalid(m, 'vaccinatedCount')" class="form-text text-danger mess-color d-block">رقم صحيح 0 أو أكثر</small></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>غير متطعم</label>
-                          <input type="number" class="form-control" formControlName="notVaccinatedCount" /></div></div>
+                          <input type="number" min="0" step="1" class="form-control" formControlName="notVaccinatedCount" />
+                          <small *ngIf="movementCountInvalid(m, 'notVaccinatedCount')" class="form-text text-danger mess-color d-block">رقم صحيح 0 أو أكثر</small></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>غير مستحق</label>
-                          <input type="number" class="form-control" formControlName="notEligibleCount" /></div></div>
+                          <input type="number" min="0" step="1" class="form-control" formControlName="notEligibleCount" />
+                          <small *ngIf="movementCountInvalid(m, 'notEligibleCount')" class="form-text text-danger mess-color d-block">رقم صحيح 0 أو أكثر</small></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>غير معروف</label>
-                          <input type="number" class="form-control" formControlName="unknownCount" /></div></div>
+                          <input type="number" min="0" step="1" class="form-control" formControlName="unknownCount" />
+                          <small *ngIf="movementCountInvalid(m, 'unknownCount')" class="form-text text-danger mess-color d-block">رقم صحيح 0 أو أكثر</small></div></div>
+                        <div class="col-12">
+                          <small class="form-text text-muted d-block">مجموع (متطعم + غير متطعم + غير مستحق + غير معروف) يجب أن يساوي عدد المخالطين المباشرين{{ m.value.directContactsCount !== null && m.value.directContactsCount !== undefined ? ' (' + m.value.directContactsCount + ')' : '' }}</small>
+                          <small *ngIf="movementVaccinationMismatch(m)" class="form-text text-danger mess-color d-block">المجموع الحالي {{ movementVaccinationTotal(m) }} لا يساوي عدد المخالطين المباشرين {{ m.value.directContactsCount }}</small>
+                        </div>
                       </div>
                     </div>
                     <div *ngIf="caseMovements.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة سجل.</div>

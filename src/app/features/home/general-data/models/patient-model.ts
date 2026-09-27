@@ -38,6 +38,8 @@ export class PatientModel {
   passportNo!: string;
   phoneNo1!: string;
   phoneNo2!: string;
+  isPhoneNo1International?: boolean;
+  isPhoneNo2International?: boolean;
   newPhoneNo1!: string;
   genderId!: number;
   birthDate!: string;

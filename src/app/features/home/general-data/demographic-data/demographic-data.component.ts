@@ -111,6 +111,54 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
 
 
 
+  onPhoneKeyPress(event: KeyboardEvent, isInternational: boolean): void {
+    if (isInternational) {
+      this.generalDataService.onInternationalPhoneKeyPress(event);
+    } else {
+      this.generalDataService.onLocalPhoneKeyPress(event);
+    }
+  }
+
+  onPhoneInput(field: 'phoneNo1' | 'phoneNo2', isInternational: boolean): void {
+    const value = this.patient[field] ?? '';
+    const cleaned = isInternational
+      ? value.replace(/(?!^\+)[^\d]/g, '').slice(0, 16)
+      : value.replace(/\D/g, '').slice(0, 11);
+    if (cleaned !== value) {
+      this.patient[field] = cleaned;
+    }
+  }
+
+  onPhoneModeChanged(field: 'phoneNo1' | 'phoneNo2'): void {
+    if (field === 'phoneNo1') {
+      this.validatePhone1();
+    } else {
+      this.validatePhone2();
+    }
+  }
+
+  phone2Touched = false;
+
+  validatePhone2(): void {
+    this.phone2Touched = true;
+    this.generalDataService.isPhoneNumber2Valid = this.generalDataService.validatePhoneNumber2(
+      this.patient.phoneNo2,
+      false,
+      this.generalDataService.phoneMode(this.patient.isPhoneNo2International)
+    );
+  }
+
+  phone1Touched = false;
+
+  validatePhone1(): void {
+    this.phone1Touched = true;
+    this.generalDataService.isPhoneNumber1Valid = this.generalDataService.validatePhoneNumber1(
+      this.patient.phoneNo1,
+      this.isPhoneRequired,
+      this.generalDataService.phoneMode(this.patient.isPhoneNo1International)
+    );
+  }
+
   ngOnInit() {
     this.generalDataService.firstNameValidationMessage = '';
     this.generalDataService.secondNameValidationMessage = '';
@@ -143,6 +191,14 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
     patient.genderId = this.toNumberOrNull(patient.genderId);
     patient.age = this.toNumberOrNull(patient.age);
     patient.ageTypeId = this.toNumberOrNull(patient.ageTypeId);
+    patient.isPhoneNo1International ??= this.generalDataService.isInternationalPhoneFormat(patient.phoneNo1);
+    patient.isPhoneNo2International ??= this.generalDataService.isInternationalPhoneFormat(patient.phoneNo2);
+    if (!patient.isPhoneNo1International && patient.phoneNo1) {
+      patient.phoneNo1 = this.generalDataService.toLocalPhoneNumber(patient.phoneNo1);
+    }
+    if (!patient.isPhoneNo2International && patient.phoneNo2) {
+      patient.phoneNo2 = this.generalDataService.toLocalPhoneNumber(patient.phoneNo2);
+    }
 
     if (patient.birthDate) {
       const parsedDate = new Date(patient.birthDate as any);

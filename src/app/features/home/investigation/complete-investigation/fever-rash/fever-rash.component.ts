@@ -547,19 +547,68 @@ export class FeverRashComponent implements OnInit {
   // ===================== Row builders =====================
   private d(x: any) { return x ? this.datePipe.transform(x, 'yyyy-MM-dd') : null; }
 
+  private readonly movementCountKeys = [
+    'directContactsCount', 'symptomaticCount', 'noSymptomsCount',
+    'vaccinatedCount', 'notVaccinatedCount', 'notEligibleCount', 'unknownCount',
+  ];
+  private readonly movementVaccinationKeys = ['vaccinatedCount', 'notVaccinatedCount', 'notEligibleCount', 'unknownCount'];
+
   private buildCaseMovement(m: any = {}): FormGroup {
-    return new FormGroup({
+    const count = (v: any) => new FormControl(v ?? null, [Validators.min(0), Validators.pattern(/^[0-9]+$/)]);
+    const g = new FormGroup({
       visitDate: new FormControl(this.d(m.visitDate)),
       contactPlace: new FormControl(m.contactPlace ?? null),
       address: new FormControl(m.address ?? null),
-      directContactsCount: new FormControl(m.directContactsCount ?? null),
-      symptomaticCount: new FormControl(m.symptomaticCount ?? null),
-      noSymptomsCount: new FormControl(m.noSymptomsCount ?? null),
-      vaccinatedCount: new FormControl(m.vaccinatedCount ?? null),
-      notVaccinatedCount: new FormControl(m.notVaccinatedCount ?? null),
-      notEligibleCount: new FormControl(m.notEligibleCount ?? null),
-      unknownCount: new FormControl(m.unknownCount ?? null),
+      directContactsCount: count(m.directContactsCount),
+      symptomaticCount: count(m.symptomaticCount),
+      noSymptomsCount: count(m.noSymptomsCount),
+      vaccinatedCount: count(m.vaccinatedCount),
+      notVaccinatedCount: count(m.notVaccinatedCount),
+      notEligibleCount: count(m.notEligibleCount),
+      unknownCount: count(m.unknownCount),
     });
+    const syncDirect = () => {
+      const s = this.countValue(g.get('symptomaticCount')?.value);
+      const n = this.countValue(g.get('noSymptomsCount')?.value);
+      const total = s === null && n === null ? null : (s ?? 0) + (n ?? 0);
+      if (g.get('directContactsCount')!.value !== total) {
+        g.get('directContactsCount')!.setValue(total, { emitEvent: false });
+      }
+    };
+    syncDirect();
+    g.get('symptomaticCount')!.valueChanges.subscribe(syncDirect);
+    g.get('noSymptomsCount')!.valueChanges.subscribe(syncDirect);
+    return g;
+  }
+
+  private countValue(v: any): number | null {
+    if (v === null || v === undefined || v === '') return null;
+    const n = Number(v);
+    return isNaN(n) ? null : n;
+  }
+
+  movementCountInvalid(m: AbstractControl, key: string): boolean {
+    return !!m.get(key)?.invalid;
+  }
+
+  movementVaccinationTotal(m: AbstractControl): number | null {
+    const values = this.movementVaccinationKeys.map((k) => this.countValue(m.get(k)?.value));
+    if (values.every((v) => v === null)) return null;
+    return values.reduce<number>((sum, v) => sum + (v ?? 0), 0);
+  }
+
+  movementVaccinationMismatch(m: AbstractControl): boolean {
+    const direct = this.countValue(m.get('directContactsCount')?.value);
+    const vaccTotal = this.movementVaccinationTotal(m);
+    if (direct === null || vaccTotal === null) return false;
+    return direct !== vaccTotal;
+  }
+
+  private hasInvalidCaseMovementCounts(): 'negative' | 'mismatch' | null {
+    if (this.feverRashForm.get('noCaseMovements')?.value) return null;
+    if (this.caseMovements.controls.some((m) => this.movementCountKeys.some((k) => m.get(k)?.invalid))) return 'negative';
+    if (this.caseMovements.controls.some((m) => this.movementVaccinationMismatch(m))) return 'mismatch';
+    return null;
   }
   private buildPreviousCase(p: any = {}): FormGroup {
     return new FormGroup({
@@ -963,6 +1012,15 @@ export class FeverRashComponent implements OnInit {
     }
     if (this.hasInvalidPregnantSampleDates()) {
       this.userMsg.error(`في حصر المخالطين: تاريخ عينة المخالطة الحامل لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    const movementIssue = this.hasInvalidCaseMovementCounts();
+    if (movementIssue === 'negative') {
+      this.userMsg.error('في خط سير الحالة: أعداد المخالطين يجب أن تكون أرقاماً صحيحة (0 أو أكثر) ولا تقبل السالب');
+      return;
+    }
+    if (movementIssue === 'mismatch') {
+      this.userMsg.error('في خط سير الحالة: مجموع (متطعم + غير متطعم + غير مستحق + غير معروف) يجب أن يساوي عدد المخالطين المباشرين');
       return;
     }
     if (this.isBeforeDiscoveryInvalid(this.feverRashForm.value.homeVisitDate)) {

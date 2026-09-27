@@ -87,13 +87,19 @@
             {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO1" | translate }}
             <span *ngIf="isPhoneRequired" class="text-danger">*</span>
           </label>
-          <input type="text" inputmode="tel" autocomplete="tel" name="phoneNo1" [(ngModel)]="patient.phoneNo1" #phoneNo1="ngModel" pInputText class="w-100"
-            (keypress)="generalDataService.onPhoneNumberKeyPress($event)" (blur)="
-              generalDataService.isPhoneNumber1Valid =
-                generalDataService.validatePhoneNumber1(patient.phoneNo1, isPhoneRequired)
-            " />
+          <div class="phone-intl-wrap">
+            <input type="text" inputmode="tel" autocomplete="tel" name="phoneNo1" [(ngModel)]="patient.phoneNo1" #phoneNo1="ngModel" pInputText class="w-100"
+              [attr.maxlength]="patient.isPhoneNo1International ? 16 : 11"
+              (keypress)="onPhoneKeyPress($event, patient.isPhoneNo1International)"
+              (ngModelChange)="onPhoneInput('phoneNo1', patient.isPhoneNo1International)" (blur)="validatePhone1()" />
+            <label class="phone-intl-toggle" for="phoneNo1International">
+              <input type="checkbox" id="phoneNo1International" name="phoneNo1International"
+                [(ngModel)]="patient.isPhoneNo1International" (ngModelChange)="onPhoneModeChanged('phoneNo1')" />
+              دولي
+            </label>
+          </div>
         </div>
-        <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isPhoneNumber1Valid" class="form-text text-danger mess-color">
+        <small *ngIf="(generalDataService.showValidationErrors || (phone1Touched && patient.phoneNo1)) && !generalDataService.isPhoneNumber1Valid" class="form-text text-danger mess-color">
           {{ generalDataService.phoneNo1ValidationMessage | translate }}
         </small>
       </div>
@@ -117,9 +123,21 @@
           <label for="" class="form-label">
             {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO2" | translate }}
           </label>
-          <input type="text" inputmode="tel" autocomplete="tel" name="phoneNo2" [(ngModel)]="patient.phoneNo2" #phoneNo2="ngModel" pInputText class="w-100"
-            (keypress)="generalDataService.onPhoneNumberKeyPress($event)" />
+          <div class="phone-intl-wrap">
+            <input type="text" inputmode="tel" autocomplete="tel" name="phoneNo2" [(ngModel)]="patient.phoneNo2" #phoneNo2="ngModel" pInputText class="w-100"
+              [attr.maxlength]="patient.isPhoneNo2International ? 16 : 11"
+              (keypress)="onPhoneKeyPress($event, patient.isPhoneNo2International)"
+              (ngModelChange)="onPhoneInput('phoneNo2', patient.isPhoneNo2International)" (blur)="validatePhone2()" />
+            <label class="phone-intl-toggle" for="phoneNo2International">
+              <input type="checkbox" id="phoneNo2International" name="phoneNo2International"
+                [(ngModel)]="patient.isPhoneNo2International" (ngModelChange)="onPhoneModeChanged('phoneNo2')" />
+              دولي
+            </label>
+          </div>
         </div>
+        <small *ngIf="(generalDataService.showValidationErrors || (phone2Touched && patient.phoneNo2)) && !generalDataService.isPhoneNumber2Valid" class="form-text text-danger mess-color">
+          {{ generalDataService.phoneNo2ValidationMessage | translate }}
+        </small>
       </div>
 
       <!--Gender-->
