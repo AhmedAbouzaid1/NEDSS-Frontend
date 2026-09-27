@@ -546,17 +546,25 @@
                             <option [ngValue]="7">وسائل النقل</option>
                           </select></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع1</label>
-                          <app-date-field formControlName="visitWeek1"></app-date-field></div></div>
-                        <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek1" /> أعراض أسبوع1</label></div>
+                          <app-date-field class="date-with-note" formControlName="visitWeek1" [min]="visitWeekMin(c, 1)"></app-date-field>
+                            <small class="form-text text-muted d-block">في نفس يوم اكتشاف الحالة أو بعده</small>
+                            <small *ngIf="visitWeekError(c, 1) as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
+                        <div class="col-lg-3 d-flex align-items-center"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek1" /> أعراض أسبوع1</label></div>
                         <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع2</label>
-                          <app-date-field formControlName="visitWeek2"></app-date-field></div></div>
-                        <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek2" /> أعراض أسبوع2</label></div>
+                          <app-date-field class="date-with-note" formControlName="visitWeek2" [min]="visitWeekMin(c, 2)"></app-date-field>
+                            <small class="form-text text-muted d-block">في نفس يوم زيارة أسبوع1 أو بعده</small>
+                            <small *ngIf="visitWeekError(c, 2) as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
+                        <div class="col-lg-3 d-flex align-items-center"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek2" /> أعراض أسبوع2</label></div>
                         <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع3</label>
-                          <app-date-field formControlName="visitWeek3"></app-date-field></div></div>
-                        <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek3" /> أعراض أسبوع3</label></div>
+                          <app-date-field class="date-with-note" formControlName="visitWeek3" [min]="visitWeekMin(c, 3)"></app-date-field>
+                            <small class="form-text text-muted d-block">في نفس يوم زيارة أسبوع2 أو بعده</small>
+                            <small *ngIf="visitWeekError(c, 3) as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
+                        <div class="col-lg-3 d-flex align-items-center"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek3" /> أعراض أسبوع3</label></div>
                         <div class="col-lg-3"><div class="form-group"><label>تاريخ الزيارة أسبوع4</label>
-                          <app-date-field formControlName="visitWeek4"></app-date-field></div></div>
-                        <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek4" /> أعراض أسبوع4</label></div>
+                          <app-date-field class="date-with-note" formControlName="visitWeek4" [min]="visitWeekMin(c, 4)"></app-date-field>
+                            <small class="form-text text-muted d-block">في نفس يوم زيارة أسبوع3 أو بعده</small>
+                            <small *ngIf="visitWeekError(c, 4) as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
+                        <div class="col-lg-3 d-flex align-items-center"><label class="d-flex align-items-center gap-1 mb-2"><input type="checkbox" formControlName="symptomsWeek4" /> أعراض أسبوع4</label></div>
                       </div>
                     </div>
                     <div *ngIf="generalContacts.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة مخالط.</div>
@@ -692,19 +700,27 @@
                           <div class="col-lg-3"><div class="form-group"><label>نتيجة عينة المولود</label>
                             <input type="text" class="form-control" formControlName="newbornSampleResult" /></div></div>
                           <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع1</label>
-                            <app-date-field formControlName="visitWeek1"></app-date-field></div></div>
-                          <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض1 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek1" /></label></div>
+                            <app-date-field class="date-with-note" formControlName="visitWeek1" [min]="visitWeekMin(contact, 1)"></app-date-field>
+                            <small class="form-text text-muted d-block">في نفس يوم اكتشاف الحالة أو بعده</small>
+                            <small *ngIf="visitWeekError(contact, 1) as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
+                          <div class="col-lg-1 d-flex align-items-center"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض1 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek1" /></label></div>
                           <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع2</label>
-                            <app-date-field formControlName="visitWeek2"></app-date-field></div></div>
-                          <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض2 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek2" /></label></div>
+                            <app-date-field class="date-with-note" formControlName="visitWeek2" [min]="visitWeekMin(contact, 2)"></app-date-field>
+                            <small class="form-text text-muted d-block">في نفس يوم زيارة أسبوع1 أو بعده</small>
+                            <small *ngIf="visitWeekError(contact, 2) as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
+                          <div class="col-lg-1 d-flex align-items-center"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض2 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek2" /></label></div>
                           <div class="col-lg-3"><div class="form-group"><label>زيارة أسبوع3</label>
-                            <app-date-field formControlName="visitWeek3"></app-date-field></div></div>
-                          <div class="col-lg-1 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض3 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek3" /></label></div>
+                            <app-date-field class="date-with-note" formControlName="visitWeek3" [min]="visitWeekMin(contact, 3)"></app-date-field>
+                            <small class="form-text text-muted d-block">في نفس يوم زيارة أسبوع2 أو بعده</small>
+                            <small *ngIf="visitWeekError(contact, 3) as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
+                          <div class="col-lg-1 d-flex align-items-center"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض3 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek3" /></label></div>
                           <div class="col-lg-4">
                             <div class="row">
                               <div class="col-lg-9"><div class="form-group"><label>زيارة أسبوع4</label>
-                                <app-date-field formControlName="visitWeek4"></app-date-field></div></div>
-                              <div class="col-lg-3 d-flex align-items-end"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض4 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek4" /></label></div>
+                                <app-date-field class="date-with-note" formControlName="visitWeek4" [min]="visitWeekMin(contact, 4)"></app-date-field>
+                            <small class="form-text text-muted d-block">في نفس يوم زيارة أسبوع3 أو بعده</small>
+                            <small *ngIf="visitWeekError(contact, 4) as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
+                              <div class="col-lg-3 d-flex align-items-center"><label class="d-flex align-items-center gap-2 mb-2 text-nowrap">أعراض4 <span>نعم</span> <input type="checkbox" formControlName="symptomsWeek4" /></label></div>
                             </div>
                           </div>
                         </div>

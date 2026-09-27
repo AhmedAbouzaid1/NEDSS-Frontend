@@ -711,6 +711,28 @@ export class FeverRashComponent implements OnInit {
     );
   }
 
+  visitWeekMin(row: AbstractControl, week: number): string | null {
+    for (let w = week - 1; w >= 1; w--) {
+      const prev = this.d(row.get('visitWeek' + w)?.value);
+      if (prev) return prev;
+    }
+    return this.caseDiscoveryDate;
+  }
+
+  visitWeekError(row: AbstractControl, week: number): string | null {
+    const date = this.d(row.get('visitWeek' + week)?.value);
+    const min = this.visitWeekMin(row, week);
+    if (!date || !min || date >= min) return null;
+    for (let w = week - 1; w >= 1; w--) {
+      if (this.d(row.get('visitWeek' + w)?.value)) return `لا يمكن أن يكون قبل زيارة أسبوع${w} (${min})`;
+    }
+    return `لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${min})`;
+  }
+
+  private hasInvalidVisitWeeks(rows: FormArray): boolean {
+    return rows.controls.some((r) => [1, 2, 3, 4].some((w) => !!this.visitWeekError(r, w)));
+  }
+
   private hasInvalidPreviousCaseDates(): boolean {
     if (this.feverRashForm.value.hasPreviousCases !== 1) return false;
     return this.previousCases.controls.some(
@@ -736,6 +758,14 @@ export class FeverRashComponent implements OnInit {
     }
     if (this.hasInvalidPregnantSampleDates()) {
       this.userMsg.error(`في حصر المخالطين: تاريخ عينة المخالطة الحامل لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    if (this.hasInvalidVisitWeeks(this.generalContacts)) {
+      this.userMsg.error('في حصر المخالطين: تاريخ زيارة الأسبوع الأول لا يمكن أن يكون قبل تاريخ اكتشاف الحالة، وكل أسبوع لا يمكن أن يكون قبل الأسبوع السابق');
+      return;
+    }
+    if (this.feverRashForm.value.hasPregnantContacts === 1 && this.hasInvalidVisitWeeks(this.pregnantContacts)) {
+      this.userMsg.error('في المخالطين الحوامل: تاريخ زيارة الأسبوع الأول لا يمكن أن يكون قبل تاريخ اكتشاف الحالة، وكل أسبوع لا يمكن أن يكون قبل الأسبوع السابق');
       return;
     }
     if (this.hasInvalidContactVaccination()) {
