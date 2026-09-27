@@ -489,10 +489,10 @@
                     <div class="fwb mb-1">عرض السجلات</div>
                     <div class="table-responsive">
                       <table class="table table-bordered text-center align-middle">
-                        <thead><tr><th>#</th><th>اسم المخالط</th><th>العمر</th><th>الحالة التطعيمية</th><th>مكان المخالطة</th><th>أسبوع1</th><th>أعراض1</th><th>أسبوع2</th><th>أعراض2</th><th>أسبوع3</th><th>أعراض3</th><th>أسبوع4</th><th>أعراض4</th></tr></thead>
+                        <thead><tr><th>#</th><th>اسم المخالط</th><th>العمر (شهور)</th><th>الحالة التطعيمية</th><th>مكان المخالطة</th><th>أسبوع1</th><th>أعراض1</th><th>أسبوع2</th><th>أعراض2</th><th>أسبوع3</th><th>أعراض3</th><th>أسبوع4</th><th>أعراض4</th></tr></thead>
                         <tbody>
                           <tr *ngFor="let c of generalContacts.controls; let i = index">
-                            <td>{{ i + 1 }}</td><td>{{ c.value.name }}</td><td>{{ c.value.ageYears }}</td>
+                            <td>{{ i + 1 }}</td><td>{{ c.value.name }}</td><td>{{ c.value.ageMonths }}</td>
                             <td>{{ vaccinationLabel(c.value.vaccinationStatus) }}</td><td>{{ placeLabel(c.value.contactPlace) }}</td>
                             <td>{{ c.value.visitWeek1 }}</td><td>{{ mark(c.value.symptomsWeek1) }}</td>
                             <td>{{ c.value.visitWeek2 }}</td><td>{{ mark(c.value.symptomsWeek2) }}</td>
@@ -519,20 +519,21 @@
                       </div>
 
                       <div *ngIf="!isRowOpen(c)" class="text-muted small">
-                        {{ c.value.name || 'بدون اسم' }} <span *ngIf="c.value.ageYears">— {{ c.value.ageYears }} سنة</span>
+                        {{ c.value.name || 'بدون اسم' }} <span *ngIf="c.value.ageMonths !== null && c.value.ageMonths !== ''">— {{ c.value.ageMonths }} شهر</span>
                       </div>
 
                       <div class="row" *ngIf="isRowOpen(c)">
                         <div class="col-lg-4"><div class="form-group"><label>اسم المخالط</label>
                           <input type="text" class="form-control" formControlName="name" /></div></div>
-                        <div class="col-lg-2"><div class="form-group"><label>العمر بالسنوات</label>
-                          <input type="number" class="form-control" formControlName="ageYears" /></div></div>
+                        <div class="col-lg-2"><div class="form-group"><label>العمر بالشهور</label>
+                          <input type="number" class="form-control" formControlName="ageMonths" min="0" step="1" /></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>الحالة التطعيمية</label>
-                          <select class="form-control" formControlName="vaccinationStatus">
-                            <option [ngValue]="null">اختر...</option>
-                            <option [ngValue]="1">مطعم</option><option [ngValue]="2">غير مطعم</option>
-                            <option [ngValue]="3">غير مستحق</option><option [ngValue]="4">غير معروف</option>
-                          </select></div></div>
+                          <select class="form-control" formControlName="vaccinationStatus" [class.bg-light]="isContactTooYoungForVaccine(c)" [style.pointer-events]="isContactTooYoungForVaccine(c) ? 'none' : null" [attr.tabindex]="isContactTooYoungForVaccine(c) ? -1 : null">
+                            <option [ngValue]="null" [disabled]="isContactTooYoungForVaccine(c)">اختر...</option>
+                            <option [ngValue]="1" [disabled]="isContactTooYoungForVaccine(c)">مطعم</option><option [ngValue]="2" [disabled]="isContactTooYoungForVaccine(c)">غير مطعم</option>
+                            <option [ngValue]="3">غير مستحق</option><option [ngValue]="4" [disabled]="isContactTooYoungForVaccine(c)">غير معروف</option>
+                          </select>
+                          <small class="text-muted d-block">أقل من 9 شهور: غير مستحق تلقائياً</small></div></div>
                         <div class="col-lg-3"><div class="form-group"><label>مكان المخالطة</label>
                           <select class="form-control" formControlName="contactPlace">
                             <option [ngValue]="null">اختر...</option>

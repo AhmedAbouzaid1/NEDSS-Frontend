@@ -11404,9 +11404,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "ageYears",
+      "key": "ageMonths",
       "label": [
-        "العمر بالسنوات"
+        "العمر بالشهور"
       ],
       "section": [
         "المخالطين"

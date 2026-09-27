@@ -405,9 +405,10 @@ export class FeverRashComponent implements OnInit {
     });
   }
   private buildContact(c: any = {}): FormGroup {
-    return new FormGroup({
+    const ageMonths = c.ageMonths ?? (c.ageYears != null && c.ageYears !== '' ? Number(c.ageYears) * 12 : null);
+    const g = new FormGroup({
       name: new FormControl(c.name ?? null),
-      ageYears: new FormControl(c.ageYears ?? null),
+      ageMonths: new FormControl(ageMonths),
       vaccinationStatus: new FormControl(c.vaccinationStatus ?? null),
       contactPlace: new FormControl(c.contactPlace ?? null),
       visitWeek1: new FormControl(this.d(c.visitWeek1)),
@@ -419,6 +420,29 @@ export class FeverRashComponent implements OnInit {
       symptomsWeek3: new FormControl(!!c.symptomsWeek3),
       symptomsWeek4: new FormControl(!!c.symptomsWeek4),
     });
+    const vaccination = g.get('vaccinationStatus')!;
+    let wasTooYoung = this.isContactTooYoungForVaccine(g);
+    if (wasTooYoung) vaccination.setValue(this.NOT_ELIGIBLE);
+    g.get('ageMonths')!.valueChanges.subscribe(() => {
+      const tooYoung = this.isContactTooYoungForVaccine(g);
+      if (tooYoung) {
+        if (vaccination.value !== this.NOT_ELIGIBLE) vaccination.setValue(this.NOT_ELIGIBLE);
+      } else if (wasTooYoung && vaccination.value === this.NOT_ELIGIBLE) {
+        vaccination.setValue(null);
+      }
+      wasTooYoung = tooYoung;
+    });
+    return g;
+  }
+  private readonly NOT_ELIGIBLE = 3;
+  isContactTooYoungForVaccine(c: AbstractControl): boolean {
+    const age = c.get('ageMonths')?.value;
+    return age !== null && age !== undefined && age !== '' && Number(age) < 9;
+  }
+  private hasInvalidContactVaccination(): boolean {
+    return this.generalContacts.controls.some(
+      (c) => this.isContactTooYoungForVaccine(c) && c.get('vaccinationStatus')?.value !== this.NOT_ELIGIBLE
+    );
   }
   private buildPregnant(p: any = {}): FormGroup {
     return new FormGroup({
@@ -712,6 +736,10 @@ export class FeverRashComponent implements OnInit {
     }
     if (this.hasInvalidPregnantSampleDates()) {
       this.userMsg.error(`في حصر المخالطين: تاريخ عينة المخالطة الحامل لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    if (this.hasInvalidContactVaccination()) {
+      this.userMsg.error('في حصر المخالطين: المخالط الذي عمره أقل من 9 شهور حالته التطعيمية "غير مستحق"');
       return;
     }
     if (this.hasInvalidPreviousCaseDates()) {
