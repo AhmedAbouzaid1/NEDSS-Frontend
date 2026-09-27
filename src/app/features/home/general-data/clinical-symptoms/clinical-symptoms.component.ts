@@ -42,6 +42,21 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
     return this.generalDataService.toYmdDate(this.patient?.caseDiscoveryDate);
   }
 
+  get feverMinDate(): Date | null {
+    return this.generalDataService.latestDateBound(this.patient?.birthDate);
+  }
+
+  get birthDateLabel(): string | null {
+    return this.generalDataService.formatDateLabel(this.patient?.birthDate);
+  }
+
+  get isFeverDateBeforeBirth(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(
+      this.patient?.feverSymptoms?.feverDate,
+      this.patient?.birthDate
+    );
+  }
+
   get isFeverDateAfterDiscovery(): boolean {
     return !this.generalDataService.checkFeverDateNotAfterDiscovery(
       this.patient?.feverSymptoms?.feverDate,

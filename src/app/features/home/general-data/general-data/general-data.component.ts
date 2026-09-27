@@ -699,6 +699,11 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
   }
 
   private showMissingFieldError(fieldLabelKey: string) {
+    const specificMessage = this.generalDataService.lastInvalidFieldMessage;
+    if (specificMessage) {
+      this.userMsg.warn(specificMessage);
+      return;
+    }
     this.translateService.get(fieldLabelKey).subscribe((fieldName: string) => {
       this.translateService
         .get('NEDSS.COMMON.FILL_REQUIRED_FIELD', { field: fieldName })

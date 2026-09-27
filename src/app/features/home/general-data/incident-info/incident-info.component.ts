@@ -96,6 +96,18 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
   Allpatients: any;
   maxDate = new Date();
   minDate = new Date(1900, 0, 1);
+
+  get caseDiscoveryMinDate(): Date {
+    return this.generalDataService.latestDateBound(this.minDate, this.patient?.birthDate) ?? this.minDate;
+  }
+
+  get birthDateLabel(): string | null {
+    return this.generalDataService.formatDateLabel(this.patient?.birthDate);
+  }
+
+  get isCaseDiscoveryBeforeBirth(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(this.patient?.caseDiscoveryDate, this.patient?.birthDate);
+  }
   defaultGovernmentId = null;
   defaultHealthAdministrationId = null;
   defaultIncidentSourceId = null;

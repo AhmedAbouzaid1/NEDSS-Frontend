@@ -10795,6 +10795,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": []
     },
     {
+      "key": "caseAgeMonths",
+      "label": [
+        "العمر بالشهور"
+      ],
+      "section": []
+    },
+    {
       "key": "differentialDiagnosis",
       "label": [
         "التشخيص التفريقي"
@@ -11627,12 +11634,24 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "coverageMonth",
       "label": [
-        "شهر نسب التغطية"
+        "شهر / فترة نسب التغطية"
       ],
       "section": [
         "ملخص إحصائي للمخالطين"
       ],
       "options": {
+        "ربع سنوي": [
+          "ربع سنوي"
+        ],
+        "نصف سنوي": [
+          "نصف سنوي"
+        ],
+        "ثلاث أرباع سنوي": [
+          "ثلاث أرباع سنوي"
+        ],
+        "سنوي": [
+          "سنوي"
+        ],
         "يناير": [
           "يناير"
         ],
@@ -12084,6 +12103,33 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "array": true
     },
     {
+      "key": "street",
+      "label": [
+        "شارع 1"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "house",
+      "label": [
+        "منزل 2"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "apartment",
+      "label": [
+        "شقة 3"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
       "key": "childName",
       "label": [
         "اسم الطفل"
@@ -12093,55 +12139,235 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "mmr1",
+      "key": "birthCertSeen",
       "label": [
-        "MMR1"
+        "الاطلاع على شهادة الميلاد 4"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "birthCertComplete",
+      "label": [
+        "شهادة الميلاد مستوفاه 5"
       ],
       "section": [
         "المسح الميداني - 30 طفل"
       ],
       "options": {
-        "1": [
-          "نعم"
+        "zero": [
+          "صفرية"
         ],
-        "2": [
-          "لا"
+        "bcg": [
+          "BCG"
+        ],
+        "first": [
+          "أولى"
+        ],
+        "second": [
+          "ثانية"
+        ],
+        "third": [
+          "ثالثة"
+        ],
+        "fourth": [
+          "رابعة"
+        ],
+        "fifth": [
+          "خامسة"
+        ],
+        "booster": [
+          "منشطة"
         ]
       }
     },
     {
-      "key": "mmr2",
+      "key": "zeroStatus",
       "label": [
-        "MMR2"
+        "صفرية",
+        "حالة تطعيمية 6"
       ],
       "section": [
         "المسح الميداني - 30 طفل"
-      ],
-      "options": {
-        "1": [
-          "نعم"
-        ],
-        "2": [
-          "لا"
-        ]
-      }
+      ]
     },
     {
-      "key": "hasSymptoms",
+      "key": "zeroReview",
       "label": [
-        "أعراض الحمى والطفح"
+        "صفرية",
+        "مراجعة الميكنة 7"
       ],
       "section": [
         "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "bcgStatus",
+      "label": [
+        "BCG",
+        "حالة تطعيمية"
       ],
-      "options": {
-        "1": [
-          "نعم"
-        ],
-        "2": [
-          "لا"
-        ]
-      }
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "bcgReview",
+      "label": [
+        "BCG",
+        "مراجعة الميكنة"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "firstStatus",
+      "label": [
+        "أولى",
+        "حالة تطعيمية"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "firstReview",
+      "label": [
+        "أولى",
+        "مراجعة الميكنة"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "secondStatus",
+      "label": [
+        "ثانية",
+        "حالة تطعيمية"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "secondReview",
+      "label": [
+        "ثانية",
+        "مراجعة الميكنة"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "thirdStatus",
+      "label": [
+        "ثالثة",
+        "حالة تطعيمية"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "thirdReview",
+      "label": [
+        "ثالثة",
+        "مراجعة الميكنة"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "fourthStatus",
+      "label": [
+        "رابعة",
+        "حالة تطعيمية"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "fourthReview",
+      "label": [
+        "رابعة",
+        "مراجعة الميكنة"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "fifthStatus",
+      "label": [
+        "خامسة",
+        "حالة تطعيمية"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "fifthReview",
+      "label": [
+        "خامسة",
+        "مراجعة الميكنة"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "boosterStatus",
+      "label": [
+        "منشطة",
+        "حالة تطعيمية"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "boosterReview",
+      "label": [
+        "منشطة",
+        "مراجعة الميكنة"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "survey30ExecutorName",
+      "label": [
+        "القائم بالتنفيذ"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "survey30SupervisorName",
+      "label": [
+        "المشرف"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
+    },
+    {
+      "key": "survey30VaccinationOfficerName",
+      "label": [
+        "مسؤول التطعيمات بالإدارة"
+      ],
+      "section": [
+        "المسح الميداني - 30 طفل"
+      ]
     },
     {
       "key": "field400VisitDate",
@@ -12170,6 +12396,33 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "المسح الميداني - 400 طفل"
       ],
       "array": true
+    },
+    {
+      "key": "survey400ExecutorName",
+      "label": [
+        "القائم بالتنفيذ"
+      ],
+      "section": [
+        "المسح الميداني - 400 طفل"
+      ]
+    },
+    {
+      "key": "survey400SupervisorName",
+      "label": [
+        "المشرف"
+      ],
+      "section": [
+        "المسح الميداني - 400 طفل"
+      ]
+    },
+    {
+      "key": "survey400VaccinationOfficerName",
+      "label": [
+        "مسؤول التطعيمات بالإدارة"
+      ],
+      "section": [
+        "المسح الميداني - 400 طفل"
+      ]
     },
     {
       "key": "diseaseOutcome",
@@ -12221,7 +12474,66 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة الحالة والتشخيص النهائي بعد 21 يوم"
-      ]
+      ],
+      "options": {
+        "حصبة": [
+          "حصبة"
+        ],
+        "حصبة ألمانى": [
+          "حصبة ألمانى"
+        ],
+        "التهاب بالجلد \"فيروسى\"": [
+          "التهاب بالجلد \"فيروسى\""
+        ],
+        "اثر جانبى بعد التطعيم": [
+          "اثر جانبى بعد التطعيم"
+        ],
+        "حمى قرمزية": [
+          "حمى قرمزية"
+        ],
+        "نقص المناعة": [
+          "نقص المناعة"
+        ],
+        "داء الفطط": [
+          "داء الفطط"
+        ],
+        "طفيلية وردية": [
+          "طفيلية وردية"
+        ],
+        "عدوى بكتيرية": [
+          "عدوى بكتيرية"
+        ],
+        "كواساكى": [
+          "كواساكى"
+        ],
+        "متلازمة جونسون": [
+          "متلازمة جونسون"
+        ],
+        "حمى الدنج": [
+          "حمى الدنج"
+        ],
+        "متلازمة الفم واليد والقدم": [
+          "متلازمة الفم واليد والقدم"
+        ],
+        "حمرة": [
+          "حمرة"
+        ],
+        "حمى موسمية": [
+          "حمى موسمية"
+        ],
+        "التهاب بالمخ": [
+          "التهاب بالمخ"
+        ],
+        "حساسية جلدية": [
+          "حساسية جلدية"
+        ],
+        "حساسية طعام": [
+          "حساسية طعام"
+        ],
+        "حساسية حشرية": [
+          "حساسية حشرية"
+        ]
+      }
     },
     {
       "key": "committeeComments",
@@ -12314,6 +12626,15 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
           "متوافق إكلينيكى"
         ]
       }
+    },
+    {
+      "key": "generalNotes",
+      "label": [
+        "الملاحظات"
+      ],
+      "section": [
+        "ملاحظات عامة"
+      ]
     }
   ],
   "filariasis": [

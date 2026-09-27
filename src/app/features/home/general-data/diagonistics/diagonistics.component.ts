@@ -20,21 +20,62 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   minDate = new Date(1900, 0, 1);
   maxDate = new Date();
 
-  private infectionMaxDateKey: string | null = null;
-  private infectionMaxDateValue: Date = this.maxDate;
-
   get infectionMaxDate(): Date {
-    const key = this.generalDataService.toYmdDate(this.patient?.caseDiscoveryDate);
-    if (key !== this.infectionMaxDateKey) {
-      this.infectionMaxDateKey = key;
-      const discovery = key ? new Date(key + 'T00:00:00') : null;
-      this.infectionMaxDateValue = discovery && discovery < this.maxDate ? discovery : this.maxDate;
-    }
-    return this.infectionMaxDateValue;
+    return this.generalDataService.earliestDateBound(
+      this.maxDate,
+      this.patient?.caseDiscoveryDate,
+      this.patient?.feverSymptoms?.feverDate
+    ) ?? this.maxDate;
+  }
+
+  get infectionMinDate(): Date {
+    return this.generalDataService.latestDateBound(this.minDate, this.patient?.birthDate) ?? this.minDate;
+  }
+
+  get hospitalEntryMinDate(): Date {
+    return this.generalDataService.latestDateBound(
+      this.minDate,
+      this.patient?.birthDate,
+      this.patient?.infectionDate
+    ) ?? this.minDate;
+  }
+
+  get hospitalLeaveMinDate(): Date {
+    return this.generalDataService.latestDateBound(
+      this.hospitalEntryMinDate,
+      this.patient?.hospitalEntryDate
+    ) ?? this.minDate;
   }
 
   get caseDiscoveryDateLabel(): string | null {
     return this.generalDataService.toYmdDate(this.patient?.caseDiscoveryDate);
+  }
+
+  get birthDateLabel(): string | null {
+    return this.generalDataService.formatDateLabel(this.patient?.birthDate);
+  }
+
+  get feverDateLabel(): string | null {
+    return this.generalDataService.formatDateLabel(this.patient?.feverSymptoms?.feverDate);
+  }
+
+  get isInfectionDateBeforeBirth(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(this.patient?.infectionDate, this.patient?.birthDate);
+  }
+
+  get isInfectionDateAfterFever(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(
+      this.patient?.feverSymptoms?.feverDate,
+      this.patient?.infectionDate
+    );
+  }
+
+  get isHospitalEntryDateOutOfOrder(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(this.patient?.hospitalEntryDate, this.hospitalEntryMinDate);
+  }
+
+  get isHospitalLeaveDateOutOfOrder(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(this.patient?.hospitalLeaveDate, this.hospitalLeaveMinDate);
   }
 
   get isInfectionDateAfterDiscovery(): boolean {

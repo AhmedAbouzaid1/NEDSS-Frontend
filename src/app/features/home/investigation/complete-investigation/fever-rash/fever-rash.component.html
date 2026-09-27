@@ -61,7 +61,11 @@
             <div class="col-lg-2 col-md-6">
               <div class="form-group">
                 <label class="fwb">تاريخ زيارة منزل الحالة</label>
-                <app-date-field formControlName="homeVisitDate"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="homeVisitDate" [min]="caseDiscoveryDate"></app-date-field>
+                <small class="form-text text-muted d-block">في نفس يوم اكتشاف الحالة أو بعده{{ caseDiscoveryDate ? ' ' + caseDiscoveryDate : '' }}</small>
+                <small *ngIf="isBeforeDiscoveryInvalid(feverRashForm.value.homeVisitDate)" class="form-text text-danger mess-color d-block">
+                  تاريخ زيارة منزل الحالة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }})
+                </small>
               </div>
             </div>
           </div>
@@ -107,6 +111,16 @@
                       <div class="invalid-feedback d-block" *ngIf="feverRashForm.get('rashDate')?.hasError('rashAfterDiscovery')">
                         تاريخ الطفح يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }})
                       </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-2 col-md-6">
+                    <div class="form-group">
+                      <label class="fwb">العمر بالشهور</label>
+                      <input type="number" min="0" step="1" class="form-control" formControlName="caseAgeMonths" />
+                      <small class="form-text text-muted d-block">يُملأ تلقائياً من عمر الحالة، وعند التعديل والحفظ يتم تحديث عمر الحالة بالشهور</small>
+                      <small *ngIf="feverRashForm.get('caseAgeMonths')?.invalid" class="form-text text-danger mess-color d-block">
+                        العمر بالشهور يجب أن يكون رقماً صحيحاً (0 أو أكثر)
+                      </small>
                     </div>
                   </div>
                   <div class="col-lg-4 col-md-6">
@@ -741,10 +755,21 @@
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ زيارة الوحدة</label>
-                    <app-date-field formControlName="coverageVisitDate"></app-date-field></div></div>
-                  <div class="col-lg-6"><div class="form-group"><label>شهر نسب التغطية</label>
+                    <app-date-field class="date-with-note" formControlName="coverageVisitDate" [min]="caseDiscoveryDate"></app-date-field>
+                    <small class="form-text text-muted d-block">في نفس يوم اكتشاف الحالة أو بعده{{ caseDiscoveryDate ? ' ' + caseDiscoveryDate : '' }}</small>
+                    <small *ngIf="isBeforeDiscoveryInvalid(feverRashForm.value.coverageVisitDate)" class="form-text text-danger mess-color d-block">
+                      تاريخ زيارة الوحدة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }})
+                    </small></div></div>
+                  <div class="col-lg-6"><div class="form-group"><label>شهر / فترة نسب التغطية</label>
                     <select class="form-control" formControlName="coverageMonth">
                       <option [ngValue]="null">اختر...</option>
+                      <optgroup label="الفترة">
+                        <option [ngValue]="'ربع سنوي'">ربع سنوي</option>
+                        <option [ngValue]="'نصف سنوي'">نصف سنوي</option>
+                        <option [ngValue]="'ثلاث أرباع سنوي'">ثلاث أرباع سنوي</option>
+                        <option [ngValue]="'سنوي'">سنوي</option>
+                      </optgroup>
+                      <optgroup label="الشهر">
                       <option [ngValue]="'يناير'">يناير</option>
                       <option [ngValue]="'فبراير'">فبراير</option>
                       <option [ngValue]="'مارس'">مارس</option>
@@ -757,6 +782,7 @@
                       <option [ngValue]="'أكتوبر'">أكتوبر</option>
                       <option [ngValue]="'نوفمبر'">نوفمبر</option>
                       <option [ngValue]="'ديسمبر'">ديسمبر</option>
+                      </optgroup>
                     </select></div></div>
 
                   <div class="col-12 table-responsive mt-2">
@@ -814,7 +840,8 @@
                   </div>
 
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالإدارة</label>
-                    <app-date-field formControlName="lastCaseDateAdmin"></app-date-field></div></div>
+                    <app-date-field class="date-with-note" formControlName="lastCaseDateAdmin"></app-date-field>
+                    <small class="form-text text-muted d-block">يُملأ تلقائياً من آخر حالة حمى وطفح مسجلة على البرنامج بنفس الإدارة، ويمكن تعديله</small></div></div>
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالمديرية</label>
                     <app-date-field formControlName="lastCaseDateDirectorate"></app-date-field></div></div>
 
@@ -825,6 +852,7 @@
                         <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="confirmedCasesLastMonth" [value]="2" /> لا</label>
                       </div>
                       <input type="number" class="form-control mt-1" placeholder="العدد" formControlName="confirmedCasesCount" *ngIf="feverRashForm.value.confirmedCasesLastMonth === 1" />
+                      <small class="form-text text-muted d-block">يُملأ تلقائياً من الحالات المصنفة "مؤكد" بنفس الإدارة خلال الشهر السابق لاكتشاف الحالة، ويمكن تعديله</small>
                     </div>
                   </div>
                   <div class="col-lg-4">
@@ -834,6 +862,7 @@
                         <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="feverRashCasesLastMonth" [value]="2" /> لا</label>
                       </div>
                       <input type="number" class="form-control mt-1" placeholder="العدد" formControlName="feverRashCasesCount" *ngIf="feverRashForm.value.feverRashCasesLastMonth === 1" />
+                      <small class="form-text text-muted d-block">يُملأ تلقائياً من حالات الحمى والطفح المسجلة على البرنامج بنفس الإدارة خلال الشهر السابق لاكتشاف الحالة، ويمكن تعديله</small>
                     </div>
                   </div>
                   <div class="col-lg-4">
@@ -864,88 +893,132 @@
                   <div class="col-lg-6"><div class="form-group"><label>رقم المربع</label>
                     <input type="text" class="form-control" formControlName="fieldSquareNumber" /></div></div>
 
-                  <div class="col-12 d-flex justify-content-between align-items-center mb-2">
-                    <span class="fwb">السجلات المدخلة</span>
-                    <button type="button" class="btn btn-add-record rounded-2" (click)="addSurveyChild()">
-                      <i class="pi pi-plus"></i> إضافة سجل جديد
-                    </button>
-                  </div>
-
-                  <div class="col-12 mb-2" *ngIf="surveyChildren.length > 0">
-                    <div class="fwb mb-1">عرض السجلات</div>
-                    <div class="table-responsive">
-                      <table class="table table-bordered text-center align-middle">
-                        <thead><tr><th>#</th><th>اسم الطفل</th><th>MMR1</th><th>MMR2</th><th>أعراض الحمى والطفح</th></tr></thead>
-                        <tbody>
-                          <tr *ngFor="let s of surveyChildren.controls; let i = index">
-                            <td>{{ i + 1 }}</td><td>{{ s.value.childName }}</td><td>{{ yesNo(s.value.mmr1) }}</td><td>{{ yesNo(s.value.mmr2) }}</td><td>{{ yesNo(s.value.hasSymptoms) }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                  <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                    <span class="fwb">سجل الأطفال</span>
+                    <div class="d-flex flex-wrap gap-2">
+                      <button type="button" class="btn rounded-2 btn-excel-download" (click)="downloadSurveyExcel('30')">
+                        <i class="pi pi-download"></i> تنزيل نموذج Excel
+                      </button>
+                      <button type="button" class="btn rounded-2 btn-excel-upload" (click)="survey30ExcelInput.click()">
+                        <i class="pi pi-upload"></i> رفع ملف Excel
+                      </button>
+                      <input #survey30ExcelInput type="file" class="d-none" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" (change)="onSurveyExcelSelected('30', $event.target)" />
+                      <button type="button" class="btn btn-add-record rounded-2" (click)="addSurveyChild()">
+                        <i class="pi pi-plus"></i> إضافة طفل
+                      </button>
                     </div>
                   </div>
-                  <div class="col-12" formArrayName="surveyChildren">
-                    <div class="record-card" *ngFor="let s of surveyChildren.controls; let i = index" [formGroupName]="i">
-                      <div class="record-card-head">
-                        <span class="fwb">طفل #{{ i + 1 }}</span>
-                        <div class="d-flex gap-2">
-                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(s)">
-                            <i class="pi" [ngClass]="isRowOpen(s) ? 'pi-chevron-up' : 'pi-pencil'"></i>
-                            {{ isRowOpen(s) ? 'إغلاق' : 'تعديل' }}
-                          </button>
-                          <button type="button" class="btn btn-sm btn-danger" (click)="removeSurveyChild(i)">
-                            <i class="pi pi-trash"></i> حذف
-                          </button>
-                        </div>
-                      </div>
+                  <div class="col-12 mb-2"><small class="survey-excel-note">نزّل النموذج (يحتوي على الأطفال المدخلين حالياً)، املأه ثم ارفعه ليحل محل سجل الأطفال في الشاشة، ثم اضغط "حفظ البيانات".</small></div>
 
-                      <div *ngIf="!isRowOpen(s)" class="text-muted small">
-                        {{ s.value.childName || 'بدون اسم' }}
-                      </div>
-
-                      <div class="row" *ngIf="isRowOpen(s)">
-                        <div class="col-lg-4"><div class="form-group"><label>اسم الطفل</label>
-                          <input type="text" class="form-control" formControlName="childName" /></div></div>
-                        <div class="col-lg-3"><div class="form-group"><label>MMR1</label>
-                          <select class="form-control" formControlName="mmr1">
-                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
-                          </select></div></div>
-                        <div class="col-lg-3"><div class="form-group"><label>MMR2</label>
-                          <select class="form-control" formControlName="mmr2">
-                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
-                          </select></div></div>
-                        <div class="col-lg-2"><div class="form-group"><label>أعراض الحمى والطفح</label>
-                          <select class="form-control" formControlName="hasSymptoms">
-                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
-                          </select></div></div>
-                      </div>
-                    </div>
-                    <div *ngIf="surveyChildren.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة طفل.</div>
-                  </div>
-
-                  <div class="col-12 title fs-6 fwb mt-3">ملخص إحصائي للسجلات المدخلة</div>
-                  <div class="col-12 mb-2">عدد السجلات: <span class="badge bg-primary">{{ surveyCount }}</span></div>
-                  <div class="col-lg-4">
-                    <div class="fwb mb-1">اختيارات MMR1</div>
-                    <table class="table table-bordered text-center">
-                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
-                      <tbody><tr><td>نعم</td><td>{{ surveyMmr1.yes }}</td></tr><tr><td>لا</td><td>{{ surveyMmr1.no }}</td></tr></tbody>
+                  <div class="col-12 table-responsive survey-grid" formArrayName="surveyChildren">
+                    <table class="table table-bordered text-center align-middle mb-0">
+                      <thead>
+                        <tr>
+                          <th rowspan="2">#</th>
+                          <th rowspan="2"><span class="vtext">شارع 1</span></th>
+                          <th rowspan="2"><span class="vtext">منزل 2</span></th>
+                          <th rowspan="2"><span class="vtext">شقة 3</span></th>
+                          <th rowspan="2" class="name-col">اسم الطفل</th>
+                          <th rowspan="2"><span class="vtext">الاطلاع على شهادة الميلاد 4</span></th>
+                          <th rowspan="2"><span class="vtext">شهادة الميلاد مستوفاه 5</span></th>
+                          <th colspan="2">صفرية</th>
+                          <th colspan="2">BCG</th>
+                          <th colspan="2">أولى</th>
+                          <th colspan="2">ثانية</th>
+                          <th colspan="2">ثالثة</th>
+                          <th colspan="2">رابعة</th>
+                          <th colspan="2">خامسة</th>
+                          <th colspan="2">منشطة</th>
+                          <th rowspan="2"></th>
+                        </tr>
+                        <tr>
+                          <th><span class="vtext">حالة تطعيمية 6</span></th>
+                          <th><span class="vtext">مراجعة الميكنة 7</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let s of surveyChildren.controls; let i = index" [formGroupName]="i">
+                          <td>{{ i + 1 }}</td>
+                          <td><input type="text" class="form-control form-control-sm" formControlName="street" /></td>
+                          <td><input type="text" class="form-control form-control-sm" formControlName="house" /></td>
+                          <td><input type="text" class="form-control form-control-sm" formControlName="apartment" /></td>
+                          <td class="name-col"><input type="text" class="form-control form-control-sm" formControlName="childName" /></td>
+                          <td><select class="form-select form-select-sm" formControlName="birthCertSeen"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="birthCertComplete"><option [ngValue]="null"></option><option [ngValue]="'yes'">✓</option><option [ngValue]="'no'">✗</option><option [ngValue]="'zero'">صفرية</option><option [ngValue]="'bcg'">BCG</option><option [ngValue]="'first'">أولى</option><option [ngValue]="'second'">ثانية</option><option [ngValue]="'third'">ثالثة</option><option [ngValue]="'fourth'">رابعة</option><option [ngValue]="'fifth'">خامسة</option><option [ngValue]="'booster'">منشطة</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="zeroStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="zeroReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="bcgStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="bcgReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="firstStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="firstReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="secondStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="secondReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="thirdStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="thirdReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="fourthStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="fourthReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="fifthStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="fifthReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="boosterStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="boosterReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><button type="button" class="btn btn-sm btn-danger survey-delete" (click)="removeSurveyChild(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr class="survey-total">
+                          <td colspan="5" class="fwb">الاجمالى</td>
+                          <td>{{ surveyTotal(surveyChildren, 'birthCertSeen') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'birthCertComplete') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'zeroStatus') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'zeroReview') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'bcgStatus') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'bcgReview') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'firstStatus') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'firstReview') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'secondStatus') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'secondReview') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'thirdStatus') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'thirdReview') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'fourthStatus') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'fourthReview') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'fifthStatus') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'fifthReview') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'boosterStatus') }}</td>
+                          <td>{{ surveyTotal(surveyChildren, 'boosterReview') }}</td>
+                          <td></td>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
-                  <div class="col-lg-4">
-                    <div class="fwb mb-1">اختيارات MMR2</div>
-                    <table class="table table-bordered text-center">
-                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
-                      <tbody><tr><td>نعم</td><td>{{ surveyMmr2.yes }}</td></tr><tr><td>لا</td><td>{{ surveyMmr2.no }}</td></tr></tbody>
-                    </table>
+
+                  <div class="col-12 mt-3 survey-legend small">
+                    <p>١. <b>شارع:</b> اسم الشارع أو أشهر علامة مميزة في حالة عدم وجود اسم. ٢. <b>منزل:</b> رقم المنزل أو اسم صاحبه أو أي علامة مميزة.</p>
+                    <p>٣. <b>شقة:</b> رقم الشقة أو الطابق في حالة عدم وجود أرقام. ٤. يتم وضع علامة صح إذا اطلع الفريق على شهادة ميلاد الطفل أو البطاقة الصحية له وخطأ إذا لم تتواجد.</p>
+                    <p>٥. يتم وضع علامات خطأ إذا كانت شهادة الميلاد لم يتم تسجيل التطعيمات بها أو صح إذا كانت مستوفاة بالكامل حتى آخر جرعة أو يتم كتابة الجرعة في حالة عدم استيفاء جميع الجرعات التي تم تطعيم الطفل بها والمقصود بالاستيفاء هنا تسجيل جميع التطعيمات التي حصل عليها الطفل في الشهادة بغض النظر عن استكمال تطعيماته من عدمه.</p>
+                    <p>٦. <b>حالة تطعيمية:</b> توضع علامة صح إذا كان التطعيم مسجل على شهادة الميلاد أو علامة صح داخل دائرة (✓) إذا كان الطفل مطعم حسب أقوال الأب أو الأم وخطأ إذا كان الطفل غير مطعم.</p>
+                    <p class="mb-0">٧. <b>مراجعات الحالة التطعيمية للطفل بمنظومة الميكنة بعد العودة للوحدة:</b> تسجيل صح أمام الجرعة في حالة الحصول عليها أو خطأ في حالة عدم الحصول عليها.</p>
                   </div>
-                  <div class="col-lg-4">
-                    <div class="fwb mb-1">أعراض الحمى والطفح</div>
-                    <table class="table table-bordered text-center">
-                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
-                      <tbody><tr><td>نعم</td><td>{{ surveySymptoms.yes }}</td></tr><tr><td>لا</td><td>{{ surveySymptoms.no }}</td></tr></tbody>
-                    </table>
-                  </div>
+
+                  <div class="col-lg-4 mt-3"><div class="form-group"><label>القائم بالتنفيذ</label>
+                    <input type="text" class="form-control" formControlName="survey30ExecutorName" /></div></div>
+                  <div class="col-lg-4 mt-3"><div class="form-group"><label>المشرف</label>
+                    <input type="text" class="form-control" formControlName="survey30SupervisorName" /></div></div>
+                  <div class="col-lg-4 mt-3"><div class="form-group"><label>مسؤول التطعيمات بالإدارة</label>
+                    <input type="text" class="form-control" formControlName="survey30VaccinationOfficerName" /></div></div>
                 </div>
               </div>
             </div>
@@ -964,88 +1037,132 @@
                   <div class="col-lg-6"><div class="form-group"><label>رقم المربع</label>
                     <input type="text" class="form-control" formControlName="field400SquareNumber" /></div></div>
 
-                  <div class="col-12 d-flex justify-content-between align-items-center mb-2">
-                    <span class="fwb">السجلات المدخلة</span>
-                    <button type="button" class="btn btn-add-record rounded-2" (click)="addSurvey400Child()">
-                      <i class="pi pi-plus"></i> إضافة سجل جديد
-                    </button>
-                  </div>
-
-                  <div class="col-12 mb-2" *ngIf="survey400Children.length > 0">
-                    <div class="fwb mb-1">عرض السجلات</div>
-                    <div class="table-responsive">
-                      <table class="table table-bordered text-center align-middle">
-                        <thead><tr><th>#</th><th>اسم الطفل</th><th>MMR1</th><th>MMR2</th><th>أعراض الحمى والطفح</th></tr></thead>
-                        <tbody>
-                          <tr *ngFor="let s of survey400Children.controls; let i = index">
-                            <td>{{ i + 1 }}</td><td>{{ s.value.childName }}</td><td>{{ yesNo(s.value.mmr1) }}</td><td>{{ yesNo(s.value.mmr2) }}</td><td>{{ yesNo(s.value.hasSymptoms) }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                  <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                    <span class="fwb">سجل الأطفال</span>
+                    <div class="d-flex flex-wrap gap-2">
+                      <button type="button" class="btn rounded-2 btn-excel-download" (click)="downloadSurveyExcel('400')">
+                        <i class="pi pi-download"></i> تنزيل نموذج Excel
+                      </button>
+                      <button type="button" class="btn rounded-2 btn-excel-upload" (click)="survey400ExcelInput.click()">
+                        <i class="pi pi-upload"></i> رفع ملف Excel
+                      </button>
+                      <input #survey400ExcelInput type="file" class="d-none" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" (change)="onSurveyExcelSelected('400', $event.target)" />
+                      <button type="button" class="btn btn-add-record rounded-2" (click)="addSurvey400Child()">
+                        <i class="pi pi-plus"></i> إضافة طفل
+                      </button>
                     </div>
                   </div>
-                  <div class="col-12" formArrayName="survey400Children">
-                    <div class="record-card" *ngFor="let s of survey400Children.controls; let i = index" [formGroupName]="i">
-                      <div class="record-card-head">
-                        <span class="fwb">طفل #{{ i + 1 }}</span>
-                        <div class="d-flex gap-2">
-                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(s)">
-                            <i class="pi" [ngClass]="isRowOpen(s) ? 'pi-chevron-up' : 'pi-pencil'"></i>
-                            {{ isRowOpen(s) ? 'إغلاق' : 'تعديل' }}
-                          </button>
-                          <button type="button" class="btn btn-sm btn-danger" (click)="removeSurvey400Child(i)">
-                            <i class="pi pi-trash"></i> حذف
-                          </button>
-                        </div>
-                      </div>
+                  <div class="col-12 mb-2"><small class="survey-excel-note">نزّل النموذج (يحتوي على الأطفال المدخلين حالياً)، املأه ثم ارفعه ليحل محل سجل الأطفال في الشاشة، ثم اضغط "حفظ البيانات".</small></div>
 
-                      <div *ngIf="!isRowOpen(s)" class="text-muted small">
-                        {{ s.value.childName || 'بدون اسم' }}
-                      </div>
-
-                      <div class="row" *ngIf="isRowOpen(s)">
-                        <div class="col-lg-4"><div class="form-group"><label>اسم الطفل</label>
-                          <input type="text" class="form-control" formControlName="childName" /></div></div>
-                        <div class="col-lg-3"><div class="form-group"><label>MMR1</label>
-                          <select class="form-control" formControlName="mmr1">
-                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
-                          </select></div></div>
-                        <div class="col-lg-3"><div class="form-group"><label>MMR2</label>
-                          <select class="form-control" formControlName="mmr2">
-                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
-                          </select></div></div>
-                        <div class="col-lg-2"><div class="form-group"><label>أعراض الحمى والطفح</label>
-                          <select class="form-control" formControlName="hasSymptoms">
-                            <option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option>
-                          </select></div></div>
-                      </div>
-                    </div>
-                    <div *ngIf="survey400Children.length === 0" class="text-muted">لا توجد سجلات. اضغط "إضافة سجل جديد" لإضافة طفل.</div>
-                  </div>
-
-                  <div class="col-12 title fs-6 fwb mt-3">ملخص إحصائي للسجلات المدخلة</div>
-                  <div class="col-12 mb-2">عدد السجلات: <span class="badge bg-primary">{{ survey400Count }}</span></div>
-                  <div class="col-lg-4">
-                    <div class="fwb mb-1">اختيارات MMR1</div>
-                    <table class="table table-bordered text-center">
-                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
-                      <tbody><tr><td>نعم</td><td>{{ survey400Mmr1.yes }}</td></tr><tr><td>لا</td><td>{{ survey400Mmr1.no }}</td></tr></tbody>
+                  <div class="col-12 table-responsive survey-grid" formArrayName="survey400Children">
+                    <table class="table table-bordered text-center align-middle mb-0">
+                      <thead>
+                        <tr>
+                          <th rowspan="2">#</th>
+                          <th rowspan="2"><span class="vtext">شارع 1</span></th>
+                          <th rowspan="2"><span class="vtext">منزل 2</span></th>
+                          <th rowspan="2"><span class="vtext">شقة 3</span></th>
+                          <th rowspan="2" class="name-col">اسم الطفل</th>
+                          <th rowspan="2"><span class="vtext">الاطلاع على شهادة الميلاد 4</span></th>
+                          <th rowspan="2"><span class="vtext">شهادة الميلاد مستوفاه 5</span></th>
+                          <th colspan="2">صفرية</th>
+                          <th colspan="2">BCG</th>
+                          <th colspan="2">أولى</th>
+                          <th colspan="2">ثانية</th>
+                          <th colspan="2">ثالثة</th>
+                          <th colspan="2">رابعة</th>
+                          <th colspan="2">خامسة</th>
+                          <th colspan="2">منشطة</th>
+                          <th rowspan="2"></th>
+                        </tr>
+                        <tr>
+                          <th><span class="vtext">حالة تطعيمية 6</span></th>
+                          <th><span class="vtext">مراجعة الميكنة 7</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                          <th><span class="vtext">حالة تطعيمية</span></th>
+                          <th><span class="vtext">مراجعة الميكنة</span></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let s of survey400Children.controls; let i = index" [formGroupName]="i">
+                          <td>{{ i + 1 }}</td>
+                          <td><input type="text" class="form-control form-control-sm" formControlName="street" /></td>
+                          <td><input type="text" class="form-control form-control-sm" formControlName="house" /></td>
+                          <td><input type="text" class="form-control form-control-sm" formControlName="apartment" /></td>
+                          <td class="name-col"><input type="text" class="form-control form-control-sm" formControlName="childName" /></td>
+                          <td><select class="form-select form-select-sm" formControlName="birthCertSeen"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="birthCertComplete"><option [ngValue]="null"></option><option [ngValue]="'yes'">✓</option><option [ngValue]="'no'">✗</option><option [ngValue]="'zero'">صفرية</option><option [ngValue]="'bcg'">BCG</option><option [ngValue]="'first'">أولى</option><option [ngValue]="'second'">ثانية</option><option [ngValue]="'third'">ثالثة</option><option [ngValue]="'fourth'">رابعة</option><option [ngValue]="'fifth'">خامسة</option><option [ngValue]="'booster'">منشطة</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="zeroStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="zeroReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="bcgStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="bcgReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="firstStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="firstReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="secondStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="secondReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="thirdStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="thirdReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="fourthStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="fourthReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="fifthStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="fifthReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="boosterStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="boosterReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
+                          <td><button type="button" class="btn btn-sm btn-danger survey-delete" (click)="removeSurvey400Child(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr class="survey-total">
+                          <td colspan="5" class="fwb">الاجمالى</td>
+                          <td>{{ surveyTotal(survey400Children, 'birthCertSeen') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'birthCertComplete') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'zeroStatus') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'zeroReview') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'bcgStatus') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'bcgReview') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'firstStatus') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'firstReview') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'secondStatus') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'secondReview') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'thirdStatus') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'thirdReview') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'fourthStatus') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'fourthReview') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'fifthStatus') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'fifthReview') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'boosterStatus') }}</td>
+                          <td>{{ surveyTotal(survey400Children, 'boosterReview') }}</td>
+                          <td></td>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
-                  <div class="col-lg-4">
-                    <div class="fwb mb-1">اختيارات MMR2</div>
-                    <table class="table table-bordered text-center">
-                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
-                      <tbody><tr><td>نعم</td><td>{{ survey400Mmr2.yes }}</td></tr><tr><td>لا</td><td>{{ survey400Mmr2.no }}</td></tr></tbody>
-                    </table>
+
+                  <div class="col-12 mt-3 survey-legend small">
+                    <p>١. <b>شارع:</b> اسم الشارع أو أشهر علامة مميزة في حالة عدم وجود اسم. ٢. <b>منزل:</b> رقم المنزل أو اسم صاحبه أو أي علامة مميزة.</p>
+                    <p>٣. <b>شقة:</b> رقم الشقة أو الطابق في حالة عدم وجود أرقام. ٤. يتم وضع علامة صح إذا اطلع الفريق على شهادة ميلاد الطفل أو البطاقة الصحية له وخطأ إذا لم تتواجد.</p>
+                    <p>٥. يتم وضع علامات خطأ إذا كانت شهادة الميلاد لم يتم تسجيل التطعيمات بها أو صح إذا كانت مستوفاة بالكامل حتى آخر جرعة أو يتم كتابة الجرعة في حالة عدم استيفاء جميع الجرعات التي تم تطعيم الطفل بها والمقصود بالاستيفاء هنا تسجيل جميع التطعيمات التي حصل عليها الطفل في الشهادة بغض النظر عن استكمال تطعيماته من عدمه.</p>
+                    <p>٦. <b>حالة تطعيمية:</b> توضع علامة صح إذا كان التطعيم مسجل على شهادة الميلاد أو علامة صح داخل دائرة (✓) إذا كان الطفل مطعم حسب أقوال الأب أو الأم وخطأ إذا كان الطفل غير مطعم.</p>
+                    <p class="mb-0">٧. <b>مراجعات الحالة التطعيمية للطفل بمنظومة الميكنة بعد العودة للوحدة:</b> تسجيل صح أمام الجرعة في حالة الحصول عليها أو خطأ في حالة عدم الحصول عليها.</p>
                   </div>
-                  <div class="col-lg-4">
-                    <div class="fwb mb-1">أعراض الحمى والطفح</div>
-                    <table class="table table-bordered text-center">
-                      <thead><tr><th>الاختيار</th><th>العدد</th></tr></thead>
-                      <tbody><tr><td>نعم</td><td>{{ survey400Symptoms.yes }}</td></tr><tr><td>لا</td><td>{{ survey400Symptoms.no }}</td></tr></tbody>
-                    </table>
-                  </div>
+
+                  <div class="col-lg-4 mt-3"><div class="form-group"><label>القائم بالتنفيذ</label>
+                    <input type="text" class="form-control" formControlName="survey400ExecutorName" /></div></div>
+                  <div class="col-lg-4 mt-3"><div class="form-group"><label>المشرف</label>
+                    <input type="text" class="form-control" formControlName="survey400SupervisorName" /></div></div>
+                  <div class="col-lg-4 mt-3"><div class="form-group"><label>مسؤول التطعيمات بالإدارة</label>
+                    <input type="text" class="form-control" formControlName="survey400VaccinationOfficerName" /></div></div>
                 </div>
               </div>
             </div>
@@ -1079,7 +1196,29 @@
                   </div>
 
                   <div class="col-12"><div class="form-group"><label>تشخيص الحالة النهائي</label>
-                    <input type="text" class="form-control" formControlName="finalDiagnosis" /></div></div>
+                    <select class="form-control" formControlName="finalDiagnosis">
+                      <option [ngValue]="null">اختر...</option>
+                      <option [ngValue]="'حصبة'">حصبة</option>
+                      <option [ngValue]="'حصبة ألمانى'">حصبة ألمانى</option>
+                      <option [ngValue]="'التهاب بالجلد &quot;فيروسى&quot;'">التهاب بالجلد "فيروسى"</option>
+                      <option [ngValue]="'اثر جانبى بعد التطعيم'">اثر جانبى بعد التطعيم</option>
+                      <option [ngValue]="'حمى قرمزية'">حمى قرمزية</option>
+                      <option [ngValue]="'نقص المناعة'">نقص المناعة</option>
+                      <option [ngValue]="'داء الفطط'">داء الفطط</option>
+                      <option [ngValue]="'طفيلية وردية'">طفيلية وردية</option>
+                      <option [ngValue]="'عدوى بكتيرية'">عدوى بكتيرية</option>
+                      <option [ngValue]="'كواساكى'">كواساكى</option>
+                      <option [ngValue]="'متلازمة جونسون'">متلازمة جونسون</option>
+                      <option [ngValue]="'حمى الدنج'">حمى الدنج</option>
+                      <option [ngValue]="'متلازمة الفم واليد والقدم'">متلازمة الفم واليد والقدم</option>
+                      <option [ngValue]="'حمرة'">حمرة</option>
+                      <option [ngValue]="'حمى موسمية'">حمى موسمية</option>
+                      <option [ngValue]="'التهاب بالمخ'">التهاب بالمخ</option>
+                      <option [ngValue]="'حساسية جلدية'">حساسية جلدية</option>
+                      <option [ngValue]="'حساسية طعام'">حساسية طعام</option>
+                      <option [ngValue]="'حساسية حشرية'">حساسية حشرية</option>
+                      <option *ngIf="isLegacyFinalDiagnosis" [ngValue]="feverRashForm.value.finalDiagnosis">{{ feverRashForm.value.finalDiagnosis }}</option>
+                    </select></div></div>
                   <div class="col-12"><div class="form-group"><label>تعليقات اللجنة</label>
                     <textarea rows="3" class="form-control" formControlName="committeeComments"></textarea></div></div>
 
@@ -1102,9 +1241,15 @@
                         </tr>
                         <tr>
                           <td class="fwb">التاريخ</td>
-                          <td><app-date-field formControlName="committeeSpecialistDate"></app-date-field></td>
-                          <td><app-date-field formControlName="adminOfficerDate"></app-date-field></td>
-                          <td><app-date-field formControlName="directorateOfficerDate"></app-date-field></td>
+                          <td><app-date-field class="date-with-note" formControlName="committeeSpecialistDate" [min]="followupMinDate"></app-date-field>
+                            <small class="form-text text-muted d-block">بعد 21 يوم من تاريخ الطفح{{ followupMinDate ? ' (من ' + (followupMinDate | date: 'dd/MM/yyyy') + ')' : '' }}</small>
+                            <small *ngIf="isBeforeFollowupMin(feverRashForm.value.committeeSpecialistDate)" class="form-text text-danger mess-color d-block">لا يمكن أن يكون قبل مرور 21 يوم من تاريخ طفح الحالة</small></td>
+                          <td><app-date-field class="date-with-note" formControlName="adminOfficerDate" [min]="followupMinDate"></app-date-field>
+                            <small class="form-text text-muted d-block">بعد 21 يوم من تاريخ الطفح{{ followupMinDate ? ' (من ' + (followupMinDate | date: 'dd/MM/yyyy') + ')' : '' }}</small>
+                            <small *ngIf="isBeforeFollowupMin(feverRashForm.value.adminOfficerDate)" class="form-text text-danger mess-color d-block">لا يمكن أن يكون قبل مرور 21 يوم من تاريخ طفح الحالة</small></td>
+                          <td><app-date-field class="date-with-note" formControlName="directorateOfficerDate" [min]="followupMinDate"></app-date-field>
+                            <small class="form-text text-muted d-block">بعد 21 يوم من تاريخ الطفح{{ followupMinDate ? ' (من ' + (followupMinDate | date: 'dd/MM/yyyy') + ')' : '' }}</small>
+                            <small *ngIf="isBeforeFollowupMin(feverRashForm.value.directorateOfficerDate)" class="form-text text-danger mess-color d-block">لا يمكن أن يكون قبل مرور 21 يوم من تاريخ طفح الحالة</small></td>
                         </tr>
                       </tbody>
                     </table>
@@ -1119,6 +1264,50 @@
                       <option [ngValue]="'مرتبط وبائى'">مرتبط وبائى</option>
                       <option [ngValue]="'متوافق إكلينيكى'">متوافق إكلينيكى</option>
                     </select></div></div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="activeTab === 'notes'">
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">ملاحظات عامة</div>
+
+                  <div class="col-12"><div class="form-group"><label>الملاحظات</label>
+                    <textarea rows="6" class="form-control" formControlName="generalNotes"></textarea></div></div>
+
+                  <div class="col-12"><div class="form-group"><label>المرفقات</label>
+                    <div>
+                      <button type="button" class="btn btn-add-record rounded-2" (click)="attachmentsInput.click()">
+                        <i class="pi pi-paperclip"></i> إضافة مرفقات
+                      </button>
+                      <input #attachmentsInput type="file" accept="application/pdf,.pdf" multiple class="d-none"
+                        (change)="onAttachmentsSelected($event.target)" />
+                    </div>
+                    <small class="form-text text-muted d-block">ملفات PDF فقط، ويمكن اختيار أكثر من ملف. يتم رفع الملفات عند حفظ البيانات.</small>
+
+                    <div class="mt-2">
+                      <div *ngFor="let url of savedAttachmentUrls; let i = index"
+                        class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
+                        <span class="text-truncate me-2"><i class="pi pi-file-pdf text-danger"></i> {{ attachmentName(url) }}</span>
+                        <div class="d-flex gap-1">
+                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openSavedAttachment(url)">عرض</button>
+                          <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeSavedAttachment(i)">حذف</button>
+                        </div>
+                      </div>
+                      <div *ngFor="let file of pendingAttachments; let i = index"
+                        class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1 border-warning">
+                        <span class="text-truncate me-2"><i class="pi pi-file-pdf text-danger"></i> {{ file.name }} <small class="text-muted">(لم يُحفظ بعد)</small></span>
+                        <div class="d-flex gap-1">
+                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openPendingAttachment(i)">عرض</button>
+                          <button type="button" class="btn btn-sm btn-outline-danger" (click)="removePendingAttachment(i)">حذف</button>
+                        </div>
+                      </div>
+                      <div *ngIf="savedAttachmentUrls.length === 0 && pendingAttachments.length === 0" class="text-muted small">لا توجد مرفقات.</div>
+                    </div>
+                  </div></div>
                 </div>
               </div>
             </div>

@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
 import { PagePermissionService } from '../../../../../core/services/page-permission.service';
+import { AttachemntApiService } from 'src/app/core/services/attachemnt-api.service';
+import { firstValueFrom } from 'rxjs';
+import { downloadSurveyTemplate, readSurveyFile } from './fever-rash-survey-excel';
 
 @Component({
   selector: 'app-fever-rash',
@@ -31,6 +34,7 @@ export class FeverRashComponent implements OnInit {
   // Upper bound for date inputs: rash date cannot be in the future.
   today: string = '';
   patientAgeLabel: string = '';
+  private patientAgeInMonths: number | null = null;
   patientSexLabel: string = '';
 
   allFilledControlsCount: number = 0;
@@ -40,7 +44,7 @@ export class FeverRashComponent implements OnInit {
   confirmedMeasles = false;
 
   // Tabs (order matches the paper form / attached images)
-  activeTab: 'field' | 'contacts' | 'unit' | 'survey' | 'survey400' | 'followup' = 'field';
+  activeTab: 'field' | 'contacts' | 'unit' | 'survey' | 'survey400' | 'followup' | 'notes' = 'field';
   tabs = [
     { key: 'field', label: 'التقصى الميدانى للحالة' },
     { key: 'contacts', label: 'حصر المخالطين' },
@@ -48,7 +52,11 @@ export class FeverRashComponent implements OnInit {
     { key: 'survey', label: 'المسح الميدانى 30 طفل' },
     { key: 'survey400', label: 'المسح الميداني 400 طفل' },
     { key: 'followup', label: 'متابعة الحالة بعد 21 يوم' },
+    { key: 'notes', label: 'ملاحظات عامة' },
   ];
+
+  savedAttachmentUrls: string[] = [];
+  pendingAttachments: File[] = [];
 
   // Each field-survey tab needs the investigations permission or its own dedicated permission.
   private readonly INVESTIGATION_PAGE_ID = 10;
@@ -71,6 +79,33 @@ export class FeverRashComponent implements OnInit {
   // Expand/collapse state for the card-based grids (case movements, previous cases).
   private openRows = new Set<AbstractControl>();
 
+  private readonly finalDiagnosisLabels = [
+    'حصبة',
+    'حصبة ألمانى',
+    'التهاب بالجلد "فيروسى"',
+    'اثر جانبى بعد التطعيم',
+    'حمى قرمزية',
+    'نقص المناعة',
+    'داء الفطط',
+    'طفيلية وردية',
+    'عدوى بكتيرية',
+    'كواساكى',
+    'متلازمة جونسون',
+    'حمى الدنج',
+    'متلازمة الفم واليد والقدم',
+    'حمرة',
+    'حمى موسمية',
+    'التهاب بالمخ',
+    'حساسية جلدية',
+    'حساسية طعام',
+    'حساسية حشرية',
+  ];
+
+  get isLegacyFinalDiagnosis(): boolean {
+    const v = this.feverRashForm?.value?.finalDiagnosis;
+    return !!v && !this.finalDiagnosisLabels.includes(v);
+  }
+
   private arrayKeys = ['caseMovements', 'previousCases', 'generalContacts', 'pregnantContacts', 'surveyChildren', 'survey400Children'];
   private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage', 'caseCodeDisplay'];
 
@@ -88,7 +123,8 @@ export class FeverRashComponent implements OnInit {
     private translateService: TranslateService,
     private userMsg: UserMessageService,
     private generalDataService: GeneralDataService,
-    private pagePermission: PagePermissionService
+    private pagePermission: PagePermissionService,
+    private attachmentApi: AttachemntApiService
   ) { }
 
   ngOnInit() {
@@ -129,6 +165,7 @@ export class FeverRashComponent implements OnInit {
 
       // Tab 1 - case field investigation
       differentialDiagnosis: new FormControl(),
+      caseAgeMonths: new FormControl(null, [Validators.min(0), Validators.pattern(/^[0-9]+$/)]),
       rashDate: new FormControl(null, this.rashDateNotBeforeFever),
       epiLinked: new FormControl(),
       linkedCaseConfirmation: new FormControl(),
@@ -197,11 +234,17 @@ export class FeverRashComponent implements OnInit {
       fieldVisitDate: new FormControl(),
       fieldSquareNumber: new FormControl(),
       surveyChildren: new FormArray([]),
+      survey30ExecutorName: new FormControl(),
+      survey30SupervisorName: new FormControl(),
+      survey30VaccinationOfficerName: new FormControl(),
 
       // Tab 4b - field survey (400 children) - positive cases only
       field400VisitDate: new FormControl(),
       field400SquareNumber: new FormControl(),
       survey400Children: new FormArray([]),
+      survey400ExecutorName: new FormControl(),
+      survey400SupervisorName: new FormControl(),
+      survey400VaccinationOfficerName: new FormControl(),
 
       // Tab 5 - follow-up after 28 days
       diseaseOutcome: new FormControl(),
@@ -219,6 +262,9 @@ export class FeverRashComponent implements OnInit {
       directorateOfficerSignature: new FormControl(),
       directorateOfficerDate: new FormControl(),
       finalClassification: new FormControl(),
+
+      // Tab 7
+      generalNotes: new FormControl(),
     });
 
     this.feverRashForm.valueChanges.subscribe(() => this.calculateCompletionPercentage());
@@ -259,8 +305,12 @@ export class FeverRashComponent implements OnInit {
     this.generalDataService.getBy(this.currentId).subscribe((res: any) => {
       const p = res?.data;
       if (!p) return;
+      const fullName = [p.firstName, p.secondName, p.thirdName].filter((x: any) => !!x).join(' ');
+      if (fullName) this.patientName = fullName;
       this.patientSexLabel = p.genderId === 1 ? 'ذكر' : p.genderId === 2 ? 'أنثى' : '';
       this.patientAgeLabel = p.age != null ? `${p.age} ${this.ageUnit(p.ageTypeId)}` : '';
+      this.patientAgeInMonths = this.toMonths(p.age, p.ageTypeId);
+      this.applyPatientAgeMonths();
       if (p.homeVisitDate && !this.feverRashForm.value.homeVisitDate) {
         this.feverRashForm.controls['homeVisitDate'].setValue(this.d(p.homeVisitDate));
       }
@@ -288,6 +338,27 @@ export class FeverRashComponent implements OnInit {
     }
   }
 
+  private toMonths(age: any, ageTypeId: any): number | null {
+    if (age === null || age === undefined || age === '') return null;
+    const n = Number(age);
+    if (isNaN(n) || n < 0) return null;
+    switch (Number(ageTypeId)) {
+      case 1: return Math.floor(n / 30);
+      case 2: return Math.floor(n);
+      case 3: return Math.floor(n * 12);
+      default: return null;
+    }
+  }
+
+  private applyPatientAgeMonths() {
+    const ctrl = this.feverRashForm?.controls['caseAgeMonths'];
+    if (!ctrl || this.patientAgeInMonths === null) return;
+    if (ctrl.value === null || ctrl.value === undefined || ctrl.value === '') {
+      ctrl.setValue(this.patientAgeInMonths, { emitEvent: false });
+      this.calculateCompletionPercentage();
+    }
+  }
+
   private ageUnit(ageTypeId: number): string {
     switch (ageTypeId) {
       case 1: return 'يوم';
@@ -307,19 +378,52 @@ export class FeverRashComponent implements OnInit {
       (res) => {
         const v = res?.data;
         if (v) this.patchFromRecord(v);
+        this.applyPatientAgeMonths();
         if (!this.feverRashForm.value.reportDate) {
           this.feverRashForm.controls['reportDate'].setValue(this.todayStr());
         }
         this.ensureDefaultRows();
         this.calculateCompletionPercentage();
+        this.loadUnitSummary();
       },
       () => {
         if (!this.feverRashForm.value.reportDate) {
           this.feverRashForm.controls['reportDate'].setValue(this.todayStr());
         }
         this.ensureDefaultRows();
+        this.loadUnitSummary();
       }
     );
+  }
+
+  private loadUnitSummary() {
+    const groupId = this.investigationService.diseaseGroupID;
+    if (!this.currentId || !groupId) return;
+    const f = this.feverRashForm.controls;
+    const needDate = !f['lastCaseDateAdmin'].value;
+    const needConfirmed = f['confirmedCasesLastMonth'].value == null;
+    const needFeverRash = f['feverRashCasesLastMonth'].value == null;
+    if (!needDate && !needConfirmed && !needFeverRash) return;
+    this.investigationService.getFeverRashUnitSummary(this.currentId, groupId).subscribe((res: any) => {
+      const s = res?.data;
+      if (!s) return;
+      if (needDate && !f['lastCaseDateAdmin'].value && s.lastCaseDate) {
+        f['lastCaseDateAdmin'].setValue(this.d(s.lastCaseDate));
+      }
+      if (needConfirmed && f['confirmedCasesLastMonth'].value == null) {
+        this.applyCaseCount('confirmedCasesLastMonth', 'confirmedCasesCount', s.confirmedCasesLastMonth);
+      }
+      if (needFeverRash && f['feverRashCasesLastMonth'].value == null) {
+        this.applyCaseCount('feverRashCasesLastMonth', 'feverRashCasesCount', s.feverRashCasesLastMonth);
+      }
+      this.calculateCompletionPercentage();
+    });
+  }
+
+  private applyCaseCount(flagKey: string, countKey: string, count: number) {
+    const n = Number(count) || 0;
+    this.feverRashForm.controls[flagKey].setValue(n > 0 ? 1 : 2);
+    this.feverRashForm.controls[countKey].setValue(n > 0 ? n : null);
   }
 
   // Start each card grid with one empty record when none were loaded.
@@ -347,6 +451,68 @@ export class FeverRashComponent implements OnInit {
     this.parseJsonInto(v.pregnantContactsJson, (p) => this.pregnantContacts.push(this.buildPregnant(p)));
     this.parseJsonInto(v.surveyChildrenJson, (s) => this.surveyChildren.push(this.buildSurveyChild(s)));
     this.parseJsonInto(v.survey400ChildrenJson, (s) => this.survey400Children.push(this.buildSurveyChild(s)));
+    this.savedAttachmentUrls = [];
+    this.parseJsonInto(v.generalAttachmentUrlsJson, (url) => url && this.savedAttachmentUrls.push(url));
+  }
+
+  // ===================== General notes attachments =====================
+  private isPdf(file: File): boolean {
+    return file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+  }
+
+  onAttachmentsSelected(input: EventTarget | null) {
+    const el = input as HTMLInputElement;
+    if (!el?.files?.length) return;
+    let rejected = 0;
+    for (let i = 0; i < el.files.length; i++) {
+      const file = el.files[i];
+      if (!this.isPdf(file)) { rejected++; continue; }
+      if (this.pendingAttachments.some((p) => p.name === file.name && p.size === file.size)) continue;
+      this.pendingAttachments.push(file);
+    }
+    if (rejected) this.userMsg.error('يُسمح بملفات PDF فقط');
+    el.value = '';
+  }
+
+  attachmentName(url: string): string {
+    const last = decodeURIComponent((url || '').split('/').pop() || '');
+    const idx = last.indexOf('--');
+    return idx >= 0 ? last.substring(idx + 2) : last;
+  }
+
+  openSavedAttachment(url: string) {
+    if (url) window.open(url, '_blank');
+  }
+
+  openPendingAttachment(i: number) {
+    const file = this.pendingAttachments[i];
+    if (file) window.open(URL.createObjectURL(file), '_blank');
+  }
+
+  removeSavedAttachment(i: number) {
+    this.savedAttachmentUrls.splice(i, 1);
+  }
+
+  removePendingAttachment(i: number) {
+    this.pendingAttachments.splice(i, 1);
+  }
+
+  private async uploadPendingAttachments(): Promise<string[] | null> {
+    if (!this.pendingAttachments.length) return [];
+    try {
+      const fd = new FormData();
+      this.pendingAttachments.forEach((f) => fd.append('files', f));
+      const res: any = await firstValueFrom(this.attachmentApi.upload(fd));
+      const urls: string[] = res?.data || res?.Data || [];
+      if (!urls.length) {
+        this.userMsg.error('لم يتم رفع المرفقات. حاول مرة أخرى.');
+        return null;
+      }
+      return urls;
+    } catch {
+      this.userMsg.error('لم يتم رفع المرفقات. حاول مرة أخرى.');
+      return null;
+    }
   }
 
   private parseJsonInto(json: string, push: (item: any) => void) {
@@ -469,13 +635,31 @@ export class FeverRashComponent implements OnInit {
       symptomsWeek4: new FormControl(!!p.symptomsWeek4),
     });
   }
+  private readonly surveyDoseKeys = ['zero', 'bcg', 'first', 'second', 'third', 'fourth', 'fifth', 'booster'];
+
   private buildSurveyChild(s: any = {}): FormGroup {
-    return new FormGroup({
+    const controls: { [key: string]: FormControl } = {
+      street: new FormControl(s.street ?? null),
+      house: new FormControl(s.house ?? null),
+      apartment: new FormControl(s.apartment ?? null),
       childName: new FormControl(s.childName ?? null),
-      mmr1: new FormControl(s.mmr1 ?? null),
-      mmr2: new FormControl(s.mmr2 ?? null),
-      hasSymptoms: new FormControl(s.hasSymptoms ?? null),
+      birthCertSeen: new FormControl(s.birthCertSeen ?? null),
+      birthCertComplete: new FormControl(s.birthCertComplete ?? null),
+    };
+    this.surveyDoseKeys.forEach((k) => {
+      controls[k + 'Status'] = new FormControl(s[k + 'Status'] ?? null);
+      controls[k + 'Review'] = new FormControl(s[k + 'Review'] ?? null);
     });
+    return new FormGroup(controls);
+  }
+
+  surveyTotal(rows: FormArray, key: string): number {
+    return rows.controls.filter((c) => {
+      const v = c.get(key)?.value;
+      if (key === 'birthCertComplete') return v === 'yes';
+      if (key.endsWith('Status')) return v === 1 || v === 2;
+      return v === 1;
+    }).length;
   }
 
   // ===================== Card grids (add new section + edit/delete) =====================
@@ -534,23 +718,55 @@ export class FeverRashComponent implements OnInit {
     this.pregnantContacts.removeAt(i);
   }
 
+  downloadSurveyExcel(kind: '30' | '400') {
+    const rows = kind === '30' ? this.surveyChildren : this.survey400Children;
+    const title = kind === '30' ? 'المسح الميداني - 30 طفل' : 'المسح الميداني - 400 طفل';
+    const code = this.feverRashForm.get('caseCodeDisplay')?.value;
+    const fileName = `المسح الميداني ${kind} طفل${code ? ' - ' + code : ''}`;
+    downloadSurveyTemplate(title, rows.getRawValue(), kind === '30' ? 30 : 400, fileName);
+  }
+
+  async onSurveyExcelSelected(kind: '30' | '400', input: EventTarget | null) {
+    const el = input as HTMLInputElement;
+    const file = el?.files?.[0];
+    if (el) el.value = '';
+    if (!file) return;
+    if (!/\.(xlsx|xls)$/i.test(file.name)) {
+      this.userMsg.error('يُسمح بملفات Excel فقط (xlsx)');
+      return;
+    }
+    try {
+      const { rows, errors } = await readSurveyFile(file);
+      if (!rows.length) {
+        this.userMsg.error(errors[0] || 'لا توجد بيانات أطفال في الملف');
+        return;
+      }
+      const arr = kind === '30' ? this.surveyChildren : this.survey400Children;
+      arr.clear();
+      rows.forEach((r) => arr.push(this.buildSurveyChild(r)));
+      this.calculateCompletionPercentage();
+      if (errors.length) {
+        const shown = errors.slice(0, 3).join(' | ');
+        this.userMsg.error(`تم تحميل ${rows.length} طفل مع ${errors.length} قيمة غير معروفة تُركت فارغة: ${shown}${errors.length > 3 ? ' ...' : ''}`);
+      } else {
+        this.userMsg.success(`تم تحميل ${rows.length} طفل من الملف. اضغط "حفظ البيانات" للحفظ.`);
+      }
+    } catch {
+      this.userMsg.error('تعذر قراءة الملف. تأكد أنه ملف Excel صحيح.');
+    }
+  }
+
   addSurveyChild() {
-    const g = this.buildSurveyChild();
-    this.surveyChildren.push(g);
-    this.openRows.add(g);
+    this.surveyChildren.push(this.buildSurveyChild());
   }
   removeSurveyChild(i: number) {
-    this.openRows.delete(this.surveyChildren.at(i));
     this.surveyChildren.removeAt(i);
   }
 
   addSurvey400Child() {
-    const g = this.buildSurveyChild();
-    this.survey400Children.push(g);
-    this.openRows.add(g);
+    this.survey400Children.push(this.buildSurveyChild());
   }
   removeSurvey400Child(i: number) {
-    this.openRows.delete(this.survey400Children.at(i));
     this.survey400Children.removeAt(i);
   }
 
@@ -598,9 +814,6 @@ export class FeverRashComponent implements OnInit {
       default: return v || '';
     }
   }
-  yesNo(v: any): string {
-    return String(v) === '1' ? 'نعم' : String(v) === '2' ? 'لا' : '';
-  }
   mark(v: any): string {
     return v ? '✓' : '';
   }
@@ -627,40 +840,6 @@ export class FeverRashComponent implements OnInit {
     });
     return Array.from(map.entries()).map(([label, count]) => ({ label, count }));
   }
-
-  get surveyCount(): number {
-    return this.surveyChildren.controls.filter((c) => this.isRowFilled(c)).length;
-  }
-  private surveyYesNo(field: string) {
-    let yes = 0, no = 0;
-    this.surveyChildren.controls.forEach((c) => {
-      if (!this.isRowFilled(c)) return;
-      const val = c.get(field)?.value;
-      if (val === 1 || val === '1') yes++;
-      else if (val === 2 || val === '2') no++;
-    });
-    return { yes, no };
-  }
-  get surveyMmr1() { return this.surveyYesNo('mmr1'); }
-  get surveyMmr2() { return this.surveyYesNo('mmr2'); }
-  get surveySymptoms() { return this.surveyYesNo('hasSymptoms'); }
-
-  get survey400Count(): number {
-    return this.survey400Children.controls.filter((c) => this.isRowFilled(c)).length;
-  }
-  private survey400YesNo(field: string) {
-    let yes = 0, no = 0;
-    this.survey400Children.controls.forEach((c) => {
-      if (!this.isRowFilled(c)) return;
-      const val = c.get(field)?.value;
-      if (val === 1 || val === '1') yes++;
-      else if (val === 2 || val === '2') no++;
-    });
-    return { yes, no };
-  }
-  get survey400Mmr1() { return this.survey400YesNo('mmr1'); }
-  get survey400Mmr2() { return this.survey400YesNo('mmr2'); }
-  get survey400Symptoms() { return this.survey400YesNo('hasSymptoms'); }
 
   updateCoverageRate(targetKey: string, vaccinatedKey: string, rateKey: string): void {
     const form = this.feverRashForm;
@@ -691,6 +870,26 @@ export class FeverRashComponent implements OnInit {
     const prev = new Date(rash + 'T00:00:00');
     prev.setDate(prev.getDate() - 1);
     return this.d(prev);
+  }
+
+  get followupMinDate(): string | null {
+    const rash = this.caseRashDate;
+    if (!rash) return null;
+    const dt = new Date(rash + 'T00:00:00');
+    dt.setDate(dt.getDate() + 21);
+    return this.datePipe.transform(dt, 'yyyy-MM-dd');
+  }
+
+  isBeforeFollowupMin(value: any): boolean {
+    const date = this.d(value);
+    const min = this.followupMinDate;
+    return !!date && !!min && date < min;
+  }
+
+  private readonly followupDateKeys = ['committeeSpecialistDate', 'adminOfficerDate', 'directorateOfficerDate'];
+
+  private hasInvalidFollowupDates(): boolean {
+    return this.followupDateKeys.some((k) => this.isBeforeFollowupMin(this.feverRashForm.value[k]));
   }
 
   isBeforeCaseRashInvalid(value: any): boolean {
@@ -741,7 +940,7 @@ export class FeverRashComponent implements OnInit {
   }
 
   // ===================== Save =====================
-  save() {
+  async save() {
     const rashCtrl = this.feverRashForm.controls['rashDate'];
     rashCtrl.markAsTouched();
     if (rashCtrl.hasError('rashInFuture')) {
@@ -756,8 +955,26 @@ export class FeverRashComponent implements OnInit {
       this.userMsg.error(`تاريخ الطفح يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
       return;
     }
+    const ageCtrl = this.feverRashForm.controls['caseAgeMonths'];
+    ageCtrl.markAsTouched();
+    if (ageCtrl.invalid) {
+      this.userMsg.error('العمر بالشهور يجب أن يكون رقماً صحيحاً (0 أو أكثر)');
+      return;
+    }
     if (this.hasInvalidPregnantSampleDates()) {
       this.userMsg.error(`في حصر المخالطين: تاريخ عينة المخالطة الحامل لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    if (this.isBeforeDiscoveryInvalid(this.feverRashForm.value.homeVisitDate)) {
+      this.userMsg.error(`تاريخ زيارة منزل الحالة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    if (this.isBeforeDiscoveryInvalid(this.feverRashForm.value.coverageVisitDate)) {
+      this.userMsg.error(`في التقصي على مستوى الوحدة الصحية: تاريخ زيارة الوحدة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    if (this.hasInvalidFollowupDates()) {
+      this.userMsg.error(`في متابعة الحالة بعد 21 يوم: تاريخ اللجنة لا يمكن أن يكون قبل مرور 21 يوم من تاريخ طفح الحالة (${this.followupMinDate})`);
       return;
     }
     if (this.hasInvalidVisitWeeks(this.generalContacts)) {
@@ -776,6 +993,10 @@ export class FeverRashComponent implements OnInit {
       this.userMsg.error(`في خط سير الحالات السابقة: تاريخ ظهور الطفح وتاريخ المخالطة يجب أن يكونا قبل تاريخ طفح الحالة (${this.caseRashDate})`);
       return;
     }
+    const uploaded = await this.uploadPendingAttachments();
+    if (uploaded === null) return;
+    const attachmentUrls = [...this.savedAttachmentUrls, ...uploaded];
+
     this.feverRashForm.controls['diseaseGroupID'].setValue(this.investigationService.diseaseGroupID);
     this.calculateCompletionPercentage();
     this.feverRashForm.controls['investigationCompletePercentage'].setValue(
@@ -796,9 +1017,21 @@ export class FeverRashComponent implements OnInit {
     payload.pregnantContactsJson = JSON.stringify(value.pregnantContacts || []);
     payload.surveyChildrenJson = JSON.stringify(value.surveyChildren || []);
     payload.survey400ChildrenJson = JSON.stringify(value.survey400Children || []);
+    payload.generalAttachmentUrlsJson = JSON.stringify(attachmentUrls);
+    const ageValue = payload.caseAgeMonths === null || payload.caseAgeMonths === undefined || payload.caseAgeMonths === '' ? null : Number(payload.caseAgeMonths);
+    payload.caseAgeMonths = ageValue !== null && ageValue !== this.patientAgeInMonths ? ageValue : null;
 
-    const ok = () =>
+    const ok = () => {
+      if (payload.caseAgeMonths !== null && payload.caseAgeMonths !== undefined) {
+        this.patientAgeInMonths = Number(payload.caseAgeMonths);
+        this.patientAgeLabel = `${payload.caseAgeMonths} ${this.ageUnit(2)}`;
+        this.investigationService.patient.age = Number(payload.caseAgeMonths);
+        this.investigationService.patient.ageTypeId = 2;
+      }
+      this.savedAttachmentUrls = attachmentUrls;
+      this.pendingAttachments = [];
       this.translateService.get('NEDSS.COMMON.SENT_SUCESSFULLY').subscribe((r: string) => this.userMsg.success(r));
+    };
 
     if (payload.id != null) {
       this.investigationService.updateFeverRash(payload).subscribe((r: any) => r && ok(), () => { });

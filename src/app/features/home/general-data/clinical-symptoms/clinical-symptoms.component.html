@@ -29,6 +29,7 @@
             {{ "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate }}
           </mat-label>
           <input
+            [min]="feverMinDate"
             [max]="feverMaxDate"
             matInput
             [matDatepicker]="feverDatePicker"
@@ -39,10 +40,13 @@
           <mat-datepicker #feverDatePicker></mat-datepicker>
         </mat-form-field>
         <small class="form-text text-muted d-block">
-          قبل أو في نفس يوم اكتشاف الحالة{{ caseDiscoveryDateLabel ? ' ' + caseDiscoveryDateLabel : '' }}
+          قبل أو في نفس يوم اكتشاف الحالة{{ caseDiscoveryDateLabel ? ' ' + caseDiscoveryDateLabel : '' }}{{ birthDateLabel ? '، وليس قبل تاريخ الميلاد ' + birthDateLabel : '' }}
         </small>
         <small *ngIf="isFeverDateAfterDiscovery" class="form-text text-danger mess-color d-block">
           تاريخ الحمى يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة ({{ caseDiscoveryDateLabel }})
+        </small>
+        <small *ngIf="isFeverDateBeforeBirth" class="form-text text-danger mess-color d-block">
+          تاريخ الحمى لا يمكن أن يكون قبل تاريخ الميلاد ({{ birthDateLabel }})
         </small>
       </div>
     </div>

@@ -165,7 +165,7 @@
               {{
               "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
               }}</mat-label>
-            <input [max]="maxDate" matInput [matDatepicker]="picker" [(ngModel)]="patient.birthDate"
+            <input [max]="birthDateMaxDate" matInput [matDatepicker]="picker" [(ngModel)]="patient.birthDate"
               style="color: black"
               [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
               (ngModelChange)="
@@ -180,6 +180,9 @@
 
           <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isBirthDateValid" class="form-text text-danger mess-color">
             {{ generalDataService.birthDateValidationMessage | translate }}
+          </small>
+          <small *ngIf="isBirthDateAfterLaterDates" class="form-text text-danger mess-color d-block">
+            تاريخ الميلاد لا يمكن أن يكون بعد تاريخ اكتشاف الحالة أو تواريخ الأعراض ودخول المستشفى ({{ birthDateMaxLabel }})
           </small>
         </div>
       </div>

@@ -58,6 +58,18 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
   multipleDropdownSettings = {};
   currentLang: string = 'ar';
   maxDate = new Date();
+
+  get birthDateMaxDate(): Date {
+    return this.generalDataService.birthDateUpperBound(this.patient) ?? this.maxDate;
+  }
+
+  get birthDateMaxLabel(): string | null {
+    return this.generalDataService.formatDateLabel(this.birthDateMaxDate);
+  }
+
+  get isBirthDateAfterLaterDates(): boolean {
+    return !this.generalDataService.checkBirthDateOrder(this.patient);
+  }
   // minDate = new Date(1900, 0, 1);
 
   // test1: string;
@@ -286,9 +298,7 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
   }
   onBirthDateChanged() {
     if (this.patient.birthDate != null) {
-      this.patient.birthDate = (new Date(this.patient.birthDate)
-        ?.toISOString()
-        ?.split('T'))[0];
+      this.patient.birthDate = this.generalDataService.toYmdDate(this.patient.birthDate);
       this.getAge(this.patient.birthDate);
     } else {
       this.patient.age = null;
