@@ -196,7 +196,11 @@
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_SEND_DATE" | translate }}</label>
-                    <app-date-field formControlName="sampleSendDate" [min]="mersForm.value.sampleCollectionDate"></app-date-field>
+                    <app-date-field class="date-with-note" formControlName="sampleSendDate" [min]="mersForm.value.sampleCollectionDate"></app-date-field>
+                    <small class="form-text text-muted d-block">في نفس يوم سحب العينة أو بعده{{ mersForm.value.sampleCollectionDate ? ' ' + (mersForm.value.sampleCollectionDate | date: 'dd/MM/yyyy') : '' }}</small>
+                    <small *ngIf="isSendBeforeCollection()" class="form-text text-danger mess-color d-block">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_SEND_BEFORE_COLLECTION" | translate }}
+                    </small>
                   </div>
                 </div>
               </div>

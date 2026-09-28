@@ -90,15 +90,36 @@
                 <div class="col-lg-3">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes__Date_Reservation" | translate }}</label>
-                    <app-date-field formControlName="dateOfReservation"></app-date-field>
+                    <app-date-field class="date-with-note" formControlName="dateOfReservation" [min]="hospitalEntryDate" [max]="hospitalLeaveDate"></app-date-field>
+                    <small *ngIf="hospitalEntryDate" class="form-text text-muted d-block">
+                      تاريخ دخول المستشفى: {{ hospitalEntryDate | date: 'dd/MM/yyyy' }}، في نفس اليوم أو بعده
+                    </small>
+                    <small *ngIf="!hospitalEntryDate" class="form-text text-muted d-block">
+                      لم يتم تسجيل تاريخ دخول المستشفى في البيانات العامة
+                    </small>
+                    <small *ngIf="hospitalLeaveDate" class="form-text text-muted d-block">
+                      تاريخ الخروج من المستشفى: {{ hospitalLeaveDate | date: 'dd/MM/yyyy' }}، في نفس اليوم أو قبله
+                    </small>
+                    <small *ngIf="isReservationBeforeHospitalEntry()" class="form-text text-danger mess-color d-block">
+                      تاريخ الحجز بالرعاية المركزة لا يمكن أن يكون قبل تاريخ دخول المستشفى ({{ hospitalEntryDate | date: 'dd/MM/yyyy' }})
+                    </small>
                   </div>
                 </div>
                 <!-- /.col-lg-3 -->
                 <div class="col-lg-3">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Number_DaysCustody" | translate }}</label>
-                    <input type="number" name="" id="" min="0" class="form-control"
+                    <input type="number" name="" id="" min="0" [max]="maxIcuDays" class="form-control"
                       formControlName="numberOfDaysOfCustody" />
+                    <small *ngIf="maxIcuDays" class="form-text text-muted d-block">
+                      الحد الأقصى {{ maxIcuDays }} يوم، من تاريخ الحجز بالرعاية حتى {{ hospitalLeaveDate ? 'تاريخ الخروج من المستشفى ' + (hospitalLeaveDate | date: 'dd/MM/yyyy') : 'اليوم' }}
+                    </small>
+                    <small *ngIf="!maxIcuDays" class="form-text text-muted d-block">
+                      يُحسب الحد الأقصى بعد إدخال تاريخ الحجز بالرعاية
+                    </small>
+                    <small *ngIf="isIcuDaysOverMax()" class="form-text text-danger mess-color d-block">
+                      عدد أيام الحجز بالعناية لا يمكن أن يزيد عن {{ maxIcuDays }} يوم
+                    </small>
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
