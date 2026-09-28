@@ -273,7 +273,6 @@
             <div class="form-group">
               <label for=""
                 >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_TEST_RESULT" | translate }}
-                <span class="text-danger mess-color">*</span>
               </label>
               <ng-multiselect-dropdown
                 [appDropdownLoading]="labCheckResultsLoading"
@@ -302,7 +301,6 @@
             <div class="form-group">
               <label for=""
                 >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.RESULT_DATE" | translate }}
-                <span class="text-danger mess-color">*</span>
               </label>
               <app-date-field class="sample-date-field" [(ngModel)]="patientAddCheck.labResultDate" [min]="patientAddCheck.sampleDeliveryDate || patientAddCheck.getSampleDate"></app-date-field>
               <small class="form-text text-muted d-block mt-0">
@@ -317,6 +315,7 @@
             <button
               type="submit"
               (click)="save()"
+              [disabled]="saving"
               class="btn bg rouded-4 text-light"
             >
               <span class="bi bi-plus-circle-fill"></span>

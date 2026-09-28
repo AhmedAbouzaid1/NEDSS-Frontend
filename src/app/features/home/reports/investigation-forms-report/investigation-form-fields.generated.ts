@@ -14532,6 +14532,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMPLETE_INVESTEGATION.CT_Scan"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.Clinical_Diagnosis"
         ]
       }
     },

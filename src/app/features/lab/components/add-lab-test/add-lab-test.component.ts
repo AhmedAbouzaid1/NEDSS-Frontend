@@ -14,7 +14,7 @@ import {
   MultipleDropdownSettings,
 } from 'src/app/core/constants';
 import { from } from 'rxjs';
-import { concatMap, toArray } from 'rxjs/operators';
+import { concatMap, finalize, toArray } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-lab-test',
@@ -488,7 +488,12 @@ export class AddLabTestComponent {
     return !!delivery && !!result && result < delivery;
   }
 
+  saving = false;
+
   save() {
+    if (this.saving) {
+      return;
+    }
     if (this.isSampleDateBeforeDiscovery()) {
       this.userMsg.error(`تاريخ سحب العينة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
       return;
@@ -505,7 +510,10 @@ export class AddLabTestComponent {
       this.clearFeverRashFieldsIfHidden();
       this.patientAddCheck.patientId = this.id;
       if (this.patientAddCheck.id == null) {
-        const resultIds = this.selectedLabCheckResult.map((r) => r.id);
+        const resultIds = this.selectedLabCheckResult?.length
+          ? this.selectedLabCheckResult.map((r) => r.id)
+          : [null];
+        this.saving = true;
         from(resultIds)
           .pipe(
             concatMap((resultId) =>
@@ -514,7 +522,8 @@ export class AddLabTestComponent {
                 diseaseLabTestResultId: resultId,
               })
             ),
-            toArray()
+            toArray(),
+            finalize(() => (this.saving = false))
           )
           .subscribe(
             (responses: any[]) => {
@@ -547,11 +556,13 @@ export class AddLabTestComponent {
   }
 
   update() {
+    this.saving = true;
     this.labService
       .updatePatientLabCheck({
         ...this.patientAddCheck,
         diseaseLabTestResultId: this.selectedLabCheckResult[0]?.id ?? null,
       })
+      .pipe(finalize(() => (this.saving = false)))
       .subscribe(
         (response: any) => {
           if (response) {
@@ -627,10 +638,7 @@ export class AddLabTestComponent {
     if (
       this.patientAddCheck.dieaseLabTestId == null ||
       this.patientAddCheck.diseaseCheckId == null ||
-      !this.selectedLabCheckResult ||
-      this.selectedLabCheckResult.length === 0 ||
-      this.patientAddCheck.getSampleDate == null ||
-      this.patientAddCheck.labResultDate == null
+      this.patientAddCheck.getSampleDate == null
     )
       return false;
     return true;
