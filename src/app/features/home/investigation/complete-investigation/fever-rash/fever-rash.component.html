@@ -145,7 +145,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-6">
+                  <div class="col-lg-4 col-md-6" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1">
                     <div class="form-group">
                       <label class="fwb">تأكيد الحالة المرتبطة</label>
                       <div class="d-flex gap-4 align-items-center">
@@ -154,7 +154,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-6">
+                  <div class="col-lg-4 col-md-6" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1">
                     <div class="form-group">
                       <label class="fwb">صلة القرابة</label>
                       <select class="form-control" formControlName="linkedCaseKinship">
@@ -179,14 +179,14 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-12 title fs-6 fwb mt-2">بيانات الحالة المرتبطة</div>
-                  <div class="col-lg-4 col-md-6">
+                  <div class="col-12 title fs-6 fwb mt-2" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1 || feverRashForm.get('linkedCaseCode')?.value || feverRashForm.get('linkedCaseName')?.value">بيانات الحالة المرتبطة</div>
+                  <div class="col-lg-4 col-md-6" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1">
                     <div class="form-group">
                       <label class="fwb">كود الحالة</label>
                       <input type="text" class="form-control" formControlName="linkedCaseCode" />
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-6">
+                  <div class="col-lg-4 col-md-6" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1">
                     <div class="form-group">
                       <label class="fwb">اسم الحالة</label>
                       <input type="text" class="form-control" formControlName="linkedCaseName" />
@@ -214,7 +214,7 @@
             </div>
 
             <!-- Case vaccinations table (image 2) - shown only when the case is vaccinated (مطعم) -->
-            <div class="row color" *ngIf="feverRashForm.value.caseVaccinationStatus === 1">
+            <div class="row color" [appShowIf]="feverRashForm.get('caseVaccinationStatus')?.value == 1">
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">
                   <div class="col-12 title fs-6 fwb">موقف تطعيمات الحالة</div>
@@ -464,8 +464,10 @@
                       <span class="fwb">هل يوجد مصدر العدوى؟</span>
                       <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasInfectionSource" [value]="1" /> نعم</label>
                       <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasInfectionSource" [value]="2" /> لا</label>
-                      <input type="text" class="form-control" style="max-width:420px" placeholder="فى حالة نعم اذكر مصدر العدوى"
-                        formControlName="infectionSourceText" *ngIf="feverRashForm.value.hasInfectionSource === 1" />
+                      <div class="w-100" style="max-width:420px" [appShowIf]="feverRashForm.get('hasInfectionSource')?.value == 1">
+                        <input type="text" class="form-control" style="max-width:420px" placeholder="فى حالة نعم اذكر مصدر العدوى"
+                          formControlName="infectionSourceText" />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -860,8 +862,10 @@
                         <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="movedToOutbreak" [value]="1" /> نعم</label>
                         <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="movedToOutbreak" [value]="2" /> لا</label>
                       </div>
-                      <input type="text" class="form-control mt-1" placeholder="اذكر المنطقة الموبوءة"
-                        formControlName="movedToOutbreakPlace" *ngIf="feverRashForm.value.movedToOutbreak === 1" />
+                      <div [appShowIf]="feverRashForm.get('movedToOutbreak')?.value == 1">
+                        <input type="text" class="form-control mt-1" placeholder="اذكر المنطقة الموبوءة"
+                          formControlName="movedToOutbreakPlace" />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1180,7 +1184,9 @@
                         <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasComplications" [value]="1" /> نعم</label>
                         <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasComplications" [value]="2" /> لا</label>
                       </div>
-                      <input type="text" class="form-control mt-1" placeholder="اكتب المضاعفات" formControlName="complications" *ngIf="feverRashForm.value.hasComplications === 1" />
+                      <div [appShowIf]="feverRashForm.get('hasComplications')?.value == 1">
+                        <input type="text" class="form-control mt-1" placeholder="اكتب المضاعفات" formControlName="complications" />
+                      </div>
                     </div>
                   </div>
 

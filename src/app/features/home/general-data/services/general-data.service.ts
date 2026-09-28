@@ -914,9 +914,8 @@ export class GeneralDataService {
         patient.haveChronicDisease
       );
 
-      this.isFeverDurationTypeValid =
-        Number(patient.feverSymptoms.feverDurationType) > 0 ||
-        !patient.feverSymptoms.feverDuration;
+      patient.feverSymptoms.feverDurationType = 3;
+      this.isFeverDurationTypeValid = true;
 
       this.isGeneralSymptomsValid = true;
       this.isGASTROLINTESTINALSympotomsValid = true;

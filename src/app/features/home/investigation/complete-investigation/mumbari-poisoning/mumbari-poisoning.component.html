@@ -32,31 +32,35 @@
               </select>
             </div>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-6" [appShowIf]="mumbariPoisoningData.patientDoseAntiBotulismSerum == 1">
             <div class="form-group">
               <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.NUMBER_OF_BOTTLES_DOSES" | translate }}</label>
               <input type="number" class="form-control" (blur)="calculateCompletionPercentage()" name="numberBottlesDosages"
                 [(ngModel)]="mumbariPoisoningData.numberBottlesDosages" #numberBottlesDosages="ngModel" />
             </div>
           </div>
-          <div class="col-12">
-            <div class="form-group">
-              <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SERUM_DATES" | translate }}</label>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="form-group">
-              <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="mumbariPoisoningData.history1"></app-date-field>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="form-group">
-              <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="mumbariPoisoningData.history2"></app-date-field>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="form-group">
-              <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="mumbariPoisoningData.history3"></app-date-field>
+          <div class="col-12" [appShowIf]="mumbariPoisoningData.patientDoseAntiBotulismSerum == 1">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SERUM_DATES" | translate }}</label>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="mumbariPoisoningData.history1"></app-date-field>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="mumbariPoisoningData.history2"></app-date-field>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="mumbariPoisoningData.history3"></app-date-field>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-lg-6">
@@ -78,7 +82,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-6" [appShowIf]="mumbariPoisoningData.intensiveCareReservation === 0">
             <div class="form-group">
               <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.ICU_RESERVATION_DATE" | translate }}</label>
               <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="mumbariPoisoningData.intensiveCareReservationDate"></app-date-field>
@@ -142,21 +146,21 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="mumbariPoisoningData.areOtherCasesInfectedFamily == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.NUMBER_OF_INFECTED_FAMILY_MEMBERS" | translate }}</label>
                   <input type="number" class="form-control" (blur)="calculateCompletionPercentage()" name="numberInfectedMembers"
                     [(ngModel)]="mumbariPoisoningData.numberInfectedMembers" #numberInfectedMembers="ngModel" />
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="mumbariPoisoningData.areOtherCasesInfectedFamily == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.THEIR_NAMES" | translate }}</label>
                   <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="infectedMember1"
                     [(ngModel)]="mumbariPoisoningData.infectedMember1" #infectedMember1="ngModel" />
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="mumbariPoisoningData.areOtherCasesInfectedFamily == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.WERE_THEY_ADMITTED_TO_HOSPITAL" | translate }}</label>
                   <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" [(ngModel)]="mumbariPoisoningData.confinedHospital">
@@ -166,7 +170,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="mumbariPoisoningData.confinedHospital == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.NUMBER_OF_HOSPITALIZED_CASES" | translate }}</label>
                   <input type="number" class="form-control" (blur)="calculateCompletionPercentage()" name="numberCasesBooked"
@@ -369,7 +373,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-4">
+                      <div class="col-lg-4" [appShowIf]="mumbariPoisoningData.isSampleTakenDay1 === 0">
                         <div class="form-group row">
                           <div class="col-lg-4">
                             <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE" | translate }}</label>
@@ -381,7 +385,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-4">
+                      <div class="col-4" [appShowIf]="mumbariPoisoningData.isSampleTakenDay1 === 0">
                         <div class="row">
                           <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT" | translate }}</div>
                           <div class="col-8 has-labels d-flex align-items-center gap-3">
@@ -601,7 +605,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-4">
+                      <div class="col-lg-4" [appShowIf]="mumbariPoisoningData.isSampleTakenDay2 === 0">
                         <div class="form-group row">
                           <div class="col-lg-4">
                             <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE" | translate }}</label>
@@ -613,7 +617,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-4">
+                      <div class="col-4" [appShowIf]="mumbariPoisoningData.isSampleTakenDay2 === 0">
                         <div class="row">
                           <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT" | translate }}</div>
                           <div class="col-8 has-labels d-flex align-items-center gap-3">
@@ -1124,7 +1128,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="mumbariPoisoningData.patientEatCanned == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.IF_YES_FOOD_TYPE" | translate }}</label>
                   <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="foodType"
@@ -1142,14 +1146,14 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3" [appShowIf]="mumbariPoisoningData.patientEatsaltedFish == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.IF_YES_MANUFACTURING_SOURCE" | translate }}</label>
                   <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="manufacturingSource"
                     [(ngModel)]="mumbariPoisoningData.manufacturingSource" #manufacturingSource="ngModel" />
                 </div>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3" [appShowIf]="mumbariPoisoningData.patientEatsaltedFish == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MANUFACTURING_SOURCE_ADDRESS" | translate }}</label>
                   <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="addressShop"

@@ -99,7 +99,7 @@ export class FeverSymptoms {
   patientId?: number;
   feverDate?: string;
   feverDuration?: number;
-  feverDurationType?: number;
+  feverDurationType?: number = 3;
   feverMaxTemp?: number;
 }
 

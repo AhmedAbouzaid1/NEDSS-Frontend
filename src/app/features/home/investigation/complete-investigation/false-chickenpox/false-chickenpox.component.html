@@ -171,7 +171,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-8">
+              <div class="col-lg-8" [appShowIf]="falseChickenpoxForm.get('hasContactStudentOrEducationalStaff')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FALSE_CHICKENPOX.EDUCATIONAL_FACILITY_DETAILS" |
                     translate }}</label>
@@ -220,7 +220,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-4" [appShowIf]="falseChickenpoxForm.get('presenceRash')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FALSE_CHICKENPOX.ONSET_RASH" | translate }}</label>
                   <app-date-field formControlName="onsetRash" (blurred)="calculateCompletionPercentage()"></app-date-field>
@@ -239,7 +239,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-4" [appShowIf]="falseChickenpoxForm.get('hasOtherSymptoms')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FALSE_CHICKENPOX.IF_YES_SPECIFY" | translate
                     }}</label>
@@ -260,7 +260,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-4" [appShowIf]="falseChickenpoxForm.get('hasOtherComplications')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.FALSE_CHICKENPOX.IF_YES_SPECIFY" | translate
                     }}</label>
@@ -299,7 +299,7 @@
                             </option>
                           </select>
                         </td>
-                        <td><app-date-field formControlName="symptomsDate" (blurred)="calculateCompletionPercentage()"></app-date-field></td>
+                        <td><div [appShowIf]="contact.get('hasSymptoms')?.value == 1"><app-date-field formControlName="symptomsDate" (blurred)="calculateCompletionPercentage()"></app-date-field></div></td>
                         <td class="text-center">
                           <button class="btn btn-danger" type="button" (click)="removeContact(i)">
                             <i class="bi bi-trash"></i>

@@ -19,7 +19,7 @@
     class="row craiteria bg-dark-mode p-3 justify-content-around"
     [ngStyle]="FEVERStatus ? { display: 'flex' } : { display: 'none' }"
   >
-    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4">
       <div class="form-group">
         <label for="">
           {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_DATE" | translate }}
@@ -50,7 +50,7 @@
         </small>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4">
       <div class="form-group">
         <label for="">
           {{ "NOUR.word143" | translate }}
@@ -81,36 +81,7 @@
         </small>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
-      <div class="form-group">
-        <label for="">
-          {{ "NOUR.Fever_Duration" | translate }}
-          <span *ngIf="!!patient.feverSymptoms.feverDuration" class="text-danger mess-color">*</span>
-          <span class="text-muted"> </span>
-        </label>
-        <p-dropdown
-          [options]="feverDurationTypes"
-          (onChange)="onfeverDurationTypeChange()"
-          [(ngModel)]="patient.feverSymptoms.feverDurationType"
-          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
-          optionValue="id"
-          autoWidth="false"
-          [style]="{ width: '100%' }"
-          name="feverDurationType"
-          [required]="!!patient.feverSymptoms.feverDuration"
-          [filter]="true"
-          [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
-          #feverDurationType
-        ></p-dropdown>
-        <small
-          *ngIf="!patient.feverSymptoms.feverDurationType && isfeverDurationTypeChanged"
-          class="form-text text-danger mess-color"
-        >
-          {{ "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired" | translate }}
-        </small>
-      </div>
-    </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4">
       <div class="form-group">
         <label for="">
           {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_MAX_TEMP" | translate }}

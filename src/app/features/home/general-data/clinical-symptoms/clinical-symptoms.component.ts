@@ -19,7 +19,6 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
   @ViewChild('chronicSection') chronicSection?: ElementRef<HTMLElement>;
   patient: PatientModel = new PatientModel();
   currentLang: string;
-  isfeverDurationTypeChanged: boolean;
 
   FEVERStatus: boolean = true;
 
@@ -66,12 +65,6 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
 
   FEVER_DURATION_DAYS: string;
 
-  feverDurationTypes: any[] = [
-    { id: null, arabicName: 'إختر', englishName: 'Select' },
-    { id: 1, arabicName: 'دقيقة', englishName: 'Minute' },
-    { id: 2, arabicName: 'ساعة', englishName: 'Hour' },
-    { id: 3, arabicName: 'يوم', englishName: 'Day' },
-  ];
   multipleDropdownSettings = {};
   chronicDiseases!: any[];
   selectedChronicDiseases: any = {};
@@ -122,6 +115,7 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
         if (!this.patient.feverSymptoms) {
           this.patient.feverSymptoms = new FeverSymptoms();
         }
+        this.patient.feverSymptoms.feverDurationType = 3;
 
         const selectedDiseaseGroupIds =
           this.getSelectedDiseaseGroupIdsFromPatient(this.patient);
@@ -392,10 +386,6 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
         (x) => x != diseaseId,
       );
     }
-  }
-
-  onfeverDurationTypeChange() {
-    this.isfeverDurationTypeChanged = true;
   }
 
   // ----- Clinical symptoms (normalized) -----

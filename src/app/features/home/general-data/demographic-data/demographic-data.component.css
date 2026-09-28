@@ -4,44 +4,81 @@
 }
 
 .phone-intl-wrap input[pInputText] {
-  padding-inline-end: 3.8rem;
+  padding-inline-end: 5.25rem;
 }
 
 .phone-intl-toggle {
   position: absolute;
   top: 50%;
-  inset-inline-end: 0.35rem;
+  inset-inline-end: 0.5rem;
   transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 0.45rem;
   margin: 0;
-  padding: 2px 5px;
-  border-radius: 999px;
-  background: #e7f0ff;
-  border: 1px solid #b6d0ff;
-  font-size: 0.65rem;
-  line-height: 1;
-  color: #0d6efd;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.15;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.15s, color 0.15s;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.phone-intl-toggle:hover {
+  border-color: #7da9ee;
+  background: #f1f6ff;
+  color: #1858b8;
 }
 
 .phone-intl-toggle:has(input:checked) {
-  background: #0d6efd;
-  border-color: #0d6efd;
-  color: #fff;
+  background: #edf4ff;
+  border-color: #3b82f6;
+  color: #174ea6;
 }
 
 .phone-intl-toggle input[type="checkbox"] {
-  width: 11px;
-  height: 11px;
-  margin: 0;
-  cursor: pointer;
-  accent-color: #0d6efd;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
-.phone-intl-toggle:has(input:checked) input[type="checkbox"] {
-  accent-color: #fff;
+.phone-intl-check {
+  position: relative;
+  flex: 0 0 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 2px solid #94a3b8;
+  border-radius: 4px;
+  background: #fff;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.phone-intl-toggle:has(input:checked) .phone-intl-check {
+  border-color: #2563eb;
+  background: #2563eb;
+}
+
+.phone-intl-toggle:has(input:checked) .phone-intl-check::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.phone-intl-toggle:has(input:focus-visible) {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
 }
