@@ -46,16 +46,12 @@
             {{
             "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.STATEANDCITY" | translate
             }}
-            <span class="text-danger mess-color">*</span>
           </label>
           <p-dropdown [appDropdownLoading]="citiesLoading" (onChange)="onCityChanged()" [options]="cities" [(ngModel)]="selectedCityId"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
             [style]="{ width: '100%' }" name="cities" [filter]="true"
             [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
           </p-dropdown>
-          <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isHomeCityValid" class="form-text text-danger mess-color">
-            {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
-          </small>
         </div>
       </div>
       <div class="col-md-6 mt-3">

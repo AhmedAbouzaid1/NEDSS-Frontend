@@ -24577,8 +24577,19 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "5": [
           "NEDSS.COMPLETE_INVESTEGATION.MERS.RACING"
+        ],
+        "6": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_OTHER"
         ]
       }
+    },
+    {
+      "key": "camelExposureTypeOther",
+      "label": [],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.EXPOSURE_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_TYPE_LABEL"
+      ]
     },
     {
       "key": "camelUnpasteurizedMilk",

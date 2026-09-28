@@ -207,7 +207,7 @@ export class GeneralDataCompletionComponent {
           isNullPatientJobId: true,
           isNullTestResultDate: true,
           isNullHospitalLeaveDate: true,
-          isNullLivingAddress: true,
+          isNullLivingAddress: false,
           isNullDiseaseSeverity: true,
           isNullFinalResult: true,
           DiseaseIds: null,
@@ -523,7 +523,6 @@ export class GeneralDataCompletionComponent {
       this.generalDataCompletionFilter.isNullPatientJobId == false &&
       this.generalDataCompletionFilter.isNullTestResultDate == false &&
       this.generalDataCompletionFilter.isNullHospitalLeaveDate == false &&
-      this.generalDataCompletionFilter.isNullLivingAddress == false &&
       this.generalDataCompletionFilter.isNullDiseaseSeverity == false &&
       this.generalDataCompletionFilter.isNullFinalResult == false
     ) {

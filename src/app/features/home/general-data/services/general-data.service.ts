@@ -817,7 +817,7 @@ export class GeneralDataService {
     this.isHomeHealthAdministrationValid = this.validateField(
       patient.homeHealthAdministrationId
     );
-    this.isHomeCityValid = this.validateField(patient.homeCityId);
+    this.isHomeCityValid = true;
     this.isHomeHealthOfficeIdValid = this.validateField(
       patient.homeHealthOfficeId
     );
@@ -962,7 +962,7 @@ export class GeneralDataService {
 
   validateFeverMaxTemperature(temperature: number): boolean {
     if (this.validateEmptyField(temperature)) {
-      return !isNaN(temperature) && temperature >= 37 && temperature <= 42;
+      return !isNaN(temperature) && temperature >= 35 && temperature <= 43;
     }
     return true;
   }

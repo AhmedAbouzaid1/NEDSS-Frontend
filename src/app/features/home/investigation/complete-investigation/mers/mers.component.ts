@@ -127,6 +127,7 @@ export class MersComponent implements OnInit {
       bats: new FormControl(false),
       mentionName: new FormControl(),
       camelExposureType: new FormControl(),
+      camelExposureTypeOther: new FormControl(),
       camelUnpasteurizedMilk: new FormControl(),
       camelBlood: new FormControl(),
       camelUrine: new FormControl(),
@@ -259,6 +260,14 @@ export class MersComponent implements OnInit {
       if (value.value == 'null')
         value.setValue(null);
     })
+    const collectionDate = this.mersForm.value.sampleCollectionDate;
+    const sendDate = this.mersForm.value.sampleSendDate;
+    if (collectionDate && sendDate && String(sendDate).substring(0, 10) < String(collectionDate).substring(0, 10)) {
+      this.translateService
+        .get('NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_SEND_BEFORE_COLLECTION')
+        .subscribe((res: string) => this.userMsg.error(res));
+      return;
+    }
     this.mersForm.controls['diseaseGroupId'].setValue(
       this.investigationService.diseaseGroupID
     );

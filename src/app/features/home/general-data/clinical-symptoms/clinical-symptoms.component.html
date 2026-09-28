@@ -73,7 +73,7 @@
               )
           "
         />
-        <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isFeverDurationValid" class="form-text text-danger mess-color">
+        <small *ngIf="!generalDataService.isFeverDurationValid" class="form-text text-danger mess-color">
           {{
             "NEDSS.COMMON.MAX_DIGITS_VALIDATION"
               | translate : { fieldName: FEVER_DURATION_DAYS, maxDigits: 3 }
@@ -121,6 +121,8 @@
           type="number"
           inputmode="decimal"
           step="0.1"
+          min="35"
+          max="43"
           class="form-control feverMaxTemptyle mt-1 w-100"
           [required]="!!patient.feverSymptoms.feverDuration"
           pInputText
@@ -131,8 +133,11 @@
               )
           "
         />
-        <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isFeverMaxTemperatureValid" class="form-text text-danger mess-color">
+        <small *ngIf="!generalDataService.isFeverMaxTemperatureValid" class="form-text text-danger mess-color">
           {{ "NEDSS.COMMON.FEVER_TEMPERATURE_VALIDATION" | translate }}
+        </small>
+        <small *ngIf="generalDataService.isFeverMaxTemperatureValid" class="form-text text-muted">
+          {{ "NEDSS.COMMON.FEVER_TEMPERATURE_HINT" | translate }}
         </small>
       </div>
     </div>

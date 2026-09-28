@@ -214,14 +214,14 @@
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_COLLECTION_DATE" | translate }}</label>
-                    <app-date-field formControlName="sampleCollectionDate"></app-date-field>
+                    <app-date-field formControlName="sampleCollectionDate" [max]="mersForm.value.sampleSendDate"></app-date-field>
                   </div>
                 </div>
 
                 <div class="col-lg-6">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_SEND_DATE" | translate }}</label>
-                    <app-date-field formControlName="sampleSendDate"></app-date-field>
+                    <app-date-field formControlName="sampleSendDate" [min]="mersForm.value.sampleCollectionDate"></app-date-field>
                   </div>
                 </div>
               </div>
@@ -424,7 +424,7 @@
                 <div class="col-lg-12"><hr /></div>
                 <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_TYPE_LABEL" | translate }}</div>
 
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                   <div class="form-group">
                     <select formControlName="camelExposureType" class="form-control">
                       <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.RAISING" | translate }}</option>
@@ -432,7 +432,15 @@
                       <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.MARKET_VISIT" | translate }}</option>
                       <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.FARM_VISIT" | translate }}</option>
                       <option value="5">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.RACING" | translate }}</option>
+                      <option value="6">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_OTHER" | translate }}</option>
                     </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <input formControlName="camelExposureTypeOther" type="text" class="form-control"
+                      [placeholder]="'NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_OTHER_SPECIFY' | translate" />
                   </div>
                 </div>
 
