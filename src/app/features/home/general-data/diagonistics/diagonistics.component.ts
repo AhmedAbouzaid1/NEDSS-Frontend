@@ -137,6 +137,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   selectedTransferHealthAdminId: number = -1;
 
   diseases: any[] = [];
+  private allDiseases: any[] = [];
   selectedDiseases: any;
 
   finalResuls!: any[];
@@ -254,6 +255,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
 
       this.patient = patientObject;
       this.generalDataService.normalizePatientApiPayload(this.patient);
+      this.updateDiseasesForDepartment();
       this.selectedFinalResultId = this.patient.finalResultId;
       if (this.selectedFinalResultId == 1) {
         this.isPatientTransfered = true;
@@ -723,7 +725,8 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
           : Array.isArray(result)
             ? result
             : [];
-        this.diseases = list;
+        this.allDiseases = list;
+        this.updateDiseasesForDepartment();
 
         if (
           this.patient?.patientDiseases != null &&
@@ -749,6 +752,37 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
           });
       }
     );
+  }
+
+  private updateDiseasesForDepartment(): void {
+    if (!this.allDiseases.length) {
+      return;
+    }
+
+    const departmentId = Number(this.patient?.incidentDepartmentId);
+    const hideBirdFlu =
+      departmentId === DepartmentEnum.Internal ||
+      departmentId === DepartmentEnum.ICU;
+
+    this.diseases = hideBirdFlu
+      ? this.allDiseases.filter((disease) =>
+          String(disease?.router ?? '').trim().toLowerCase() !== 'h5n1'
+        )
+      : [...this.allDiseases];
+
+    if (!hideBirdFlu || !Array.isArray(this.selectedDiseases)) {
+      return;
+    }
+
+    const allowedDiseaseIds = new Set(this.diseases.map((disease) => disease.id));
+    const filteredSelection = this.selectedDiseases.filter((disease) =>
+      allowedDiseaseIds.has(disease.id)
+    );
+
+    if (filteredSelection.length !== this.selectedDiseases.length) {
+      this.selectedDiseases = filteredSelection;
+      this.onDiseasesChanged();
+    }
   }
   getFinalResults() {
     this.finalResultsLoading = true;
