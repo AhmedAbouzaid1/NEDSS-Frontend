@@ -1,6 +1,6 @@
 import { InvestigationService } from './../../investigation/services/investigation.service';
 import { GeneralDataService } from './../services/general-data.service';
-import { Component, ElementRef, HostBinding, HostListener, Input, NgZone, OnDestroy, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, NgZone, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { SharedDataService } from '../services/shared-data.service';
@@ -20,15 +20,9 @@ import { PagePermissionService } from 'src/app/core/services/page-permission.ser
   templateUrl: './general-data.component.html',
   styleUrls: ['./general-data.component.css']
 })
-export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
+export class GeneralDataComponent implements OnDestroy {
   @Input() finalTab2: boolean;
-  @ViewChild('saveButtonSentinel') saveButtonSentinel: ElementRef;
   loadingPanel: boolean = false;
-  hasScrolledToButton = false;
-  @HostBinding('class.keyboard-open') keyboardOpen = false;
-  private keyboardBlurTimer: any;
-  private saveBarObserver: IntersectionObserver;
-  private saveBarObserverAttached = false;
   patient: PatientModel = new PatientModel();
   updating: boolean = false;
   dataSource: any;
@@ -122,38 +116,6 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
     });
   }
 
-  ngAfterViewInit() {
-    this.tryAttachSaveBarObserver();
-  }
-
-  ngAfterViewChecked() {
-    this.tryAttachSaveBarObserver();
-  }
-
-  private tryAttachSaveBarObserver() {
-    if (this.saveBarObserverAttached || this.isLoadingData) {
-      return;
-    }
-    if (!this.saveButtonSentinel?.nativeElement) {
-      return;
-    }
-    this.observeSaveBar();
-    this.saveBarObserverAttached = true;
-  }
-
-  private observeSaveBar() {
-    if (!this.saveButtonSentinel?.nativeElement) return;
-    this.saveBarObserver = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !this.hasScrolledToButton) {
-          this.hasScrolledToButton = true;
-        }
-      },
-      { threshold: 0 },
-    );
-    this.saveBarObserver.observe(this.saveButtonSentinel.nativeElement);
-  }
-
   private isMobileView(): boolean {
     return typeof window !== 'undefined' &&
       typeof window.matchMedia === 'function' &&
@@ -172,20 +134,9 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
     if (!this.isMobileView()) return;
     const target = event.target as HTMLElement;
     if (!this.isFieldControl(target)) return;
-    clearTimeout(this.keyboardBlurTimer);
-    this.keyboardOpen = true;
     setTimeout(() => {
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 300);
-  }
-
-  @HostListener('focusout')
-  onFieldFocusOut(): void {
-    if (!this.isMobileView()) return;
-    clearTimeout(this.keyboardBlurTimer);
-    this.keyboardBlurTimer = setTimeout(() => {
-      this.keyboardOpen = false;
-    }, 250);
   }
 
   private scrollToFirstError(): void {
@@ -699,6 +650,11 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
   }
 
   private showMissingFieldError(fieldLabelKey: string) {
+    const specificMessage = this.generalDataService.lastInvalidFieldMessage;
+    if (specificMessage) {
+      this.userMsg.warn(specificMessage);
+      return;
+    }
     this.translateService.get(fieldLabelKey).subscribe((fieldName: string) => {
       this.translateService
         .get('NEDSS.COMMON.FILL_REQUIRED_FIELD', { field: fieldName })
@@ -845,8 +801,6 @@ export class GeneralDataComponent implements OnDestroy, AfterViewInit, AfterView
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
-    this.saveBarObserver?.disconnect();
-    clearTimeout(this.keyboardBlurTimer);
   }
   public get generalDataEnum(): typeof GeneralDataEnum {
     return GeneralDataEnum;

@@ -79,13 +79,13 @@
                 }}
                 <span *ngIf="patient.incidentDepartmentId == 1" class="text-danger mess-color">*</span>
               </label>
-              <mat-form-field appearance="fill">
+              <mat-form-field appearance="fill" class="date-with-note">
                 <mat-label>
                   {{
                   "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
                   }}
                 </mat-label>
-                <input [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker"
+                <input [min]="infectionMinDate" [max]="infectionMaxDate" matInput [matDatepicker]="picker"
                   [(ngModel)]="patient.infectionDate" (blur)="
                     generalDataService.isInfectionDateValid =
                       generalDataService.validateField(patient.infectionDate) ||
@@ -94,8 +94,20 @@
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
+              <small class="form-text text-muted d-block">
+                قبل أو في نفس يوم اكتشاف الحالة{{ caseDiscoveryDateLabel ? ' ' + caseDiscoveryDateLabel : '' }}{{ birthDateLabel ? '، وليس قبل تاريخ الميلاد ' + birthDateLabel : '' }}
+              </small>
               <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isInfectionDateValid" class="form-text text-danger mess-color">
                 {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small>
+              <small *ngIf="isInfectionDateAfterDiscovery" class="form-text text-danger mess-color d-block">
+                تاريخ بداية الأعراض يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة ({{ caseDiscoveryDateLabel }})
+              </small>
+              <small *ngIf="isInfectionDateBeforeBirth" class="form-text text-danger mess-color d-block">
+                تاريخ بداية الأعراض لا يمكن أن يكون قبل تاريخ الميلاد ({{ birthDateLabel }})
+              </small>
+              <small *ngIf="isInfectionDateAfterFever" class="form-text text-danger mess-color d-block">
+                تاريخ بداية الأعراض يجب أن يكون قبل أو في نفس يوم تاريخ الحمى ({{ feverDateLabel }})
               </small>
             </div>
           </div>
@@ -115,7 +127,7 @@
                   {{
                   "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
                   }}</mat-label>
-                <input [min]="patient.infectionDate" [max]="maxDate" matInput [matDatepicker]="picker"
+                <input [min]="hospitalEntryMinDate" [max]="maxDate" matInput [matDatepicker]="picker"
                   [(ngModel)]="patient.hospitalEntryDate" (blur)="
                     generalDataService.isHospitalEntryDateValid =
                       generalDataService.validateField(
@@ -128,6 +140,9 @@
               </mat-form-field>
               <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isHospitalEntryDateValid" class="form-text text-danger mess-color">
                 {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small>
+              <small *ngIf="isHospitalEntryDateOutOfOrder" class="form-text text-danger mess-color d-block">
+                تاريخ دخول المستشفى يجب أن يكون بعد أو في نفس يوم تاريخ الميلاد وتاريخ بداية الأعراض
               </small>
             </div>
           </div>
@@ -146,12 +161,15 @@
                   {{
                   "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
                   }}</mat-label>
-                <input [min]="patient.hospitalEntryDate" [max]="maxDate" matInput [matDatepicker]="picker"
+                <input [min]="hospitalLeaveMinDate" [max]="maxDate" matInput [matDatepicker]="picker"
                   [(ngModel)]="patient.hospitalLeaveDate" />
 
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
+              <small *ngIf="isHospitalLeaveDateOutOfOrder" class="form-text text-danger mess-color d-block">
+                تاريخ الخروج من المستشفى يجب أن يكون بعد أو في نفس يوم تاريخ دخول المستشفى
+              </small>
             </div>
           </div>
           <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->

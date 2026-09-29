@@ -56,6 +56,7 @@ export class NavigationGuard {
     { Comingroute: 'add-user', id: 16 },
     { Comingroute: 'edit-user', id: 16 },
     { Comingroute: 'reports', id: 17 },
+    { Comingroute: 'investigation-forms-report', id: 17 },
     { Comingroute: 'announcements', id: 18 },
     { Comingroute: 'help', id: 19 },
     { Comingroute: 'codes', id: 24 },

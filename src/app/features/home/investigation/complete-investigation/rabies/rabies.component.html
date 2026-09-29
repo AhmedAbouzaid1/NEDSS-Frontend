@@ -12,32 +12,6 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-4">
-        <div class="form-group">
-          <label for="">
-            {{"NEDSS.INVESTIGATIONS.percentage"| translate}}
-            <span class="mx-4" style="font-size: larger; color: red">
-              <!-- {{ precentile.value }} % -->
-              {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount / allControllesCount) * 100 |
-              number:'1.0-2') }} %
-            </span>
-          </label>
-          <input #precentile type="range" class="form-range bg" onkeypress="false" [readonly]="true"
-            style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
-            [value]="allControllesCount ? (allFilledControlsCount / allControllesCount) * 100 : 0" />
-          <!-- value="{{controlsCount}}" /> -->
-        </div>
-      </div>
-      <div class="col-lg-4">
-        {{"NEDSS.INVESTIGATIONS.Filled"| translate}}
-        {{allFilledControlsCount}}
-        {{"NEDSS.INVESTIGATIONS.Field"| translate}}
-        {{"NEDSS.INVESTIGATIONS.From"| translate}}
-        {{allControllesCount}}
-        {{"NEDSS.INVESTIGATIONS.Field"| translate}}
-      </div>
-    </div>
 
     <div class="card shadow mt-4 color">
       <div class="card-body">
@@ -63,7 +37,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="rabiesForm.get('patientExposedVenom')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_TYPE_IF_YES" | translate }}</label>
                   <input formControlName="kindOfAnimal" type="text" class="form-control"
@@ -209,7 +183,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="rabiesForm.get('woundBeenWashed')?.value == 2">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.Complete_Investigation.rabies.REASON_IF_NOT_STATED" | translate }}</label>
                     <input formControlName="reasonNotMentioned" type="text" name="" id="" class="form-control"
@@ -228,7 +202,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="rabiesForm.get('woundSuturedDone')?.value == 2">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.Complete_Investigation.rabies.REASON_IF_NOT_STATED" | translate }}</label>
                     <input formControlName="reasonIsNotMentioned" type="text" name="" id="" class="form-control"
@@ -249,10 +223,10 @@
                 <!-- /.col-lg-6 -->
                 <div class="col-lg-6 border-right">
                   <div class="row">
-                    <div class="col-lg-12 color-d-2 mb-2">
+                    <div class="col-lg-12 color-d-2 mb-2" [appShowIf]="rabiesForm.get('vaccinatedAgainstRabies')?.value == 1">
                       {{ "NEDSS.Complete_Investigation.rabies.VACCINE_DOSES_HINT" | translate }}
                     </div>
-                    <div class="col-lg-12">
+                    <div class="col-lg-12" [appShowIf]="rabiesForm.get('vaccinatedAgainstRabies')?.value == 1">
                       <div class="table-responsive table-none-scroll">
                         <table class="table table-bordered mb-2 rabies-doses-table">
                           <tbody>
@@ -313,7 +287,7 @@
                     </div>
                     <!-- /.col-lg-12 --><div class="col-lg-12 color-d-2">
                     </div>
-                    <div class="col-lg-12 my-4">
+                    <div class="col-lg-12 my-4" [appShowIf]="rabiesForm.get('vaccinatedAgainstRabies')?.value == 2">
                       <div class="form-group">
                         <label for="">{{ "NEDSS.Complete_Investigation.rabies.REASON_NOT_RECEIVING_DOSES" | translate }}</label>
                         <input formControlName="reasonNotReceivingDoses" type="text" name="" id="" class="form-control"
@@ -334,7 +308,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6 border-right mt-4">
+                <div class="col-lg-6 border-right mt-4" [appShowIf]="rabiesForm.get('patientReceiveSerum')?.value == 1">
                   <div class="row">
                     <div class="col-lg-12 color-d-2">{{ "NEDSS.Complete_Investigation.rabies.IF_YES_DETAILS" | translate }}</div>
                     <!-- /.col-lg-6 -->
@@ -390,7 +364,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6" [appShowIf]="rabiesForm.get('patientBitOthersAfterSymptoms')?.value == 1 || bittenPersonsOldFiles.length > 0 || bittenPersonsListOfFiles.length > 0">
                       <div class="form-group">
                         <label for="">{{ "NEDSS.Complete_Investigation.rabies.BIT_OTHERS_LIST_AND_ATTACH" | translate }}</label>
                         <button type="button" (click)="bittenPersonsFileInput.click()"
@@ -441,7 +415,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="rabiesForm.get('barrenAnimal')?.value == 1">
                   <div class="form-group">
                     <label for="rabies-changeBehaviorAnimal">{{ "NEDSS.Complete_Investigation.rabies.CHANGE_BEHAVIOR_ANIMAL_NOTE" | translate }}</label>
                     <input id="rabies-changeBehaviorAnimal" formControlName="changeBehaviorAnimal" type="text" class="form-control"
@@ -449,7 +423,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="rabiesForm.get('barrenAnimal')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_DOMESTIC_VACCINATED" | translate }}</label>
                     <select formControlName="animalReceiveVaccinations" name="" id="" class="form-control"
@@ -484,7 +458,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="rabiesForm.get('bittenBySameAnimal')?.value == 1 || massBiteOldFiles.length > 0 || massBiteListOfFiles.length > 0">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_YES_ATTACH" | translate }}</label>
                     <button type="button" (click)="massBiteFileInput.click()"
@@ -535,7 +509,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="rabiesForm.get('veterinaryUnitsNotified')?.value == 1 || veterinaryNotifyOldFiles.length > 0 || veterinaryNotifyListOfFiles.length > 0">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_YES_ATTACH" | translate }}</label>
                     <button type="button" (click)="veterinaryNotifyFileInput.click()"
@@ -586,7 +560,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="rabiesForm.get('barrenAnimalCaptured')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.Complete_Investigation.rabies.LAB_TEST_IF_CAPTURED" | translate }}</label>
                     <select formControlName="testedLaboratory" name="" id="" class="form-control"
@@ -640,7 +614,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-3 -->
-                <div class="col-lg-3">
+                <div class="col-lg-3" [appShowIf]="rabiesForm.get('deathPlace')?.value == 3">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_OTHER_SPECIFY_DEATH_PLACE" | translate }}</label>
                     <input formControlName="placeMentioned" type="text" name="" id="" class="form-control"

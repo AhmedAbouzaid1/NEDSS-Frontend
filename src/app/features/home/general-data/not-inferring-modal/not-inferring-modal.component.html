@@ -1,13 +1,19 @@
 <!-- Trigger button - turns into a distinct warning style once the case already
      carries a recorded عدم الاستدلال reason, and shows that reason. -->
 <a
-  class="btn ni-warning-btn rounded-pill d-inline-flex align-items-center gap-2"
+  class="btn rounded-pill d-inline-flex align-items-center gap-2"
+  [class.ni-warning-btn]="hasNotInferringData"
+  [class.bg]="!hasNotInferringData"
+  [class.text-light]="!hasNotInferringData"
   [class.fw-bold]="hasNotInferringData"
   data-bs-toggle="modal"
   data-bs-target="#notInferringModal"
 >
-  <i *ngIf="hasNotInferringData" class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
-  <span>{{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.NOTINFERING" | translate }}</span>
+  <i *ngIf="hasNotInferringData" class="bi bi-info-circle-fill" aria-hidden="true"></i>
+  <i *ngIf="!hasNotInferringData" class="bi bi-question-circle-fill" aria-hidden="true"></i>
+  <span>{{ (hasNotInferringData
+    ? "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.NOTINFERING"
+    : "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.NOTINFERING_QUESTION") | translate }}</span>
   <span *ngIf="hasNotInferringData && notInferringReasonKey" class="badge bg-dark">
     {{ notInferringReasonKey | translate }}
   </span>

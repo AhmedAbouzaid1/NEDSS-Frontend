@@ -20,6 +20,7 @@ import { ScrollIntoViewOnResultsDirective } from './directives/scroll-into-view-
 import { DropdownLoadingDirective } from './directives/dropdown-loading.directive';
 import { DropdownNoAutofocusFilterDirective } from './directives/dropdown-no-autofocus-filter.directive';
 import { NoNegativeNumberDirective } from './directives/no-negative-number.directive';
+import { ShowIfDirective } from './directives/show-if.directive';
 import { RecentDaysNoteComponent } from './components/recent-days-note/recent-days-note.component';
 import { MaterialModule } from './material-module';
 import { DateFieldComponent } from './components/date-field/date-field.component';
@@ -43,6 +44,7 @@ import { DateFieldComponent } from './components/date-field/date-field.component
     DropdownLoadingDirective,
     DropdownNoAutofocusFilterDirective,
     NoNegativeNumberDirective,
+    ShowIfDirective,
     DateFieldComponent,
   ],
   imports: [CommonModule, SidebarModule, TranslateModule, ReactiveFormsModule, FormsModule, MaterialModule],
@@ -64,6 +66,7 @@ import { DateFieldComponent } from './components/date-field/date-field.component
     DropdownLoadingDirective,
     DropdownNoAutofocusFilterDirective,
     NoNegativeNumberDirective,
+    ShowIfDirective,
     DateFieldComponent,
   ],
 })

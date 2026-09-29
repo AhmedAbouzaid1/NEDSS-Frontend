@@ -15,31 +15,6 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-4">
-        <div class="form-group">
-          <label for="">
-            {{"NEDSS.INVESTIGATIONS.percentage"| translate}}
-            <span class="mx-4" style="font-size: larger; color: red">
-              <!-- {{ precentile.value }} % -->
-              {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount / allControllesCount) * 100 | number:'1.0-2') }} %
-            </span>
-          </label>
-          <input #precentile type="range" class="form-range bg" onkeypress="false" [readonly]="true"
-                  style="border-radius: 11.7px; border: 5.5px solid white" min="0" max="100" step="1" id="customRange3"
-                 [value]="allControllesCount ? (allFilledControlsCount / allControllesCount) * 100 : 0" />
-                  <!-- value="{{controlsCount}}" /> -->
-        </div>
-      </div>
-      <div class="col-lg-4">
-        {{"NEDSS.INVESTIGATIONS.Filled"| translate}}
-        {{allFilledControlsCount}}
-        {{"NEDSS.INVESTIGATIONS.Field"| translate}}
-        {{"NEDSS.INVESTIGATIONS.From"| translate}}
-        {{allControllesCount}}
-        {{"NEDSS.INVESTIGATIONS.Field"| translate}}
-      </div>
-    </div>
 
 
   <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
@@ -57,14 +32,14 @@
         </div>
       </div>
       <!-- /.col-lg-3 -->
-      <div class="col-lg-3">
+      <div class="col-lg-3" [appShowIf]="brucellaData.get('dealWithAnimals')?.value == 1">
         <div class="form-group">
           <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.ANIMAL_TYPE" | translate }}</label>
           <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="animalType" formControlName="animalType" />
         </div>
       </div>
       <!-- /.col-lg-3 -->
-      <div class="col-lg-3">
+      <div class="col-lg-3" [appShowIf]="brucellaData.get('dealWithAnimals')?.value == 1">
         <div class="form-group">
           <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_MENTION_PLACE" | translate }}</label>
 
@@ -76,7 +51,7 @@
         </div>
       </div>
       <!-- /.col-lg-3 -->
-      <div class="col-lg-3">
+      <div class="col-lg-3" [appShowIf]="brucellaData.get('place')?.value == 2">
         <div class="form-group">
           <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_OTHER_MENTION_PLACE" | translate }}</label>
           <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="anotherPlace" formControlName="anotherPlace" />
@@ -95,7 +70,7 @@
         </div>
       </div>
       <!-- /.col-lg-6 -->
-      <div class="col-lg-3">
+      <div class="col-lg-3" [appShowIf]="brucellaData.get('abortionInfectedAnimals')?.value == 1">
         <div class="form-group">
           <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.VETERINARY_NOTIFIED" | translate }}</label>
 
@@ -182,14 +157,14 @@
         </div>
       </div>
       <!-- /.col-lg-6 -->
-      <div class="col-lg-3">
+      <div class="col-lg-3" [appShowIf]="brucellaData.get('exposedToBrucellosis')?.value == 1">
         <div class="form-group">
           <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_LAB_NAME" | translate }}</label>
           <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="labName" formControlName="labName" />
         </div>
       </div>
       <!-- /.col-lg-3 -->
-      <div class="col-lg-3">
+      <div class="col-lg-3" [appShowIf]="brucellaData.get('exposedToBrucellosis')?.value == 1">
         <div class="form-group">
           <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.LAB_ADDRESS" | translate }}</label>
           <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="labPlace" formControlName="labPlace" />
@@ -208,7 +183,7 @@
         </div>
       </div>
       <!-- /.col-lg-6 -->
-      <div class="col-lg-6">
+      <div class="col-lg-6" [appShowIf]="brucellaData.get('laboratoryExposureBrucella')?.value == 1">
         <div class="form-group">
           <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_EXPOSURE_DETAILS" | translate }}</label>
           <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()" name="exposureDetails"
@@ -238,7 +213,7 @@
         </div>
       </div>
       <!-- /.col-lg-6 -->
-      <div class="col-lg-6">
+      <div class="col-lg-6" [appShowIf]="brucellaData.get('casesSameSymptoms')?.value == 1">
         <div class="form-group">
           <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_CASE_LOCATION" | translate }}</label>
 

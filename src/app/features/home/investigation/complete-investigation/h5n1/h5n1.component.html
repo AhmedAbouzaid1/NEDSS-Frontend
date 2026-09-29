@@ -46,7 +46,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="birdFluForm.get('diagnosisOfPneumonia')?.value == 1">
                   <div class="form-group">
                     <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes_Date_Diagnosis_Pneumonia" | translate
                       }}</label>
@@ -54,17 +54,18 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="birdFluForm.get('diagnosisOfPneumonia')?.value == 1">
                   <div class="form-group">
                     <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes_Diagnosis_Made" | translate }} </label>
                     <select name="" id="" class="form-control" formControlName="diagnosisWasMade">
                       <option value="1"> {{ "NEDSS.COMPLETE_INVESTEGATION.X_Ray" | translate }}</option>
                       <option value="2"> {{ "NEDSS.COMPLETE_INVESTEGATION.CT_Scan" | translate }}</option>
+                      <option value="3"> {{ "NEDSS.COMPLETE_INVESTEGATION.Clinical_Diagnosis" | translate }}</option>
                     </select>
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="birdFluForm.get('diagnosisOfPneumonia')?.value == 1">
                   <div class="form-group">
                     <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.Pneumonia" | translate }}</label>
                     <select name="" id="" class="form-control" formControlName="pneumonia">
@@ -86,18 +87,39 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-3">
+                <div class="col-lg-3" [appShowIf]="birdFluForm.get('reservationintheintensiveCareUnit')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.If_Yes__Date_Reservation" | translate }}</label>
-                    <app-date-field formControlName="dateOfReservation"></app-date-field>
+                    <app-date-field class="date-with-note" formControlName="dateOfReservation" [min]="hospitalEntryDate" [max]="hospitalLeaveDate"></app-date-field>
+                    <small *ngIf="hospitalEntryDate" class="form-text text-muted d-block">
+                      تاريخ دخول المستشفى: {{ hospitalEntryDate | date: 'dd/MM/yyyy' }}، في نفس اليوم أو بعده
+                    </small>
+                    <small *ngIf="!hospitalEntryDate" class="form-text text-muted d-block">
+                      لم يتم تسجيل تاريخ دخول المستشفى في البيانات العامة
+                    </small>
+                    <small *ngIf="hospitalLeaveDate" class="form-text text-muted d-block">
+                      تاريخ الخروج من المستشفى: {{ hospitalLeaveDate | date: 'dd/MM/yyyy' }}، في نفس اليوم أو قبله
+                    </small>
+                    <small *ngIf="isReservationBeforeHospitalEntry()" class="form-text text-danger mess-color d-block">
+                      تاريخ الحجز بالرعاية المركزة لا يمكن أن يكون قبل تاريخ دخول المستشفى ({{ hospitalEntryDate | date: 'dd/MM/yyyy' }})
+                    </small>
                   </div>
                 </div>
                 <!-- /.col-lg-3 -->
-                <div class="col-lg-3">
+                <div class="col-lg-3" [appShowIf]="birdFluForm.get('reservationintheintensiveCareUnit')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Number_DaysCustody" | translate }}</label>
-                    <input type="number" name="" id="" min="0" class="form-control"
+                    <input type="number" name="" id="" min="0" [max]="maxIcuDays" class="form-control"
                       formControlName="numberOfDaysOfCustody" />
+                    <small *ngIf="maxIcuDays" class="form-text text-muted d-block">
+                      الحد الأقصى {{ maxIcuDays }} يوم، من تاريخ الحجز بالرعاية حتى {{ hospitalLeaveDate ? 'تاريخ الخروج من المستشفى ' + (hospitalLeaveDate | date: 'dd/MM/yyyy') : 'اليوم' }}
+                    </small>
+                    <small *ngIf="!maxIcuDays" class="form-text text-muted d-block">
+                      يُحسب الحد الأقصى بعد إدخال تاريخ الحجز بالرعاية
+                    </small>
+                    <small *ngIf="isIcuDaysOverMax()" class="form-text text-danger mess-color d-block">
+                      عدد أيام الحجز بالعناية لا يمكن أن يزيد عن {{ maxIcuDays }} يوم
+                    </small>
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
@@ -112,7 +134,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-3 -->
-                <div class="col-lg-3">
+                <div class="col-lg-3" [appShowIf]="birdFluForm.get('useOfARespirator')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.In_Case_Yes_Type" | translate }}</label>
                     <select name="" id="" class="form-control" formControlName="maskType">
@@ -123,14 +145,14 @@
                   </div>
                 </div>
                 <!-- /.col-lg-3 -->
-                <div class="col-lg-3">
+                <div class="col-lg-3" [appShowIf]="birdFluForm.get('useOfARespirator')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Date_Placed_On_Device" | translate }}</label>
                     <app-date-field formControlName="statusHistoryOnDevice"></app-date-field>
                   </div>
                 </div>
                 <!-- /.col-lg-3 -->
-                <div class="col-lg-3">
+                <div class="col-lg-3" [appShowIf]="birdFluForm.get('useOfARespirator')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Number_Days_Placement_Device" | translate }}</label>
                     <input type="number" name="" id="" class="form-control" min="0"
@@ -167,13 +189,13 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="birdFluForm.get('diagnoseOseltamivir')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES" | translate }}</label>
                     <app-date-field formControlName="dateOfTakingOseltamivir"></app-date-field>
                   </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="birdFluForm.get('diagnoseOseltamivir')?.value == 1">
                   <div class="form-group">
                     <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.WAS_IT_REPEATED" | translate }}</label>
                     <select name="" id="" class="form-control" formControlName="repeatedOseltamivir">
@@ -193,7 +215,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-3" [appShowIf]="birdFluForm.get('diagnoseAntiviral')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES_ANTIVIRAL" | translate }}</label>
                     <input type="text" name="" id="" [class]="'form-control-'+ currentLang"
@@ -218,10 +240,10 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-12 color-d-2 mb-3">
+                <div class="col-12 color-d-2 mb-3" [appShowIf]="birdFluForm.get('fieldOfWorkBirdsAnimals')?.value == 1">
                   {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_YES_EXPOSURE_TYPE" | translate }}
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12" [appShowIf]="birdFluForm.get('fieldOfWorkBirdsAnimals')?.value == 1">
                   <div class="table-responsive table-none-scroll">
                     <table class="table table-bordered table-hover table-striped">
                       <thead>
@@ -622,7 +644,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-lg-12 my-4">
+                <div class="col-lg-12 my-4" [appShowIf]="birdFluForm.get('usedProtectiveEquipmentWithBirds')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PROTECTIVE_EQUIPMENT_DETAILS" | translate
                       }}</label>
@@ -668,7 +690,7 @@
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="birdFluForm.get('occupationalExposureWorkplace')?.value == 7">
                   <div class="form-group">
                     <label for="">
                       {{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.DIRECT_PATIENT_CARE_QUESTION" | translate }}
@@ -779,7 +801,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12" [appShowIf]="birdFluForm.get('travelingwithinEgypt')?.value == 1">
                   <div class="form-group">
                     <div class="color-d-2 mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_ANSWER_YES" | translate }}
                     </div>
@@ -841,7 +863,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12" [appShowIf]="birdFluForm.get('travelingOutsideEgypt')?.value == 1">
                   <div class="form-group">
                     <div class="color-d-2 mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.IF_ANSWER_YES" | translate }}
                     </div>
@@ -897,7 +919,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" [appShowIf]="birdFluForm.get('travelingOutsideEgypt')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ENTRY_POINT_TO_EGYPT" | translate }}</label>
                     <select name="" id="" class="form-control" formControlName="entryPointToEgypt">
@@ -907,13 +929,13 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" [appShowIf]="birdFluForm.get('travelingOutsideEgypt')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.PLACE_NAME" | translate }}</label>
                     <input type="text" name="" id="" class="form-control" formControlName="entryPointPlaceName" />
                   </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" [appShowIf]="birdFluForm.get('travelingOutsideEgypt')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.ARRIVAL_DATE" | translate }}</label>
                     <app-date-field formControlName="arrivalDateToEgypt"></app-date-field>

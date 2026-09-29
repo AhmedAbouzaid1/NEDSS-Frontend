@@ -23,6 +23,7 @@ export class SidebarComponent {
     '/home/disease-based-on-diagnosis',
     '/home/disease-based-on-age',
     '/home/disease-based-on-patient',
+    '/home/investigation-forms-report',
     '/home/user-report',
     '/home/zero-reporting-report',
     '/home/immediate-reporting-report',

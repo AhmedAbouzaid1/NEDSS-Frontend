@@ -39,8 +39,6 @@
   --save-bar-accent: #007bff;
   --save-bar-accent-hover: #0069d9;
   --save-bar-border: rgba(15, 23, 42, 0.08);
-  --save-bar-sidebar-collapsed: 75px;
-  --save-bar-sidebar-expanded: 260px;
 
   display: flex;
   justify-content: flex-end;
@@ -110,76 +108,25 @@
   line-height: 1;
 }
 
-.save-button-bar--elevated {
-  position: sticky;
-  bottom: 0;
-  z-index: 100;
-  margin-top: 1.5rem;
-  padding: 0.875rem 0;
-  padding-bottom: calc(0.875rem + env(safe-area-inset-bottom, 0px));
-  border-top-color: transparent;
-  background: transparent;
-}
-
 body.dark-mode .save-button-bar {
   --save-bar-border: rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 767.98px) {
   .save-button-bar {
-    position: fixed;
-    left: calc(var(--save-bar-sidebar-collapsed) + 0.875rem);
-    right: 0.875rem;
-    bottom: calc(0.875rem + env(safe-area-inset-bottom, 0px));
-    z-index: 100;
-    display: flex;
-    justify-content: flex-start;
-    direction: ltr;
-    width: auto;
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: transparent;
-  }
-
-  :host-context(.main-container:not(.nav-collapsed)) .save-button-bar {
-    left: calc(var(--save-bar-sidebar-expanded) + 0.875rem);
-  }
-
-  :host-context(.ar) .save-button-bar {
-    left: 0.875rem;
-    right: calc(var(--save-bar-sidebar-collapsed) + 0.875rem);
-  }
-
-  :host-context(.ar .main-container:not(.nav-collapsed)) .save-button-bar {
-    right: calc(var(--save-bar-sidebar-expanded) + 0.875rem);
+    margin-top: 1.25rem;
+    padding-top: 1rem;
   }
 
   .save-button-bar__inner {
-    justify-content: flex-start;
-    width: auto;
-  }
-
-  .save-button-bar__btn {
-    width: auto;
-    min-width: 9.5rem;
-    min-height: 3rem;
-    border-radius: 0.625rem;
-  }
-
-  .save-button-bar-spacer {
-    height: calc(5rem + env(safe-area-inset-bottom, 0px));
+    width: 100%;
   }
 
   .save-button-bar__btn {
     width: 100%;
     min-width: 0;
-  }
-
-  :host(.keyboard-open) .save-button-bar {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+    min-height: 3rem;
+    border-radius: 0.625rem;
   }
 }
 

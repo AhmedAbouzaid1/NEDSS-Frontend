@@ -5,6 +5,7 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { CustomeService } from '../residence-info/custome.service';
 import { SharedDataService } from '../services/shared-data.service';
+import { GeneralDataService } from '../services/general-data.service';
 
 @Component({
   selector: 'app-sentinel',
@@ -18,6 +19,19 @@ export class SentinelComponent implements OnInit {
   dir: string;
   delay: boolean = false;
   timer: any;
+  maxDate = new Date();
+
+  get birthMinDate(): Date | null {
+    return this.generalDataService.latestDateBound(this.patient?.birthDate);
+  }
+
+  get lastDoseMinDate(): Date | null {
+    return this.generalDataService.latestDateBound(this.patient?.birthDate, this.sentinelData?.dateFirstDose);
+  }
+
+  get shipmentMinDate(): Date | null {
+    return this.generalDataService.latestDateBound(this.patient?.birthDate, this.sentinelData?.dateSpecimenCollection);
+  }
 
   sariCaseDefinitions: any[] = [
     {
@@ -185,7 +199,8 @@ export class SentinelComponent implements OnInit {
   ]
 
   constructor(private sharedDataService: SharedDataService, private lookupsService: LookupsGetterService, private translateService: TranslateService,
-    private userMsg: UserMessageService, private customService: CustomeService) { }
+    private userMsg: UserMessageService, private customService: CustomeService,
+    private generalDataService: GeneralDataService) { }
 
   ngOnInit(): void {
     this.currentLang =

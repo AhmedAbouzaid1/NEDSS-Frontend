@@ -256,6 +256,37 @@ export class H5n1Component implements OnInit {
     return payload;
   }
 
+  hospitalEntryDate: string | null = null;
+  hospitalLeaveDate: string | null = null;
+
+  isReservationBeforeHospitalEntry(): boolean {
+    const reservationDate = this.birdFluForm?.value?.dateOfReservation;
+    return !!reservationDate && !!this.hospitalEntryDate && String(reservationDate).substring(0, 10) < this.hospitalEntryDate;
+  }
+
+  get maxIcuDays(): number | null {
+    const reservationDate = this.birdFluForm?.value?.dateOfReservation;
+    if (!reservationDate) {
+      return null;
+    }
+    const start = this.toLocalDate(String(reservationDate).substring(0, 10));
+    const end = this.hospitalLeaveDate ? this.toLocalDate(this.hospitalLeaveDate) : new Date();
+    end.setHours(0, 0, 0, 0);
+    const days = Math.round((end.getTime() - start.getTime()) / 86400000) + 1;
+    return days > 0 ? days : null;
+  }
+
+  isIcuDaysOverMax(): boolean {
+    const days = this.birdFluForm?.value?.numberOfDaysOfCustody;
+    const max = this.maxIcuDays;
+    return days != null && days !== '' && max != null && Number(days) > max;
+  }
+
+  private toLocalDate(iso: string): Date {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
+
   private logSaveError(err: any): void {
     console.error('H5N1 save failed', {
       status: err?.status,
@@ -471,6 +502,12 @@ export class H5n1Component implements OnInit {
       (res) => {
         console.log(res);
         var v = res.data;
+        this.hospitalEntryDate = v?.patientHospitalEntryDate
+          ? String(v.patientHospitalEntryDate).substring(0, 10)
+          : null;
+        this.hospitalLeaveDate = v?.patientHospitalLeaveDate
+          ? String(v.patientHospitalLeaveDate).substring(0, 10)
+          : null;
 
         this.birdFluForm.patchValue(v);
         this.normalizeExposureCheckboxValues();
@@ -634,6 +671,15 @@ export class H5n1Component implements OnInit {
   }
   save() {
     if (this.isSaving) {
+      return;
+    }
+
+    if (this.isReservationBeforeHospitalEntry()) {
+      this.userMsg.error('تاريخ الحجز بالرعاية المركزة لا يمكن أن يكون قبل تاريخ دخول المستشفى');
+      return;
+    }
+    if (this.isIcuDaysOverMax()) {
+      this.userMsg.error(`عدد أيام الحجز بالعناية لا يمكن أن يزيد عن ${this.maxIcuDays} يوم`);
       return;
     }
 

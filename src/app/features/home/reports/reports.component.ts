@@ -36,6 +36,10 @@ export class ReportsComponent {
       labelKey: 'NEDSS.REPORTS_LABELS.DiseseBasedOnPatient',
     },
     {
+      route: '/home/investigation-forms-report',
+      labelKey: 'NEDSS.REPORTS_LABELS.InvestigationFormsReport',
+    },
+    {
       route: '/home/user-report',
       labelKey: 'NEDSS.REPORTS_LABELS.UserReports',
     },

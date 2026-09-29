@@ -19,20 +19,52 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
   @ViewChild('chronicSection') chronicSection?: ElementRef<HTMLElement>;
   patient: PatientModel = new PatientModel();
   currentLang: string;
-  isfeverDurationTypeChanged: boolean;
 
   FEVERStatus: boolean = true;
 
   maxDate: Date = new Date();
 
+  private feverMaxDateKey: string | null = null;
+  private feverMaxDateValue: Date = this.maxDate;
+
+  get feverMaxDate(): Date {
+    const key = this.generalDataService.toYmdDate(this.patient?.caseDiscoveryDate);
+    if (key !== this.feverMaxDateKey) {
+      this.feverMaxDateKey = key;
+      const discovery = key ? new Date(key + 'T00:00:00') : null;
+      this.feverMaxDateValue = discovery && discovery < this.maxDate ? discovery : this.maxDate;
+    }
+    return this.feverMaxDateValue;
+  }
+
+  get caseDiscoveryDateLabel(): string | null {
+    return this.generalDataService.toYmdDate(this.patient?.caseDiscoveryDate);
+  }
+
+  get feverMinDate(): Date | null {
+    return this.generalDataService.latestDateBound(this.patient?.birthDate);
+  }
+
+  get birthDateLabel(): string | null {
+    return this.generalDataService.formatDateLabel(this.patient?.birthDate);
+  }
+
+  get isFeverDateBeforeBirth(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(
+      this.patient?.feverSymptoms?.feverDate,
+      this.patient?.birthDate
+    );
+  }
+
+  get isFeverDateAfterDiscovery(): boolean {
+    return !this.generalDataService.checkFeverDateNotAfterDiscovery(
+      this.patient?.feverSymptoms?.feverDate,
+      this.patient?.caseDiscoveryDate
+    );
+  }
+
   FEVER_DURATION_DAYS: string;
 
-  feverDurationTypes: any[] = [
-    { id: null, arabicName: 'إختر', englishName: 'Select' },
-    { id: 1, arabicName: 'دقيقة', englishName: 'Minute' },
-    { id: 2, arabicName: 'ساعة', englishName: 'Hour' },
-    { id: 3, arabicName: 'يوم', englishName: 'Day' },
-  ];
   multipleDropdownSettings = {};
   chronicDiseases!: any[];
   selectedChronicDiseases: any = {};
@@ -83,6 +115,7 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
         if (!this.patient.feverSymptoms) {
           this.patient.feverSymptoms = new FeverSymptoms();
         }
+        this.patient.feverSymptoms.feverDurationType = 3;
 
         const selectedDiseaseGroupIds =
           this.getSelectedDiseaseGroupIdsFromPatient(this.patient);
@@ -353,10 +386,6 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
         (x) => x != diseaseId,
       );
     }
-  }
-
-  onfeverDurationTypeChange() {
-    this.isfeverDurationTypeChanged = true;
   }
 
   // ----- Clinical symptoms (normalized) -----
