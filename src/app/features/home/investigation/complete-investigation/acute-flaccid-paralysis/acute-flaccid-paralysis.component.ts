@@ -43,11 +43,33 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   campaignTypes = ['قومية', 'محدودة', 'جرعة منشطة'];
   labResults = ['سلبى', 'فيروس شلل أطفال شرس', 'فيروس سابين', 'فيروس معوي آخر'];
 
+  initialClinicalDiagnoses = [
+    { value: 1, label: 'متلازمة جيليان باري' },
+    { value: 2, label: 'التهاب سحائي فيروسي' },
+    { value: 3, label: 'التهاب النخاع المستعرض' },
+    { value: 4, label: 'أمراض الوصلات العصبية العضلية' },
+    { value: 5, label: 'التهاب فيروسي بالمخ' },
+    { value: 6, label: 'التهاب العضلات الفيروسي' },
+    { value: 7, label: 'نزلة معوية مع نقص البوتاسيوم' },
+    { value: 8, label: 'الإصابة بفيروسات معوية أخرى' },
+    { value: 9, label: 'التهاب الأعصاب الطرفية' },
+    { value: 10, label: 'إصابة العصب الوركي نتيجة الحقن' },
+    { value: 11, label: 'تشخيصات أخرى' },
+  ];
+
+  dangerousCaseReasons = [
+    { value: 1, label: 'وجود إحساس بالأعضاء المصابة' },
+    { value: 2, label: 'اكتمال الشلل خلال 4 أيام' },
+    { value: 3, label: 'وجود حرارة' },
+    { value: 4, label: 'عدم تناظر الأعضاء المصابة' },
+  ];
+
   private openRows = new Set<AbstractControl>();
 
   private arrayKeys = [
     'caseMovements', 'previousCases', 'highRiskAreas', 'healthFacilityVisits',
     'routineVaccinations', 'campaigns', 'surveyChildren', 'aggregatedCases', 'followupCommittee',
+    'selectedDangerousCaseReasons',
   ];
   private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage', 'caseCodeDisplay'];
 
@@ -84,6 +106,10 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
 
       // Tab 1 - field investigation
       paralysisOnsetDate: new FormControl(),
+      initialClinicalDiagnosis: new FormControl(),
+      otherInitialClinicalDiagnosis: new FormControl(),
+      isDangerousCase: new FormControl(),
+      selectedDangerousCaseReasons: new FormControl([]),
       caseMovements: new FormArray([]),
       hasPreviousAfpCases: new FormControl(),
       previousCases: new FormArray([]),
@@ -137,6 +163,16 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     });
 
     this.form.valueChanges.subscribe(() => this.calculateCompletionPercentage());
+    this.form.controls['initialClinicalDiagnosis'].valueChanges.subscribe((value) => {
+      if (Number(value) !== 11) {
+        this.form.controls['otherInitialClinicalDiagnosis'].setValue(null, { emitEvent: false });
+      }
+    });
+    this.form.controls['isDangerousCase'].valueChanges.subscribe((value) => {
+      if (Number(value) !== 1) {
+        this.form.controls['selectedDangerousCaseReasons'].setValue([], { emitEvent: false });
+      }
+    });
 
     this.currentId = this.investigationService.currentid;
     this.patientName =
@@ -189,6 +225,11 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     });
     this.form.patchValue(patch);
     this.form.controls['caseCodeDisplay'].setValue(v.caseCode ?? null);
+    this.form.controls['selectedDangerousCaseReasons'].setValue(
+      Number(v.isDangerousCase) === 1
+        ? this.parseJsonArray(v.dangerousCaseReasonsJson)
+        : []
+    );
 
     this.parseInto(v.caseMovementsJson, (x) => this.caseMovements.push(this.buildCaseMovement(x)));
     this.parseInto(v.previousCasesJson, (x) => this.previousCases.push(this.buildPreviousCase(x)));
@@ -204,6 +245,16 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   private parseInto(json: string, push: (item: any) => void) {
     if (!json) return;
     try { (JSON.parse(json) || []).forEach((it: any) => push(it)); } catch (e) { }
+  }
+
+  private parseJsonArray(json: string): any[] {
+    if (!json) return [];
+    try {
+      const value = JSON.parse(json);
+      return Array.isArray(value) ? value : [];
+    } catch {
+      return [];
+    }
   }
 
   // ===================== FormArray accessors =====================
@@ -382,6 +433,11 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     payload.surveyChildrenJson = JSON.stringify(value.surveyChildren || []);
     payload.aggregatedCasesJson = JSON.stringify(value.aggregatedCases || []);
     payload.followupCommitteeJson = JSON.stringify(value.followupCommittee || []);
+    payload.dangerousCaseReasonsJson = JSON.stringify(
+      Number(value.isDangerousCase) === 1
+        ? value.selectedDangerousCaseReasons || []
+        : []
+    );
 
     const ok = () =>
       this.translateService.get('NEDSS.COMMON.SENT_SUCESSFULLY').subscribe((r: string) => this.userMsg.success(r));
