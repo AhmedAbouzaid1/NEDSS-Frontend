@@ -16525,8 +16525,20 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "8": [
           "NEDSS.COMPLETE_INVESTEGATION.H5N1.VETERINARIAN"
+        ],
+        "9": [
+          "NEDSS.COMPLETE_INVESTEGATION.H5N1.OCCUPATIONAL_EXPOSURE_OTHER_OPTION"
         ]
       }
+    },
+    {
+      "key": "occupationalExposureWorkplaceOther",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.H5N1.OCCUPATIONAL_EXPOSURE_OTHER"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.H5N1.OCCUPATIONAL_EXPOSURE"
+      ]
     },
     {
       "key": "workIsInFieldOfHealthServices",
@@ -16594,6 +16606,59 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.H5N1.HUMAN_EXPOSURE_14_DAYS"
       ],
       "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "sampleType",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.LAB_TESTS"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.NASOPHARYNGEAL_SWAB"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.SPUTUM"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.BRONCHIAL_LAVAGE"
+        ],
+        "4": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE_OTHER"
+        ],
+        "5": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.THROAT_SWAB"
+        ]
+      }
+    },
+    {
+      "key": "sampleTypeOther",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE_OTHER"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.LAB_TESTS"
+      ]
+    },
+    {
+      "key": "sampleCollectionDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_COLLECTION_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.LAB_TESTS"
+      ]
+    },
+    {
+      "key": "sampleSendDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_SEND_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.LAB_TESTS"
+      ]
     },
     {
       "key": "travelingwithinEgypt",
@@ -24362,6 +24427,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "3": [
           "NEDSS.COMPLETE_INVESTEGATION.MERS.BRONCHIAL_LAVAGE"
         ],
+        "5": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.THROAT_SWAB"
+        ],
         "4": [
           "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE_OTHER"
         ]
@@ -31650,9 +31718,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "dryCoughDay1",
+      "key": "headacheDay1",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
@@ -31661,53 +31729,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "coughingWithSpittingDay1",
+      "key": "abdominalPainDay1",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
@@ -31719,6 +31743,50 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "diarrheaDay1",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "constipationDay1",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "bradycardiaDay1",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "lossOfAppetiteDay1",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "dryCoughDay1",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
@@ -31880,9 +31948,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "dryCoughDay2",
+      "key": "headacheDay2",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
@@ -31891,53 +31959,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "coughingWithSpittingDay2",
+      "key": "abdominalPainDay2",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
@@ -31949,6 +31973,50 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "diarrheaDay2",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "constipationDay2",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "bradycardiaDay2",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "lossOfAppetiteDay2",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "dryCoughDay2",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
@@ -32110,9 +32178,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "dryCoughDay7",
+      "key": "headacheDay7",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
@@ -32121,53 +32189,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "coughingWithSpittingDay7",
+      "key": "abdominalPainDay7",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
@@ -32179,6 +32203,50 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "diarrheaDay7",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "constipationDay7",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "bradycardiaDay7",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "lossOfAppetiteDay7",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "dryCoughDay7",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
@@ -32340,9 +32408,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "dryCoughDay14",
+      "key": "headacheDay14",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
@@ -32351,53 +32419,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "coughingWithSpittingDay14",
+      "key": "abdominalPainDay14",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
@@ -32409,6 +32433,50 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "diarrheaDay14",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "constipationDay14",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "bradycardiaDay14",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "lossOfAppetiteDay14",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "dryCoughDay14",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
@@ -33210,6 +33278,24 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "waterSampleResult",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.WATER_SAMPLE_RESULT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ENVIRONMENTAL_INVESTIGATION"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.WATER_RESULT_NEGATIVE"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.WATER_RESULT_POSITIVE"
         ]
       }
     }

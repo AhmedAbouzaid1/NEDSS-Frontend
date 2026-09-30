@@ -1035,6 +1035,14 @@ export class FeverRashComponent implements OnInit {
       this.userMsg.error(`في التقصي على مستوى الوحدة الصحية: تاريخ زيارة الوحدة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
       return;
     }
+    if (this.isBeforeDiscoveryInvalid(this.feverRashForm.value.fieldVisitDate)) {
+      this.userMsg.error(`في المسح الميداني 30 طفل: تاريخ الزيارة الميدانية لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    if (this.isBeforeDiscoveryInvalid(this.feverRashForm.value.field400VisitDate)) {
+      this.userMsg.error(`في المسح الميداني 400 طفل: تاريخ الزيارة الميدانية لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
     if (this.hasInvalidFollowupDates()) {
       this.userMsg.error(`في متابعة الحالة بعد 21 يوم: تاريخ اللجنة لا يمكن أن يكون قبل مرور 21 يوم من تاريخ طفح الحالة (${this.followupMinDate})`);
       return;

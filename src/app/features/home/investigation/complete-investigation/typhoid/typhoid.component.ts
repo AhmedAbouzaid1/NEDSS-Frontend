@@ -67,6 +67,11 @@ export class TyphoidComponent implements OnInit {
     jointPainDay1: null,
     vomitDay1: null,
     diarrheaDay1: null,
+    headacheDay1: null,
+    abdominalPainDay1: null,
+    constipationDay1: null,
+    bradycardiaDay1: null,
+    lossOfAppetiteDay1: null,
     otherDay1: null,
     otherSymptomsDay1: null,
     // isSampleTakenDay1: 1,
@@ -90,6 +95,11 @@ export class TyphoidComponent implements OnInit {
     jointPainDay2: null,
     vomitDay2: null,
     diarrheaDay2: null,
+    headacheDay2: null,
+    abdominalPainDay2: null,
+    constipationDay2: null,
+    bradycardiaDay2: null,
+    lossOfAppetiteDay2: null,
     otherDay2: null,
     otherSymptomsDay2: null,
     // isSampleTakenDay2: 1,
@@ -113,6 +123,11 @@ export class TyphoidComponent implements OnInit {
     jointPainDay7: null,
     vomitDay7: null,
     diarrheaDay7: null,
+    headacheDay7: null,
+    abdominalPainDay7: null,
+    constipationDay7: null,
+    bradycardiaDay7: null,
+    lossOfAppetiteDay7: null,
     otherDay7: null,
     otherSymptomsDay7: null,
     // isSampleTakenDay7: 1,
@@ -136,6 +151,11 @@ export class TyphoidComponent implements OnInit {
     jointPainDay14: null,
     vomitDay14: null,
     diarrheaDay14: null,
+    headacheDay14: null,
+    abdominalPainDay14: null,
+    constipationDay14: null,
+    bradycardiaDay14: null,
+    lossOfAppetiteDay14: null,
     otherDay14: null,
     otherSymptomsDay14: null,
     // isSampleTakenDay14: '5',
@@ -189,6 +209,7 @@ export class TyphoidComponent implements OnInit {
     filteredWater: null,
     wells: null,
     ethiopianPump: null,
+    waterSampleResult: null,
     diseaseGroupId: this.investigationService.diseaseGroupID,
     samplesAnalysisPatienhome1: null,
     investigationCompletePercentage: null,
@@ -206,6 +227,11 @@ export class TyphoidComponent implements OnInit {
   jointPainDay1s = AnswerOptions;
   vomitDay1s = AnswerOptions;
   diarrheaDay1s = AnswerOptions;
+  headacheDay1s = AnswerOptions;
+  abdominalPainDay1s = AnswerOptions;
+  constipationDay1s = AnswerOptions;
+  bradycardiaDay1s = AnswerOptions;
+  lossOfAppetiteDay1s = AnswerOptions;
   otherDay1s = AnswerOptions;
 
   genderDay2s = Gender;
@@ -218,6 +244,11 @@ export class TyphoidComponent implements OnInit {
   jointPainDay2s = AnswerOptions;
   vomitDay2s = AnswerOptions;
   diarrheaDay2s = AnswerOptions;
+  headacheDay2s = AnswerOptions;
+  abdominalPainDay2s = AnswerOptions;
+  constipationDay2s = AnswerOptions;
+  bradycardiaDay2s = AnswerOptions;
+  lossOfAppetiteDay2s = AnswerOptions;
   otherDay2s = AnswerOptions;
 
   genderDay7s = Gender;
@@ -230,6 +261,11 @@ export class TyphoidComponent implements OnInit {
   jointPainDay7s = AnswerOptions;
   vomitDay7s = AnswerOptions;
   diarrheaDay7s = AnswerOptions;
+  headacheDay7s = AnswerOptions;
+  abdominalPainDay7s = AnswerOptions;
+  constipationDay7s = AnswerOptions;
+  bradycardiaDay7s = AnswerOptions;
+  lossOfAppetiteDay7s = AnswerOptions;
   otherDay7s = AnswerOptions;
 
   genderDay14s = Gender;
@@ -242,6 +278,11 @@ export class TyphoidComponent implements OnInit {
   jointPainDay14s = AnswerOptions;
   vomitDay14s = AnswerOptions;
   diarrheaDay14s = AnswerOptions;
+  headacheDay14s = AnswerOptions;
+  abdominalPainDay14s = AnswerOptions;
+  constipationDay14s = AnswerOptions;
+  bradycardiaDay14s = AnswerOptions;
+  lossOfAppetiteDay14s = AnswerOptions;
   otherDay14s = AnswerOptions;
   currentId: any;
   ngOnInit(): void {
@@ -343,7 +384,9 @@ export class TyphoidComponent implements OnInit {
     this.allFilledControlsCount = 0;
     const data = this.typhoidData;
     //Exclude fields you don't want to count (like 'id')
-    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
+    const hiddenSymptomFields = ['coughingWithSpitting', 'soreThroat', 'breathingDifficulty', 'jointPain', 'vomit']
+      .flatMap(f => ['Day1', 'Day2', 'Day7', 'Day14'].map(d => f + d));
+    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate', ...hiddenSymptomFields];
     const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
 
     this.allControllesCount = totalFields;

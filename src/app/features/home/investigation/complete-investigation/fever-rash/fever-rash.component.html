@@ -883,7 +883,11 @@
                 <div class="row">
                   <div class="col-12 title fs-6 fwb">المسح الميداني - 30 طفل</div>
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ الزيارة الميدانية</label>
-                    <app-date-field formControlName="fieldVisitDate"></app-date-field></div></div>
+                    <app-date-field class="date-with-note" formControlName="fieldVisitDate" [min]="caseDiscoveryDate"></app-date-field>
+                    <small class="form-text text-muted d-block">في نفس يوم اكتشاف الحالة أو بعده{{ caseDiscoveryDate ? ' ' + caseDiscoveryDate : '' }}</small>
+                    <small *ngIf="isBeforeDiscoveryInvalid(feverRashForm.value.fieldVisitDate)" class="form-text text-danger mess-color d-block">
+                      تاريخ الزيارة الميدانية لا يمكن أن يكون قبل تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }})
+                    </small></div></div>
                   <div class="col-lg-6"><div class="form-group"><label>رقم المربع</label>
                     <input type="text" class="form-control" formControlName="fieldSquareNumber" /></div></div>
 
@@ -1027,7 +1031,11 @@
                 <div class="row">
                   <div class="col-12 title fs-6 fwb">المسح الميداني - 400 طفل</div>
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ الزيارة الميدانية</label>
-                    <app-date-field formControlName="field400VisitDate"></app-date-field></div></div>
+                    <app-date-field class="date-with-note" formControlName="field400VisitDate" [min]="caseDiscoveryDate"></app-date-field>
+                    <small class="form-text text-muted d-block">في نفس يوم اكتشاف الحالة أو بعده{{ caseDiscoveryDate ? ' ' + caseDiscoveryDate : '' }}</small>
+                    <small *ngIf="isBeforeDiscoveryInvalid(feverRashForm.value.field400VisitDate)" class="form-text text-danger mess-color d-block">
+                      تاريخ الزيارة الميدانية لا يمكن أن يكون قبل تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }})
+                    </small></div></div>
                   <div class="col-lg-6"><div class="form-group"><label>رقم المربع</label>
                     <input type="text" class="form-control" formControlName="field400SquareNumber" /></div></div>
 

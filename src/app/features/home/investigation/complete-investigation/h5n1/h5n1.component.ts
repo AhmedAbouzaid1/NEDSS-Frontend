@@ -34,6 +34,8 @@ export class H5n1Component implements OnInit {
     'dateOfTravelInsideTo3',
     'arrivalDateToEgypt',
     'investigationDate',
+    'sampleCollectionDate',
+    'sampleSendDate',
   ]);
   private readonly stringPayloadFields = new Set([
     'nameOfCountry',
@@ -46,6 +48,8 @@ export class H5n1Component implements OnInit {
     'surveillanceOfficerName',
     'administrationDirectorName',
     'nameOfAntiviral',
+    'occupationalExposureWorkplaceOther',
+    'sampleTypeOther',
     'notes'
   ]);
   private readonly visitFieldBases = [
@@ -483,6 +487,7 @@ export class H5n1Component implements OnInit {
 
       // inAnotherCase : new FormControl(null),
       occupationalExposureWorkplace: new FormControl(),
+      occupationalExposureWorkplaceOther: new FormControl(),
       workIsInFieldOfHealthServices: new FormControl(),
       exposureToAConfirmedCaseOfH5N1AvianInfluenza: new FormControl(),
       contactSevereRespiratorySymptoms: new FormControl(),
@@ -490,6 +495,10 @@ export class H5n1Component implements OnInit {
         new FormControl(),
       caseAmongAGroupOfOtherSimilarCases: new FormControl(),
       contactHumanGatherings: new FormControl(),
+      sampleType: new FormControl(),
+      sampleTypeOther: new FormControl(),
+      sampleCollectionDate: new FormControl(),
+      sampleSendDate: new FormControl(),
       investigationDate: new FormControl(),
       healthObserverName: new FormControl(),
       surveillanceOfficerName: new FormControl(),
@@ -641,6 +650,18 @@ export class H5n1Component implements OnInit {
             this.DATE_FORMAT
           )
         );
+        this.birdFluForm.controls['sampleCollectionDate'].setValue(
+          this.datePipe.transform(
+            this.birdFluForm.value.sampleCollectionDate,
+            this.DATE_FORMAT
+          )
+        );
+        this.birdFluForm.controls['sampleSendDate'].setValue(
+          this.datePipe.transform(
+            this.birdFluForm.value.sampleSendDate,
+            this.DATE_FORMAT
+          )
+        );
         this.birdFluForm.controls['statusHistoryOnDevice'].setValue(
           this.datePipe.transform(
             this.birdFluForm.value.statusHistoryOnDevice,
@@ -671,6 +692,12 @@ export class H5n1Component implements OnInit {
    * Calculate the percentage
    * @returns
    */
+  isSendBeforeCollection(): boolean {
+    const collectionDate = this.birdFluForm?.value?.sampleCollectionDate;
+    const sendDate = this.birdFluForm?.value?.sampleSendDate;
+    return !!collectionDate && !!sendDate && String(sendDate).substring(0, 10) < String(collectionDate).substring(0, 10);
+  }
+
   calculateCompletePercentage(): number {
     const excludedFields = this.getCompletionExcludedFields();
 
@@ -713,6 +740,13 @@ export class H5n1Component implements OnInit {
     }
     if (this.isRespiratorDaysOverMax()) {
       this.userMsg.error(`عدد أيام الوضع على جهاز التنفس الصناعي لا يمكن أن يزيد عن ${this.maxRespiratorDays} يوم`);
+      return;
+    }
+
+    if (this.isSendBeforeCollection()) {
+      this.translateService
+        .get('NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_SEND_BEFORE_COLLECTION')
+        .subscribe((res: string) => this.userMsg.error(res));
       return;
     }
 
