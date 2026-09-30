@@ -291,11 +291,8 @@
           <label for="" class="form-label">
             {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.JOB" | translate }}
           </label>
-          <p-dropdown [appDropdownLoading]="jobsLoading" (onChange)="onJobChanged()" [options]="jobs" [(ngModel)]="selectedJobId"
-            [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
-            [style]="{ width: '100%' }" name="jobs" [filter]="true"
-            [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
-          </p-dropdown>
+          <input type="text" name="jobName" [(ngModel)]="patient.patientJobName"
+            (ngModelChange)="patient.patientJobId = null" pInputText class="w-100" />
         </div>
       </div>
 

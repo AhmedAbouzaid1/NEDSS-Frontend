@@ -282,6 +282,30 @@ export class H5n1Component implements OnInit {
     return days != null && days !== '' && max != null && Number(days) > max;
   }
 
+  isRespiratorDateBeforeReservation(): boolean {
+    const deviceDate = this.birdFluForm?.value?.statusHistoryOnDevice;
+    const reservationDate = this.birdFluForm?.value?.dateOfReservation;
+    return !!deviceDate && !!reservationDate && String(deviceDate).substring(0, 10) < String(reservationDate).substring(0, 10);
+  }
+
+  get maxRespiratorDays(): number | null {
+    const deviceDate = this.birdFluForm?.value?.statusHistoryOnDevice;
+    if (!deviceDate) {
+      return null;
+    }
+    const start = this.toLocalDate(String(deviceDate).substring(0, 10));
+    const end = this.hospitalLeaveDate ? this.toLocalDate(this.hospitalLeaveDate) : new Date();
+    end.setHours(0, 0, 0, 0);
+    const days = Math.round((end.getTime() - start.getTime()) / 86400000) + 1;
+    return days > 0 ? days : null;
+  }
+
+  isRespiratorDaysOverMax(): boolean {
+    const days = this.birdFluForm?.value?.numberOfDaysOfPlacementOnDevice;
+    const max = this.maxRespiratorDays;
+    return days != null && days !== '' && max != null && Number(days) > max;
+  }
+
   private toLocalDate(iso: string): Date {
     const [y, m, d] = iso.split('-').map(Number);
     return new Date(y, m - 1, d);
@@ -680,6 +704,15 @@ export class H5n1Component implements OnInit {
     }
     if (this.isIcuDaysOverMax()) {
       this.userMsg.error(`عدد أيام الحجز بالعناية لا يمكن أن يزيد عن ${this.maxIcuDays} يوم`);
+      return;
+    }
+
+    if (this.isRespiratorDateBeforeReservation()) {
+      this.userMsg.error('تاريخ الوضع على جهاز التنفس الصناعي لا يمكن أن يكون قبل تاريخ الحجز بالرعاية المركزة');
+      return;
+    }
+    if (this.isRespiratorDaysOverMax()) {
+      this.userMsg.error(`عدد أيام الوضع على جهاز التنفس الصناعي لا يمكن أن يزيد عن ${this.maxRespiratorDays} يوم`);
       return;
     }
 

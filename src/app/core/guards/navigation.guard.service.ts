@@ -32,6 +32,7 @@ export class NavigationGuard {
     { Comingroute: 'meningeal', id: 10 },
     { Comingroute: 'monkeypox', id: 10 },
     { Comingroute: 'rabies', id: 10 },
+    { Comingroute: 'animal', id: 10 },
     { Comingroute: 'plague', id: 10 },
     { Comingroute: 'fever-rash', id: 10 },
     { Comingroute: 'rift-valley', id: 10 },
@@ -86,6 +87,7 @@ export class NavigationGuard {
     { Comingroute: 'final-result', id: 24 },
     { Comingroute: 'case-result-category', id: 24 },
     { Comingroute: 'incident-source-type', id: 24 },
+    { Comingroute: 'clinical-symptoms', id: 24 },
     { Comingroute: 'dashBoardControlers', id: 24 },
     { Comingroute: 'permissions', id: 25 },
     { Comingroute: 'add-roles', id: 25 },
@@ -146,6 +148,7 @@ export class NavigationGuard {
     { Comingroute: 'hiv', id: 90 },
     { Comingroute: 'mers', id: 91 },
     { Comingroute: 'acute', id: 92 },
+    { Comingroute: 'acute-flaccid-paralysis', id: 92 },
     { Comingroute: 'system-settings', id: 93 },
     { Comingroute: 'qustion-form', id: 94 },
   ];

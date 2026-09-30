@@ -992,6 +992,8 @@ export class GeneralDataService {
   isInfectionDateNotAfterFeverValid: boolean = true;
   isHospitalEntryDateOrderValid: boolean = true;
   isHospitalLeaveDateOrderValid: boolean = true;
+  isHospitalLabSelectionValid: boolean = true;
+  isOtherHospitalLabNameValid: boolean = true;
   isSpecialLabNameValid: boolean = true;
 
   doctorNameValidationMessage: string;
@@ -1033,6 +1035,12 @@ export class GeneralDataService {
       (this.isDateOnOrAfter(patient.hospitalLeaveDate, patient.birthDate) &&
         this.isDateOnOrAfter(patient.hospitalLeaveDate, patient.hospitalEntryDate) &&
         this.isDateOnOrAfter(new Date(), patient.hospitalLeaveDate));
+    this.isHospitalLabSelectionValid =
+      !patient.isHospitalLab || this.validateField(patient.hospitalLabSelection);
+    this.isOtherHospitalLabNameValid =
+      !patient.isHospitalLab ||
+      patient.hospitalLabSelection !== 2 ||
+      this.validateEmptyField(patient.otherHospitalLabName);
     this.isSpecialLabNameValid =
       !patient.isSpecialLabLab ||
       this.validateEmptyField(patient.specialLabName);
@@ -1048,6 +1056,8 @@ export class GeneralDataService {
       this.isHospitalEntryDateValid,
       this.isHospitalEntryDateOrderValid,
       this.isHospitalLeaveDateOrderValid,
+      this.isHospitalLabSelectionValid,
+      this.isOtherHospitalLabNameValid,
       this.isSpecialLabNameValid,
     ];
     return validationResults.findIndex((result) => result == false);
@@ -1661,6 +1671,8 @@ export class GeneralDataService {
         'تاريخ الخروج من المستشفى يجب أن يكون بعد أو في نفس يوم تاريخ دخول المستشفى، ولا يتجاوز اليوم'],
       [this.isPatientHospitalNoValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.PATIENT_HOSPITAL_NO'],
       [this.isDoctorNameValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DOCTOR_NAME'],
+      [this.isHospitalLabSelectionValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITAL_LAB_SELECTION'],
+      [this.isOtherHospitalLabNameValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.OTHER_HOSPITAL_NAME'],
       [this.isSpecialLabNameValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DELEGATED_TO'],
     ]);
   }

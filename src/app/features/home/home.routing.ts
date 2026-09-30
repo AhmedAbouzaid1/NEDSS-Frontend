@@ -248,6 +248,12 @@ const routes: Routes = [
         data: { types: [3] },
       },
       {
+        path: 'h5n1/:id/diseaseId/:diseaseId',
+        component: H5n1Component,
+        canActivate: [AuthGuard, NavigationGuard, InvestigationPatientGuard],
+        data: { types: [3] },
+      },
+      {
         path: 'ari/:id/diseaseId/:diseaseId',
         component: AriComponent,
         canActivate: [NavigationGuard, InvestigationPatientGuard],
@@ -273,6 +279,12 @@ const routes: Routes = [
       },
       {
         path: 'rabies/:id/diseaseId/:diseaseId',
+        component: RabiesComponent,
+        canActivate: [AuthGuard, NavigationGuard, InvestigationPatientGuard],
+        data: { types: [3] },
+      },
+      {
+        path: 'animal/:id/diseaseId/:diseaseId',
         component: RabiesComponent,
         canActivate: [AuthGuard, NavigationGuard, InvestigationPatientGuard],
         data: { types: [3] },
@@ -465,6 +477,12 @@ const routes: Routes = [
       },
       {
         path: 'acute/:id/diseaseId/:diseaseId',
+        component: AcuteFlaccidParalysisComponent,
+        canActivate: [AuthGuard, NavigationGuard, InvestigationPatientGuard],
+        data: { types: [3] },
+      },
+      {
+        path: 'acute-flaccid-paralysis/:id/diseaseId/:diseaseId',
         component: AcuteFlaccidParalysisComponent,
         canActivate: [AuthGuard, NavigationGuard, InvestigationPatientGuard],
         data: { types: [3] },

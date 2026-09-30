@@ -19,6 +19,7 @@ export interface InvestigationFormsExportMeta {
 const MAX_CELL_LENGTH = 32000;
 const IGNORED_FORM_KEYS = new Set(['investigationcompletepercentage', 'patient', 'diseasegroup']);
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
+const MULTI_VALUE_DELIMITER = '|';
 
 @Injectable({ providedIn: 'root' })
 export class InvestigationFormsExcelService {
@@ -154,12 +155,15 @@ export class InvestigationFormsExcelService {
   private buildLookup(fields: InvestigationFormField[]) {
     const exact = new Map<string, InvestigationFormField>();
     const lower = new Map<string, InvestigationFormField>();
-    for (const f of fields) {
-      if (!exact.has(f.key)) exact.set(f.key, f);
-      if (!lower.has(f.key.toLowerCase())) lower.set(f.key.toLowerCase(), f);
-    }
+    const index = (name: string, f: InvestigationFormField) => {
+      if (!exact.has(name)) exact.set(name, f);
+      if (!lower.has(name.toLowerCase())) lower.set(name.toLowerCase(), f);
+    };
+    for (const f of fields) index(f.key, f);
+    for (const f of fields) (f.aliases ?? []).forEach((alias) => index(alias, f));
     return (key: string): InvestigationFormField | undefined => {
-      const candidates = [key, key.replace(/Json$/i, '')];
+      const base = key.replace(/Json$/i, '');
+      const candidates = [key, base, `selected${base.charAt(0).toUpperCase()}${base.slice(1)}`];
       for (const c of candidates) {
         const hit = exact.get(c) ?? lower.get(c.toLowerCase());
         if (hit) return hit;
@@ -175,15 +179,20 @@ export class InvestigationFormsExcelService {
       const trimmed = value.trim();
       if ((trimmed.startsWith('[') && trimmed.endsWith(']')) || (trimmed.startsWith('{') && trimmed.endsWith('}'))) {
         try {
-          return this.formatStructured(JSON.parse(trimmed), lookup);
+          return this.formatStructured(JSON.parse(trimmed), lookup, field);
         } catch {
           return trimmed;
         }
       }
+      const parts = trimmed.split(MULTI_VALUE_DELIMITER).map((part) => part.trim()).filter(Boolean);
+      if (parts.length > 1) {
+        const texts = parts.map((part) => this.optionText(part, field));
+        if (texts.every((text) => text !== undefined)) return texts.join('، ');
+      }
     }
 
     if (Array.isArray(value) || (value && typeof value === 'object')) {
-      return this.formatStructured(value, lookup);
+      return this.formatStructured(value, lookup, field);
     }
 
     const option = this.optionText(value, field);
@@ -198,10 +207,10 @@ export class InvestigationFormsExcelService {
     return `${value}`;
   }
 
-  private formatStructured(value: any, lookup: (key: string) => InvestigationFormField | undefined): string {
+  private formatStructured(value: any, lookup: (key: string) => InvestigationFormField | undefined, field?: InvestigationFormField): string {
     const describe = (obj: any): string => {
       if (obj == null) return '';
-      if (typeof obj !== 'object') return this.formatValue(obj, undefined, lookup);
+      if (typeof obj !== 'object') return this.formatValue(obj, field, lookup);
       if (Array.isArray(obj)) return obj.map((v) => describe(v)).filter(Boolean).join('، ');
       return Object.entries(obj)
         .filter(([k, v]) => !this.isEmpty(v) && !/^(id|index|seq|isOpen|expanded)$/i.test(k))
@@ -213,6 +222,9 @@ export class InvestigationFormsExcelService {
         .join(' | ');
     };
 
+    if (Array.isArray(value) && value.every((entry) => entry === null || typeof entry !== 'object')) {
+      return value.map((entry) => describe(entry)).filter((text) => !!text).join('، ');
+    }
     if (Array.isArray(value)) {
       const lines = value.map((entry) => describe(entry)).filter((line) => !!line);
       return lines.length > 1 ? lines.map((line, i) => `${i + 1}) ${line}`).join('\n') : lines.join('');

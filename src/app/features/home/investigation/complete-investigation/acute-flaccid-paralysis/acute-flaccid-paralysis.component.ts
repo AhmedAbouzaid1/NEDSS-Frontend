@@ -5,6 +5,7 @@ import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
+import { AgeType } from 'src/app/core/constants';
 
 @Component({
   selector: 'app-acute-flaccid-paralysis',
@@ -41,6 +42,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   vaccineTypes = ['سابين', 'سولك', 'سابين+سولك', 'نوفل'];
   sources = ['سجلات', 'أقوال أم', 'ميكنة'];
   campaignTypes = ['قومية', 'محدودة', 'جرعة منشطة'];
+  ageTypes = AgeType;
   labResults = ['سلبى', 'فيروس شلل أطفال شرس', 'فيروس سابين', 'فيروس معوي آخر'];
 
   initialClinicalDiagnoses = [
@@ -74,7 +76,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage', 'caseCodeDisplay'];
 
   private dateFields = new Set([
-    'homeVisitDate', 'entryDate', 'paralysisOnsetDate',
+    'homeVisitDate', 'entryDate', 'paralysisOnsetDate', 'investigationDate',
     'behaviorDose1Date', 'behaviorDose2Date', 'surveyVisitDate',
     'paralysisStartDate', 'followupDate', 'deathDate',
   ]);
@@ -106,6 +108,8 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
 
       // Tab 1 - field investigation
       paralysisOnsetDate: new FormControl(),
+      investigationDate: new FormControl(),
+      investigatingPhysicianName: new FormControl(),
       initialClinicalDiagnosis: new FormControl(),
       otherInitialClinicalDiagnosis: new FormControl(),
       isDangerousCase: new FormControl(),
@@ -271,6 +275,24 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   // ===================== Display helpers (summary tables) =====================
   yesNo(v: any): string { return String(v) === '1' ? 'نعم' : String(v) === '2' ? 'لا' : ''; }
   mark(v: any): string { return v ? '✓' : ''; }
+  ageLabel(v: any): string {
+    if (v?.age === null || v?.age === undefined || v?.age === '') return '';
+    const type = AgeType.find((t) => t.id != null && t.id === Number(v.ageTypeId));
+    return type ? `${v.age} ${type.arabicName}` : `${v.age}`;
+  }
+
+  private legacySurveyAge(s: any): { age: any; ageTypeId: number | null } {
+    if (s.age !== undefined || s.ageTypeId !== undefined) {
+      return { age: s.age ?? null, ageTypeId: s.ageTypeId ?? null };
+    }
+    const has = (x: any) => x !== null && x !== undefined && x !== '';
+    const years = has(s.ageYear) ? Number(s.ageYear) : null;
+    const months = has(s.ageMonth) ? Number(s.ageMonth) : null;
+    if (years && months) return { age: years * 12 + months, ageTypeId: 2 };
+    if (years !== null && !months) return { age: years, ageTypeId: 3 };
+    if (months !== null) return { age: months, ageTypeId: 2 };
+    return { age: null, ageTypeId: null };
+  }
 
   // ===================== Card expand / collapse =====================
   setTab(tab: any) { this.activeTab = tab; }
@@ -335,10 +357,11 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     });
   }
   private buildSurveyChild(s: any = {}): FormGroup {
+    const age = this.legacySurveyAge(s);
     return new FormGroup({
       name: new FormControl(s.name ?? null),
-      ageMonth: new FormControl(s.ageMonth ?? null),
-      ageYear: new FormControl(s.ageYear ?? null),
+      age: new FormControl(age.age),
+      ageTypeId: new FormControl(age.ageTypeId),
       dose0: new FormControl(!!s.dose0),
       dose1: new FormControl(!!s.dose1),
       dose2: new FormControl(!!s.dose2),
@@ -359,6 +382,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       name: new FormControl(a.name ?? null),
       unit: new FormControl(a.unit ?? null),
       age: new FormControl(a.age ?? null),
+      ageTypeId: new FormControl(a.ageTypeId ?? null),
     });
   }
   private buildCommittee(c: any = {}): FormGroup {

@@ -303,7 +303,8 @@
               }}
             </div>
             <div class="text-muted mt-2">
-              <input class="form-check-input" type="checkbox" [(ngModel)]="patient.isHospitalLab" />
+              <input class="form-check-input" type="checkbox" [(ngModel)]="patient.isHospitalLab"
+                (change)="onHospitalLabSelected()" />
 
               {{
               "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALLAB"
@@ -424,6 +425,34 @@
                   </small>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div class="row mt-3" *ngIf="patient.isHospitalLab">
+            <div class="col-lg-4 mt-2">
+              <label for="hospitalLabSelection">
+                {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITAL_LAB_SELECTION" | translate }}
+              </label>
+              <p-dropdown inputId="hospitalLabSelection" [options]="hospitalLabOptions"
+                [(ngModel)]="patient.hospitalLabSelection" (onChange)="onHospitalLabSelectionChanged()"
+                [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
+                [style]="{ width: '100%' }" name="hospitalLabSelection">
+              </p-dropdown>
+              <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isHospitalLabSelectionValid"
+                class="form-text text-danger mess-color">
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small>
+            </div>
+            <div class="col-lg-4 mt-2" *ngIf="patient.hospitalLabSelection === 2">
+              <label for="otherHospitalLabName">
+                {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.OTHER_HOSPITAL_NAME" | translate }}
+              </label>
+              <input id="otherHospitalLabName" type="text" [(ngModel)]="patient.otherHospitalLabName"
+                name="otherHospitalLabName" pInputText class="w-100" />
+              <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isOtherHospitalLabNameValid"
+                class="form-text text-danger mess-color">
+                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small>
             </div>
           </div>
 

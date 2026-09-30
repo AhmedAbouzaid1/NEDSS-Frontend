@@ -24,6 +24,12 @@ import { DatePipe } from '@angular/common';
 })
 export class HepatitisVirusesComponent implements OnInit {
   private readonly dateFormat = 'yyyy-MM-dd';
+  readonly yesNoUnknownOptions = [
+    { id: null, arabicName: '--', englishName: '--' },
+    { id: 0, arabicName: 'نعم', englishName: 'Yes' },
+    { id: 1, arabicName: 'لا', englishName: 'No' },
+    { id: 2, arabicName: 'غير معروف', englishName: 'Unknown' },
+  ];
 
   currentLang =
     localStorage.getItem('ls.currentLang') !== undefined &&

@@ -16,6 +16,8 @@ import {
 } from './investigation-form-field.model';
 import { ExportColumn, InvestigationFormsExcelService } from './investigation-forms-excel.service';
 import { InvestigationFormsReportService } from './investigation-forms-report.service';
+import { GeneralDataService } from '../../general-data/services/general-data.service';
+import { InvestigationService } from '../../investigation/services/investigation.service';
 
 type StatusFilter = 'all' | 'done' | 'notDone';
 
@@ -24,9 +26,6 @@ interface Option {
   arabicName: string;
   englishName: string;
 }
-
-const ROUTER_ALIASES: Record<string, string> = { animal: 'rabies' };
-const ROUTERS_WITHOUT_DIRECT_ROUTE = new Set(['h5n1']);
 
 @Component({
   selector: 'app-investigation-forms-report',
@@ -82,6 +81,7 @@ export class InvestigationFormsReportComponent implements OnInit {
   loading = false;
   exporting = false;
   submitted = false;
+  openingPatientId: number | null = null;
 
   constructor(
     private reportService: InvestigationFormsReportService,
@@ -90,7 +90,9 @@ export class InvestigationFormsReportComponent implements OnInit {
     private translate: TranslateService,
     private userMsg: UserMessageService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private generalDataService: GeneralDataService,
+    private investigationService: InvestigationService
   ) {}
 
   ngOnInit(): void {
@@ -175,12 +177,32 @@ export class InvestigationFormsReportComponent implements OnInit {
 
   openForm(item: InvestigationFormsReportItem): void {
     const router = (this.report?.router || '').trim();
-    const target = ROUTER_ALIASES[router] ?? router;
-    if (!target || ROUTERS_WITHOUT_DIRECT_ROUTE.has(target)) {
-      this.router.navigate(['/home/investigations/investigation-detailes', item.patientId]);
-      return;
-    }
-    this.router.navigate(['/home', target, item.patientId, 'diseaseId', this.report!.diseaseGroupId]);
+    const diseaseGroupId = this.report?.diseaseGroupId;
+    if (!router || !diseaseGroupId || this.openingPatientId != null) return;
+
+    this.openingPatientId = item.patientId;
+    this.generalDataService
+      .getPatientByIdForInvestigation(item.patientId)
+      .pipe(finalize(() => (this.openingPatientId = null)))
+      .subscribe({
+        next: (res: any) => {
+          const patient = res?.data;
+          if (!patient) return;
+          const groups = patient.patientDiseasesGroups?.length ? patient.patientDiseasesGroups : patient.patientDiseases || [];
+          this.investigationService.currentid = item.patientId;
+          this.investigationService.diseaseGroupID = diseaseGroupId;
+          this.investigationService.patient = {
+            firstName: patient.firstName,
+            secondName: patient.secondName,
+            thirdName: patient.thirdName,
+            familyName: patient.familyName,
+            phoneNo1: patient.phoneNo1,
+            livingAddress: patient.livingAddress,
+          } as any;
+          this.investigationService.patientDiseases = groups;
+          this.router.navigate(['/home', router, item.patientId, 'diseaseId', diseaseGroupId]);
+        },
+      });
   }
 
   exportExcel(): void {

@@ -148,15 +148,29 @@
                 <div class="col-lg-3" [appShowIf]="birdFluForm.get('useOfARespirator')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Date_Placed_On_Device" | translate }}</label>
-                    <app-date-field formControlName="statusHistoryOnDevice"></app-date-field>
+                    <app-date-field formControlName="statusHistoryOnDevice"
+                      [min]="birdFluForm.get('dateOfReservation')?.value || hospitalEntryDate"
+                      [max]="hospitalLeaveDate"></app-date-field>
+                    <small *ngIf="birdFluForm.get('dateOfReservation')?.value" class="form-text text-muted d-block">
+                      يجب أن يكون تاريخ الوضع على الجهاز في نفس يوم الحجز بالرعاية أو بعده
+                    </small>
+                    <small *ngIf="isRespiratorDateBeforeReservation()" class="form-text text-danger mess-color d-block">
+                      تاريخ الوضع على جهاز التنفس الصناعي لا يمكن أن يكون قبل تاريخ الحجز بالرعاية المركزة
+                    </small>
                   </div>
                 </div>
                 <!-- /.col-lg-3 -->
                 <div class="col-lg-3" [appShowIf]="birdFluForm.get('useOfARespirator')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Number_Days_Placement_Device" | translate }}</label>
-                    <input type="number" name="" id="" class="form-control" min="0"
+                    <input type="number" name="" id="" class="form-control" min="0" [max]="maxRespiratorDays"
                       formControlName="numberOfDaysOfPlacementOnDevice" />
+                    <small *ngIf="maxRespiratorDays" class="form-text text-muted d-block">
+                      الحد الأقصى {{ maxRespiratorDays }} يوم
+                    </small>
+                    <small *ngIf="isRespiratorDaysOverMax()" class="form-text text-danger mess-color d-block">
+                      عدد أيام الوضع على جهاز التنفس الصناعي لا يمكن أن يزيد عن {{ maxRespiratorDays }} يوم
+                    </small>
                   </div>
                 </div>
                 <!-- /.col-lg-12 -->

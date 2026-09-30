@@ -190,7 +190,8 @@
           }}
         </div>
         <div class="chronic-grid">
-          <label *ngFor="let dieases of chronicDiseases; let i = index" class="chronic-item text-muted">
+          <label *ngFor="let dieases of chronicDiseases; let i = index" class="chronic-item text-muted"
+            [style.display]="shouldShowChronicDisease(dieases) ? null : 'none'">
             <input class="form-check-input" type="checkbox" [(ngModel)]="selectedChronicDiseases[dieases.id]"
               [name]="'chronic_' + dieases.id" (change)="itemsCheck(dieases.id)" (blur)="
               generalDataService.isChronicDiseaseValid =

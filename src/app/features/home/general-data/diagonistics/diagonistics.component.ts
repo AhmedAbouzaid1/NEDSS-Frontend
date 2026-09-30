@@ -17,6 +17,10 @@ import { DepartmentEnum } from '../models/department-enum';
   styleUrls: ['./diagonistics.component.css'],
 })
 export class DiagonisticsComponent implements OnInit, OnDestroy {
+  readonly hospitalLabOptions = [
+    { id: 1, arabicName: 'مستشفى محل الإبلاغ', englishName: 'Reporting hospital' },
+    { id: 2, arabicName: 'مستشفى أخرى', englishName: 'Other hospital' },
+  ];
   minDate = new Date(1900, 0, 1);
   maxDate = new Date();
 
@@ -620,6 +624,22 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onHospitalLabSelected(): void {
+    if (!this.patient.isHospitalLab) {
+      this.patient.hospitalLabSelection = null;
+      this.patient.otherHospitalLabName = null;
+      this.generalDataService.isHospitalLabSelectionValid = true;
+      this.generalDataService.isOtherHospitalLabNameValid = true;
+    }
+  }
+
+  onHospitalLabSelectionChanged(): void {
+    if (this.patient.hospitalLabSelection !== 2) {
+      this.patient.otherHospitalLabName = null;
+      this.generalDataService.isOtherHospitalLabNameValid = true;
+    }
+  }
+
   onSpecialLabSelected() {
     if (!this.patient.isSpecialLabLab) {
       this.isSpecialLabSelected = false;
@@ -761,8 +781,8 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
 
     const departmentId = Number(this.patient?.incidentDepartmentId);
     const hideBirdFlu =
-      departmentId === DepartmentEnum.Internal ||
-      departmentId === DepartmentEnum.ICU;
+      departmentId !== DepartmentEnum.Internal &&
+      departmentId !== DepartmentEnum.ICU;
 
     this.diseases = hideBirdFlu
       ? this.allDiseases.filter((disease) =>

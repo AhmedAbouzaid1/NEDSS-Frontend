@@ -130,6 +130,8 @@ export class SharedDataService {
     insertedByLab: false,
     relationShipDegreeId: null,
     isHospitalLab: false,
+    hospitalLabSelection: null,
+    otherHospitalLabName: null,
     isCentralLabLab: false,
     isGovernmentLab: false,
     isRegionalLab: false,

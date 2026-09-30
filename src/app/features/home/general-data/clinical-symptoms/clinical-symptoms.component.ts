@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PatientModel, FeverSymptoms } from '../models/patient-model';
 import { DepartmentEnum } from '../models/department-enum';
 import { SharedDataService } from '../services/shared-data.service';
@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './clinical-symptoms.component.html',
   styleUrls: ['./clinical-symptoms.component.css'],
 })
-export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
+export class ClinicalSymptomsComponent implements OnInit, OnDestroy, DoCheck {
   @ViewChild('chronicSection') chronicSection?: ElementRef<HTMLElement>;
   patient: PatientModel = new PatientModel();
   currentLang: string;
@@ -79,6 +79,7 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
   private diseaseMappingRequestSeq = 0;
   private destroy$ = new Subject<void>();
   private diseasesByGroupId = new Map<number, any[]>();
+  private previousGenderId: number | null | undefined;
 
   clinicalSymptomsOptions: {
     id: number;
@@ -178,6 +179,16 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
       });
 
     this.getChronicDisease();
+  }
+
+  ngDoCheck(): void {
+    const genderId = this.patient?.genderId == null ? null : Number(this.patient.genderId);
+    if (genderId !== this.previousGenderId) {
+      this.previousGenderId = genderId;
+      if (genderId !== 2) {
+        this.removePregnantWomenSelection();
+      }
+    }
   }
 
   private loadDiseasesForExternalAutofillFlag() {
@@ -360,6 +371,9 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
         (result: any) => {
           if (result != null && result != undefined) {
             this.chronicDiseases = result.data;
+            if (Number(this.patient?.genderId) !== 2) {
+              this.removePregnantWomenSelection();
+            }
           }
         },
         (error) => {
@@ -394,6 +408,38 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
         (x) => x != diseaseId,
       );
     }
+  }
+
+  shouldShowChronicDisease(disease: any): boolean {
+    return Number(this.patient?.genderId) === 2 || !this.isPregnantWomenFactor(disease);
+  }
+
+  private isPregnantWomenFactor(disease: any): boolean {
+    const names = [disease?.name, disease?.arabicName, disease?.englishName]
+      .filter(Boolean)
+      .map((name: string) => name.trim().toLocaleLowerCase());
+
+    return names.includes('سيدات حوامل') || names.includes('pregnant women');
+  }
+
+  private removePregnantWomenSelection(): void {
+    if (!this.chronicDiseases?.length) return;
+
+    const pregnancyIds = this.chronicDiseases
+      .filter((disease) => this.isPregnantWomenFactor(disease))
+      .map((disease) => disease.id);
+
+    if (!pregnancyIds.length) return;
+
+    pregnancyIds.forEach((id) => delete this.selectedChronicDiseases[id]);
+    this.patient.chronicDiseasesIds = (this.patient.chronicDiseasesIds ?? [])
+      .filter((id) => !pregnancyIds.some((pregnancyId) => pregnancyId == id));
+    this.generalDataService.isChronicDiseaseValid =
+      this.generalDataService.validateChronicDisease(
+        this.patient.chronicDiseasesIds,
+        this.patient.anotherChronicDisease,
+        this.patient.haveChronicDisease,
+      );
   }
 
   // ----- Clinical symptoms (normalized) -----

@@ -5,6 +5,7 @@ export interface InvestigationFormField {
   options?: Record<string, string[]>;
   optionsRef?: string;
   array?: boolean;
+  aliases?: string[];
 }
 
 export interface InvestigationFormsReportFilter {

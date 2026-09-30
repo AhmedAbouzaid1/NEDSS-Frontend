@@ -70,14 +70,124 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
+      "key": "investigationDate",
+      "label": [
+        "تاريخ التقصي"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
+      "key": "investigatingPhysicianName",
+      "label": [
+        "اسم الطبيب القائم بالتقصي"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
       "key": "paralysisOnsetDate",
       "label": [
         "تاريخ بداية شلل الحالة"
       ],
       "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "1) تحركات الحالة خلال 30 يوم قبل بداية الشلل"
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
       ]
+    },
+    {
+      "key": "initialClinicalDiagnosis",
+      "label": [
+        "التشخيص الإكلينيكي الأولي"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ],
+      "options": {
+        "1": [
+          "متلازمة جيليان باري"
+        ],
+        "2": [
+          "التهاب سحائي فيروسي"
+        ],
+        "3": [
+          "التهاب النخاع المستعرض"
+        ],
+        "4": [
+          "أمراض الوصلات العصبية العضلية"
+        ],
+        "5": [
+          "التهاب فيروسي بالمخ"
+        ],
+        "6": [
+          "التهاب العضلات الفيروسي"
+        ],
+        "7": [
+          "نزلة معوية مع نقص البوتاسيوم"
+        ],
+        "8": [
+          "الإصابة بفيروسات معوية أخرى"
+        ],
+        "9": [
+          "التهاب الأعصاب الطرفية"
+        ],
+        "10": [
+          "إصابة العصب الوركي نتيجة الحقن"
+        ],
+        "11": [
+          "تشخيصات أخرى"
+        ]
+      }
+    },
+    {
+      "key": "otherInitialClinicalDiagnosis",
+      "label": [
+        "التشخيص الآخر"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
+      "key": "isDangerousCase",
+      "label": [
+        "هل الحالة خطرة؟"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "selectedDangerousCaseReasons",
+      "label": [
+        "مؤشرات خطورة الحالة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ],
+      "options": {
+        "1": [
+          "وجود إحساس بالأعضاء المصابة"
+        ],
+        "2": [
+          "اكتمال الشلل خلال 4 أيام"
+        ],
+        "3": [
+          "وجود حرارة"
+        ],
+        "4": [
+          "عدم تناظر الأعضاء المصابة"
+        ]
+      }
     },
     {
       "key": "caseMovements",
@@ -180,7 +290,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "contactName",
       "label": [
-        "اسم المخالط"
+        "اسم الحالة"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -507,9 +617,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "ageMonth",
+      "key": "age",
       "label": [
-        "شهر"
+        "العمر"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -517,14 +627,15 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "ageYear",
+      "key": "ageTypeId",
       "label": [
-        "سنة"
+        "نوع العمر"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
         "مبادرة السلوك"
-      ]
+      ],
+      "optionsRef": "AgeType"
     },
     {
       "key": "feverRash",
@@ -857,16 +968,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "unit",
       "label": [
         "الوحدة"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
-      ]
-    },
-    {
-      "key": "age",
-      "label": [
-        "العمر"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -1251,6 +1352,16 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.ARI.CLINICAL_DATA"
       ]
+    },
+    {
+      "key": "healthFacilityTimeline",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.HEALTH_FACILITY_TIMELINE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.HEALTH_FACILITY_TIMELINE"
+      ],
+      "array": true
     },
     {
       "key": "facilityName",
@@ -1805,6 +1916,19 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
+      "key": "domesticTravelEntries",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.EXPOSURE_DATA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.EXPOSURE_DATA"
+      ],
+      "array": true,
+      "aliases": [
+        "domesticTravelJson"
+      ]
+    },
+    {
       "key": "dateFrom",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.ARI.DATE_FROM"
@@ -1850,6 +1974,19 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
           "NEDSS.REPORTS.UnKnown"
         ]
       }
+    },
+    {
+      "key": "internationalTravelEntries",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.EXPOSURE_DATA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.EXPOSURE_DATA"
+      ],
+      "array": true,
+      "aliases": [
+        "internationalTravelJson"
+      ]
     },
     {
       "key": "country",
@@ -10113,7 +10250,10 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.FALSE_CHICKENPOX.EPIDEMIOLOGICAL_INVESTIGATION"
       ],
-      "array": true
+      "array": true,
+      "aliases": [
+        "directContactsJson"
+      ]
     },
     {
       "key": "contactSeq",
@@ -10977,7 +11117,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     },
     {
       "key": "caseVaccinationStatus",
-      "label": [],
+      "label": [
+        "اذكر موقف التطعيم للحالة"
+      ],
       "section": [
         "اذكر موقف التطعيم للحالة"
       ],
@@ -17050,7 +17192,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "followD1Diarrhea",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA"
+        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
@@ -17142,6 +17284,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
         ]
       }
     },
@@ -17387,7 +17532,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "followD2Diarrhea",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA"
+        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
@@ -17479,6 +17624,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
         ]
       }
     },
@@ -17724,7 +17872,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "followD7Diarrhea",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA"
+        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
@@ -17816,6 +17964,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "لم ترد"
         ]
       }
     },
@@ -18061,7 +18212,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "followD14Diarrhea",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA"
+        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
@@ -18153,6 +18304,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
         ]
       }
     },
@@ -18526,7 +18680,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "label": [
         "هل تم حجز المريض بالمستشفى"
       ],
-      "section": [],
+      "section": [
+        "NEDSS.INVESTIGATIONS.PAGES.Kadeb"
+      ],
       "optionsRef": "AnswerOptions"
     },
     {
@@ -18534,14 +18690,18 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "label": [
         "تاريخ دخول المستشفى"
       ],
-      "section": []
+      "section": [
+        "NEDSS.INVESTIGATIONS.PAGES.Kadeb"
+      ]
     },
     {
       "key": "bookedIntensiveCare",
       "label": [
         "هل تم الحجز بالعناية المركزة"
       ],
-      "section": [],
+      "section": [
+        "NEDSS.INVESTIGATIONS.PAGES.Kadeb"
+      ],
       "optionsRef": "AnswerOptions"
     },
     {
@@ -18609,7 +18769,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -18620,7 +18780,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ]
     },
     {
@@ -18630,7 +18790,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -18641,7 +18801,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -18652,7 +18812,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -18663,7 +18823,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ]
     },
     {
@@ -18673,7 +18833,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -18684,7 +18844,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ]
     },
     {
@@ -18694,7 +18854,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -19759,13 +19919,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19780,13 +19940,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19801,13 +19961,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19822,13 +19982,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19843,13 +20003,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19864,13 +20024,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19885,13 +20045,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19916,13 +20076,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19937,13 +20097,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19958,13 +20118,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19979,13 +20139,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -20000,13 +20160,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -20021,13 +20181,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -20048,7 +20208,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20059,7 +20219,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20070,7 +20230,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20080,7 +20240,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20091,7 +20251,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20102,7 +20262,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20112,7 +20272,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20123,7 +20283,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20134,7 +20294,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20144,7 +20304,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20155,7 +20315,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20166,7 +20326,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20176,7 +20336,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20187,7 +20347,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20198,7 +20358,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20208,7 +20368,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20219,7 +20379,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20230,7 +20390,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20240,7 +20400,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20251,7 +20411,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20262,7 +20422,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20272,7 +20432,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20283,7 +20443,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20294,7 +20454,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20304,7 +20464,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20315,7 +20475,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20326,7 +20486,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20336,7 +20496,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20347,7 +20507,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20358,7 +20518,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20369,7 +20529,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20380,7 +20540,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20391,7 +20551,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20402,7 +20562,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20413,7 +20573,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20424,7 +20584,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20435,7 +20595,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeHepatitis"
     },
@@ -20446,7 +20606,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20457,7 +20617,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20468,7 +20628,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20479,7 +20639,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20490,7 +20650,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20501,7 +20661,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20511,7 +20671,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20522,7 +20682,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20533,7 +20693,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20544,7 +20704,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20555,7 +20715,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeChronicDiseases"
     },
@@ -20566,7 +20726,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20576,7 +20736,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20587,7 +20747,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20598,7 +20758,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20609,7 +20769,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20619,7 +20779,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20629,7 +20789,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20639,7 +20799,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     }
   ],
@@ -23876,7 +24036,10 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TOTAL_CONTACTS_COUNT"
       ],
       "section": [],
-      "array": true
+      "array": true,
+      "aliases": [
+        "directContactsJson"
+      ]
     },
     {
       "key": "contactSeq",
@@ -24560,7 +24723,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     },
     {
       "key": "camelExposureType",
-      "label": [],
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_TYPE_LABEL"
+      ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.MERS.EXPOSURE_DATA",
         "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_TYPE_LABEL"
@@ -24588,7 +24753,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     },
     {
       "key": "camelExposureTypeOther",
-      "label": [],
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_OTHER_SPECIFY"
+      ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.MERS.EXPOSURE_DATA",
         "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_TYPE_LABEL"
@@ -24925,6 +25092,53 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.MONKEYPOX.ACTIVE_DISEASE_ASSESSMENT"
       ]
+    },
+    {
+      "key": "symptomChecklist",
+      "label": [
+        "NEDSS.MONKEYPOX.OTHER_SYMPTOMS_CHECKLIST"
+      ],
+      "section": [
+        "NEDSS.MONKEYPOX.OTHER_SYMPTOMS_CHECKLIST"
+      ],
+      "options": {
+        "symptom_fatigue_nausea": [
+          "NEDSS.MONKEYPOX.SYMPTOM_FATIGUE_NAUSEA"
+        ],
+        "symptom_itchy_lesions": [
+          "NEDSS.MONKEYPOX.SYMPTOM_ITCHY_LESIONS"
+        ],
+        "symptom_lymph_node_swelling_armpit": [
+          "NEDSS.MONKEYPOX.SYMPTOM_LYMPH_NODE_SWELLING_ARMPIT"
+        ],
+        "symptom_conjunctivitis": [
+          "NEDSS.MONKEYPOX.SYMPTOM_CONJUNCTIVITIS"
+        ],
+        "symptom_headache": [
+          "NEDSS.MONKEYPOX.SYMPTOM_HEADACHE"
+        ],
+        "symptom_mouth_ulcers": [
+          "NEDSS.MONKEYPOX.SYMPTOM_MOUTH_ULCERS"
+        ],
+        "symptom_fatigue": [
+          "NEDSS.MONKEYPOX.SYMPTOM_FATIGUE"
+        ],
+        "symptom_chills_sweating": [
+          "NEDSS.MONKEYPOX.SYMPTOM_CHILLS_SWEATING"
+        ],
+        "symptom_cough": [
+          "NEDSS.MONKEYPOX.SYMPTOM_COUGH"
+        ],
+        "symptom_muscle_pain": [
+          "NEDSS.MONKEYPOX.SYMPTOM_MUSCLE_PAIN"
+        ],
+        "symptom_pharyngitis": [
+          "NEDSS.MONKEYPOX.SYMPTOM_PHARYNGITIS"
+        ],
+        "symptom_sensitivity": [
+          "NEDSS.MONKEYPOX.SYMPTOM_SENSITIVITY"
+        ]
+      }
     },
     {
       "key": "symptomBedridden",
@@ -25424,6 +25638,26 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.MONKEYPOX.LABORATORY_SAMPLES"
       ]
+    },
+    {
+      "key": "sampleType",
+      "label": [
+        "NEDSS.MONKEYPOX.SAMPLE_TYPE"
+      ],
+      "section": [
+        "NEDSS.MONKEYPOX.LABORATORY_SAMPLES"
+      ],
+      "options": {
+        "lesion_swab": [
+          "NEDSS.MONKEYPOX.LESION_SWAB"
+        ],
+        "throat_swab": [
+          "NEDSS.MONKEYPOX.THROAT_SWAB"
+        ],
+        "blood_sample": [
+          "NEDSS.MONKEYPOX.BLOOD_SAMPLE"
+        ]
+      }
     },
     {
       "key": "patientAdmitted",
@@ -29976,7 +30210,36 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
+      ],
+      "aliases": [
+        "exposureLocation"
+      ],
+      "options": {
+        "HOME": [
+          "منزل"
+        ],
+        "RESTAURANT": [
+          "مطعم"
+        ],
+        "SCHOOL": [
+          "مدرسة"
+        ],
+        "HOTEL": [
+          "فندق"
+        ],
+        "MARKET": [
+          "سوق"
+        ],
+        "SUPERMARKET": [
+          "سوبر ماركت"
+        ],
+        "PARTIES": [
+          "حفلات"
+        ],
+        "OTHER": [
+          "أخرى"
+        ]
+      }
     },
     {
       "key": "exposureLocationOther",
@@ -29994,7 +30257,39 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
+      ],
+      "aliases": [
+        "foodTypes"
+      ],
+      "options": {
+        "MEAT": [
+          "لحوم"
+        ],
+        "POULTRY": [
+          "دواجن"
+        ],
+        "FISH": [
+          "أسماك"
+        ],
+        "DAIRY_PRODUCTS": [
+          "منتجات ألبان"
+        ],
+        "WATER": [
+          "مياه"
+        ],
+        "BAKERY": [
+          "معجنات"
+        ],
+        "FRUITS_AND_VEGETABLES": [
+          "خضروات وفاكهة"
+        ],
+        "SWEETS_OR_DRINKS": [
+          "حلويات أو مشروبات"
+        ],
+        "OTHER": [
+          "أخرى"
+        ]
+      }
     },
     {
       "key": "foodTypeOther",
@@ -30057,7 +30352,24 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
+      ],
+      "aliases": [
+        "waterSourceType"
+      ],
+      "options": {
+        "NETWORK": [
+          "شبكة"
+        ],
+        "GROUNDWATER": [
+          "مياه جوفية"
+        ],
+        "TANK": [
+          "خزان"
+        ],
+        "OTHER": [
+          "أخرى"
+        ]
+      }
     },
     {
       "key": "waterSourceOther",
@@ -30075,7 +30387,27 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SAMPLES_SECTION"
-      ]
+      ],
+      "aliases": [
+        "humanSamples"
+      ],
+      "options": {
+        "VOMIT": [
+          "قيء"
+        ],
+        "URINE": [
+          "بول"
+        ],
+        "STOOL": [
+          "براز"
+        ],
+        "BLOOD": [
+          "دم"
+        ],
+        "OTHER": [
+          "أخرى"
+        ]
+      }
     },
     {
       "key": "humanSamplesOther",
@@ -30093,7 +30425,21 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SAMPLES_SECTION"
-      ]
+      ],
+      "aliases": [
+        "environmentalSamples"
+      ],
+      "options": {
+        "FOOD_REMAINS": [
+          "بقايا طعام"
+        ],
+        "WATER": [
+          "مياه"
+        ],
+        "OTHER": [
+          "أخرى"
+        ]
+      }
     },
     {
       "key": "environmentalSamplesOther",
