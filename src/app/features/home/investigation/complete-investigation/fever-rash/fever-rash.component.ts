@@ -401,14 +401,18 @@ export class FeverRashComponent implements OnInit {
     if (!this.currentId || !groupId) return;
     const f = this.feverRashForm.controls;
     const needDate = !f['lastCaseDateAdmin'].value;
+    const needDirDate = !f['lastCaseDateDirectorate'].value;
     const needConfirmed = f['confirmedCasesLastMonth'].value == null;
     const needFeverRash = f['feverRashCasesLastMonth'].value == null;
-    if (!needDate && !needConfirmed && !needFeverRash) return;
+    if (!needDate && !needDirDate && !needConfirmed && !needFeverRash) return;
     this.investigationService.getFeverRashUnitSummary(this.currentId, groupId).subscribe((res: any) => {
       const s = res?.data;
       if (!s) return;
       if (needDate && !f['lastCaseDateAdmin'].value && s.lastCaseDate) {
         f['lastCaseDateAdmin'].setValue(this.d(s.lastCaseDate));
+      }
+      if (needDirDate && !f['lastCaseDateDirectorate'].value && s.lastCaseDateDirectorate) {
+        f['lastCaseDateDirectorate'].setValue(this.d(s.lastCaseDateDirectorate));
       }
       if (needConfirmed && f['confirmedCasesLastMonth'].value == null) {
         this.applyCaseCount('confirmedCasesLastMonth', 'confirmedCasesCount', s.confirmedCasesLastMonth);
