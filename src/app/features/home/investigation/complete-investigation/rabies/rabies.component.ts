@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -47,6 +47,64 @@ export class RabiesComponent implements OnInit {
   veterinaryNotifyListOfFiles: string[] = [];
   veterinaryNotifyOldFiles: string[] = [];
 
+  readonly animalOtherCode = '14';
+  readonly bitingAnimalTypes = [
+    { value: '1', key: 'ANIMAL_CAT' },
+    { value: '2', key: 'ANIMAL_DOG' },
+    { value: '3', key: 'ANIMAL_HORSE' },
+    { value: '4', key: 'ANIMAL_CATTLE' },
+    { value: '5', key: 'ANIMAL_DONKEY' },
+    { value: '6', key: 'ANIMAL_RODENTS' },
+    { value: '7', key: 'ANIMAL_FOX_WOLF' },
+    { value: '8', key: 'ANIMAL_CAMEL' },
+    { value: '9', key: 'ANIMAL_BAT' },
+    { value: '10', key: 'ANIMAL_MONKEY' },
+    { value: '11', key: 'ANIMAL_SUSPECTED_HUMAN' },
+    { value: '12', key: 'ANIMAL_BIG_CATS' },
+    { value: '13', key: 'ANIMAL_HEDGEHOG' },
+    { value: '14', key: 'ANIMAL_OTHER' },
+  ];
+
+  readonly woundLocations = [
+    { value: '1', key: 'WOUND_LOC_RIGHT_HAND' },
+    { value: '2', key: 'WOUND_LOC_LEFT_HAND' },
+    { value: '3', key: 'WOUND_LOC_RIGHT_LEG' },
+    { value: '4', key: 'WOUND_LOC_LEFT_LEG' },
+    { value: '5', key: 'WOUND_LOC_HEAD' },
+    { value: '6', key: 'WOUND_LOC_NECK' },
+    { value: '7', key: 'WOUND_LOC_CHEST' },
+    { value: '8', key: 'WOUND_LOC_ABDOMEN' },
+    { value: '9', key: 'WOUND_LOC_BACK' },
+    { value: '10', key: 'WOUND_LOC_GENITALS' },
+  ];
+
+  readonly woundTypes = [
+    { value: '1', key: 'WOUND_TYPE_SCRATCH' },
+    { value: '2', key: 'WOUND_TYPE_BITE' },
+    { value: '3', key: 'WOUND_TYPE_MUCOUS' },
+  ];
+
+  private readonly woundDescriptionsByType: Record<string, { value: string; key: string }[]> = {
+    '1': [
+      { value: '5', key: 'WOUND_DESC_SCRATCH_BLEEDING' },
+      { value: '6', key: 'WOUND_DESC_SCRATCH_NO_BLEEDING' },
+    ],
+    '2': [
+      { value: '1', key: 'BITE_DESC_SUPERFICIAL' },
+      { value: '2', key: 'BITE_DESC_DEEP' },
+      { value: '8', key: 'BITE_DESC_INCISED' },
+      { value: '3', key: 'BITE_DESC_LACERATION' },
+    ],
+    '3': [
+      { value: '7', key: 'WOUND_TYPE_MUCOUS' },
+    ],
+  };
+
+  readonly serumTypes = [
+    { value: '1', key: 'SERUM_TYPE_HUMAN' },
+    { value: '2', key: 'SERUM_TYPE_EQUINE' },
+  ];
+
   private restoreIncidentAdminId: number | null = null;
   private restoreIncidentOfficeId: number | null = null;
 
@@ -85,10 +143,51 @@ export class RabiesComponent implements OnInit {
       rawDesc != null && rawDesc !== ''
         ? String(rawDesc)
         : null;
+    const rawType = data?.woundType ?? data?.WoundType;
+    let woundType = rawType != null && rawType !== '' ? String(rawType) : null;
+    if (woundType == null && desc != null) {
+      woundType = this.woundTypeForDescription(desc);
+    }
     return new FormGroup({
       biteLocationOnBody: new FormControl(biteLocationOnBody),
+      woundType: new FormControl(woundType),
       biteDescription: new FormControl(desc),
     });
+  }
+
+  private woundTypeForDescription(desc: string): string | null {
+    if (desc === '4') {
+      return '2';
+    }
+    const match = Object.keys(this.woundDescriptionsByType).find((type) =>
+      this.woundDescriptionsByType[type].some((o) => o.value === desc),
+    );
+    return match ?? null;
+  }
+
+  woundDescriptionOptions(row: AbstractControl): { value: string; key: string }[] {
+    const type = row.get('woundType')?.value;
+    const options = type ? this.woundDescriptionsByType[String(type)] ?? [] : [];
+    if (String(type) === '2' && String(row.get('biteDescription')?.value) === '4') {
+      return [...options, { value: '4', key: 'BITE_DESC_COMPLEX' }];
+    }
+    return options;
+  }
+
+  isLegacyWoundLocation(row: AbstractControl): boolean {
+    const value = row.get('biteLocationOnBody')?.value;
+    return value != null && value !== '' && !this.woundLocations.some((o) => o.value === String(value));
+  }
+
+  onWoundTypeChanged(row: AbstractControl): void {
+    const options = this.woundDescriptionOptions(row);
+    const descControl = row.get('biteDescription');
+    if (options.length === 1) {
+      descControl?.setValue(options[0].value);
+    } else if (!options.some((o) => o.value === String(descControl?.value))) {
+      descControl?.setValue(null);
+    }
+    this.calculateCompletionPercentage();
   }
 
   createPatientFacilityVisitRow(data?: any): FormGroup {
@@ -148,6 +247,7 @@ export class RabiesComponent implements OnInit {
   ngOnInit() {
     this.rabiesForm = new FormGroup({
       patientExposedVenom: new FormControl(),
+      bitingAnimalType: new FormControl(),
       kindOfAnimal: new FormControl(),
       incidentGovernmentId: new FormControl(-1),
       incidentHealthAdministrationId: new FormControl(-1),
@@ -173,6 +273,7 @@ export class RabiesComponent implements OnInit {
       fifthDoseHealthFacility: new FormControl(),
       reasonNotReceivingDoses: new FormControl(),
       patientReceiveSerum: new FormControl(),
+      serumType: new FormControl(),
       patientReceiveSerumReason: new FormControl(),
       unitDose: new FormControl(),
       patientWeight: new FormControl(),
@@ -232,6 +333,7 @@ export class RabiesComponent implements OnInit {
 
         this.patchFormArraysFromApi(v);
         this.prefillIncidentLocationDropdowns();
+        this.normalizeSelectCodes();
 
         this.bittenPersonsOldFiles = v?.bittenPersonsAttachmentUrls?.length
           ? [...v.bittenPersonsAttachmentUrls]
@@ -273,6 +375,23 @@ export class RabiesComponent implements OnInit {
       }
     )
   }
+  private normalizeSelectCodes(): void {
+    ['bitingAnimalType', 'serumType'].forEach((key) => {
+      const val = this.rabiesForm.get(key)?.value;
+      if (val !== null && val !== undefined && val !== '') {
+        this.rabiesForm.get(key)?.setValue(String(val), { emitEvent: false });
+      }
+    });
+    const legacyAnimal = this.rabiesForm.get('kindOfAnimal')?.value;
+    if (!this.rabiesForm.get('bitingAnimalType')?.value && legacyAnimal && String(legacyAnimal).trim() !== '') {
+      this.rabiesForm.get('bitingAnimalType')?.setValue(this.animalOtherCode, { emitEvent: false });
+    }
+  }
+
+  private toNullableNumber(v: any): number | null {
+    return v === '' || v === undefined || v === null || v === 'null' ? null : Number(v);
+  }
+
   private normalizeLookupId(v: any): number | null {
     if (v === null || v === undefined || v === '' || v === -1 || v === '-1') {
       return null;
@@ -621,12 +740,12 @@ export class RabiesComponent implements OnInit {
       incidentGovernmentId: this.normalizeLookupId(raw.incidentGovernmentId),
       incidentHealthAdministrationId: this.normalizeLookupId(raw.incidentHealthAdministrationId),
       incidentHealthOfficeId: this.normalizeLookupId(raw.incidentHealthOfficeId),
+      bitingAnimalType: this.toNullableNumber(raw.bitingAnimalType),
+      serumType: this.toNullableNumber(raw.serumType),
       biteIncidents: (raw.biteIncidents || []).map((r: any) => ({
         biteLocationOnBody: r.biteLocationOnBody ?? null,
-        biteDescription:
-          r.biteDescription === '' || r.biteDescription === undefined || r.biteDescription === null
-            ? null
-            : Number(r.biteDescription),
+        woundType: this.toNullableNumber(r.woundType),
+        biteDescription: this.toNullableNumber(r.biteDescription),
       })),
       patientFacilityVisits: (raw.patientFacilityVisits || []).map((r: any) => ({
         healthFacilityName: r.healthFacilityName ?? null,

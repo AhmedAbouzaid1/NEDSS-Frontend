@@ -28912,9 +28912,18 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
-      "key": "kindOfAnimal",
+      "key": "bitingAnimalType",
       "label": [
         "NEDSS.Complete_Investigation.rabies.ANIMAL_TYPE_IF_YES"
+      ],
+      "section": [
+        "NEDSS.Complete_Investigation.rabies.SURVEY_SECTION_TITLE"
+      ]
+    },
+    {
+      "key": "kindOfAnimal",
+      "label": [
+        "NEDSS.Complete_Investigation.rabies.ANIMAL_OTHER_SPECIFY"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.SURVEY_SECTION_TITLE"
@@ -28976,27 +28985,22 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
+      "key": "woundType",
+      "label": [
+        "NEDSS.Complete_Investigation.rabies.WOUND_TYPE"
+      ],
+      "section": [
+        "NEDSS.Complete_Investigation.rabies.BITE_TABLE_TITLE"
+      ]
+    },
+    {
       "key": "biteDescription",
       "label": [
         "NEDSS.Complete_Investigation.rabies.BITE_DESCRIPTION"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.BITE_TABLE_TITLE"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.Complete_Investigation.rabies.BITE_DESC_SUPERFICIAL"
-        ],
-        "2": [
-          "NEDSS.Complete_Investigation.rabies.BITE_DESC_DEEP"
-        ],
-        "3": [
-          "NEDSS.Complete_Investigation.rabies.BITE_DESC_LACERATION"
-        ],
-        "4": [
-          "NEDSS.Complete_Investigation.rabies.BITE_DESC_COMPLEX"
-        ]
-      }
+      ]
     },
     {
       "key": "patientFacilityVisits",
@@ -29081,7 +29085,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "reasonIsNotMentioned",
       "label": [
-        "NEDSS.Complete_Investigation.rabies.REASON_IF_NOT_STATED"
+        "NEDSS.Complete_Investigation.rabies.REASON_IF_YES_STATED"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
@@ -29231,9 +29235,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
-      "key": "patientReceiveSerumReason",
+      "key": "serumType",
       "label": [
-        "NEDSS.Complete_Investigation.rabies.SERUM_REASON_NOTE"
+        "NEDSS.Complete_Investigation.rabies.SERUM_TYPE"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
@@ -29270,6 +29274,15 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "nameHealthFacility",
       "label": [
         "NEDSS.Complete_Investigation.rabies.SERUM_HEALTH_FACILITY_NAME"
+      ],
+      "section": [
+        "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
+      ]
+    },
+    {
+      "key": "patientReceiveSerumReason",
+      "label": [
+        "NEDSS.Complete_Investigation.rabies.SERUM_REASON_IF_NO"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
@@ -29332,6 +29345,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.Complete_Investigation.rabies.ANIMAL_STATUS_NOT_VACCINATED"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -30272,6 +30288,33 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
+      "key": "foodExposureCount",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_EXPOSURE_COUNT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
+      ]
+    },
+    {
+      "key": "foodIntakeTime",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_INTAKE_TIME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
+      ]
+    },
+    {
+      "key": "symptomsOnsetTime",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SYMPTOMS_ONSET_TIME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
+      ]
+    },
+    {
       "key": "selectedExposureLocations",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.EXPOSURE_LOCATION"
@@ -30312,7 +30355,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "exposureLocationOther",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.EXPOSURE_LOCATION"
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
@@ -30362,52 +30405,39 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "foodTypeOther",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_TYPE"
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
       ]
     },
     {
-      "key": "foodIntakeTime",
+      "key": "selectedFoodSources",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_INTAKE_TIME"
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_SOURCE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
-    },
-    {
-      "key": "symptomsOnsetTime",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SYMPTOMS_ONSET_TIME"
       ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
+      "aliases": [
+        "foodSources"
+      ],
+      "options": {
+        "RESTAURANT": [
+          "مطعم"
+        ],
+        "STREET_VENDOR": [
+          "بائع متجول"
+        ],
+        "HOME_PREPARED": [
+          "معد منزليا"
+        ]
+      }
     },
     {
       "key": "preparationToIntakeDuration",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.PREPARATION_TO_INTAKE_DURATION"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
-    },
-    {
-      "key": "foodExposureCount",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_EXPOSURE_COUNT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
-    },
-    {
-      "key": "generalCaseStatus",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.GENERAL_CASE_STATUS"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
@@ -30442,7 +30472,16 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "waterSourceOther",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.WATER_SOURCE"
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
+      ]
+    },
+    {
+      "key": "generalCaseStatus",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.GENERAL_CASE_STATUS"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
@@ -30480,7 +30519,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "humanSamplesOther",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.HUMAN_SAMPLES"
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SAMPLES_SECTION"
@@ -30512,7 +30551,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "environmentalSamplesOther",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.ENVIRONMENTAL_SAMPLES"
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SAMPLES_SECTION"

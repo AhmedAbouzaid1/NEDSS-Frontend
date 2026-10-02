@@ -15,619 +15,615 @@
 
     <div class="card shadow mt-4 color">
       <div class="card-body">
-        <div class="row">
-          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-            <div class="row">
-              <div class="col-12 title fs-6 fwb">{{ "NEDSS.Complete_Investigation.rabies.SURVEY_SECTION_TITLE" | translate }}</div>
+        <div class="card card-body bg-dark-mode rounded-2 mb-4 card-alt rabies-section">
+          <div class="title fs-6 fwb">{{ "NEDSS.Complete_Investigation.rabies.SURVEY_SECTION_TITLE" | translate }}</div>
 
-              <div class="col-lg-12">
-                <div class="form-group">
-                  <label for="rabies-dateIncident">{{ "NEDSS.Complete_Investigation.rabies.BITE_DATE" | translate }}</label>
-                  <app-date-field formControlName="dateIncident" (blurred)="calculateCompletionPercentage()"></app-date-field>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.Complete_Investigation.rabies.EXPOSED_SCRATCH_BITE" | translate }}</label>
-                  <select formControlName="patientExposedVenom" class="form-control"
-                    (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-6" [appShowIf]="rabiesForm.get('patientExposedVenom')?.value == 1">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_TYPE_IF_YES" | translate }}</label>
-                  <input formControlName="kindOfAnimal" type="text" class="form-control"
-                    (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-
-              <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.Complete_Investigation.rabies.INCIDENT_ADDRESS_TITLE" | translate }}</div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="" class="form-label">
-                    {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.GOVERNMENT" | translate }}
-                  </label>
-                  <p-dropdown [appDropdownLoading]="incidentGovernmentsLoading" (onChange)="onIncidentGovernmentChanged()" [options]="incidentGovernments"
-                    formControlName="incidentGovernmentId" optionValue="id"
-                    [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
-                    autoWidth="false" [style]="{ width: '100%' }" [filter]="true"
-                    [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
-                    appendTo="body" (onBlur)="calculateCompletionPercentage()">
-                  </p-dropdown>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="" class="form-label">
-                    {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.ADMINISTRATION" | translate }}
-                  </label>
-                  <p-dropdown [appDropdownLoading]="incidentHealthAdministrationsLoading" (onChange)="onIncidentHealthAdministrationChanged()" [options]="incidentHealthAdministrations"
-                    formControlName="incidentHealthAdministrationId" optionValue="id"
-                    [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
-                    autoWidth="false" [style]="{ width: '100%' }" [filter]="true"
-                    [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
-                    appendTo="body" (onBlur)="calculateCompletionPercentage()">
-                  </p-dropdown>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="" class="form-label">
-                    {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.HEALTHOFFICE" | translate }}
-                  </label>
-                  <p-dropdown [appDropdownLoading]="incidentHealthOfficesLoading" (onChange)="onIncidentHealthOfficeChanged()" [options]="incidentHealthOffices"
-                    formControlName="incidentHealthOfficeId" optionValue="id"
-                    [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
-                    autoWidth="false" [style]="{ width: '100%' }" [filter]="true"
-                    [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
-                    appendTo="body" (onBlur)="calculateCompletionPercentage()">
-                  </p-dropdown>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.Complete_Investigation.rabies.VILLAGE_OR_STREET" | translate }}</label>
-                  <input formControlName="incidentVillageOrStreet" type="text" class="form-control"
-                    (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-
-              <div class="col-12 title fs-6 fwb mt-3">{{ "NEDSS.Complete_Investigation.rabies.BITE_TABLE_TITLE" | translate }}</div>
-              <div class="col-lg-12" formArrayName="biteIncidents">
-                <div class="table-responsive table-none-scroll">
-                  <table class="table table-bordered mb-2">
-                    <thead>
-                      <tr>
-                        <th>{{ "NEDSS.Complete_Investigation.rabies.BITE_BODY_SITE" | translate }}</th>
-                        <th>{{ "NEDSS.Complete_Investigation.rabies.BITE_DESCRIPTION" | translate }}</th>
-                        <th>{{ "NEDSS.Complete_Investigation.rabies.TABLE_ACTIONS" | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let row of biteIncidentRows.controls; let idx = index" [formGroupName]="idx">
-                        <td><input formControlName="biteLocationOnBody" type="text" class="form-control"
-                            (blur)="calculateCompletionPercentage()" /></td>
-                        <td>
-                          <select formControlName="biteDescription" class="form-control"
-                            (change)="calculateCompletionPercentage()">
-                            <option value=""></option>
-                            <option value="1">{{ "NEDSS.Complete_Investigation.rabies.BITE_DESC_SUPERFICIAL" | translate }}</option>
-                            <option value="2">{{ "NEDSS.Complete_Investigation.rabies.BITE_DESC_DEEP" | translate }}</option>
-                            <option value="3">{{ "NEDSS.Complete_Investigation.rabies.BITE_DESC_LACERATION" | translate }}</option>
-                            <option value="4">{{ "NEDSS.Complete_Investigation.rabies.BITE_DESC_COMPLEX" | translate }}</option>
-                          </select>
-                        </td>
-                        <td>
-                          <button type="button" class="btn btn-danger" (click)="removeBiteRow(idx)">
-                            <i class="fa fa-trash"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <button type="button" class="btn fw-bold px-4 text-white rabies-table__add mb-3"
-                  (click)="addBiteRow()">{{ "NEDSS.Complete_Investigation.rabies.ADD_ROW" | translate }}</button>
-              </div>
-
-              <div class="col-12 title fs-6 fwb mt-2">{{ "NEDSS.Complete_Investigation.rabies.FACILITY_VISITS_TITLE" | translate }}</div>
-              <div class="col-lg-12" formArrayName="patientFacilityVisits">
-                <div class="table-responsive table-none-scroll">
-                  <table class="table table-bordered mb-2">
-                    <thead>
-                      <tr>
-                        <th>{{ "NEDSS.Complete_Investigation.rabies.FACILITY_VISITS_TITLE" | translate }}</th>
-                        <th>{{ "NEDSS.Complete_Investigation.rabies.VISIT_DATE" | translate }}</th>
-                        <th>{{ "NEDSS.Complete_Investigation.rabies.NOTES" | translate }}</th>
-                        <th>{{ "NEDSS.Complete_Investigation.rabies.TABLE_ACTIONS" | translate }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let row of patientFacilityVisitRows.controls; let idx = index" [formGroupName]="idx">
-                        <td><input formControlName="healthFacilityName" type="text" class="form-control"
-                            (blur)="calculateCompletionPercentage()" /></td>
-                        <td><app-date-field formControlName="visitDate" (blurred)="calculateCompletionPercentage()"></app-date-field></td>
-                        <td><input formControlName="notes" type="text" class="form-control"
-                            (blur)="calculateCompletionPercentage()" /></td>
-                        <td>
-                          <button type="button" class="btn btn-danger" (click)="removePatientFacilityVisitRow(idx)">
-                            <i class="fa fa-trash"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <button type="button" class="btn fw-bold px-4 text-white rabies-table__add"
-                  (click)="addPatientFacilityVisitRow()">{{ "NEDSS.Complete_Investigation.rabies.ADD_ROW" | translate }}</button>
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="rabies-dateIncident">{{ "NEDSS.Complete_Investigation.rabies.BITE_DATE" | translate }}</label>
+                <app-date-field formControlName="dateIncident" (blurred)="calculateCompletionPercentage()"></app-date-field>
               </div>
             </div>
           </div>
 
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION" | translate }}</div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.WOUND_WASHED_SOAP_15MIN" | translate }}</label>
-                    <select formControlName="woundBeenWashed" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6" [appShowIf]="rabiesForm.get('woundBeenWashed')?.value == 2">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.REASON_IF_NOT_STATED" | translate }}</label>
-                    <input formControlName="reasonNotMentioned" type="text" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.WOUND_SUTURED" | translate }}</label>
-                    <select formControlName="woundSuturedDone" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6" [appShowIf]="rabiesForm.get('woundSuturedDone')?.value == 2">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.REASON_IF_NOT_STATED" | translate }}</label>
-                    <input formControlName="reasonIsNotMentioned" type="text" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.VACCINATED_AFTER_BITE" | translate }}</label>
-                    <select formControlName="vaccinatedAgainstRabies" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6 border-right">
-                  <div class="row">
-                    <div class="col-lg-12 color-d-2 mb-2" [appShowIf]="rabiesForm.get('vaccinatedAgainstRabies')?.value == 1">
-                      {{ "NEDSS.Complete_Investigation.rabies.VACCINE_DOSES_HINT" | translate }}
-                    </div>
-                    <div class="col-lg-12" [appShowIf]="rabiesForm.get('vaccinatedAgainstRabies')?.value == 1">
-                      <div class="table-responsive table-none-scroll">
-                        <table class="table table-bordered mb-2 rabies-doses-table">
-                          <tbody>
-                            <tr>
-                              <th colspan="5" class="text-center">
-                                {{ "NEDSS.Complete_Investigation.rabies.VACCINE_DOSES_TABLE_TITLE" | translate }}
-                              </th>
-                            </tr>
-                            <tr>
-                              <th class="text-center">{{ "NEDSS.Complete_Investigation.rabies.DOSE_FIRST" | translate }}</th>
-                              <th class="text-center">{{ "NEDSS.Complete_Investigation.rabies.DOSE_SECOND" | translate }}</th>
-                              <th class="text-center">{{ "NEDSS.Complete_Investigation.rabies.DOSE_THIRD" | translate }}</th>
-                              <th class="text-center">{{ "NEDSS.Complete_Investigation.rabies.DOSE_FOURTH" | translate }}</th>
-                              <th class="text-center">{{ "NEDSS.Complete_Investigation.rabies.DOSE_FIFTH" | translate }}</th>
-                            </tr>
-                            <tr>
-                              <td>
-                                <app-date-field formControlName="firstDose" (blurred)="calculateCompletionPercentage()"></app-date-field>
-                              </td>
-                              <td>
-                                <app-date-field formControlName="secondDose" (blurred)="calculateCompletionPercentage()"></app-date-field>
-                              </td>
-                              <td>
-                                <app-date-field formControlName="thirdDose" (blurred)="calculateCompletionPercentage()"></app-date-field>
-                              </td>
-                              <td>
-                                <app-date-field formControlName="fourthDose" (blurred)="calculateCompletionPercentage()"></app-date-field>
-                              </td>
-                              <td>
-                                <app-date-field formControlName="fifthDose" (blurred)="calculateCompletionPercentage()"></app-date-field>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <input formControlName="firstDoseHealthFacility" type="text" class="form-control"
-                                  (blur)="calculateCompletionPercentage()" />
-                              </td>
-                              <td>
-                                <input formControlName="secondDoseHealthFacility" type="text" class="form-control"
-                                  (blur)="calculateCompletionPercentage()" />
-                              </td>
-                              <td>
-                                <input formControlName="thirdDoseHealthFacility" type="text" class="form-control"
-                                  (blur)="calculateCompletionPercentage()" />
-                              </td>
-                              <td>
-                                <input formControlName="fourthDoseHealthFacility" type="text" class="form-control"
-                                  (blur)="calculateCompletionPercentage()" />
-                              </td>
-                              <td>
-                                <input formControlName="fifthDoseHealthFacility" type="text" class="form-control"
-                                  (blur)="calculateCompletionPercentage()" />
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    <!-- /.col-lg-12 --><div class="col-lg-12 color-d-2">
-                    </div>
-                    <div class="col-lg-12 my-4" [appShowIf]="rabiesForm.get('vaccinatedAgainstRabies')?.value == 2">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.Complete_Investigation.rabies.REASON_NOT_RECEIVING_DOSES" | translate }}</label>
-                        <input formControlName="reasonNotReceivingDoses" type="text" name="" id="" class="form-control"
-                          (blur)="calculateCompletionPercentage()" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-12 -->
-                  </div>
-                </div>
-                <div class="col-lg-6 mt-4">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.SERUM_REQUIRED_QUESTION" | translate }}</label>
-                    <select formControlName="patientReceiveSerum" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6 border-right mt-4" [appShowIf]="rabiesForm.get('patientReceiveSerum')?.value == 1">
-                  <div class="row">
-                    <div class="col-lg-12 color-d-2">{{ "NEDSS.Complete_Investigation.rabies.IF_YES_DETAILS" | translate }}</div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-12">
-                      <div class="form-group">
-                        <label for="rabies-patientReceiveSerumReason">{{ "NEDSS.Complete_Investigation.rabies.SERUM_REASON_NOTE" | translate }}</label>
-                        <input id="rabies-patientReceiveSerumReason" formControlName="patientReceiveSerumReason" type="text"
-                          class="form-control" (blur)="calculateCompletionPercentage()" />
-                      </div>
-                    </div>
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.Complete_Investigation.rabies.PATIENT_WEIGHT_KG" | translate }}</label>
-                        <input formControlName="patientWeight" type="number" name="" id="" class="form-control"
-                          (blur)="calculateCompletionPercentage()" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-12 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.Complete_Investigation.rabies.UNIT_DOSE_MG" | translate }}</label>
-                        <input formControlName="unitDose" type="number" name="" id="" class="form-control"
-                          (blur)="calculateCompletionPercentage()" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.Complete_Investigation.rabies.DATE_SERUM_RECEIVED" | translate }}</label>
-                        <app-date-field formControlName="dateTheSerum" (blurred)="calculateCompletionPercentage()"></app-date-field>
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.Complete_Investigation.rabies.SERUM_HEALTH_FACILITY_NAME" | translate }}</label>
-                        <input formControlName="nameHealthFacility" type="text" name="" id="" class="form-control"
-                          (blur)="calculateCompletionPercentage()" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.Complete_Investigation.rabies.BIT_OTHERS_AFTER_SYMPTOMS" | translate }}</label>
-                        <select formControlName="patientBitOthersAfterSymptoms" name="" id="" class="form-control"
-                          (change)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()">
-                          <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                          <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-lg-6" [appShowIf]="rabiesForm.get('patientBitOthersAfterSymptoms')?.value == 1 || bittenPersonsOldFiles.length > 0 || bittenPersonsListOfFiles.length > 0">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.Complete_Investigation.rabies.BIT_OTHERS_LIST_AND_ATTACH" | translate }}</label>
-                        <button type="button" (click)="bittenPersonsFileInput.click()"
-                          class="rabies-attach-upload-btn mb-2">
-                          {{ "NEDSS.Complete_Investigation.rabies.BITTEN_PERSONS_LIST_UPLOAD_BTN" | translate }}
-                        </button>
-                        <input class="form-control" type="file" #bittenPersonsFileInput style="display: none"
-                          (change)="onBittenPersonsFileSelect($event.target)" multiple />
-                        <div class="small text-muted mt-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_MAX_FILES_NOTE" | translate }}</div>
-                        <div *ngIf="bittenPersonsOldFiles.length > 0" class="mt-2">
-                          <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_UPLOADED_FILES" | translate }}</div>
-                          <div *ngFor="let fileUrl of bittenPersonsOldFiles; let i = index"
-                            class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
-                            <span class="text-truncate me-2">{{ fileUrl }}</span>
-                            <div class="d-flex gap-1">
-                              <button type="button" class="btn btn-sm btn-outline-primary"
-                                (click)="openBittenPersonsExistingFile(fileUrl)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
-                              <button type="button" class="btn btn-sm btn-outline-danger"
-                                (click)="removeBittenPersonsOldFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
-                            </div>
-                          </div>
-                        </div>
-                        <div *ngIf="bittenPersonsListOfFiles.length > 0" class="mt-2">
-                          <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_PENDING_FILES" | translate }}</div>
-                          <div *ngFor="let fileName of bittenPersonsListOfFiles; let i = index"
-                            class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
-                            <span class="text-truncate me-2">{{ fileName }}</span>
-                            <div class="d-flex gap-1">
-                              <button type="button" class="btn btn-sm btn-outline-primary"
-                                (click)="openBittenPersonsSelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
-                              <button type="button" class="btn btn-sm btn-outline-danger"
-                                (click)="removeBittenPersonsSelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.BITING_ANIMAL_TYPE" | translate }}</label>
-                    <select formControlName="barrenAnimal" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_DOMESTIC" | translate }}</option>
-                      <option value="2">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_STRAY" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6" [appShowIf]="rabiesForm.get('barrenAnimal')?.value == 1">
-                  <div class="form-group">
-                    <label for="rabies-changeBehaviorAnimal">{{ "NEDSS.Complete_Investigation.rabies.CHANGE_BEHAVIOR_ANIMAL_NOTE" | translate }}</label>
-                    <input id="rabies-changeBehaviorAnimal" formControlName="changeBehaviorAnimal" type="text" class="form-control"
-                      (blur)="calculateCompletionPercentage()" />
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6" [appShowIf]="rabiesForm.get('barrenAnimal')?.value == 1">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_DOMESTIC_VACCINATED" | translate }}</label>
-                    <select formControlName="animalReceiveVaccinations" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_STATUS_VACCINATED" | translate }}</option>
-                      <option value="2">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_STATUS_NOT_VACCINATED" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_PROVOKED" | translate }}</label>
-                    <select formControlName="waAnimalExcited" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.OTHERS_BITTEN_SAME_ANIMAL" | translate }}</label>
-                    <select formControlName="bittenBySameAnimal" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6" [appShowIf]="rabiesForm.get('bittenBySameAnimal')?.value == 1 || massBiteOldFiles.length > 0 || massBiteListOfFiles.length > 0">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_YES_ATTACH" | translate }}</label>
-                    <button type="button" (click)="massBiteFileInput.click()"
-                      class="rabies-attach-upload-btn mb-2">
-                      {{ "NEDSS.Complete_Investigation.rabies.MASS_BITE_REPORT_UPLOAD_BTN" | translate }}
-                    </button>
-                    <input class="form-control" type="file" #massBiteFileInput style="display: none"
-                      (change)="onMassBiteReportFileSelect($event.target)" multiple />
-                    <div class="small text-muted mt-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_MAX_FILES_NOTE" | translate }}</div>
-                    <div *ngIf="massBiteOldFiles.length > 0" class="mt-2">
-                      <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_UPLOADED_FILES" | translate }}</div>
-                      <div *ngFor="let fileUrl of massBiteOldFiles; let i = index"
-                        class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
-                        <span class="text-truncate me-2">{{ fileUrl }}</span>
-                        <div class="d-flex gap-1">
-                          <button type="button" class="btn btn-sm btn-outline-primary"
-                            (click)="openMassBiteExistingFile(fileUrl)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
-                          <button type="button" class="btn btn-sm btn-outline-danger"
-                            (click)="removeMassBiteOldFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div *ngIf="massBiteListOfFiles.length > 0" class="mt-2">
-                      <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_PENDING_FILES" | translate }}</div>
-                      <div *ngFor="let fileName of massBiteListOfFiles; let i = index"
-                        class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
-                        <span class="text-truncate me-2">{{ fileName }}</span>
-                        <div class="d-flex gap-1">
-                          <button type="button" class="btn btn-sm btn-outline-primary"
-                            (click)="openMassBiteSelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
-                          <button type="button" class="btn btn-sm btn-outline-danger"
-                            (click)="removeMassBiteSelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.VET_UNITS_NOTIFIED" | translate }}</label>
-                    <select formControlName="veterinaryUnitsNotified" name="" id="" class="form-control" 
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6" [appShowIf]="rabiesForm.get('veterinaryUnitsNotified')?.value == 1 || veterinaryNotifyOldFiles.length > 0 || veterinaryNotifyListOfFiles.length > 0">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_YES_ATTACH" | translate }}</label>
-                    <button type="button" (click)="veterinaryNotifyFileInput.click()"
-                      class="rabies-attach-upload-btn mb-2">
-                      {{ "NEDSS.Complete_Investigation.rabies.VET_NOTIFICATION_FORM_UPLOAD_BTN" | translate }}
-                    </button>
-                    <input class="form-control" type="file" #veterinaryNotifyFileInput style="display: none"
-                      (change)="onVeterinaryNotificationFileSelect($event.target)" multiple />
-                    <div class="small text-muted mt-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_MAX_FILES_NOTE" | translate }}</div>
-                    <div *ngIf="veterinaryNotifyOldFiles.length > 0" class="mt-2">
-                      <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_UPLOADED_FILES" | translate }}</div>
-                      <div *ngFor="let fileUrl of veterinaryNotifyOldFiles; let i = index"
-                        class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
-                        <span class="text-truncate me-2">{{ fileUrl }}</span>
-                        <div class="d-flex gap-1">
-                          <button type="button" class="btn btn-sm btn-outline-primary"
-                            (click)="openVeterinaryNotifyExistingFile(fileUrl)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
-                          <button type="button" class="btn btn-sm btn-outline-danger"
-                            (click)="removeVeterinaryNotifyOldFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div *ngIf="veterinaryNotifyListOfFiles.length > 0" class="mt-2">
-                      <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_PENDING_FILES" | translate }}</div>
-                      <div *ngFor="let fileName of veterinaryNotifyListOfFiles; let i = index"
-                        class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
-                        <span class="text-truncate me-2">{{ fileName }}</span>
-                        <div class="d-flex gap-1">
-                          <button type="button" class="btn btn-sm btn-outline-primary"
-                            (click)="openVeterinaryNotifySelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
-                          <button type="button" class="btn btn-sm btn-outline-danger"
-                            (click)="removeVeterinaryNotifySelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_CAPTURED" | translate }}</label>
-                    <select formControlName="barrenAnimalCaptured" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6" [appShowIf]="rabiesForm.get('barrenAnimalCaptured')?.value == 1">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.LAB_TEST_IF_CAPTURED" | translate }}</label>
-                    <select formControlName="testedLaboratory" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_CONFIRMED_INFECTED" | translate }}</label>
-                    <select formControlName="suffersFromRabies" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.EXPOSED_SCRATCH_BITE" | translate }}</label>
+                <select formControlName="patientExposedVenom" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                  <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                </select>
               </div>
-              <!-- / .row -->
             </div>
-            <!-- / .col-12 -->
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('patientExposedVenom')?.value == 1">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_TYPE_IF_YES" | translate }}</label>
+                <select formControlName="bitingAnimalType" class="form-control"
+                  (change)="calculateCompletionPercentage()">
+                  <option *ngFor="let a of bitingAnimalTypes" [value]="a.value">{{ "NEDSS.Complete_Investigation.rabies." + a.key | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('patientExposedVenom')?.value == 1 && rabiesForm.get('bitingAnimalType')?.value == animalOtherCode">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_OTHER_SPECIFY" | translate }}</label>
+                <input formControlName="kindOfAnimal" type="text" class="form-control"
+                  (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
           </div>
-          <!-- / .row -->
 
-          <div class="row color">
-            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-              <div class="row">
-                <div class="col-12 title fs-6 fwb">{{ "NEDSS.Complete_Investigation.rabies.DEATH_SECTION" | translate }}</div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.DATE_OF_DEATH" | translate }}</label>
-                    <app-date-field formControlName="dateOfDeath" (blurred)="calculateCompletionPercentage()"></app-date-field>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.PLACE_OF_DEATH" | translate }}</label>
-                    <select formControlName="deathPlace" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.Complete_Investigation.rabies.DEATH_PLACE_HOSPITAL" | translate }}</option>
-                      <option value="2">{{ "NEDSS.Complete_Investigation.rabies.DEATH_PLACE_HOME" | translate }}</option>
-                      <option value="3">{{ "NEDSS.Complete_Investigation.rabies.DEATH_PLACE_OTHER" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
-                <div class="col-lg-3" [appShowIf]="rabiesForm.get('deathPlace')?.value == 3">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_OTHER_SPECIFY_DEATH_PLACE" | translate }}</label>
-                    <input formControlName="placeMentioned" type="text" name="" id="" class="form-control"
-                      (blur)="calculateCompletionPercentage()" />
-                  </div>
-                </div>
-                <!-- /.col-lg-3 -->
+          <div class="title fs-6 fwb mt-3">{{ "NEDSS.Complete_Investigation.rabies.INCIDENT_ADDRESS_TITLE" | translate }}</div>
+          <div class="row rabies-group">
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label for="" class="form-label">
+                  {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.GOVERNMENT" | translate }}
+                </label>
+                <p-dropdown [appDropdownLoading]="incidentGovernmentsLoading" (onChange)="onIncidentGovernmentChanged()" [options]="incidentGovernments"
+                  formControlName="incidentGovernmentId" optionValue="id"
+                  [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                  autoWidth="false" [style]="{ width: '100%' }" [filter]="true"
+                  [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                  appendTo="body" (onBlur)="calculateCompletionPercentage()">
+                </p-dropdown>
               </div>
-              <!-- / .row -->
             </div>
-            <!-- / .col-12 -->
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label for="" class="form-label">
+                  {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.ADMINISTRATION" | translate }}
+                </label>
+                <p-dropdown [appDropdownLoading]="incidentHealthAdministrationsLoading" (onChange)="onIncidentHealthAdministrationChanged()" [options]="incidentHealthAdministrations"
+                  formControlName="incidentHealthAdministrationId" optionValue="id"
+                  [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                  autoWidth="false" [style]="{ width: '100%' }" [filter]="true"
+                  [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                  appendTo="body" (onBlur)="calculateCompletionPercentage()">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label for="" class="form-label">
+                  {{ "NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.HEALTHOFFICE" | translate }}
+                </label>
+                <p-dropdown [appDropdownLoading]="incidentHealthOfficesLoading" (onChange)="onIncidentHealthOfficeChanged()" [options]="incidentHealthOffices"
+                  formControlName="incidentHealthOfficeId" optionValue="id"
+                  [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                  autoWidth="false" [style]="{ width: '100%' }" [filter]="true"
+                  [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+                  appendTo="body" (onBlur)="calculateCompletionPercentage()">
+                </p-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.VILLAGE_OR_STREET" | translate }}</label>
+                <input formControlName="incidentVillageOrStreet" type="text" class="form-control"
+                  (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
           </div>
-          <!-- / .row -->
+
+          <div class="title fs-6 fwb mt-3">{{ "NEDSS.Complete_Investigation.rabies.BITE_TABLE_TITLE" | translate }}</div>
+          <div formArrayName="biteIncidents" class="rabies-table-block">
+            <div class="table-responsive">
+              <table class="table table-bordered mb-2 rabies-table">
+                <thead>
+                  <tr>
+                    <th>{{ "NEDSS.Complete_Investigation.rabies.BITE_BODY_SITE" | translate }}</th>
+                    <th>{{ "NEDSS.Complete_Investigation.rabies.WOUND_TYPE" | translate }}</th>
+                    <th>{{ "NEDSS.Complete_Investigation.rabies.BITE_DESCRIPTION" | translate }}</th>
+                    <th class="rabies-table__actions">{{ "NEDSS.Complete_Investigation.rabies.TABLE_ACTIONS" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of biteIncidentRows.controls; let idx = index" [formGroupName]="idx">
+                    <td>
+                      <select formControlName="biteLocationOnBody" class="form-control"
+                        (change)="calculateCompletionPercentage()">
+                        <option value=""></option>
+                        <option *ngIf="isLegacyWoundLocation(row)" [value]="row.get('biteLocationOnBody')?.value">{{ row.get('biteLocationOnBody')?.value }}</option>
+                        <option *ngFor="let l of woundLocations" [value]="l.value">{{ "NEDSS.Complete_Investigation.rabies." + l.key | translate }}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select formControlName="woundType" class="form-control"
+                        (change)="onWoundTypeChanged(row)">
+                        <option value=""></option>
+                        <option *ngFor="let t of woundTypes" [value]="t.value">{{ "NEDSS.Complete_Investigation.rabies." + t.key | translate }}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select formControlName="biteDescription" class="form-control"
+                        (change)="calculateCompletionPercentage()">
+                        <option value=""></option>
+                        <option *ngFor="let d of woundDescriptionOptions(row)" [value]="d.value">{{ "NEDSS.Complete_Investigation.rabies." + d.key | translate }}</option>
+                      </select>
+                    </td>
+                    <td class="rabies-table__actions">
+                      <button type="button" class="btn btn-danger" (click)="removeBiteRow(idx)">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button type="button" class="btn fw-bold px-4 text-white rabies-table__add mb-3"
+              (click)="addBiteRow()">{{ "NEDSS.Complete_Investigation.rabies.ADD_ROW" | translate }}</button>
+          </div>
+
+          <div class="title fs-6 fwb mt-2">{{ "NEDSS.Complete_Investigation.rabies.FACILITY_VISITS_TITLE" | translate }}</div>
+          <div formArrayName="patientFacilityVisits" class="rabies-table-block">
+            <div class="table-responsive">
+              <table class="table table-bordered mb-2 rabies-table">
+                <thead>
+                  <tr>
+                    <th>{{ "NEDSS.Complete_Investigation.rabies.FACILITY_VISITS_TITLE" | translate }}</th>
+                    <th>{{ "NEDSS.Complete_Investigation.rabies.VISIT_DATE" | translate }}</th>
+                    <th>{{ "NEDSS.Complete_Investigation.rabies.NOTES" | translate }}</th>
+                    <th class="rabies-table__actions">{{ "NEDSS.Complete_Investigation.rabies.TABLE_ACTIONS" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of patientFacilityVisitRows.controls; let idx = index" [formGroupName]="idx">
+                    <td><input formControlName="healthFacilityName" type="text" class="form-control"
+                        (blur)="calculateCompletionPercentage()" /></td>
+                    <td><app-date-field formControlName="visitDate" (blurred)="calculateCompletionPercentage()"></app-date-field></td>
+                    <td><input formControlName="notes" type="text" class="form-control"
+                        (blur)="calculateCompletionPercentage()" /></td>
+                    <td class="rabies-table__actions">
+                      <button type="button" class="btn btn-danger" (click)="removePatientFacilityVisitRow(idx)">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button type="button" class="btn fw-bold px-4 text-white rabies-table__add"
+              (click)="addPatientFacilityVisitRow()">{{ "NEDSS.Complete_Investigation.rabies.ADD_ROW" | translate }}</button>
+          </div>
+        </div>
+
+        <div class="card card-body bg-dark-mode rounded-2 mb-4 card-alt rabies-section">
+          <div class="title fs-6 fwb">{{ "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION" | translate }}</div>
+
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.WOUND_WASHED_SOAP_15MIN" | translate }}</label>
+                <select formControlName="woundBeenWashed" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('woundBeenWashed')?.value == 2">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.REASON_IF_NOT_STATED" | translate }}</label>
+                <input formControlName="reasonNotMentioned" type="text" class="form-control"
+                  (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+          </div>
+
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.WOUND_SUTURED" | translate }}</label>
+                <select formControlName="woundSuturedDone" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('woundSuturedDone')?.value == 1">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.REASON_IF_YES_STATED" | translate }}</label>
+                <input formControlName="reasonIsNotMentioned" type="text" class="form-control"
+                  (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+          </div>
+
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.VACCINATED_AFTER_BITE" | translate }}</label>
+                <select formControlName="vaccinatedAgainstRabies" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('vaccinatedAgainstRabies')?.value == 2">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.REASON_NOT_RECEIVING_DOSES" | translate }}</label>
+                <input formControlName="reasonNotReceivingDoses" type="text" class="form-control"
+                  (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-12 rabies-table-block" [appShowIf]="rabiesForm.get('vaccinatedAgainstRabies')?.value == 1">
+              <div class="color-d-2 mb-2">{{ "NEDSS.Complete_Investigation.rabies.VACCINE_DOSES_HINT" | translate }}</div>
+              <div class="table-responsive">
+                <table class="table table-bordered mb-2 rabies-table rabies-doses-table">
+                  <thead>
+                    <tr>
+                      <th colspan="5" class="text-center">
+                        {{ "NEDSS.Complete_Investigation.rabies.VACCINE_DOSES_TABLE_TITLE" | translate }}
+                      </th>
+                    </tr>
+                    <tr>
+                      <th class="text-center">{{ "NEDSS.Complete_Investigation.rabies.DOSE_FIRST" | translate }}</th>
+                      <th class="text-center">{{ "NEDSS.Complete_Investigation.rabies.DOSE_SECOND" | translate }}</th>
+                      <th class="text-center">{{ "NEDSS.Complete_Investigation.rabies.DOSE_THIRD" | translate }}</th>
+                      <th class="text-center">{{ "NEDSS.Complete_Investigation.rabies.DOSE_FOURTH" | translate }}</th>
+                      <th class="text-center">{{ "NEDSS.Complete_Investigation.rabies.DOSE_FIFTH" | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><app-date-field formControlName="firstDose" (blurred)="calculateCompletionPercentage()"></app-date-field></td>
+                      <td><app-date-field formControlName="secondDose" (blurred)="calculateCompletionPercentage()"></app-date-field></td>
+                      <td><app-date-field formControlName="thirdDose" (blurred)="calculateCompletionPercentage()"></app-date-field></td>
+                      <td><app-date-field formControlName="fourthDose" (blurred)="calculateCompletionPercentage()"></app-date-field></td>
+                      <td><app-date-field formControlName="fifthDose" (blurred)="calculateCompletionPercentage()"></app-date-field></td>
+                    </tr>
+                    <tr>
+                      <td><input formControlName="firstDoseHealthFacility" type="text" class="form-control"
+                          (blur)="calculateCompletionPercentage()" /></td>
+                      <td><input formControlName="secondDoseHealthFacility" type="text" class="form-control"
+                          (blur)="calculateCompletionPercentage()" /></td>
+                      <td><input formControlName="thirdDoseHealthFacility" type="text" class="form-control"
+                          (blur)="calculateCompletionPercentage()" /></td>
+                      <td><input formControlName="fourthDoseHealthFacility" type="text" class="form-control"
+                          (blur)="calculateCompletionPercentage()" /></td>
+                      <td><input formControlName="fifthDoseHealthFacility" type="text" class="form-control"
+                          (blur)="calculateCompletionPercentage()" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.SERUM_REQUIRED_QUESTION" | translate }}</label>
+                <select formControlName="patientReceiveSerum" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('patientReceiveSerum')?.value == 2">
+              <div class="form-group">
+                <label for="rabies-patientReceiveSerumReason">{{ "NEDSS.Complete_Investigation.rabies.SERUM_REASON_IF_NO" | translate }}</label>
+                <input id="rabies-patientReceiveSerumReason" formControlName="patientReceiveSerumReason" type="text"
+                  class="form-control" (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('patientReceiveSerum')?.value == 1">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.SERUM_TYPE" | translate }}</label>
+                <select formControlName="serumType" class="form-control"
+                  (change)="calculateCompletionPercentage()">
+                  <option *ngFor="let t of serumTypes" [value]="t.value">{{ "NEDSS.Complete_Investigation.rabies." + t.key | translate }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row rabies-group rabies-subgroup" [appShowIf]="rabiesForm.get('patientReceiveSerum')?.value == 1">
+            <div class="col-12 color-d-2 mb-2">{{ "NEDSS.Complete_Investigation.rabies.IF_YES_DETAILS" | translate }}</div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.PATIENT_WEIGHT_KG" | translate }}</label>
+                <input formControlName="patientWeight" type="number" class="form-control"
+                  (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.UNIT_DOSE_MG" | translate }}</label>
+                <input formControlName="unitDose" type="number" class="form-control"
+                  (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.DATE_SERUM_RECEIVED" | translate }}</label>
+                <app-date-field formControlName="dateTheSerum" (blurred)="calculateCompletionPercentage()"></app-date-field>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.SERUM_HEALTH_FACILITY_NAME" | translate }}</label>
+                <input formControlName="nameHealthFacility" type="text" class="form-control"
+                  (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+          </div>
+
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.BIT_OTHERS_AFTER_SYMPTOMS" | translate }}</label>
+                <select formControlName="patientBitOthersAfterSymptoms" class="form-control"
+                  (change)="calculateCompletionPercentage()" (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('patientBitOthersAfterSymptoms')?.value == 1 || bittenPersonsOldFiles.length > 0 || bittenPersonsListOfFiles.length > 0">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.BIT_OTHERS_LIST_AND_ATTACH" | translate }}</label>
+                <button type="button" (click)="bittenPersonsFileInput.click()"
+                  class="rabies-attach-upload-btn mb-2">
+                  {{ "NEDSS.Complete_Investigation.rabies.BITTEN_PERSONS_LIST_UPLOAD_BTN" | translate }}
+                </button>
+                <input class="form-control" type="file" #bittenPersonsFileInput style="display: none"
+                  (change)="onBittenPersonsFileSelect($event.target)" multiple />
+                <div class="small text-muted mt-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_MAX_FILES_NOTE" | translate }}</div>
+                <div *ngIf="bittenPersonsOldFiles.length > 0" class="mt-2">
+                  <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_UPLOADED_FILES" | translate }}</div>
+                  <div *ngFor="let fileUrl of bittenPersonsOldFiles; let i = index"
+                    class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
+                    <span class="text-truncate me-2">{{ fileUrl }}</span>
+                    <div class="d-flex gap-1">
+                      <button type="button" class="btn btn-sm btn-outline-primary"
+                        (click)="openBittenPersonsExistingFile(fileUrl)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
+                      <button type="button" class="btn btn-sm btn-outline-danger"
+                        (click)="removeBittenPersonsOldFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="bittenPersonsListOfFiles.length > 0" class="mt-2">
+                  <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_PENDING_FILES" | translate }}</div>
+                  <div *ngFor="let fileName of bittenPersonsListOfFiles; let i = index"
+                    class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
+                    <span class="text-truncate me-2">{{ fileName }}</span>
+                    <div class="d-flex gap-1">
+                      <button type="button" class="btn btn-sm btn-outline-primary"
+                        (click)="openBittenPersonsSelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
+                      <button type="button" class="btn btn-sm btn-outline-danger"
+                        (click)="removeBittenPersonsSelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.BITING_ANIMAL_TYPE" | translate }}</label>
+                <select formControlName="barrenAnimal" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_DOMESTIC" | translate }}</option>
+                  <option value="2">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_STRAY" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('barrenAnimal')?.value == 1">
+              <div class="form-group">
+                <label for="rabies-changeBehaviorAnimal">{{ "NEDSS.Complete_Investigation.rabies.CHANGE_BEHAVIOR_ANIMAL_NOTE" | translate }}</label>
+                <input id="rabies-changeBehaviorAnimal" formControlName="changeBehaviorAnimal" type="text" class="form-control"
+                  (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('barrenAnimal')?.value == 1">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_DOMESTIC_VACCINATED" | translate }}</label>
+                <select formControlName="animalReceiveVaccinations" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_STATUS_VACCINATED" | translate }}</option>
+                  <option value="2">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_STATUS_NOT_VACCINATED" | translate }}</option>
+                  <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_PROVOKED" | translate }}</label>
+                <select formControlName="waAnimalExcited" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                  <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.OTHERS_BITTEN_SAME_ANIMAL" | translate }}</label>
+                <select formControlName="bittenBySameAnimal" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                  <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('bittenBySameAnimal')?.value == 1 || massBiteOldFiles.length > 0 || massBiteListOfFiles.length > 0">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_YES_ATTACH" | translate }}</label>
+                <button type="button" (click)="massBiteFileInput.click()"
+                  class="rabies-attach-upload-btn mb-2">
+                  {{ "NEDSS.Complete_Investigation.rabies.MASS_BITE_REPORT_UPLOAD_BTN" | translate }}
+                </button>
+                <input class="form-control" type="file" #massBiteFileInput style="display: none"
+                  (change)="onMassBiteReportFileSelect($event.target)" multiple />
+                <div class="small text-muted mt-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_MAX_FILES_NOTE" | translate }}</div>
+                <div *ngIf="massBiteOldFiles.length > 0" class="mt-2">
+                  <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_UPLOADED_FILES" | translate }}</div>
+                  <div *ngFor="let fileUrl of massBiteOldFiles; let i = index"
+                    class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
+                    <span class="text-truncate me-2">{{ fileUrl }}</span>
+                    <div class="d-flex gap-1">
+                      <button type="button" class="btn btn-sm btn-outline-primary"
+                        (click)="openMassBiteExistingFile(fileUrl)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
+                      <button type="button" class="btn btn-sm btn-outline-danger"
+                        (click)="removeMassBiteOldFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="massBiteListOfFiles.length > 0" class="mt-2">
+                  <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_PENDING_FILES" | translate }}</div>
+                  <div *ngFor="let fileName of massBiteListOfFiles; let i = index"
+                    class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
+                    <span class="text-truncate me-2">{{ fileName }}</span>
+                    <div class="d-flex gap-1">
+                      <button type="button" class="btn btn-sm btn-outline-primary"
+                        (click)="openMassBiteSelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
+                      <button type="button" class="btn btn-sm btn-outline-danger"
+                        (click)="removeMassBiteSelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.VET_UNITS_NOTIFIED" | translate }}</label>
+                <select formControlName="veterinaryUnitsNotified" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                  <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('veterinaryUnitsNotified')?.value == 1 || veterinaryNotifyOldFiles.length > 0 || veterinaryNotifyListOfFiles.length > 0">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_YES_ATTACH" | translate }}</label>
+                <button type="button" (click)="veterinaryNotifyFileInput.click()"
+                  class="rabies-attach-upload-btn mb-2">
+                  {{ "NEDSS.Complete_Investigation.rabies.VET_NOTIFICATION_FORM_UPLOAD_BTN" | translate }}
+                </button>
+                <input class="form-control" type="file" #veterinaryNotifyFileInput style="display: none"
+                  (change)="onVeterinaryNotificationFileSelect($event.target)" multiple />
+                <div class="small text-muted mt-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_MAX_FILES_NOTE" | translate }}</div>
+                <div *ngIf="veterinaryNotifyOldFiles.length > 0" class="mt-2">
+                  <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_UPLOADED_FILES" | translate }}</div>
+                  <div *ngFor="let fileUrl of veterinaryNotifyOldFiles; let i = index"
+                    class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
+                    <span class="text-truncate me-2">{{ fileUrl }}</span>
+                    <div class="d-flex gap-1">
+                      <button type="button" class="btn btn-sm btn-outline-primary"
+                        (click)="openVeterinaryNotifyExistingFile(fileUrl)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
+                      <button type="button" class="btn btn-sm btn-outline-danger"
+                        (click)="removeVeterinaryNotifyOldFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="veterinaryNotifyListOfFiles.length > 0" class="mt-2">
+                  <div class="small text-muted mb-1">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_PENDING_FILES" | translate }}</div>
+                  <div *ngFor="let fileName of veterinaryNotifyListOfFiles; let i = index"
+                    class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
+                    <span class="text-truncate me-2">{{ fileName }}</span>
+                    <div class="d-flex gap-1">
+                      <button type="button" class="btn btn-sm btn-outline-primary"
+                        (click)="openVeterinaryNotifySelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_VIEW" | translate }}</button>
+                      <button type="button" class="btn btn-sm btn-outline-danger"
+                        (click)="removeVeterinaryNotifySelectedFile(i)">{{ "NEDSS.Complete_Investigation.rabies.ATTACH_DELETE" | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_CAPTURED" | translate }}</label>
+                <select formControlName="barrenAnimalCaptured" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                  <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('barrenAnimalCaptured')?.value == 1">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.LAB_TEST_IF_CAPTURED" | translate }}</label>
+                <select formControlName="testedLaboratory" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                  <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.ANIMAL_CONFIRMED_INFECTED" | translate }}</label>
+                <select formControlName="suffersFromRabies" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                  <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                  <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-body bg-dark-mode rounded-2 mb-4 card-alt rabies-section">
+          <div class="title fs-6 fwb">{{ "NEDSS.Complete_Investigation.rabies.DEATH_SECTION" | translate }}</div>
+          <div class="row rabies-group">
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.DATE_OF_DEATH" | translate }}</label>
+                <app-date-field formControlName="dateOfDeath" (blurred)="calculateCompletionPercentage()"></app-date-field>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.PLACE_OF_DEATH" | translate }}</label>
+                <select formControlName="deathPlace" class="form-control"
+                  (blur)="calculateCompletionPercentage()">
+                  <option value="1">{{ "NEDSS.Complete_Investigation.rabies.DEATH_PLACE_HOSPITAL" | translate }}</option>
+                  <option value="2">{{ "NEDSS.Complete_Investigation.rabies.DEATH_PLACE_HOME" | translate }}</option>
+                  <option value="3">{{ "NEDSS.Complete_Investigation.rabies.DEATH_PLACE_OTHER" | translate }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6" [appShowIf]="rabiesForm.get('deathPlace')?.value == 3">
+              <div class="form-group">
+                <label for="">{{ "NEDSS.Complete_Investigation.rabies.IF_OTHER_SPECIFY_DEATH_PLACE" | translate }}</label>
+                <input formControlName="placeMentioned" type="text" class="form-control"
+                  (blur)="calculateCompletionPercentage()" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="card-footer text-start">
