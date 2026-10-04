@@ -2137,27 +2137,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
-      "key": "contactDeceasedPersonRespiratory",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.CONTACT_DECEASED_UNKNOWN_RESPIRATORY_DISEASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HUMAN_CONTACT"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
       "key": "numberDirectContacts",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.NUMBER_DIRECT_CONTACTS"
@@ -4351,27 +4330,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
-      "key": "contactDeceasedPersonRespiratory",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_DECEASED_PERSON_UNKNOWN_RESPIRATORY_DISEASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.HUMAN_CONTACT"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
       "key": "numberDirectContacts",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NUMBER_DIRECT_CONTACTS"
@@ -6410,27 +6368,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "contactConfirmedCase",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_CONFIRMED_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.HUMAN_CONTACT"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "contactDeceasedPersonRespiratory",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_DECEASED_UNKNOWN_RESPIRATORY_DISEASE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.EPIDEMIOLOGICAL_INVESTIGATION",
@@ -11857,18 +11794,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "covUnitRoutineMmr1Rate",
-      "label": [
-        "الوحدة",
-        "روتينى",
-        "MMR1",
-        "نسبة"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
       "key": "covUnitRoutineMmr2Target",
       "label": [
         "الوحدة",
@@ -11887,18 +11812,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "روتينى",
         "MMR2",
         "متطعم"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
-      "key": "covUnitRoutineMmr2Rate",
-      "label": [
-        "الوحدة",
-        "روتينى",
-        "MMR2",
-        "نسبة"
       ],
       "section": [
         "ملخص إحصائي للمخالطين"
@@ -11929,18 +11842,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "covUnitCampaignMmr1Rate",
-      "label": [
-        "الوحدة",
-        "حملات",
-        "MMR",
-        "نسبة"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
       "key": "covUnitCampaignMmr2Target",
       "label": [
         "الوحدة",
@@ -11959,18 +11860,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "حملات",
         "MR",
         "متطعم"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
-      "key": "covUnitCampaignMmr2Rate",
-      "label": [
-        "الوحدة",
-        "حملات",
-        "MR",
-        "نسبة"
       ],
       "section": [
         "ملخص إحصائي للمخالطين"
@@ -12001,18 +11890,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "covAdminRoutineMmr1Rate",
-      "label": [
-        "الإدارة",
-        "روتينى",
-        "MMR1",
-        "نسبة"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
       "key": "covAdminRoutineMmr2Target",
       "label": [
         "الإدارة",
@@ -12031,18 +11908,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "روتينى",
         "MMR2",
         "متطعم"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
-      "key": "covAdminRoutineMmr2Rate",
-      "label": [
-        "الإدارة",
-        "روتينى",
-        "MMR2",
-        "نسبة"
       ],
       "section": [
         "ملخص إحصائي للمخالطين"
@@ -12073,18 +11938,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "covAdminCampaignMmr1Rate",
-      "label": [
-        "الإدارة",
-        "حملات",
-        "MMR",
-        "نسبة"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
       "key": "covAdminCampaignMmr2Target",
       "label": [
         "الإدارة",
@@ -12103,18 +11956,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "حملات",
         "MR",
         "متطعم"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
-      "key": "covAdminCampaignMmr2Rate",
-      "label": [
-        "الإدارة",
-        "حملات",
-        "MR",
-        "نسبة"
       ],
       "section": [
         "ملخص إحصائي للمخالطين"
@@ -24427,11 +24268,11 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "3": [
           "NEDSS.COMPLETE_INVESTEGATION.MERS.BRONCHIAL_LAVAGE"
         ],
-        "5": [
-          "NEDSS.COMPLETE_INVESTEGATION.MERS.THROAT_SWAB"
-        ],
         "4": [
           "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE_OTHER"
+        ],
+        "5": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.THROAT_SWAB"
         ]
       }
     },
@@ -29109,6 +28950,15 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
+      "key": "reasonNotReceivingDoses",
+      "label": [
+        "NEDSS.Complete_Investigation.rabies.REASON_NOT_RECEIVING_DOSES"
+      ],
+      "section": [
+        "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
+      ]
+    },
+    {
       "key": "firstDose",
       "label": [
         "NEDSS.Complete_Investigation.rabies.VACCINE_DOSES_TABLE_TITLE",
@@ -29209,18 +29059,10 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "reasonNotReceivingDoses",
-      "label": [
-        "NEDSS.Complete_Investigation.rabies.REASON_NOT_RECEIVING_DOSES"
-      ],
-      "section": [
-        "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
-      ]
-    },
-    {
       "key": "patientReceiveSerum",
       "label": [
-        "NEDSS.Complete_Investigation.rabies.REASON_NOT_RECEIVING_DOSES"
+        "NEDSS.Complete_Investigation.rabies.VACCINE_DOSES_TABLE_TITLE",
+        "NEDSS.Complete_Investigation.rabies.DOSE_FIFTH"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
@@ -29233,6 +29075,15 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
           "NEDSS.COMMON.NO"
         ]
       }
+    },
+    {
+      "key": "patientReceiveSerumReason",
+      "label": [
+        "NEDSS.Complete_Investigation.rabies.SERUM_REASON_IF_NO"
+      ],
+      "section": [
+        "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
+      ]
     },
     {
       "key": "serumType",
@@ -29274,15 +29125,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "nameHealthFacility",
       "label": [
         "NEDSS.Complete_Investigation.rabies.SERUM_HEALTH_FACILITY_NAME"
-      ],
-      "section": [
-        "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
-      ]
-    },
-    {
-      "key": "patientReceiveSerumReason",
-      "label": [
-        "NEDSS.Complete_Investigation.rabies.SERUM_REASON_IF_NO"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
@@ -31615,27 +31457,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "contactConfirmedCase",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_CONFIRMED_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HUMAN_CONTACT"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "contactDeceasedPersonRespiratory",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_DECEASED_RESPIRATORY_CASE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.EPIDEMIOLOGICAL_INVESTIGATION",

@@ -24,6 +24,7 @@ export class DiarrheaComponent implements OnInit {
     'investigationCompletePercentage',
     'diseaseGroupId',
     'createdDate',
+    'contactDeceasedPersonRespiratory',
   ];
   private readonly dateFields = [
     'dateOnsetSymptomsDay1',

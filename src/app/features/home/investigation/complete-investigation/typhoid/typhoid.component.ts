@@ -387,7 +387,7 @@ export class TyphoidComponent implements OnInit {
     //Exclude fields you don't want to count (like 'id')
     const hiddenSymptomFields = ['coughingWithSpitting', 'soreThroat', 'breathingDifficulty', 'jointPain', 'vomit']
       .flatMap(f => ['Day1', 'Day2', 'Day7', 'Day14'].map(d => f + d));
-    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate', ...hiddenSymptomFields];
+    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate', 'contactDeceasedPersonRespiratory', ...hiddenSymptomFields];
     const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
 
     this.allControllesCount = totalFields;
