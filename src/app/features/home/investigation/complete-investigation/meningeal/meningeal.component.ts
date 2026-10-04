@@ -10,6 +10,7 @@ import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-meningeal',
+  host: { class: 'investigation-form' },
   templateUrl: './meningeal.component.html',
   styleUrls: ['./meningeal.component.css'],
 })

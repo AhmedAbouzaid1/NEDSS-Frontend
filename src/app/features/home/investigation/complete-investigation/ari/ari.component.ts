@@ -7,6 +7,7 @@ import { InvestigationService } from '../../services/investigation.service';
 
 @Component({
   selector: 'app-ari',
+  host: { class: 'investigation-form' },
   templateUrl: './ari.component.html',
   styleUrls: ['./ari.component.css'],
 })

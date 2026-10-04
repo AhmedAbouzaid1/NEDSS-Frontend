@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-h5n1',
+  host: { class: 'investigation-form' },
   templateUrl: './h5n1.component.html',
   styleUrls: ['./h5n1.component.css'],
 })

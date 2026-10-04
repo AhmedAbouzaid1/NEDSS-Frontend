@@ -8,6 +8,7 @@ import { InvestigationService } from '../../services/investigation.service';
 
 @Component({
   selector: 'app-filariasis',
+  host: { class: 'investigation-form' },
   templateUrl: './filariasis.component.html',
   styleUrls: ['./filariasis.component.css']
 })

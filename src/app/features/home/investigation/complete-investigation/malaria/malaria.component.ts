@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-malaria',
+  host: { class: 'investigation-form' },
   templateUrl: './malaria.component.html',
   styleUrls: ['./malaria.component.css'],
 })

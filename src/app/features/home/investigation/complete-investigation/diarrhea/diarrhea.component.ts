@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-diarrhea',
+  host: { class: 'investigation-form' },
   templateUrl: './diarrhea.component.html',
   styleUrls: ['./diarrhea.component.css'],
 })

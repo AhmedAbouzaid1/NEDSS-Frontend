@@ -14,6 +14,7 @@ export interface RiftAttachmentGroup {
 
 @Component({
   selector: 'app-rift-valley',
+  host: { class: 'investigation-form' },
   templateUrl: './rift-valley.component.html',
   styleUrls: ['./rift-valley.component.css']
 })

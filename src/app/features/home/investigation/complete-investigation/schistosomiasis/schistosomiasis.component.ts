@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-schistosomiasis',
+  host: { class: 'investigation-form' },
   templateUrl: './schistosomiasis.component.html',
   styleUrls: ['./schistosomiasis.component.css']
 })

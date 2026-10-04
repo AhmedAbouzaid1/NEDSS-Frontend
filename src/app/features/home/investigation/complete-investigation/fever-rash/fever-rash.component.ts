@@ -12,6 +12,7 @@ import { downloadSurveyTemplate, readSurveyFile } from './fever-rash-survey-exce
 
 @Component({
   selector: 'app-fever-rash',
+  host: { class: 'investigation-form' },
   templateUrl: './fever-rash.component.html',
   styleUrls: ['./fever-rash.component.css'],
 })

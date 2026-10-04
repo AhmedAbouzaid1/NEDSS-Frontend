@@ -9,6 +9,7 @@ import { AgeType } from 'src/app/core/constants';
 
 @Component({
   selector: 'app-acute-flaccid-paralysis',
+  host: { class: 'investigation-form' },
   templateUrl: './acute-flaccid-paralysis.component.html',
   styleUrls: ['./acute-flaccid-paralysis.component.css'],
 })

@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-hemorrhagic-fevers',
+  host: { class: 'investigation-form' },
   templateUrl: './hemorrhagic-fevers.component.html',
   styleUrls: ['./hemorrhagic-fevers.component.css']
 })

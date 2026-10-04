@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-mumbari-poisoning',
+  host: { class: 'investigation-form' },
   templateUrl: './mumbari-poisoning.component.html',
   styleUrls: ['./mumbari-poisoning.component.css']
 })

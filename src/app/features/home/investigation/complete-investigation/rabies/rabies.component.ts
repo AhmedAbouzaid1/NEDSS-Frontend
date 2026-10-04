@@ -10,6 +10,7 @@ import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-rabies',
+  host: { class: 'investigation-form' },
   templateUrl: './rabies.component.html',
   styleUrls: ['./rabies.component.css']
 })

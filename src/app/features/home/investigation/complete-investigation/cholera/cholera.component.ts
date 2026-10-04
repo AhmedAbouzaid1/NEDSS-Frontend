@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-cholera',
+  host: { class: 'investigation-form' },
   templateUrl: './cholera.component.html',
   styleUrls: ['./cholera.component.css']
 })

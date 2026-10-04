@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-typhoid',
+  host: { class: 'investigation-form' },
   templateUrl: './typhoid.component.html',
   styleUrls: ['./typhoid.component.css'],
 })

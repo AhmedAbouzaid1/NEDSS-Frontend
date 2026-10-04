@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MultipleDropdownSettings } from 'src/app/core/constants';
 @Component({
   selector: 'app-severe-food-poisoning',
+  host: { class: 'investigation-form' },
   templateUrl: './severe-food-poisoning.component.html',
   styleUrls: ['./severe-food-poisoning.component.css']
 })

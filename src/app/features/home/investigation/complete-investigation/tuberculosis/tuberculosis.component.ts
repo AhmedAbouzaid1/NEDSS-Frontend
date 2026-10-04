@@ -9,6 +9,7 @@ import { GeneralDataService } from '../../../general-data/services/general-data.
 
 @Component({
   selector: 'app-tuberculosis',
+  host: { class: 'investigation-form' },
   templateUrl: './tuberculosis.component.html',
   styleUrls: ['./tuberculosis.component.css']
 })

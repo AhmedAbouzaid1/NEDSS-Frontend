@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-tetanus',
+  host: { class: 'investigation-form' },
   templateUrl: './tetanus.component.html',
   styleUrls: ['./tetanus.component.css'],
 })

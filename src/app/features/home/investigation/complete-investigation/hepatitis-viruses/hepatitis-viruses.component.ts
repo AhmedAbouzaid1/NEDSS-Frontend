@@ -19,6 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-hepatitis-viruses',
+  host: { class: 'investigation-form' },
   templateUrl: './hepatitis-viruses.component.html',
   styleUrls: ['./hepatitis-viruses.component.css'],
 })
