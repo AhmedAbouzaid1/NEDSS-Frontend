@@ -25,6 +25,15 @@ export class BloodyDiarrheaComponent implements OnInit {
     'diseaseGroupId',
     'createdDate',
     'contactDeceasedPersonRespiratory',
+    'hepatitisExposureChildOrEmployee',
+    'hepatitisExposureStateNameAddress',
+    'hepatitisExposureFoodProvider',
+    'hepatitisExposureSimilarCasesSimilarPlaces',
+    'hepatitisExposureMealsOutside',
+    'hepatitisExposureTypeFood',
+    'hepatitisExposureExposedToAnimals',
+    'hepatitisExposureTypeOfAnimal',
+    'hepatitisExposureDealDirectlySewageWaste',
   ];
   private readonly dateFields = [
     'dateOnsetSymptomsDay1',
