@@ -94,6 +94,7 @@ export class NavigationGuard {
     { Comingroute: 'disease-rules', id: 26 },
     { Comingroute: 'audit-trial', id: 27 },
     { Comingroute: 'disease-symptoms', id: 28 },
+    { Comingroute: 'disease-clinical-symptoms', id: 98 },
     { Comingroute: 'dynamic-forms', id: 29 },
     { Comingroute: 'user-manual', id: 30 },
     { Comingroute: 'evaluation-questions', id: 31 },

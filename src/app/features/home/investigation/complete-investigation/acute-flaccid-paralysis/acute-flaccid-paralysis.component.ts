@@ -28,13 +28,14 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   allControllesCount = 0;
   patientName: string = '';
 
-  activeTab: 'field' | 'vaccination' | 'survey' | 'aggregation' | 'followup' = 'field';
+  activeTab: 'field' | 'vaccination' | 'survey' | 'aggregation' | 'followup' | 'contactSamples' = 'field';
   tabs = [
     { key: 'field', label: 'التقصي الميداني للحالة' },
     { key: 'vaccination', label: 'موقف التطعيمات' },
     { key: 'survey', label: 'المسح الميداني' },
     { key: 'aggregation', label: 'تجمع الحالات' },
     { key: 'followup', label: 'المتابعة' },
+    { key: 'contactSamples', label: 'عينات المخالطين' },
   ];
 
   routineDoseLabels = ['الصفرية', 'الأولى', 'الثانية', 'الثالثة', 'الرابعة', 'الخامسة', 'المنشطة'];
@@ -45,6 +46,30 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   campaignTypes = ['قومية', 'محدودة', 'جرعة منشطة'];
   ageTypes = AgeType;
   labResults = ['سلبى', 'فيروس شلل أطفال شرس', 'فيروس سابين', 'فيروس معوي آخر'];
+
+  contactSampleReasons = [
+    { value: 1, label: 'عدم كفاية العينات' },
+    { value: 2, label: 'حالة خطرة' },
+    { value: 3, label: 'محافظة حدودية' },
+  ];
+  contactPeriods = [
+    { value: 1, label: 'خلال أسبوع قبل الإصابة بالشلل' },
+    { value: 2, label: 'بعد أسبوعين من الإصابة بالشلل' },
+  ];
+  labChecklist = [
+    { key: 'labSampleQuantityOk', label: 'كمية العينة 8 جم' },
+    { key: 'labCoolingOk', label: 'درجة التبريد 4-8 درجة مئوية' },
+    { key: 'labNoLeakage', label: 'عدم وجود تسرب في انابيب جمع العينات' },
+    { key: 'labColemanUsed', label: 'استخدام الكولمان الخاص بجمع العينات' },
+    { key: 'labSpecialTubesUsed', label: 'استخدام الانابيب الخاصة بجمع العينات' },
+    { key: 'labTempMonitorUsed', label: 'استخدام راصد للحرارة' },
+    { key: 'labSamplesValid', label: 'اعتمادا على ما سبق هل العينات صالحة' },
+  ];
+  private contactSamplesKeys = [
+    'contactSamplesCollectorName', 'contactSamplesDelivererName',
+    'labSampleQuantityOk', 'labCoolingOk', 'labNoLeakage', 'labColemanUsed', 'labSpecialTubesUsed',
+    'labTempMonitorUsed', 'labSamplesValid', 'labReceiverName', 'labReceiveDate', 'labReceiveTime', 'labNotes',
+  ];
 
   initialClinicalDiagnoses = [
     { value: 1, label: 'متلازمة جيليان باري' },
@@ -72,14 +97,14 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   private arrayKeys = [
     'caseMovements', 'previousCases', 'highRiskAreas', 'healthFacilityVisits',
     'routineVaccinations', 'campaigns', 'surveyChildren', 'aggregatedCases', 'followupCommittee',
-    'selectedDangerousCaseReasons',
+    'selectedDangerousCaseReasons', 'contactSamples',
   ];
   private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage', 'caseCodeDisplay'];
 
   private dateFields = new Set([
     'homeVisitDate', 'entryDate', 'paralysisOnsetDate', 'investigationDate',
     'behaviorDose1Date', 'behaviorDose2Date', 'surveyVisitDate',
-    'paralysisStartDate', 'followupDate', 'deathDate',
+    'paralysisStartDate', 'followupDate', 'deathDate', 'labReceiveDate',
   ]);
 
   constructor(
@@ -165,6 +190,22 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       myelographEmg: new FormControl(),
       csf: new FormControl(),
       followupCommittee: new FormArray([]),
+
+      // Tab 6 - contact samples
+      contactSamples: new FormArray([]),
+      contactSamplesCollectorName: new FormControl(),
+      contactSamplesDelivererName: new FormControl(),
+      labSampleQuantityOk: new FormControl(),
+      labCoolingOk: new FormControl(),
+      labNoLeakage: new FormControl(),
+      labColemanUsed: new FormControl(),
+      labSpecialTubesUsed: new FormControl(),
+      labTempMonitorUsed: new FormControl(),
+      labSamplesValid: new FormControl(),
+      labReceiverName: new FormControl(),
+      labReceiveDate: new FormControl(),
+      labReceiveTime: new FormControl(),
+      labNotes: new FormControl(),
     });
 
     this.form.valueChanges.subscribe(() => this.calculateCompletionPercentage());
@@ -245,6 +286,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     this.parseInto(v.surveyChildrenJson, (x) => this.surveyChildren.push(this.buildSurveyChild(x)));
     this.parseInto(v.aggregatedCasesJson, (x) => this.aggregatedCases.push(this.buildAggregatedCase(x)));
     this.parseInto(v.followupCommitteeJson, (x) => this.followupCommittee.push(this.buildCommittee(x)));
+    this.parseInto(v.contactSamplesJson, (x) => this.contactSamples.push(this.buildContactSample(x)));
   }
 
   private parseInto(json: string, push: (item: any) => void) {
@@ -272,6 +314,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   get surveyChildren(): FormArray { return this.form.get('surveyChildren') as FormArray; }
   get aggregatedCases(): FormArray { return this.form.get('aggregatedCases') as FormArray; }
   get followupCommittee(): FormArray { return this.form.get('followupCommittee') as FormArray; }
+  get contactSamples(): FormArray { return this.form.get('contactSamples') as FormArray; }
 
   // ===================== Display helpers (summary tables) =====================
   yesNo(v: any): string { return String(v) === '1' ? 'نعم' : String(v) === '2' ? 'لا' : ''; }
@@ -386,6 +429,23 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       ageTypeId: new FormControl(a.ageTypeId ?? null),
     });
   }
+  private buildContactSample(c: any = {}): FormGroup {
+    return new FormGroup({
+      sampleReason: new FormControl(c.sampleReason ?? null),
+      name: new FormControl(c.name ?? null),
+      age: new FormControl(c.age ?? null),
+      ageTypeId: new FormControl(c.ageTypeId ?? null),
+      genderId: new FormControl(c.genderId ?? null),
+      relationship: new FormControl(c.relationship ?? null),
+      contactPeriod: new FormControl(c.contactPeriod ?? null),
+      routineDoses: new FormControl(c.routineDoses ?? null),
+      campaignDoses: new FormControl(c.campaignDoses ?? null),
+      ipvDoses: new FormControl(c.ipvDoses ?? null),
+      lastDoseDate: new FormControl(this.d(c.lastDoseDate)),
+      sampleCollectionDate: new FormControl(this.d(c.sampleCollectionDate)),
+      sampleSendDate: new FormControl(this.d(c.sampleSendDate)),
+    });
+  }
   private buildCommittee(c: any = {}): FormGroup {
     return new FormGroup({
       name: new FormControl(c.name ?? null),
@@ -407,6 +467,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     if (this.surveyChildren.length === 0) this.addSurveyChild();
     if (this.aggregatedCases.length === 0) this.addAggregatedCase();
     if (this.followupCommittee.length === 0) this.addCommittee();
+    if (this.contactSamples.length === 0) this.addContactSample();
   }
 
   private pushOpen(arr: FormArray, g: FormGroup) { arr.push(g); this.openRows.add(g); }
@@ -432,6 +493,11 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   }
   addCommittee() { this.pushOpen(this.followupCommittee, this.buildCommittee()); }
   removeCommittee(i: number) { this.removeAt(this.followupCommittee, i); }
+  addContactSample() { this.pushOpen(this.contactSamples, this.buildContactSample()); }
+  removeContactSample(i: number) {
+    this.removeAt(this.contactSamples, i);
+    if (this.contactSamples.length === 0) this.addContactSample();
+  }
 
   // ===================== Save =====================
   save() {
@@ -458,6 +524,11 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     payload.surveyChildrenJson = JSON.stringify(value.surveyChildren || []);
     payload.aggregatedCasesJson = JSON.stringify(value.aggregatedCases || []);
     payload.followupCommitteeJson = JSON.stringify(value.followupCommittee || []);
+    payload.contactSamplesJson = JSON.stringify(
+      (value.contactSamples || []).filter((row: any) =>
+        Object.values(row || {}).some((x) => x !== null && x !== undefined && `${x}`.trim() !== '')
+      )
+    );
     payload.dangerousCaseReasonsJson = JSON.stringify(
       Number(value.isDangerousCase) === 1
         ? value.selectedDangerousCaseReasons || []
@@ -476,7 +547,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
 
   calculateCompletionPercentage(): void {
     const data = this.form?.value ?? {};
-    const excluded = new Set([...this.coreKeys, ...this.arrayKeys, 'createdDate']);
+    const excluded = new Set([...this.coreKeys, ...this.arrayKeys, ...this.contactSamplesKeys, 'createdDate']);
     const baseFields = Object.keys(data).filter((k) => !excluded.has(k));
     const filled = baseFields.reduce((acc, k) => {
       const val = data[k];

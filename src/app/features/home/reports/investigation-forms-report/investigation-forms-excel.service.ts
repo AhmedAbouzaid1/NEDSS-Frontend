@@ -19,7 +19,7 @@ export interface InvestigationFormsExportMeta {
 const MAX_CELL_LENGTH = 32000;
 const IGNORED_FORM_KEYS = new Set(['investigationcompletepercentage', 'patient', 'diseasegroup']);
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
-const MULTI_VALUE_DELIMITER = '|';
+const MULTI_VALUE_DELIMITER = /[|,]/;
 
 @Injectable({ providedIn: 'root' })
 export class InvestigationFormsExcelService {

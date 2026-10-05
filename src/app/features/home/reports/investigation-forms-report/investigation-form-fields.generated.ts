@@ -1139,6 +1139,204 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "إدارة حالات الشلل الرخو الحاد (AFP)",
         "لجنة المتابعة"
       ]
+    },
+    {
+      "key": "contactSamples",
+      "label": [
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ],
+      "array": true
+    },
+    {
+      "key": "sampleReason",
+      "label": [
+        "سبب جمع العينة من المخالط"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "عدم كفاية العينات"
+        ],
+        "2": [
+          "حالة خطرة"
+        ],
+        "3": [
+          "محافظة حدودية"
+        ]
+      }
+    },
+    {
+      "key": "genderId",
+      "label": [
+        "الجنس"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "ذكر"
+        ],
+        "2": [
+          "أنثى"
+        ]
+      }
+    },
+    {
+      "key": "relationship",
+      "label": [
+        "علاقة المخالط بالحالة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "contactPeriod",
+      "label": [
+        "فترة المخالطة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "خلال أسبوع قبل الإصابة بالشلل"
+        ],
+        "2": [
+          "بعد أسبوعين من الإصابة بالشلل"
+        ]
+      }
+    },
+    {
+      "key": "routineDoses",
+      "label": [
+        "عدد جرعات التطعيم الروتيني"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "campaignDoses",
+      "label": [
+        "عدد جرعات الحملات"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "ipvDoses",
+      "label": [
+        "عدد جرعات السولك"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "lastDoseDate",
+      "label": [
+        "تاريخ آخر جرعة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "sampleCollectionDate",
+      "label": [
+        "تاريخ جمع العينات"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "sampleSendDate",
+      "label": [
+        "تاريخ إرسال العينة إلى المعمل"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "contactSamplesCollectorName",
+      "label": [
+        "اسم المسئول عن جمع العينات"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "contactSamplesDelivererName",
+      "label": [
+        "اسم المسئول عن تسليم العينات"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "labReceiverName",
+      "label": [
+        "اسم المستلم من هيئة المصل واللقاح"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "معلومات يتم إستيفائها بواسطة المعمل"
+      ]
+    },
+    {
+      "key": "labReceiveDate",
+      "label": [
+        "تاريخ الاستلام"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "معلومات يتم إستيفائها بواسطة المعمل"
+      ]
+    },
+    {
+      "key": "labReceiveTime",
+      "label": [
+        "ساعة الاستلام"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "معلومات يتم إستيفائها بواسطة المعمل"
+      ]
+    },
+    {
+      "key": "labNotes",
+      "label": [
+        "ملاحظات"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "معلومات يتم إستيفائها بواسطة المعمل"
+      ]
     }
   ],
   "ari": [
@@ -21710,44 +21908,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
   ],
   "malaria": [
     {
-      "key": "transfusedBlood",
-      "label": [
-        "NEDSS.MALARIA.TRANSFUSED_BLOOD"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "placeName",
-      "label": [
-        "NEDSS.MALARIA.PLACE_NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ]
-    },
-    {
-      "key": "date",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ]
-    },
-    {
       "key": "hadMalaria",
       "label": [
         "NEDSS.MALARIA.HAD_MALARIA"
@@ -21884,9 +22044,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21902,7 +22059,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "typeTreatment",
       "label": [
-        "NEDSS.MALARIA.TREATMENT_TYPE"
+        "NEDSS.MALARIA.TREATMENT_TYPE_LEGACY"
       ],
       "section": [
         "NEDSS.MALARIA.TREATMENT_SECTION"
@@ -21918,6 +22075,107 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
+      "key": "firstLineTreatmentReceived",
+      "label": [
+        "NEDSS.MALARIA.FIRST_LINE_TREATMENT_RECEIVED"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "firstLineTreatmentDrugs",
+      "label": [
+        "NEDSS.MALARIA.IF_YES_CHOOSE_TREATMENT_TYPE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ],
+      "options": {
+        "1": [
+          "كوارتم (Coartem)"
+        ],
+        "2": [
+          "أرتيسونات (Artesunate)"
+        ],
+        "99": [
+          "أخرى"
+        ]
+      }
+    },
+    {
+      "key": "firstLineTreatmentOther",
+      "label": [
+        "NEDSS.MALARIA.OTHER_TREATMENT_SPECIFY"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ]
+    },
+    {
+      "key": "secondLineTreatmentReceived",
+      "label": [
+        "NEDSS.MALARIA.SECOND_LINE_TREATMENT_RECEIVED"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "secondLineTreatmentDrugs",
+      "label": [
+        "NEDSS.MALARIA.IF_YES_CHOOSE_TREATMENT_TYPE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ],
+      "options": {
+        "1": [
+          "كينين أمبول"
+        ],
+        "2": [
+          "كينين أقراص"
+        ],
+        "3": [
+          "كليندامايسين (Clindamycin)"
+        ],
+        "4": [
+          "دوكسيسيكلين (Doxycycline)"
+        ],
+        "5": [
+          "بريماكين (Primaquine)"
+        ],
+        "99": [
+          "أخرى"
+        ]
+      }
+    },
+    {
+      "key": "secondLineTreatmentOther",
+      "label": [
+        "NEDSS.MALARIA.OTHER_TREATMENT_SPECIFY"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ]
+    },
+    {
       "key": "caseAssessment",
       "label": [
         "NEDSS.MALARIA.CASE_ASSESSMENT"
@@ -21927,10 +22185,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "1": [
-          "NEDSS.MALARIA.CASE_ASSESSMENT_MILD"
-        ],
-        "2": [
-          "NEDSS.MALARIA.CASE_ASSESSMENT_MODERATE"
+          "NEDSS.MALARIA.CASE_ASSESSMENT_NOT_SEVERE"
         ],
         "3": [
           "NEDSS.MALARIA.CASE_ASSESSMENT_SEVERE"
@@ -21958,62 +22213,19 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
-      "key": "routineSurveillance",
+      "key": "discoveryMethod",
       "label": [
-        "NEDSS.MALARIA.ROUTINE_SURVEILLANCE"
+        "NEDSS.MALARIA.DISCOVERY_METHOD"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "NEDSS.MALARIA.ROUTINE_SURVEILLANCE"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "contactFollowUp",
-      "label": [
-        "NEDSS.MALARIA.CONTACT_FOLLOW_UP"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "travelOutsideEgypt",
-      "label": [
-        "NEDSS.MALARIA.TRAVEL_OUTSIDE_EGYPT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "NEDSS.MALARIA.CONTACT_FOLLOW_UP"
         ]
       }
     },
@@ -22481,7 +22693,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ]
     },
@@ -22491,7 +22703,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.AGE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ]
     },
@@ -22501,7 +22713,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.PHONE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ]
     },
@@ -22511,7 +22723,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.GENDER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ],
       "options": {
@@ -22529,7 +22741,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ],
       "options": {
@@ -22553,7 +22765,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ]
     },
@@ -22563,7 +22775,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ]
     },
@@ -22573,7 +22785,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22594,7 +22806,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22615,7 +22827,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22636,7 +22848,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22657,7 +22869,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22678,7 +22890,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22699,7 +22911,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22720,7 +22932,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA_TITLE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22741,7 +22953,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.OTHER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22762,7 +22974,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ]
     },
@@ -22772,7 +22984,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.LAB"
       ],
       "options": {
@@ -22790,7 +23002,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.LAB"
       ]
     },
@@ -22800,7 +23012,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.LAB"
       ],
       "options": {
@@ -23496,12 +23708,352 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
+      "key": "followD28Name",
+      "label": [
+        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ]
+    },
+    {
+      "key": "followD28Age",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.AGE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ]
+    },
+    {
+      "key": "followD28Phone",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.PHONE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ]
+    },
+    {
+      "key": "followD28Type",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.GENDER"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.MALE"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
+        ]
+      }
+    },
+    {
+      "key": "followD28MixingType",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT"
+        ],
+        "4": [
+          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS"
+        ]
+      }
+    },
+    {
+      "key": "followD28RelationshipSituation",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ]
+    },
+    {
+      "key": "followD28DateOfSymptoms",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ]
+    },
+    {
+      "key": "followD28Fever",
+      "label": [
+        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28DryCough",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28CoughingWithSpitting",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28SoreThroat",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28DifficultyBreathing",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28JointPain",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28vomit",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28Diarrhea",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA_TITLE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28Other",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.OTHER"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28OtherSymptoms",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ]
+    },
+    {
+      "key": "followD28SampleTaken",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.LAB"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "followD28DateSampleTaken",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.LAB"
+      ]
+    },
+    {
+      "key": "followD28SampleResult",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.LAB"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.POSITIVE"
+        ],
+        "2": [
+          "NEDSS.COMMON.NEGATIVE"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
       "key": "investigationDone",
       "label": [
         "NEDSS.MALARIA.ENTOMOLOGICAL_INVESTIGATION_DONE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
       ],
       "options": {
@@ -23522,7 +24074,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.IF_YES_ENTOMOLOGICAL_RESULT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
       ]
     },
@@ -23532,7 +24084,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.IF_POSITIVE_MOSQUITO_CONTROL_DONE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
       ],
       "options": {
@@ -23553,7 +24105,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.IF_YES_PROCEDURES"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
       ]
     },
@@ -23563,7 +24115,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.TRAVELED_ABROAD"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.TRAVEL_SECTION"
       ],
       "options": {
@@ -23584,27 +24136,58 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.IF_YES_TRAVEL_PLACE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.MALARIA.TRAVEL_SECTION"
-      ]
-    },
-    {
-      "key": "travelHistoryEgyptians",
-      "label": [
-        "NEDSS.MALARIA.TRAVEL_HISTORY_EGYPTIANS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.TRAVEL_SECTION"
       ]
     },
     {
       "key": "entryIntoEgypt",
       "label": [
-        "NEDSS.MALARIA.ENTRY_INTO_EGYPT"
+        "NEDSS.MALARIA.RETURN_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.TRAVEL_SECTION"
+      ]
+    },
+    {
+      "key": "transfusedBlood",
+      "label": [
+        "NEDSS.MALARIA.TRANSFUSED_BLOOD"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.TRAVEL_SECTION"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "placeName",
+      "label": [
+        "NEDSS.MALARIA.PLACE_NAME"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.TRAVEL_SECTION"
+      ]
+    },
+    {
+      "key": "date",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.DATE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.TRAVEL_SECTION"
       ]
     },
@@ -23614,7 +24197,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.PROPHYLACTIC_DRUG"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.PREVENTIVE_MEASURES_SECTION"
       ],
       "options": {
@@ -23635,7 +24218,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.PROPERTY_TYPE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.PREVENTIVE_MEASURES_SECTION"
       ]
     },
@@ -23645,8 +24228,167 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.PREVENTIVE_MEASURES_SECTION"
+      ]
+    },
+    {
+      "key": "contactSamplesPatientName",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_PATIENT_NAME"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesMalariaUnit",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_MALARIA_UNIT"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesInfectionDate",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_INFECTION_DATE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesPlasmodiumType",
+      "label": [
+        "NEDSS.MALARIA.PLASMODIUM_TYPE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesPatientAddress",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_PATIENT_ADDRESS"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesSampleDate",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_SAMPLE_DATE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamples",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ],
+      "array": true
+    },
+    {
+      "key": "name",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_NAME"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "age",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_AGE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "genderId",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_GENDER"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.MALE"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
+        ]
+      }
+    },
+    {
+      "key": "address",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_ADDRESS"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "nationality",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_NATIONALITY"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "phone",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_PHONE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesCollectorName",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_COLLECTOR"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesUnitManagerName",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_UNIT_MANAGER"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     }
   ],

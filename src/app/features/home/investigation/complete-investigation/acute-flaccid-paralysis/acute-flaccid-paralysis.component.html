@@ -19,7 +19,7 @@
             [allControllesCount]="allControllesCount"
           ></app-investigation-summary>
 
-          <div class="row align-items-end">
+          <div class="row">
             <div class="col-lg-3 col-md-6">
               <div class="form-group"><label class="fwb">كود الحالة</label>
                 <input type="text" class="form-control fwb" formControlName="caseCodeDisplay" readonly /></div>
@@ -584,6 +584,108 @@
             <div class="d-flex justify-content-center gap-3 mt-3">
               <button type="submit" class="btn btn-success px-4">اعتماد المتابعة</button>
               <button type="button" class="btn btn-secondary px-4" onclick="window.print()">طباعة التقرير</button>
+            </div>
+          </ng-container>
+
+          <!-- ================= TAB 6: عينات المخالطين ================= -->
+          <ng-container *ngIf="activeTab === 'contactSamples'">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="title fs-6 fwb">نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد</span>
+              <button type="button" class="btn btn-add-record btn-sm" (click)="addContactSample()"><i class="pi pi-plus"></i> إضافة مخالط</button>
+            </div>
+            <div class="table-responsive mb-3">
+              <table class="table table-bordered text-center align-middle" formArrayName="contactSamples">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>سبب جمع العينة من المخالط</th>
+                    <th>الاسم</th>
+                    <th>العمر</th>
+                    <th>الجنس</th>
+                    <th>علاقة المخالط بالحالة</th>
+                    <th>فترة المخالطة</th>
+                    <th>عدد جرعات التطعيم الروتيني</th>
+                    <th>عدد جرعات الحملات</th>
+                    <th>عدد جرعات السولك</th>
+                    <th>تاريخ آخر جرعة</th>
+                    <th>تاريخ جمع العينات</th>
+                    <th>تاريخ إرسال العينة إلى المعمل</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let c of contactSamples.controls; let i = index" [formGroupName]="i">
+                    <td class="fwb">{{ i + 1 }}</td>
+                    <td style="min-width: 160px">
+                      <select class="form-control" formControlName="sampleReason">
+                        <option [ngValue]="null">-- اختر --</option>
+                        <option *ngFor="let o of contactSampleReasons" [ngValue]="o.value">{{ o.label }}</option>
+                      </select>
+                    </td>
+                    <td style="min-width: 160px"><input type="text" maxlength="200" class="form-control" formControlName="name" /></td>
+                    <td style="min-width: 170px">
+                      <div class="d-flex gap-1">
+                        <input type="number" min="0" class="form-control" formControlName="age" />
+                        <select class="form-control" formControlName="ageTypeId"><option *ngFor="let t of ageTypes" [ngValue]="t.id">{{ t.arabicName }}</option></select>
+                      </div>
+                    </td>
+                    <td style="min-width: 100px">
+                      <select class="form-control" formControlName="genderId">
+                        <option [ngValue]="null">-- اختر --</option>
+                        <option [ngValue]="1">ذكر</option>
+                        <option [ngValue]="2">أنثى</option>
+                      </select>
+                    </td>
+                    <td style="min-width: 140px"><input type="text" maxlength="100" class="form-control" formControlName="relationship" /></td>
+                    <td style="min-width: 200px">
+                      <select class="form-control" formControlName="contactPeriod">
+                        <option [ngValue]="null">-- اختر --</option>
+                        <option *ngFor="let o of contactPeriods" [ngValue]="o.value">{{ o.label }}</option>
+                      </select>
+                    </td>
+                    <td><input type="number" min="0" class="form-control" formControlName="routineDoses" /></td>
+                    <td><input type="number" min="0" class="form-control" formControlName="campaignDoses" /></td>
+                    <td><input type="number" min="0" class="form-control" formControlName="ipvDoses" /></td>
+                    <td style="min-width: 150px"><app-date-field formControlName="lastDoseDate"></app-date-field></td>
+                    <td style="min-width: 150px"><app-date-field formControlName="sampleCollectionDate"></app-date-field></td>
+                    <td style="min-width: 150px"><app-date-field formControlName="sampleSendDate" [min]="c.value.sampleCollectionDate"></app-date-field></td>
+                    <td>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="removeContactSample(i)"><i class="pi pi-trash"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6"><div class="form-group"><label>اسم المسئول عن جمع العينات</label>
+                <input type="text" maxlength="200" class="form-control" formControlName="contactSamplesCollectorName" /></div></div>
+              <div class="col-lg-6"><div class="form-group"><label>اسم المسئول عن تسليم العينات</label>
+                <input type="text" maxlength="200" class="form-control" formControlName="contactSamplesDelivererName" /></div></div>
+            </div>
+
+            <div class="title fs-6 fwb mt-3 mb-2">معلومات يتم إستيفائها بواسطة المعمل</div>
+            <div class="row">
+              <div class="col-lg-6" *ngFor="let q of labChecklist">
+                <div class="form-group">
+                  <label>{{ q.label }}</label>
+                  <select class="form-control" [formControlName]="q.key">
+                    <option [ngValue]="null">-- اختر --</option>
+                    <option [ngValue]="1">نعم</option>
+                    <option [ngValue]="2">لا</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4"><div class="form-group"><label>اسم المستلم من هيئة المصل واللقاح</label>
+                <input type="text" maxlength="200" class="form-control" formControlName="labReceiverName" /></div></div>
+              <div class="col-lg-4"><div class="form-group"><label>تاريخ الاستلام</label>
+                <app-date-field formControlName="labReceiveDate"></app-date-field></div></div>
+              <div class="col-lg-4"><div class="form-group"><label>ساعة الاستلام</label>
+                <input type="time" class="form-control" formControlName="labReceiveTime" /></div></div>
+              <div class="col-12"><div class="form-group"><label>ملاحظات</label>
+                <textarea rows="3" maxlength="1000" class="form-control" formControlName="labNotes"></textarea></div></div>
             </div>
           </ng-container>
 

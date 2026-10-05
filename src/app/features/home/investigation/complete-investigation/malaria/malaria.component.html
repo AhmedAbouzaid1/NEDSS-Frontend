@@ -1,7 +1,7 @@
 <form [formGroup]="malariaForm" (ngSubmit)="save()">
   <div class="row">
     <div class="col-12">
-      <div class="card shadow mt-4 color mb-4">
+      <div class="card shadow mt-4 color mb-3">
         <div class="card-body">
         <div id="jump_to_this_location"></div>
           <div class="row">
@@ -23,44 +23,23 @@
 
 
           </div>
+        </div>
+      </div>
+
+      <ul class="nav nav-tabs fwb">
+        <li class="nav-item" *ngFor="let t of tabs">
+          <a class="nav-link" style="cursor:pointer" [class.active]="activeTab === t.key" (click)="setTab($any(t.key))">{{ t.label | translate }}</a>
+        </li>
+      </ul>
+
+      <div class="card shadow color mb-4">
+        <div class="card-body">
+          <ng-container *ngIf="activeTab === 'investigation'">
 
           <div class="row color">
             <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
               <div class="row">
                 <div class="col-12 title fs-6 fwb"> {{ "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data" | translate }}</div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="">{{ "NEDSS.MALARIA.TRANSFUSED_BLOOD" | translate }}</label>
-                    <select formControlName="transfusedBlood" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6 border-right" [appShowIf]="malariaForm.get('transfusedBlood')?.value == 1">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <div class="mt-4 pt-1">{{ "NEDSS.MALARIA.IF_YES" | translate }}</div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.MALARIA.PLACE_NAME" | translate }}</label>
-                        <input formControlName="placeName" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
-                      </div>
-                    </div>
-                    <!-- /.col-lg-4 -->
-                    <div class="col-lg-4">
-                      <div class="form-group">
-                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DATE" | translate }}</label>
-                        <app-date-field formControlName="date" (blurred)="calculateCompletionPercentage()"></app-date-field>
-                      </div>
-                    </div>
-                    <!-- /.col-lg-4 -->
-                  </div>
-                  <!-- / .row -->
-                </div>
                 <div class="col-lg-6 mt-3">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.MALARIA.HAD_MALARIA" | translate }}</label>
@@ -177,7 +156,6 @@
                     <select formControlName="malariaTreatmentApplied" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
                       <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
                       <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                     </select>
                   </div>
                 </div>
@@ -193,9 +171,9 @@
                       </div>
                     </div>
                     <!-- /.col-lg-4 -->
-                    <div class="col-lg-4">
+                    <div class="col-lg-4" [appShowIf]="false">
                       <div class="form-group">
-                        <label for="">{{ "NEDSS.MALARIA.TREATMENT_TYPE" | translate }}</label>
+                        <label for="">{{ "NEDSS.MALARIA.TREATMENT_TYPE_LEGACY" | translate }}</label>
                         <input formControlName="typeTreatment" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
                       </div>
                     </div>
@@ -207,6 +185,56 @@
                       </div>
                     </div>
                     <!-- /.col-lg-4 -->
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.MALARIA.FIRST_LINE_TREATMENT_RECEIVED" | translate }}</label>
+                        <select formControlName="firstLineTreatmentReceived" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                          <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6" [appShowIf]="malariaForm.get('firstLineTreatmentReceived')?.value == 1">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.MALARIA.IF_YES_CHOOSE_TREATMENT_TYPE" | translate }}</label>
+                        <p-multiSelect formControlName="firstLineTreatmentDrugs" [options]="firstLineDrugOptions" optionLabel="label" optionValue="value"
+                          [style]="{ width: '100%' }" [showToggleAll]="false" [filter]="false" appendTo="body"
+                          [placeholder]="'NEDSS.MALARIA.CHOOSE_TREATMENT' | translate"
+                          (onChange)="calculateCompletionPercentage()">
+                        </p-multiSelect>
+                      </div>
+                    </div>
+                    <div class="col-lg-6" [appShowIf]="malariaForm.get('firstLineTreatmentReceived')?.value == 1 && hasOtherDrug('firstLineTreatmentDrugs')">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.MALARIA.OTHER_TREATMENT_SPECIFY" | translate }}</label>
+                        <input formControlName="firstLineTreatmentOther" type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()" />
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.MALARIA.SECOND_LINE_TREATMENT_RECEIVED" | translate }}</label>
+                        <select formControlName="secondLineTreatmentReceived" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                          <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6" [appShowIf]="malariaForm.get('secondLineTreatmentReceived')?.value == 1">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.MALARIA.IF_YES_CHOOSE_TREATMENT_TYPE" | translate }}</label>
+                        <p-multiSelect formControlName="secondLineTreatmentDrugs" [options]="secondLineDrugOptions" optionLabel="label" optionValue="value"
+                          [style]="{ width: '100%' }" [showToggleAll]="false" [filter]="false" appendTo="body"
+                          [placeholder]="'NEDSS.MALARIA.CHOOSE_TREATMENT' | translate"
+                          (onChange)="calculateCompletionPercentage()">
+                        </p-multiSelect>
+                      </div>
+                    </div>
+                    <div class="col-lg-6" [appShowIf]="malariaForm.get('secondLineTreatmentReceived')?.value == 1 && hasOtherDrug('secondLineTreatmentDrugs')">
+                      <div class="form-group">
+                        <label for="">{{ "NEDSS.MALARIA.OTHER_TREATMENT_SPECIFY" | translate }}</label>
+                        <input formControlName="secondLineTreatmentOther" type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()" />
+                      </div>
+                    </div>
                   </div>
                   <!-- / .row -->
                 </div>
@@ -225,8 +253,7 @@
                   <div class="form-group">
                     <label for="">{{ "NEDSS.MALARIA.CASE_ASSESSMENT" | translate }}</label>
                     <select formControlName="caseAssessment" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                      <option value="1">{{ "NEDSS.MALARIA.CASE_ASSESSMENT_MILD" | translate }}</option>
-                      <option value="2">{{ "NEDSS.MALARIA.CASE_ASSESSMENT_MODERATE" | translate }}</option>
+                      <option value="1">{{ "NEDSS.MALARIA.CASE_ASSESSMENT_NOT_SEVERE" | translate }}</option>
                       <option value="3">{{ "NEDSS.MALARIA.CASE_ASSESSMENT_SEVERE" | translate }}</option>
                     </select>
                   </div>
@@ -263,40 +290,17 @@
               <div class="col-lg-12 color-d-2 fwb mb-4">
                 {{ "NEDSS.MALARIA.EPIDEMIOLOGICAL_LINK_DISCOVERY_METHOD" | translate }}
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-4">
                 <div class="form-group">
-                  <label for="">{{ "NEDSS.MALARIA.ROUTINE_SURVEILLANCE" | translate }}</label>
-                  <select formControlName="routineSurveillance" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                  <label for="">{{ "NEDSS.MALARIA.DISCOVERY_METHOD" | translate }}</label>
+                  <select formControlName="discoveryMethod" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                    <option value="1">{{ "NEDSS.MALARIA.ROUTINE_SURVEILLANCE" | translate }}</option>
+                    <option value="2">{{ "NEDSS.MALARIA.CONTACT_FOLLOW_UP" | translate }}</option>
                   </select>
                 </div>
               </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.MALARIA.CONTACT_FOLLOW_UP" | translate }}</label>
-                  <select formControlName="contactFollowUp" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="">{{ "NEDSS.MALARIA.TRAVEL_OUTSIDE_EGYPT" | translate }}</label>
-                  <select formControlName="travelOutsideEgypt" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
-                    <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                    <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                    <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-6">
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.MALARIA.FROM_MEDICAL_TEAM" | translate }}</label>
                   <select formControlName="fromMedicalTeam" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
@@ -307,7 +311,7 @@
                 </div>
               </div>
               <!-- /.col-lg-6 -->
-              <div class="col-lg-12 mb-4">
+              <div class="col-lg-4">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.MALARIA.PLACE_CONFIRMED_CASES" | translate }}</label>
                   <select formControlName="placeConfirmedCases" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
@@ -317,7 +321,7 @@
                   </select>
                 </div>
               </div>
-              <!-- /.col-lg-12 mb-4 -->
+              <!-- /.col-lg-4 -->
 
               <div class="col-lg-12 color-d-2 fwb mb-4">{{ "NEDSS.COMPLETE_INVESTEGATION.HUMAN_CONTACT" | translate }}</div>
               <div class="col-lg-4">
@@ -594,7 +598,7 @@
                 <h2 class="accordion-header" id="headingTwo">
                   <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseOne">
-                    {{ "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2" | translate }}
+                    {{ "NEDSS.MALARIA.FOLLOW_UP_DAY_3" | translate }}
                   </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="collapseTwo"
@@ -1239,6 +1243,222 @@
                   </div>
                 </div>
               </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwentyEight">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseTwentyEight" aria-expanded="true" aria-controls="collapseTwentyEight">
+                    {{ "NEDSS.MALARIA.FOLLOW_UP_DAY_28" | translate }}
+                  </button>
+                </h2>
+                <div id="collapseTwentyEight" class="accordion-collapse collapse" aria-labelledby="collapseTwentyEight"
+                  data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <div class="row">
+                      <div class="col-12 title fs-6 fwb">
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA" | translate }}
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
+                          <input formControlName="followD28Name" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.AGE" | translate }}</label>
+                          <input formControlName="followD28Age" type="number" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.PHONE" | translate }}</label>
+                          <input formControlName="followD28Phone" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.GENDER" | translate }}</label>
+                          <select formControlName="followD28Type" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MALE" | translate }}</option>
+                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEMALE" | translate }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE" | translate }}</label>
+                          <select formControlName="followD28MixingType" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                            <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME" | translate }}</option>
+                            <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK" | translate }}</option>
+                            <option value="3">
+                              {{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT" | translate }}
+                            </option>
+                            <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS" | translate }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE" | translate }}</label>
+                          <input formControlName="followD28RelationshipSituation" type="text" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </div>
+                      </div>
+                      <div class="col-12 title fs-6 fwb">
+                        {{ "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR" | translate }}
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE" | translate }}</label>
+                          <app-date-field formControlName="followD28DateOfSymptoms" (blurred)="calculateCompletionPercentage()"></app-date-field>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
+                          <select formControlName="followD28Fever" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH" | translate }}</label>
+                          <select formControlName="followD28DryCough" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM" | translate }}</label>
+                          <select formControlName="followD28CoughingWithSpitting" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT" | translate }}</label>
+                          <select formControlName="followD28SoreThroat" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING" | translate }}</label>
+                          <select formControlName="followD28DifficultyBreathing" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN" | translate }}</label>
+                          <select formControlName="followD28JointPain" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.VOMITING" | translate }}</label>
+                          <select formControlName="followD28vomit" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA_TITLE" | translate }}</label>
+                          <select formControlName="followD28Diarrhea" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.OTHER" | translate }}</label>
+                          <select formControlName="followD28Other" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                            <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-6" [appShowIf]="malariaForm.get('followD28Other')?.value == 1">
+                        <div class="form-group">
+                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
+                          <input formControlName="followD28OtherSymptoms" type="text" name="" id=""
+                            class="form-control" (blur)="calculateCompletionPercentage()" />
+                        </div>
+                      </div>
+                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.LAB" | translate }}</div>
+                      <div class="col-4">
+                        <div class="row">
+                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN" | translate }}</div>
+                          <div class="col-6 has-labels">
+                            <label for=""><input formControlName="followD28SampleTaken" type="radio" (blur)="calculateCompletionPercentage()"
+                                name="followD28SampleTaken" id="" value="1" />
+                              {{ "NEDSS.COMMON.YES" | translate }}
+                            </label>
+                            <label for=""><input formControlName="followD28SampleTaken" type="radio" (blur)="calculateCompletionPercentage()"
+                                name="followD28SampleTaken" id="" value="2" />
+                              {{ "NEDSS.COMMON.NO" | translate }}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4" [appShowIf]="malariaForm.get('followD28SampleTaken')?.value == 1">
+                        <div class="form-group row">
+                          <div class="col-lg-4">
+                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE" | translate }}</label>
+                          </div>
+                          <div class="col-lg-8">
+                            <app-date-field formControlName="followD28DateSampleTaken" (blurred)="calculateCompletionPercentage()"></app-date-field>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-4" [appShowIf]="malariaForm.get('followD28SampleTaken')?.value == 1">
+                        <div class="row">
+                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT" | translate }}</div>
+                          <div class="col-8 has-labels">
+                            <label for=""><input formControlName="followD28SampleResult" type="radio" (blur)="calculateCompletionPercentage()"
+                                name="followD28SampleResult" id="" value="1" />
+                              {{ "NEDSS.COMMON.POSITIVE" | translate }}
+                            </label>
+                            <label for=""><input formControlName="followD28SampleResult" type="radio" (blur)="calculateCompletionPercentage()"
+                                name="followD28SampleResult" id="" value="2" />
+                              {{ "NEDSS.COMMON.NEGATIVE" | translate }}
+                            </label>
+                            <label for=""><input formControlName="followD28SampleResult" type="radio" (blur)="calculateCompletionPercentage()"
+                                name="followD28SampleResult" id="3" value="3" />
+                              {{ "NEDSS.REPORTS.UnKnown" | translate }}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1312,25 +1532,45 @@
                 </div>
                 <!-- /.col-lg-4 -->
                 <div class="col-lg-4" [appShowIf]="malariaForm.get('traveledAbroad')?.value == 1">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.MALARIA.RETURN_DATE" | translate }}</label>
+                    <app-date-field formControlName="entryIntoEgypt" (blurred)="calculateCompletionPercentage()"></app-date-field>
+                  </div>
+                </div>
+                <!-- /.col-lg-4 -->
+                <div class="col-lg-6 mt-3" [appShowIf]="malariaForm.get('traveledAbroad')?.value == 2">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.MALARIA.TRANSFUSED_BLOOD" | translate }}</label>
+                    <select formControlName="transfusedBlood" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 border-right mt-3" [appShowIf]="malariaForm.get('traveledAbroad')?.value == 2 && malariaForm.get('transfusedBlood')?.value == 1">
                   <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-4">
+                      <div class="mt-4 pt-1">{{ "NEDSS.MALARIA.IF_YES" | translate }}</div>
+                    </div>
+                    <div class="col-lg-4">
                       <div class="form-group">
-                        <label for="">{{ "NEDSS.MALARIA.TRAVEL_HISTORY_EGYPTIANS" | translate }}</label>
-                        <app-date-field formControlName="travelHistoryEgyptians" (blurred)="calculateCompletionPercentage()"></app-date-field>
+                        <label for="">{{ "NEDSS.MALARIA.PLACE_NAME" | translate }}</label>
+                        <input formControlName="placeName" type="text" name="" id="" class="form-control" (blur)="calculateCompletionPercentage()" />
                       </div>
                     </div>
-                    <!-- / .col-lg-12 -->
-                    <div class="col-lg-12">
+                    <!-- /.col-lg-4 -->
+                    <div class="col-lg-4">
                       <div class="form-group">
-                        <label for="">{{ "NEDSS.MALARIA.ENTRY_INTO_EGYPT" | translate }}</label>
-                        <app-date-field formControlName="entryIntoEgypt" (blurred)="calculateCompletionPercentage()"></app-date-field>
+                        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DATE" | translate }}</label>
+                        <app-date-field formControlName="date" (blurred)="calculateCompletionPercentage()"></app-date-field>
                       </div>
                     </div>
-                    <!-- / .col-lg-12 -->
+                    <!-- /.col-lg-4 -->
                   </div>
                   <!-- / .row -->
                 </div>
-                <!-- /.col-lg-4 -->
               </div>
               <!-- / .row -->
             </div>
@@ -1383,6 +1623,116 @@
             <!-- / .col-12 -->
           </div>
           <!-- / .row -->
+          </ng-container>
+
+          <ng-container *ngIf="activeTab === 'contactSamples'">
+            <div class="row color">
+              <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+                <div class="row">
+                  <div class="col-12 title fs-6 fwb">{{ "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE" | translate }}</div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.MALARIA.CONTACT_SAMPLES_PATIENT_NAME" | translate }}</label>
+                      <input formControlName="contactSamplesPatientName" type="text" maxlength="200" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.MALARIA.CONTACT_SAMPLES_MALARIA_UNIT" | translate }}</label>
+                      <input formControlName="contactSamplesMalariaUnit" type="text" maxlength="200" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.MALARIA.CONTACT_SAMPLES_INFECTION_DATE" | translate }}</label>
+                      <app-date-field formControlName="contactSamplesInfectionDate"></app-date-field>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.MALARIA.PLASMODIUM_TYPE" | translate }}</label>
+                      <input formControlName="contactSamplesPlasmodiumType" type="text" maxlength="200" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.MALARIA.CONTACT_SAMPLES_PATIENT_ADDRESS" | translate }}</label>
+                      <input formControlName="contactSamplesPatientAddress" type="text" maxlength="300" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.MALARIA.CONTACT_SAMPLES_SAMPLE_DATE" | translate }}</label>
+                      <app-date-field formControlName="contactSamplesSampleDate"></app-date-field>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="table-scroll">
+                      <table class="table table-bordered text-center align-middle mb-3" formArrayName="contactSamples">
+                        <thead>
+                          <tr>
+                            <th>{{ "NEDSS.MALARIA.CONTACT_SAMPLES_SERIAL" | translate }}</th>
+                            <th>{{ "NEDSS.MALARIA.CONTACT_SAMPLES_NAME" | translate }}</th>
+                            <th>{{ "NEDSS.MALARIA.CONTACT_SAMPLES_AGE" | translate }}</th>
+                            <th>{{ "NEDSS.MALARIA.CONTACT_SAMPLES_GENDER" | translate }}</th>
+                            <th>{{ "NEDSS.MALARIA.CONTACT_SAMPLES_ADDRESS" | translate }}</th>
+                            <th>{{ "NEDSS.MALARIA.CONTACT_SAMPLES_NATIONALITY" | translate }}</th>
+                            <th>{{ "NEDSS.MALARIA.CONTACT_SAMPLES_RESULT" | translate }}</th>
+                            <th>{{ "NEDSS.MALARIA.CONTACT_SAMPLES_PHONE" | translate }}</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let row of contactSamples.controls; let i = index" [formGroupName]="i">
+                            <td class="fwb">{{ i + 1 }}</td>
+                            <td><input formControlName="name" type="text" maxlength="200" class="form-control" /></td>
+                            <td style="min-width: 90px"><input formControlName="age" type="number" min="0" class="form-control" /></td>
+                            <td style="min-width: 110px">
+                              <select formControlName="genderId" class="form-control">
+                                <option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MALE" | translate }}</option>
+                                <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.FEMALE" | translate }}</option>
+                              </select>
+                            </td>
+                            <td><input formControlName="address" type="text" maxlength="300" class="form-control" /></td>
+                            <td><input formControlName="nationality" type="text" maxlength="100" class="form-control" /></td>
+                            <td style="min-width: 110px">
+                              <select formControlName="result" class="form-control">
+                                <option [ngValue]="2">{{ "NEDSS.COMMON.NEGATIVE" | translate }}</option>
+                                <option [ngValue]="1">{{ "NEDSS.COMMON.POSITIVE" | translate }}</option>
+                              </select>
+                            </td>
+                            <td><input formControlName="phone" type="text" maxlength="20" class="form-control" /></td>
+                            <td>
+                              <button type="button" class="btn btn-sm btn-danger" (click)="removeContactSample(i)">
+                                <i class="pi pi-trash"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <button type="button" class="btn btn-add-record btn-sm mb-4" (click)="addContactSample()">
+                      <i class="pi pi-plus"></i> {{ "NEDSS.MALARIA.CONTACT_SAMPLES_ADD" | translate }}
+                    </button>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.MALARIA.CONTACT_SAMPLES_COLLECTOR" | translate }}</label>
+                      <input formControlName="contactSamplesCollectorName" type="text" maxlength="200" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label for="">{{ "NEDSS.MALARIA.CONTACT_SAMPLES_UNIT_MANAGER" | translate }}</label>
+                      <input formControlName="contactSamplesUnitManagerName" type="text" maxlength="200" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
         </div>
         <div class="card-footer text-start">
           <button type="submit" class="btn bg rounded-2 text-light"> 
