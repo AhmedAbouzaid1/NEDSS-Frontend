@@ -134,6 +134,7 @@ export class SharedDataService {
     otherHospitalLabName: null,
     isCentralLabLab: false,
     isGovernmentLab: false,
+    isMalariaLab: false,
     isRegionalLab: false,
     regionalLabId: null,
     isSpecialLabLab: false,

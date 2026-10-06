@@ -308,6 +308,9 @@ export class GeneralDataService {
   update(patient: any) {
     return this.APIs.update(this.controllerURL + 'Update', patient);
   }
+  updateFromInvestigation(patient: any) {
+    return this.APIs.update(this.controllerURL + 'UpdateFromInvestigation', patient);
+  }
   updateInvestigation(patient: any) {
     return this.APIs.update(
       this.controllerURL + 'UpdateNotInvetigation',

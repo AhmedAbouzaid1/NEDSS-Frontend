@@ -24398,263 +24398,766 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DISEASE_TYPE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATA"
+      ],
+      "options": {
+        "1": [
+          "اشتباه التهاب سحائي"
+        ],
+        "2": [
+          "اشتباه التهاب بالمخ"
+        ]
+      }
     },
     {
       "key": "investigationDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATA"
+      ]
     },
     {
-      "key": "schoolOrGatheringName",
+      "key": "firstName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SCHOOL_OR_GATHERING_NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FIRST_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
     },
     {
-      "key": "lastVisitDate",
+      "key": "secondName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_VISIT_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SECOND_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
     },
     {
-      "key": "schoolGovernorate",
+      "key": "thirdName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SCHOOL_GOVERNORATE"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.THIRD_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
     },
     {
-      "key": "schoolAdministrationArea",
+      "key": "familyName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SCHOOL_ADMINISTRATION_AREA"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FAMILY_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "age",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.AGE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "ageTypeId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.AGE_TYPE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ],
+      "options": {
+        "1": [
+          "يوم"
+        ],
+        "2": [
+          "شهر"
+        ],
+        "3": [
+          "سنة"
+        ]
+      }
+    },
+    {
+      "key": "genderId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.GENDER"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ],
+      "options": {
+        "1": [
+          "ذكر"
+        ],
+        "2": [
+          "أنثى"
+        ]
+      }
+    },
+    {
+      "key": "phoneNo1",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PHONE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "nationalityId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.NATIONALITY"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "patientJobCategoryId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.JOB"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "patientJobName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.JOB_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "homeGovernmentId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.GOVERNORATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "homeHealthAdministrationId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ADMINISTRATION_AREA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "homeCityId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CITY"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "livingAddress",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DETAILED_ADDRESS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "lastFacilityVisitDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_FACILITY_VISIT_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "facilityGovernorateId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.GOVERNORATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ]
+    },
+    {
+      "key": "facilityHealthAdministrationId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ADMINISTRATION_AREA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ]
+    },
+    {
+      "key": "facilityVillageOrStreet",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VILLAGE_OR_STREET"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ]
     },
     {
       "key": "traveledAbroad",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TRAVELED_ABROAD"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
     },
     {
-      "key": "travelDestinationCountry",
+      "key": "travelCountryId",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COUNTRY"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ]
     },
     {
-      "key": "arrivalDate",
+      "key": "travelArrivalDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ARRIVAL_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ]
     },
     {
-      "key": "vaccinationHibStatus",
+      "key": "incidentSourceId",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HIB_VACCINATION"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.REPORTING_SOURCE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA"
+      ]
     },
     {
-      "key": "vaccinationHibLastDoseDate",
+      "key": "infectionDate",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SYMPTOM_ONSET_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA"
+      ]
     },
     {
-      "key": "vaccinationMeningococcalSchoolsStatus",
+      "key": "finalResultId",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_SCHOOLS"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DISCHARGE_STATUS"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA"
+      ]
     },
     {
-      "key": "vaccinationMeningococcalSchoolsLastDoseDate",
+      "key": "lastFollowUpDate",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_FOLLOW_UP_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA"
+      ]
     },
     {
-      "key": "vaccinationMeningococcalTravelersStatus",
+      "key": "currentHealthStatus",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_TRAVELERS"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HEALTH_STATUS"
       ],
-      "section": []
-    },
-    {
-      "key": "vaccinationMeningococcalTravelersLastDoseDate",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA"
       ],
-      "section": []
+      "options": {
+        "1": [
+          "وفاة"
+        ],
+        "2": [
+          "سيئة"
+        ],
+        "3": [
+          "نفس الوضع"
+        ],
+        "4": [
+          "تحسن"
+        ]
+      }
     },
     {
       "key": "contactWithSimilarCase",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_WITH_SIMILAR_CASE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
     },
     {
-      "key": "contactPatientName",
+      "key": "contactCaseName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_PATIENT_NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_CASE_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
-      "key": "contactRelationship",
+      "key": "contactType",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_RELATIONSHIP"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_TYPE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ],
+      "options": {
+        "1": [
+          "منزل"
+        ],
+        "2": [
+          "عمل"
+        ],
+        "3": [
+          "مدرسة"
+        ],
+        "4": [
+          "أخرى"
+        ]
+      }
+    },
+    {
+      "key": "contactTypeOther",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_TYPE_OTHER"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
       "key": "contactHospitalized",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_HOSPITALIZED"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
     },
     {
       "key": "contactHospitalName",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_HOSPITAL_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
       "key": "contactHospitalAdmissionDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_HOSPITAL_ADMISSION_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
       "key": "contactFinalDiagnosis",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_FINAL_DIAGNOSIS"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
       "key": "contactTraveledAbroad",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_TRAVELED_ABROAD"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
     },
     {
-      "key": "contactTravelCountry",
+      "key": "contactTravelCountryId",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COUNTRY"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
       "key": "contactArrivalDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ARRIVAL_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
-      "key": "caseMovements",
+      "key": "hibVaccinated",
       "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HIB_VACCINATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "hibLastDoseDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ]
+    },
+    {
+      "key": "meningococcalSchoolVaccinated",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_SCHOOLS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "meningococcalSchoolLastDoseDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ]
+    },
+    {
+      "key": "meningococcalTravelVaccinated",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_TRAVELERS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "meningococcalTravelLastDoseDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ]
+    },
+    {
+      "key": "wentToHospitalOnOnset",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.WENT_TO_HOSPITAL_ON_ONSET"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "timeToDoctorValue",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TIME_TO_DOCTOR"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ]
+    },
+    {
+      "key": "timeToDoctorUnit",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TIME_UNIT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ],
+      "options": {
+        "1": [
+          "ساعة"
+        ],
+        "2": [
+          "يوم"
+        ]
+      }
+    },
+    {
+      "key": "firstFacilityVisitDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FIRST_FACILITY_VISIT_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ]
+    },
+    {
+      "key": "visitedMultipleFacilities",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VISITED_MULTIPLE_FACILITIES"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "facilitiesVisitedCount",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITIES_VISITED_COUNT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ]
+    },
+    {
+      "key": "firstFacilityName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FIRST_FACILITY_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ]
+    },
+    {
+      "key": "currentHospitalName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HOSPITAL_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ]
+    },
+    {
+      "key": "movedBetweenFacilities",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MOVED_BETWEEN_FACILITIES"
+      ],
+      "section": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CASE_MOVEMENTS"
       ],
-      "section": []
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "movementFacilitiesCount",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MOVEMENT_FACILITIES_COUNT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CASE_MOVEMENTS"
+      ],
+      "options": {
+        "1": [
+          "2 منشأة"
+        ],
+        "2": [
+          "3 منشآت أو أكثر"
+        ]
+      }
+    },
+    {
+      "key": "contactsTracedAndManaged",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACTS_TRACED_AND_MANAGED"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
     },
     {
       "key": "totalContactsCount",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TOTAL_CONTACTS_COUNT"
       ],
-      "section": []
-    },
-    {
-      "key": "contacts",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TOTAL_CONTACTS_COUNT"
-      ],
-      "section": [],
-      "array": true,
-      "aliases": [
-        "directContactsJson"
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES"
       ]
     },
     {
-      "key": "contactSeq",
+      "key": "chemoprophylaxisGiven",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_SEQ"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CHEMOPROPHYLAXIS_GIVEN"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
     },
     {
-      "key": "contactName",
+      "key": "chemoprophylaxisContactsCount",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PATIENT_NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CHEMOPROPHYLAXIS_CONTACTS_COUNT"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES"
+      ]
     },
     {
-      "key": "contactAge",
+      "key": "relatedCasesIdentified",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.AGE"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RELATED_CASES_IDENTIFIED"
       ],
-      "section": []
-    },
-    {
-      "key": "contactRelationshipToCase",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_RELATIONSHIP_TO_CASE"
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES"
       ],
-      "section": []
-    },
-    {
-      "key": "contactVaccinationStatus",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_VACCINATION_STATUS"
-      ],
-      "section": []
-    },
-    {
-      "key": "contactChemoprophylaxisGiven",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_CHEMOPROPHYLAXIS_GIVEN"
-      ],
-      "section": []
-    },
-    {
-      "key": "contactDrugUsed",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_DRUG_USED"
-      ],
-      "section": []
-    },
-    {
-      "key": "contactDose",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_DOSE"
-      ],
-      "section": []
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
     },
     {
       "key": "followUpRounds",
       "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FOLLOWUP_DONE"
+      ],
+      "section": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
       ],
-      "section": [],
       "array": true
     },
     {
@@ -24662,35 +25165,97 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FOLLOWUP_DONE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
+      ],
+      "options": {
+        "1": [
+          "تمت"
+        ],
+        "2": [
+          "لم تتم"
+        ]
+      }
+    },
+    {
+      "key": "followUpDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FOLLOW_UP_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
+      ]
     },
     {
       "key": "complicationsOccurred",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_OCCURRED"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
     },
     {
       "key": "complicationDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATION_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
+      ]
     },
     {
-      "key": "caseSummary",
+      "key": "otherComplicationsDetails",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CASE_SUMMARY"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.OTHER_COMPLICATIONS_DETAILS"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
+      ]
     },
     {
-      "key": "notes",
+      "key": "investigatorName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.NOTES"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATOR_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
+      ]
+    },
+    {
+      "key": "surveillanceOfficerName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SURVEILLANCE_OFFICER_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
+      ]
+    },
+    {
+      "key": "preventiveDirectorName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_DIRECTOR_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
+      ]
+    },
+    {
+      "key": "administrationDirectorName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ADMINISTRATION_DIRECTOR_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
+      ]
     }
   ],
   "mers": [
