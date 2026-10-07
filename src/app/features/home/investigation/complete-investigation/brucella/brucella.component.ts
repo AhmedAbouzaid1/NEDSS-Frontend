@@ -115,6 +115,9 @@ export class BrucellaComponent implements OnInit {
   exposedToBrucellosis = AnswerOptions;
   previousDiagnosis = AnswerOptions;
   casesSameSymptoms = AnswerOptions;
+  antibioticsBeforeReport = AnswerOptions;
+  healthFacilitiesBeforeReport = AnswerOptions;
+  private readonly freeTextControls = ['labName', 'labPlace', 'exposureDetails', 'antibioticsNames', 'healthFacilitiesDetails'];
   consumingUnpasteurizedDairy = AnswerOptions;
   veterinarianInformed = AnswerOptions;
   Places = place;
@@ -163,6 +166,10 @@ export class BrucellaComponent implements OnInit {
       laboratoryExposureBrucella: new FormControl(),
       exposureDetails: new FormControl(),
       previousDiagnosis: new FormControl(),
+      antibioticsBeforeReport: new FormControl(),
+      antibioticsNames: new FormControl(),
+      healthFacilitiesBeforeReport: new FormControl(),
+      healthFacilitiesDetails: new FormControl(),
       casesSameSymptoms: new FormControl(),
       placeOrLab: new FormControl(),
       patientID: new FormControl(this.currentId),
@@ -309,7 +316,7 @@ export class BrucellaComponent implements OnInit {
       else if (typeof value.value === 'boolean'){
         value.value.toString();
       }
-      else if (value.value != null && !isNaN(+value.value) && typeof value.value !== 'boolean') {
+      else if (value.value != null && !isNaN(+value.value) && typeof value.value !== 'boolean' && !this.freeTextControls.includes(key)) {
         value.setValue(parseInt(value.value.toString()));
       }
     });

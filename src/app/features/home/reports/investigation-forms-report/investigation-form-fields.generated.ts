@@ -4347,6 +4347,44 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
+      "key": "antibioticsBeforeReport",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.ANTIBIOTICS_BEFORE_REPORT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "antibioticsNames",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_ANTIBIOTICS_NAMES"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ]
+    },
+    {
+      "key": "healthFacilitiesBeforeReport",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.HEALTH_FACILITIES_BEFORE_REPORT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "healthFacilitiesDetails",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_HEALTH_FACILITIES_DETAILS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ]
+    },
+    {
       "key": "casesSameSymptoms",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.CASES_WITH_SAME_SYMPTOMS"
@@ -4452,922 +4490,124 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "nameDay1",
+      "key": "name",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_NAME"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACTS_FOLLOW_UP"
       ]
     },
     {
-      "key": "ageDay1",
+      "key": "age",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.AGE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACTS_FOLLOW_UP"
       ]
     },
     {
-      "key": "telephoneDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.PHONE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "genderDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ],
-      "optionsRef": "Gender"
-    },
-    {
-      "key": "contactTypeDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ],
-      "optionsRef": "contactType"
-    },
-    {
-      "key": "relationshipPatientDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.RELATION_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "dateOnsetSymptomsDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SYMPTOMS_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "feverDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "dryCoughDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "coughingWithSpittingDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "diarrheaDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherSymptomsDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "isSampleTakenDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dateSampleTakenDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
-      ]
-    },
-    {
-      "key": "sampleResultDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED"
-        ]
-      }
-    },
-    {
-      "key": "nameDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "ageDay2",
+      "key": "ageUnit",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.AGE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACTS_FOLLOW_UP"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.AGE_YEARS"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.AGE_MONTHS"
+        ]
+      }
+    },
+    {
+      "key": "telephone",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.TELEPHONE_NO"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACTS_FOLLOW_UP"
       ]
     },
     {
-      "key": "telephoneDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.PHONE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "genderDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ],
-      "optionsRef": "Gender"
-    },
-    {
-      "key": "contactTypeDay2",
+      "key": "contactType",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_TYPE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ],
-      "optionsRef": "contactType"
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACTS_FOLLOW_UP"
+      ]
     },
     {
-      "key": "relationshipPatientDay2",
+      "key": "relationship",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.RELATION_TO_CASE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACTS_FOLLOW_UP"
       ]
     },
     {
-      "key": "dateOnsetSymptomsDay2",
+      "key": "hasSymptoms",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SYMPTOMS_ONSET_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.HAS_SYMPTOMS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ]
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACTS_FOLLOW_UP"
+      ],
+      "options": {
+        "0": [
+          "NEDSS.COMMON.YES"
+        ],
+        "1": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
     },
     {
-      "key": "feverDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "dryCoughDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "coughingWithSpittingDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "diarrheaDay2",
+      "key": "diarrhea",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DIARRHEA"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherSymptomsDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "isSampleTakenDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACTS_FOLLOW_UP"
       ],
       "options": {
-        "0": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "1": [
+        "false": [
           "NEDSS.COMMON.NO"
         ]
       }
     },
     {
-      "key": "dateSampleTakenDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
-      ]
-    },
-    {
-      "key": "sampleResultDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED"
-        ]
-      }
-    },
-    {
-      "key": "nameDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "ageDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "telephoneDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.PHONE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "genderDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ],
-      "optionsRef": "Gender"
-    },
-    {
-      "key": "contactTypeDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ],
-      "optionsRef": "contactType"
-    },
-    {
-      "key": "relationshipPatientDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.RELATION_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "dateOnsetSymptomsDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SYMPTOMS_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "feverDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "dryCoughDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "coughingWithSpittingDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay7",
+      "key": "vomiting",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.VOMITING"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "diarrheaDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherSymptomsDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "isSampleTakenDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACTS_FOLLOW_UP"
       ],
       "options": {
-        "0": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "1": [
+        "false": [
           "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dateSampleTakenDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
-      ]
-    },
-    {
-      "key": "sampleResultDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED"
-        ]
-      }
-    },
-    {
-      "key": "nameDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "ageDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "telephoneDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.PHONE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "genderDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ],
-      "optionsRef": "Gender"
-    },
-    {
-      "key": "contactTypeDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ],
-      "optionsRef": "contactType"
-    },
-    {
-      "key": "relationshipPatientDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.RELATION_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "dateOnsetSymptomsDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SYMPTOMS_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "feverDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "dryCoughDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "coughingWithSpittingDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "diarrheaDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherSymptomsDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "isSampleTakenDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dateSampleTakenDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
-      ]
-    },
-    {
-      "key": "sampleResultDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LABORATORY"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED"
         ]
       }
     },
@@ -5377,7 +4617,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTAMINATED_FOOD_OR_LIQUIDS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5398,7 +4638,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5408,7 +4648,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.MARINE_CRUSTACEANS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5429,7 +4669,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5439,7 +4679,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_SEAFOOD"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5460,7 +4700,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5470,7 +4710,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.MILK"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5491,7 +4731,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5501,7 +4741,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CHEESE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5522,7 +4762,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5532,7 +4772,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_CHEESE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5553,7 +4793,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5563,7 +4803,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ICE_CREAM"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5584,7 +4824,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5594,7 +4834,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_DAIRY_PRODUCTS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5615,7 +4855,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5625,7 +4865,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.UNCOOKED_FRUITS_VEGETABLES"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5646,7 +4886,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5656,7 +4896,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.RAW_EGGS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5677,7 +4917,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5687,7 +4927,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOODS_NOT_HOME"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5708,7 +4948,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_TYPE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5718,7 +4958,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5728,7 +4968,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_FOODS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5749,7 +4989,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SOURCE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5759,7 +4999,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IS_FOOD_HANDLER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5780,7 +5020,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.JOB"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5790,7 +5030,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.HAS_HEALTH_CERTIFICATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ],
       "options": {
@@ -5811,7 +5051,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.LAST_CERTIFICATE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOOD_EXPOSURES"
       ]
     },
@@ -5821,7 +5061,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.PATIENT_OUTSIDE_COUNTRY_14_DAYS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.TRAVEL_AND_MOVEMENTS"
       ],
       "optionsRef": "AnswerOptions"
@@ -5832,7 +5072,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_YES_COUNTRY"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.TRAVEL_AND_MOVEMENTS"
       ]
     },
@@ -5842,7 +5082,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.TRAVEL_REASON"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.TRAVEL_AND_MOVEMENTS"
       ]
     },
@@ -5852,7 +5092,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.TRAVEL_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.TRAVEL_AND_MOVEMENTS"
       ]
     },
@@ -5862,7 +5102,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.RETURN_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.TRAVEL_AND_MOVEMENTS"
       ]
     },
@@ -5872,7 +5112,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.WATER_SOURCE_HOME"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -5899,7 +5139,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.WATER_SOURCE_HOME"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ]
     },
@@ -5909,7 +5149,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IS_WATER_STORED"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -5927,7 +5167,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IS_WATER_STORED"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ]
     },
@@ -5937,7 +5177,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SEWAGE_SYSTEM_HOME"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -5958,7 +5198,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DISTANCE_WATER_SOURCES_SEWAGE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "optionsRef": "distanceWaterSourcesSewage"
@@ -5969,7 +5209,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.MAINTENANCE_SEWER_SYSTEM"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -5990,7 +5230,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.BREAK_PIPES_DRINKING_WATER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6011,7 +5251,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OVERFLOW_SEWER_SYSTEM"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6032,7 +5272,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CHANGE_TASTE_COLOR_SMELL_WATER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6053,7 +5293,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.REPORTS_CONTAMINATION_WATER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6074,7 +5314,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLES_ANALYSIS_PATIENT_HOME"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6095,7 +5335,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENTAMOEBA_HISTOLYTICA"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6116,7 +5356,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SHIGELLA_SPECIES"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6137,7 +5377,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CAMPYLOBACTER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6158,7 +5398,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SALMONELLA_SPECIES"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6179,7 +5419,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.PATHOGENIC_COLI"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6200,7 +5440,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SALMONELLA_TYPHI"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6221,7 +5461,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.VIBRIO_CHOLERA"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6242,7 +5482,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.VIBRIO_CHOLERA"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ]
     },
@@ -6252,7 +5492,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FILTERED_WATER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6273,7 +5513,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.WELLS_SAMPLE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6294,7 +5534,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ETHIOPIAN_PUMP_SAMPLE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6315,7 +5555,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CANAL_SAMPLE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6336,7 +5576,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.STORED_WATER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6357,7 +5597,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLED_SEWER_SYSTEM_TAKEN"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ],
       "options": {
@@ -6378,7 +5618,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IF_YES_SAMPLE_RESULT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ]
     },
@@ -6388,7 +5628,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.INVESTIGATION_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ]
     },
@@ -6398,7 +5638,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.HEALTH_OBSERVER_NAME"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ]
     },
@@ -6408,7 +5648,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SURVEILLANCE_OFFICER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ]
     },
@@ -6418,7 +5658,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.APPROVED_BY_ADMIN_DIRECTOR"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOLLOW_UP_DAY_14",
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENVIRONMENTAL_INVESTIGATION"
       ]
     }
