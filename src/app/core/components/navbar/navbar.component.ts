@@ -32,7 +32,6 @@ export class NavbarComponent implements OnInit {
   chatNotifications: NotificationDTO = {};
   private hubConnection: signalR.HubConnection;
   userId: number = 0;
-  notstr: string = '';
   readonly defaultUserImage = 'assets/default-user.webp';
   userImage: string = this.defaultUserImage;
   hasProfileImage = false;
@@ -168,24 +167,6 @@ export class NavbarComponent implements OnInit {
         console.log('Error while starting connection: ' + err);
       });
   }
-  public sendNotification(userIDs: number[], not: NotificationDTO) {
-    this.hubConnection
-      .invoke('sendNotification', userIDs, not)
-      .catch((err) => console.error(err));
-    this.hubConnection.on(
-      'notificationReceived',
-      (connID: string, msg: NotificationDTO) => {
-        if (this.notifications.find((x) => x.title == 'chat')) {
-          this.notifications[0].message = (
-            Number(this.notifications[0].message) + 1
-          ).toString();
-        }
-        this.notifications = this.notifications.filter(
-          (x) => x.title !== 'chat'
-        );
-      }
-    );
-  }
 
   RemoveChatNotifications() {
     this.notificationService
@@ -283,20 +264,6 @@ export class NavbarComponent implements OnInit {
     };
     this.auth.logout().subscribe({ next: finish, error: finish });
   }
-  testNot() {
-    let not: NotificationDTO = {};
-    not.createdDate = new Date();
-    not.hasUrl = false;
-    not.message = this.notstr;
-    not.seen = false;
-    not.systemUserId = 2;
-    not.title = this.notstr;
-    not.url = '';
-    not.user = {};
-
-    this.sendNotification([1010, 2], not);
-  }
-
   password: null;
   confirmPassword: null;
   chngPassword() {

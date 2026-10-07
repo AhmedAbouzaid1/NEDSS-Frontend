@@ -81,18 +81,6 @@ export class NotificationService {
 
     this.hubConnection.invoke('UserConnected', Number(userId));
   }
-  public sendNotification(userIDs: number[], not: NotificationDTO) {
-    this.hubConnection
-      .invoke('sendNotification', userIDs, not)
-      .catch((err) => console.error(err));
-
-    this.hubConnection.on(
-      'notificationReceived',
-      (connID: string, msg: NotificationDTO) => {
-        console.log(msg);
-      }
-    );
-  }
   // } else {
   //   this.hubConnection.invoke('sendNotification', notificationDTO);
   // }

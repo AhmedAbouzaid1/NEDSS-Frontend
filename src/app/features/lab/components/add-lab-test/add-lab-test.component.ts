@@ -577,12 +577,6 @@ export class AddLabTestComponent {
                 });
               this.getById(this.id);
               this.resetLabCheck();
-              //send notification here
-              responses.forEach((response) => {
-                response?.messages?.forEach((msg) => {
-                  this.notificationService.sendNotification([], JSON.parse(msg));
-                });
-              });
             },
             (error) => {
               this.translateService
