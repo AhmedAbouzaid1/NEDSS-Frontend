@@ -8,225 +8,203 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="form-group">
-              <label>
+              <label class="inv-patient-name">
                 {{"NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME"| translate}}: {{ patientName }}
               </label>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="form-group">
-              <label>
-                {{"NEDSS.INVESTIGATIONS.percentage"| translate}}
-                <span class="mx-4" style="font-size: larger; color: red">
-                  {{ allControllesCount === 0 ? '0.00' : ((allFilledControlsCount / allControllesCount) * 100 | number:'1.0-2') }} %
-                </span>
-              </label>
-              <input
-                type="range"
-                class="form-range bg"
-                [readonly]="true"
-                style="border-radius: 11.7px; border: 5.5px solid white"
-                min="0"
-                max="100"
-                step="1"
-                [value]="allControllesCount ? (allFilledControlsCount / allControllesCount) * 100 : 0"
-              />
-            </div>
+
+        <div class="card card-body bg-dark-mode rounded-2 mb-4 card-alt severe-fp-samples">
+          <div class="title fs-6 fwb mb-2">
+            {{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION" | translate }}
           </div>
-          <div class="col-lg-4">
-            {{"NEDSS.INVESTIGATIONS.Filled"| translate}}
-            {{allFilledControlsCount}}
-            {{"NEDSS.INVESTIGATIONS.Field"| translate}}
-            {{"NEDSS.INVESTIGATIONS.From"| translate}}
-            {{allControllesCount}}
-            {{"NEDSS.INVESTIGATIONS.Field"| translate}}
+          <div class="row severe-fp-grid">
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_COUNT" | translate }}</label>
+                <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
+                  [(ngModel)]="SevereFoodPoisoningData.caseCount" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_EXPOSURE_COUNT" | translate }}</label>
+                <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
+                  [(ngModel)]="SevereFoodPoisoningData.foodExposureCount" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_INTAKE_TIME" | translate }}</label>
+                <input type="datetime-local" class="form-control" (blur)="calculateCompletionPercentage()"
+                  [(ngModel)]="SevereFoodPoisoningData.foodIntakeTime" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SYMPTOMS_ONSET_TIME" | translate }}</label>
+                <input type="datetime-local" class="form-control" (blur)="calculateCompletionPercentage()"
+                  [(ngModel)]="SevereFoodPoisoningData.symptomsOnsetTime" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.EXPOSURE_LOCATION" | translate }}</label>
+                <ng-multiselect-dropdown
+                  class="w-100"
+                  [settings]="multipleDropdownSettings"
+                  [data]="exposureLocations"
+                  [(ngModel)]="selectedExposureLocations"
+                  (onSelect)="calculateCompletionPercentage()"
+                  (onDeSelect)="calculateCompletionPercentage()"
+                  (onSelectAll)="calculateCompletionPercentage()"
+                  (onDeSelectAll)="calculateCompletionPercentage()"
+                  name="exposureLocation"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6" *ngIf="isChecked(selectedExposureLocations, 'OTHER')">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY" | translate }}</label>
+                <input type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()"
+                  [(ngModel)]="SevereFoodPoisoningData.exposureLocationOther" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_TYPE" | translate }}</label>
+                <ng-multiselect-dropdown
+                  class="w-100"
+                  [settings]="multipleDropdownSettings"
+                  [data]="foodTypeOptions"
+                  [(ngModel)]="selectedFoodTypes"
+                  (onSelect)="calculateCompletionPercentage()"
+                  (onDeSelect)="calculateCompletionPercentage()"
+                  (onSelectAll)="calculateCompletionPercentage()"
+                  (onDeSelectAll)="calculateCompletionPercentage()"
+                  name="foodTypes"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6" *ngIf="isChecked(selectedFoodTypes, 'OTHER')">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY" | translate }}</label>
+                <input type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()"
+                  [(ngModel)]="SevereFoodPoisoningData.foodTypeOther" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_SOURCE" | translate }}</label>
+                <ng-multiselect-dropdown
+                  class="w-100"
+                  [settings]="multipleDropdownSettings"
+                  [data]="foodSourceOptions"
+                  [(ngModel)]="selectedFoodSources"
+                  (onSelect)="calculateCompletionPercentage()"
+                  (onDeSelect)="calculateCompletionPercentage()"
+                  (onSelectAll)="calculateCompletionPercentage()"
+                  (onDeSelectAll)="calculateCompletionPercentage()"
+                  name="foodSources"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.PREPARATION_TO_INTAKE_DURATION" | translate }}</label>
+                <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
+                  [(ngModel)]="SevereFoodPoisoningData.preparationToIntakeDuration" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.WATER_SOURCE" | translate }}</label>
+                <ng-multiselect-dropdown
+                  class="w-100"
+                  [settings]="multipleDropdownSettings"
+                  [data]="waterSourceOptions"
+                  [(ngModel)]="selectedWaterSources"
+                  (onSelect)="calculateCompletionPercentage()"
+                  (onDeSelect)="calculateCompletionPercentage()"
+                  (onSelectAll)="calculateCompletionPercentage()"
+                  (onDeSelectAll)="calculateCompletionPercentage()"
+                  name="waterSourceType"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6" *ngIf="isChecked(selectedWaterSources, 'OTHER')">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY" | translate }}</label>
+                <input type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()"
+                  [(ngModel)]="SevereFoodPoisoningData.waterSourceOther" />
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.GENERAL_CASE_STATUS" | translate }}</label>
+                <input type="text" maxlength="250" class="form-control" (blur)="calculateCompletionPercentage()"
+                  [(ngModel)]="SevereFoodPoisoningData.generalCaseStatus" />
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt severe-fp-samples">
-            <div class="row">
-              <div class="col-12 title fs-6 fwb">
-                {{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION" | translate }}
-              </div>
-
-              <div class="col-lg-6 mb-3">
-                <div class="form-group">
-                  <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_COUNT" | translate }}</label>
-                  <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
-                    [(ngModel)]="SevereFoodPoisoningData.caseCount" />
-                </div>
-              </div>
-
-              <div class="col-12 mb-3">
-                <label class="mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.EXPOSURE_LOCATION" | translate }}</label>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <ng-multiselect-dropdown
-                      class="w-100"
-                      [settings]="multipleDropdownSettings"
-                      [data]="exposureLocations"
-                      [(ngModel)]="selectedExposureLocations"
-                      (onSelect)="calculateCompletionPercentage()"
-                      (onDeSelect)="calculateCompletionPercentage()"
-                      (onSelectAll)="calculateCompletionPercentage()"
-                      (onDeSelectAll)="calculateCompletionPercentage()"
-                      name="exposureLocation"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="col-lg-6" *ngIf="isChecked(selectedExposureLocations, 'OTHER')">
-                    <input type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()"
-                      [(ngModel)]="SevereFoodPoisoningData.exposureLocationOther" />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-12 mb-3">
-                <label class="mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_TYPE" | translate }}</label>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <ng-multiselect-dropdown
-                      class="w-100"
-                      [settings]="multipleDropdownSettings"
-                      [data]="foodTypeOptions"
-                      [(ngModel)]="selectedFoodTypes"
-                      (onSelect)="calculateCompletionPercentage()"
-                      (onDeSelect)="calculateCompletionPercentage()"
-                      (onSelectAll)="calculateCompletionPercentage()"
-                      (onDeSelectAll)="calculateCompletionPercentage()"
-                      name="foodTypes"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="col-lg-6" *ngIf="isChecked(selectedFoodTypes, 'OTHER')">
-                    <input type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()"
-                      [(ngModel)]="SevereFoodPoisoningData.foodTypeOther" />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_INTAKE_TIME" | translate }}</label>
-                  <input type="datetime-local" [class]="'form-control-'+ currentLang" (blur)="calculateCompletionPercentage()"
-                    [(ngModel)]="SevereFoodPoisoningData.foodIntakeTime" />
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="form-group">
-                  <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SYMPTOMS_ONSET_TIME" | translate }}</label>
-                  <input type="datetime-local" [class]="'form-control-'+ currentLang" (blur)="calculateCompletionPercentage()"
-                    [(ngModel)]="SevereFoodPoisoningData.symptomsOnsetTime" />
-                </div>
-              </div>
-              <div class="col-12"></div>
-              <div class="col-lg-6 mb-3">
-                <div class="form-group">
-                  <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.PREPARATION_TO_INTAKE_DURATION" | translate }}</label>
-                  <input type="text" maxlength="100" class="form-control" (blur)="calculateCompletionPercentage()"
-                    [(ngModel)]="SevereFoodPoisoningData.preparationToIntakeDuration" />
-                </div>
-              </div>
-
-              <div class="col-12"></div>
-              <div class="col-lg-6 mb-3">
-                <div class="form-group">
-                  <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_EXPOSURE_COUNT" | translate }}</label>
-                  <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
-                    [(ngModel)]="SevereFoodPoisoningData.foodExposureCount" />
-                </div>
-              </div>
-
-              <div class="col-12"></div>
-              <div class="col-lg-6 mb-3">
-                <div class="form-group">
-                  <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.GENERAL_CASE_STATUS" | translate }}</label>
-                  <input type="text" maxlength="250" class="form-control" (blur)="calculateCompletionPercentage()"
-                    [(ngModel)]="SevereFoodPoisoningData.generalCaseStatus" />
-                </div>
-              </div>
-
-              <div class="col-12 mb-3">
-                <label class="mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.WATER_SOURCE" | translate }}</label>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <ng-multiselect-dropdown
-                      class="w-100"
-                      [settings]="multipleDropdownSettings"
-                      [data]="waterSourceOptions"
-                      [(ngModel)]="selectedWaterSources"
-                      (onSelect)="calculateCompletionPercentage()"
-                      (onDeSelect)="calculateCompletionPercentage()"
-                      (onSelectAll)="calculateCompletionPercentage()"
-                      (onDeSelectAll)="calculateCompletionPercentage()"
-                      name="waterSourceType"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="col-lg-6" *ngIf="isChecked(selectedWaterSources, 'OTHER')">
-                    <input type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()"
-                      [(ngModel)]="SevereFoodPoisoningData.waterSourceOther" />
-                  </div>
-                </div>
+        <div class="card card-body bg-dark-mode rounded-2 mb-4 card-alt severe-fp-samples">
+          <div class="title fs-6 fwb mb-2">
+            {{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SAMPLES_SECTION" | translate }}
+          </div>
+          <div class="row severe-fp-grid">
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.HUMAN_SAMPLES" | translate }}</label>
+                <ng-multiselect-dropdown
+                  class="w-100 severe-fp-samples-msd"
+                  [settings]="samplesDropdownSettings"
+                  [data]="humanSampleOptions"
+                  [(ngModel)]="selectedHumanSamples"
+                  (onSelect)="calculateCompletionPercentage()"
+                  (onDeSelect)="calculateCompletionPercentage()"
+                  (onSelectAll)="calculateCompletionPercentage()"
+                  (onDeSelectAll)="calculateCompletionPercentage()"
+                  name="humanSamples"
+                >
+                </ng-multiselect-dropdown>
               </div>
             </div>
-          </div>
-
-          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt severe-fp-samples">
-            <div class="row">
-              <div class="col-12 title fs-6 fwb">
-                {{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SAMPLES_SECTION" | translate }}
+            <div class="col-lg-3 col-md-6" *ngIf="isChecked(selectedHumanSamples, 'OTHER')">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY" | translate }}</label>
+                <input type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()"
+                  [(ngModel)]="SevereFoodPoisoningData.humanSamplesOther" />
               </div>
-
-              <div class="col-12 mb-3">
-                <label class="mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.HUMAN_SAMPLES" | translate }}</label>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <ng-multiselect-dropdown
-                      class="w-100 severe-fp-samples-msd"
-                      [settings]="samplesDropdownSettings"
-                      [data]="humanSampleOptions"
-                      [(ngModel)]="selectedHumanSamples"
-                      (onSelect)="calculateCompletionPercentage()"
-                      (onDeSelect)="calculateCompletionPercentage()"
-                      (onSelectAll)="calculateCompletionPercentage()"
-                      (onDeSelectAll)="calculateCompletionPercentage()"
-                      name="humanSamples"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="col-lg-6" *ngIf="isChecked(selectedHumanSamples, 'OTHER')">
-                    <input type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()"
-                      [(ngModel)]="SevereFoodPoisoningData.humanSamplesOther" />
-                  </div>
-                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.ENVIRONMENTAL_SAMPLES" | translate }}</label>
+                <ng-multiselect-dropdown
+                  class="w-100 severe-fp-samples-msd"
+                  [settings]="samplesDropdownSettings"
+                  [data]="environmentalSampleOptions"
+                  [(ngModel)]="selectedEnvironmentalSamples"
+                  (onSelect)="calculateCompletionPercentage()"
+                  (onDeSelect)="calculateCompletionPercentage()"
+                  (onSelectAll)="calculateCompletionPercentage()"
+                  (onDeSelectAll)="calculateCompletionPercentage()"
+                  name="environmentalSamples"
+                >
+                </ng-multiselect-dropdown>
               </div>
-
-              <div class="col-12">
-                <label class="mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.ENVIRONMENTAL_SAMPLES" | translate }}</label>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <ng-multiselect-dropdown
-                      class="w-100 severe-fp-samples-msd"
-                      [settings]="samplesDropdownSettings"
-                      [data]="environmentalSampleOptions"
-                      [(ngModel)]="selectedEnvironmentalSamples"
-                      (onSelect)="calculateCompletionPercentage()"
-                      (onDeSelect)="calculateCompletionPercentage()"
-                      (onSelectAll)="calculateCompletionPercentage()"
-                      (onDeSelectAll)="calculateCompletionPercentage()"
-                      name="environmentalSamples"
-                    >
-                    </ng-multiselect-dropdown>
-                  </div>
-                  <div class="col-lg-6" *ngIf="isChecked(selectedEnvironmentalSamples, 'OTHER')">
-                    <input type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()"
-                      [(ngModel)]="SevereFoodPoisoningData.environmentalSamplesOther" />
-                  </div>
-                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" *ngIf="isChecked(selectedEnvironmentalSamples, 'OTHER')">
+              <div class="form-group">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY" | translate }}</label>
+                <input type="text" maxlength="200" class="form-control" (blur)="calculateCompletionPercentage()"
+                  [(ngModel)]="SevereFoodPoisoningData.environmentalSamplesOther" />
               </div>
             </div>
           </div>

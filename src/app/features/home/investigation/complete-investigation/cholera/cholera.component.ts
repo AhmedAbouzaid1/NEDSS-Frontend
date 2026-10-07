@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-cholera',
+  host: { class: 'investigation-form' },
   templateUrl: './cholera.component.html',
   styleUrls: ['./cholera.component.css']
 })
@@ -358,7 +359,7 @@ export class CholeraComponent implements OnInit {
     const data = this.choleraData;
     console.log(data);
     //Exclude fields you don't want to count (like 'id')
-    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
+    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate', 'contactDeceasedPersonRespiratory'];
     const totalFields = Object.keys(data).filter(key => !excludedFields.includes(key)).length;
 
     this.allControllesCount = totalFields;

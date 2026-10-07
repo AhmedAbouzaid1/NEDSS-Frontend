@@ -308,6 +308,9 @@ export class GeneralDataService {
   update(patient: any) {
     return this.APIs.update(this.controllerURL + 'Update', patient);
   }
+  updateFromInvestigation(patient: any) {
+    return this.APIs.update(this.controllerURL + 'UpdateFromInvestigation', patient);
+  }
   updateInvestigation(patient: any) {
     return this.APIs.update(
       this.controllerURL + 'UpdateNotInvetigation',
@@ -501,6 +504,7 @@ export class GeneralDataService {
     this.isThirdNameValid = true;
     this.isFamilyNameValid = true;
     this.isPhoneNumber1Valid = true;
+    this.isPhoneNumber2Valid = true;
     this.livingAddressValid = true;
     this.isGenderValid = true;
     this.isAgeTypeValid = true;
@@ -514,6 +518,7 @@ export class GeneralDataService {
     this.isHomeHealthOfficeIdValid = true;
     this.isAdressValid = true;
     this.isFeverDurationValid = true;
+    this.isFeverDateValid = true;
     this.isFeverMaxTemperatureValid = true;
     this.isFeverDurationTypeValid = true;
     this.isChronicDiseaseValid = true;
@@ -521,7 +526,16 @@ export class GeneralDataService {
     this.isDoctorNameValid = true;
     this.isPatientDiseasesValid = true;
     this.isInfectionDateValid = true;
+    this.isInfectionDateNotAfterDiscoveryValid = true;
     this.isHospitalEntryDateValid = true;
+    this.isCaseDiscoveryDateAfterBirthValid = true;
+    this.isBirthDateOrderValid = true;
+    this.isFeverDateAfterBirthValid = true;
+    this.isInfectionDateAfterBirthValid = true;
+    this.isInfectionDateNotAfterFeverValid = true;
+    this.isHospitalEntryDateOrderValid = true;
+    this.isHospitalLeaveDateOrderValid = true;
+    this.lastInvalidFieldMessage = null;
   }
 
   // MARK IMP
@@ -562,6 +576,7 @@ export class GeneralDataService {
   isIncidentSourceValid: boolean = true;
   isIncidentDepartmentValid: boolean = true;
   isCaseDiscoveryDateValid: boolean = true;
+  isCaseDiscoveryDateAfterBirthValid: boolean = true;
   isNationalityValid: boolean = true;
   isCardIdValid: boolean = true;
   isPassportIdValid: boolean = true;
@@ -603,6 +618,10 @@ export class GeneralDataService {
     this.isCaseDiscoveryDateValid = this.checkCaseDiscoveryDateValid(
       patient.caseDiscoveryDate
     );
+    this.isCaseDiscoveryDateAfterBirthValid = this.isDateOnOrAfter(
+      patient.caseDiscoveryDate,
+      patient.birthDate
+    );
     this.isNationalityValid = this.checkNationalityValid(patient.nationalityId);
     this.isCardIdValid = this.checkCardIdValid(
       patient.incidentDepartmentId,
@@ -621,6 +640,7 @@ export class GeneralDataService {
       this.isIncidentSourceValid,
       this.isIncidentDepartmentValid,
       this.isCaseDiscoveryDateValid,
+      this.isCaseDiscoveryDateAfterBirthValid,
       this.isNationalityValid,
       this.isCardIdValid,
       this.isPassportIdValid,
@@ -684,11 +704,13 @@ export class GeneralDataService {
   isThirdNameValid: boolean = true;
   isFamilyNameValid: boolean = true;
   isPhoneNumber1Valid: boolean = true;
+  isPhoneNumber2Valid: boolean = true;
   livingAddressValid: boolean = true;
   isGenderValid: boolean = true;
   isAgeTypeValid: boolean = true;
   isAgeValid: boolean = true;
   isBirthDateValid: boolean = true;
+  isBirthDateOrderValid: boolean = true;
   isPassportValid: boolean = true;
   isNationalValid: boolean = true;
 
@@ -715,7 +737,13 @@ export class GeneralDataService {
     const phoneRequired = patient.incidentDepartmentId == DepartmentEnum.Internal;
     this.isPhoneNumber1Valid = this.validatePhoneNumber1(
       patient.phoneNo1,
-      phoneRequired
+      phoneRequired,
+      this.phoneMode(patient.isPhoneNo1International ?? this.isInternationalPhoneFormat(patient.phoneNo1))
+    );
+    this.isPhoneNumber2Valid = this.validatePhoneNumber2(
+      patient.phoneNo2,
+      false,
+      this.phoneMode(patient.isPhoneNo2International ?? this.isInternationalPhoneFormat(patient.phoneNo2))
     );
     this.livingAddressValid = this.validatePhoneNumber1(
       patient.livingAddress,
@@ -725,14 +753,17 @@ export class GeneralDataService {
     this.isAgeTypeValid = this.checkAgeTypeValid(patient.ageTypeId);
     this.isAgeValid = this.validateAge(patient.age, true);
     this.isBirthDateValid = this.validateBirthDate(patient.birthDate, false);
+    this.isBirthDateOrderValid = this.checkBirthDateOrder(patient);
     this.isPassportValid = this.validateField(patient.passportNo);
     this.isNationalValid = this.validateField(patient.nationalId);
     let validationResults = [
+      this.isBirthDateOrderValid,
       this.isFirstNameValid,
       this.isSecondNameValid,
       this.isThirdNameValid,
       this.isFamilyNameValid,
       this.isPhoneNumber1Valid,
+      this.isPhoneNumber2Valid,
       //this.livingAddressValid,
       this.isGenderValid,
       this.isAgeValid,
@@ -789,7 +820,7 @@ export class GeneralDataService {
     this.isHomeHealthAdministrationValid = this.validateField(
       patient.homeHealthAdministrationId
     );
-    this.isHomeCityValid = this.validateField(patient.homeCityId);
+    this.isHomeCityValid = true;
     this.isHomeHealthOfficeIdValid = this.validateField(
       patient.homeHealthOfficeId
     );
@@ -849,6 +880,8 @@ export class GeneralDataService {
 
   //#region "Clinical Symptoms"
   isFeverDurationValid: boolean = true;
+  isFeverDateValid: boolean = true;
+  isFeverDateAfterBirthValid: boolean = true;
   isFeverMaxTemperatureValid: boolean = true;
   isGeneralSymptomsValid: boolean = true;
   isGASTROLINTESTINALSympotomsValid: boolean = true;
@@ -870,15 +903,22 @@ export class GeneralDataService {
         this.validateFeverMaxTemperature(
           patient.feverSymptoms.feverMaxTemp
         );
+      this.isFeverDateValid = this.checkFeverDateNotAfterDiscovery(
+        patient.feverSymptoms.feverDate,
+        patient.caseDiscoveryDate
+      );
+      this.isFeverDateAfterBirthValid = this.isDateOnOrAfter(
+        patient.feverSymptoms.feverDate,
+        patient.birthDate
+      );
       this.isChronicDiseaseValid = this.validateChronicDisease(
         patient.chronicDiseasesIds,
         patient.anotherChronicDisease,
         patient.haveChronicDisease
       );
 
-      this.isFeverDurationTypeValid =
-        Number(patient.feverSymptoms.feverDurationType) > 0 ||
-        !patient.feverSymptoms.feverDuration;
+      patient.feverSymptoms.feverDurationType = 3;
+      this.isFeverDurationTypeValid = true;
 
       this.isGeneralSymptomsValid = true;
       this.isGASTROLINTESTINALSympotomsValid = true;
@@ -887,6 +927,8 @@ export class GeneralDataService {
 
       var validationResults = [
         this.isFeverDurationValid,
+        this.isFeverDateValid,
+        this.isFeverDateAfterBirthValid,
         this.isFeverMaxTemperatureValid,
         this.isGeneralSymptomsValid,
         this.isGASTROLINTESTINALSympotomsValid,
@@ -922,7 +964,7 @@ export class GeneralDataService {
 
   validateFeverMaxTemperature(temperature: number): boolean {
     if (this.validateEmptyField(temperature)) {
-      return !isNaN(temperature) && temperature >= 37 && temperature <= 42;
+      return !isNaN(temperature) && temperature >= 35 && temperature <= 43;
     }
     return true;
   }
@@ -947,7 +989,14 @@ export class GeneralDataService {
   isDoctorNameValid: boolean = true;
   isPatientDiseasesValid: boolean = true;
   isInfectionDateValid: boolean = true;
+  isInfectionDateNotAfterDiscoveryValid: boolean = true;
   isHospitalEntryDateValid: boolean = true;
+  isInfectionDateAfterBirthValid: boolean = true;
+  isInfectionDateNotAfterFeverValid: boolean = true;
+  isHospitalEntryDateOrderValid: boolean = true;
+  isHospitalLeaveDateOrderValid: boolean = true;
+  isHospitalLabSelectionValid: boolean = true;
+  isOtherHospitalLabNameValid: boolean = true;
   isSpecialLabNameValid: boolean = true;
 
   doctorNameValidationMessage: string;
@@ -963,9 +1012,38 @@ export class GeneralDataService {
     this.isInfectionDateValid =
       this.validateField(patient.infectionDate) ||
       patient.incidentDepartmentId != 1;
+    this.isInfectionDateNotAfterDiscoveryValid = this.checkFeverDateNotAfterDiscovery(
+      patient.infectionDate,
+      patient.caseDiscoveryDate
+    );
     this.isHospitalEntryDateValid =
       this.validateField(patient.hospitalEntryDate) ||
       patient.incidentDepartmentId != 1;
+    this.isInfectionDateAfterBirthValid = this.isDateOnOrAfter(
+      patient.infectionDate,
+      patient.birthDate
+    );
+    this.isInfectionDateNotAfterFeverValid = this.isDateOnOrAfter(
+      patient.feverSymptoms?.feverDate,
+      patient.infectionDate
+    );
+    const isInternal = patient.incidentDepartmentId == DepartmentEnum.Internal;
+    this.isHospitalEntryDateOrderValid =
+      !isInternal ||
+      (this.isDateOnOrAfter(patient.hospitalEntryDate, patient.birthDate) &&
+        this.isDateOnOrAfter(patient.hospitalEntryDate, patient.infectionDate) &&
+        this.isDateOnOrAfter(new Date(), patient.hospitalEntryDate));
+    this.isHospitalLeaveDateOrderValid =
+      !isInternal ||
+      (this.isDateOnOrAfter(patient.hospitalLeaveDate, patient.birthDate) &&
+        this.isDateOnOrAfter(patient.hospitalLeaveDate, patient.hospitalEntryDate) &&
+        this.isDateOnOrAfter(new Date(), patient.hospitalLeaveDate));
+    this.isHospitalLabSelectionValid =
+      !patient.isHospitalLab || this.validateField(patient.hospitalLabSelection);
+    this.isOtherHospitalLabNameValid =
+      !patient.isHospitalLab ||
+      patient.hospitalLabSelection !== 2 ||
+      this.validateEmptyField(patient.otherHospitalLabName);
     this.isSpecialLabNameValid =
       !patient.isSpecialLabLab ||
       this.validateEmptyField(patient.specialLabName);
@@ -975,7 +1053,14 @@ export class GeneralDataService {
       this.isDoctorNameValid,
       this.isPatientDiseasesValid,
       this.isInfectionDateValid,
+      this.isInfectionDateNotAfterDiscoveryValid,
+      this.isInfectionDateAfterBirthValid,
+      this.isInfectionDateNotAfterFeverValid,
       this.isHospitalEntryDateValid,
+      this.isHospitalEntryDateOrderValid,
+      this.isHospitalLeaveDateOrderValid,
+      this.isHospitalLabSelectionValid,
+      this.isOtherHospitalLabNameValid,
       this.isSpecialLabNameValid,
     ];
     return validationResults.findIndex((result) => result == false);
@@ -1157,28 +1242,74 @@ export class GeneralDataService {
     }
   }
 
-  validatePhoneNumber1(phoneNo, isRequired) {
+  validatePhoneNumber1(phoneNo, isRequired, mode: 'international' | 'local' | null = null) {
     this.phoneNo1ValidationMessage = this.validatePhoneNumber(
       phoneNo,
-      isRequired
+      isRequired,
+      mode
     );
     return this.phoneNo1ValidationMessage === '';
   }
 
-  validatePhoneNumber2(phoneNo, isRequired) {
+  validatePhoneNumber2(phoneNo, isRequired, mode: 'international' | 'local' | null = null) {
     this.phoneNo2ValidationMessage = this.validatePhoneNumber(
       phoneNo,
-      isRequired
+      isRequired,
+      mode
     );
     return this.phoneNo2ValidationMessage === '';
   }
 
-  validatePhoneNumber(phoneNo: string, isRequired: boolean): string {
+  isInternationalPhoneFormat(phoneNo: any): boolean {
+    const value = phoneNo?.toString().trim();
+    return !!value && /^(\+|00)/.test(value) && !/^(\+20|0020)/.test(value);
+  }
+
+  validateInternationalPhoneNumber(phoneNo: string): string {
+    const value = phoneNo.toString().trim();
+    if (/^(\+20|0020)/.test(value)) {
+      return 'رقم مصري: قم بإلغاء اختيار "رقم دولي" وأدخله كرقم محلي';
+    }
+    if (!/^(\+|00)[1-9]\d{6,14}$/.test(value)) {
+      return 'رقم دولي غير صحيح: يبدأ بـ + أو 00 ثم كود الدولة والرقم (8 إلى 15 رقم)';
+    }
+    return '';
+  }
+
+  phoneMode(isInternational: boolean): 'international' | 'local' {
+    return isInternational ? 'international' : 'local';
+  }
+
+  toLocalPhoneNumber(phoneNo: any): string {
+    const value = phoneNo?.toString().trim() ?? '';
+    const match = value.match(/^(?:\+2|002)(01\d{9})$/);
+    return match ? match[1] : value;
+  }
+
+  validateLocalPhoneNumber(phoneNo: string): string {
+    const value = phoneNo.toString().trim();
+    if (!/^\d{11}$/.test(value)) {
+      return 'NEDSS.LAB_VIEW.ADD_PATIENT.PHONE_NO_NOT_11';
+    }
+    if (!/^01[0125]\d{8}$/.test(value)) {
+      return 'NEDSS.COMMON.INVALID_PHONE_FORMAT';
+    }
+    return '';
+  }
+
+  validatePhoneNumber(phoneNo: string, isRequired: boolean, mode: 'international' | 'local' | null = null): string {
     if (!this.validateEmptyField(phoneNo)) {
       if (isRequired) {
         return 'NEDSS.COMMON.FILEDREQUIRED';
       }
       return '';
+    }
+
+    if (mode === 'international') {
+      return this.validateInternationalPhoneNumber(phoneNo);
+    }
+    if (mode === 'local') {
+      return this.validateLocalPhoneNumber(phoneNo);
     }
 
     let phonePattern = /^(\+201|01|00201)[0-2,5]{1}[0-9]{8}/;
@@ -1207,6 +1338,32 @@ export class GeneralDataService {
       .trim()
       .replace(/^(\+2|002)/, '');
     if (trimmedPhoneNumber.length >= 11) {
+      event.preventDefault();
+    }
+  }
+
+  onLocalPhoneKeyPress(event: KeyboardEvent): void {
+    const input = event.target as HTMLInputElement;
+    if (!/^\d$/.test(event.key)) {
+      event.preventDefault();
+      return;
+    }
+    const selected = (input.selectionEnd ?? 0) - (input.selectionStart ?? 0);
+    if (input.value.length - selected >= 11) {
+      event.preventDefault();
+    }
+  }
+
+  onInternationalPhoneKeyPress(event: KeyboardEvent): void {
+    const input = event.target as HTMLInputElement;
+    const inputKey = event.key;
+    const atStart = input.selectionStart === 0 && !input.value.includes('+');
+    if (inputKey === '+' ? !atStart : isNaN(Number(inputKey)) || inputKey === ' ') {
+      event.preventDefault();
+      return;
+    }
+    const selected = (input.selectionEnd ?? 0) - (input.selectionStart ?? 0);
+    if (input.value.length - selected >= 17) {
       event.preventDefault();
     }
   }
@@ -1349,7 +1506,7 @@ export class GeneralDataService {
   //#endregion "Common Validations"
 
   getIncidentInfoInvalidFieldLabel(patient: any): string | null {
-    const items: Array<[boolean, string]> = [
+    return this.pickInvalidField([
       [this.isIncidentGovernmentValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.GOVERBMENT'],
       [this.isIncidentHealthAdministrationValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.HEALTHADMIN'],
       [this.isUniversityValid, 'NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_UNIVERSITY'],
@@ -1358,27 +1515,35 @@ export class GeneralDataService {
       [this.isIncidentSourceValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.INCIDENT_SOURCE'],
       [this.isIncidentDepartmentValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.DEPARTMENT'],
       [this.isCaseDiscoveryDateValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.DATE_DISCOVER_STATUS'],
+      [this.isCaseDiscoveryDateAfterBirthValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.DATE_DISCOVER_STATUS',
+        this.beforeBirthMessage('تاريخ اكتشاف الحالة', patient)],
       [this.isNationalityValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONATILY'],
       [this.isCardIdValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONAL_ID'],
       [this.isPassportIdValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.PASSPOR_NO'],
-    ];
-    const failed = items.find(([valid]) => !valid);
-    return failed ? failed[1] : null;
+    ]);
   }
 
   getDemographicInfoInvalidFieldLabel(patient: any): string | null {
-    const items: Array<[boolean, string]> = [
+    this.lastInvalidFieldMessage = null;
+    const items: Array<[boolean, string, string?]> = [
       [this.isFirstNameValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.FIRST_NAME'],
       [this.isSecondNameValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.SECOND_NAME'],
       [this.isThirdNameValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.THIRD_NAME'],
       [this.isFamilyNameValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.FAMILY_NAME'],
-      [this.isPhoneNumber1Valid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO1'],
+      [this.isPhoneNumber1Valid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO1',
+        this.phoneNo1ValidationMessage && this.phoneNo1ValidationMessage !== 'NEDSS.COMMON.FILEDREQUIRED'
+          ? this.translate.instant(this.phoneNo1ValidationMessage)
+          : undefined],
+      [this.isPhoneNumber2Valid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO2',
+        this.phoneNo2ValidationMessage ? this.translate.instant(this.phoneNo2ValidationMessage) : undefined],
       [this.isGenderValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.GENDER'],
       [this.isAgeValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGE'],
       [this.isAgeTypeValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGETYPE'],
+      [this.isBirthDateOrderValid, 'NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.BIRTHDATE',
+        `تاريخ الميلاد لا يمكن أن يكون بعد تاريخ اكتشاف الحالة أو تواريخ الأعراض ودخول المستشفى (${this.formatDateLabel(this.birthDateUpperBound(patient))})`],
     ];
-    const failed = items.find(([valid]) => !valid);
-    if (failed) return failed[1];
+    const failed = this.pickInvalidField(items);
+    if (failed) return failed;
 
     // National ID / Passport requirement is OR-coupled when department is Internal.
     const idsOk =
@@ -1395,36 +1560,124 @@ export class GeneralDataService {
   }
 
   getResidenceInfoInvalidFieldLabel(patient: any): string | null {
-    const items: Array<[boolean, string]> = [
+    return this.pickInvalidField([
       [this.isHomeGovernmentValid, 'NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.GOVERNMENT'],
       [this.isHomeHealthAdministrationValid, 'NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.ADMINISTRATION'],
       [this.isHomeCityValid, 'NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.STATEANDCITY'],
       [this.isHomeHealthOfficeIdValid, 'NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.HEALTHOFFICE'],
       [this.isAdressValid, 'NEDSS.HOME.GENERAL_DATA_RESIDENCEINFO.DETAILADDRESS'],
-    ];
+    ]);
+  }
+
+  toYmdDate(value: any): string | null {
+    if (value == null || value === '') return null;
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return null;
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${mm}-${dd}`;
+  }
+
+  checkFeverDateNotAfterDiscovery(feverDate: any, caseDiscoveryDate: any): boolean {
+    const fever = this.toYmdDate(feverDate);
+    const discovery = this.toYmdDate(caseDiscoveryDate);
+    return !fever || !discovery || fever <= discovery;
+  }
+
+  isDateOnOrAfter(date: any, reference: any): boolean {
+    const d = this.toYmdDate(date);
+    const r = this.toYmdDate(reference);
+    return !d || !r || d >= r;
+  }
+
+  private boundDateCache = new Map<string, Date>();
+
+  private toBoundDate(key: string | null): Date | null {
+    if (!key) return null;
+    let date = this.boundDateCache.get(key);
+    if (!date) {
+      date = new Date(key + 'T00:00:00');
+      this.boundDateCache.set(key, date);
+    }
+    return date;
+  }
+
+  latestDateBound(...values: any[]): Date | null {
+    const keys = values.map((v) => this.toYmdDate(v)).filter((k): k is string => !!k);
+    return keys.length ? this.toBoundDate(keys.sort()[keys.length - 1]) : null;
+  }
+
+  earliestDateBound(...values: any[]): Date | null {
+    const keys = values.map((v) => this.toYmdDate(v)).filter((k): k is string => !!k);
+    return keys.length ? this.toBoundDate(keys.sort()[0]) : null;
+  }
+
+  formatDateLabel(value: any): string | null {
+    const key = this.toYmdDate(value);
+    if (!key) return null;
+    const [y, m, d] = key.split('-');
+    return `${d}/${m}/${y}`;
+  }
+
+  birthDateUpperBound(patient: any): Date | null {
+    const isInternal = patient?.incidentDepartmentId == DepartmentEnum.Internal;
+    return this.earliestDateBound(
+      new Date(),
+      patient?.caseDiscoveryDate,
+      patient?.feverSymptoms?.feverDate,
+      patient?.infectionDate,
+      isInternal ? patient?.hospitalEntryDate : null,
+      isInternal ? patient?.hospitalLeaveDate : null
+    );
+  }
+
+  checkBirthDateOrder(patient: any): boolean {
+    return this.isDateOnOrAfter(this.birthDateUpperBound(patient), patient?.birthDate);
+  }
+
+  private beforeBirthMessage(fieldAr: string, patient: any): string {
+    return `${fieldAr} لا يمكن أن يكون قبل تاريخ الميلاد (${this.formatDateLabel(patient?.birthDate)})`;
+  }
+
+  lastInvalidFieldMessage: string | null = null;
+
+  private pickInvalidField(items: Array<[boolean, string, string?]>): string | null {
     const failed = items.find(([valid]) => !valid);
+    this.lastInvalidFieldMessage = failed?.[2] ?? null;
     return failed ? failed[1] : null;
   }
 
   getClinicalSymptomsInvalidFieldLabel(patient: any): string | null {
-    const items: Array<[boolean, string]> = [
+    return this.pickInvalidField([
+      [this.isFeverDateValid, 'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_DATE',
+        `تاريخ الحمى يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة (${this.formatDateLabel(patient?.caseDiscoveryDate)})`],
+      [this.isFeverDateAfterBirthValid, 'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_DATE',
+        this.beforeBirthMessage('تاريخ الحمى', patient)],
       [this.isFeverMaxTemperatureValid, 'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_MAX_TEMP'],
-    ];
-    const failed = items.find(([valid]) => !valid);
-    return failed ? failed[1] : null;
+    ]);
   }
 
   getDiagnosticsInvalidFieldLabel(patient: any): string | null {
-    const items: Array<[boolean, string]> = [
+    return this.pickInvalidField([
       [this.isPatientDiseasesValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES'],
       [this.isInfectionDateValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE'],
+      [this.isInfectionDateNotAfterDiscoveryValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE',
+        `تاريخ بداية الأعراض يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة (${this.formatDateLabel(patient?.caseDiscoveryDate)})`],
+      [this.isInfectionDateAfterBirthValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE',
+        this.beforeBirthMessage('تاريخ بداية الأعراض', patient)],
+      [this.isInfectionDateNotAfterFeverValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE',
+        `تاريخ بداية الأعراض يجب أن يكون قبل أو في نفس يوم تاريخ الحمى (${this.formatDateLabel(patient?.feverSymptoms?.feverDate)})`],
       [this.isHospitalEntryDateValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALENTRYDATE'],
+      [this.isHospitalEntryDateOrderValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALENTRYDATE',
+        'تاريخ دخول المستشفى يجب أن يكون بعد أو في نفس يوم تاريخ الميلاد وتاريخ بداية الأعراض، ولا يتجاوز اليوم'],
+      [this.isHospitalLeaveDateOrderValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITAL_LEAVE_DATE',
+        'تاريخ الخروج من المستشفى يجب أن يكون بعد أو في نفس يوم تاريخ دخول المستشفى، ولا يتجاوز اليوم'],
       [this.isPatientHospitalNoValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.PATIENT_HOSPITAL_NO'],
       [this.isDoctorNameValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DOCTOR_NAME'],
+      [this.isHospitalLabSelectionValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITAL_LAB_SELECTION'],
+      [this.isOtherHospitalLabNameValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.OTHER_HOSPITAL_NAME'],
       [this.isSpecialLabNameValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DELEGATED_TO'],
-    ];
-    const failed = items.find(([valid]) => !valid);
-    return failed ? failed[1] : null;
+    ]);
   }
 
   getFirstInvalidFieldLabel(patient: any): string | null {

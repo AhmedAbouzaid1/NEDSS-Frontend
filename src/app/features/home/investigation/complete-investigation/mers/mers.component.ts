@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-mers',
+  host: { class: 'investigation-form' },
   templateUrl: './mers.component.html',
   styleUrls: ['./mers.component.css'],
 })
@@ -127,6 +128,7 @@ export class MersComponent implements OnInit {
       bats: new FormControl(false),
       mentionName: new FormControl(),
       camelExposureType: new FormControl(),
+      camelExposureTypeOther: new FormControl(),
       camelUnpasteurizedMilk: new FormControl(),
       camelBlood: new FormControl(),
       camelUrine: new FormControl(),
@@ -259,6 +261,12 @@ export class MersComponent implements OnInit {
       if (value.value == 'null')
         value.setValue(null);
     })
+    if (this.isSendBeforeCollection()) {
+      this.translateService
+        .get('NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_SEND_BEFORE_COLLECTION')
+        .subscribe((res: string) => this.userMsg.error(res));
+      return;
+    }
     this.mersForm.controls['diseaseGroupId'].setValue(
       this.investigationService.diseaseGroupID
     );
@@ -310,6 +318,12 @@ export class MersComponent implements OnInit {
           }
         );
     }
+  }
+
+  isSendBeforeCollection(): boolean {
+    const collectionDate = this.mersForm?.value?.sampleCollectionDate;
+    const sendDate = this.mersForm?.value?.sampleSendDate;
+    return !!collectionDate && !!sendDate && String(sendDate).substring(0, 10) < String(collectionDate).substring(0, 10);
   }
 
   calculateCompletionPercentage(): void {

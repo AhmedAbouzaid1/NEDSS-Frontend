@@ -10,10 +10,58 @@ import { PatientModel } from '../../general-data/models/patient-model';
 export class InvestigationService {
   private static readonly PATIENT_ID_KEY = 'investigation.currentid';
   private static readonly DISEASE_GROUP_KEY = 'investigation.diseaseGroupID';
+  private static readonly PATIENT_KEY = 'investigation.patient';
+  private static readonly PATIENT_DISEASES_KEY = 'investigation.patientDiseases';
 
-  patientDiseases = [];
-  patient: PatientModel = new PatientModel;
+  private _patient: PatientModel = this.createPersistentPatient(
+    this.readJson(InvestigationService.PATIENT_KEY) || {}
+  );
   view: boolean = true;
+
+  get patient(): PatientModel {
+    return this._patient;
+  }
+  set patient(value: PatientModel) {
+    this._patient = this.createPersistentPatient(value || {});
+    this.writeJson(InvestigationService.PATIENT_KEY, value || null);
+  }
+
+  get patientDiseases(): any[] {
+    return this.readJson(InvestigationService.PATIENT_DISEASES_KEY) || [];
+  }
+  set patientDiseases(value: any[]) {
+    this.writeJson(InvestigationService.PATIENT_DISEASES_KEY, value && value.length ? value : null);
+  }
+
+  private createPersistentPatient(source: any): PatientModel {
+    const target = Object.assign(new PatientModel(), source);
+    return new Proxy(target, {
+      set: (obj: any, key: string | symbol, val: any) => {
+        obj[key] = val;
+        this.writeJson(InvestigationService.PATIENT_KEY, obj);
+        return true;
+      },
+    });
+  }
+
+  private readJson(key: string): any {
+    const raw = this.readSession(key);
+    if (raw == null) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+
+  private writeJson(key: string, value: any): void {
+    let json: string | null = null;
+    try {
+      json = value == null ? null : JSON.stringify(value);
+    } catch {
+    }
+    this.writeSession(key, json);
+  }
 
   get currentid(): any {
     return this.readSession(InvestigationService.PATIENT_ID_KEY);
@@ -127,6 +175,11 @@ export class InvestigationService {
   getByIdFeverRash(id: any) {
     return this.APIs.get(
       this.controllerURL + 'GetFeverRashByPatientId?id=' + id
+    );
+  }
+  getFeverRashUnitSummary(patientId: any, diseaseGroupId: any) {
+    return this.APIs.get(
+      this.controllerURL + 'GetFeverRashUnitSummary?patientId=' + patientId + '&diseaseGroupId=' + diseaseGroupId
     );
   }
   //WhoopingCough

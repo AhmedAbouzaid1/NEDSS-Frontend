@@ -27,6 +27,7 @@ export interface MumpsInvestigation {
 
 @Component({
   selector: 'app-mumps',
+  host: { class: 'investigation-form' },
   templateUrl: './mumps.component.html',
   styleUrls: ['./mumps.component.css']
 })

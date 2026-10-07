@@ -33,13 +33,9 @@
                                             <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
                                             <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                                         </select>
-                                        <small class="text-muted">
-                                            {{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.ATTACH_NOTIFICATION_FORM_NOTE"
-                                            | translate }}
-                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" [appShowIf]="riftValley.get('contactSuspectedCase')?.value == 1">
                                     <div class="form-group">
                                         <label for="">
                                             {{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.AUTHORITIES_NOTIFIED" |
@@ -51,6 +47,10 @@
                                             <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="col-lg-6"></div>
+                                <div class="col-lg-6" [appShowIf]="riftValley.get('contactConfirmedCase')?.value == 1 || hasAttachments(authoritiesAttachments)">
+                                    <ng-container *ngTemplateOutlet="attachmentBlock; context: { group: authoritiesAttachments, label: 'AUTHORITIES_NOTIFICATION_FORM_UPLOAD_BTN' }"></ng-container>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" [appShowIf]="riftValley.get('contactDeceasedUnknownDisease')?.value == 1">
                                     <div class="form-group">
                                         <label for="">
                                             {{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.CONTACT_PLACE" | translate }}
@@ -81,7 +81,7 @@
                                             [placeholder]='"NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.CONTACT_PLACE_PLACEHOLDER" | translate'>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" [appShowIf]="riftValley.get('contactDeceasedUnknownDisease')?.value == 1">
                                     <div class="form-group">
                                         <label for="">
                                             {{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.ANIMAL_TYPE" | translate }}
@@ -108,13 +108,9 @@
                                             <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
                                             <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                                         </select>
-                                        <small class="text-muted">
-                                            {{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.ATTACH_NOTIFICATION_FORM_NOTE"
-                                            | translate }}
-                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" [appShowIf]="riftValley.get('painEyeSocket')?.value == 1">
                                     <div class="form-group">
                                         <label for="">
                                             {{
@@ -128,6 +124,11 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-lg-6"></div>
+                                <div class="col-lg-6" [appShowIf]="riftValley.get('veterinaryServices')?.value == 1 || hasAttachments(animalDeathsVetAttachments)">
+                                    <ng-container *ngTemplateOutlet="attachmentBlock; context: { group: animalDeathsVetAttachments, label: 'VET_NOTIFICATION_FORM_UPLOAD_BTN' }"></ng-container>
+                                </div>
+                                <div class="col-12"></div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="">
@@ -140,6 +141,9 @@
                                             <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="col-lg-6" [appShowIf]="riftValley.get('neighboringHouses')?.value == 1 || hasAttachments(caseVetAttachments)">
+                                    <ng-container *ngTemplateOutlet="attachmentBlock; context: { group: caseVetAttachments, label: 'VET_NOTIFICATION_FORM_UPLOAD_BTN' }"></ng-container>
                                 </div>
                             </div>
                         </div>
@@ -174,13 +178,9 @@
                                             <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
                                             <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                                         </select>
-                                        <small class="text-muted">
-                                            {{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.ATTACH_INVESTIGATION_FORM_NOTE"
-                                            | translate }}
-                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" [appShowIf]="riftValley.get('bloodyVomiting')?.value == 1">
                                     <div class="form-group">
                                         <label for="">
                                             {{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.SIMILAR_CASES_LOCATION" |
@@ -204,3 +204,36 @@
         </div>
     </div>
 </form>
+
+<ng-template #attachmentBlock let-group="group" let-label="label">
+    <div class="form-group">
+        <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.IF_YES_ATTACH" | translate }}</label>
+        <button type="button" (click)="fileInput.click()" class="rift-attach-upload-btn mb-2">
+            {{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY." + label | translate }}
+        </button>
+        <input type="file" #fileInput style="display: none" (change)="onAttachmentSelect(group, $event.target)" multiple />
+        <div class="small text-muted">{{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.ATTACH_MAX_FILES_NOTE" | translate }}</div>
+        <div *ngIf="group.oldFiles.length > 0" class="mt-2">
+            <div class="small text-muted mb-1">{{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.ATTACH_UPLOADED_FILES" | translate }}</div>
+            <div *ngFor="let fileUrl of group.oldFiles; let i = index"
+                class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
+                <span class="text-truncate me-2">{{ fileUrl }}</span>
+                <div class="d-flex gap-1">
+                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="openSavedAttachment(fileUrl)">{{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.ATTACH_VIEW" | translate }}</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeSavedAttachment(group, i)">{{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.ATTACH_DELETE" | translate }}</button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="group.pendingFiles.length > 0" class="mt-2">
+            <div class="small text-muted mb-1">{{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.ATTACH_PENDING_FILES" | translate }}</div>
+            <div *ngFor="let file of group.pendingFiles; let i = index"
+                class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mb-1">
+                <span class="text-truncate me-2">{{ file.name }}</span>
+                <div class="d-flex gap-1">
+                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="openPendingAttachment(group, i)">{{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.ATTACH_VIEW" | translate }}</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" (click)="removePendingAttachment(group, i)">{{ "NEDSS.COMPLETE_INVESTEGATION.RIFT_VALLEY.ATTACH_DELETE" | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

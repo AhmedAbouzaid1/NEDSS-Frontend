@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { calculateCompletionStats } from '../shared/investigation-summary.utils';
 @Component({
   selector: 'app-diphtheria',
+  host: { class: 'investigation-form' },
   templateUrl: './diphtheria.component.html',
   styleUrls: ['./diphtheria.component.css'],
 })

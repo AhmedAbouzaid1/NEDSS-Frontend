@@ -12,7 +12,7 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="form-group">
-                <label>
+                <label class="inv-patient-name">
                   {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME" | translate }}: {{ patientName }}
                 </label>
               </div>
@@ -20,36 +20,6 @@
           </div>
 
           <!-- Progress Bar -->
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="form-group">
-                <label>
-                  {{ "NEDSS.INVESTIGATIONS.percentage" | translate }}
-                  <span class="mx-4" style="font-size: larger; color: red">
-                    {{ allControllesCount === 0 ? "0.00" : ((allFilledControlsCount / allControllesCount) * 100 | number: "1.0-2") }} %
-                  </span>
-                </label>
-                <input
-                  type="range"
-                  class="form-range bg"
-                  [readonly]="true"
-                  style="border-radius: 11.7px; border: 5.5px solid white"
-                  min="0"
-                  max="100"
-                  step="1"
-                  [value]="allControllesCount ? (allFilledControlsCount / allControllesCount) * 100 : 0"
-                />
-              </div>
-            </div>
-            <div class="col-lg-4">
-              {{ "NEDSS.INVESTIGATIONS.Filled" | translate }}
-              {{ allFilledControlsCount }}
-              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
-              {{ "NEDSS.INVESTIGATIONS.From" | translate }}
-              {{ allControllesCount }}
-              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
-            </div>
-          </div>
 
           <!-- ===== 1. Clinical Data ===== -->
           <div class="row color">
@@ -83,7 +53,7 @@
                         </label>
                       </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4" [appShowIf]="ariForm.get('virusType')?.value == 4">
                       <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.VIRUS_TYPE_OTHER" | translate }}</label>
                       <input type="text" formControlName="virusTypeOther" class="form-control" />
                     </div>
@@ -132,7 +102,7 @@
                 </div>
 
                 <!-- Pneumonia Details -->
-                <div class="col-12 mt-2">
+                <div class="col-12 mt-2" [appShowIf]="ariForm.get('pneumoniaDiagnosis')?.value == 1">
                   <div class="row">
                     <div class="col-lg-12">
                       <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.PNEUMONIA_DIAGNOSIS_METHOD" | translate }}</label>
@@ -204,11 +174,11 @@
                         <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
                       </select>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4" [appShowIf]="ariForm.get('icuAdmission')?.value == 1">
                       <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.ICU_ADMISSION_DATE" | translate }}</label>
                       <app-date-field formControlName="icuAdmissionDate"></app-date-field>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4" [appShowIf]="ariForm.get('icuAdmission')?.value == 1">
                       <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.ICU_DAYS_COUNT" | translate }}</label>
                       <input type="number" formControlName="icuDaysCount" class="form-control" />
                     </div>
@@ -216,7 +186,7 @@
                 </div>
 
                 <!-- Respiratory Device -->
-                <div class="col-12 mt-2">
+                <div class="col-12 mt-2" [appShowIf]="ariForm.get('needsRespiratoryDevice')?.value == 1">
                   <div class="row">
                     <div class="col-lg-4">
                       <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.RESPIRATORY_DEVICE_TYPE" | translate }}</label>
@@ -280,8 +250,8 @@
                             <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
                           </select>
                         </td>
-                        <td><app-date-field formControlName="entryDate"></app-date-field></td>
-                        <td><app-date-field formControlName="exitDate"></app-date-field></td>
+                        <td><div [appShowIf]="row.get('hospitalAdmission')?.value == 1"><app-date-field formControlName="entryDate"></app-date-field></div></td>
+                        <td><div [appShowIf]="row.get('hospitalAdmission')?.value == 1"><app-date-field formControlName="exitDate"></app-date-field></div></td>
                         <td>
                           <button type="button" class="btn btn-delete" (click)="removeHealthFacilityRow(i)">
                             <i class="fas fa-trash"></i>
@@ -317,7 +287,7 @@
                     <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                   </select>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="ariForm.get('seasonalFluVaccineTaken')?.value == 1">
                   <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.SEASONAL_FLU_VACCINE_DATE" | translate }}</label>
                   <app-date-field formControlName="seasonalFluVaccineDate"></app-date-field>
                 </div>
@@ -329,7 +299,7 @@
                     <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                   </select>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="ariForm.get('pneumococcalVaccineTaken')?.value == 1">
                   <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.PNEUMOCOCCAL_VACCINE_DATE" | translate }}</label>
                   <app-date-field formControlName="pneumococcalVaccineDate"></app-date-field>
                 </div>
@@ -352,11 +322,11 @@
                     <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                   </select>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" [appShowIf]="ariForm.get('oseltamivirGiven')?.value == 1">
                   <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.OSELTAMIVIR_FIRST_DOSE_DATE" | translate }}</label>
                   <app-date-field formControlName="oseltamivirFirstDoseDate"></app-date-field>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" [appShowIf]="ariForm.get('oseltamivirGiven')?.value == 1">
                   <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.OSELTAMIVIR_REPEATED" | translate }}</label>
                   <select formControlName="oseltamivirRepeatedOver5Days" class="form-control">
                     <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
@@ -371,7 +341,7 @@
                     <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                   </select>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" [appShowIf]="ariForm.get('otherAntiviralGiven')?.value == 1">
                   <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.OTHER_ANTIVIRAL_NAME" | translate }}</label>
                   <input type="text" formControlName="otherAntiviralName" class="form-control" />
                 </div>
@@ -398,7 +368,7 @@
                     <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
                   </select>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12" [appShowIf]="ariForm.get('occupationalContact')?.value == 1">
                   <div class="has-labels d-flex gap-4 flex-wrap align-items-center mt-1">
                     <label>
                       <input type="checkbox" formControlName="worksWithPoultry" />
@@ -418,11 +388,11 @@
                     </label>
                   </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="ariForm.get('occupationalContact')?.value == 1">
                   <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.OCCUPATIONAL_OTHER" | translate }}</label>
                   <input type="text" formControlName="occupationalOther" class="form-control" />
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="ariForm.get('worksInHealthcare')?.value === true">
                   <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.HEALTHCARE_DIRECT_CARE" | translate }}</label>
                   <select formControlName="healthcareDirectCare" class="form-control">
                     <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
@@ -445,7 +415,7 @@
                     <label><input type="checkbox" formControlName="directContactOther" /> {{ "NEDSS.COMPLETE_INVESTEGATION.ARI.OTHER" | translate }}</label>
                   </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" [appShowIf]="ariForm.get('directContactOther')?.value === true">
                   <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.OTHER_MENTION" | translate }}</label>
                   <input type="text" formControlName="directContactOtherText" class="form-control" />
                 </div>
@@ -508,7 +478,7 @@
                     <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                   </select>
                 </div>
-                <div class="col-12 table-responsive mt-2">
+                <div class="col-12 table-responsive mt-2" [appShowIf]="ariForm.get('domesticTravel')?.value == 1">
                   <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -545,7 +515,7 @@
                     <option value="3">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
                   </select>
                 </div>
-                <div class="col-12 table-responsive mt-2">
+                <div class="col-12 table-responsive mt-2" [appShowIf]="ariForm.get('internationalTravel')?.value == 1">
                   <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -574,7 +544,7 @@
                 </div>
 
                 <!-- Arrival Point -->
-                <div class="col-12 mt-3">
+                <div class="col-12 mt-3" [appShowIf]="ariForm.get('internationalTravel')?.value == 1">
                   <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.ARRIVAL_POINT" | translate }}</label>
                   <div class="has-labels d-flex gap-4 flex-wrap align-items-center">
                     <label>
@@ -591,11 +561,11 @@
                     </label>
                   </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" [appShowIf]="ariForm.get('internationalTravel')?.value == 1">
                   <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.ARRIVAL_POINT_NAME" | translate }}</label>
                   <input type="text" formControlName="arrivalPointName" class="form-control" />
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" [appShowIf]="ariForm.get('internationalTravel')?.value == 1">
                   <label>{{ "NEDSS.COMPLETE_INVESTEGATION.ARI.ARRIVAL_DATE" | translate }}</label>
                   <app-date-field formControlName="arrivalDate"></app-date-field>
                 </div>

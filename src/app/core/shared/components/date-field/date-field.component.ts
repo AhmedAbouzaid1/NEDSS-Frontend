@@ -58,13 +58,16 @@ export class DateFieldComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  onPickerChange(event: { value: Date | null }): void {
+  onPickerChange(event: { value: Date | null; target?: { value: Date | null } }): void {
     let date = event.value;
     if (date && this.maxDate && date > this.maxDate) {
       date = null;
     }
     if (date && this.minDate && date < this.minDate) {
       date = null;
+    }
+    if (!date && event.value && event.target) {
+      event.target.value = null;
     }
     this.value = date;
     const iso = this.toIso(date);

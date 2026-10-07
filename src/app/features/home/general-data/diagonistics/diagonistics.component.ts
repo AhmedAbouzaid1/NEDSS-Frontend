@@ -17,8 +17,77 @@ import { DepartmentEnum } from '../models/department-enum';
   styleUrls: ['./diagonistics.component.css'],
 })
 export class DiagonisticsComponent implements OnInit, OnDestroy {
+  readonly hospitalLabOptions = [
+    { id: 1, arabicName: 'مستشفى محل الإبلاغ', englishName: 'Reporting hospital' },
+    { id: 2, arabicName: 'مستشفى أخرى', englishName: 'Other hospital' },
+  ];
   minDate = new Date(1900, 0, 1);
   maxDate = new Date();
+
+  get infectionMaxDate(): Date {
+    return this.generalDataService.earliestDateBound(
+      this.maxDate,
+      this.patient?.caseDiscoveryDate,
+      this.patient?.feverSymptoms?.feverDate
+    ) ?? this.maxDate;
+  }
+
+  get infectionMinDate(): Date {
+    return this.generalDataService.latestDateBound(this.minDate, this.patient?.birthDate) ?? this.minDate;
+  }
+
+  get hospitalEntryMinDate(): Date {
+    return this.generalDataService.latestDateBound(
+      this.minDate,
+      this.patient?.birthDate,
+      this.patient?.infectionDate
+    ) ?? this.minDate;
+  }
+
+  get hospitalLeaveMinDate(): Date {
+    return this.generalDataService.latestDateBound(
+      this.hospitalEntryMinDate,
+      this.patient?.hospitalEntryDate
+    ) ?? this.minDate;
+  }
+
+  get caseDiscoveryDateLabel(): string | null {
+    return this.generalDataService.toYmdDate(this.patient?.caseDiscoveryDate);
+  }
+
+  get birthDateLabel(): string | null {
+    return this.generalDataService.formatDateLabel(this.patient?.birthDate);
+  }
+
+  get feverDateLabel(): string | null {
+    return this.generalDataService.formatDateLabel(this.patient?.feverSymptoms?.feverDate);
+  }
+
+  get isInfectionDateBeforeBirth(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(this.patient?.infectionDate, this.patient?.birthDate);
+  }
+
+  get isInfectionDateAfterFever(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(
+      this.patient?.feverSymptoms?.feverDate,
+      this.patient?.infectionDate
+    );
+  }
+
+  get isHospitalEntryDateOutOfOrder(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(this.patient?.hospitalEntryDate, this.hospitalEntryMinDate);
+  }
+
+  get isHospitalLeaveDateOutOfOrder(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(this.patient?.hospitalLeaveDate, this.hospitalLeaveMinDate);
+  }
+
+  get isInfectionDateAfterDiscovery(): boolean {
+    return !this.generalDataService.checkFeverDateNotAfterDiscovery(
+      this.patient?.infectionDate,
+      this.patient?.caseDiscoveryDate
+    );
+  }
 
   patient: PatientModel = new PatientModel();
   private diseasesInitializedFromPatient = false;
@@ -72,6 +141,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   selectedTransferHealthAdminId: number = -1;
 
   diseases: any[] = [];
+  private allDiseases: any[] = [];
   selectedDiseases: any;
 
   finalResuls!: any[];
@@ -189,6 +259,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
 
       this.patient = patientObject;
       this.generalDataService.normalizePatientApiPayload(this.patient);
+      this.updateDiseasesForDepartment();
       this.selectedFinalResultId = this.patient.finalResultId;
       if (this.selectedFinalResultId == 1) {
         this.isPatientTransfered = true;
@@ -553,6 +624,22 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onHospitalLabSelected(): void {
+    if (!this.patient.isHospitalLab) {
+      this.patient.hospitalLabSelection = null;
+      this.patient.otherHospitalLabName = null;
+      this.generalDataService.isHospitalLabSelectionValid = true;
+      this.generalDataService.isOtherHospitalLabNameValid = true;
+    }
+  }
+
+  onHospitalLabSelectionChanged(): void {
+    if (this.patient.hospitalLabSelection !== 2) {
+      this.patient.otherHospitalLabName = null;
+      this.generalDataService.isOtherHospitalLabNameValid = true;
+    }
+  }
+
   onSpecialLabSelected() {
     if (!this.patient.isSpecialLabLab) {
       this.isSpecialLabSelected = false;
@@ -658,7 +745,8 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
           : Array.isArray(result)
             ? result
             : [];
-        this.diseases = list;
+        this.allDiseases = list;
+        this.updateDiseasesForDepartment();
 
         if (
           this.patient?.patientDiseases != null &&
@@ -684,6 +772,37 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
           });
       }
     );
+  }
+
+  private updateDiseasesForDepartment(): void {
+    if (!this.allDiseases.length) {
+      return;
+    }
+
+    const departmentId = Number(this.patient?.incidentDepartmentId);
+    const hideBirdFlu =
+      departmentId !== DepartmentEnum.Internal &&
+      departmentId !== DepartmentEnum.ICU;
+
+    this.diseases = hideBirdFlu
+      ? this.allDiseases.filter((disease) =>
+          String(disease?.router ?? '').trim().toLowerCase() !== 'h5n1'
+        )
+      : [...this.allDiseases];
+
+    if (!hideBirdFlu || !Array.isArray(this.selectedDiseases)) {
+      return;
+    }
+
+    const allowedDiseaseIds = new Set(this.diseases.map((disease) => disease.id));
+    const filteredSelection = this.selectedDiseases.filter((disease) =>
+      allowedDiseaseIds.has(disease.id)
+    );
+
+    if (filteredSelection.length !== this.selectedDiseases.length) {
+      this.selectedDiseases = filteredSelection;
+      this.onDiseasesChanged();
+    }
   }
   getFinalResults() {
     this.finalResultsLoading = true;

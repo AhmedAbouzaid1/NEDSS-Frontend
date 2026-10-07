@@ -146,6 +146,7 @@ import { DiseaseBasedOnAgeComponent } from './reports/disease-based-on-age/disea
 import { DiseaseBasedOnAgePdfComponent } from './reports/disease-based-on-age/disease-based-on-age-pdf/disease-based-on-age-pdf.component';
 import { AccumelateDiseaseByAgePipe } from './reports/pipes/accumelate-disease-by-age.pipe';
 import { DiseaseBasedOnPatientComponent } from './reports/disease-based-on-patient/disease-based-on-patient.component';
+import { InvestigationFormsReportComponent } from './reports/investigation-forms-report/investigation-forms-report.component';
 import { DiseaseBasedOnPatientPdfComponent } from './reports/disease-based-on-patient/disease-based-on-patient-pdf/disease-based-on-patient-pdf.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -298,6 +299,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     DiseaseBasedOnAgePdfComponent,
     AccumelateDiseaseByAgePipe,
     DiseaseBasedOnPatientComponent,
+    InvestigationFormsReportComponent,
     DiseaseBasedOnPatientPdfComponent,
     MergeRepeatedRecordsComponent,
     MergeRecordsPerAttributeComponent,

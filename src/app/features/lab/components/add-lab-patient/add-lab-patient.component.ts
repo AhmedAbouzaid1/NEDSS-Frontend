@@ -19,6 +19,7 @@ import { Table } from 'primeng/table';
 import { RepeatedService } from 'src/app/features/home/repeated-records/Repeated.service';
 import { Patient } from 'src/app/features/home/search/models/patient';
 
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-add-lab-patient',
   templateUrl: './add-lab-patient.component.html',
@@ -845,7 +846,12 @@ export class AddLabPatientComponent {
     this.labChecksCount--;
   }
 
+  savingPatient = false;
+
   saveLabPatient() {
+    if (this.savingPatient) {
+      return;
+    }
     // if (this.validateLabPatientSample()) {
     //   if (this.validateLabPatient()) {
     //     this.patient.patientLabChecks = this.patientAddChecks;
@@ -908,8 +914,9 @@ export class AddLabPatientComponent {
 
         this.patient.insertedByLabId = this.userId;
         this.loadingPanel = true;
+        this.savingPatient = true;
         if (this.patient.id) {
-          this.repeatedService.editLabPatient(this.patient).subscribe(
+          this.repeatedService.editLabPatient(this.patient).pipe(finalize(() => (this.savingPatient = false))).subscribe(
             (response: any) => {
               if (response) {
                 this.translateService
@@ -942,7 +949,7 @@ export class AddLabPatientComponent {
         }
         // Add
         else {
-          this.labService.addLabPatient(this.patient).subscribe(
+          this.labService.addLabPatient(this.patient).pipe(finalize(() => (this.savingPatient = false))).subscribe(
             (response: any) => {
               if (response) {
                 this.translateService

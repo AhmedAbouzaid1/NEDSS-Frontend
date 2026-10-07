@@ -15,6 +15,7 @@ import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-brucella',
+  host: { class: 'investigation-form' },
   templateUrl: './brucella.component.html',
   styleUrls: ['./brucella.component.css']
 })

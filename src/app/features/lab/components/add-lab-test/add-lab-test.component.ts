@@ -6,6 +6,7 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { UserService } from 'src/app/features/home/users/Services/user.service';
 import { LabService } from '../../services/lab.service';
+import { GeneralDataService } from 'src/app/features/home/general-data/services/general-data.service';
 import { DatePipe } from '@angular/common';
 import { NotificationService } from 'src/app/core/services/notificationService.service';
 import {
@@ -13,7 +14,7 @@ import {
   MultipleDropdownSettings,
 } from 'src/app/core/constants';
 import { from } from 'rxjs';
-import { concatMap, toArray } from 'rxjs/operators';
+import { concatMap, finalize, toArray } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-lab-test',
@@ -27,6 +28,7 @@ export class AddLabTestComponent {
       ? localStorage.getItem('ls.currentLang')
       : 'ar';
   patient: any;
+  caseDiscoveryDate: string | null = null;
   patientChecks: [];
   id: any;
   patientAddCheck = {
@@ -37,7 +39,12 @@ export class AddLabTestComponent {
     dieaseLabTestId: null,
     diseaseLabTestResultId: null,
     getSampleDate: null,
+    sampleSendDate: null,
+    sampleDeliveryDate: null,
     labResultDate: null,
+    labNumber: null,
+    genotype: null,
+    geneticNumber: null,
   };
   checkFilter = {
     pageSize: 10,
@@ -74,6 +81,7 @@ export class AddLabTestComponent {
   filterdDisease: any[];
 
   readonly meningitisAndEncephalitisDiseaseGroupIds = [2, 23];
+  readonly feverRashDiseaseGroupId = 5;
 
   underDeleting = {
     nameAr: '',
@@ -86,7 +94,8 @@ export class AddLabTestComponent {
     private labService: LabService,
     private datePipe: DatePipe,
     private lookupsService: LookupsGetterService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private generalDataService: GeneralDataService
   ) {}
 
   ngOnInit() {
@@ -241,6 +250,32 @@ export class AddLabTestComponent {
     );
   }
 
+  isFeverRashSelected(): boolean {
+    return Number(this.patientAddCheck.diseaseGroupId) === this.feverRashDiseaseGroupId;
+  }
+
+  isPcrPositiveSelected(): boolean {
+    const test = this.labChecks?.find((t) => t.id === this.selectedLabCheck);
+    const isPcr = /PCR/i.test(`${test?.englishName ?? ''} ${test?.arabicName ?? ''}`);
+    return (
+      isPcr &&
+      (this.selectedLabCheckResult ?? []).some((r: any) => {
+        const full = this.labCheckResults?.find((x) => x.id === r.id) ?? r;
+        return /positive/i.test(full?.englishName ?? '') || /إيجاب|ايجاب/.test(full?.arabicName ?? '');
+      })
+    );
+  }
+
+  private clearFeverRashFieldsIfHidden() {
+    if (!this.isFeverRashSelected()) {
+      this.patientAddCheck.labNumber = null;
+    }
+    if (!this.isFeverRashSelected() || !this.isPcrPositiveSelected()) {
+      this.patientAddCheck.genotype = null;
+      this.patientAddCheck.geneticNumber = null;
+    }
+  }
+
   isDiseaseSelected(): boolean {
     return (
       this.patientAddCheck.diseaseGroupId != null &&
@@ -348,6 +383,8 @@ export class AddLabTestComponent {
       (result: any) => {
         if (result != null && result != undefined) {
           this.patient = result.data;
+          this.caseDiscoveryDate = this.datePipe.transform(this.patient?.caseDiscoveryDate, 'yyyy-MM-dd');
+          if (!this.caseDiscoveryDate) this.loadCaseDiscoveryDate(id);
           this.checkFilter.patientId = this.patient.id;
           this.getPatientChecks();
         }
@@ -402,6 +439,14 @@ export class AddLabTestComponent {
           this.patientAddCheck.getSampleDate,
           'yyyy-MM-dd'
         );
+        this.patientAddCheck.sampleSendDate = this.datePipe.transform(
+          this.patientAddCheck.sampleSendDate,
+          'yyyy-MM-dd'
+        );
+        this.patientAddCheck.sampleDeliveryDate = this.datePipe.transform(
+          this.patientAddCheck.sampleDeliveryDate,
+          'yyyy-MM-dd'
+        );
         this.patientAddCheck.labResultDate = this.datePipe.transform(
           this.patientAddCheck.labResultDate,
           'yyyy-MM-dd'
@@ -425,11 +470,93 @@ export class AddLabTestComponent {
     );
   }
 
+  private loadCaseDiscoveryDate(id: number) {
+    this.generalDataService.getBy(id).subscribe((res: any) => {
+      this.caseDiscoveryDate = this.datePipe.transform(res?.data?.caseDiscoveryDate, 'yyyy-MM-dd');
+    });
+  }
+
+  isSampleDateBeforeDiscovery(): boolean {
+    const sample = this.datePipe.transform(this.patientAddCheck?.getSampleDate, 'yyyy-MM-dd');
+    return !!sample && !!this.caseDiscoveryDate && sample < this.caseDiscoveryDate;
+  }
+
+  private toDay(value: any): string | null {
+    return value ? this.datePipe.transform(value, 'yyyy-MM-dd') : null;
+  }
+
+  private floorFrom(candidates: { date: any; short: string }[]): { date: string; short: string } | null {
+    for (const candidate of candidates) {
+      const date = this.toDay(candidate.date);
+      if (date) {
+        return { date, short: candidate.short };
+      }
+    }
+    return null;
+  }
+
+  sendDateFloor() {
+    return this.floorFrom([{ date: this.patientAddCheck?.getSampleDate, short: 'سحب العينة' }]);
+  }
+
+  deliveryDateFloor() {
+    return this.floorFrom([
+      { date: this.patientAddCheck?.sampleSendDate, short: 'ارسال العينة' },
+      { date: this.patientAddCheck?.getSampleDate, short: 'سحب العينة' },
+    ]);
+  }
+
+  resultDateFloor() {
+    return this.floorFrom([
+      { date: this.patientAddCheck?.sampleDeliveryDate, short: 'استلام العينة' },
+      { date: this.patientAddCheck?.sampleSendDate, short: 'ارسال العينة' },
+      { date: this.patientAddCheck?.getSampleDate, short: 'سحب العينة' },
+    ]);
+  }
+
+  isBeforeFloor(value: any, floor: { date: string } | null): boolean {
+    const date = this.toDay(value);
+    return !!date && !!floor && date < floor.date;
+  }
+
+  floorMessage(labelKey: string, floor: { date: string; short: string } | null): string {
+    const label = this.translateService.instant('NEDSS.LAB_VIEW.ADD_PATIENT.' + labelKey);
+    return floor ? `${label} يجب أن يكون في نفس يوم ${floor.short} أو بعده (${floor.date})` : '';
+  }
+
+  private dateOrderError(): string | null {
+    const checks: [any, { date: string; short: string } | null, string][] = [
+      [this.patientAddCheck?.sampleSendDate, this.sendDateFloor(), 'SAMPLE_SEND_DATE'],
+      [this.patientAddCheck?.sampleDeliveryDate, this.deliveryDateFloor(), 'SAMPLE_DELIVERY_DATE'],
+      [this.patientAddCheck?.labResultDate, this.resultDateFloor(), 'RESULT_DATE'],
+    ];
+    const failed = checks.find(([value, floor]) => this.isBeforeFloor(value, floor));
+    return failed ? this.floorMessage(failed[2], failed[1]) : null;
+  }
+
+  saving = false;
+
   save() {
+    if (this.saving) {
+      return;
+    }
+    if (this.isSampleDateBeforeDiscovery()) {
+      this.userMsg.error(`تاريخ سحب العينة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    const dateOrderError = this.dateOrderError();
+    if (dateOrderError) {
+      this.userMsg.error(dateOrderError);
+      return;
+    }
     if (this.validateRequiredData()) {
+      this.clearFeverRashFieldsIfHidden();
       this.patientAddCheck.patientId = this.id;
       if (this.patientAddCheck.id == null) {
-        const resultIds = this.selectedLabCheckResult.map((r) => r.id);
+        const resultIds = this.selectedLabCheckResult?.length
+          ? this.selectedLabCheckResult.map((r) => r.id)
+          : [null];
+        this.saving = true;
         from(resultIds)
           .pipe(
             concatMap((resultId) =>
@@ -438,7 +565,8 @@ export class AddLabTestComponent {
                 diseaseLabTestResultId: resultId,
               })
             ),
-            toArray()
+            toArray(),
+            finalize(() => (this.saving = false))
           )
           .subscribe(
             (responses: any[]) => {
@@ -447,7 +575,7 @@ export class AddLabTestComponent {
                 .subscribe((res: string) => {
                   this.userMsg.success(res);
                 });
-              this.getPatientChecks();
+              this.getById(this.id);
               this.resetLabCheck();
               //send notification here
               responses.forEach((response) => {
@@ -471,11 +599,13 @@ export class AddLabTestComponent {
   }
 
   update() {
+    this.saving = true;
     this.labService
       .updatePatientLabCheck({
         ...this.patientAddCheck,
         diseaseLabTestResultId: this.selectedLabCheckResult[0]?.id ?? null,
       })
+      .pipe(finalize(() => (this.saving = false)))
       .subscribe(
         (response: any) => {
           if (response) {
@@ -484,7 +614,7 @@ export class AddLabTestComponent {
               .subscribe((res: string) => {
                 this.userMsg.success(res);
               });
-            this.getPatientChecks();
+            this.getById(this.id);
             this.resetLabCheck();
           }
         },
@@ -510,7 +640,7 @@ export class AddLabTestComponent {
   delete(id: number) {
     this.labService.deletePatientLabCheck(id).subscribe(
       (result: any) => {
-        this.getPatientChecks();
+        this.getById(this.id);
         this.translateService
           .get('NEDSS.COMMON.DELETED_SUCESSFULLY')
           .subscribe((res: string) => {
@@ -536,7 +666,12 @@ export class AddLabTestComponent {
       dieaseLabTestId: null,
       diseaseLabTestResultId: null,
       getSampleDate: null,
+      sampleSendDate: null,
+      sampleDeliveryDate: null,
       labResultDate: null,
+      labNumber: null,
+      genotype: null,
+      geneticNumber: null,
     };
     this.selectedCheckSample = null;
     this.selectedLabCheck = null;
@@ -547,10 +682,7 @@ export class AddLabTestComponent {
     if (
       this.patientAddCheck.dieaseLabTestId == null ||
       this.patientAddCheck.diseaseCheckId == null ||
-      !this.selectedLabCheckResult ||
-      this.selectedLabCheckResult.length === 0 ||
-      this.patientAddCheck.getSampleDate == null ||
-      this.patientAddCheck.labResultDate == null
+      this.patientAddCheck.getSampleDate == null
     )
       return false;
     return true;

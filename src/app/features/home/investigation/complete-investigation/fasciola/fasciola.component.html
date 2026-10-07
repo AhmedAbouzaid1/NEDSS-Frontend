@@ -12,7 +12,7 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="form-group">
-                <label>
+                <label class="inv-patient-name">
                   {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME" | translate }}: {{ patientName }}
                 </label>
               </div>
@@ -20,36 +20,6 @@
           </div>
 
           <!-- Progress Bar -->
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="form-group">
-                <label>
-                  {{ "NEDSS.INVESTIGATIONS.percentage" | translate }}
-                  <span class="mx-4" style="font-size: larger; color: red">
-                    {{ allControllesCount === 0 ? "0.00" : ((allFilledControlsCount / allControllesCount) * 100 | number: "1.0-2") }} %
-                  </span>
-                </label>
-                <input
-                  type="range"
-                  class="form-range bg"
-                  [readonly]="true"
-                  style="border-radius: 11.7px; border: 5.5px solid white"
-                  min="0"
-                  max="100"
-                  step="1"
-                  [value]="allControllesCount ? (allFilledControlsCount / allControllesCount) * 100 : 0"
-                />
-              </div>
-            </div>
-            <div class="col-lg-4">
-              {{ "NEDSS.INVESTIGATIONS.Filled" | translate }}
-              {{ allFilledControlsCount }}
-              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
-              {{ "NEDSS.INVESTIGATIONS.From" | translate }}
-              {{ allControllesCount }}
-              {{ "NEDSS.INVESTIGATIONS.Field" | translate }}
-            </div>
-          </div>
 
           <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
@@ -68,7 +38,7 @@
                   </select>
                 </div>
               </div><!-- /.col-lg-6 -->
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="fasciolaForm.get('bathingSwimming')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
                   <input formControlName="swimmingPlace" type="text" name="" id="" class="form-control">
@@ -84,7 +54,7 @@
                   </select>
                 </div>
               </div><!-- /.col-lg-6 -->
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="fasciolaForm.get('drinkingCanalWater')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
                   <input formControlName="drinkingCanalWaterPlace" type="text" name="" id="" class="form-control">
@@ -100,7 +70,7 @@
                   </select>
                 </div>
               </div><!-- /.col-lg-6 -->
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="fasciolaForm.get('washingUtensils')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
                   <input formControlName="washingUtensilsPlace" type="text" name="" id="" class="form-control">
@@ -117,7 +87,7 @@
                   </select>
                 </div>
               </div><!-- /.col-lg-6 -->
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="fasciolaForm.get('workAgriculture')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
                   <input formControlName="workAgriculturePlace" type="text" name="" id="" class="form-control">
@@ -134,7 +104,7 @@
                   </select>
                 </div>
               </div><!-- /.col-lg-6 -->
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="fasciolaForm.get('urinateCanal')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
                   <input formControlName="urinateCanalPlace" type="text" name="" id="" class="form-control">
@@ -151,7 +121,7 @@
                   </select>
                 </div>
               </div><!-- /.col-lg-6 -->
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="fasciolaForm.get('drinkingCanalHome')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
                   <input formControlName="drinkingCanalHomePlace" type="text" name="" id="" class="form-control">
@@ -168,7 +138,7 @@
                   </select>
                 </div>
               </div><!-- /.col-lg-6 -->
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="fasciolaForm.get('livestockToHouse')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.LIVESTOCK_ANIMAL_TYPE" | translate }}</label>
                   <input formControlName="livestockAnimalType" type="text" name="" id="" class="form-control">
@@ -196,7 +166,7 @@
                   </select>
                 </div>
               </div><!-- /.col-lg-6 -->
-              <div class="col-lg-3">
+              <div class="col-lg-3" [appShowIf]="fasciolaForm.get('animalsSlaughteredOutside')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE" | translate }}</label>
                   <input formControlName="animalsSlaughteredOutsidePlace" type="text" name="" id=""
@@ -235,13 +205,13 @@
                   </select>
                 </div>
               </div><!-- /.col-lg-6 -->
-              <div class="col-lg-3">
+              <div class="col-lg-3" [appShowIf]="fasciolaForm.get('eatVegetables')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_IT" | translate }}</label>
                   <input formControlName="eatVegetablesMention" type="text" name="" id="" class="form-control">
                 </div>
               </div><!-- /.col-lg-3 -->
-              <div class="col-lg-3">
+              <div class="col-lg-3" [appShowIf]="fasciolaForm.get('eatVegetables')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SOURCE" | translate }}</label>
                   <input formControlName="source" type="text" name="" id="" class="form-control">
@@ -257,7 +227,7 @@
                   </select>
                 </div>
               </div><!-- /.col-lg-6 -->
-              <div class="col-lg-6">
+              <div class="col-lg-6" [appShowIf]="fasciolaForm.get('hadSchistosomiasis')?.value == 1">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_DATE" | translate }}</label>
                   <app-date-field formControlName="hadSchistosomiasisDate"></app-date-field>
@@ -274,7 +244,7 @@
                   </select>
                 </div>
               </div><!-- /.col-lg-6 -->
-              <div class="col-lg-6 border-right">
+              <div class="col-lg-6 border-right" [appShowIf]="fasciolaForm.get('treatmentSchistosomiasis')?.value == 1">
                 <p class="mt-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES" | translate }}</p><!-- / .mt-4 -->
                 <div class="row">
                   <div class="col-lg-12">
@@ -339,7 +309,7 @@
                     </select>
                   </div>
                 </div><!-- /.col-lg-6 -->
-                <div class="col-lg-6 border-right mb-4">
+                <div class="col-lg-6 border-right mb-4" [appShowIf]="fasciolaForm.get('locationDirectContact')?.value == 1">
                   <div class="row">
                     <div class="col-lg-12 mb-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES" | translate }}</div><!-- / .col-lg-12 mt-4 -->
                     <div class="col-lg-12">
@@ -366,7 +336,7 @@
                     </select>
                   </div>
                 </div><!-- /.col-lg-6 -->
-                <div class="col-lg-6 border-right mb-4">
+                <div class="col-lg-6 border-right mb-4" [appShowIf]="fasciolaForm.get('possibleDirect')?.value == 1">
                   <div class="row">
                     <div class="col-lg-12 mb-4">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES" | translate }}</div><!-- / .col-lg-12 mt-4 -->
                     <div class="col-lg-6">
@@ -406,16 +376,16 @@
                     </select>
                   </div>
                 </div><!-- /.col-lg-12 -->
-                <div class="col-lg-4 mt-4">
+                <div class="col-lg-4 mt-4" [appShowIf]="fasciolaForm.get('snailsPositive')?.value == 3">
                   {{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.CHEMICAL_PESTICIDE" | translate }}
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" [appShowIf]="fasciolaForm.get('snailsPositive')?.value == 3">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.MENTION_PESTICIDE" | translate }}</label>
                     <input formControlName="mentionPesticide" type="text" name="" id="" class="form-control">
                   </div>
                 </div><!-- /.col-lg-3 -->
-                <div class="col-lg-4">
+                <div class="col-lg-4" [appShowIf]="fasciolaForm.get('snailsPositive')?.value == 3">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PESTICIDE_CONCENTRATION" | translate }}</label>
                     <input formControlName="pesticideConcentration" type="number" step="any" name="" id="" class="form-control">

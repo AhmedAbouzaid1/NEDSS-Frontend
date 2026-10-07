@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
+import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
+import { GeneralDataService } from '../../../general-data/services/general-data.service';
 
 import { MeningealComponent } from './meningeal.component';
 
@@ -29,6 +31,30 @@ describe('MeningealComponent', () => {
       providers: [
         DatePipe,
         { provide: InvestigationService, useValue: investigationServiceMock },
+        {
+          provide: LookupsGetterService,
+          useValue: {
+            getAllGovernments: () => of({ data: [] }),
+            getAllNationalitys: () => of({ data: [] }),
+            getPageHealthAdministrations: () => of({ data: [] }),
+            getPageCitys: () => of({ data: [] }),
+            getAllPatientJobCategorys: () => of({ data: [] }),
+            getAllFinalResults: () => of({ data: [] }),
+            getPageIncidentSourceHospitals: () => of({ data: [] }),
+          },
+        },
+        {
+          provide: GeneralDataService,
+          useValue: {
+            getPatientByIdForInvestigation: () => of({ data: {} }),
+            updateFromInvestigation: () => of({}),
+            toLocalPhoneNumber: (v: any) => v ?? '',
+            isInternationalPhoneFormat: () => false,
+            validatePhoneNumber: () => '',
+            isDateOnOrAfter: () => true,
+            checkFeverDateNotAfterDiscovery: () => true,
+          },
+        },
         { provide: UserMessageService, useValue: { success: () => {}, error: () => {} } },
         { provide: TranslateService, useValue: { get: () => of('ok') } },
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: () => 1 } } } },

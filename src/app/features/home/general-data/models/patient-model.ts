@@ -38,6 +38,8 @@ export class PatientModel {
   passportNo!: string;
   phoneNo1!: string;
   phoneNo2!: string;
+  isPhoneNo1International?: boolean;
+  isPhoneNo2International?: boolean;
   newPhoneNo1!: string;
   genderId!: number;
   birthDate!: string;
@@ -57,8 +59,11 @@ export class PatientModel {
   incidentDate!: string;
   insertedByLab!: boolean;
   isHospitalLab!: boolean;
+  hospitalLabSelection?: number | null;
+  otherHospitalLabName?: string | null;
   isCentralLabLab!: boolean;
   isGovernmentLab!: boolean;
+  isMalariaLab?: boolean;
   isRegionalLab!: boolean;
   regionalLabId!: number;
   isSpecialLabLab!: boolean;
@@ -97,7 +102,7 @@ export class FeverSymptoms {
   patientId?: number;
   feverDate?: string;
   feverDuration?: number;
-  feverDurationType?: number;
+  feverDurationType?: number = 3;
   feverMaxTemp?: number;
 }
 

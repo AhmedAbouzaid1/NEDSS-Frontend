@@ -16,20 +16,38 @@
   </div>
   <div
     id="craiteria"
-    class="row craiteria bg-dark-mode p-3 justify-content-around"
+    class="row craiteria bg-dark-mode p-3"
     [ngStyle]="FEVERStatus ? { display: 'flex' } : { display: 'none' }"
   >
-    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-3">
+      <div class="form-group">
+        <label class="d-block mb-2">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.HAS_FEVER" | translate }}
+        </label>
+        <p-dropdown
+          [options]="feverPresenceOptions"
+          name="hasFever"
+          [(ngModel)]="hasFever"
+          optionValue="value"
+          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
+          [placeholder]="'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.SELECT' | translate"
+          [style]="{ width: '100%' }"
+          (onChange)="onFeverPresenceChange($event.value)"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngIf="hasFever === true">
       <div class="form-group">
         <label for="">
           {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_DATE" | translate }}
         </label>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" class="date-with-note">
           <mat-label>
             {{ "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate }}
           </mat-label>
           <input
-            [max]="maxDate"
+            [min]="feverMinDate"
+            [max]="feverMaxDate"
             matInput
             [matDatepicker]="feverDatePicker"
             [(ngModel)]="patient.feverSymptoms.feverDate"
@@ -38,9 +56,18 @@
           <mat-datepicker-toggle matIconSuffix [for]="feverDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #feverDatePicker></mat-datepicker>
         </mat-form-field>
+        <small class="form-text text-muted d-block">
+          قبل أو في نفس يوم اكتشاف الحالة{{ caseDiscoveryDateLabel ? ' ' + caseDiscoveryDateLabel : '' }}{{ birthDateLabel ? '، وليس قبل تاريخ الميلاد ' + birthDateLabel : '' }}
+        </small>
+        <small *ngIf="isFeverDateAfterDiscovery" class="form-text text-danger mess-color d-block">
+          تاريخ الحمى يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة ({{ caseDiscoveryDateLabel }})
+        </small>
+        <small *ngIf="isFeverDateBeforeBirth" class="form-text text-danger mess-color d-block">
+          تاريخ الحمى لا يمكن أن يكون قبل تاريخ الميلاد ({{ birthDateLabel }})
+        </small>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngIf="hasFever === true">
       <div class="form-group">
         <label for="">
           {{ "NOUR.word143" | translate }}
@@ -53,7 +80,7 @@
           type="number"
           inputmode="numeric"
           class="form-control w-100"
-          [required]="!FEVERStatus"
+          [required]="hasFever === true"
           pInputText
           (blur)="
             generalDataService.isFeverDurationValid =
@@ -63,7 +90,7 @@
               )
           "
         />
-        <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isFeverDurationValid" class="form-text text-danger mess-color">
+        <small *ngIf="!generalDataService.isFeverDurationValid" class="form-text text-danger mess-color">
           {{
             "NEDSS.COMMON.MAX_DIGITS_VALIDATION"
               | translate : { fieldName: FEVER_DURATION_DAYS, maxDigits: 3 }
@@ -71,36 +98,7 @@
         </small>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
-      <div class="form-group">
-        <label for="">
-          {{ "NOUR.Fever_Duration" | translate }}
-          <span *ngIf="!!patient.feverSymptoms.feverDuration" class="text-danger mess-color">*</span>
-          <span class="text-muted"> </span>
-        </label>
-        <p-dropdown
-          [options]="feverDurationTypes"
-          (onChange)="onfeverDurationTypeChange()"
-          [(ngModel)]="patient.feverSymptoms.feverDurationType"
-          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
-          optionValue="id"
-          autoWidth="false"
-          [style]="{ width: '100%' }"
-          name="feverDurationType"
-          [required]="!!patient.feverSymptoms.feverDuration"
-          [filter]="true"
-          [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
-          #feverDurationType
-        ></p-dropdown>
-        <small
-          *ngIf="!patient.feverSymptoms.feverDurationType && isfeverDurationTypeChanged"
-          class="form-text text-danger mess-color"
-        >
-          {{ "NEDSS.HOME.CONTROL_PANEL.SPECIAL_SYMPTOMS_ADD.filedRequired" | translate }}
-        </small>
-      </div>
-    </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngIf="hasFever === true">
       <div class="form-group">
         <label for="">
           {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_MAX_TEMP" | translate }}
@@ -111,6 +109,8 @@
           type="number"
           inputmode="decimal"
           step="0.1"
+          min="35"
+          max="43"
           class="form-control feverMaxTemptyle mt-1 w-100"
           [required]="!!patient.feverSymptoms.feverDuration"
           pInputText
@@ -121,8 +121,11 @@
               )
           "
         />
-        <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isFeverMaxTemperatureValid" class="form-text text-danger mess-color">
+        <small *ngIf="!generalDataService.isFeverMaxTemperatureValid" class="form-text text-danger mess-color">
           {{ "NEDSS.COMMON.FEVER_TEMPERATURE_VALIDATION" | translate }}
+        </small>
+        <small *ngIf="generalDataService.isFeverMaxTemperatureValid" class="form-text text-muted">
+          {{ "NEDSS.COMMON.FEVER_TEMPERATURE_HINT" | translate }}
         </small>
       </div>
     </div>
@@ -187,7 +190,8 @@
           }}
         </div>
         <div class="chronic-grid">
-          <label *ngFor="let dieases of chronicDiseases; let i = index" class="chronic-item text-muted">
+          <label *ngFor="let dieases of chronicDiseases; let i = index" class="chronic-item text-muted"
+            [style.display]="shouldShowChronicDisease(dieases) ? null : 'none'">
             <input class="form-check-input" type="checkbox" [(ngModel)]="selectedChronicDiseases[dieases.id]"
               [name]="'chronic_' + dieases.id" (change)="itemsCheck(dieases.id)" (blur)="
               generalDataService.isChronicDiseaseValid =

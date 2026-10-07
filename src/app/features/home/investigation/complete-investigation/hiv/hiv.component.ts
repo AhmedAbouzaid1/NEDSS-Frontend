@@ -9,6 +9,7 @@ import { GeneralDataService } from '../../../general-data/services/general-data.
 import { calculateCompletionStats } from '../shared/investigation-summary.utils';
 @Component({
   selector: 'app-hiv',
+  host: { class: 'investigation-form' },
   templateUrl: './hiv.component.html',
   styleUrls: ['./hiv.component.css']
 })
