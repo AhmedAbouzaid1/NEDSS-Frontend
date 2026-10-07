@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+export const INVESTIGATION_FORM_PAGE_OFFSET = 500;
+
 @Injectable({ providedIn: 'root' })
 export class PagePermissionService {
   private readonly AUTH_KEY = 'ls.authorizationData';
@@ -35,5 +37,13 @@ export class PagePermissionService {
     const permitted = this.permittedPageIds();
     const ids = Array.isArray(pageId) ? pageId : [pageId];
     return ids.some((id) => permitted.has(String(id)));
+  }
+
+  canAccessInvestigationForm(diseaseGroupId: number | string): boolean {
+    const id = Number(diseaseGroupId);
+    if (!id) {
+      return false;
+    }
+    return this.canAccessPage(INVESTIGATION_FORM_PAGE_OFFSET + id);
   }
 }
