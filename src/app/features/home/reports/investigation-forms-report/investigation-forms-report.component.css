@@ -63,12 +63,32 @@ header .box-title {
 }
 
 .field-value {
-  white-space: pre-line;
   max-width: 420px;
+}
+
+.cell-content {
+  max-height: 8.5em;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  scrollbar-width: thin;
+}
+
+@media print {
+  .cell-content {
+    max-height: none;
+    overflow: visible;
+  }
 }
 
 .open-form {
   cursor: pointer;
+}
+
+.open-form.disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .forms-table,

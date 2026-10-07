@@ -10,6 +10,7 @@ import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-monkeypox',
+  host: { class: 'investigation-form' },
   templateUrl: './monkeypox.component.html',
   styleUrls: ['./monkeypox.component.css']
 })

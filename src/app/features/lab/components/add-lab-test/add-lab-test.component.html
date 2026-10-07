@@ -108,7 +108,7 @@
       </div>
       <div class="card-body bg-dark-mode">
         <div class="row">
-          <div class="col-lg-6 mt-4">
+          <div class="col-lg-4 col-md-6 mt-4">
             <div class="form-group">
               <label for="" class="form-label">
                 {{ "NEDSS.EVENTS.DESIEASE" | translate }}
@@ -154,7 +154,7 @@
           class="row"
           *ngIf="isDiseaseSelected() && !isMeningitisOrEncephalitisSelected()"
         >
-          <div class="col-lg-6 mt-4">
+          <div class="col-lg-4 col-md-6 mt-4">
             <div class="form-group">
               <label for=""
                 >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.GET_SAMPLE_DATE" | translate }}
@@ -169,7 +169,7 @@
               </small>
             </div>
           </div>
-          <div class="col-lg-6 mt-4">
+          <div class="col-lg-4 col-md-6 mt-4">
             <div class="form-group">
               <label for=""
                 >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAMPLE" | translate }}
@@ -209,25 +209,37 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 mt-4" *ngIf="isFeverRashSelected()">
+          <div class="col-lg-4 col-md-6 mt-4" *ngIf="isFeverRashSelected()">
             <div class="form-group">
               <label for="">{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_NUMBER" | translate }}</label>
               <input type="text" class="form-control" maxlength="100" [(ngModel)]="patientAddCheck.labNumber" name="labNumber" />
             </div>
           </div>
-          <div class="col-lg-6 mt-4">
+          <div class="col-lg-4 col-md-6 mt-4">
             <div class="form-group">
-              <label for="">{{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAMPLE_DELIVERY_DATE" | translate }}</label>
-              <app-date-field class="sample-date-field" [(ngModel)]="patientAddCheck.sampleDeliveryDate" [min]="patientAddCheck.getSampleDate"></app-date-field>
+              <label for="">{{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAMPLE_SEND_DATE" | translate }}</label>
+              <app-date-field class="sample-date-field" [(ngModel)]="patientAddCheck.sampleSendDate" [min]="sendDateFloor()?.date"></app-date-field>
               <small class="form-text text-muted d-block mt-0">
                 في نفس يوم سحب العينة أو بعده{{ patientAddCheck.getSampleDate ? ' ' + patientAddCheck.getSampleDate : '' }}
               </small>
-              <small *ngIf="isDeliveryDateBeforeSample()" class="form-text text-danger mess-color d-block">
-                تاريخ تسليم العينة يجب أن يكون في نفس يوم سحب العينة أو بعده ({{ patientAddCheck.getSampleDate }})
+              <small *ngIf="isBeforeFloor(patientAddCheck.sampleSendDate, sendDateFloor())" class="form-text text-danger mess-color d-block">
+                {{ floorMessage('SAMPLE_SEND_DATE', sendDateFloor()) }}
               </small>
             </div>
           </div>
-          <div class="col-lg-6 mt-4">
+          <div class="col-lg-4 col-md-6 mt-4">
+            <div class="form-group">
+              <label for="">{{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAMPLE_DELIVERY_DATE" | translate }}</label>
+              <app-date-field class="sample-date-field" [(ngModel)]="patientAddCheck.sampleDeliveryDate" [min]="deliveryDateFloor()?.date"></app-date-field>
+              <small class="form-text text-muted d-block mt-0" *ngIf="deliveryDateFloor() as floor">
+                في نفس يوم {{ floor.short }} أو بعده {{ floor.date }}
+              </small>
+              <small *ngIf="isBeforeFloor(patientAddCheck.sampleDeliveryDate, deliveryDateFloor())" class="form-text text-danger mess-color d-block">
+                {{ floorMessage('SAMPLE_DELIVERY_DATE', deliveryDateFloor()) }}
+              </small>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mt-4">
             <div class="form-group">
               <label for=""
                 >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_TEST" | translate }}
@@ -269,7 +281,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 mt-4">
+          <div class="col-lg-4 col-md-6 mt-4">
             <div class="form-group">
               <label for=""
                 >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_TEST_RESULT" | translate }}
@@ -285,29 +297,29 @@
               </ng-multiselect-dropdown>
             </div>
           </div>
-          <div class="col-lg-6 mt-4" *ngIf="isFeverRashSelected() && isPcrPositiveSelected()">
+          <div class="col-lg-4 col-md-6 mt-4" *ngIf="isFeverRashSelected() && isPcrPositiveSelected()">
             <div class="form-group">
               <label for="">{{ "NEDSS.LAB_VIEW.ADD_PATIENT.GENOTYPE" | translate }}</label>
               <input type="text" class="form-control" maxlength="100" [(ngModel)]="patientAddCheck.genotype" name="genotype" />
             </div>
           </div>
-          <div class="col-lg-6 mt-4" *ngIf="isFeverRashSelected() && isPcrPositiveSelected()">
+          <div class="col-lg-4 col-md-6 mt-4" *ngIf="isFeverRashSelected() && isPcrPositiveSelected()">
             <div class="form-group">
               <label for="">{{ "NEDSS.LAB_VIEW.ADD_PATIENT.GENETIC_NUMBER" | translate }}</label>
               <input type="text" class="form-control" maxlength="100" [(ngModel)]="patientAddCheck.geneticNumber" name="geneticNumber" />
             </div>
           </div>
-          <div class="col-lg-6 mt-4">
+          <div class="col-lg-4 col-md-6 mt-4">
             <div class="form-group">
               <label for=""
                 >{{ "NEDSS.LAB_VIEW.ADD_PATIENT.RESULT_DATE" | translate }}
               </label>
-              <app-date-field class="sample-date-field" [(ngModel)]="patientAddCheck.labResultDate" [min]="patientAddCheck.sampleDeliveryDate || patientAddCheck.getSampleDate"></app-date-field>
-              <small class="form-text text-muted d-block mt-0">
-                في نفس يوم تسليم العينة أو بعده{{ patientAddCheck.sampleDeliveryDate ? ' ' + patientAddCheck.sampleDeliveryDate : '' }}
+              <app-date-field class="sample-date-field" [(ngModel)]="patientAddCheck.labResultDate" [min]="resultDateFloor()?.date"></app-date-field>
+              <small class="form-text text-muted d-block mt-0" *ngIf="resultDateFloor() as floor">
+                في نفس يوم {{ floor.short }} أو بعده {{ floor.date }}
               </small>
-              <small *ngIf="isResultDateBeforeDelivery()" class="form-text text-danger mess-color d-block">
-                تاريخ النتيجة يجب أن يكون في نفس يوم تسليم العينة أو بعده ({{ patientAddCheck.sampleDeliveryDate }})
+              <small *ngIf="isBeforeFloor(patientAddCheck.labResultDate, resultDateFloor())" class="form-text text-danger mess-color d-block">
+                {{ floorMessage('RESULT_DATE', resultDateFloor()) }}
               </small>
             </div>
           </div>
@@ -352,6 +364,7 @@
                   {{ "NEDSS.LAB_VIEW.ADD_PATIENT.GET_SAMPLE_DATE" | translate }}
                 </th>
                 <th>{{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAMPLE" | translate }}</th>
+                <th>{{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAMPLE_SEND_DATE" | translate }}</th>
                 <th>{{ "NEDSS.LAB_VIEW.ADD_PATIENT.SAMPLE_DELIVERY_DATE" | translate }}</th>
                 <th>{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_TEST" | translate }}</th>
                 <th>
@@ -371,6 +384,7 @@
                   </span>
                 </td>
                 <td><span [innerHTML]="item.diseaseCheck"> </span></td>
+                <td>{{ item.sampleSendDate | date : 'dd/MM/yyyy' }}</td>
                 <td>{{ item.sampleDeliveryDate | date : 'dd/MM/yyyy' }}</td>
                 <td><span [innerHTML]="item.dieaseLabTest"> </span></td>
                 <td><span [innerHTML]="item.diseaseLabTestResult"> </span></td>

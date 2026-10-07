@@ -7,6 +7,7 @@ import { InvestigationService } from '../../services/investigation.service';
 
 @Component({
   selector: 'app-trachoma',
+  host: { class: 'investigation-form' },
   templateUrl: './trachoma.component.html',
   styleUrls: ['./trachoma.component.css']
 })

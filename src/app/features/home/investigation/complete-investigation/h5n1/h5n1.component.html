@@ -148,15 +148,29 @@
                 <div class="col-lg-3" [appShowIf]="birdFluForm.get('useOfARespirator')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Date_Placed_On_Device" | translate }}</label>
-                    <app-date-field formControlName="statusHistoryOnDevice"></app-date-field>
+                    <app-date-field formControlName="statusHistoryOnDevice"
+                      [min]="birdFluForm.get('dateOfReservation')?.value || hospitalEntryDate"
+                      [max]="hospitalLeaveDate"></app-date-field>
+                    <small *ngIf="birdFluForm.get('dateOfReservation')?.value" class="form-text text-muted d-block">
+                      يجب أن يكون تاريخ الوضع على الجهاز في نفس يوم الحجز بالرعاية أو بعده
+                    </small>
+                    <small *ngIf="isRespiratorDateBeforeReservation()" class="form-text text-danger mess-color d-block">
+                      تاريخ الوضع على جهاز التنفس الصناعي لا يمكن أن يكون قبل تاريخ الحجز بالرعاية المركزة
+                    </small>
                   </div>
                 </div>
                 <!-- /.col-lg-3 -->
                 <div class="col-lg-3" [appShowIf]="birdFluForm.get('useOfARespirator')?.value == 1">
                   <div class="form-group">
                     <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Number_Days_Placement_Device" | translate }}</label>
-                    <input type="number" name="" id="" class="form-control" min="0"
+                    <input type="number" name="" id="" class="form-control" min="0" [max]="maxRespiratorDays"
                       formControlName="numberOfDaysOfPlacementOnDevice" />
+                    <small *ngIf="maxRespiratorDays" class="form-text text-muted d-block">
+                      الحد الأقصى {{ maxRespiratorDays }} يوم
+                    </small>
+                    <small *ngIf="isRespiratorDaysOverMax()" class="form-text text-danger mess-color d-block">
+                      عدد أيام الوضع على جهاز التنفس الصناعي لا يمكن أن يزيد عن {{ maxRespiratorDays }} يوم
+                    </small>
                   </div>
                 </div>
                 <!-- /.col-lg-12 -->
@@ -686,10 +700,17 @@
                       <option value="7">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.HEALTH_SERVICES_WORK" | translate }}
                       </option>
                       <option value="8">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.VETERINARIAN" | translate }}</option>
+                      <option value="9">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.OCCUPATIONAL_EXPOSURE_OTHER_OPTION" | translate }}</option>
                     </select>
                   </div>
                 </div>
                 <!-- /.col-lg-6 -->
+                <div class="col-lg-6" [appShowIf]="birdFluForm.get('occupationalExposureWorkplace')?.value == 9">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.H5N1.OCCUPATIONAL_EXPOSURE_OTHER" | translate }}</label>
+                    <input formControlName="occupationalExposureWorkplaceOther" type="text" class="form-control" />
+                  </div>
+                </div>
                 <div class="col-lg-6" [appShowIf]="birdFluForm.get('occupationalExposureWorkplace')?.value == 7">
                   <div class="form-group">
                     <label for="">
@@ -784,6 +805,52 @@
             <!-- / .col-12 -->
           </div>
           <!-- / .row -->
+
+          <div class="row color">
+            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.LAB_TESTS" | translate }}</div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE" | translate }}</label>
+                    <select formControlName="sampleType" class="form-control">
+                      <option value="1">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.NASOPHARYNGEAL_SWAB" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SPUTUM" | translate }}</option>
+                      <option value="3">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.BRONCHIAL_LAVAGE" | translate }}</option>
+                      <option value="5">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.THROAT_SWAB" | translate }}</option>
+                      <option value="4">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE_OTHER" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-lg-6" [appShowIf]="birdFluForm.get('sampleType')?.value == 4">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE_OTHER" | translate }}</label>
+                    <input formControlName="sampleTypeOther" type="text" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_COLLECTION_DATE" | translate }}</label>
+                    <app-date-field formControlName="sampleCollectionDate" [max]="birdFluForm.value.sampleSendDate"></app-date-field>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_SEND_DATE" | translate }}</label>
+                    <app-date-field class="date-with-note" formControlName="sampleSendDate" [min]="birdFluForm.value.sampleCollectionDate"></app-date-field>
+                    <small class="form-text text-muted d-block">في نفس يوم سحب العينة أو بعده{{ birdFluForm.value.sampleCollectionDate ? ' ' + (birdFluForm.value.sampleCollectionDate | date: 'dd/MM/yyyy') : '' }}</small>
+                    <small *ngIf="isSendBeforeCollection()" class="form-text text-danger mess-color d-block">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_SEND_BEFORE_COLLECTION" | translate }}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="row color">
             <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">

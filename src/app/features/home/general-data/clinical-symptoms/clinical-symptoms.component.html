@@ -16,10 +16,27 @@
   </div>
   <div
     id="craiteria"
-    class="row craiteria bg-dark-mode p-3 justify-content-around"
+    class="row craiteria bg-dark-mode p-3"
     [ngStyle]="FEVERStatus ? { display: 'flex' } : { display: 'none' }"
   >
-    <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-3">
+      <div class="form-group">
+        <label class="d-block mb-2">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.HAS_FEVER" | translate }}
+        </label>
+        <p-dropdown
+          [options]="feverPresenceOptions"
+          name="hasFever"
+          [(ngModel)]="hasFever"
+          optionValue="value"
+          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'"
+          [placeholder]="'NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.SELECT' | translate"
+          [style]="{ width: '100%' }"
+          (onChange)="onFeverPresenceChange($event.value)"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngIf="hasFever === true">
       <div class="form-group">
         <label for="">
           {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_DATE" | translate }}
@@ -50,7 +67,7 @@
         </small>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngIf="hasFever === true">
       <div class="form-group">
         <label for="">
           {{ "NOUR.word143" | translate }}
@@ -63,7 +80,7 @@
           type="number"
           inputmode="numeric"
           class="form-control w-100"
-          [required]="!FEVERStatus"
+          [required]="hasFever === true"
           pInputText
           (blur)="
             generalDataService.isFeverDurationValid =
@@ -81,7 +98,7 @@
         </small>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngIf="hasFever === true">
       <div class="form-group">
         <label for="">
           {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_MAX_TEMP" | translate }}
@@ -173,7 +190,8 @@
           }}
         </div>
         <div class="chronic-grid">
-          <label *ngFor="let dieases of chronicDiseases; let i = index" class="chronic-item text-muted">
+          <label *ngFor="let dieases of chronicDiseases; let i = index" class="chronic-item text-muted"
+            [style.display]="shouldShowChronicDisease(dieases) ? null : 'none'">
             <input class="form-check-input" type="checkbox" [(ngModel)]="selectedChronicDiseases[dieases.id]"
               [name]="'chronic_' + dieases.id" (change)="itemsCheck(dieases.id)" (blur)="
               generalDataService.isChronicDiseaseValid =

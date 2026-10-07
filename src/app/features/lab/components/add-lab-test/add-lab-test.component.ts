@@ -39,6 +39,7 @@ export class AddLabTestComponent {
     dieaseLabTestId: null,
     diseaseLabTestResultId: null,
     getSampleDate: null,
+    sampleSendDate: null,
     sampleDeliveryDate: null,
     labResultDate: null,
     labNumber: null,
@@ -438,6 +439,10 @@ export class AddLabTestComponent {
           this.patientAddCheck.getSampleDate,
           'yyyy-MM-dd'
         );
+        this.patientAddCheck.sampleSendDate = this.datePipe.transform(
+          this.patientAddCheck.sampleSendDate,
+          'yyyy-MM-dd'
+        );
         this.patientAddCheck.sampleDeliveryDate = this.datePipe.transform(
           this.patientAddCheck.sampleDeliveryDate,
           'yyyy-MM-dd'
@@ -476,16 +481,57 @@ export class AddLabTestComponent {
     return !!sample && !!this.caseDiscoveryDate && sample < this.caseDiscoveryDate;
   }
 
-  isDeliveryDateBeforeSample(): boolean {
-    const sample = this.datePipe.transform(this.patientAddCheck?.getSampleDate, 'yyyy-MM-dd');
-    const delivery = this.datePipe.transform(this.patientAddCheck?.sampleDeliveryDate, 'yyyy-MM-dd');
-    return !!sample && !!delivery && delivery < sample;
+  private toDay(value: any): string | null {
+    return value ? this.datePipe.transform(value, 'yyyy-MM-dd') : null;
   }
 
-  isResultDateBeforeDelivery(): boolean {
-    const delivery = this.datePipe.transform(this.patientAddCheck?.sampleDeliveryDate, 'yyyy-MM-dd');
-    const result = this.datePipe.transform(this.patientAddCheck?.labResultDate, 'yyyy-MM-dd');
-    return !!delivery && !!result && result < delivery;
+  private floorFrom(candidates: { date: any; short: string }[]): { date: string; short: string } | null {
+    for (const candidate of candidates) {
+      const date = this.toDay(candidate.date);
+      if (date) {
+        return { date, short: candidate.short };
+      }
+    }
+    return null;
+  }
+
+  sendDateFloor() {
+    return this.floorFrom([{ date: this.patientAddCheck?.getSampleDate, short: 'سحب العينة' }]);
+  }
+
+  deliveryDateFloor() {
+    return this.floorFrom([
+      { date: this.patientAddCheck?.sampleSendDate, short: 'ارسال العينة' },
+      { date: this.patientAddCheck?.getSampleDate, short: 'سحب العينة' },
+    ]);
+  }
+
+  resultDateFloor() {
+    return this.floorFrom([
+      { date: this.patientAddCheck?.sampleDeliveryDate, short: 'استلام العينة' },
+      { date: this.patientAddCheck?.sampleSendDate, short: 'ارسال العينة' },
+      { date: this.patientAddCheck?.getSampleDate, short: 'سحب العينة' },
+    ]);
+  }
+
+  isBeforeFloor(value: any, floor: { date: string } | null): boolean {
+    const date = this.toDay(value);
+    return !!date && !!floor && date < floor.date;
+  }
+
+  floorMessage(labelKey: string, floor: { date: string; short: string } | null): string {
+    const label = this.translateService.instant('NEDSS.LAB_VIEW.ADD_PATIENT.' + labelKey);
+    return floor ? `${label} يجب أن يكون في نفس يوم ${floor.short} أو بعده (${floor.date})` : '';
+  }
+
+  private dateOrderError(): string | null {
+    const checks: [any, { date: string; short: string } | null, string][] = [
+      [this.patientAddCheck?.sampleSendDate, this.sendDateFloor(), 'SAMPLE_SEND_DATE'],
+      [this.patientAddCheck?.sampleDeliveryDate, this.deliveryDateFloor(), 'SAMPLE_DELIVERY_DATE'],
+      [this.patientAddCheck?.labResultDate, this.resultDateFloor(), 'RESULT_DATE'],
+    ];
+    const failed = checks.find(([value, floor]) => this.isBeforeFloor(value, floor));
+    return failed ? this.floorMessage(failed[2], failed[1]) : null;
   }
 
   saving = false;
@@ -498,12 +544,9 @@ export class AddLabTestComponent {
       this.userMsg.error(`تاريخ سحب العينة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
       return;
     }
-    if (this.isDeliveryDateBeforeSample()) {
-      this.userMsg.error('تاريخ تسليم العينة يجب أن يكون في نفس يوم سحب العينة أو بعده');
-      return;
-    }
-    if (this.isResultDateBeforeDelivery()) {
-      this.userMsg.error('تاريخ النتيجة يجب أن يكون في نفس يوم تسليم العينة أو بعده');
+    const dateOrderError = this.dateOrderError();
+    if (dateOrderError) {
+      this.userMsg.error(dateOrderError);
       return;
     }
     if (this.validateRequiredData()) {
@@ -623,6 +666,7 @@ export class AddLabTestComponent {
       dieaseLabTestId: null,
       diseaseLabTestResultId: null,
       getSampleDate: null,
+      sampleSendDate: null,
       sampleDeliveryDate: null,
       labResultDate: null,
       labNumber: null,

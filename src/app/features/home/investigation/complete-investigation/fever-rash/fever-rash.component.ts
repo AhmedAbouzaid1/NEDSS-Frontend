@@ -12,6 +12,7 @@ import { downloadSurveyTemplate, readSurveyFile } from './fever-rash-survey-exce
 
 @Component({
   selector: 'app-fever-rash',
+  host: { class: 'investigation-form' },
   templateUrl: './fever-rash.component.html',
   styleUrls: ['./fever-rash.component.css'],
 })
@@ -401,14 +402,18 @@ export class FeverRashComponent implements OnInit {
     if (!this.currentId || !groupId) return;
     const f = this.feverRashForm.controls;
     const needDate = !f['lastCaseDateAdmin'].value;
+    const needDirDate = !f['lastCaseDateDirectorate'].value;
     const needConfirmed = f['confirmedCasesLastMonth'].value == null;
     const needFeverRash = f['feverRashCasesLastMonth'].value == null;
-    if (!needDate && !needConfirmed && !needFeverRash) return;
+    if (!needDate && !needDirDate && !needConfirmed && !needFeverRash) return;
     this.investigationService.getFeverRashUnitSummary(this.currentId, groupId).subscribe((res: any) => {
       const s = res?.data;
       if (!s) return;
       if (needDate && !f['lastCaseDateAdmin'].value && s.lastCaseDate) {
         f['lastCaseDateAdmin'].setValue(this.d(s.lastCaseDate));
+      }
+      if (needDirDate && !f['lastCaseDateDirectorate'].value && s.lastCaseDateDirectorate) {
+        f['lastCaseDateDirectorate'].setValue(this.d(s.lastCaseDateDirectorate));
       }
       if (needConfirmed && f['confirmedCasesLastMonth'].value == null) {
         this.applyCaseCount('confirmedCasesLastMonth', 'confirmedCasesCount', s.confirmedCasesLastMonth);
@@ -1029,6 +1034,14 @@ export class FeverRashComponent implements OnInit {
     }
     if (this.isBeforeDiscoveryInvalid(this.feverRashForm.value.coverageVisitDate)) {
       this.userMsg.error(`في التقصي على مستوى الوحدة الصحية: تاريخ زيارة الوحدة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    if (this.isBeforeDiscoveryInvalid(this.feverRashForm.value.fieldVisitDate)) {
+      this.userMsg.error(`في المسح الميداني 30 طفل: تاريخ الزيارة الميدانية لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
+      return;
+    }
+    if (this.isBeforeDiscoveryInvalid(this.feverRashForm.value.field400VisitDate)) {
+      this.userMsg.error(`في المسح الميداني 400 طفل: تاريخ الزيارة الميدانية لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
       return;
     }
     if (this.hasInvalidFollowupDates()) {

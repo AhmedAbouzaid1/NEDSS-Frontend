@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MultipleDropdownSettings } from 'src/app/core/constants';
 @Component({
   selector: 'app-severe-food-poisoning',
+  host: { class: 'investigation-form' },
   templateUrl: './severe-food-poisoning.component.html',
   styleUrls: ['./severe-food-poisoning.component.css']
 })
@@ -46,6 +47,12 @@ export class SevereFoodPoisoningComponent implements OnInit {
     { id: 'OTHER', arabicName: 'أخرى', englishName: 'Other' },
   ];
 
+  foodSourceOptions = [
+    { id: 'RESTAURANT', arabicName: 'مطعم', englishName: 'Restaurant' },
+    { id: 'STREET_VENDOR', arabicName: 'بائع متجول', englishName: 'Street vendor' },
+    { id: 'HOME_PREPARED', arabicName: 'معد منزليا', englishName: 'Home prepared' },
+  ];
+
   waterSourceOptions = [
     { id: 'NETWORK', arabicName: 'شبكة', englishName: 'Network' },
     { id: 'GROUNDWATER', arabicName: 'مياه جوفية', englishName: 'Groundwater' },
@@ -68,6 +75,7 @@ export class SevereFoodPoisoningComponent implements OnInit {
   ];
 
   selectedFoodTypes: any[] = [];
+  selectedFoodSources: any[] = [];
   selectedExposureLocations: any[] = [];
   selectedWaterSources: any[] = [];
   selectedHumanSamples: any[] = [];
@@ -89,6 +97,7 @@ export class SevereFoodPoisoningComponent implements OnInit {
     exposureLocationOther: null,
     foodTypes: null,
     foodTypeOther: null,
+    foodSources: null,
     foodIntakeTime: null,
     symptomsOnsetTime: null,
     preparationToIntakeDuration: null,
@@ -125,6 +134,7 @@ export class SevereFoodPoisoningComponent implements OnInit {
         if (v != null) {
           this.SevereFoodPoisoningData = v;
           this.selectedFoodTypes = this.deserializeMultiValue(v.foodTypes, this.foodTypeOptions);
+          this.selectedFoodSources = this.deserializeMultiValue(v.foodSources, this.foodSourceOptions);
           this.selectedExposureLocations = this.deserializeMultiValue(v.exposureLocation, this.exposureLocations);
           this.selectedWaterSources = this.deserializeMultiValue(v.waterSourceType, this.waterSourceOptions);
           this.selectedHumanSamples = this.deserializeMultiValue(v.humanSamples, this.humanSampleOptions);
@@ -149,6 +159,7 @@ export class SevereFoodPoisoningComponent implements OnInit {
     this.SevereFoodPoisoningData.diseaseGroupId = this.investigationService.diseaseGroupID;
     this.SevereFoodPoisoningData.exposureLocation = this.serializeMultiValue(this.selectedExposureLocations);
     this.SevereFoodPoisoningData.foodTypes = this.serializeMultiValue(this.selectedFoodTypes);
+    this.SevereFoodPoisoningData.foodSources = this.serializeMultiValue(this.selectedFoodSources);
     this.SevereFoodPoisoningData.waterSourceType = this.serializeMultiValue(this.selectedWaterSources);
     this.SevereFoodPoisoningData.humanSamples = this.serializeMultiValue(this.selectedHumanSamples);
     this.SevereFoodPoisoningData.environmentalSamples = this.serializeMultiValue(this.selectedEnvironmentalSamples);

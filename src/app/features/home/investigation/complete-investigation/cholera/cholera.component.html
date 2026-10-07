@@ -28,22 +28,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_WITH_SUSPECTED_CASE" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="contactSuspectedCase" name="contactSuspectedCase"
-                        [(ngModel)]="choleraData.contactSuspectedCase" #contactSuspectedCase="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="fecontactSuspectedCasever" name="contactSuspectedCase"
-                        [(ngModel)]="choleraData.contactSuspectedCase" #contactSuspectedCase="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="contactSuspectedCase" name="contactSuspectedCase"
-                        [(ngModel)]="choleraData.contactSuspectedCase" #contactSuspectedCase="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="contactSuspectedCase" [(ngModel)]="choleraData.contactSuspectedCase" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -51,69 +41,24 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.PART_OF_EPIDEMIC_OUTBREAK_OR_SIMILAR_CASES" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="epidemicOutbreak" name="epidemicOutbreak" [(ngModel)]="choleraData.epidemicOutbreak"
-                        #epidemicOutbreak="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="epidemicOutbreak" name="epidemicOutbreak" [(ngModel)]="choleraData.epidemicOutbreak"
-                        #epidemicOutbreak="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="epidemicOutbreak" name="epidemicOutbreak" [(ngModel)]="choleraData.epidemicOutbreak"
-                        #epidemicOutbreak="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="epidemicOutbreak" [(ngModel)]="choleraData.epidemicOutbreak" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
               <div class="col-6 mt-4">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_WITH_CONFIRMED_CASE" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="contactConfirmedCase" name="contactConfirmedCase"
-                        [(ngModel)]="choleraData.contactConfirmedCase" #contactConfirmedCase="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="contactConfirmedCase" name="contactConfirmedCase"
-                        [(ngModel)]="choleraData.contactConfirmedCase" #contactConfirmedCase="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="contactConfirmedCase" name="contactConfirmedCase"
-                        [(ngModel)]="choleraData.contactConfirmedCase" #contactConfirmedCase="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="row">
-                  <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_DECEASED_PERSON_UNKNOWN_RESPIRATORY_DISEASE" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="contactDeceasedPersonRespiratory" name="contactDeceasedPersonRespiratory" [(ngModel)]="
-                          choleraData.contactDeceasedPersonRespiratory
-                        " #contactDeceasedPersonRespiratory="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="contactDeceasedPersonRespiratory" name="contactDeceasedPersonRespiratory" [(ngModel)]="
-                          choleraData.contactDeceasedPersonRespiratory
-                        " #contactDeceasedPersonRespiratory="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="contactDeceasedPersonRespiratory" name="contactDeceasedPersonRespiratory" [(ngModel)]="
-                          choleraData.contactDeceasedPersonRespiratory
-                        " #contactDeceasedPersonRespiratory="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="contactConfirmedCase" [(ngModel)]="choleraData.contactConfirmedCase" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -337,17 +282,11 @@
                       <div class="col-4">
                         <div class="row">
                           <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6 has-labels">
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="isSampleTakenDay1" name="isSampleTakenDay1"
-                                [(ngModel)]="choleraData.isSampleTakenDay1" #isSampleTakenDay1="ngModel" [value]="0" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="isSampleTakenDay1" name="isSampleTakenDay1"
-                                [(ngModel)]="choleraData.isSampleTakenDay1" #isSampleTakenDay1="ngModel" [value]="1" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
+                          <div class="col-6">
+                            <select class="form-control" name="isSampleTakenDay1" [(ngModel)]="choleraData.isSampleTakenDay1" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -364,22 +303,12 @@
                       <div class="col-4" [appShowIf]="choleraData.isSampleTakenDay1 === 0">
                         <div class="row">
                           <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8 has-labels">
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay1" name="sampleResultDay1"
-                                [(ngModel)]="choleraData.sampleResultDay1" #sampleResultDay1="ngModel" [value]="0" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay1" name="sampleResultDay1"
-                                [(ngModel)]="choleraData.sampleResultDay1" #sampleResultDay1="ngModel" [value]="1" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay1" name="sampleResultDay1"
-                                [(ngModel)]="choleraData.sampleResultDay1" #sampleResultDay1="ngModel" [value]="2" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED" | translate }}
-                            </label>
+                          <div class="col-8">
+                            <select class="form-control" name="sampleResultDay1" [(ngModel)]="choleraData.sampleResultDay1" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED" | translate }}</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -574,17 +503,11 @@
                       <div class="col-4">
                         <div class="row">
                           <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6 has-labels">
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="isSampleTakenDay2" name="isSampleTakenDay2"
-                                [(ngModel)]="choleraData.isSampleTakenDay2" #isSampleTakenDay2="ngModel" [value]="0" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="isSampleTakenDay2" name="isSampleTakenDay2"
-                                [(ngModel)]="choleraData.isSampleTakenDay2" #isSampleTakenDay2="ngModel" [value]="1" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
+                          <div class="col-6">
+                            <select class="form-control" name="isSampleTakenDay2" [(ngModel)]="choleraData.isSampleTakenDay2" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -601,22 +524,12 @@
                       <div class="col-4" [appShowIf]="choleraData.isSampleTakenDay2 === 0">
                         <div class="row">
                           <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8 has-labels">
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay2" name="sampleResultDay2"
-                                [(ngModel)]="choleraData.sampleResultDay2" #sampleResultDay2="ngModel" [value]="0" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay2" name="sampleResultDay2"
-                                [(ngModel)]="choleraData.sampleResultDay2" #sampleResultDay2="ngModel" [value]="1" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay2" name="sampleResultDay2"
-                                [(ngModel)]="choleraData.sampleResultDay2" #sampleResultDay2="ngModel" [value]="2" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED" | translate }}
-                            </label>
+                          <div class="col-8">
+                            <select class="form-control" name="sampleResultDay2" [(ngModel)]="choleraData.sampleResultDay2" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED" | translate }}</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -811,17 +724,11 @@
                       <div class="col-4">
                         <div class="row">
                           <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6 has-labels">
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="isSampleTakenDay7" name="isSampleTakenDay7"
-                                [(ngModel)]="choleraData.isSampleTakenDay7" #isSampleTakenDay7="ngModel" [value]="0" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="isSampleTakenDay7" name="isSampleTakenDay7"
-                                [(ngModel)]="choleraData.isSampleTakenDay7" #isSampleTakenDay7="ngModel" [value]="1" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
+                          <div class="col-6">
+                            <select class="form-control" name="isSampleTakenDay7" [(ngModel)]="choleraData.isSampleTakenDay7" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -838,22 +745,12 @@
                       <div class="col-4" [appShowIf]="choleraData.isSampleTakenDay7 === 0">
                         <div class="row">
                           <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8 has-labels">
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay7" name="sampleResultDay7"
-                                [(ngModel)]="choleraData.sampleResultDay7" #sampleResultDay7="ngModel" [value]="0" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay7" name="sampleResultDay7"
-                                [(ngModel)]="choleraData.sampleResultDay7" #sampleResultDay7="ngModel" [value]="1" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay7" name="sampleResultDay7"
-                                [(ngModel)]="choleraData.sampleResultDay7" #sampleResultDay7="ngModel" [value]="2" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED" | translate }}
-                            </label>
+                          <div class="col-8">
+                            <select class="form-control" name="sampleResultDay7" [(ngModel)]="choleraData.sampleResultDay7" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED" | translate }}</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -1049,19 +946,11 @@
                       <div class="col-4">
                         <div class="row">
                           <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6 has-labels">
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="isSampleTakenDay14" name="isSampleTakenDay14"
-                                [(ngModel)]="choleraData.isSampleTakenDay14" #isSampleTakenDay14="ngModel"
-                                [value]="0" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="isSampleTakenDay14" name="isSampleTakenDay14"
-                                [(ngModel)]="choleraData.isSampleTakenDay14" #isSampleTakenDay14="ngModel"
-                                [value]="1" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
+                          <div class="col-6">
+                            <select class="form-control" name="isSampleTakenDay14" [(ngModel)]="choleraData.isSampleTakenDay14" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -1078,22 +967,12 @@
                       <div class="col-4" [appShowIf]="choleraData.isSampleTakenDay14 === 0">
                         <div class="row">
                           <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8 has-labels">
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay14" name="sampleResultDay14"
-                                [(ngModel)]="choleraData.sampleResultDay14" #sampleResultDay14="ngModel" [value]="0" />
-                              {{ "NEDSS.COMMON.YES" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay14" name="sampleResultDay14"
-                                [(ngModel)]="choleraData.sampleResultDay14" #sampleResultDay14="ngModel" [value]="1" />
-                              {{ "NEDSS.COMMON.NO" | translate }}
-                            </label>
-                            <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                                class="form-check-input" id="sampleResultDay14" name="sampleResultDay14"
-                                [(ngModel)]="choleraData.sampleResultDay14" #sampleResultDay14="ngModel" [value]="2" />
-                              {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED" | translate }}
-                            </label>
+                          <div class="col-8">
+                            <select class="form-control" name="sampleResultDay14" [(ngModel)]="choleraData.sampleResultDay14" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.NOT_RECEIVED" | translate }}</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -1115,22 +994,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTAMINATED_FOOD_OR_LIQUIDS" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="contaminated" name="contaminated" [(ngModel)]="choleraData.contaminated"
-                        #contaminated="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="contaminated" name="contaminated" [(ngModel)]="choleraData.contaminated"
-                        #contaminated="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="contaminated" name="contaminated" [(ngModel)]="choleraData.contaminated"
-                        #contaminated="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="contaminated" [(ngModel)]="choleraData.contaminated" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1148,22 +1017,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.MARINE_CRUSTACEANS" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="marineCrustaceans" name="marineCrustaceans" [(ngModel)]="choleraData.marineCrustaceans"
-                        #marineCrustaceans="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="marineCrustaceans" name="marineCrustaceans" [(ngModel)]="choleraData.marineCrustaceans"
-                        #marineCrustaceans="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="marineCrustaceans" name="marineCrustaceans" [(ngModel)]="choleraData.marineCrustaceans"
-                        #marineCrustaceans="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="marineCrustaceans" [(ngModel)]="choleraData.marineCrustaceans" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1181,22 +1040,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_SEAFOOD" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherSeafood" name="otherSeafood" [(ngModel)]="choleraData.otherSeafood"
-                        #otherSeafood="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherSeafood" name="otherSeafood" [(ngModel)]="choleraData.otherSeafood"
-                        #otherSeafood="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherSeafood" name="otherSeafood" [(ngModel)]="choleraData.otherSeafood"
-                        #otherSeafood="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="otherSeafood" [(ngModel)]="choleraData.otherSeafood" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1216,19 +1065,12 @@
                   <div class="col-4">
                     {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.MILK" | translate }}
                   </div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="milk" name="milk" [(ngModel)]="choleraData.milk" #milk="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="milk" name="milk" [(ngModel)]="choleraData.milk" #milk="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="milk" name="milk" [(ngModel)]="choleraData.milk" #milk="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="milk" [(ngModel)]="choleraData.milk" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1245,19 +1087,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CHEESE" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="cheese" name="cheese" [(ngModel)]="choleraData.cheese" #cheese="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="cheese" name="cheese" [(ngModel)]="choleraData.cheese" #cheese="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="cheese" name="cheese" [(ngModel)]="choleraData.cheese" #cheese="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="cheese" [(ngModel)]="choleraData.cheese" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1274,22 +1109,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_CHEESE" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherCheese" name="otherCheese" [(ngModel)]="choleraData.otherCheese" #otherCheese="ngModel"
-                        [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherCheese" name="otherCheese" [(ngModel)]="choleraData.otherCheese" #v="ngModel"
-                        [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherCheese" name="otherCheese" [(ngModel)]="choleraData.otherCheese" #otherCheese="ngModel"
-                        [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="otherCheese" [(ngModel)]="choleraData.otherCheese" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1307,22 +1132,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ICE_CREAM" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="iceCream" name="iceCream" [(ngModel)]="choleraData.iceCream" #iceCream="ngModel"
-                        [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="iceCream" name="iceCream" [(ngModel)]="choleraData.iceCream" #iceCream="ngModel"
-                        [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="iceCream" name="iceCream" [(ngModel)]="choleraData.iceCream" #iceCream="ngModel"
-                        [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="iceCream" [(ngModel)]="choleraData.iceCream" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1339,22 +1154,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_DAIRY_PRODUCTS" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherDairyProducts" name="otherDairyProducts" [(ngModel)]="choleraData.otherDairyProducts"
-                        #otherDairyProducts="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherDairyProducts" name="otherDairyProducts" [(ngModel)]="choleraData.otherDairyProducts"
-                        #otherDairyProducts="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherDairyProducts" name="otherDairyProducts" [(ngModel)]="choleraData.otherDairyProducts"
-                        #otherDairyProducts="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="otherDairyProducts" [(ngModel)]="choleraData.otherDairyProducts" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1372,25 +1177,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.UNCOOKED_FRUITS_VEGETABLES" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="UncookedFruitsVegetables" name="UncookedFruitsVegetables"
-                        [(ngModel)]="choleraData.uncookedFruitsVegetables" #UncookedFruitsVegetables="ngModel"
-                        [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="UncookedFruitsVegetables" name="UncookedFruitsVegetables"
-                        [(ngModel)]="choleraData.uncookedFruitsVegetables" #UncookedFruitsVegetables="ngModel"
-                        [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="UncookedFruitsVegetables" name="UncookedFruitsVegetables"
-                        [(ngModel)]="choleraData.uncookedFruitsVegetables" #UncookedFruitsVegetables="ngModel"
-                        [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="UncookedFruitsVegetables" [(ngModel)]="choleraData.uncookedFruitsVegetables" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1408,19 +1200,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.RAW_EGGS" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="rawEggs" name="rawEggs" [(ngModel)]="choleraData.rawEggs" #rawEggs="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="rawEggs" name="rawEggs" [(ngModel)]="choleraData.rawEggs" #rawEggs="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="rawEggs" name="rawEggs" [(ngModel)]="choleraData.rawEggs" #rawEggs="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="rawEggs" [(ngModel)]="choleraData.rawEggs" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1437,22 +1222,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FOODS_NOT_HOME" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="foodsNotHome" name="foodsNotHome" [(ngModel)]="choleraData.foodsNotHome"
-                        #foodsNotHome="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="foodsNotHome" name="foodsNotHome" [(ngModel)]="choleraData.foodsNotHome"
-                        #foodsNotHome="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="foodsNotHome" name="foodsNotHome" [(ngModel)]="choleraData.foodsNotHome"
-                        #foodsNotHome="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="foodsNotHome" [(ngModel)]="choleraData.foodsNotHome" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1480,22 +1255,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_FOODS" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherFoods" name="otherFoods" [(ngModel)]="choleraData.otherFoods" #otherFoods="ngModel"
-                        [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherFoods" name="otherFoods" [(ngModel)]="choleraData.otherFoods" #otherFoods="ngModel"
-                        [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="otherFoods" name="otherFoods" [(ngModel)]="choleraData.otherFoods" #otherFoods="ngModel"
-                        [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="otherFoods" [(ngModel)]="choleraData.otherFoods" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1512,22 +1277,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IS_FOOD_HANDLER" | translate }}</div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="isFoodHandler" name="isFoodHandler" [(ngModel)]="choleraData.isFoodHandler"
-                        #isFoodHandler="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="isFoodHandler" name="isFoodHandler" [(ngModel)]="choleraData.isFoodHandler"
-                        #isFoodHandler="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="isFoodHandler" name="isFoodHandler" [(ngModel)]="choleraData.isFoodHandler"
-                        #isFoodHandler="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="isFoodHandler" [(ngModel)]="choleraData.isFoodHandler" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1545,22 +1300,12 @@
                   <div class="col-4">
                     {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.HAS_HEALTH_CERTIFICATE" | translate }}
                   </div>
-                  <div class="col-8 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="isHealthCertificate" name="isHealthCertificate"
-                        [(ngModel)]="choleraData.isHealthCertificate" #isHealthCertificate="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="isHealthCertificate" name="isHealthCertificate"
-                        [(ngModel)]="choleraData.isHealthCertificate" #isHealthCertificate="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="isHealthCertificate" name="isHealthCertificate"
-                        [(ngModel)]="choleraData.isHealthCertificate" #isHealthCertificate="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8">
+                    <select class="form-control" name="isHealthCertificate" [(ngModel)]="choleraData.isHealthCertificate" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1625,32 +1370,14 @@
               <div class="col-12">
                 <div class="row">
                   <div class="col-2">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.WATER_SOURCE_HOME" | translate }}</div>
-                  <div class="col-4 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="waterSourceHouse" name="waterSourceHouse" [(ngModel)]="choleraData.waterSourceHouse"
-                        #waterSourceHouse="ngModel" [value]="0" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.PUBLIC_NETWORK" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="waterSourceHouse" name="waterSourceHouse" [(ngModel)]="choleraData.waterSourceHouse"
-                        #waterSourceHouse="ngModel" [value]="1" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.WELLS" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="waterSourceHouse" name="waterSourceHouse" [(ngModel)]="choleraData.waterSourceHouse"
-                        #waterSourceHouse="ngModel" [value]="2" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CANALS" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="waterSourceHouse" name="waterSourceHouse" [(ngModel)]="choleraData.waterSourceHouse"
-                        #waterSourceHouse="ngModel" [value]="3" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ETHIOPIAN_PUMPS" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="waterSourceHouse" name="waterSourceHouse" [(ngModel)]="choleraData.waterSourceHouse"
-                        #waterSourceHouse="ngModel" [value]="4" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER" | translate }}
-                    </label>
+                  <div class="col-4">
+                    <select class="form-control" name="waterSourceHouse" [(ngModel)]="choleraData.waterSourceHouse" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.PUBLIC_NETWORK" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.WELLS" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CANALS" | translate }}</option>
+                      <option [ngValue]="3">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ETHIOPIAN_PUMPS" | translate }}</option>
+                      <option [ngValue]="4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER" | translate }}</option>
+                    </select>
                   </div>
                   <div class="col-lg-2" [appShowIf]="choleraData.waterSourceHouse === 4">
                     <input type="text" maxlength="100" [placeholder]="'NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OTHER_WATER_SOURCE' | translate" class="form-control"
@@ -1663,17 +1390,11 @@
               <div class="col-12 mt-4">
                 <div class="row">
                   <div class="col-2">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.IS_WATER_STORED" | translate }}</div>
-                  <div class="col-4 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="isWaterStored" name="isWaterStored" [(ngModel)]="choleraData.isWaterStored"
-                        #isWaterStored="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="isWaterStored" name="isWaterStored" [(ngModel)]="choleraData.isWaterStored"
-                        #isWaterStored="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
+                  <div class="col-4">
+                    <select class="form-control" name="isWaterStored" [(ngModel)]="choleraData.isWaterStored" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
                   </div>
                   <div class="col-lg-2" [appShowIf]="choleraData.isWaterStored === 0">
                     <input type="text" maxlength="100" [placeholder]="'NEDSS.COMPLETE_INVESTEGATION.CHOLERA.TANK_TYPE' | translate" class="form-control"
@@ -1687,22 +1408,12 @@
                   <div class="col-2">
                     {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SEWAGE_SYSTEM_HOME" | translate }}
                   </div>
-                  <div class="col-4 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="sewageSystemHome" name="sewageSystemHome" [(ngModel)]="choleraData.sewageSystemHome"
-                        #sewageSystemHome="ngModel" [value]="0" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SEWAGE_NETWORK" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="sewageSystemHome" name="sewageSystemHome" [(ngModel)]="choleraData.sewageSystemHome"
-                        #sewageSystemHome="ngModel" [value]="1" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.TRENCH" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="sewageSystemHome" name="sewageSystemHome" [(ngModel)]="choleraData.sewageSystemHome"
-                        #sewageSystemHome="ngModel" [value]="2" />
-                      {{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CESSPIT" | translate }}
-                    </label>
+                  <div class="col-4">
+                    <select class="form-control" name="sewageSystemHome" [(ngModel)]="choleraData.sewageSystemHome" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SEWAGE_NETWORK" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.TRENCH" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CESSPIT" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1721,97 +1432,48 @@
               <div class="col-lg-">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.MAINTENANCE_SEWER_SYSTEM" | translate }}</label>
-                  <div class="col-12 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="maintenanceSewerSystem" name="maintenanceSewerSystem"
-                        [(ngModel)]="choleraData.maintenanceSewerSystem" #maintenanceSewerSystem="ngModel"
-                        [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="maintenanceSewerSystem" name="maintenanceSewerSystem"
-                        [(ngModel)]="choleraData.maintenanceSewerSystem" #maintenanceSewerSystem="ngModel"
-                        [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="maintenanceSewerSystem" name="maintenanceSewerSystem"
-                        [(ngModel)]="choleraData.maintenanceSewerSystem" #maintenanceSewerSystem="ngModel"
-                        [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-12">
+                    <select class="form-control" name="maintenanceSewerSystem" [(ngModel)]="choleraData.maintenanceSewerSystem" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
               <div class="col-lg-12">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.BREAK_PIPES_DRINKING_WATER" | translate }}</label>
-                  <div class="col-12 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="breakPipesDrinkingWater" name="breakPipesDrinkingWater"
-                        [(ngModel)]="choleraData.breakPipesDrinkingWater" #breakPipesDrinkingWater="ngModel"
-                        [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="breakPipesDrinkingWater" name="breakPipesDrinkingWater"
-                        [(ngModel)]="choleraData.breakPipesDrinkingWater" #breakPipesDrinkingWater="ngModel"
-                        [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="breakPipesDrinkingWater" name="breakPipesDrinkingWater"
-                        [(ngModel)]="choleraData.breakPipesDrinkingWater" #breakPipesDrinkingWater="ngModel"
-                        [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-12">
+                    <select class="form-control" name="breakPipesDrinkingWater" [(ngModel)]="choleraData.breakPipesDrinkingWater" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
               <div class="col-lg-12">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.OVERFLOW_SEWER_SYSTEM" | translate }}</label>
-                  <div class="col-12 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="overflowSewerSystem" name="overflowSewerSystem"
-                        [(ngModel)]="choleraData.overflowSewerSystem" #overflowSewerSystem="ngModel" [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="overflowSewerSystem" name="overflowSewerSystem"
-                        [(ngModel)]="choleraData.overflowSewerSystem" #overflowSewerSystem="ngModel" [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="overflowSewerSystem" name="overflowSewerSystem"
-                        [(ngModel)]="choleraData.overflowSewerSystem" #overflowSewerSystem="ngModel" [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-12">
+                    <select class="form-control" name="overflowSewerSystem" [(ngModel)]="choleraData.overflowSewerSystem" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
               <div class="col-lg-12">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CHANGE_TASTE_COLOR_SMELL_WATER" | translate }}</label>
-                  <div class="col-12 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="changeTasteColorSmellwater" name="changeTasteColorSmellwater"
-                        [(ngModel)]="choleraData.changeTasteColorSmellwater" #changeTasteColorSmellwater="ngModel"
-                        [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="changeTasteColorSmellwater" name="changeTasteColorSmellwater"
-                        [(ngModel)]="choleraData.changeTasteColorSmellwater" #changeTasteColorSmellwater="ngModel"
-                        [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="changeTasteColorSmellwater" name="changeTasteColorSmellwater"
-                        [(ngModel)]="choleraData.changeTasteColorSmellwater" #changeTasteColorSmellwater="ngModel"
-                        [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-12">
+                    <select class="form-control" name="changeTasteColorSmellwater" [(ngModel)]="choleraData.changeTasteColorSmellwater" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1819,25 +1481,12 @@
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.REPORTS_CONTAMINATION_WATER" | translate }}
                   </label>
-                  <div class="col-12 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="reportsContaminationWater" name="reportsContaminationWater"
-                        [(ngModel)]="choleraData.reportsContaminationWater" #reportsContaminationWater="ngModel"
-                        [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="reportsContaminationWater" name="reportsContaminationWater"
-                        [(ngModel)]="choleraData.reportsContaminationWater" #reportsContaminationWater="ngModel"
-                        [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="reportsContaminationWater" name="reportsContaminationWater"
-                        [(ngModel)]="choleraData.reportsContaminationWater" #reportsContaminationWater="ngModel"
-                        [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-12">
+                    <select class="form-control" name="reportsContaminationWater" [(ngModel)]="choleraData.reportsContaminationWater" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1847,25 +1496,12 @@
               <div class="col-lg-6">
                 <div class="form-group">
                   <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLES_ANALYSIS_PATIENT_HOME" | translate }}</label>
-                  <div class="col-12 has-labels">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="samplesAnalysisPatienhome" name="samplesAnalysisPatienhome"
-                        [(ngModel)]="choleraData.samplesAnalysisPatienhome" #samplesAnalysisPatienhome="ngModel"
-                        [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="samplesAnalysisPatienhome" name="samplesAnalysisPatienhome"
-                        [(ngModel)]="choleraData.samplesAnalysisPatienhome" #samplesAnalysisPatienhome="ngModel"
-                        [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="samplesAnalysisPatienhome" name="samplesAnalysisPatienhome"
-                        [(ngModel)]="choleraData.samplesAnalysisPatienhome" #samplesAnalysisPatienhome="ngModel"
-                        [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-12">
+                    <select class="form-control" name="samplesAnalysisPatienhome" [(ngModel)]="choleraData.samplesAnalysisPatienhome" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1875,157 +1511,84 @@
                   <div class="col-12 mt-4">
                     <div class="row">
                       <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ENTAMOEBA_HISTOLYTICA" | translate }}</div>
-                      <div class="col-8 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="entamoebaHistolytica" name="entamoebaHistolytica"
-                            [(ngModel)]="choleraData.entamoebaHistolytica" #entamoebaHistolytica="ngModel"
-                            [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="entamoebaHistolytica" name="entamoebaHistolytica"
-                            [(ngModel)]="choleraData.entamoebaHistolytica" #entamoebaHistolytica="ngModel"
-                            [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="entamoebaHistolytica" name="entamoebaHistolytica"
-                            [(ngModel)]="choleraData.entamoebaHistolytica" #entamoebaHistolytica="ngModel"
-                            [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
+                      <div class="col-8">
+                        <select class="form-control" name="entamoebaHistolytica" [(ngModel)]="choleraData.entamoebaHistolytica" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                          <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                        </select>
                       </div>
                     </div>
                   </div>
                   <div class="col-12 mt-4">
                     <div class="row">
                       <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SHIGELLA_SPECIES" | translate }}</div>
-                      <div class="col-8 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="shigellaSpecies" name="shigellaSpecies"
-                            [(ngModel)]="choleraData.shigellaSpecies" #shigellaSpecies="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="shigellaSpecies" name="shigellaSpecies"
-                            [(ngModel)]="choleraData.shigellaSpecies" #shigellaSpecies="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="shigellaSpecies" name="shigellaSpecies"
-                            [(ngModel)]="choleraData.shigellaSpecies" #shigellaSpecies="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
+                      <div class="col-8">
+                        <select class="form-control" name="shigellaSpecies" [(ngModel)]="choleraData.shigellaSpecies" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                          <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                        </select>
                       </div>
                     </div>
                   </div>
                   <div class="col-12 mt-4">
                     <div class="row">
                       <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CAMPYLOBACTER" | translate }}</div>
-                      <div class="col-8 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="campylobacter" name="campylobacter"
-                            [(ngModel)]="choleraData.campylobacter" #campylobacter="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="campylobacter" name="campylobacter"
-                            [(ngModel)]="choleraData.campylobacter" #campylobacter="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="campylobacter" name="campylobacter"
-                            [(ngModel)]="choleraData.campylobacter" #campylobacter="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
+                      <div class="col-8">
+                        <select class="form-control" name="campylobacter" [(ngModel)]="choleraData.campylobacter" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                          <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                        </select>
                       </div>
                     </div>
                   </div>
                   <div class="col-12 mt-4">
                     <div class="row">
                       <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SALMONELLA_SPECIES" | translate }}</div>
-                      <div class="col-8 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaSpecies" name="salmonellaSpecies"
-                            [(ngModel)]="choleraData.salmonellaSpecies" #salmonellaSpecies="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaSpecies" name="salmonellaSpecies"
-                            [(ngModel)]="choleraData.salmonellaSpecies" #salmonellaSpecies="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaSpecies" name="salmonellaSpecies"
-                            [(ngModel)]="choleraData.salmonellaSpecies" #salmonellaSpecies="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
+                      <div class="col-8">
+                        <select class="form-control" name="salmonellaSpecies" [(ngModel)]="choleraData.salmonellaSpecies" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                          <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                        </select>
                       </div>
                     </div>
                   </div>
                   <div class="col-12 mt-4">
                     <div class="row">
                       <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.PATHOGENIC_COLI" | translate }}</div>
-                      <div class="col-8 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="pathogenicColi" name="pathogenicColi"
-                            [(ngModel)]="choleraData.pathogenicColi" #pathogenicColi="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="pathogenicColi" name="pathogenicColi"
-                            [(ngModel)]="choleraData.pathogenicColi" #pathogenicColi="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="pathogenicColi" name="pathogenicColi"
-                            [(ngModel)]="choleraData.pathogenicColi" #pathogenicColi="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
+                      <div class="col-8">
+                        <select class="form-control" name="pathogenicColi" [(ngModel)]="choleraData.pathogenicColi" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                          <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                        </select>
                       </div>
                     </div>
                   </div>
                   <div class="col-12 mt-4">
                     <div class="row">
                       <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SALMONELLA_TYPHI" | translate }}</div>
-                      <div class="col-8 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaTyphi" name="salmonellaTyphi"
-                            [(ngModel)]="choleraData.salmonellaTyphi" #salmonellaTyphi="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaTyphi" name="salmonellaTyphi"
-                            [(ngModel)]="choleraData.salmonellaTyphi" #salmonellaTyphi="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="salmonellaTyphi" name="salmonellaTyphi"
-                            [(ngModel)]="choleraData.salmonellaTyphi" #salmonellaTyphi="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
+                      <div class="col-8">
+                        <select class="form-control" name="salmonellaTyphi" [(ngModel)]="choleraData.salmonellaTyphi" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                          <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                        </select>
                       </div>
                     </div>
                   </div>
                   <div class="col-12 mt-4">
                     <div class="row">
                       <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.VIBRIO_CHOLERA" | translate }}</div>
-                      <div class="col-8 has-labels">
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="vibrioCholera" name="vibrioCholera"
-                            [(ngModel)]="choleraData.vibrioCholera" #vibrioCholera="ngModel" [value]="0" />
-                          {{ "NEDSS.COMMON.YES" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="vibrioCholera" name="vibrioCholera"
-                            [(ngModel)]="choleraData.vibrioCholera" #vibrioCholera="ngModel" [value]="1" />
-                          {{ "NEDSS.COMMON.NO" | translate }}
-                        </label>
-                        <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                            class="form-check-input" id="vibrioCholera" name="vibrioCholera"
-                            [(ngModel)]="choleraData.vibrioCholera" #vibrioCholera="ngModel" [value]="2" />
-                          {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                        </label>
+                      <div class="col-8">
+                        <select class="form-control" name="vibrioCholera" [(ngModel)]="choleraData.vibrioCholera" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                          <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                          <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -2047,102 +1610,52 @@
                 <div class="col-12">
                   <div class="row mt-4">
                     <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.FILTERED_WATER" | translate }}</div>
-                    <div class="col-8 has-labels">
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="filteredWater" name="filteredWater"
-                          [(ngModel)]="choleraData.filteredWater" #filteredWater="ngModel" [value]="0" />
-                        {{ "NEDSS.COMMON.YES" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="filteredWater" name="filteredWater"
-                          [(ngModel)]="choleraData.filteredWater" #filteredWater="ngModel" [value]="1" />
-                        {{ "NEDSS.COMMON.NO" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="filteredWater" name="filteredWater"
-                          [(ngModel)]="choleraData.filteredWater" #filteredWater="ngModel" [value]="2" />
-                        {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                      </label>
+                    <div class="col-8">
+                      <select class="form-control" name="filteredWater" [(ngModel)]="choleraData.filteredWater" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                        <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                      </select>
                     </div>
                   </div>
                   <div class="row mt-4">
                     <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.WELLS_SAMPLE" | translate }}</div>
-                    <div class="col-8 has-labels">
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="wells" name="wells" [(ngModel)]="choleraData.wells"
-                          #wells="ngModel" [value]="0" />
-                        {{ "NEDSS.COMMON.YES" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="wells" name="wells" [(ngModel)]="choleraData.wells"
-                          #wells="ngModel" [value]="1" />
-                        {{ "NEDSS.COMMON.NO" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="wells" name="wells" [(ngModel)]="choleraData.wells"
-                          #wells="ngModel" [value]="2" />
-                        {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                      </label>
+                    <div class="col-8">
+                      <select class="form-control" name="wells" [(ngModel)]="choleraData.wells" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                        <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                      </select>
                     </div>
                   </div>
                   <div class="row mt-4">
                     <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.ETHIOPIAN_PUMP_SAMPLE" | translate }}</div>
-                    <div class="col-8 has-labels">
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="ethiopianPump" name="ethiopianPump"
-                          [(ngModel)]="choleraData.ethiopianPump" #ethiopianPump="ngModel" [value]="0" />
-                        {{ "NEDSS.COMMON.YES" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="ethiopianPump" name="ethiopianPump"
-                          [(ngModel)]="choleraData.ethiopianPump" #ethiopianPump="ngModel" [value]="1" />
-                        {{ "NEDSS.COMMON.NO" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="ethiopianPump" name="ethiopianPump"
-                          [(ngModel)]="choleraData.ethiopianPump" #ethiopianPump="ngModel" [value]="2" />
-                        {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                      </label>
+                    <div class="col-8">
+                      <select class="form-control" name="ethiopianPump" [(ngModel)]="choleraData.ethiopianPump" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                        <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                      </select>
                     </div>
                   </div>
                   <div class="row mt-4">
                     <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CANAL_SAMPLE" | translate }}</div>
-                    <div class="col-8 has-labels">
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="canal" name="canal" [(ngModel)]="choleraData.canal"
-                          #canal="ngModel" [value]="0" />
-                        {{ "NEDSS.COMMON.YES" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="canal" name="canal" [(ngModel)]="choleraData.canal"
-                          #canal="ngModel" [value]="1" />
-                        {{ "NEDSS.COMMON.NO" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="canal" name="canal" [(ngModel)]="choleraData.canal"
-                          #canal="ngModel" [value]="2" />
-                        {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                      </label>
+                    <div class="col-8">
+                      <select class="form-control" name="canal" [(ngModel)]="choleraData.canal" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                        <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                      </select>
                     </div>
                   </div>
                   <div class="row mt-4">
                     <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.STORED_WATER" | translate }}</div>
-                    <div class="col-8 has-labels">
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="storedWater" name="storedWater"
-                          [(ngModel)]="choleraData.storedWater" #storedWater="ngModel" [value]="0" />
-                        {{ "NEDSS.COMMON.YES" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="storedWater" name="storedWater"
-                          [(ngModel)]="choleraData.storedWater" #storedWater="ngModel" [value]="1" />
-                        {{ "NEDSS.COMMON.NO" | translate }}
-                      </label>
-                      <label for=""><input type="radio" (blur)="calculateCompletionPercentage()"
-                          class="form-check-input" id="storedWater" name="storedWater"
-                          [(ngModel)]="choleraData.storedWater" #storedWater="ngModel" [value]="2" />
-                        {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                      </label>
+                    <div class="col-8">
+                      <select class="form-control" name="storedWater" [(ngModel)]="choleraData.storedWater" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                        <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                        <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                        <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -2153,25 +1666,12 @@
               <div class="col-6">
                 <div class="row">
                   <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.SAMPLED_SEWER_SYSTEM_TAKEN" | translate }}</div>
-                  <div class="col-8 has-labels mt-4">
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="sampledSewerSystemTaken" name="sampledSewerSystemTaken"
-                        [(ngModel)]="choleraData.sampledSewerSystemTaken" #sampledSewerSystemTaken="ngModel"
-                        [value]="0" />
-                      {{ "NEDSS.COMMON.YES" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="sampledSewerSystemTaken" name="sampledSewerSystemTaken"
-                        [(ngModel)]="choleraData.sampledSewerSystemTaken" #sampledSewerSystemTaken="ngModel"
-                        [value]="1" />
-                      {{ "NEDSS.COMMON.NO" | translate }}
-                    </label>
-                    <label for=""><input type="radio" (blur)="calculateCompletionPercentage()" class="form-check-input"
-                        id="sampledSewerSystemTaken" name="sampledSewerSystemTaken"
-                        [(ngModel)]="choleraData.sampledSewerSystemTaken" #sampledSewerSystemTaken="ngModel"
-                        [value]="2" />
-                      {{ "NEDSS.REPORTS.UnKnown" | translate }}
-                    </label>
+                  <div class="col-8 mt-4">
+                    <select class="form-control" name="sampledSewerSystemTaken" [(ngModel)]="choleraData.sampledSewerSystemTaken" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                      <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                      <option [ngValue]="2">{{ "NEDSS.REPORTS.UnKnown" | translate }}</option>
+                    </select>
                   </div>
                 </div>
               </div>

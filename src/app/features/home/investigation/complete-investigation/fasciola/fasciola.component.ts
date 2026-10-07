@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-fasciola',
+  host: { class: 'investigation-form' },
   templateUrl: './fasciola.component.html',
   styleUrls: ['./fasciola.component.css']
 })

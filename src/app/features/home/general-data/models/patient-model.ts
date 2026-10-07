@@ -59,8 +59,11 @@ export class PatientModel {
   incidentDate!: string;
   insertedByLab!: boolean;
   isHospitalLab!: boolean;
+  hospitalLabSelection?: number | null;
+  otherHospitalLabName?: string | null;
   isCentralLabLab!: boolean;
   isGovernmentLab!: boolean;
+  isMalariaLab?: boolean;
   isRegionalLab!: boolean;
   regionalLabId!: number;
   isSpecialLabLab!: boolean;

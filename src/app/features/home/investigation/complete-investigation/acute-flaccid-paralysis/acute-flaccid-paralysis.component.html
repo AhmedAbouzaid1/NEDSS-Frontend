@@ -19,7 +19,7 @@
             [allControllesCount]="allControllesCount"
           ></app-investigation-summary>
 
-          <div class="row align-items-end">
+          <div class="row">
             <div class="col-lg-3 col-md-6">
               <div class="form-group"><label class="fwb">كود الحالة</label>
                 <input type="text" class="form-control fwb" formControlName="caseCodeDisplay" readonly /></div>
@@ -57,14 +57,77 @@
           <!-- ================= TAB 1: التقصي الميداني للحالة ================= -->
           <ng-container *ngIf="activeTab === 'field'">
 
-            <!-- 1. Case movements -->
-            <div class="section-bar b1 d-flex justify-content-between align-items-center">
-              <span>1) تحركات الحالة خلال 30 يوم قبل بداية الشلل</span>
-              <button type="button" class="btn btn-light btn-sm" (click)="addCaseMovement()"><i class="pi pi-plus"></i> إضافة تحرك جديد</button>
+            <div class="row mb-2">
+              <div class="col-lg-4"><div class="form-group"><label>تاريخ التقصي</label>
+                <app-date-field formControlName="investigationDate"></app-date-field></div></div>
+              <div class="col-lg-4"><div class="form-group"><label>اسم الطبيب القائم بالتقصي</label>
+                <input type="text" class="form-control" formControlName="investigatingPhysicianName"
+                  maxlength="200" /></div></div>
             </div>
+
             <div class="row mb-2">
               <div class="col-lg-4"><div class="form-group"><label>تاريخ بداية شلل الحالة</label>
                 <app-date-field formControlName="paralysisOnsetDate"></app-date-field></div></div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label>التشخيص الإكلينيكي الأولي</label>
+                  <select class="form-control" formControlName="initialClinicalDiagnosis">
+                    <option [ngValue]="null">اختر</option>
+                    <option *ngFor="let diagnosis of initialClinicalDiagnoses" [ngValue]="diagnosis.value">
+                      {{ diagnosis.label }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-4" *ngIf="form.get('initialClinicalDiagnosis')?.value == 11">
+                <div class="form-group">
+                  <label>التشخيص الآخر</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="otherInitialClinicalDiagnosis"
+                    maxlength="250"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label>هل الحالة خطرة؟</label>
+                  <select class="form-control" formControlName="isDangerousCase">
+                    <option [ngValue]="null">اختر</option>
+                    <option [ngValue]="1">نعم</option>
+                    <option [ngValue]="2">لا</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-8" *ngIf="form.get('isDangerousCase')?.value == 1">
+                <div class="form-group">
+                  <label>مؤشرات خطورة الحالة</label>
+                  <p-multiSelect
+                    [options]="dangerousCaseReasons"
+                    formControlName="selectedDangerousCaseReasons"
+                    optionLabel="label"
+                    optionValue="value"
+                    display="chip"
+                    defaultLabel="اختر"
+                    panelStyleClass="dangerous-reasons-panel"
+                    [showToggleAll]="true"
+                    [style]="{ width: '100%' }"
+                  ></p-multiSelect>
+                </div>
+              </div>
+            </div>
+
+            <!-- 1. Case movements -->
+            <div class="section-bar b1 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>1) تحركات الحالة خلال 30 يوم قبل بداية الشلل</span>
+              <button type="button" class="btn case-movement-add" (click)="addCaseMovement()">
+                <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                <span>إضافة تحرك جديد</span>
+              </button>
             </div>
             <div class="mb-2" *ngIf="caseMovements.length > 0">
               <div class="fwb mb-1">عرض السجلات</div>
@@ -94,7 +157,7 @@
                   <div class="col-lg-3"><div class="form-group"><label>مكان المخالطة</label><input type="text" class="form-control" formControlName="contactPlace" /></div></div>
                   <div class="col-lg-6"><div class="form-group"><label>العنوان بالتفصيل</label><input type="text" class="form-control" formControlName="address" /></div></div>
                   <div class="col-lg-3"><div class="form-group"><label>هل يوجد حالات؟</label>
-                    <select class="form-control" formControlName="hasCases"><option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
+                    <select class="form-control" formControlName="hasCases"><option [ngValue]="null">اختر</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
                   <div class="col-lg-9" [appShowIf]="m.get('hasCases')?.value == 1"><div class="form-group"><label>بيانات الحالة</label><input type="text" class="form-control" formControlName="caseData" /></div></div>
                 </div>
               </div>
@@ -108,12 +171,12 @@
               <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasPreviousAfpCases" [value]="2" /> لا</label>
             </div>
             <ng-container *ngIf="form.value.hasPreviousAfpCases === 1">
-              <div class="d-flex justify-content-end mb-2"><button type="button" class="btn btn-add-record btn-sm" (click)="addPreviousCase()"><i class="pi pi-plus"></i> إضافة مخالط جديد</button></div>
+              <div class="d-flex justify-content-end mb-2"><button type="button" class="btn btn-add-record btn-sm" (click)="addPreviousCase()"><i class="pi pi-plus"></i> إضافة حالة جديدة</button></div>
               <div class="mb-2" *ngIf="previousCases.length > 0">
                 <div class="fwb mb-1">عرض السجلات</div>
                 <div class="table-responsive">
                   <table class="table table-bordered text-center align-middle">
-                    <thead><tr><th>#</th><th>اسم المخالط</th><th>تاريخ ظهور الشلل</th><th>نطاق السكن</th><th>العنوان</th><th>كود الحالة</th></tr></thead>
+                    <thead><tr><th>#</th><th>اسم الحالة</th><th>تاريخ ظهور الشلل</th><th>نطاق السكن</th><th>العنوان</th><th>كود الحالة</th></tr></thead>
                     <tbody>
                       <tr *ngFor="let p of previousCases.controls; let i = index">
                         <td>{{ i + 1 }}</td><td>{{ p.value.contactName }}</td><td>{{ p.value.paralysisOnsetDate }}</td><td>{{ p.value.residenceScope }}</td><td>{{ p.value.address }}</td><td>{{ p.value.caseCode }}</td>
@@ -125,7 +188,7 @@
               <div formArrayName="previousCases">
                 <div class="record-card" *ngFor="let p of previousCases.controls; let i = index" [formGroupName]="i">
                   <div class="record-card-head">
-                    <span class="fwb">مخالط #{{ i + 1 }}</span>
+                    <span class="fwb">حالة #{{ i + 1 }}</span>
                     <div class="d-flex gap-2">
                       <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(p)"><i class="pi" [ngClass]="isRowOpen(p) ? 'pi-chevron-up' : 'pi-pencil'"></i> {{ isRowOpen(p) ? 'إغلاق' : 'تعديل' }}</button>
                       <button type="button" class="btn btn-sm btn-danger" (click)="removePreviousCase(i)"><i class="pi pi-trash"></i> حذف</button>
@@ -133,7 +196,7 @@
                   </div>
                   <div *ngIf="!isRowOpen(p)" class="text-muted small">{{ p.value.contactName || 'بدون اسم' }}</div>
                   <div class="row" *ngIf="isRowOpen(p)">
-                    <div class="col-lg-4"><div class="form-group"><label>اسم المخالط</label><input type="text" class="form-control" formControlName="contactName" /></div></div>
+                    <div class="col-lg-4"><div class="form-group"><label>اسم الحالة</label><input type="text" class="form-control" formControlName="contactName" /></div></div>
                     <div class="col-lg-4"><div class="form-group"><label>تاريخ ظهور الشلل</label><app-date-field formControlName="paralysisOnsetDate"></app-date-field></div></div>
                     <div class="col-lg-4"><div class="form-group"><label>نطاق السكن</label><input type="text" class="form-control" formControlName="residenceScope" /></div></div>
                     <div class="col-lg-8"><div class="form-group"><label>العنوان</label><input type="text" class="form-control" formControlName="address" /></div></div>
@@ -181,7 +244,7 @@
                     <div class="col-lg-5"><div class="form-group"><label>سبب التصنيف</label><input type="text" class="form-control" formControlName="classificationReason" /></div></div>
                     <div class="col-lg-6"><div class="form-group"><label>العنوان</label><input type="text" class="form-control" formControlName="address" /></div></div>
                     <div class="col-lg-3"><div class="form-group"><label>هل يوجد حالات؟</label>
-                      <select class="form-control" formControlName="hasCases"><option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
+                      <select class="form-control" formControlName="hasCases"><option [ngValue]="null">اختر</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
                     <div class="col-lg-3" [appShowIf]="a.get('hasCases')?.value == 1"><div class="form-group"><label>بيانات الحالة</label><input type="text" class="form-control" formControlName="caseData" /></div></div>
                   </div>
                 </div>
@@ -227,7 +290,7 @@
                     <div class="col-lg-3"><div class="form-group"><label>اسم الجهة</label><input type="text" class="form-control" formControlName="facilityName" /></div></div>
                     <div class="col-lg-6"><div class="form-group"><label>العنوان</label><input type="text" class="form-control" formControlName="address" /></div></div>
                     <div class="col-lg-2"><div class="form-group"><label>إبلاغ فوري</label>
-                      <select class="form-control" formControlName="immediateReport"><option [ngValue]="null">اختر...</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
+                      <select class="form-control" formControlName="immediateReport"><option [ngValue]="null">اختر</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
                     <div class="col-lg-4"><div class="form-group"><label>الإجراءات</label><input type="text" class="form-control" formControlName="actions" /></div></div>
                     <div class="col-lg-3"><div class="form-group"><label>تاريخ التفتيش</label><app-date-field formControlName="inspectionDate"></app-date-field></div></div>
                   </div>
@@ -332,10 +395,10 @@
               <div class="fwb mb-1">عرض السجلات</div>
               <div class="table-responsive">
                 <table class="table table-bordered text-center align-middle">
-                  <thead><tr><th>#</th><th>الاسم</th><th>شهر</th><th>سنة</th><th>صفر</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>منشطة</th><th>حمى/طفح</th><th>التاريخ</th><th>الهاتف</th><th>Long</th><th>Lat</th></tr></thead>
+                  <thead><tr><th>#</th><th>الاسم</th><th>العمر</th><th>صفر</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>منشطة</th><th>حمى/طفح</th><th>التاريخ</th><th>الهاتف</th><th>Long</th><th>Lat</th></tr></thead>
                   <tbody>
                     <tr *ngFor="let s of surveyChildren.controls; let i = index">
-                      <td>{{ i + 1 }}</td><td>{{ s.value.name }}</td><td>{{ s.value.ageMonth }}</td><td>{{ s.value.ageYear }}</td>
+                      <td>{{ i + 1 }}</td><td>{{ s.value.name }}</td><td>{{ ageLabel(s.value) }}</td>
                       <td>{{ mark(s.value.dose0) }}</td><td>{{ mark(s.value.dose1) }}</td><td>{{ mark(s.value.dose2) }}</td><td>{{ mark(s.value.dose3) }}</td><td>{{ mark(s.value.dose4) }}</td><td>{{ mark(s.value.dose5) }}</td><td>{{ mark(s.value.booster) }}</td>
                       <td>{{ yesNo(s.value.feverRash) }}</td><td>{{ s.value.date }}</td><td>{{ s.value.phone }}</td><td>{{ s.value.long }}</td><td>{{ s.value.lat }}</td>
                     </tr>
@@ -355,8 +418,9 @@
                 <div *ngIf="!isRowOpen(s)" class="text-muted small">{{ s.value.name || 'بدون اسم' }}</div>
                 <div class="row" *ngIf="isRowOpen(s)">
                   <div class="col-lg-4 col-md-6"><div class="form-group"><label>الاسم</label><input type="text" class="form-control" formControlName="name" /></div></div>
-                  <div class="col-lg-2 col-md-3"><div class="form-group"><label>شهر</label><input type="number" min="0" class="form-control" formControlName="ageMonth" /></div></div>
-                  <div class="col-lg-2 col-md-3"><div class="form-group"><label>سنة</label><input type="number" min="0" class="form-control" formControlName="ageYear" /></div></div>
+                  <div class="col-lg-2 col-md-3"><div class="form-group"><label>العمر</label><input type="number" min="0" class="form-control" formControlName="age" /></div></div>
+                  <div class="col-lg-2 col-md-3"><div class="form-group"><label>نوع العمر</label>
+                    <select class="form-control" formControlName="ageTypeId"><option *ngFor="let t of ageTypes" [ngValue]="t.id">{{ t.arabicName }}</option></select></div></div>
                   <div class="col-lg-4 col-md-6"><div class="form-group"><label>حمى/طفح</label>
                     <select class="form-control" formControlName="feverRash"><option [ngValue]="null">--</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
 
@@ -425,7 +489,7 @@
                   <thead><tr><th>#</th><th>كود الحالة</th><th>الاسم</th><th>الوحدة</th><th>العمر</th></tr></thead>
                   <tbody>
                     <tr *ngFor="let a of aggregatedCases.controls; let i = index">
-                      <td>{{ i + 1 }}</td><td>{{ a.value.caseCode }}</td><td>{{ a.value.name }}</td><td>{{ a.value.unit }}</td><td>{{ a.value.age }}</td>
+                      <td>{{ i + 1 }}</td><td>{{ a.value.caseCode }}</td><td>{{ a.value.name }}</td><td>{{ a.value.unit }}</td><td>{{ ageLabel(a.value) }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -441,7 +505,9 @@
                   <div class="col-lg-3"><div class="form-group"><label>كود الحالة</label><input type="text" class="form-control" formControlName="caseCode" /></div></div>
                   <div class="col-lg-4"><div class="form-group"><label>الاسم</label><input type="text" class="form-control" formControlName="name" /></div></div>
                   <div class="col-lg-3"><div class="form-group"><label>الوحدة</label><input type="text" class="form-control" formControlName="unit" /></div></div>
-                  <div class="col-lg-2"><div class="form-group"><label>العمر</label><input type="number" min="0" class="form-control" formControlName="age" /></div></div>
+                  <div class="col-lg-3 col-md-6"><div class="form-group"><label>العمر</label><input type="number" min="0" class="form-control" formControlName="age" /></div></div>
+                  <div class="col-lg-3 col-md-6"><div class="form-group"><label>نوع العمر</label>
+                    <select class="form-control" formControlName="ageTypeId"><option *ngFor="let t of ageTypes" [ngValue]="t.id">{{ t.arabicName }}</option></select></div></div>
                 </div>
               </div>
             </div>
@@ -518,6 +584,108 @@
             <div class="d-flex justify-content-center gap-3 mt-3">
               <button type="submit" class="btn btn-success px-4">اعتماد المتابعة</button>
               <button type="button" class="btn btn-secondary px-4" onclick="window.print()">طباعة التقرير</button>
+            </div>
+          </ng-container>
+
+          <!-- ================= TAB 6: عينات المخالطين ================= -->
+          <ng-container *ngIf="activeTab === 'contactSamples'">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="title fs-6 fwb">نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد</span>
+              <button type="button" class="btn btn-add-record btn-sm" (click)="addContactSample()"><i class="pi pi-plus"></i> إضافة مخالط</button>
+            </div>
+            <div class="table-responsive mb-3">
+              <table class="table table-bordered text-center align-middle" formArrayName="contactSamples">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>سبب جمع العينة من المخالط</th>
+                    <th>الاسم</th>
+                    <th>العمر</th>
+                    <th>الجنس</th>
+                    <th>علاقة المخالط بالحالة</th>
+                    <th>فترة المخالطة</th>
+                    <th>عدد جرعات التطعيم الروتيني</th>
+                    <th>عدد جرعات الحملات</th>
+                    <th>عدد جرعات السولك</th>
+                    <th>تاريخ آخر جرعة</th>
+                    <th>تاريخ جمع العينات</th>
+                    <th>تاريخ إرسال العينة إلى المعمل</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let c of contactSamples.controls; let i = index" [formGroupName]="i">
+                    <td class="fwb">{{ i + 1 }}</td>
+                    <td style="min-width: 160px">
+                      <select class="form-control" formControlName="sampleReason">
+                        <option [ngValue]="null">-- اختر --</option>
+                        <option *ngFor="let o of contactSampleReasons" [ngValue]="o.value">{{ o.label }}</option>
+                      </select>
+                    </td>
+                    <td style="min-width: 160px"><input type="text" maxlength="200" class="form-control" formControlName="name" /></td>
+                    <td style="min-width: 170px">
+                      <div class="d-flex gap-1">
+                        <input type="number" min="0" class="form-control" formControlName="age" />
+                        <select class="form-control" formControlName="ageTypeId"><option *ngFor="let t of ageTypes" [ngValue]="t.id">{{ t.arabicName }}</option></select>
+                      </div>
+                    </td>
+                    <td style="min-width: 100px">
+                      <select class="form-control" formControlName="genderId">
+                        <option [ngValue]="null">-- اختر --</option>
+                        <option [ngValue]="1">ذكر</option>
+                        <option [ngValue]="2">أنثى</option>
+                      </select>
+                    </td>
+                    <td style="min-width: 140px"><input type="text" maxlength="100" class="form-control" formControlName="relationship" /></td>
+                    <td style="min-width: 200px">
+                      <select class="form-control" formControlName="contactPeriod">
+                        <option [ngValue]="null">-- اختر --</option>
+                        <option *ngFor="let o of contactPeriods" [ngValue]="o.value">{{ o.label }}</option>
+                      </select>
+                    </td>
+                    <td><input type="number" min="0" class="form-control" formControlName="routineDoses" /></td>
+                    <td><input type="number" min="0" class="form-control" formControlName="campaignDoses" /></td>
+                    <td><input type="number" min="0" class="form-control" formControlName="ipvDoses" /></td>
+                    <td style="min-width: 150px"><app-date-field formControlName="lastDoseDate"></app-date-field></td>
+                    <td style="min-width: 150px"><app-date-field formControlName="sampleCollectionDate"></app-date-field></td>
+                    <td style="min-width: 150px"><app-date-field formControlName="sampleSendDate" [min]="c.value.sampleCollectionDate"></app-date-field></td>
+                    <td>
+                      <button type="button" class="btn btn-sm btn-danger" (click)="removeContactSample(i)"><i class="pi pi-trash"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6"><div class="form-group"><label>اسم المسئول عن جمع العينات</label>
+                <input type="text" maxlength="200" class="form-control" formControlName="contactSamplesCollectorName" /></div></div>
+              <div class="col-lg-6"><div class="form-group"><label>اسم المسئول عن تسليم العينات</label>
+                <input type="text" maxlength="200" class="form-control" formControlName="contactSamplesDelivererName" /></div></div>
+            </div>
+
+            <div class="title fs-6 fwb mt-3 mb-2">معلومات يتم إستيفائها بواسطة المعمل</div>
+            <div class="row">
+              <div class="col-lg-6" *ngFor="let q of labChecklist">
+                <div class="form-group">
+                  <label>{{ q.label }}</label>
+                  <select class="form-control" [formControlName]="q.key">
+                    <option [ngValue]="null">-- اختر --</option>
+                    <option [ngValue]="1">نعم</option>
+                    <option [ngValue]="2">لا</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4"><div class="form-group"><label>اسم المستلم من هيئة المصل واللقاح</label>
+                <input type="text" maxlength="200" class="form-control" formControlName="labReceiverName" /></div></div>
+              <div class="col-lg-4"><div class="form-group"><label>تاريخ الاستلام</label>
+                <app-date-field formControlName="labReceiveDate"></app-date-field></div></div>
+              <div class="col-lg-4"><div class="form-group"><label>ساعة الاستلام</label>
+                <input type="time" class="form-control" formControlName="labReceiveTime" /></div></div>
+              <div class="col-12"><div class="form-group"><label>ملاحظات</label>
+                <textarea rows="3" maxlength="1000" class="form-control" formControlName="labNotes"></textarea></div></div>
             </div>
           </ng-container>
 

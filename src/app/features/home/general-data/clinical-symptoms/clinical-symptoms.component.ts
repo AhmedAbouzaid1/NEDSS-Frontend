@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PatientModel, FeverSymptoms } from '../models/patient-model';
 import { DepartmentEnum } from '../models/department-enum';
 import { SharedDataService } from '../services/shared-data.service';
@@ -15,12 +15,17 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './clinical-symptoms.component.html',
   styleUrls: ['./clinical-symptoms.component.css'],
 })
-export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
+export class ClinicalSymptomsComponent implements OnInit, OnDestroy, DoCheck {
   @ViewChild('chronicSection') chronicSection?: ElementRef<HTMLElement>;
   patient: PatientModel = new PatientModel();
   currentLang: string;
 
   FEVERStatus: boolean = true;
+  hasFever: boolean | null = null;
+  feverPresenceOptions = [
+    { value: true, arabicName: 'نعم', englishName: 'Yes' },
+    { value: false, arabicName: 'لا', englishName: 'No' },
+  ];
 
   maxDate: Date = new Date();
 
@@ -74,6 +79,7 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
   private diseaseMappingRequestSeq = 0;
   private destroy$ = new Subject<void>();
   private diseasesByGroupId = new Map<number, any[]>();
+  private previousGenderId: number | null | undefined;
 
   clinicalSymptomsOptions: {
     id: number;
@@ -175,6 +181,16 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
     this.getChronicDisease();
   }
 
+  ngDoCheck(): void {
+    const genderId = this.patient?.genderId == null ? null : Number(this.patient.genderId);
+    if (genderId !== this.previousGenderId) {
+      this.previousGenderId = genderId;
+      if (genderId !== 2) {
+        this.removePregnantWomenSelection();
+      }
+    }
+  }
+
   private loadDiseasesForExternalAutofillFlag() {
     this.lookupsService
       .getAllDiseases()
@@ -247,6 +263,9 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
     this.existingSymptomsSelection = (
       this.existingSymptomsOptions || []
     ).filter((o) => selected.has(Number(o.id)));
+    this.hasFever = selected.size
+      ? this.existingSymptomsSelection.some((option) => this.isFeverSymptom(option))
+      : null;
   }
 
   private clearClinicalSymptoms() {
@@ -352,6 +371,9 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
         (result: any) => {
           if (result != null && result != undefined) {
             this.chronicDiseases = result.data;
+            if (Number(this.patient?.genderId) !== 2) {
+              this.removePregnantWomenSelection();
+            }
           }
         },
         (error) => {
@@ -388,6 +410,38 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
     }
   }
 
+  shouldShowChronicDisease(disease: any): boolean {
+    return Number(this.patient?.genderId) === 2 || !this.isPregnantWomenFactor(disease);
+  }
+
+  private isPregnantWomenFactor(disease: any): boolean {
+    const names = [disease?.name, disease?.arabicName, disease?.englishName]
+      .filter(Boolean)
+      .map((name: string) => name.trim().toLocaleLowerCase());
+
+    return names.includes('سيدات حوامل') || names.includes('pregnant women');
+  }
+
+  private removePregnantWomenSelection(): void {
+    if (!this.chronicDiseases?.length) return;
+
+    const pregnancyIds = this.chronicDiseases
+      .filter((disease) => this.isPregnantWomenFactor(disease))
+      .map((disease) => disease.id);
+
+    if (!pregnancyIds.length) return;
+
+    pregnancyIds.forEach((id) => delete this.selectedChronicDiseases[id]);
+    this.patient.chronicDiseasesIds = (this.patient.chronicDiseasesIds ?? [])
+      .filter((id) => !pregnancyIds.some((pregnancyId) => pregnancyId == id));
+    this.generalDataService.isChronicDiseaseValid =
+      this.generalDataService.validateChronicDisease(
+        this.patient.chronicDiseasesIds,
+        this.patient.anotherChronicDisease,
+        this.patient.haveChronicDisease,
+      );
+  }
+
   // ----- Clinical symptoms (normalized) -----
 
   private syncSymptomsWithSelections() {
@@ -396,6 +450,51 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy {
       .map((x: any) => Number(x?.id))
       .filter((x: number) => !Number.isNaN(x));
     this.patient.clinicalSymptomIds = Array.from(new Set(ids));
+    this.syncFeverPresenceFromSelection();
+  }
+
+  private isFeverSymptom(option: any): boolean {
+    const code = String(option?.code ?? '').trim().toUpperCase();
+    const arabicName = String(option?.arabicName ?? '').trim();
+    const englishName = String(option?.englishName ?? '').trim().toLowerCase();
+    return code === 'FEVER' || arabicName.includes('حمى') ||
+      arabicName.includes('حرارة') || englishName.includes('fever');
+  }
+
+  private syncFeverPresenceFromSelection(): void {
+    this.hasFever = (this.existingSymptomsSelection || []).some((option) =>
+      this.isFeverSymptom(option)
+    );
+  }
+
+  onFeverPresenceChange(hasFever: boolean): void {
+    const feverOption = (this.existingSymptomsOptions || []).find((option) =>
+      this.isFeverSymptom(option)
+    );
+
+    this.hasFever = hasFever;
+    if (!hasFever) {
+      this.patient.feverSymptoms.feverDate = null;
+      this.patient.feverSymptoms.feverDuration = null;
+      this.patient.feverSymptoms.feverMaxTemp = null;
+      this.patient.feverSymptoms.feverDurationType = 3;
+      this.generalDataService.isFeverDateValid = true;
+      this.generalDataService.isFeverDateAfterBirthValid = true;
+      this.generalDataService.isFeverDurationValid = true;
+      this.generalDataService.isFeverMaxTemperatureValid = true;
+    }
+    if (!feverOption) return;
+
+    if (hasFever) {
+      if (!(this.existingSymptomsSelection || []).some((x) => Number(x.id) === Number(feverOption.id))) {
+        this.existingSymptomsSelection = [...(this.existingSymptomsSelection || []), feverOption];
+      }
+    } else {
+      this.existingSymptomsSelection = (this.existingSymptomsSelection || []).filter(
+        (x) => Number(x.id) !== Number(feverOption.id)
+      );
+    }
+    this.syncSymptomsWithSelections();
   }
 
   onExistingSymptomSelect(_item: any) {

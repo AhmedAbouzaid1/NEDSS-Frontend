@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-bloody-diarrhea',
+  host: { class: 'investigation-form' },
   templateUrl: './bloody-diarrhea.component.html',
   styleUrls: ['./bloody-diarrhea.component.css'],
 })
@@ -23,6 +24,16 @@ export class BloodyDiarrheaComponent implements OnInit {
     'investigationCompletePercentage',
     'diseaseGroupId',
     'createdDate',
+    'contactDeceasedPersonRespiratory',
+    'hepatitisExposureChildOrEmployee',
+    'hepatitisExposureStateNameAddress',
+    'hepatitisExposureFoodProvider',
+    'hepatitisExposureSimilarCasesSimilarPlaces',
+    'hepatitisExposureMealsOutside',
+    'hepatitisExposureTypeFood',
+    'hepatitisExposureExposedToAnimals',
+    'hepatitisExposureTypeOfAnimal',
+    'hepatitisExposureDealDirectlySewageWaste',
   ];
   private readonly dateFields = [
     'dateOnsetSymptomsDay1',

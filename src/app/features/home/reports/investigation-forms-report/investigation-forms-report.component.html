@@ -178,14 +178,16 @@
         <tbody>
           <tr *ngFor="let row of rows; let i = index">
             <td class="px-4">{{ firstRow + i + 1 }}</td>
-            <td class="px-4 field-value" *ngFor="let value of row">{{ value }}</td>
+            <td class="px-4 field-value" *ngFor="let value of row"><div class="cell-content">{{ value }}</div></td>
             <td class="px-4 hide-print">
               <a
                 class="open-form"
+                [class.disabled]="openingPatientId != null"
+                [attr.aria-busy]="openingPatientId === report.items[i].patientId"
                 [title]="'NEDSS.INVESTIGATION_FORMS_REPORT.OPEN_FORM' | translate"
                 (click)="openForm(report.items[i])"
               >
-                <i class="fa fa-eye"></i>
+                <i class="fa" [ngClass]="openingPatientId === report.items[i].patientId ? 'fa-spinner fa-spin' : 'fa-eye'"></i>
               </a>
             </td>
           </tr>

@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-mers',
+  host: { class: 'investigation-form' },
   templateUrl: './mers.component.html',
   styleUrls: ['./mers.component.css'],
 })

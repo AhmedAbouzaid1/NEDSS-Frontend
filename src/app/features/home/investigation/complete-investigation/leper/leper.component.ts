@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { calculateCompletionStats } from '../shared/investigation-summary.utils';
 @Component({
   selector: 'app-leper',
+  host: { class: 'investigation-form' },
   templateUrl: './leper.component.html',
   styleUrls: ['./leper.component.css']
 })

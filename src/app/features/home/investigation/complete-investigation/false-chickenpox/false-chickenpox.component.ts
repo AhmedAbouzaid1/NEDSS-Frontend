@@ -8,6 +8,7 @@ import { AnswerOptions } from './../../../../../core/constants';
 
 @Component({
   selector: 'app-false-chickenpox',
+  host: { class: 'investigation-form' },
   templateUrl: './false-chickenpox.component.html',
   styleUrls: ['./false-chickenpox.component.css']
 })

@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-leishmania',
+  host: { class: 'investigation-form' },
   templateUrl: './leishmania.component.html',
   styleUrls: ['./leishmania.component.css']
 })

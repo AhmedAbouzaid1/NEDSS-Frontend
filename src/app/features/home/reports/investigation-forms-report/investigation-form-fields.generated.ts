@@ -70,14 +70,124 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
+      "key": "investigationDate",
+      "label": [
+        "تاريخ التقصي"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
+      "key": "investigatingPhysicianName",
+      "label": [
+        "اسم الطبيب القائم بالتقصي"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
       "key": "paralysisOnsetDate",
       "label": [
         "تاريخ بداية شلل الحالة"
       ],
       "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "1) تحركات الحالة خلال 30 يوم قبل بداية الشلل"
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
       ]
+    },
+    {
+      "key": "initialClinicalDiagnosis",
+      "label": [
+        "التشخيص الإكلينيكي الأولي"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ],
+      "options": {
+        "1": [
+          "متلازمة جيليان باري"
+        ],
+        "2": [
+          "التهاب سحائي فيروسي"
+        ],
+        "3": [
+          "التهاب النخاع المستعرض"
+        ],
+        "4": [
+          "أمراض الوصلات العصبية العضلية"
+        ],
+        "5": [
+          "التهاب فيروسي بالمخ"
+        ],
+        "6": [
+          "التهاب العضلات الفيروسي"
+        ],
+        "7": [
+          "نزلة معوية مع نقص البوتاسيوم"
+        ],
+        "8": [
+          "الإصابة بفيروسات معوية أخرى"
+        ],
+        "9": [
+          "التهاب الأعصاب الطرفية"
+        ],
+        "10": [
+          "إصابة العصب الوركي نتيجة الحقن"
+        ],
+        "11": [
+          "تشخيصات أخرى"
+        ]
+      }
+    },
+    {
+      "key": "otherInitialClinicalDiagnosis",
+      "label": [
+        "التشخيص الآخر"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
+      "key": "isDangerousCase",
+      "label": [
+        "هل الحالة خطرة؟"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "selectedDangerousCaseReasons",
+      "label": [
+        "مؤشرات خطورة الحالة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ],
+      "options": {
+        "1": [
+          "وجود إحساس بالأعضاء المصابة"
+        ],
+        "2": [
+          "اكتمال الشلل خلال 4 أيام"
+        ],
+        "3": [
+          "وجود حرارة"
+        ],
+        "4": [
+          "عدم تناظر الأعضاء المصابة"
+        ]
+      }
     },
     {
       "key": "caseMovements",
@@ -180,7 +290,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "contactName",
       "label": [
-        "اسم المخالط"
+        "اسم الحالة"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -507,9 +617,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "ageMonth",
+      "key": "age",
       "label": [
-        "شهر"
+        "العمر"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -517,14 +627,15 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "ageYear",
+      "key": "ageTypeId",
       "label": [
-        "سنة"
+        "نوع العمر"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
         "مبادرة السلوك"
-      ]
+      ],
+      "optionsRef": "AgeType"
     },
     {
       "key": "feverRash",
@@ -864,16 +975,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "age",
-      "label": [
-        "العمر"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
-      ]
-    },
-    {
       "key": "paralysisStartDate",
       "label": [
         "تاريخ بداية الشلل"
@@ -1037,6 +1138,204 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
         "لجنة المتابعة"
+      ]
+    },
+    {
+      "key": "contactSamples",
+      "label": [
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ],
+      "array": true
+    },
+    {
+      "key": "sampleReason",
+      "label": [
+        "سبب جمع العينة من المخالط"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "عدم كفاية العينات"
+        ],
+        "2": [
+          "حالة خطرة"
+        ],
+        "3": [
+          "محافظة حدودية"
+        ]
+      }
+    },
+    {
+      "key": "genderId",
+      "label": [
+        "الجنس"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "ذكر"
+        ],
+        "2": [
+          "أنثى"
+        ]
+      }
+    },
+    {
+      "key": "relationship",
+      "label": [
+        "علاقة المخالط بالحالة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "contactPeriod",
+      "label": [
+        "فترة المخالطة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "خلال أسبوع قبل الإصابة بالشلل"
+        ],
+        "2": [
+          "بعد أسبوعين من الإصابة بالشلل"
+        ]
+      }
+    },
+    {
+      "key": "routineDoses",
+      "label": [
+        "عدد جرعات التطعيم الروتيني"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "campaignDoses",
+      "label": [
+        "عدد جرعات الحملات"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "ipvDoses",
+      "label": [
+        "عدد جرعات السولك"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "lastDoseDate",
+      "label": [
+        "تاريخ آخر جرعة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "sampleCollectionDate",
+      "label": [
+        "تاريخ جمع العينات"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "sampleSendDate",
+      "label": [
+        "تاريخ إرسال العينة إلى المعمل"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "contactSamplesCollectorName",
+      "label": [
+        "اسم المسئول عن جمع العينات"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "contactSamplesDelivererName",
+      "label": [
+        "اسم المسئول عن تسليم العينات"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "labReceiverName",
+      "label": [
+        "اسم المستلم من هيئة المصل واللقاح"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "معلومات يتم إستيفائها بواسطة المعمل"
+      ]
+    },
+    {
+      "key": "labReceiveDate",
+      "label": [
+        "تاريخ الاستلام"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "معلومات يتم إستيفائها بواسطة المعمل"
+      ]
+    },
+    {
+      "key": "labReceiveTime",
+      "label": [
+        "ساعة الاستلام"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "معلومات يتم إستيفائها بواسطة المعمل"
+      ]
+    },
+    {
+      "key": "labNotes",
+      "label": [
+        "ملاحظات"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "معلومات يتم إستيفائها بواسطة المعمل"
       ]
     }
   ],
@@ -1251,6 +1550,16 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.ARI.CLINICAL_DATA"
       ]
+    },
+    {
+      "key": "healthFacilityTimeline",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.HEALTH_FACILITY_TIMELINE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.HEALTH_FACILITY_TIMELINE"
+      ],
+      "array": true
     },
     {
       "key": "facilityName",
@@ -1805,6 +2114,19 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
+      "key": "domesticTravelEntries",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.EXPOSURE_DATA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.EXPOSURE_DATA"
+      ],
+      "array": true,
+      "aliases": [
+        "domesticTravelJson"
+      ]
+    },
+    {
       "key": "dateFrom",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.ARI.DATE_FROM"
@@ -1850,6 +2172,19 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
           "NEDSS.REPORTS.UnKnown"
         ]
       }
+    },
+    {
+      "key": "internationalTravelEntries",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.EXPOSURE_DATA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.ARI.EXPOSURE_DATA"
+      ],
+      "array": true,
+      "aliases": [
+        "internationalTravelJson"
+      ]
     },
     {
       "key": "country",
@@ -1982,27 +2317,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "contactConfirmedCase",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.CONTACT_CONFIRMED_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HUMAN_CONTACT"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "contactDeceasedPersonRespiratory",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.CONTACT_DECEASED_UNKNOWN_RESPIRATORY_DISEASE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.EPIDEMIOLOGICAL_INVESTIGATION",
@@ -3856,109 +4170,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "hepatitisExposureChildOrEmployee",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.CHILD_OR_EMPLOYEE_NURSERY_SCHOOL"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "hepatitisExposureStateNameAddress",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.IF_YES_NURSERY_SCHOOL_NAME_ADDRESS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
-      ]
-    },
-    {
-      "key": "hepatitisExposureFoodProvider",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.IS_FOOD_PROVIDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "hepatitisExposureSimilarCasesSimilarPlaces",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.SIMILAR_CASES_SAME_PLACE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "hepatitisExposureMealsOutside",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.USUALLY_EATS_OUTSIDE_HOME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "hepatitisExposureTypeFood",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.IF_YES_FOOD_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
-      ]
-    },
-    {
-      "key": "hepatitisExposureExposedToAnimals",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.EXPOSED_TO_ANIMALS_DAILY_LIFE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "hepatitisExposureTypeOfAnimal",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.MENTION_ANIMAL_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
-      ]
-    },
-    {
-      "key": "hepatitisExposureDealDirectlySewageWaste",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.DEAL_DIRECTLY_WITH_SEWAGE_WASTE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
       "key": "investigationDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.INVESTIGATION_DATE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
+        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.ENVIRONMENTAL_INVESTIGATION"
       ]
     },
     {
@@ -3968,7 +4186,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
+        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.ENVIRONMENTAL_INVESTIGATION"
       ]
     },
     {
@@ -3978,7 +4196,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
+        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.ENVIRONMENTAL_INVESTIGATION"
       ]
     },
     {
@@ -3988,7 +4206,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.FOLLOW_UP_AFTER_14_DAYS",
-        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.HEPATITIS_EXPOSURE_PERIOD"
+        "NEDSS.COMPLETE_INVESTEGATION.BLOODY_DIARRHEA.ENVIRONMENTAL_INVESTIGATION"
       ]
     }
   ],
@@ -4196,27 +4414,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "contactConfirmedCase",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_WITH_CONFIRMED_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.HUMAN_CONTACT"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "contactDeceasedPersonRespiratory",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.CONTACT_DECEASED_PERSON_UNKNOWN_RESPIRATORY_DISEASE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION",
@@ -6273,27 +6470,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "contactConfirmedCase",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_CONFIRMED_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.HUMAN_CONTACT"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "contactDeceasedPersonRespiratory",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_DECEASED_UNKNOWN_RESPIRATORY_DISEASE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.EPIDEMIOLOGICAL_INVESTIGATION",
@@ -10113,7 +10289,10 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.FALSE_CHICKENPOX.EPIDEMIOLOGICAL_INVESTIGATION"
       ],
-      "array": true
+      "array": true,
+      "aliases": [
+        "directContactsJson"
+      ]
     },
     {
       "key": "contactSeq",
@@ -10977,7 +11156,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     },
     {
       "key": "caseVaccinationStatus",
-      "label": [],
+      "label": [
+        "اذكر موقف التطعيم للحالة"
+      ],
       "section": [
         "اذكر موقف التطعيم للحالة"
       ],
@@ -11715,18 +11896,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "covUnitRoutineMmr1Rate",
-      "label": [
-        "الوحدة",
-        "روتينى",
-        "MMR1",
-        "نسبة"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
       "key": "covUnitRoutineMmr2Target",
       "label": [
         "الوحدة",
@@ -11745,18 +11914,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "روتينى",
         "MMR2",
         "متطعم"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
-      "key": "covUnitRoutineMmr2Rate",
-      "label": [
-        "الوحدة",
-        "روتينى",
-        "MMR2",
-        "نسبة"
       ],
       "section": [
         "ملخص إحصائي للمخالطين"
@@ -11787,18 +11944,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "covUnitCampaignMmr1Rate",
-      "label": [
-        "الوحدة",
-        "حملات",
-        "MMR",
-        "نسبة"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
       "key": "covUnitCampaignMmr2Target",
       "label": [
         "الوحدة",
@@ -11817,18 +11962,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "حملات",
         "MR",
         "متطعم"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
-      "key": "covUnitCampaignMmr2Rate",
-      "label": [
-        "الوحدة",
-        "حملات",
-        "MR",
-        "نسبة"
       ],
       "section": [
         "ملخص إحصائي للمخالطين"
@@ -11859,18 +11992,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "covAdminRoutineMmr1Rate",
-      "label": [
-        "الإدارة",
-        "روتينى",
-        "MMR1",
-        "نسبة"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
       "key": "covAdminRoutineMmr2Target",
       "label": [
         "الإدارة",
@@ -11889,18 +12010,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "روتينى",
         "MMR2",
         "متطعم"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
-      "key": "covAdminRoutineMmr2Rate",
-      "label": [
-        "الإدارة",
-        "روتينى",
-        "MMR2",
-        "نسبة"
       ],
       "section": [
         "ملخص إحصائي للمخالطين"
@@ -11931,18 +12040,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "covAdminCampaignMmr1Rate",
-      "label": [
-        "الإدارة",
-        "حملات",
-        "MMR",
-        "نسبة"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
       "key": "covAdminCampaignMmr2Target",
       "label": [
         "الإدارة",
@@ -11961,18 +12058,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "حملات",
         "MR",
         "متطعم"
-      ],
-      "section": [
-        "ملخص إحصائي للمخالطين"
-      ]
-    },
-    {
-      "key": "covAdminCampaignMmr2Rate",
-      "label": [
-        "الإدارة",
-        "حملات",
-        "MR",
-        "نسبة"
       ],
       "section": [
         "ملخص إحصائي للمخالطين"
@@ -16383,8 +16468,20 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "8": [
           "NEDSS.COMPLETE_INVESTEGATION.H5N1.VETERINARIAN"
+        ],
+        "9": [
+          "NEDSS.COMPLETE_INVESTEGATION.H5N1.OCCUPATIONAL_EXPOSURE_OTHER_OPTION"
         ]
       }
+    },
+    {
+      "key": "occupationalExposureWorkplaceOther",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.H5N1.OCCUPATIONAL_EXPOSURE_OTHER"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.H5N1.OCCUPATIONAL_EXPOSURE"
+      ]
     },
     {
       "key": "workIsInFieldOfHealthServices",
@@ -16452,6 +16549,59 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.H5N1.HUMAN_EXPOSURE_14_DAYS"
       ],
       "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "sampleType",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.LAB_TESTS"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.NASOPHARYNGEAL_SWAB"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.SPUTUM"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.BRONCHIAL_LAVAGE"
+        ],
+        "4": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE_OTHER"
+        ],
+        "5": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.THROAT_SWAB"
+        ]
+      }
+    },
+    {
+      "key": "sampleTypeOther",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE_OTHER"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.LAB_TESTS"
+      ]
+    },
+    {
+      "key": "sampleCollectionDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_COLLECTION_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.LAB_TESTS"
+      ]
+    },
+    {
+      "key": "sampleSendDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_SEND_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.LAB_TESTS"
+      ]
     },
     {
       "key": "travelingwithinEgypt",
@@ -17050,7 +17200,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "followD1Diarrhea",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA"
+        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
@@ -17142,6 +17292,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
         ]
       }
     },
@@ -17387,7 +17540,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "followD2Diarrhea",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA"
+        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
@@ -17479,6 +17632,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
         ]
       }
     },
@@ -17724,7 +17880,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "followD7Diarrhea",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA"
+        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
@@ -17816,6 +17972,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "لم ترد"
         ]
       }
     },
@@ -18061,7 +18220,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "followD14Diarrhea",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA"
+        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
@@ -18153,6 +18312,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
         ]
       }
     },
@@ -18526,7 +18688,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "label": [
         "هل تم حجز المريض بالمستشفى"
       ],
-      "section": [],
+      "section": [
+        "NEDSS.INVESTIGATIONS.PAGES.Kadeb"
+      ],
       "optionsRef": "AnswerOptions"
     },
     {
@@ -18534,14 +18698,18 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "label": [
         "تاريخ دخول المستشفى"
       ],
-      "section": []
+      "section": [
+        "NEDSS.INVESTIGATIONS.PAGES.Kadeb"
+      ]
     },
     {
       "key": "bookedIntensiveCare",
       "label": [
         "هل تم الحجز بالعناية المركزة"
       ],
-      "section": [],
+      "section": [
+        "NEDSS.INVESTIGATIONS.PAGES.Kadeb"
+      ],
       "optionsRef": "AnswerOptions"
     },
     {
@@ -18609,7 +18777,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -18620,7 +18788,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ]
     },
     {
@@ -18630,7 +18798,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -18641,7 +18809,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -18652,7 +18820,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -18663,7 +18831,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ]
     },
     {
@@ -18673,7 +18841,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -18684,7 +18852,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ]
     },
     {
@@ -18694,7 +18862,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "التقصي الوبائي",
-        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E"
+        "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -19759,13 +19927,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19780,13 +19948,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19801,13 +19969,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19822,13 +19990,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19843,13 +20011,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19864,13 +20032,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19885,13 +20053,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19916,13 +20084,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19937,13 +20105,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19958,13 +20126,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -19979,13 +20147,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -20000,13 +20168,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -20021,13 +20189,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "0": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "1": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "2": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
@@ -20048,7 +20216,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20059,7 +20227,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20070,7 +20238,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20080,7 +20248,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20091,7 +20259,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20102,7 +20270,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20112,7 +20280,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20123,7 +20291,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20134,7 +20302,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20144,7 +20312,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20155,7 +20323,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20166,7 +20334,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20176,7 +20344,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20187,7 +20355,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20198,7 +20366,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20208,7 +20376,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20219,7 +20387,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20230,7 +20398,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20240,7 +20408,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20251,7 +20419,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20262,7 +20430,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20272,7 +20440,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20283,7 +20451,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20294,7 +20462,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20304,7 +20472,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20315,7 +20483,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20326,7 +20494,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20336,7 +20504,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20347,7 +20515,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20358,7 +20526,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20369,7 +20537,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20380,7 +20548,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20391,7 +20559,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20402,7 +20570,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20413,7 +20581,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20424,7 +20592,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20435,7 +20603,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeHepatitis"
     },
@@ -20446,7 +20614,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20457,7 +20625,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20468,7 +20636,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20479,7 +20647,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20490,7 +20658,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeEstablishment"
     },
@@ -20501,7 +20669,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20511,7 +20679,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20522,7 +20690,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20533,7 +20701,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20544,7 +20712,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20555,7 +20723,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "typeChronicDiseases"
     },
@@ -20566,7 +20734,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20576,7 +20744,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20587,7 +20755,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20598,7 +20766,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ],
       "optionsRef": "AnswerOptions"
     },
@@ -20609,7 +20777,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20619,7 +20787,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20629,7 +20797,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     },
     {
@@ -20639,7 +20807,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التعرض خلال 2-6 شهورالسابقه لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C"
+        "التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى B أو الإلتهاب الكبدى C)"
       ]
     }
   ],
@@ -21740,44 +21908,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
   ],
   "malaria": [
     {
-      "key": "transfusedBlood",
-      "label": [
-        "NEDSS.MALARIA.TRANSFUSED_BLOOD"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "placeName",
-      "label": [
-        "NEDSS.MALARIA.PLACE_NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ]
-    },
-    {
-      "key": "date",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ]
-    },
-    {
       "key": "hadMalaria",
       "label": [
         "NEDSS.MALARIA.HAD_MALARIA"
@@ -21914,9 +22044,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21932,7 +22059,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "typeTreatment",
       "label": [
-        "NEDSS.MALARIA.TREATMENT_TYPE"
+        "NEDSS.MALARIA.TREATMENT_TYPE_LEGACY"
       ],
       "section": [
         "NEDSS.MALARIA.TREATMENT_SECTION"
@@ -21948,6 +22075,107 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
+      "key": "firstLineTreatmentReceived",
+      "label": [
+        "NEDSS.MALARIA.FIRST_LINE_TREATMENT_RECEIVED"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "firstLineTreatmentDrugs",
+      "label": [
+        "NEDSS.MALARIA.IF_YES_CHOOSE_TREATMENT_TYPE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ],
+      "options": {
+        "1": [
+          "كوارتم (Coartem)"
+        ],
+        "2": [
+          "أرتيسونات (Artesunate)"
+        ],
+        "99": [
+          "أخرى"
+        ]
+      }
+    },
+    {
+      "key": "firstLineTreatmentOther",
+      "label": [
+        "NEDSS.MALARIA.OTHER_TREATMENT_SPECIFY"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ]
+    },
+    {
+      "key": "secondLineTreatmentReceived",
+      "label": [
+        "NEDSS.MALARIA.SECOND_LINE_TREATMENT_RECEIVED"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "secondLineTreatmentDrugs",
+      "label": [
+        "NEDSS.MALARIA.IF_YES_CHOOSE_TREATMENT_TYPE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ],
+      "options": {
+        "1": [
+          "كينين أمبول"
+        ],
+        "2": [
+          "كينين أقراص"
+        ],
+        "3": [
+          "كليندامايسين (Clindamycin)"
+        ],
+        "4": [
+          "دوكسيسيكلين (Doxycycline)"
+        ],
+        "5": [
+          "بريماكين (Primaquine)"
+        ],
+        "99": [
+          "أخرى"
+        ]
+      }
+    },
+    {
+      "key": "secondLineTreatmentOther",
+      "label": [
+        "NEDSS.MALARIA.OTHER_TREATMENT_SPECIFY"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ]
+    },
+    {
       "key": "caseAssessment",
       "label": [
         "NEDSS.MALARIA.CASE_ASSESSMENT"
@@ -21957,10 +22185,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "1": [
-          "NEDSS.MALARIA.CASE_ASSESSMENT_MILD"
-        ],
-        "2": [
-          "NEDSS.MALARIA.CASE_ASSESSMENT_MODERATE"
+          "NEDSS.MALARIA.CASE_ASSESSMENT_NOT_SEVERE"
         ],
         "3": [
           "NEDSS.MALARIA.CASE_ASSESSMENT_SEVERE"
@@ -21988,62 +22213,19 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
-      "key": "routineSurveillance",
+      "key": "discoveryMethod",
       "label": [
-        "NEDSS.MALARIA.ROUTINE_SURVEILLANCE"
+        "NEDSS.MALARIA.DISCOVERY_METHOD"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "NEDSS.MALARIA.ROUTINE_SURVEILLANCE"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "contactFollowUp",
-      "label": [
-        "NEDSS.MALARIA.CONTACT_FOLLOW_UP"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "travelOutsideEgypt",
-      "label": [
-        "NEDSS.MALARIA.TRAVEL_OUTSIDE_EGYPT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "NEDSS.MALARIA.CONTACT_FOLLOW_UP"
         ]
       }
     },
@@ -22511,7 +22693,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ]
     },
@@ -22521,7 +22703,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.AGE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ]
     },
@@ -22531,7 +22713,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.PHONE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ]
     },
@@ -22541,7 +22723,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.GENDER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ],
       "options": {
@@ -22559,7 +22741,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ],
       "options": {
@@ -22583,7 +22765,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
       ]
     },
@@ -22593,7 +22775,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ]
     },
@@ -22603,7 +22785,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22624,7 +22806,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22645,7 +22827,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22666,7 +22848,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22687,7 +22869,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22708,7 +22890,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22729,7 +22911,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22750,7 +22932,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA_TITLE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22771,7 +22953,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.OTHER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ],
       "options": {
@@ -22792,7 +22974,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
       ]
     },
@@ -22802,7 +22984,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.LAB"
       ],
       "options": {
@@ -22820,7 +23002,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.LAB"
       ]
     },
@@ -22830,7 +23012,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
         "NEDSS.COMPLETE_INVESTEGATION.LAB"
       ],
       "options": {
@@ -23526,12 +23708,352 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
+      "key": "followD28Name",
+      "label": [
+        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ]
+    },
+    {
+      "key": "followD28Age",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.AGE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ]
+    },
+    {
+      "key": "followD28Phone",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.PHONE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ]
+    },
+    {
+      "key": "followD28Type",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.GENDER"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.MALE"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
+        ]
+      }
+    },
+    {
+      "key": "followD28MixingType",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT"
+        ],
+        "4": [
+          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS"
+        ]
+      }
+    },
+    {
+      "key": "followD28RelationshipSituation",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+      ]
+    },
+    {
+      "key": "followD28DateOfSymptoms",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ]
+    },
+    {
+      "key": "followD28Fever",
+      "label": [
+        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28DryCough",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28CoughingWithSpitting",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28SoreThroat",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28DifficultyBreathing",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28JointPain",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28vomit",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28Diarrhea",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA_TITLE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28Other",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.OTHER"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "followD28OtherSymptoms",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+      ]
+    },
+    {
+      "key": "followD28SampleTaken",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.LAB"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "followD28DateSampleTaken",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.LAB"
+      ]
+    },
+    {
+      "key": "followD28SampleResult",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.COMPLETE_INVESTEGATION.LAB"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.POSITIVE"
+        ],
+        "2": [
+          "NEDSS.COMMON.NEGATIVE"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
       "key": "investigationDone",
       "label": [
         "NEDSS.MALARIA.ENTOMOLOGICAL_INVESTIGATION_DONE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
       ],
       "options": {
@@ -23552,7 +24074,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.IF_YES_ENTOMOLOGICAL_RESULT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
       ]
     },
@@ -23562,7 +24084,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.IF_POSITIVE_MOSQUITO_CONTROL_DONE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
       ],
       "options": {
@@ -23583,7 +24105,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.IF_YES_PROCEDURES"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
       ]
     },
@@ -23593,7 +24115,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.TRAVELED_ABROAD"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.TRAVEL_SECTION"
       ],
       "options": {
@@ -23614,27 +24136,58 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.IF_YES_TRAVEL_PLACE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.MALARIA.TRAVEL_SECTION"
-      ]
-    },
-    {
-      "key": "travelHistoryEgyptians",
-      "label": [
-        "NEDSS.MALARIA.TRAVEL_HISTORY_EGYPTIANS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.TRAVEL_SECTION"
       ]
     },
     {
       "key": "entryIntoEgypt",
       "label": [
-        "NEDSS.MALARIA.ENTRY_INTO_EGYPT"
+        "NEDSS.MALARIA.RETURN_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.TRAVEL_SECTION"
+      ]
+    },
+    {
+      "key": "transfusedBlood",
+      "label": [
+        "NEDSS.MALARIA.TRANSFUSED_BLOOD"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.TRAVEL_SECTION"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "placeName",
+      "label": [
+        "NEDSS.MALARIA.PLACE_NAME"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.TRAVEL_SECTION"
+      ]
+    },
+    {
+      "key": "date",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.DATE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.TRAVEL_SECTION"
       ]
     },
@@ -23644,7 +24197,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.PROPHYLACTIC_DRUG"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.PREVENTIVE_MEASURES_SECTION"
       ],
       "options": {
@@ -23665,7 +24218,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.PROPERTY_TYPE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.PREVENTIVE_MEASURES_SECTION"
       ]
     },
@@ -23675,8 +24228,167 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.PREVENTIVE_MEASURES_SECTION"
+      ]
+    },
+    {
+      "key": "contactSamplesPatientName",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_PATIENT_NAME"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesMalariaUnit",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_MALARIA_UNIT"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesInfectionDate",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_INFECTION_DATE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesPlasmodiumType",
+      "label": [
+        "NEDSS.MALARIA.PLASMODIUM_TYPE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesPatientAddress",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_PATIENT_ADDRESS"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesSampleDate",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_SAMPLE_DATE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamples",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ],
+      "array": true
+    },
+    {
+      "key": "name",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_NAME"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "age",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_AGE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "genderId",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_GENDER"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.MALE"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
+        ]
+      }
+    },
+    {
+      "key": "address",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_ADDRESS"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "nationality",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_NATIONALITY"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "phone",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_PHONE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesCollectorName",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_COLLECTOR"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
+      ]
+    },
+    {
+      "key": "contactSamplesUnitManagerName",
+      "label": [
+        "NEDSS.MALARIA.CONTACT_SAMPLES_UNIT_MANAGER"
+      ],
+      "section": [
+        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
+        "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     }
   ],
@@ -23686,260 +24398,766 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DISEASE_TYPE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATA"
+      ],
+      "options": {
+        "1": [
+          "اشتباه التهاب سحائي"
+        ],
+        "2": [
+          "اشتباه التهاب بالمخ"
+        ]
+      }
     },
     {
       "key": "investigationDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATA"
+      ]
     },
     {
-      "key": "schoolOrGatheringName",
+      "key": "firstName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SCHOOL_OR_GATHERING_NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FIRST_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
     },
     {
-      "key": "lastVisitDate",
+      "key": "secondName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_VISIT_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SECOND_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
     },
     {
-      "key": "schoolGovernorate",
+      "key": "thirdName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SCHOOL_GOVERNORATE"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.THIRD_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
     },
     {
-      "key": "schoolAdministrationArea",
+      "key": "familyName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SCHOOL_ADMINISTRATION_AREA"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FAMILY_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "age",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.AGE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "ageTypeId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.AGE_TYPE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ],
+      "options": {
+        "1": [
+          "يوم"
+        ],
+        "2": [
+          "شهر"
+        ],
+        "3": [
+          "سنة"
+        ]
+      }
+    },
+    {
+      "key": "genderId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.GENDER"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ],
+      "options": {
+        "1": [
+          "ذكر"
+        ],
+        "2": [
+          "أنثى"
+        ]
+      }
+    },
+    {
+      "key": "phoneNo1",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PHONE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "nationalityId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.NATIONALITY"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "patientJobCategoryId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.JOB"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "patientJobName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.JOB_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "homeGovernmentId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.GOVERNORATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "homeHealthAdministrationId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ADMINISTRATION_AREA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "homeCityId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CITY"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "livingAddress",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DETAILED_ADDRESS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "lastFacilityVisitDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_FACILITY_VISIT_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA"
+      ]
+    },
+    {
+      "key": "facilityGovernorateId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.GOVERNORATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ]
+    },
+    {
+      "key": "facilityHealthAdministrationId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ADMINISTRATION_AREA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ]
+    },
+    {
+      "key": "facilityVillageOrStreet",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VILLAGE_OR_STREET"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ]
     },
     {
       "key": "traveledAbroad",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TRAVELED_ABROAD"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
     },
     {
-      "key": "travelDestinationCountry",
+      "key": "travelCountryId",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COUNTRY"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ]
     },
     {
-      "key": "arrivalDate",
+      "key": "travelArrivalDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ARRIVAL_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE"
+      ]
     },
     {
-      "key": "vaccinationHibStatus",
+      "key": "incidentSourceId",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HIB_VACCINATION"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.REPORTING_SOURCE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA"
+      ]
     },
     {
-      "key": "vaccinationHibLastDoseDate",
+      "key": "infectionDate",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SYMPTOM_ONSET_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA"
+      ]
     },
     {
-      "key": "vaccinationMeningococcalSchoolsStatus",
+      "key": "finalResultId",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_SCHOOLS"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DISCHARGE_STATUS"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA"
+      ]
     },
     {
-      "key": "vaccinationMeningococcalSchoolsLastDoseDate",
+      "key": "lastFollowUpDate",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_FOLLOW_UP_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA"
+      ]
     },
     {
-      "key": "vaccinationMeningococcalTravelersStatus",
+      "key": "currentHealthStatus",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_TRAVELERS"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HEALTH_STATUS"
       ],
-      "section": []
-    },
-    {
-      "key": "vaccinationMeningococcalTravelersLastDoseDate",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA"
       ],
-      "section": []
+      "options": {
+        "1": [
+          "وفاة"
+        ],
+        "2": [
+          "سيئة"
+        ],
+        "3": [
+          "نفس الوضع"
+        ],
+        "4": [
+          "تحسن"
+        ]
+      }
     },
     {
       "key": "contactWithSimilarCase",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_WITH_SIMILAR_CASE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
     },
     {
-      "key": "contactPatientName",
+      "key": "contactCaseName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_PATIENT_NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_CASE_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
-      "key": "contactRelationship",
+      "key": "contactType",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_RELATIONSHIP"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_TYPE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ],
+      "options": {
+        "1": [
+          "منزل"
+        ],
+        "2": [
+          "عمل"
+        ],
+        "3": [
+          "مدرسة"
+        ],
+        "4": [
+          "أخرى"
+        ]
+      }
+    },
+    {
+      "key": "contactTypeOther",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_TYPE_OTHER"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
       "key": "contactHospitalized",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_HOSPITALIZED"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
     },
     {
       "key": "contactHospitalName",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_HOSPITAL_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
       "key": "contactHospitalAdmissionDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_HOSPITAL_ADMISSION_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
       "key": "contactFinalDiagnosis",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_FINAL_DIAGNOSIS"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
       "key": "contactTraveledAbroad",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_TRAVELED_ABROAD"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
     },
     {
-      "key": "contactTravelCountry",
+      "key": "contactTravelCountryId",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COUNTRY"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
       "key": "contactArrivalDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ARRIVAL_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
+      ]
     },
     {
-      "key": "caseMovements",
+      "key": "hibVaccinated",
       "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HIB_VACCINATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "hibLastDoseDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ]
+    },
+    {
+      "key": "meningococcalSchoolVaccinated",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_SCHOOLS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "meningococcalSchoolLastDoseDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ]
+    },
+    {
+      "key": "meningococcalTravelVaccinated",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_TRAVELERS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "meningococcalTravelLastDoseDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS"
+      ]
+    },
+    {
+      "key": "wentToHospitalOnOnset",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.WENT_TO_HOSPITAL_ON_ONSET"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "timeToDoctorValue",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TIME_TO_DOCTOR"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ]
+    },
+    {
+      "key": "timeToDoctorUnit",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TIME_UNIT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ],
+      "options": {
+        "1": [
+          "ساعة"
+        ],
+        "2": [
+          "يوم"
+        ]
+      }
+    },
+    {
+      "key": "firstFacilityVisitDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FIRST_FACILITY_VISIT_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ]
+    },
+    {
+      "key": "visitedMultipleFacilities",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VISITED_MULTIPLE_FACILITIES"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "facilitiesVisitedCount",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITIES_VISITED_COUNT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ]
+    },
+    {
+      "key": "firstFacilityName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FIRST_FACILITY_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ]
+    },
+    {
+      "key": "currentHospitalName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HOSPITAL_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE"
+      ]
+    },
+    {
+      "key": "movedBetweenFacilities",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MOVED_BETWEEN_FACILITIES"
+      ],
+      "section": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CASE_MOVEMENTS"
       ],
-      "section": []
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "movementFacilitiesCount",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MOVEMENT_FACILITIES_COUNT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CASE_MOVEMENTS"
+      ],
+      "options": {
+        "1": [
+          "2 منشأة"
+        ],
+        "2": [
+          "3 منشآت أو أكثر"
+        ]
+      }
+    },
+    {
+      "key": "contactsTracedAndManaged",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACTS_TRACED_AND_MANAGED"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
     },
     {
       "key": "totalContactsCount",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TOTAL_CONTACTS_COUNT"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES"
+      ]
     },
     {
-      "key": "contacts",
+      "key": "chemoprophylaxisGiven",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TOTAL_CONTACTS_COUNT"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CHEMOPROPHYLAXIS_GIVEN"
       ],
-      "section": [],
-      "array": true
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
     },
     {
-      "key": "contactSeq",
+      "key": "chemoprophylaxisContactsCount",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_SEQ"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CHEMOPROPHYLAXIS_CONTACTS_COUNT"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES"
+      ]
     },
     {
-      "key": "contactName",
+      "key": "relatedCasesIdentified",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PATIENT_NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RELATED_CASES_IDENTIFIED"
       ],
-      "section": []
-    },
-    {
-      "key": "contactAge",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.AGE"
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES"
       ],
-      "section": []
-    },
-    {
-      "key": "contactRelationshipToCase",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_RELATIONSHIP_TO_CASE"
-      ],
-      "section": []
-    },
-    {
-      "key": "contactVaccinationStatus",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_VACCINATION_STATUS"
-      ],
-      "section": []
-    },
-    {
-      "key": "contactChemoprophylaxisGiven",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_CHEMOPROPHYLAXIS_GIVEN"
-      ],
-      "section": []
-    },
-    {
-      "key": "contactDrugUsed",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_DRUG_USED"
-      ],
-      "section": []
-    },
-    {
-      "key": "contactDose",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_DOSE"
-      ],
-      "section": []
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
     },
     {
       "key": "followUpRounds",
       "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FOLLOWUP_DONE"
+      ],
+      "section": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
       ],
-      "section": [],
       "array": true
     },
     {
@@ -23947,35 +25165,97 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FOLLOWUP_DONE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
+      ],
+      "options": {
+        "1": [
+          "تمت"
+        ],
+        "2": [
+          "لم تتم"
+        ]
+      }
+    },
+    {
+      "key": "followUpDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FOLLOW_UP_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
+      ]
     },
     {
       "key": "complicationsOccurred",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_OCCURRED"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
     },
     {
       "key": "complicationDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATION_DATE"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
+      ]
     },
     {
-      "key": "caseSummary",
+      "key": "otherComplicationsDetails",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CASE_SUMMARY"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.OTHER_COMPLICATIONS_DETAILS"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
+      ]
     },
     {
-      "key": "notes",
+      "key": "investigatorName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.NOTES"
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATOR_NAME"
       ],
-      "section": []
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
+      ]
+    },
+    {
+      "key": "surveillanceOfficerName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SURVEILLANCE_OFFICER_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
+      ]
+    },
+    {
+      "key": "preventiveDirectorName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_DIRECTOR_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
+      ]
+    },
+    {
+      "key": "administrationDirectorName",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ADMINISTRATION_DIRECTOR_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
+      ]
     }
   ],
   "mers": [
@@ -24201,6 +25481,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "4": [
           "NEDSS.COMPLETE_INVESTEGATION.MERS.SAMPLE_TYPE_OTHER"
+        ],
+        "5": [
+          "NEDSS.COMPLETE_INVESTEGATION.MERS.THROAT_SWAB"
         ]
       }
     },
@@ -24560,7 +25843,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     },
     {
       "key": "camelExposureType",
-      "label": [],
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_TYPE_LABEL"
+      ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.MERS.EXPOSURE_DATA",
         "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_TYPE_LABEL"
@@ -24588,7 +25873,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     },
     {
       "key": "camelExposureTypeOther",
-      "label": [],
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_OTHER_SPECIFY"
+      ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.MERS.EXPOSURE_DATA",
         "NEDSS.COMPLETE_INVESTEGATION.MERS.CAMEL_EXPOSURE_TYPE_LABEL"
@@ -24925,6 +26212,53 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.MONKEYPOX.ACTIVE_DISEASE_ASSESSMENT"
       ]
+    },
+    {
+      "key": "symptomChecklist",
+      "label": [
+        "NEDSS.MONKEYPOX.OTHER_SYMPTOMS_CHECKLIST"
+      ],
+      "section": [
+        "NEDSS.MONKEYPOX.OTHER_SYMPTOMS_CHECKLIST"
+      ],
+      "options": {
+        "symptom_fatigue_nausea": [
+          "NEDSS.MONKEYPOX.SYMPTOM_FATIGUE_NAUSEA"
+        ],
+        "symptom_itchy_lesions": [
+          "NEDSS.MONKEYPOX.SYMPTOM_ITCHY_LESIONS"
+        ],
+        "symptom_lymph_node_swelling_armpit": [
+          "NEDSS.MONKEYPOX.SYMPTOM_LYMPH_NODE_SWELLING_ARMPIT"
+        ],
+        "symptom_conjunctivitis": [
+          "NEDSS.MONKEYPOX.SYMPTOM_CONJUNCTIVITIS"
+        ],
+        "symptom_headache": [
+          "NEDSS.MONKEYPOX.SYMPTOM_HEADACHE"
+        ],
+        "symptom_mouth_ulcers": [
+          "NEDSS.MONKEYPOX.SYMPTOM_MOUTH_ULCERS"
+        ],
+        "symptom_fatigue": [
+          "NEDSS.MONKEYPOX.SYMPTOM_FATIGUE"
+        ],
+        "symptom_chills_sweating": [
+          "NEDSS.MONKEYPOX.SYMPTOM_CHILLS_SWEATING"
+        ],
+        "symptom_cough": [
+          "NEDSS.MONKEYPOX.SYMPTOM_COUGH"
+        ],
+        "symptom_muscle_pain": [
+          "NEDSS.MONKEYPOX.SYMPTOM_MUSCLE_PAIN"
+        ],
+        "symptom_pharyngitis": [
+          "NEDSS.MONKEYPOX.SYMPTOM_PHARYNGITIS"
+        ],
+        "symptom_sensitivity": [
+          "NEDSS.MONKEYPOX.SYMPTOM_SENSITIVITY"
+        ]
+      }
     },
     {
       "key": "symptomBedridden",
@@ -25424,6 +26758,26 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.MONKEYPOX.LABORATORY_SAMPLES"
       ]
+    },
+    {
+      "key": "sampleType",
+      "label": [
+        "NEDSS.MONKEYPOX.SAMPLE_TYPE"
+      ],
+      "section": [
+        "NEDSS.MONKEYPOX.LABORATORY_SAMPLES"
+      ],
+      "options": {
+        "lesion_swab": [
+          "NEDSS.MONKEYPOX.LESION_SWAB"
+        ],
+        "throat_swab": [
+          "NEDSS.MONKEYPOX.THROAT_SWAB"
+        ],
+        "blood_sample": [
+          "NEDSS.MONKEYPOX.BLOOD_SAMPLE"
+        ]
+      }
     },
     {
       "key": "patientAdmitted",
@@ -28610,9 +29964,18 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
-      "key": "kindOfAnimal",
+      "key": "bitingAnimalType",
       "label": [
         "NEDSS.Complete_Investigation.rabies.ANIMAL_TYPE_IF_YES"
+      ],
+      "section": [
+        "NEDSS.Complete_Investigation.rabies.SURVEY_SECTION_TITLE"
+      ]
+    },
+    {
+      "key": "kindOfAnimal",
+      "label": [
+        "NEDSS.Complete_Investigation.rabies.ANIMAL_OTHER_SPECIFY"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.SURVEY_SECTION_TITLE"
@@ -28674,27 +30037,22 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
+      "key": "woundType",
+      "label": [
+        "NEDSS.Complete_Investigation.rabies.WOUND_TYPE"
+      ],
+      "section": [
+        "NEDSS.Complete_Investigation.rabies.BITE_TABLE_TITLE"
+      ]
+    },
+    {
       "key": "biteDescription",
       "label": [
         "NEDSS.Complete_Investigation.rabies.BITE_DESCRIPTION"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.BITE_TABLE_TITLE"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.Complete_Investigation.rabies.BITE_DESC_SUPERFICIAL"
-        ],
-        "2": [
-          "NEDSS.Complete_Investigation.rabies.BITE_DESC_DEEP"
-        ],
-        "3": [
-          "NEDSS.Complete_Investigation.rabies.BITE_DESC_LACERATION"
-        ],
-        "4": [
-          "NEDSS.Complete_Investigation.rabies.BITE_DESC_COMPLEX"
-        ]
-      }
+      ]
     },
     {
       "key": "patientFacilityVisits",
@@ -28779,7 +30137,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "reasonIsNotMentioned",
       "label": [
-        "NEDSS.Complete_Investigation.rabies.REASON_IF_NOT_STATED"
+        "NEDSS.Complete_Investigation.rabies.REASON_IF_YES_STATED"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
@@ -28801,6 +30159,15 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
           "NEDSS.COMMON.NO"
         ]
       }
+    },
+    {
+      "key": "reasonNotReceivingDoses",
+      "label": [
+        "NEDSS.Complete_Investigation.rabies.REASON_NOT_RECEIVING_DOSES"
+      ],
+      "section": [
+        "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
+      ]
     },
     {
       "key": "firstDose",
@@ -28903,18 +30270,10 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "reasonNotReceivingDoses",
-      "label": [
-        "NEDSS.Complete_Investigation.rabies.REASON_NOT_RECEIVING_DOSES"
-      ],
-      "section": [
-        "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
-      ]
-    },
-    {
       "key": "patientReceiveSerum",
       "label": [
-        "NEDSS.Complete_Investigation.rabies.REASON_NOT_RECEIVING_DOSES"
+        "NEDSS.Complete_Investigation.rabies.VACCINE_DOSES_TABLE_TITLE",
+        "NEDSS.Complete_Investigation.rabies.DOSE_FIFTH"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
@@ -28931,7 +30290,16 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "patientReceiveSerumReason",
       "label": [
-        "NEDSS.Complete_Investigation.rabies.SERUM_REASON_NOTE"
+        "NEDSS.Complete_Investigation.rabies.SERUM_REASON_IF_NO"
+      ],
+      "section": [
+        "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
+      ]
+    },
+    {
+      "key": "serumType",
+      "label": [
+        "NEDSS.Complete_Investigation.rabies.SERUM_TYPE"
       ],
       "section": [
         "NEDSS.Complete_Investigation.rabies.PREVENTIVE_MEASURES_SECTION"
@@ -29030,6 +30398,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.Complete_Investigation.rabies.ANIMAL_STATUS_NOT_VACCINATED"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -29970,36 +31341,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "selectedExposureLocations",
+      "key": "foodExposureCount",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.EXPOSURE_LOCATION"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
-    },
-    {
-      "key": "exposureLocationOther",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.EXPOSURE_LOCATION"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
-    },
-    {
-      "key": "selectedFoodTypes",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
-    },
-    {
-      "key": "foodTypeOther",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_TYPE"
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_EXPOSURE_COUNT"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
@@ -30024,6 +31368,126 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
+      "key": "selectedExposureLocations",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.EXPOSURE_LOCATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
+      ],
+      "aliases": [
+        "exposureLocation"
+      ],
+      "options": {
+        "HOME": [
+          "منزل"
+        ],
+        "RESTAURANT": [
+          "مطعم"
+        ],
+        "SCHOOL": [
+          "مدرسة"
+        ],
+        "HOTEL": [
+          "فندق"
+        ],
+        "MARKET": [
+          "سوق"
+        ],
+        "SUPERMARKET": [
+          "سوبر ماركت"
+        ],
+        "PARTIES": [
+          "حفلات"
+        ],
+        "OTHER": [
+          "أخرى"
+        ]
+      }
+    },
+    {
+      "key": "exposureLocationOther",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
+      ]
+    },
+    {
+      "key": "selectedFoodTypes",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_TYPE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
+      ],
+      "aliases": [
+        "foodTypes"
+      ],
+      "options": {
+        "MEAT": [
+          "لحوم"
+        ],
+        "POULTRY": [
+          "دواجن"
+        ],
+        "FISH": [
+          "أسماك"
+        ],
+        "DAIRY_PRODUCTS": [
+          "منتجات ألبان"
+        ],
+        "WATER": [
+          "مياه"
+        ],
+        "BAKERY": [
+          "معجنات"
+        ],
+        "FRUITS_AND_VEGETABLES": [
+          "خضروات وفاكهة"
+        ],
+        "SWEETS_OR_DRINKS": [
+          "حلويات أو مشروبات"
+        ],
+        "OTHER": [
+          "أخرى"
+        ]
+      }
+    },
+    {
+      "key": "foodTypeOther",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
+      ]
+    },
+    {
+      "key": "selectedFoodSources",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_SOURCE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
+      ],
+      "aliases": [
+        "foodSources"
+      ],
+      "options": {
+        "RESTAURANT": [
+          "مطعم"
+        ],
+        "STREET_VENDOR": [
+          "بائع متجول"
+        ],
+        "HOME_PREPARED": [
+          "معد منزليا"
+        ]
+      }
+    },
+    {
       "key": "preparationToIntakeDuration",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.PREPARATION_TO_INTAKE_DURATION"
@@ -30033,9 +31497,35 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "foodExposureCount",
+      "key": "selectedWaterSources",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.FOOD_EXPOSURE_COUNT"
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.WATER_SOURCE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
+      ],
+      "aliases": [
+        "waterSourceType"
+      ],
+      "options": {
+        "NETWORK": [
+          "شبكة"
+        ],
+        "GROUNDWATER": [
+          "مياه جوفية"
+        ],
+        "TANK": [
+          "خزان"
+        ],
+        "OTHER": [
+          "أخرى"
+        ]
+      }
+    },
+    {
+      "key": "waterSourceOther",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
@@ -30051,36 +31541,38 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "selectedWaterSources",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.WATER_SOURCE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
-    },
-    {
-      "key": "waterSourceOther",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.WATER_SOURCE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.CASE_DETAILS_SECTION"
-      ]
-    },
-    {
       "key": "selectedHumanSamples",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.HUMAN_SAMPLES"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SAMPLES_SECTION"
-      ]
+      ],
+      "aliases": [
+        "humanSamples"
+      ],
+      "options": {
+        "VOMIT": [
+          "قيء"
+        ],
+        "URINE": [
+          "بول"
+        ],
+        "STOOL": [
+          "براز"
+        ],
+        "BLOOD": [
+          "دم"
+        ],
+        "OTHER": [
+          "أخرى"
+        ]
+      }
     },
     {
       "key": "humanSamplesOther",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.HUMAN_SAMPLES"
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SAMPLES_SECTION"
@@ -30093,12 +31585,26 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SAMPLES_SECTION"
-      ]
+      ],
+      "aliases": [
+        "environmentalSamples"
+      ],
+      "options": {
+        "FOOD_REMAINS": [
+          "بقايا طعام"
+        ],
+        "WATER": [
+          "مياه"
+        ],
+        "OTHER": [
+          "أخرى"
+        ]
+      }
     },
     {
       "key": "environmentalSamplesOther",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.ENVIRONMENTAL_SAMPLES"
+        "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.IF_OTHER_SPECIFY"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SEVERE_FOOD_POISONING.SAMPLES_SECTION"
@@ -31180,27 +32686,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
-      "key": "contactDeceasedPersonRespiratory",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_DECEASED_RESPIRATORY_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HUMAN_CONTACT"
-      ],
-      "options": {
-        "0": [
-          "NEDSS.COMMON.YES"
-        ],
-        "1": [
-          "NEDSS.COMMON.NO"
-        ],
-        "2": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
       "key": "numberDirectContacts",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.NUMBER_DIRECT_CONTACTS"
@@ -31304,9 +32789,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "dryCoughDay1",
+      "key": "headacheDay1",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
@@ -31315,53 +32800,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "coughingWithSpittingDay1",
+      "key": "abdominalPainDay1",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
@@ -31373,6 +32814,50 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "diarrheaDay1",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "constipationDay1",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "bradycardiaDay1",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "lossOfAppetiteDay1",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "dryCoughDay1",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP",
@@ -31534,9 +33019,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "dryCoughDay2",
+      "key": "headacheDay2",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
@@ -31545,53 +33030,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "coughingWithSpittingDay2",
+      "key": "abdominalPainDay2",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
@@ -31603,6 +33044,50 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "diarrheaDay2",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "constipationDay2",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "bradycardiaDay2",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "lossOfAppetiteDay2",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "dryCoughDay2",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP",
@@ -31764,9 +33249,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "dryCoughDay7",
+      "key": "headacheDay7",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
@@ -31775,53 +33260,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "coughingWithSpittingDay7",
+      "key": "abdominalPainDay7",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
@@ -31833,6 +33274,50 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "diarrheaDay7",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "constipationDay7",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "bradycardiaDay7",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "lossOfAppetiteDay7",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "dryCoughDay7",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP",
@@ -31994,9 +33479,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "dryCoughDay14",
+      "key": "headacheDay14",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
@@ -32005,53 +33490,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "coughingWithSpittingDay14",
+      "key": "abdominalPainDay14",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.VOMITING"
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
@@ -32063,6 +33504,50 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "diarrheaDay14",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "constipationDay14",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "bradycardiaDay14",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "lossOfAppetiteDay14",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "dryCoughDay14",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
@@ -32864,6 +34349,24 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
+      "key": "waterSampleResult",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.WATER_SAMPLE_RESULT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP",
+        "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ENVIRONMENTAL_INVESTIGATION"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.WATER_RESULT_NEGATIVE"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.WATER_RESULT_POSITIVE"
         ]
       }
     }
