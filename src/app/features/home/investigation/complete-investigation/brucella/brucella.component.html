@@ -203,6 +203,40 @@
       <!-- /.col-lg-3 -->
       <div class="col-lg-6">
         <div class="form-group">
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.ANTIBIOTICS_BEFORE_REPORT" | translate }}</label>
+          <select name="antibioticsBeforeReport" class="form-control" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()" formControlName="antibioticsBeforeReport">
+            <option *ngFor="let case of antibioticsBeforeReport" [value]="case.id">
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-6" [appShowIf]="brucellaData.get('antibioticsBeforeReport')?.value == 1">
+        <div class="form-group">
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_ANTIBIOTICS_NAMES" | translate }}</label>
+          <input type="text" maxlength="500" class="form-control" (blur)="calculateCompletionPercentage()" name="antibioticsNames"
+            formControlName="antibioticsNames" />
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.HEALTH_FACILITIES_BEFORE_REPORT" | translate }}</label>
+          <select name="healthFacilitiesBeforeReport" class="form-control" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()" formControlName="healthFacilitiesBeforeReport">
+            <option *ngFor="let case of healthFacilitiesBeforeReport" [value]="case.id">
+              {{ currentLang === 'ar' ? case.arabicName : (case.englishName || case.arabicName) }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-6" [appShowIf]="brucellaData.get('healthFacilitiesBeforeReport')?.value == 1">
+        <div class="form-group">
+          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.IF_YES_HEALTH_FACILITIES_DETAILS" | translate }}</label>
+          <input type="text" maxlength="500" class="form-control" (blur)="calculateCompletionPercentage()" name="healthFacilitiesDetails"
+            formControlName="healthFacilitiesDetails" />
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
           <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.BRUCELLA.CASES_WITH_SAME_SYMPTOMS" | translate }}</label>
 
           <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()" formControlName="casesSameSymptoms">
