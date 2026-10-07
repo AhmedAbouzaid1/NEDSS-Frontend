@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
@@ -384,8 +385,8 @@ export class HealthAdministrationReportComponent implements OnInit {
     this.isValid = true;// this.generalDataService.isIncidentGovernmentValid && this.generalDataService.isIncidentHealthAdministrationValid;
     if ((this.selectedGovernment != -1 && this.selectedHealthAdministration.length > 0) || this.selectedGovernment == -1) {
       let filterDateDTO: any = {
-        startDate: this.startDate == null ? this.minDate : this.startDate,
-        endDate: this.endDate == null ? this.maxDate : this.endDate,
+        startDate: formatDate(this.startDate == null ? this.minDate : this.startDate, 'yyyy-MM-dd', 'en'),
+        endDate: formatDate(this.endDate == null ? this.maxDate : this.endDate, 'yyyy-MM-dd', 'en'),
       }
 
       let years = this.selectedyears != undefined && this.selectedyears.length > 0 ? this.selectedyears.map(dateObj => dateObj.arabicName) : '-1';

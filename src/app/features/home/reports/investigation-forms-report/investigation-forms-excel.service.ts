@@ -60,7 +60,7 @@ export class InvestigationFormsExcelService {
       col('HOME_GOVERNMENT', (i) => i.homeGovernmentName ?? ''),
       col('HOME_ADMINISTRATION', (i) => i.homeHealthAdministrationName ?? ''),
       col('HOME_OFFICE', (i) => i.homeHealthOfficeName ?? ''),
-      col('DISCOVERY_DATE', (i) => this.formatDate(i.caseDiscoveryDate ?? i.createdDate)),
+      col('DISCOVERY_DATE', (i) => this.formatDate(i.caseDiscoveryDate)),
       col('FINAL_RESULT', (i) => i.finalResult ?? ''),
       col('FINAL_DIAGNOSIS', (i) => i.finalDiagnosis ?? ''),
       col('INVESTIGATION_STATUS', (i) => this.t(i.isInvestigationDone ? 'STATUS_DONE' : 'STATUS_NOT_DONE')),

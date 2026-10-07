@@ -241,8 +241,8 @@ export class AgeCategoriesReportComponent implements OnInit {
     //
     this.lookUpsService
       .getDiseaseAccordingToAgeGroups(this.Desiesids,
-        this.datePipe.transform(this.fromDate, 'MM-dd-yyyy'),
-        this.datePipe.transform(this.toDate, 'MM-dd-yyyy'))
+        this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
+        this.datePipe.transform(this.toDate, 'yyyy-MM-dd'))
       .subscribe(
         (res) => {
           this.Summtion = [0, 0, 0, 0, 0, 0];

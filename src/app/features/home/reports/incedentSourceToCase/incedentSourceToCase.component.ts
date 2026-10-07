@@ -316,8 +316,8 @@ export class IncedentSourceToCaseComponent implements OnInit {
         .getIncedencSourceToCategoryReport(
           this.IncidentSourceids.slice(0, -1),
           this.CaseCategryids.slice(0, -1),
-          this.datePipe.transform(this.fromDate, 'MM-dd-yyyy'),
-          this.datePipe.transform(this.toDate, 'MM-dd-yyyy')
+          this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
+          this.datePipe.transform(this.toDate, 'yyyy-MM-dd')
         )
         .subscribe(
           (res) => {

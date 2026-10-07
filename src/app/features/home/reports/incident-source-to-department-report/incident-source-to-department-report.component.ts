@@ -347,8 +347,8 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
       this.IncidentSourceids = this.IncidentSourceids.slice(0, -1);
 
       this.lookUpsService.getIncidentSourceToDepartmentReport(this.IncidentSourceids, this.Dpartmentids,
-        this.datePipe.transform(this.fromDate, 'MM-dd-yyyy'),
-        this.datePipe.transform(this.toDate, 'MM-dd-yyyy'), this.Desiesids).subscribe(
+        this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
+        this.datePipe.transform(this.toDate, 'yyyy-MM-dd'), this.Desiesids).subscribe(
 
           (res) => {
             this.ids = '';

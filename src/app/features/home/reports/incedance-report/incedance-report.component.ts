@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
@@ -386,9 +387,11 @@ export class IncedanceReportComponent implements OnInit {
       if (EndSelectedDiseaseIds == "") { EndSelectedDiseaseIds = '-1,'; }
       EndSelectedDiseaseIds = EndSelectedDiseaseIds.slice(0, -1);
 
+      this.startDate = this.fromDate ?? null;
+      this.endDate = this.toDate ?? null;
       let filterDateDTO: any = {
-        startDate: this.startDate,
-        endDate: this.endDate
+        startDate: this.startDate ? formatDate(this.startDate, 'yyyy-MM-dd', 'en') : null,
+        endDate: this.endDate ? formatDate(this.endDate, 'yyyy-MM-dd', 'en') : null
       }
 
       let years = this.selectedyears != undefined && this.selectedyears.length > 0 ? this.selectedyears.map(dateObj => dateObj.arabicName) : '-1';
@@ -541,14 +544,8 @@ export class IncedanceReportComponent implements OnInit {
     let selectedDep = this.departments?.filter(g => tempSelectedDeps.includes(g.id))
     selectedDep = selectedDep?.map(g => g.arabicName)
 
-    let sDate, eDate
-
-    try {
-      sDate = (((new Date(this.startDate))?.toISOString())?.split('T'))[0]
-      eDate = (((new Date(this.endDate))?.toISOString())?.split('T'))[0]
-    } catch (error) {
-      sDate = ''; eDate = '';
-    }
+    const sDate = this.startDate ? formatDate(this.startDate, 'yyyy-MM-dd', 'en') : '';
+    const eDate = this.endDate ? formatDate(this.endDate, 'yyyy-MM-dd', 'en') : '';
 
     this.exportService.exportTemplateAsPdf(document.getElementById(this.currentConfig),
       'عدد الحالات حسب مصادر الابلاغ',

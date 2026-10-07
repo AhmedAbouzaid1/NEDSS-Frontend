@@ -36,9 +36,8 @@ export class AuditTrialComponent {
   loadingPanel: boolean = false;
   usersLoading: boolean = false;
   sysPagesLoading: boolean = false;
-  first: number = 0;
-  last: number = 0;
-  pages: number = 0;
+  hasNextPage: boolean = false;
+  currentLang: string = 'ar';
 
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
   messageService: any;
@@ -58,8 +57,10 @@ export class AuditTrialComponent {
   }
   ngOnInit() {
     this.primengConfig.ripple = true;
+    this.currentLang = localStorage.getItem('ls.currentLang') || 'ar';
     this.getUser();
     this.getAllPages();
+    this.getSysAudits();
   }
   getUser() {
     this.usersLoading = true;
@@ -71,10 +72,8 @@ export class AuditTrialComponent {
         if (result != null && result != undefined) {
           this.users = result.data;
         }
-        this.loadingPanel = false;
       },
       (error) => {
-        this.loadingPanel = false;
         this.translateService
           .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
           .subscribe((res: string) => {
@@ -94,10 +93,8 @@ export class AuditTrialComponent {
           if (result != null && result != undefined) {
             this.sysPages = result.data;
           }
-          this.loadingPanel = false;
         },
         (error) => {
-          this.loadingPanel = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -109,10 +106,7 @@ export class AuditTrialComponent {
 
 
   search() {
-    this.first = 0;
     this.sysAuditFilter.pageIndex = 0;
-    this.last =
-      this.sysAuditFilter.pageIndex * this.sysAuditFilter.pageSize;
     this.getSysAudits();
   }
 
@@ -121,28 +115,25 @@ export class AuditTrialComponent {
     this.loadingPanel = true;
     this.sysAuditService
       .getPageSysAudits(this.sysAuditFilter)
+      .pipe(finalize(() => (this.loadingPanel = false)))
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
-            this.sysAudits = result.data;
+            this.sysAudits = result.data || [];
             if (
               this.sysAudits != undefined &&
               this.sysAudits.length == 0
             ) {
               this.noData = true;
-              this.pages = 0;
+              this.hasNextPage = false;
             } else {
               this.noData = false;
-              this.pages = result.data[0].totalCount;
-              this.last =
-                this.sysAuditFilter.pageIndex *
-                this.sysAuditFilter.pageSize;
+              this.hasNextPage = result.data[0].hasNextPage === true;
             }
           }
-          this.loadingPanel = false;
         },
         (error) => {
-          this.loadingPanel = false;
+          this.hasNextPage = false;
           this.translateService
             .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
             .subscribe((res: string) => {
@@ -160,6 +151,7 @@ export class AuditTrialComponent {
       this.sysAuditFilter.sortOrder = SortOrder.desc;
       if (typeof event.field === 'string')
         this.sysAuditFilter.sortColumn = event.field;
+      this.sysAuditFilter.pageIndex = 0;
       this.getSysAudits();
     } else if (
       event.order == 1 &&
@@ -168,14 +160,28 @@ export class AuditTrialComponent {
       this.sysAuditFilter.sortOrder = SortOrder.asc;
       if (typeof event.field === 'string')
         this.sysAuditFilter.sortColumn = event.field;
+      this.sysAuditFilter.pageIndex = 0;
       this.getSysAudits();
     }
   }
-  paginate(event: any) {
-    this.first = event.first;
-    this.last = event.last;
-    this.sysAuditFilter.pageIndex = event.page;
-    this.sysAuditFilter.pageSize = event.rows;
+
+  previousPage() {
+    if (this.sysAuditFilter.pageIndex > 0) {
+      this.sysAuditFilter.pageIndex--;
+      this.getSysAudits();
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.sysAuditFilter.pageIndex++;
+      this.getSysAudits();
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.sysAuditFilter.pageSize = newSize;
+    this.sysAuditFilter.pageIndex = 0;
     this.getSysAudits();
   }
 
