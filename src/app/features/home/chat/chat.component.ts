@@ -232,8 +232,10 @@ export class ChatComponent implements OnInit {
   }
 
   RemoveChatNotifications() {
-    if (this.chatNotifications.id == null)
+    if (this.chatNotifications?.id == null) {
       this.getAllNotifications();
+      return;
+    }
     this.notificationService.removeNotification(this.chatNotifications).subscribe({
       next: x => null,
       error: err => console.error(err),

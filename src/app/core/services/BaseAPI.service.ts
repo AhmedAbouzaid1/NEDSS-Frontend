@@ -12,6 +12,7 @@ import { UserMessageService } from './user.message.service';
 import { Router } from '@angular/router';
 import { Subject } from '@microsoft/signalr';
 import { SessionService } from './session.service';
+import { backgroundRequestContext } from '../interceptors/background-request';
 
 @Injectable({
   providedIn: 'root',
@@ -68,6 +69,23 @@ export class BaseAPIService {
         undefined,
         this.http.get(this.createCompleteRoute(route), options)
       )
+      .pipe(
+        catchError((e: any) => {
+          this.errorHandler(e);
+          return throwError(e);
+        })
+      );
+  }
+
+  public getInBackground(route: string) {
+    if (!this.checkUserIsOnline()) {
+      return throwError(() => new Error('OFFLINE'));
+    }
+    return this.http
+      .get(this.createCompleteRoute(route), {
+        headers: this.setHeader(),
+        context: backgroundRequestContext(),
+      })
       .pipe(
         catchError((e: any) => {
           this.errorHandler(e);

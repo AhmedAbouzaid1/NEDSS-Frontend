@@ -160,11 +160,6 @@ export class DiseaseBasedOnResultComponent implements OnInit {
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
 
-    setTimeout((i) => {
-      document.getElementById('incident').click();
-      document.getElementById('table').click();
-    }, 500);
-
     this.dir = this.currentLang == 'ar' ? 'rtl' : 'ltr';
 
     this.levelId = JSON.parse(

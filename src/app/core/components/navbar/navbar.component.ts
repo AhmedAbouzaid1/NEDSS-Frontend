@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { UserMessageService } from '../../services/user.message.service';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { NotificationDTO } from 'src/app/models/notification-dto';
 import { ChangenpasswordComponent } from '../changenpassword/changenpassword.component';
 import { GeneralDataService } from 'src/app/features/home/general-data/services/general-data.service';
 import { TranslateService } from '@ngx-translate/core';
-import { finalize } from 'rxjs';
+import { Subscription, finalize } from 'rxjs';
 import { UiLoadingService } from '../../services/ui-loading.service';
 import { SessionService } from '../../services/session.service';
 
@@ -21,14 +21,15 @@ import { SessionService } from '../../services/session.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   username: any;
   incidentSourceName: any;
   userLevel: any;
   applanguages: any;
   language: any;
   sigrID: string = '';
-  notifications: NotificationDTO[] = [];
+  unreadCount = 0;
+  private unreadCountSub: Subscription;
   chatNotifications: NotificationDTO = {};
   private hubConnection: signalR.HubConnection;
   userId: number = 0;
@@ -93,18 +94,8 @@ export class NavbarComponent implements OnInit {
   onOnline(event) {
     this.generalDataService.syncData();
   }
-  load(notification: NotificationDTO) {
-    notification.seen = true;
-    this.notificationService.removeNotification(notification).subscribe({
-      next: (x) => null,
-      error: (err) => console.error(err),
-      complete: () =>
-        (this.notifications = this.notifications.filter((x) => !x.seen)),
-    });
-    this.router.navigateByUrl(notification.url);
-    setTimeout(() => {
-      window.location.reload();
-    }, 10);
+  get unreadBadge(): string {
+    return this.unreadCount > 99 ? '99+' : `${this.unreadCount}`;
   }
   public UserConnected = () => {
     this.hubConnection.invoke('UserConnected', this.userId);
@@ -133,7 +124,7 @@ export class NavbarComponent implements OnInit {
         this.hubConnection.on(
           'notificationReceived',
           (data: NotificationDTO) => {
-            if (data.title != 'chat') this.notifications.push(data);
+            if (data.title != 'chat') this.notificationService.notifyReceived(data);
             if (
               this.chatNotifications != null &&
               this.chatNotifications != undefined &&
@@ -143,14 +134,8 @@ export class NavbarComponent implements OnInit {
               this.chatNotifications.message = (
                 Number(this.chatNotifications.message) + Number(data.message)
               ).toString();
-            } else if (data.message === 'chat') {
-              this.chatNotifications = this.notifications.filter(
-                (x) => x.title === 'chat'
-              )[0];
-            } else {
-              this.notifications = this.notifications.filter(
-                (x) => x.title !== 'chat'
-              );
+            } else if (data.title === 'chat') {
+              this.chatNotifications = data;
             }
           }
         );
@@ -177,7 +162,14 @@ export class NavbarComponent implements OnInit {
         complete: () => {},
       });
   }
+  ngOnDestroy() {
+    this.unreadCountSub?.unsubscribe();
+  }
+
   ngOnInit() {
+    this.unreadCountSub = this.notificationService.unreadCount$.subscribe(
+      (count) => (this.unreadCount = count)
+    );
     this.chatNotifications.message = '0';
     this.getAppLanguages();
     this.language =
@@ -200,34 +192,17 @@ export class NavbarComponent implements OnInit {
   }
 
   getAllNotifications() {
-    let userId = JSON.parse(
-      localStorage.getItem('ls.authorizationData')
-    ).userId;
-
-    this.notificationService
-      .getPageNotifications({ systemUserId: userId })
-      .subscribe({
-        next: (res: Result<NotificationDTO[]>) => {
-          this.notifications = res.data;
-        },
-        error: (err) => console.error(err),
-        complete: () => {
-          this.chatNotifications = this.notifications.filter(
-            (x) => x.title === 'chat'
-          )[0];
-          this.notifications = this.notifications.filter(
-            (x) => x.title !== 'chat'
-          );
-          if (
-            this.chatNotifications != null &&
-            this.chatNotifications != undefined &&
-            Number(this.chatNotifications.message) >= 0
-          ) {
-          } else {
-            this.chatNotifications = { message: '0', title: 'chat' };
-          }
-        },
-      });
+    this.notificationService.getMySummary().subscribe({
+      next: (res: any) => {
+        this.notificationService.setUnreadCount(res?.data?.unreadCount ?? 0);
+        const chat: NotificationDTO = res?.data?.chat;
+        this.chatNotifications =
+          chat && Number(chat.message) >= 0
+            ? chat
+            : { message: '0', title: 'chat' };
+      },
+      error: (err) => console.error(err),
+    });
   }
   getAppLanguages() {
     this.uiLoadingService.isLoading = true;

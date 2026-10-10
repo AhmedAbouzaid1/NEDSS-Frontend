@@ -154,11 +154,6 @@ export class RolesReportComponent implements OnInit {
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
 
-    setTimeout((i) => {
-      document.getElementById('incident').click();
-      document.getElementById('table').click();
-    }, 500);
-
     this.dir = this.currentLang == 'ar' ? 'rtl' : 'ltr';
 
     this.levelId = JSON.parse(
@@ -651,7 +646,7 @@ export class RolesReportComponent implements OnInit {
   getReportResult() {
     this.lookUpsService
       .GetRolesReport({
-        RolesIds: this.selectedRole?.map((x) => x.id),
+        rolesIds: this.selectedRole?.map((x) => x.id),
         governmentsIds: this.selectedgovernment?.map((x) => x.id),
         healthAdministrationsIds: this.selectedhealthAdministration?.map(
           (x) => x.id

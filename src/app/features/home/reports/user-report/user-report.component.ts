@@ -134,7 +134,7 @@ export class UserReportComponent implements OnInit {
     this.selectedOrginzationId = orginzationId;
     if (
       orginzationId == OrganizationEnum.ministryOfHealth ||
-      OrganizationEnum.generalOrganizationForTeachingHospitalsAndInstitutes ||
+      orginzationId == OrganizationEnum.generalOrganizationForTeachingHospitalsAndInstitutes ||
       orginzationId == OrganizationEnum.amanHospitals
     ) {
       this.getGovernments();
@@ -566,7 +566,7 @@ export class UserReportComponent implements OnInit {
     userReportDto.incidentSourcesIds = this.selectedIncidentSources?.map(
       (g) => g.id
     );
-    userReportDto.branchsIds = this.selectedBranches?.map((g) => g.id);
+    userReportDto.branchsIds = (this.selectedBranches?.length ? this.selectedBranches : this.selectedUniversities)?.map((g) => g.id);
     userReportDto.areasIds = this.selectedAreas?.map((g) => g.id);
     userReportDto.rolesIds = this.selectedRoles?.map((g) => g.id);
     userReportDto.positionsIds = this.selectedPositions?.map((g) => g.id);

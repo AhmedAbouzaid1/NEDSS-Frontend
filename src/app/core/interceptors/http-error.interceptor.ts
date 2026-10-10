@@ -13,6 +13,7 @@ import { catchError, filter, finalize, timeout } from 'rxjs/operators';
 import { SessionService } from '../services/session.service';
 import { UserMessageService } from '../services/user.message.service';
 import { PartialLoadingService } from '../components/partial-loading/partial-loading.service';
+import { BACKGROUND_REQUEST } from './background-request';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
@@ -76,6 +77,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   }
 
   private isBackgroundRequest(req: HttpRequest<any>): boolean {
+    if (req.context.get(BACKGROUND_REQUEST)) {
+      return true;
+    }
     const body = req.body as any;
     return !!body && typeof body === 'object' && body.countOnly === true;
   }

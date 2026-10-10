@@ -33,11 +33,11 @@
       </div>
       <div class="card">
         <div
-          *ngIf="notifications?.length; else noNotiicationExist"
+          *ngIf="notifications?.length || !initialized || loadFailed; else noNotiicationExist"
           class="card-body"
         >
           <div
-            *ngFor="let item of notifications"
+            *ngFor="let item of notifications; trackBy: trackById"
             [class]="
               item.seen
                 ? 'notification-wrapper is-seen d-flex pb-4 mb-4'
@@ -47,7 +47,7 @@
             <div class="width-5">
               <button
                 class="btn btn-delete"
-                (click)="deleteNotification(item.id)"
+                (click)="deleteNotification(item)"
               >
                 <i class="pi pi-times"></i>
               </button>
@@ -125,6 +125,20 @@
                 <span>{{ item.message }}</span>
               </div>
             </div>
+          </div>
+          <div *ngIf="hasMore" #scrollSentinel class="notifications-sentinel"></div>
+          <div
+            *ngIf="loading"
+            class="d-flex justify-content-center py-3"
+            role="status"
+            aria-live="polite"
+          >
+            <span class="spinner-border spinner-border-sm text-secondary"></span>
+          </div>
+          <div *ngIf="loadFailed && !loading" class="d-flex justify-content-center py-3">
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="retry()">
+              <i class="pi pi-refresh"></i>
+            </button>
           </div>
         </div>
         <ng-template #noNotiicationExist>

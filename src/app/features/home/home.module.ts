@@ -149,7 +149,7 @@ import { DiseaseBasedOnPatientComponent } from './reports/disease-based-on-patie
 import { InvestigationFormsReportComponent } from './reports/investigation-forms-report/investigation-forms-report.component';
 import { DiseaseBasedOnPatientPdfComponent } from './reports/disease-based-on-patient/disease-based-on-patient-pdf/disease-based-on-patient-pdf.component';
 import { HighchartsChartModule } from 'highcharts-angular';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DayFirstDateModule } from 'src/app/core/shared/day-first-date.module';
 import { MergeRepeatedRecordsComponent } from './repeated-records/merge-repeated-records/merge-repeated-records.component';
 import { MergeRecordsPerAttributeComponent } from './repeated-records/merge-records-per-attribute/merge-records-per-attribute.component';
 import { CalendarModule } from 'primeng/calendar';
@@ -351,7 +351,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ButtonModule,
     MatIconModule,
     MatDatepickerModule,
-    MatNativeDateModule,
+    DayFirstDateModule,
     NgMultiSelectDropDownModule.forRoot(),
     // ngx-translate and the loader module
     HttpClientModule,

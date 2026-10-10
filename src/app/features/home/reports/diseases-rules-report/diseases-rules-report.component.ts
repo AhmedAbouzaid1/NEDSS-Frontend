@@ -81,7 +81,7 @@ export class DiseasesRulesReportComponent implements OnInit{
     this.lookupsService.getDiseasesRulesReport(diseasesRulesReportFilter).subscribe({
       next: (response) => {
         this.tableData = response.data;
-        this.showTableData = true;
+        this.showTableData = !!response?.data?.diseasesRulesData?.length;
       },
       error: (error) => {
         this.translateService
