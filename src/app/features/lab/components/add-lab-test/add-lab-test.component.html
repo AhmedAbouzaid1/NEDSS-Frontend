@@ -451,6 +451,67 @@
     </div>
   </div>
 </div>
+<div
+  class="modal fade multi-result-modal"
+  id="confirmMultiResultModal"
+  tabindex="-1"
+  aria-labelledby="confirmMultiResultLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" [attr.dir]="currentLang == 'ar' ? 'rtl' : 'ltr'">
+      <button
+        type="button"
+        class="btn-close mrm-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+      <div class="mrm-body">
+        <div class="mrm-icon">
+          <i class="bi bi-clipboard2-pulse"></i>
+        </div>
+        <h5 class="mrm-title" id="confirmMultiResultLabel">
+          {{ currentLang == 'ar' ? 'تأكيد إضافة الفحص' : 'Confirm adding check' }}
+        </h5>
+        <p class="mrm-text">
+          <ng-container *ngIf="currentLang == 'ar'; else enText">
+            لقد اخترت <span class="mrm-count">{{ selectedLabCheckResult?.length }}</span> نتائج للاختبار المعملى،
+            وسيتم إضافة سجل فحص منفصل لكل نتيجة.
+          </ng-container>
+          <ng-template #enText>
+            You selected <span class="mrm-count">{{ selectedLabCheckResult?.length }}</span> lab test results.
+            A separate check record will be added for each result.
+          </ng-template>
+        </p>
+        <div class="mrm-results">
+          <span class="mrm-chip" *ngFor="let r of selectedLabCheckResult">
+            <i class="bi bi-check2-circle"></i>
+            {{ currentLang == 'ar' ? r.arabicName : r.englishName }}
+          </span>
+        </div>
+        <p class="mrm-question">
+          {{ currentLang == 'ar' ? 'هل تريد المتابعة؟' : 'Do you want to continue?' }}
+        </p>
+      </div>
+      <div class="mrm-footer">
+        <button
+          type="button"
+          class="btn mrm-btn mrm-btn-confirm"
+          [disabled]="saving"
+          (click)="submitLabCheck()"
+          data-bs-dismiss="modal"
+        >
+          <i class="bi bi-plus-circle-fill"></i>
+          {{ currentLang == 'ar' ? 'تأكيد الإضافة' : 'Confirm' }}
+        </button>
+        <button type="button" class="btn mrm-btn mrm-btn-cancel" data-bs-dismiss="modal">
+          {{ "NEDSS.COMMON.CANCEL" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- confirm - modal -->
 
 <div

@@ -16,6 +16,8 @@ import {
 import { from } from 'rxjs';
 import { concatMap, finalize, toArray } from 'rxjs/operators';
 
+declare const bootstrap: any;
+
 @Component({
   selector: 'app-add-lab-test',
   templateUrl: './add-lab-test.component.html',
@@ -566,46 +568,60 @@ export class AddLabTestComponent {
       return;
     }
     if (this.validateRequiredData()) {
-      this.clearFeverRashFieldsIfHidden();
-      this.patientAddCheck.patientId = this.id;
-      if (this.patientAddCheck.id == null) {
-        const resultIds = this.selectedLabCheckResult?.length
-          ? this.selectedLabCheckResult.map((r) => r.id)
-          : [null];
-        this.saving = true;
-        from(resultIds)
-          .pipe(
-            concatMap((resultId) =>
-              this.labService.addPatientLabCheck({
-                ...this.patientAddCheck,
-                diseaseLabTestResultId: resultId,
-              })
-            ),
-            toArray(),
-            finalize(() => (this.saving = false))
-          )
-          .subscribe(
-            (responses: any[]) => {
-              this.translateService
-                .get('NEDSS.COMMON.SENT_SUCESSFULLY')
-                .subscribe((res: string) => {
-                  this.userMsg.success(res);
-                });
-              this.getById(this.id);
-              this.resetLabCheck();
-            },
-            (error) => {
-              this.translateService
-                .get('NEDSS.COMMON.SENT_FAILD')
-                .subscribe((res: string) => {
-                  this.userMsg.error(res);
-                });
-            }
-          );
-      } else this.update();
+      if (this.patientAddCheck.id == null && this.selectedLabCheckResult?.length > 1) {
+        const modalElement = document.getElementById('confirmMultiResultModal');
+        if (modalElement) {
+          bootstrap.Modal.getOrCreateInstance(modalElement).show();
+          return;
+        }
+      }
+      this.submitLabCheck();
     } else {
       this.userMsg.error('يجب ادخال كل الحقول');
     }
+  }
+
+  submitLabCheck() {
+    if (this.saving) {
+      return;
+    }
+    this.clearFeverRashFieldsIfHidden();
+    this.patientAddCheck.patientId = this.id;
+    if (this.patientAddCheck.id == null) {
+      const resultIds = this.selectedLabCheckResult?.length
+        ? this.selectedLabCheckResult.map((r) => r.id)
+        : [null];
+      this.saving = true;
+      from(resultIds)
+        .pipe(
+          concatMap((resultId) =>
+            this.labService.addPatientLabCheck({
+              ...this.patientAddCheck,
+              diseaseLabTestResultId: resultId,
+            })
+          ),
+          toArray(),
+          finalize(() => (this.saving = false))
+        )
+        .subscribe(
+          (responses: any[]) => {
+            this.translateService
+              .get('NEDSS.COMMON.SENT_SUCESSFULLY')
+              .subscribe((res: string) => {
+                this.userMsg.success(res);
+              });
+            this.getById(this.id);
+            this.resetLabCheck();
+          },
+          (error) => {
+            this.translateService
+              .get('NEDSS.COMMON.SENT_FAILD')
+              .subscribe((res: string) => {
+                this.userMsg.error(res);
+              });
+          }
+        );
+    } else this.update();
   }
 
   update() {
