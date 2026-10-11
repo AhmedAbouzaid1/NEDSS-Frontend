@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MultipleDropdownSettings } from 'src/app/core/constants';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
@@ -18,6 +19,9 @@ import { ExportColumn, InvestigationFormsExcelService } from './investigation-fo
 import { InvestigationFormsReportService } from './investigation-forms-report.service';
 import { GeneralDataService } from '../../general-data/services/general-data.service';
 import { InvestigationService } from '../../investigation/services/investigation.service';
+import { PagePermissionService } from 'src/app/core/services/page-permission.service';
+
+export const INVESTIGATION_FORMS_EXPORT_PAGE_ID = 99;
 
 type StatusFilter = 'all' | 'done' | 'notDone';
 
@@ -33,7 +37,7 @@ interface Option {
   styleUrls: ['./investigation-forms-report.component.css'],
   providers: [DatePipe],
 })
-export class InvestigationFormsReportComponent implements OnInit {
+export class InvestigationFormsReportComponent implements OnInit, OnDestroy {
   readonly reportLocationType = ReportLocationType;
   readonly pageSizes = [10, 25, 50, 100];
   readonly multipleDropdownSettings = { ...MultipleDropdownSettings, enableCheckAll: false };
@@ -74,12 +78,15 @@ export class InvestigationFormsReportComponent implements OnInit {
   columns: ExportColumn[] = [];
   groupSpans: { label: string; span: number }[] = [];
   rows: (string | number)[][] = [];
-  private columnsCache: { router: string; columns: ExportColumn[] } | null = null;
+  private columnsCache: { router: string; items: InvestigationFormsReportItem[] } | null = null;
   appliedFilter: InvestigationFormsReportFilter | null = null;
+  private appliedFilterDescription: [string, string][] = [];
+  private pageRequest?: Subscription;
   pageIndex = 1;
   pageSize = 10;
   loading = false;
   exporting = false;
+  canExport = false;
   submitted = false;
   openingPatientId: number | null = null;
 
@@ -92,12 +99,18 @@ export class InvestigationFormsReportComponent implements OnInit {
     private router: Router,
     private datePipe: DatePipe,
     private generalDataService: GeneralDataService,
-    private investigationService: InvestigationService
+    private investigationService: InvestigationService,
+    private pagePermission: PagePermissionService
   ) {}
+
+  ngOnDestroy(): void {
+    this.pageRequest?.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.isArabic = (localStorage.getItem('ls.currentLang') || 'ar') === 'ar';
     this.dir = this.isArabic ? 'rtl' : 'ltr';
+    this.canExport = this.pagePermission.canAccessPage(INVESTIGATION_FORMS_EXPORT_PAGE_ID);
     this.statusOptions = (['STATUS_ALL', 'STATUS_DONE', 'STATUS_NOT_DONE'] as const).map((key, i) => ({
       id: (['all', 'done', 'notDone'] as StatusFilter[])[i],
       arabicName: this.translate.instant(`NEDSS.INVESTIGATION_FORMS_REPORT.${key}`),
@@ -164,7 +177,13 @@ export class InvestigationFormsReportComponent implements OnInit {
       this.warn('DISEASE_REQUIRED');
       return;
     }
+    if (this.fromDate && this.toDate && this.fromDate > this.toDate) {
+      this.warn('INVALID_DATE_RANGE');
+      return;
+    }
     this.appliedFilter = this.buildFilter();
+    this.appliedFilterDescription = this.describeFilters();
+    this.columnsCache = null;
     this.pageIndex = 1;
     this.loadPage();
   }
@@ -206,6 +225,10 @@ export class InvestigationFormsReportComponent implements OnInit {
   }
 
   exportExcel(): void {
+    if (!this.canExport) {
+      this.userMsg.error(this.t('EXPORT_DENIED'));
+      return;
+    }
     if (!this.appliedFilter || !this.report?.totalCount) return;
     this.exporting = true;
     this.reportService
@@ -218,7 +241,7 @@ export class InvestigationFormsReportComponent implements OnInit {
             this.warn('NO_DATA');
             return;
           }
-          this.excelService.export(data, { filters: this.describeFilters() });
+          this.excelService.export(data, { filters: this.appliedFilterDescription });
           if (data.items.length < data.totalCount) {
             this.userMsg.warn(this.t('EXPORT_TRUNCATED', { count: data.items.length, total: data.totalCount }));
           }
@@ -229,8 +252,9 @@ export class InvestigationFormsReportComponent implements OnInit {
 
   private loadPage(): void {
     if (!this.appliedFilter) return;
+    this.pageRequest?.unsubscribe();
     this.loading = true;
-    this.reportService
+    this.pageRequest = this.reportService
       .getReport({ ...this.appliedFilter, pageIndex: this.pageIndex, pageSize: this.pageSize })
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
@@ -250,13 +274,10 @@ export class InvestigationFormsReportComponent implements OnInit {
       this.rows = [];
       return;
     }
-    const hasForms = report.items.some((item) => !!item.form);
-    let formColumns = this.excelService.buildFormColumns(report);
-    if (hasForms) {
-      this.columnsCache = { router: report.router, columns: formColumns };
-    } else if (this.columnsCache?.router === report.router) {
-      formColumns = this.columnsCache.columns;
-    }
+    const previousItems = this.columnsCache?.router === report.router ? this.columnsCache.items : [];
+    const sampleItems = [...previousItems, ...report.items.filter((item) => !!item.form)];
+    this.columnsCache = { router: report.router, items: sampleItems };
+    const formColumns = this.excelService.buildFormColumns({ ...report, items: sampleItems });
     const columns = [...this.excelService.patientColumns(), ...formColumns];
     this.columns = columns;
     this.groupSpans = this.excelService.groupSpans(columns);
@@ -315,7 +336,10 @@ export class InvestigationFormsReportComponent implements OnInit {
   private handleError(err: any): void {
     if (!(err instanceof HttpErrorResponse)) return;
     const message = (err.error?.messages ?? err.error?.Messages ?? [])[0];
-    if (err.status === 403) {
+    if (err.status === 403 && message === 'ReportExportDenied') {
+      this.canExport = false;
+      this.userMsg.error(this.t('EXPORT_DENIED'));
+    } else if (err.status === 403) {
       this.userMsg.error(this.t(message === 'DiseaseGroupAccessDenied' ? 'DISEASE_ACCESS_DENIED' : 'ACCESS_DENIED'));
       if (message !== 'DiseaseGroupAccessDenied') this.router.navigateByUrl('/home/reports');
     } else if (err.status === 400) {

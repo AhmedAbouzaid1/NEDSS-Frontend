@@ -509,6 +509,7 @@ const routes: Routes = [
             path: 'compelete-investigation',
             component: CompleteInvestigationComponent,
             canActivate: [InvestigationPatientGuard],
+            canActivateChild: [InvestigationPatientGuard],
             children: [
               { path: 'h5n1', component: H5n1Component },
               { path: 'brucella', component: BrucellaComponent },

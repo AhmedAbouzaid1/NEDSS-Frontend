@@ -20,7 +20,7 @@ import {
 import { EventService } from './services/event.service';
 import { ExportService } from '../../../core/services/export.service';
 import { GeneralDataService } from '../general-data/services/general-data.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { ExportAsConfig } from 'ngx-export-as';
 import { ActiveUserService } from 'src/app/core/services/active-user.service';
 import { EventRadio } from '../chat/Models/event-radio';
@@ -740,7 +740,7 @@ export class EventsComponent {
         // this.AddEventForm.controls['eventEndDate'].setValue(this.AddEventForm.value.eventEndDate?.split('T')[0]);
         this.AddEventForm.controls['eventEndDate'].setValue(
           this.AddEventForm.value.eventEndDate
-            ? this.AddEventForm.value.eventEndDate.toISOString().split('T')[0]
+            ? formatDate(this.AddEventForm.value.eventEndDate, 'yyyy-MM-dd', 'en')
             : null
         );
 

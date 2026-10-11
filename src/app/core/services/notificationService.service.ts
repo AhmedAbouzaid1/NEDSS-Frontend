@@ -32,6 +32,10 @@ export class NotificationService {
   castDatalegnth = this.Datalegnth.asObservable();
   private Data = new BehaviorSubject<NotificationDTO[]>([]);
   castData = this.Data.asObservable();
+  private unreadCountSubject = new BehaviorSubject<number>(0);
+  unreadCount$ = this.unreadCountSubject.asObservable();
+  private receivedSubject = new Subject<NotificationDTO>();
+  received$ = this.receivedSubject.asObservable();
   constructor(
     private APIs: BaseAPIService,
     private userMsg: UserMessageService
@@ -81,21 +85,37 @@ export class NotificationService {
 
     this.hubConnection.invoke('UserConnected', Number(userId));
   }
-  public sendNotification(userIDs: number[], not: NotificationDTO) {
-    this.hubConnection
-      .invoke('sendNotification', userIDs, not)
-      .catch((err) => console.error(err));
-
-    this.hubConnection.on(
-      'notificationReceived',
-      (connID: string, msg: NotificationDTO) => {
-        console.log(msg);
-      }
-    );
-  }
   // } else {
   //   this.hubConnection.invoke('sendNotification', notificationDTO);
   // }
+  public getMySummary(): Observable<any> {
+    return this.APIs.getInBackground(
+      this.NotificationsControllerURL + 'GetMySummary'
+    );
+  }
+
+  public getMyFeed(beforeId: number | null, pageSize: number): Observable<any> {
+    const cursor = beforeId != null ? `&beforeId=${beforeId}` : '';
+    return this.APIs.getInBackground(
+      `${this.NotificationsControllerURL}GetMyFeed?pageSize=${pageSize}${cursor}`
+    );
+  }
+
+  public setUnreadCount(count: number) {
+    this.unreadCountSubject.next(Math.max(0, count || 0));
+  }
+
+  public adjustUnreadCount(delta: number) {
+    this.setUnreadCount(this.unreadCountSubject.value + delta);
+  }
+
+  public notifyReceived(notification: NotificationDTO) {
+    if (!notification?.seen) {
+      this.adjustUnreadCount(1);
+    }
+    this.receivedSubject.next(notification);
+  }
+
   public DeleteAll() {
     return this.APIs.delete(this.NotificationsControllerURL + 'DeleteAll');
   }

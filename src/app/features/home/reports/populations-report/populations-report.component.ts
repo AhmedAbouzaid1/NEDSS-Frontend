@@ -213,13 +213,13 @@ export class PopulationsReportComponent implements OnInit {
       return this.selectedYear !== undefined;
     } else if (this.levelValue == LevelsEnum.Governorate) {
       return (
-        this.selectedYear !== undefined && this.selectedGovernmentId !== -1
+        this.selectedYear !== undefined && this.selectedGovernmentId != null && this.selectedGovernmentId !== -1
       );
     } else if (this.levelValue == LevelsEnum.Administration) {
       return (
         this.selectedYear !== undefined &&
-        this.selectedGovernmentId !== -1 &&
-        this.selectedHealthAdminId !== -1
+        this.selectedGovernmentId != null && this.selectedGovernmentId !== -1 &&
+        this.selectedHealthAdminId != null && this.selectedHealthAdminId !== -1
       );
     } else {
       return false;

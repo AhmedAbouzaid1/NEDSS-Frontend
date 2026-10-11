@@ -23,7 +23,8 @@ import { HttpClient } from '@angular/common/http';
 import { StringConverterPipe } from 'src/app/core/Pipes/string-converter.pipe';
 import { SentinelComponent } from './sentinel/sentinel.component';
 import { NotInferringModalComponent } from './not-inferring-modal/not-inferring-modal.component';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { DayFirstDateModule } from 'src/app/core/shared/day-first-date.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -70,7 +71,7 @@ import { DialogModule } from 'primeng/dialog';
         deps: [HttpClient],
       },
     }),
-    MatNativeDateModule,
+    DayFirstDateModule,
     DropdownModule,
     NgbNavModule,
     DialogModule,

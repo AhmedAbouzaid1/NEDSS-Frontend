@@ -246,13 +246,7 @@ export class DiseaseSpecialSymptomsComponent {
         this.diseasesFieldForm = {};
         this.diseasesFieldForm.diseaseGroupId = this.diseaseSelected;
       },
-      () => {
-        this.translateService
-          .get('NEDSS.COMMON.failaddField')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
+      (error) => this.showSaveError(error, 'NEDSS.COMMON.failaddField')
     );
   }
   edit() {
@@ -264,14 +258,16 @@ export class DiseaseSpecialSymptomsComponent {
         this.isEdit = false;
         this.diseasesFieldForm.diseaseGroupId = this.diseaseSelected;
       },
-      () => {
-        this.translateService
-          .get('NEDSS.COMMON.faileditField')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
+      (error) => this.showSaveError(error, 'NEDSS.COMMON.faileditField')
     );
+  }
+  private showSaveError(error: any, fallbackKey: string) {
+    const body = error?.error;
+    const message = error?.status === 400 ? (body?.messages ?? body?.Messages)?.[0] : null;
+    const key = message ? `NEDSS.COMMON.${message}` : fallbackKey;
+    this.translateService.get(key).subscribe((res: string) => {
+      this.userMsg.error(res !== key ? res : message ?? res);
+    });
   }
   onFieldTypeChange($event: any) {
     let value = $event.value;

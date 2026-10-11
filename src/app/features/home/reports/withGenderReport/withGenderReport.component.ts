@@ -238,8 +238,8 @@ export class WithGenderReportComponent implements OnInit {
     //
     this.lookUpsService
       .getDiseaseAccordingToGender(this.Desiesids,
-        this.datePipe.transform(this.fromDate, 'MM-dd-yyyy'),
-        this.datePipe.transform(this.toDate, 'MM-dd-yyyy'))
+        this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
+        this.datePipe.transform(this.toDate, 'yyyy-MM-dd'))
       .subscribe(
         (res) => {
           this.Summtion = [0, 0, 0, 0];

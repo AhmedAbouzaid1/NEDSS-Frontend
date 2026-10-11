@@ -301,8 +301,8 @@ export class UserMonitoringReportComponent implements OnInit {
     //
     this.lookUpsService
       .getUserMonitoringReport(this.Desiesids,
-        this.datePipe.transform(this.fromDate, 'MM-dd-yyyy'),
-        this.datePipe.transform(this.toDate, 'MM-dd-yyyy'), this.selectedIncidentSource[0].id)
+        this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
+        this.datePipe.transform(this.toDate, 'yyyy-MM-dd'), this.selectedIncidentSource[0].id)
       .subscribe(
         (res) => {
           this.Summtion = [0, 0, 0, 0];

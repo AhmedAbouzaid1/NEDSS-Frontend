@@ -16,6 +16,8 @@ import {
 import { from } from 'rxjs';
 import { concatMap, finalize, toArray } from 'rxjs/operators';
 
+declare const bootstrap: any;
+
 @Component({
   selector: 'app-add-lab-test',
   templateUrl: './add-lab-test.component.html',
@@ -77,11 +79,13 @@ export class AddLabTestComponent {
 
   singleDropdownSettings = {};
   multipleDropdownSettings = {};
+  singleResultDropdownSettings = {};
   Diseasies: any[];
   filterdDisease: any[];
 
   readonly meningitisAndEncephalitisDiseaseGroupIds = [2, 23];
   readonly feverRashDiseaseGroupId = 5;
+  readonly multiResultDiseaseGroupIds = [1, 19, 25, 27];
 
   underDeleting = {
     nameAr: '',
@@ -111,6 +115,11 @@ export class AddLabTestComponent {
       ...MultipleDropdownSettings,
       textField: this.currentLang == 'ar' ? 'arabicName' : 'englishName',
       placeholder: this.currentLang == 'ar' ? 'اختر' : 'Choose',
+    };
+    this.singleResultDropdownSettings = {
+      ...this.multipleDropdownSettings,
+      singleSelection: true,
+      closeDropDownOnSelection: true,
     };
     this.loadingPanel = false;
   }
@@ -238,7 +247,16 @@ export class AddLabTestComponent {
         }
       );
   }
+  isMultiResultDiseaseSelected(): boolean {
+    return this.multiResultDiseaseGroupIds.includes(
+      Number(this.patientAddCheck.diseaseGroupId)
+    );
+  }
+
   filterdDiseaseChange() {
+    if (!this.isMultiResultDiseaseSelected() && this.selectedLabCheckResult?.length > 1) {
+      this.selectedLabCheckResult = this.selectedLabCheckResult.slice(0, 1);
+    }
     if (!this.isMeningitisOrEncephalitisSelected()) {
       this.getLabSamples();
     }
@@ -550,52 +568,60 @@ export class AddLabTestComponent {
       return;
     }
     if (this.validateRequiredData()) {
-      this.clearFeverRashFieldsIfHidden();
-      this.patientAddCheck.patientId = this.id;
-      if (this.patientAddCheck.id == null) {
-        const resultIds = this.selectedLabCheckResult?.length
-          ? this.selectedLabCheckResult.map((r) => r.id)
-          : [null];
-        this.saving = true;
-        from(resultIds)
-          .pipe(
-            concatMap((resultId) =>
-              this.labService.addPatientLabCheck({
-                ...this.patientAddCheck,
-                diseaseLabTestResultId: resultId,
-              })
-            ),
-            toArray(),
-            finalize(() => (this.saving = false))
-          )
-          .subscribe(
-            (responses: any[]) => {
-              this.translateService
-                .get('NEDSS.COMMON.SENT_SUCESSFULLY')
-                .subscribe((res: string) => {
-                  this.userMsg.success(res);
-                });
-              this.getById(this.id);
-              this.resetLabCheck();
-              //send notification here
-              responses.forEach((response) => {
-                response?.messages?.forEach((msg) => {
-                  this.notificationService.sendNotification([], JSON.parse(msg));
-                });
-              });
-            },
-            (error) => {
-              this.translateService
-                .get('NEDSS.COMMON.SENT_FAILD')
-                .subscribe((res: string) => {
-                  this.userMsg.error(res);
-                });
-            }
-          );
-      } else this.update();
+      if (this.patientAddCheck.id == null && this.selectedLabCheckResult?.length > 1) {
+        const modalElement = document.getElementById('confirmMultiResultModal');
+        if (modalElement) {
+          bootstrap.Modal.getOrCreateInstance(modalElement).show();
+          return;
+        }
+      }
+      this.submitLabCheck();
     } else {
       this.userMsg.error('يجب ادخال كل الحقول');
     }
+  }
+
+  submitLabCheck() {
+    if (this.saving) {
+      return;
+    }
+    this.clearFeverRashFieldsIfHidden();
+    this.patientAddCheck.patientId = this.id;
+    if (this.patientAddCheck.id == null) {
+      const resultIds = this.selectedLabCheckResult?.length
+        ? this.selectedLabCheckResult.map((r) => r.id)
+        : [null];
+      this.saving = true;
+      from(resultIds)
+        .pipe(
+          concatMap((resultId) =>
+            this.labService.addPatientLabCheck({
+              ...this.patientAddCheck,
+              diseaseLabTestResultId: resultId,
+            })
+          ),
+          toArray(),
+          finalize(() => (this.saving = false))
+        )
+        .subscribe(
+          (responses: any[]) => {
+            this.translateService
+              .get('NEDSS.COMMON.SENT_SUCESSFULLY')
+              .subscribe((res: string) => {
+                this.userMsg.success(res);
+              });
+            this.getById(this.id);
+            this.resetLabCheck();
+          },
+          (error) => {
+            this.translateService
+              .get('NEDSS.COMMON.SENT_FAILD')
+              .subscribe((res: string) => {
+                this.userMsg.error(res);
+              });
+          }
+        );
+    } else this.update();
   }
 
   update() {

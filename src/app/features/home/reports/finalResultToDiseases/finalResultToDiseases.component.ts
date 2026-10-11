@@ -278,8 +278,8 @@ export class FinalResultToDiseasesComponent implements OnInit {
       .FinalResultToDiseaseReport(
         {
           ids_Disease: this.Diseaseids,
-          from_Date: this.datePipe.transform(this.fromDate, 'MM-dd-yyyy'),
-          to_Date: this.datePipe.transform(this.toDate, 'MM-dd-yyyy'),
+          from_Date: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
+          to_Date: this.datePipe.transform(this.toDate, 'yyyy-MM-dd'),
           ids_FinalResult: this.FinalResultsids,
           result: this.resultType[0].id,
         }

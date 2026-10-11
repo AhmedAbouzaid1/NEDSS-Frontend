@@ -1,5 +1,6 @@
-import { Router, ActivatedRoute } from '@angular/router';
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Component, ElementRef, HostListener, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Subscription, filter } from 'rxjs';
 import { DiseaseFormService } from 'src/app/features/home/dashboard/components/disease-special-symptoms/services/disease-form.service';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 
@@ -8,8 +9,10 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnDestroy {
   isCollapsed: Boolean = true;
+  private readonly mobileNavQuery = '(max-width: 991.98px)';
+  private routerEventsSub?: Subscription;
 
   forms: any = [];
   lang: any;
@@ -58,6 +61,31 @@ export class SidebarComponent {
   ngOnInit(): void {
     this.Customdisplay();
     this.loadChartsTabVisibility();
+    this.routerEventsSub = this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => this.closeMobileDrawer());
+  }
+
+  ngOnDestroy(): void {
+    this.routerEventsSub?.unsubscribe();
+  }
+
+  @HostListener('click', ['$event'])
+  onSidebarClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement | null;
+    if (target?.closest('nav a')) {
+      this.closeMobileDrawer();
+    }
+  }
+
+  private closeMobileDrawer(): void {
+    if (!window.matchMedia(this.mobileNavQuery).matches) {
+      return;
+    }
+    document.querySelector('.main-container')?.classList.add('nav-collapsed');
+    document
+      .querySelectorAll('.menu-toggles .bi')
+      .forEach((icon) => icon.classList.remove('bi-x-circle'));
   }
 
   loadChartsTabVisibility(): void {
