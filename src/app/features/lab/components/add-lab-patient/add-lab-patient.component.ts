@@ -927,11 +927,6 @@ export class AddLabPatientComponent {
               }
               this.resetPage();
               this.loadingPanel = false;
-
-              //send notification here
-              response.messages.forEach((msg) => {
-                this.notificationService.sendNotification([], JSON.parse(msg));
-              });
             },
             (error) => {
               console.error('Error in subscribe:', error); // Log the error to the console
@@ -960,11 +955,6 @@ export class AddLabPatientComponent {
               }
               this.resetPage();
               this.loadingPanel = false;
-
-              //send notification here
-              response.messages.forEach((msg) => {
-                this.notificationService.sendNotification([], JSON.parse(msg));
-              });
             },
             (error) => {
               console.error('Error in subscribe:', error); // Log the error to the console

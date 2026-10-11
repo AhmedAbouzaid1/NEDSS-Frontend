@@ -1,9 +1,12 @@
 <div class="d-flex align-items-start justify-content-between gap-3 mt-4 mx-4">
   <div class="d-flex flex-wrap align-items-center gap-3">
-    <button class="btn form-titles" *ngFor="let item of patientDiseases" routerLink="./{{ item.router }}"
-      [replaceUrl]="true" (click)="setDesiese(item)">
+    <button class="btn form-titles" *ngFor="let item of patientDiseases" type="button"
+      (click)="setDesiese(item)">
       {{ item.arabicName }}
     </button>
+    <span class="text-muted" *ngIf="!patientDiseases.length && hiddenDiseasesCount">
+      ليس لديك صلاحية على نماذج التقصي الخاصة بأمراض هذه الحالة
+    </span>
   </div>
   <button type="button" class="btn btn-sm form-titles" dir="auto" (click)="downloadFile()">
     {{ "NEDSS.COMMON.DOWNLOAD_EXCEL_TEMPLATE" | translate }}

@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { InvestigationComponent } from '../investigation.component';
 import { Router } from '@angular/router';
 import { FormTemplateExportService } from 'src/app/core/services/form-template-export.service';
+import { PagePermissionService } from 'src/app/core/services/page-permission.service';
 
 @Component({
   selector: 'app-complete-investigation',
@@ -14,17 +15,23 @@ export class CompleteInvestigationComponent implements OnInit {
   investigationContainer?: ElementRef<HTMLElement>;
 
   patientDiseases: any[];
+  hiddenDiseasesCount = 0;
   currentId: any;
   constructor(
     private investigation: InvestigationComponent,
     private Router: Router,
     public InvestigationService: InvestigationService,
-    private formTemplateExportService: FormTemplateExportService
+    private formTemplateExportService: FormTemplateExportService,
+    private pagePermission: PagePermissionService
   ) { }
 
   ngOnInit() {
     this.currentId = this.InvestigationService.currentid;
-    this.patientDiseases = this.InvestigationService.patientDiseases || [];
+    const allDiseases = this.InvestigationService.patientDiseases || [];
+    this.patientDiseases = allDiseases.filter((d) =>
+      this.pagePermission.canAccessInvestigationForm(d?.diseaseGroupId)
+    );
+    this.hiddenDiseasesCount = allDiseases.length - this.patientDiseases.length;
     const firstDisease = this.patientDiseases[0];
     if (firstDisease && firstDisease.router) {
       this.InvestigationService.diseaseGroupID = firstDisease.diseaseGroupId;
@@ -43,7 +50,10 @@ export class CompleteInvestigationComponent implements OnInit {
   }
   setDesiese(item: any) {
     this.InvestigationService.diseaseGroupID = item.diseaseGroupId;
-    //diseaseGroupID;
+    this.Router.navigateByUrl(
+      '/home/investigations/compelete-investigation/' + item.router,
+      { replaceUrl: true }
+    );
   }
 
   downloadFile() {

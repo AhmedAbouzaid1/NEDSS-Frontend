@@ -398,8 +398,8 @@ export class IncidentDepartmentReportComponent implements OnInit {
         this.toDate = null;
       }
       this.lookUpsService.getIncidentDepartmentReport(this.Desiesids, this.Dpartmentids,
-        this.datePipe.transform(this.fromDate, 'MM-dd-yyyy'),
-        this.datePipe.transform(this.toDate, 'MM-dd-yyyy'), this.IncidentSourceids, this.isHome,
+        this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
+        this.datePipe.transform(this.toDate, 'yyyy-MM-dd'), this.IncidentSourceids, this.isHome,
         this.categoryIds, this.tarasodSelect, StartSelectedDiseaseIds, EndSelectedDiseaseIds, years).subscribe(
 
           (res) => {

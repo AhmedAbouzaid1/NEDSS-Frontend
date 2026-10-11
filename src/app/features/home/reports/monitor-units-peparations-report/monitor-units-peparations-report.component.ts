@@ -148,11 +148,6 @@ export class MonitorUnitsPeparationsReportComponent implements OnInit {
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
 
-    setTimeout((i) => {
-      document.getElementById('incident').click();
-      document.getElementById('table').click();
-    }, 500);
-
     this.dir = this.currentLang == 'ar' ? 'rtl' : 'ltr';
 
     this.levelId = JSON.parse(
@@ -679,6 +674,9 @@ export class MonitorUnitsPeparationsReportComponent implements OnInit {
         const levelId = user.levelId;
         if (levelId !== undefined) {
           this.currentUserLevel = levelId;
+          if (levelId == LevelsEnum.Governorate || levelId == LevelsEnum.Administration) {
+            this.reportLevel = String(levelId);
+          }
         }
       }
     }

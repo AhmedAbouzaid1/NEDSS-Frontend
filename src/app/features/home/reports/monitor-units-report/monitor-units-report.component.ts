@@ -181,6 +181,9 @@ export class MonitorUnitsReportComponent implements OnInit{
         const levelId = user.levelId;
         if (levelId !== undefined) {
           this.currentUserLevel = levelId;
+          if (levelId == LevelsEnum.Governorate || levelId == LevelsEnum.Administration) {
+            this.reportLevel = String(levelId);
+          }
         }
       }
     }

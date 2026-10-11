@@ -505,11 +505,6 @@ export class GeneralDataComponent implements OnDestroy {
 
               //window.location.href = '/#/home/general-data/incident-info?clear=1';
 
-              //send notification here
-              response.messages.forEach((msg) => {
-                this.notificationService.sendNotification([], JSON.parse(msg));
-              });
-
               if (this.sharedDataService.ShowSentinel == false) {
                 this.patient = new PatientModel();
                 this.sharedDataService.setPatientObject(new PatientModel());
