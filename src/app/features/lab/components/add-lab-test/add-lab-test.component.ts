@@ -77,11 +77,13 @@ export class AddLabTestComponent {
 
   singleDropdownSettings = {};
   multipleDropdownSettings = {};
+  singleResultDropdownSettings = {};
   Diseasies: any[];
   filterdDisease: any[];
 
   readonly meningitisAndEncephalitisDiseaseGroupIds = [2, 23];
   readonly feverRashDiseaseGroupId = 5;
+  readonly multiResultDiseaseGroupIds = [1, 19, 25, 27];
 
   underDeleting = {
     nameAr: '',
@@ -111,6 +113,11 @@ export class AddLabTestComponent {
       ...MultipleDropdownSettings,
       textField: this.currentLang == 'ar' ? 'arabicName' : 'englishName',
       placeholder: this.currentLang == 'ar' ? 'اختر' : 'Choose',
+    };
+    this.singleResultDropdownSettings = {
+      ...this.multipleDropdownSettings,
+      singleSelection: true,
+      closeDropDownOnSelection: true,
     };
     this.loadingPanel = false;
   }
@@ -238,7 +245,16 @@ export class AddLabTestComponent {
         }
       );
   }
+  isMultiResultDiseaseSelected(): boolean {
+    return this.multiResultDiseaseGroupIds.includes(
+      Number(this.patientAddCheck.diseaseGroupId)
+    );
+  }
+
   filterdDiseaseChange() {
+    if (!this.isMultiResultDiseaseSelected() && this.selectedLabCheckResult?.length > 1) {
+      this.selectedLabCheckResult = this.selectedLabCheckResult.slice(0, 1);
+    }
     if (!this.isMeningitisOrEncephalitisSelected()) {
       this.getLabSamples();
     }

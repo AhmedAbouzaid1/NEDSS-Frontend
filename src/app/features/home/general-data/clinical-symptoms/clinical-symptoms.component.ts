@@ -107,6 +107,7 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy, DoCheck {
     this.multipleDropdownSettings = {
       ...MultipleDropdownSettings,
       closeDropDownOnSelection: false,
+      itemsShowLimit: Number.MAX_SAFE_INTEGER,
     };
 
     this.sharedDataService
