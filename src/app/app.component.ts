@@ -8,6 +8,7 @@ import { AuthService } from './core/services/auth.service';
 import { PartialLoadingService } from './core/components/partial-loading/partial-loading.service';
 import { UiLoadingService } from './core/services/ui-loading.service';
 import { PwaUpdateService } from './core/services/pwa-update.service';
+import { FieldRowAlignService } from './core/services/field-row-align.service';
 import { SessionService } from './core/services/session.service';
 import { UserMessageService } from './core/services/user.message.service';
 import { ChangePasswordComponent } from './features/auth/change-password/change-password.component';
@@ -54,11 +55,13 @@ export class AppComponent {
     private partialLoadingService: PartialLoadingService,
     private uiLoadingService: UiLoadingService,
     private pwaUpdateService: PwaUpdateService,
+    private fieldRowAlign: FieldRowAlignService,
     private session: SessionService,
     private userMsg: UserMessageService,
     private ngZone: NgZone
   ) {
     this.pwaUpdateService.init();
+    this.fieldRowAlign.init();
     this.lang =
       localStorage.getItem('ls.currentLang') != undefined
         ? localStorage.getItem('ls.currentLang')

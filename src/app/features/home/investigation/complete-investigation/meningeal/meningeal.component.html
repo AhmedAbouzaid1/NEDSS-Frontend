@@ -13,23 +13,23 @@
           <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATA" | translate }}</h3>
           <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DISEASE_TYPE" | translate }}</label>
                 <select class="form-control" formControlName="diseaseType" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of diseaseTypeOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="investigationDate" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('investigationDate') }}</small>
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_ENTRY_DATE" | translate }}</label>
                 <input class="form-control" [value]="investigationEntryDate ? (investigationEntryDate | date: 'dd/MM/yyyy') : ''" readonly disabled />
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.REPORT_DURATION_DAYS" | translate }}</label>
                 <input class="form-control" [value]="reportDurationDays ?? ''" readonly disabled />
               </div>
@@ -40,41 +40,41 @@
           <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <small class="text-muted d-block mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PATIENT_DATA_NOTE" | translate }}</small>
             <div class="row" [formGroup]="patientForm">
-              <div class="col-lg-3">
+              <div class="col-lg-3 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FIRST_NAME" | translate }}</label>
                 <input class="form-control" formControlName="firstName" />
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SECOND_NAME" | translate }}</label>
                 <input class="form-control" formControlName="secondName" />
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.THIRD_NAME" | translate }}</label>
                 <input class="form-control" formControlName="thirdName" />
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FAMILY_NAME" | translate }}</label>
                 <input class="form-control" formControlName="familyName" />
               </div>
-              <div class="col-lg-3 mt-2">
+              <div class="col-lg-3 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.AGE" | translate }}</label>
                 <input class="form-control" formControlName="age" type="number" min="0" />
               </div>
-              <div class="col-lg-3 mt-2">
+              <div class="col-lg-3 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.AGE_TYPE" | translate }}</label>
                 <select class="form-control" formControlName="ageTypeId">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of ageTypeOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-3 mt-2">
+              <div class="col-lg-3 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.GENDER" | translate }}</label>
                 <select class="form-control" formControlName="genderId">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of genderOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-3 mt-2">
+              <div class="col-lg-3 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PHONE" | translate }}</label>
                 <input class="form-control" inputmode="tel" formControlName="phoneNo1" />
                 <small class="text-danger" *ngIf="phoneError">{{ phoneError | translate }}</small>
@@ -82,96 +82,96 @@
               <div class="col-12" *ngIf="identityLockedByNationalId">
                 <small class="text-muted">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.IDENTITY_LOCKED_NOTE" | translate }}</small>
               </div>
-              <div class="col-lg-3 mt-2">
+              <div class="col-lg-3 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.NATIONALITY" | translate }}</label>
                 <select class="form-control" [appDropdownLoading]="countriesLoading" formControlName="nationalityId">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of countries" [ngValue]="item.id">{{ currentLang === 'ar' ? item.arabicName : item.englishName }}</option>
                 </select>
               </div>
-              <div class="col-lg-3 mt-2">
+              <div class="col-lg-3 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.JOB" | translate }}</label>
                 <select class="form-control" [appDropdownLoading]="jobCategoriesLoading" formControlName="patientJobCategoryId">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of jobCategories" [ngValue]="item.id">{{ currentLang === 'ar' ? item.arabicName : item.englishName }}</option>
                 </select>
               </div>
-              <div class="col-lg-3 mt-2" *ngIf="showJobName">
+              <div class="col-lg-3 mt-2 inv-field-cell" *ngIf="showJobName">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.JOB_NAME" | translate }}</label>
                 <input class="form-control" formControlName="patientJobName" />
               </div>
             </div>
             <div class="row" [formGroup]="patientForm">
-              <div class="col-lg-3 mt-2">
+              <div class="col-lg-3 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.GOVERNORATE" | translate }}</label>
                 <select class="form-control" [appDropdownLoading]="governoratesLoading" formControlName="homeGovernmentId">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of governorates" [ngValue]="item.id">{{ currentLang === 'ar' ? item.arabicName : item.englishName }}</option>
                 </select>
               </div>
-              <div class="col-lg-3 mt-2">
+              <div class="col-lg-3 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ADMINISTRATION_AREA" | translate }}</label>
                 <select class="form-control" [appDropdownLoading]="homeHealthAdministrationsLoading" formControlName="homeHealthAdministrationId">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of homeHealthAdministrations" [ngValue]="item.id">{{ currentLang === 'ar' ? item.arabicName : item.englishName }}</option>
                 </select>
               </div>
-              <div class="col-lg-3 mt-2">
+              <div class="col-lg-3 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CITY" | translate }}</label>
                 <select class="form-control" [appDropdownLoading]="homeCitiesLoading" formControlName="homeCityId">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of homeCities" [ngValue]="item.id">{{ currentLang === 'ar' ? item.arabicName : item.englishName }}</option>
                 </select>
               </div>
-              <div class="col-lg-3 mt-2">
+              <div class="col-lg-3 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DETAILED_ADDRESS" | translate }}</label>
                 <input class="form-control" formControlName="livingAddress" />
               </div>
             </div>
 
             <div class="row mt-3" [appShowIf]="isStudentOrGathering">
-              <div class="col-lg-4">
+              <div class="col-lg-4 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_FACILITY_VISIT_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="lastFacilityVisitDate" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('lastFacilityVisitDate') }}</small>
               </div>
               <div class="col-12 mt-2 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE" | translate }}</div>
-              <div class="col-lg-4">
+              <div class="col-lg-4 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.GOVERNORATE" | translate }}</label>
                 <select class="form-control" [appDropdownLoading]="governoratesLoading" formControlName="facilityGovernorateId" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of governorates" [ngValue]="item.id">{{ currentLang === 'ar' ? item.arabicName : item.englishName }}</option>
                 </select>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-4 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ADMINISTRATION_AREA" | translate }}</label>
                 <select class="form-control" [appDropdownLoading]="facilityHealthAdministrationsLoading" formControlName="facilityHealthAdministrationId" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of facilityHealthAdministrations" [ngValue]="item.id">{{ currentLang === 'ar' ? item.arabicName : item.englishName }}</option>
                 </select>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-4 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VILLAGE_OR_STREET" | translate }}</label>
                 <input class="form-control" formControlName="facilityVillageOrStreet" (blur)="calculateCompletionPercentage()" />
               </div>
             </div>
 
             <div class="row mt-3">
-              <div class="col-lg-4">
+              <div class="col-lg-4 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TRAVELED_ABROAD" | translate }}</label>
                 <select class="form-control" formControlName="traveledAbroad" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-4" [appShowIf]="meningealForm.get('traveledAbroad')?.value === 1">
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="meningealForm.get('traveledAbroad')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COUNTRY" | translate }}</label>
                 <select class="form-control" [appDropdownLoading]="countriesLoading" formControlName="travelCountryId" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of countries" [ngValue]="item.id">{{ currentLang === 'ar' ? item.arabicName : item.englishName }}</option>
                 </select>
               </div>
-              <div class="col-lg-4" [appShowIf]="meningealForm.get('traveledAbroad')?.value === 1">
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="meningealForm.get('traveledAbroad')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ARRIVAL_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="travelArrivalDate" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('travelArrivalDate') }}</small>
@@ -182,14 +182,14 @@
           <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA" | translate }}</h3>
           <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-lg-4" [formGroup]="patientForm">
+              <div class="col-lg-4 inv-field-cell" [formGroup]="patientForm">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.REPORTING_SOURCE" | translate }}</label>
                 <select class="form-control" [appDropdownLoading]="incidentSourcesLoading" formControlName="incidentSourceId">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of incidentSources" [ngValue]="item.id">{{ currentLang === 'ar' ? item.arabicName : item.englishName }}</option>
                 </select>
               </div>
-              <div class="col-lg-4" [formGroup]="patientForm">
+              <div class="col-lg-4 inv-field-cell" [formGroup]="patientForm">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SYMPTOM_ONSET_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="infectionDate" [max]="caseDetectionDate"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">
@@ -197,24 +197,24 @@
                 </small>
                 <small class="text-danger d-block" *ngIf="onsetDateError">{{ onsetDateError | translate }}</small>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-4 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FINAL_DIAGNOSIS_AFTER_LAB" | translate }}</label>
                 <input class="form-control" [value]="finalDiagnosisDisplay" readonly disabled />
               </div>
-              <div class="col-lg-4 mt-2" [formGroup]="patientForm">
+              <div class="col-lg-4 mt-2 inv-field-cell" [formGroup]="patientForm">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DISCHARGE_STATUS" | translate }}</label>
                 <select class="form-control" [appDropdownLoading]="finalResultsLoading" formControlName="finalResultId">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of finalResults" [ngValue]="item.id">{{ currentLang === 'ar' ? item.arabicName : item.englishName }}</option>
                 </select>
               </div>
-              <div class="col-lg-4 mt-2">
+              <div class="col-lg-4 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_FOLLOW_UP_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="lastFollowUpDate" [min]="lastFollowUpMinDate" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('lastFollowUpDate') }}</small>
                 <small class="form-text text-danger mess-color d-block" *ngIf="lastFollowUpDateError">{{ lastFollowUpDateError }}</small>
               </div>
-              <div class="col-lg-4 mt-2">
+              <div class="col-lg-4 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HEALTH_STATUS" | translate }}</label>
                 <select class="form-control" formControlName="currentHealthStatus" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
@@ -227,7 +227,7 @@
           <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS" | translate }}</h3>
           <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_WITH_SIMILAR_CASE" | translate }}</label>
                 <select class="form-control" formControlName="contactWithSimilarCase" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
@@ -236,39 +236,39 @@
               </div>
             </div>
             <div class="row mt-2" [appShowIf]="meningealForm.get('contactWithSimilarCase')?.value === 1">
-              <div class="col-lg-4">
+              <div class="col-lg-4 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_CASE_NAME" | translate }}</label>
                 <input class="form-control" formControlName="contactCaseName" (blur)="calculateCompletionPercentage()" />
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-4 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_TYPE" | translate }}</label>
                 <select class="form-control" formControlName="contactType" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of contactTypeOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-4" [appShowIf]="meningealForm.get('contactType')?.value === 4">
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="meningealForm.get('contactType')?.value === 4">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_TYPE_OTHER" | translate }}</label>
                 <input class="form-control" formControlName="contactTypeOther" (blur)="calculateCompletionPercentage()" />
               </div>
-              <div class="col-lg-4 mt-2">
+              <div class="col-lg-4 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_HOSPITALIZED" | translate }}</label>
                 <select class="form-control" formControlName="contactHospitalized" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoUnknownOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-4 mt-2" [appShowIf]="meningealForm.get('contactHospitalized')?.value === 1">
+              <div class="col-lg-4 mt-2 inv-field-cell" [appShowIf]="meningealForm.get('contactHospitalized')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_HOSPITAL_NAME" | translate }}</label>
                 <input class="form-control" formControlName="contactHospitalName" (blur)="calculateCompletionPercentage()" />
               </div>
-              <div class="col-lg-4 mt-2" [appShowIf]="meningealForm.get('contactHospitalized')?.value === 1">
+              <div class="col-lg-4 mt-2 inv-field-cell" [appShowIf]="meningealForm.get('contactHospitalized')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_HOSPITAL_ADMISSION_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="contactHospitalAdmissionDate" [min]="contactAdmissionMinDate" [max]="caseDetectionDate" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('contactHospitalAdmissionDate') }}</small>
                 <small class="form-text text-danger mess-color d-block" *ngIf="contactAdmissionDateError">{{ contactAdmissionDateError }}</small>
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_FINAL_DIAGNOSIS" | translate }}</label>
                 <select class="form-control" [formControl]="contactDiagnosisChoice">
                   <option [ngValue]="null"></option>
@@ -276,27 +276,27 @@
                   <option [ngValue]="otherDiagnosisValue">{{ label('أخرى (حدد)', 'Other (specify)') }}</option>
                 </select>
               </div>
-              <div class="col-lg-6 mt-2" [appShowIf]="contactDiagnosisChoice.value === otherDiagnosisValue">
+              <div class="col-lg-6 mt-2 inv-field-cell" [appShowIf]="contactDiagnosisChoice.value === otherDiagnosisValue">
                 <label>{{ label('التشخيص النهائي للمخالط (أخرى)', 'Contact final diagnosis (other)') }}</label>
                 <input class="form-control" [formControl]="contactDiagnosisOtherText" />
               </div>
             </div>
             <div class="row mt-3">
-              <div class="col-lg-4">
+              <div class="col-lg-4 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_TRAVELED_ABROAD" | translate }}</label>
                 <select class="form-control" formControlName="contactTraveledAbroad" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-4" [appShowIf]="meningealForm.get('contactTraveledAbroad')?.value === 1">
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="meningealForm.get('contactTraveledAbroad')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COUNTRY" | translate }}</label>
                 <select class="form-control" [appDropdownLoading]="countriesLoading" formControlName="contactTravelCountryId" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let item of countries" [ngValue]="item.id">{{ currentLang === 'ar' ? item.arabicName : item.englishName }}</option>
                 </select>
               </div>
-              <div class="col-lg-4" [appShowIf]="meningealForm.get('contactTraveledAbroad')?.value === 1">
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="meningealForm.get('contactTraveledAbroad')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ARRIVAL_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="contactArrivalDate" [max]="contactArrivalMaxDate" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('contactArrivalDate') }}</small>
@@ -308,40 +308,40 @@
           <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS" | translate }}</h3>
           <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HIB_VACCINATION" | translate }}</label>
                 <select class="form-control" formControlName="hibVaccinated" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoUnknownOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-6" [appShowIf]="meningealForm.get('hibVaccinated')?.value === 1">
+              <div class="col-lg-6 inv-field-cell" [appShowIf]="meningealForm.get('hibVaccinated')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="hibLastDoseDate" [min]="vaccineMinDate('hibLastDoseDate')" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('hibLastDoseDate') }}</small>
                 <small class="form-text text-danger mess-color d-block" *ngIf="vaccineDateError('hibLastDoseDate')">{{ vaccineDateError('hibLastDoseDate') }}</small>
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_SCHOOLS" | translate }}</label>
                 <select class="form-control" formControlName="meningococcalSchoolVaccinated" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoUnknownOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-6 mt-2" [appShowIf]="meningealForm.get('meningococcalSchoolVaccinated')?.value === 1">
+              <div class="col-lg-6 mt-2 inv-field-cell" [appShowIf]="meningealForm.get('meningococcalSchoolVaccinated')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="meningococcalSchoolLastDoseDate" [min]="vaccineMinDate('meningococcalSchoolLastDoseDate')" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('meningococcalSchoolLastDoseDate') }}</small>
                 <small class="form-text text-danger mess-color d-block" *ngIf="vaccineDateError('meningococcalSchoolLastDoseDate')">{{ vaccineDateError('meningococcalSchoolLastDoseDate') }}</small>
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_TRAVELERS" | translate }}</label>
                 <select class="form-control" formControlName="meningococcalTravelVaccinated" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoUnknownOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-6 mt-2" [appShowIf]="meningealForm.get('meningococcalTravelVaccinated')?.value === 1">
+              <div class="col-lg-6 mt-2 inv-field-cell" [appShowIf]="meningealForm.get('meningococcalTravelVaccinated')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="meningococcalTravelLastDoseDate" [min]="vaccineMinDate('meningococcalTravelLastDoseDate')" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('meningococcalTravelLastDoseDate') }}</small>
@@ -353,50 +353,50 @@
           <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE" | translate }}</h3>
           <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.WENT_TO_HOSPITAL_ON_ONSET" | translate }}</label>
                 <select class="form-control" formControlName="wentToHospitalOnOnset" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoUnknownOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TIME_TO_DOCTOR" | translate }}</label>
                 <input type="number" min="0" class="form-control" formControlName="timeToDoctorValue" (blur)="calculateCompletionPercentage()" />
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TIME_UNIT" | translate }}</label>
                 <select class="form-control" formControlName="timeToDoctorUnit" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of timeUnitOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FIRST_FACILITY_VISIT_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="firstFacilityVisitDate" [min]="patientForm.get('infectionDate')?.value" [max]="firstFacilityVisitMaxDate" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('firstFacilityVisitDate') }}</small>
                 <small class="form-text text-danger mess-color d-block" *ngIf="firstFacilityVisitDateError">{{ firstFacilityVisitDateError }}</small>
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ONSET_TO_ADMISSION_DAYS" | translate }}</label>
                 <input class="form-control" [value]="onsetToAdmissionDays ?? ''" readonly disabled />
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VISITED_MULTIPLE_FACILITIES" | translate }}</label>
                 <select class="form-control" formControlName="visitedMultipleFacilities" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoUnknownOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-6 mt-2" [appShowIf]="meningealForm.get('visitedMultipleFacilities')?.value === 1">
+              <div class="col-lg-6 mt-2 inv-field-cell" [appShowIf]="meningealForm.get('visitedMultipleFacilities')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITIES_VISITED_COUNT" | translate }}</label>
                 <input type="number" min="0" class="form-control" formControlName="facilitiesVisitedCount" (blur)="calculateCompletionPercentage()" />
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FIRST_FACILITY_NAME" | translate }}</label>
                 <input class="form-control" formControlName="firstFacilityName" (blur)="calculateCompletionPercentage()" />
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HOSPITAL_NAME" | translate }}</label>
                 <input class="form-control" formControlName="currentHospitalName" (blur)="calculateCompletionPercentage()" />
               </div>
@@ -406,14 +406,14 @@
           <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CASE_MOVEMENTS" | translate }}</h3>
           <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MOVED_BETWEEN_FACILITIES" | translate }}</label>
                 <select class="form-control" formControlName="movedBetweenFacilities" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-6" [appShowIf]="meningealForm.get('movedBetweenFacilities')?.value === 1">
+              <div class="col-lg-6 inv-field-cell" [appShowIf]="meningealForm.get('movedBetweenFacilities')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MOVEMENT_FACILITIES_COUNT" | translate }}</label>
                 <select class="form-control" formControlName="movementFacilitiesCount" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
@@ -426,29 +426,29 @@
           <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES" | translate }}</h3>
           <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-lg-6">
+              <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACTS_TRACED_AND_MANAGED" | translate }}</label>
                 <select class="form-control" formControlName="contactsTracedAndManaged" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoUnknownOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-6" [appShowIf]="meningealForm.get('contactsTracedAndManaged')?.value === 1">
+              <div class="col-lg-6 inv-field-cell" [appShowIf]="meningealForm.get('contactsTracedAndManaged')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.TOTAL_CONTACTS_COUNT" | translate }}</label>
                 <input type="number" min="0" class="form-control" formControlName="totalContactsCount" (blur)="calculateCompletionPercentage()" />
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CHEMOPROPHYLAXIS_GIVEN" | translate }}</label>
                 <select class="form-control" formControlName="chemoprophylaxisGiven" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
               </div>
-              <div class="col-lg-6 mt-2" [appShowIf]="meningealForm.get('chemoprophylaxisGiven')?.value === 1">
+              <div class="col-lg-6 mt-2 inv-field-cell" [appShowIf]="meningealForm.get('chemoprophylaxisGiven')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CHEMOPROPHYLAXIS_CONTACTS_COUNT" | translate }}</label>
                 <input type="number" min="0" class="form-control" formControlName="chemoprophylaxisContactsCount" (blur)="calculateCompletionPercentage()" />
               </div>
-              <div class="col-lg-6 mt-2">
+              <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RELATED_CASES_IDENTIFIED" | translate }}</label>
                 <select class="form-control" formControlName="relatedCasesIdentified" (change)="calculateCompletionPercentage()">
                   <option [ngValue]="null"></option>
@@ -474,14 +474,14 @@
                   [attr.aria-labelledby]="'headingFollowUp' + i" data-bs-parent="#meningealFollowupAccordion">
                   <div class="accordion-body">
                     <div class="row">
-                      <div class="col-lg-3">
+                      <div class="col-lg-3 inv-field-cell">
                         <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FOLLOWUP_DONE" | translate }}</label>
                         <select class="form-control" formControlName="followupDone" (change)="calculateCompletionPercentage()">
                           <option [ngValue]="null"></option>
                           <option *ngFor="let o of followUpDoneOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                         </select>
                       </div>
-                      <div class="col-lg-3" [appShowIf]="round.get('followupDone')?.value === 1">
+                      <div class="col-lg-3 inv-field-cell" [appShowIf]="round.get('followupDone')?.value === 1">
                         <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FOLLOW_UP_DATE" | translate }}</label>
                         <app-date-field class="date-with-note" formControlName="followUpDate" [min]="followUpMinDate(i)" (changed)="calculateCompletionPercentage()"></app-date-field>
                         <small class="form-text text-muted d-block mt-0" *ngIf="isFollowUpOpen(i)">{{ dateHint('followUpDate', i) }}</small>
@@ -492,14 +492,14 @@
                         </small>
                         <small class="form-text text-danger mess-color d-block" *ngIf="followUpDateError(i)">{{ followUpDateError(i) }}</small>
                       </div>
-                      <div class="col-lg-3" [appShowIf]="round.get('followupDone')?.value === 1">
+                      <div class="col-lg-3 inv-field-cell" [appShowIf]="round.get('followupDone')?.value === 1">
                         <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_OCCURRED" | translate }}</label>
                         <select class="form-control" formControlName="complicationsOccurred" (change)="calculateCompletionPercentage()">
                           <option [ngValue]="null"></option>
                           <option *ngFor="let o of yesNoOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                         </select>
                       </div>
-                      <div class="col-lg-3" [appShowIf]="round.get('complicationsOccurred')?.value === 1">
+                      <div class="col-lg-3 inv-field-cell" [appShowIf]="round.get('complicationsOccurred')?.value === 1">
                         <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATION_DATE" | translate }}</label>
                         <app-date-field class="date-with-note" formControlName="complicationDate" (changed)="calculateCompletionPercentage()"></app-date-field>
                         <small class="form-text text-muted d-block mt-0">{{ dateHint('complicationDate') }}</small>
@@ -533,19 +533,19 @@
           <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES" | translate }}</h3>
           <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-lg-3">
+              <div class="col-lg-3 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATOR_NAME" | translate }}</label>
                 <input class="form-control" formControlName="investigatorName" (blur)="calculateCompletionPercentage()" />
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SURVEILLANCE_OFFICER_NAME" | translate }}</label>
                 <input class="form-control" formControlName="surveillanceOfficerName" (blur)="calculateCompletionPercentage()" />
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_DIRECTOR_NAME" | translate }}</label>
                 <input class="form-control" formControlName="preventiveDirectorName" (blur)="calculateCompletionPercentage()" />
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ADMINISTRATION_DIRECTOR_NAME" | translate }}</label>
                 <input class="form-control" formControlName="administrationDirectorName" (blur)="calculateCompletionPercentage()" />
               </div>

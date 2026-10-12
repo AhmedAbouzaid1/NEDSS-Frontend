@@ -110,7 +110,7 @@ export class DropdownLoadingDirective implements OnInit, OnChanges, OnDestroy {
   margin-top: -8px;
   inset-inline-end: 2rem;
   border: 2px solid rgba(0, 123, 255, 0.25);
-  border-top-color: #007bff;
+  border-top-color: var(--nd-primary, #007bff);
   border-radius: 50%;
   animation: app-dd-spin 0.6s linear infinite;
   pointer-events: none;
@@ -123,7 +123,7 @@ export class DropdownLoadingDirective implements OnInit, OnChanges, OnDestroy {
 .app-dd-loading-wrap.is-pdropdown.is-loading .p-dropdown-trigger,
 .app-dd-loading-wrap.is-pdropdown.is-loading .p-multiselect-trigger { visibility: hidden; }
 .app-dd-loading-wrap.is-ng-multiselect .app-dd-loading-spinner { inset-inline-end: 2.25rem; }
-.app-dd-loading-wrap.is-select.is-loading > select { padding-inline-end: 3rem; }
+.app-dd-loading-wrap.is-select.is-loading > select { padding-inline-end: 3rem !important; }
 @keyframes app-dd-spin { to { transform: rotate(360deg); } }
 `;
     renderer.appendChild(style, renderer.createText(css));
