@@ -6,37 +6,37 @@
       <div class="card shadow mt-4 color mb-3">
         <div class="card-body">
           <div class="row">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6 inv-field-cell">
               <div class="form-group">
                 <label class="fwb">كود الحالة</label>
                 <input type="text" class="form-control fwb" formControlName="caseCodeDisplay" readonly />
               </div>
             </div>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-md-6 inv-field-cell">
               <div class="form-group">
                 <label class="fwb">اسم الحالة</label>
                 <input type="text" class="form-control" [value]="patientName" readonly />
               </div>
             </div>
-            <div class="col-lg-2 col-md-6">
+            <div class="col-lg-2 col-md-6 inv-field-cell">
               <div class="form-group">
                 <label class="fwb">العمر</label>
                 <input type="text" class="form-control" [value]="patientAgeLabel" readonly />
               </div>
             </div>
-            <div class="col-lg-2 col-md-6">
+            <div class="col-lg-2 col-md-6 inv-field-cell">
               <div class="form-group">
                 <label class="fwb">النوع</label>
                 <input type="text" class="form-control" [value]="patientSexLabel" readonly />
               </div>
             </div>
-            <div class="col-lg-2 col-md-6">
+            <div class="col-lg-2 col-md-6 inv-field-cell">
               <div class="form-group">
                 <label class="fwb">تاريخ التقرير</label>
                 <app-date-field formControlName="reportDate"></app-date-field>
               </div>
             </div>
-            <div class="col-lg-2 col-md-6">
+            <div class="col-lg-2 col-md-6 inv-field-cell">
               <div class="form-group">
                 <label class="fwb">تاريخ زيارة منزل الحالة</label>
                 <app-date-field class="date-with-note" formControlName="homeVisitDate" [min]="caseDiscoveryDate"></app-date-field>
@@ -70,7 +70,7 @@
             <div class="row color">
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">
-                  <div class="col-lg-3 col-md-6">
+                  <div class="col-lg-3 col-md-6 inv-field-cell">
                     <div class="form-group">
                       <label class="fwb">تاريخ الطفح</label>
                       <app-date-field class="date-with-note" formControlName="rashDate" [min]="rashMinDate" [max]="rashMaxDate"></app-date-field>
@@ -91,7 +91,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-2 col-md-6">
+                  <div class="col-lg-2 col-md-6 inv-field-cell">
                     <div class="form-group">
                       <label class="fwb">العمر بالشهور</label>
                       <input type="number" min="0" step="1" class="form-control" formControlName="caseAgeMonths" />
@@ -101,7 +101,7 @@
                       </small>
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-6">
+                  <div class="col-lg-4 col-md-6 inv-field-cell">
                     <div class="form-group">
                       <label class="fwb">التشخيص التفريقي</label>
                       <select class="form-control" formControlName="differentialDiagnosis">
@@ -125,15 +125,13 @@
                         <option [ngValue]="17">حساسية جلدية</option>
                         <option [ngValue]="18">حساسية طعام</option>
                         <option [ngValue]="19">حساسية حشرية</option>
+                        <option [ngValue]="20">الحصبة الالمانية الخلقية</option>
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <!-- Epidemiologically linked case -->
-            <div class="row color">
+            
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">
                   <div class="col-lg-4 col-md-6">
@@ -154,7 +152,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-6" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1">
+                  <div class="col-lg-4 col-md-6 inv-field-cell" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1">
                     <div class="form-group">
                       <label class="fwb">صلة القرابة</label>
                       <select class="form-control" formControlName="linkedCaseKinship">
@@ -180,13 +178,13 @@
                     </div>
                   </div>
                   <div class="col-12 title fs-6 fwb mt-2" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1 || feverRashForm.get('linkedCaseCode')?.value || feverRashForm.get('linkedCaseName')?.value">بيانات الحالة المرتبطة</div>
-                  <div class="col-lg-4 col-md-6" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1">
+                  <div class="col-lg-4 col-md-6 inv-field-cell" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1">
                     <div class="form-group">
                       <label class="fwb">كود الحالة</label>
                       <input type="text" class="form-control" formControlName="linkedCaseCode" />
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-6" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1">
+                  <div class="col-lg-4 col-md-6 inv-field-cell" [appShowIf]="feverRashForm.get('epiLinked')?.value == 1">
                     <div class="form-group">
                       <label class="fwb">اسم الحالة</label>
                       <input type="text" class="form-control" formControlName="linkedCaseName" />
@@ -194,10 +192,7 @@
                   </div>
                 </div>
               </div>
-            </div>
-
-            <!-- Vaccination status (image 2) -->
-            <div class="row color">
+            
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">
                   <div class="col-12 title fs-6 fwb">اذكر موقف التطعيم للحالة</div>
@@ -355,10 +350,7 @@
                   </div>
                 </div>
               </div>
-            </div>
-
-            <!-- Previous cases timeline (images 4,5) - card sections -->
-            <div class="row color">
+            
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">
                   <div class="col-12 title fs-6 fwb">خط سير الحالات السابقة لتحديد مصدر العدوى</div>
@@ -745,13 +737,13 @@
             <div class="row color">
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">
-                  <div class="col-lg-6"><div class="form-group"><label>تاريخ زيارة الوحدة</label>
+                  <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>تاريخ زيارة الوحدة</label>
                     <app-date-field class="date-with-note" formControlName="coverageVisitDate" [min]="caseDiscoveryDate"></app-date-field>
                     <small class="form-text text-muted d-block">في نفس يوم اكتشاف الحالة أو بعده{{ caseDiscoveryDate ? ' ' + caseDiscoveryDate : '' }}</small>
                     <small *ngIf="isBeforeDiscoveryInvalid(feverRashForm.value.coverageVisitDate)" class="form-text text-danger mess-color d-block">
                       تاريخ زيارة الوحدة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }})
                     </small></div></div>
-                  <div class="col-lg-6"><div class="form-group"><label>شهر / فترة نسب التغطية</label>
+                  <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>شهر / فترة نسب التغطية</label>
                     <select class="form-control" formControlName="coverageMonth">
                       <option [ngValue]="null">اختر</option>
                       <optgroup label="الفترة">
@@ -830,12 +822,14 @@
                     </table>
                   </div>
 
-                  <div class="col-lg-6"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالإدارة</label>
-                    <app-date-field class="date-with-note" formControlName="lastCaseDateAdmin"></app-date-field>
-                    <small class="form-text text-muted d-block">يُملأ تلقائياً من آخر حالة حمى وطفح مسجلة على البرنامج بنفس الإدارة، ويمكن تعديله</small></div></div>
-                  <div class="col-lg-6"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالمديرية</label>
-                    <app-date-field class="date-with-note" formControlName="lastCaseDateDirectorate"></app-date-field>
-                    <small class="form-text text-muted d-block">يُملأ تلقائياً من آخر حالة حمى وطفح مسجلة على البرنامج بنفس المديرية، ويمكن تعديله</small></div></div>
+                  <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالإدارة</label>
+                    <app-date-field class="date-with-note" formControlName="lastCaseDateAdmin" [max]="caseDiscoveryDate"></app-date-field>
+                    <small class="form-text text-muted d-block">يُملأ تلقائياً من آخر حالة حمى وطفح سابقة بنفس إدارة السكن (حتى تاريخ اكتشاف الحالة)، ويمكن تعديله</small>
+                    <small *ngIf="lastCaseDateError('lastCaseDateAdmin') as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
+                  <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالمديرية</label>
+                    <app-date-field class="date-with-note" formControlName="lastCaseDateDirectorate" [min]="feverRashForm.value.lastCaseDateAdmin" [max]="caseDiscoveryDate"></app-date-field>
+                    <small class="form-text text-muted d-block">يُملأ تلقائياً من آخر حالة حمى وطفح سابقة بنفس مديرية السكن (حتى تاريخ اكتشاف الحالة)، ويمكن تعديله</small>
+                    <small *ngIf="lastCaseDateError('lastCaseDateDirectorate') as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
 
                   <div class="col-lg-4">
                     <div class="form-group"><label>هل يوجد حالات مؤكدة خلال الشهر السابق؟</label>
@@ -882,13 +876,13 @@
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">
                   <div class="col-12 title fs-6 fwb">المسح الميداني - 30 طفل</div>
-                  <div class="col-lg-6"><div class="form-group"><label>تاريخ الزيارة الميدانية</label>
+                  <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>تاريخ الزيارة الميدانية</label>
                     <app-date-field class="date-with-note" formControlName="fieldVisitDate" [min]="caseDiscoveryDate"></app-date-field>
                     <small class="form-text text-muted d-block">في نفس يوم اكتشاف الحالة أو بعده{{ caseDiscoveryDate ? ' ' + caseDiscoveryDate : '' }}</small>
                     <small *ngIf="isBeforeDiscoveryInvalid(feverRashForm.value.fieldVisitDate)" class="form-text text-danger mess-color d-block">
                       تاريخ الزيارة الميدانية لا يمكن أن يكون قبل تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }})
                     </small></div></div>
-                  <div class="col-lg-6"><div class="form-group"><label>رقم المربع</label>
+                  <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>رقم المربع</label>
                     <input type="text" class="form-control" formControlName="fieldSquareNumber" /></div></div>
 
                   <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
@@ -956,7 +950,7 @@
                           <td><input type="text" class="form-control form-control-sm" formControlName="apartment" /></td>
                           <td class="name-col"><input type="text" class="form-control form-control-sm" formControlName="childName" /></td>
                           <td><select class="form-select form-select-sm" formControlName="birthCertSeen"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
-                          <td><select class="form-select form-select-sm" formControlName="birthCertComplete"><option [ngValue]="null"></option><option [ngValue]="'yes'">✓</option><option [ngValue]="'no'">✗</option><option [ngValue]="'zero'">صفرية</option><option [ngValue]="'bcg'">BCG</option><option [ngValue]="'first'">أولى</option><option [ngValue]="'second'">ثانية</option><option [ngValue]="'third'">ثالثة</option><option [ngValue]="'fourth'">رابعة</option><option [ngValue]="'fifth'">خامسة</option><option [ngValue]="'booster'">منشطة</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="birthCertComplete"><option [ngValue]="null"></option><option [ngValue]="'yes'">✓</option><option [ngValue]="'no'">✗</option></select></td>
                           <td><select class="form-select form-select-sm" formControlName="zeroStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
                           <td><select class="form-select form-select-sm" formControlName="zeroReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
                           <td><select class="form-select form-select-sm" formControlName="bcgStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
@@ -1006,16 +1000,16 @@
                   <div class="col-12 mt-3 survey-legend small">
                     <p>١. <b>شارع:</b> اسم الشارع أو أشهر علامة مميزة في حالة عدم وجود اسم. ٢. <b>منزل:</b> رقم المنزل أو اسم صاحبه أو أي علامة مميزة.</p>
                     <p>٣. <b>شقة:</b> رقم الشقة أو الطابق في حالة عدم وجود أرقام. ٤. يتم وضع علامة صح إذا اطلع الفريق على شهادة ميلاد الطفل أو البطاقة الصحية له وخطأ إذا لم تتواجد.</p>
-                    <p>٥. يتم وضع علامات خطأ إذا كانت شهادة الميلاد لم يتم تسجيل التطعيمات بها أو صح إذا كانت مستوفاة بالكامل حتى آخر جرعة أو يتم كتابة الجرعة في حالة عدم استيفاء جميع الجرعات التي تم تطعيم الطفل بها والمقصود بالاستيفاء هنا تسجيل جميع التطعيمات التي حصل عليها الطفل في الشهادة بغض النظر عن استكمال تطعيماته من عدمه.</p>
+                    <p>٥. يتم وضع علامات خطأ إذا كانت شهادة الميلاد لم يتم تسجيل التطعيمات بها أو صح إذا كانت مستوفاة بالكامل حتى آخر جرعة</p>
                     <p>٦. <b>حالة تطعيمية:</b> توضع علامة صح إذا كان التطعيم مسجل على شهادة الميلاد أو علامة صح داخل دائرة (✓) إذا كان الطفل مطعم حسب أقوال الأب أو الأم وخطأ إذا كان الطفل غير مطعم.</p>
                     <p class="mb-0">٧. <b>مراجعات الحالة التطعيمية للطفل بمنظومة الميكنة بعد العودة للوحدة:</b> تسجيل صح أمام الجرعة في حالة الحصول عليها أو خطأ في حالة عدم الحصول عليها.</p>
                   </div>
 
-                  <div class="col-lg-4 mt-3"><div class="form-group"><label>القائم بالتنفيذ</label>
+                  <div class="col-lg-4 mt-3 inv-field-cell"><div class="form-group"><label>القائم بالتنفيذ</label>
                     <input type="text" class="form-control" formControlName="survey30ExecutorName" /></div></div>
-                  <div class="col-lg-4 mt-3"><div class="form-group"><label>المشرف</label>
+                  <div class="col-lg-4 mt-3 inv-field-cell"><div class="form-group"><label>المشرف</label>
                     <input type="text" class="form-control" formControlName="survey30SupervisorName" /></div></div>
-                  <div class="col-lg-4 mt-3"><div class="form-group"><label>مسؤول التطعيمات بالإدارة</label>
+                  <div class="col-lg-4 mt-3 inv-field-cell"><div class="form-group"><label>مسؤول التطعيمات بالإدارة</label>
                     <input type="text" class="form-control" formControlName="survey30VaccinationOfficerName" /></div></div>
                 </div>
               </div>
@@ -1030,13 +1024,13 @@
               <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
                 <div class="row">
                   <div class="col-12 title fs-6 fwb">المسح الميداني - 400 طفل</div>
-                  <div class="col-lg-6"><div class="form-group"><label>تاريخ الزيارة الميدانية</label>
+                  <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>تاريخ الزيارة الميدانية</label>
                     <app-date-field class="date-with-note" formControlName="field400VisitDate" [min]="caseDiscoveryDate"></app-date-field>
                     <small class="form-text text-muted d-block">في نفس يوم اكتشاف الحالة أو بعده{{ caseDiscoveryDate ? ' ' + caseDiscoveryDate : '' }}</small>
                     <small *ngIf="isBeforeDiscoveryInvalid(feverRashForm.value.field400VisitDate)" class="form-text text-danger mess-color d-block">
                       تاريخ الزيارة الميدانية لا يمكن أن يكون قبل تاريخ اكتشاف الحالة ({{ caseDiscoveryDate }})
                     </small></div></div>
-                  <div class="col-lg-6"><div class="form-group"><label>رقم المربع</label>
+                  <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>رقم المربع</label>
                     <input type="text" class="form-control" formControlName="field400SquareNumber" /></div></div>
 
                   <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
@@ -1104,7 +1098,7 @@
                           <td><input type="text" class="form-control form-control-sm" formControlName="apartment" /></td>
                           <td class="name-col"><input type="text" class="form-control form-control-sm" formControlName="childName" /></td>
                           <td><select class="form-select form-select-sm" formControlName="birthCertSeen"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
-                          <td><select class="form-select form-select-sm" formControlName="birthCertComplete"><option [ngValue]="null"></option><option [ngValue]="'yes'">✓</option><option [ngValue]="'no'">✗</option><option [ngValue]="'zero'">صفرية</option><option [ngValue]="'bcg'">BCG</option><option [ngValue]="'first'">أولى</option><option [ngValue]="'second'">ثانية</option><option [ngValue]="'third'">ثالثة</option><option [ngValue]="'fourth'">رابعة</option><option [ngValue]="'fifth'">خامسة</option><option [ngValue]="'booster'">منشطة</option></select></td>
+                          <td><select class="form-select form-select-sm" formControlName="birthCertComplete"><option [ngValue]="null"></option><option [ngValue]="'yes'">✓</option><option [ngValue]="'no'">✗</option></select></td>
                           <td><select class="form-select form-select-sm" formControlName="zeroStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
                           <td><select class="form-select form-select-sm" formControlName="zeroReview"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">✗</option></select></td>
                           <td><select class="form-select form-select-sm" formControlName="bcgStatus"><option [ngValue]="null"></option><option [ngValue]="1">✓</option><option [ngValue]="2">(✓)</option><option [ngValue]="3">✗</option></select></td>
@@ -1154,16 +1148,16 @@
                   <div class="col-12 mt-3 survey-legend small">
                     <p>١. <b>شارع:</b> اسم الشارع أو أشهر علامة مميزة في حالة عدم وجود اسم. ٢. <b>منزل:</b> رقم المنزل أو اسم صاحبه أو أي علامة مميزة.</p>
                     <p>٣. <b>شقة:</b> رقم الشقة أو الطابق في حالة عدم وجود أرقام. ٤. يتم وضع علامة صح إذا اطلع الفريق على شهادة ميلاد الطفل أو البطاقة الصحية له وخطأ إذا لم تتواجد.</p>
-                    <p>٥. يتم وضع علامات خطأ إذا كانت شهادة الميلاد لم يتم تسجيل التطعيمات بها أو صح إذا كانت مستوفاة بالكامل حتى آخر جرعة أو يتم كتابة الجرعة في حالة عدم استيفاء جميع الجرعات التي تم تطعيم الطفل بها والمقصود بالاستيفاء هنا تسجيل جميع التطعيمات التي حصل عليها الطفل في الشهادة بغض النظر عن استكمال تطعيماته من عدمه.</p>
+                    <p>٥. يتم وضع علامات خطأ إذا كانت شهادة الميلاد لم يتم تسجيل التطعيمات بها أو صح إذا كانت مستوفاة بالكامل حتى آخر جرعة</p>
                     <p>٦. <b>حالة تطعيمية:</b> توضع علامة صح إذا كان التطعيم مسجل على شهادة الميلاد أو علامة صح داخل دائرة (✓) إذا كان الطفل مطعم حسب أقوال الأب أو الأم وخطأ إذا كان الطفل غير مطعم.</p>
                     <p class="mb-0">٧. <b>مراجعات الحالة التطعيمية للطفل بمنظومة الميكنة بعد العودة للوحدة:</b> تسجيل صح أمام الجرعة في حالة الحصول عليها أو خطأ في حالة عدم الحصول عليها.</p>
                   </div>
 
-                  <div class="col-lg-4 mt-3"><div class="form-group"><label>القائم بالتنفيذ</label>
+                  <div class="col-lg-4 mt-3 inv-field-cell"><div class="form-group"><label>القائم بالتنفيذ</label>
                     <input type="text" class="form-control" formControlName="survey400ExecutorName" /></div></div>
-                  <div class="col-lg-4 mt-3"><div class="form-group"><label>المشرف</label>
+                  <div class="col-lg-4 mt-3 inv-field-cell"><div class="form-group"><label>المشرف</label>
                     <input type="text" class="form-control" formControlName="survey400SupervisorName" /></div></div>
-                  <div class="col-lg-4 mt-3"><div class="form-group"><label>مسؤول التطعيمات بالإدارة</label>
+                  <div class="col-lg-4 mt-3 inv-field-cell"><div class="form-group"><label>مسؤول التطعيمات بالإدارة</label>
                     <input type="text" class="form-control" formControlName="survey400VaccinationOfficerName" /></div></div>
                 </div>
               </div>
@@ -1199,7 +1193,7 @@
                     </div>
                   </div>
 
-                  <div class="col-12"><div class="form-group"><label>تشخيص الحالة النهائي</label>
+                  <div class="col-12 inv-field-cell"><div class="form-group"><label>تشخيص الحالة النهائي</label>
                     <select class="form-control" formControlName="finalDiagnosis">
                       <option [ngValue]="null">اختر</option>
                       <option [ngValue]="'حصبة'">حصبة</option>
@@ -1221,11 +1215,15 @@
                       <option [ngValue]="'حساسية جلدية'">حساسية جلدية</option>
                       <option [ngValue]="'حساسية طعام'">حساسية طعام</option>
                       <option [ngValue]="'حساسية حشرية'">حساسية حشرية</option>
+                      <option [ngValue]="'الحصبة الالمانية الخلقية'">الحصبة الالمانية الخلقية</option>
                       <option *ngIf="isLegacyFinalDiagnosis" [ngValue]="feverRashForm.value.finalDiagnosis">{{ feverRashForm.value.finalDiagnosis }}</option>
                     </select></div></div>
                   <div class="col-12"><div class="form-group"><label>تعليقات اللجنة</label>
                     <textarea rows="3" class="form-control" formControlName="committeeComments"></textarea></div></div>
 
+                  <div class="col-12" *ngIf="!isFollowupCommitteeOpen">
+                    <small class="form-text text-danger mess-color d-block mb-2">لا يمكن ادخال بيانات اللجنة الا بعد مرور 21 يوم من تاريخ الطفح{{ followupMinDate ? ' (من ' + (followupMinDate | date: 'dd/MM/yyyy') + ')' : ' (برجاء ادخال تاريخ الطفح اولا)' }}</small>
+                  </div>
                   <div class="col-12 table-responsive">
                     <table class="table table-bordered text-center align-middle">
                       <thead>
@@ -1260,7 +1258,7 @@
                   </div>
                   <div class="col-12"><p class="text-muted small">يتم اعتماد المتابعة والتشخيص النهائي بمعرفة لجنة تضم طبيب اخصائي ومسئول ترصد الادارة ومسئول ترصد المديرية.</p></div>
 
-                  <div class="col-12"><div class="form-group"><label>التصنيف النهائي</label>
+                  <div class="col-12 inv-field-cell"><div class="form-group"><label>التصنيف النهائي</label>
                     <select class="form-control" formControlName="finalClassification">
                       <option [ngValue]="null">اختر</option>
                       <option [ngValue]="'مؤكد'">مؤكد</option>

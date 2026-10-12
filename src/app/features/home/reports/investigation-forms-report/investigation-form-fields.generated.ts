@@ -10283,6 +10283,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "19": [
           "حساسية حشرية"
+        ],
+        "20": [
+          "الحصبة الالمانية الخلقية"
         ]
       }
     },
@@ -11479,33 +11482,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "المسح الميداني - 30 طفل"
-      ],
-      "options": {
-        "zero": [
-          "صفرية"
-        ],
-        "bcg": [
-          "BCG"
-        ],
-        "first": [
-          "أولى"
-        ],
-        "second": [
-          "ثانية"
-        ],
-        "third": [
-          "ثالثة"
-        ],
-        "fourth": [
-          "رابعة"
-        ],
-        "fifth": [
-          "خامسة"
-        ],
-        "booster": [
-          "منشطة"
-        ]
-      }
+      ]
     },
     {
       "key": "zeroStatus",
@@ -11857,6 +11834,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "حساسية حشرية": [
           "حساسية حشرية"
+        ],
+        "الحصبة الالمانية الخلقية": [
+          "الحصبة الالمانية الخلقية"
         ]
       }
     },
