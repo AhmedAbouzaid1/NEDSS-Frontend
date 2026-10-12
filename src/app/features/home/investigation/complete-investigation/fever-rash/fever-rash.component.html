@@ -125,6 +125,7 @@
                         <option [ngValue]="17">حساسية جلدية</option>
                         <option [ngValue]="18">حساسية طعام</option>
                         <option [ngValue]="19">حساسية حشرية</option>
+                        <option [ngValue]="20">الحصبة الالمانية الخلقية</option>
                       </select>
                     </div>
                   </div>
@@ -831,11 +832,13 @@
                   </div>
 
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالإدارة</label>
-                    <app-date-field class="date-with-note" formControlName="lastCaseDateAdmin"></app-date-field>
-                    <small class="form-text text-muted d-block">يُملأ تلقائياً من آخر حالة حمى وطفح مسجلة على البرنامج بنفس الإدارة، ويمكن تعديله</small></div></div>
+                    <app-date-field class="date-with-note" formControlName="lastCaseDateAdmin" [max]="caseDiscoveryDate"></app-date-field>
+                    <small class="form-text text-muted d-block">يُملأ تلقائياً من آخر حالة حمى وطفح سابقة بنفس إدارة السكن (حتى تاريخ اكتشاف الحالة)، ويمكن تعديله</small>
+                    <small *ngIf="lastCaseDateError('lastCaseDateAdmin') as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
                   <div class="col-lg-6"><div class="form-group"><label>تاريخ آخر حالة حمى وطفح بالمديرية</label>
-                    <app-date-field class="date-with-note" formControlName="lastCaseDateDirectorate"></app-date-field>
-                    <small class="form-text text-muted d-block">يُملأ تلقائياً من آخر حالة حمى وطفح مسجلة على البرنامج بنفس المديرية، ويمكن تعديله</small></div></div>
+                    <app-date-field class="date-with-note" formControlName="lastCaseDateDirectorate" [min]="feverRashForm.value.lastCaseDateAdmin" [max]="caseDiscoveryDate"></app-date-field>
+                    <small class="form-text text-muted d-block">يُملأ تلقائياً من آخر حالة حمى وطفح سابقة بنفس مديرية السكن (حتى تاريخ اكتشاف الحالة)، ويمكن تعديله</small>
+                    <small *ngIf="lastCaseDateError('lastCaseDateDirectorate') as err" class="form-text text-danger mess-color d-block">{{ err }}</small></div></div>
 
                   <div class="col-lg-4">
                     <div class="form-group"><label>هل يوجد حالات مؤكدة خلال الشهر السابق؟</label>
@@ -1221,11 +1224,15 @@
                       <option [ngValue]="'حساسية جلدية'">حساسية جلدية</option>
                       <option [ngValue]="'حساسية طعام'">حساسية طعام</option>
                       <option [ngValue]="'حساسية حشرية'">حساسية حشرية</option>
+                      <option [ngValue]="'الحصبة الالمانية الخلقية'">الحصبة الالمانية الخلقية</option>
                       <option *ngIf="isLegacyFinalDiagnosis" [ngValue]="feverRashForm.value.finalDiagnosis">{{ feverRashForm.value.finalDiagnosis }}</option>
                     </select></div></div>
                   <div class="col-12"><div class="form-group"><label>تعليقات اللجنة</label>
                     <textarea rows="3" class="form-control" formControlName="committeeComments"></textarea></div></div>
 
+                  <div class="col-12" *ngIf="!isFollowupCommitteeOpen">
+                    <small class="form-text text-danger mess-color d-block mb-2">لا يمكن ادخال بيانات اللجنة الا بعد مرور 21 يوم من تاريخ الطفح{{ followupMinDate ? ' (من ' + (followupMinDate | date: 'dd/MM/yyyy') + ')' : ' (برجاء ادخال تاريخ الطفح اولا)' }}</small>
+                  </div>
                   <div class="col-12 table-responsive">
                     <table class="table table-bordered text-center align-middle">
                       <thead>

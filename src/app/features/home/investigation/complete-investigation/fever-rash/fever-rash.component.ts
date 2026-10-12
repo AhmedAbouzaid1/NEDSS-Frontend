@@ -100,6 +100,7 @@ export class FeverRashComponent implements OnInit {
     'حساسية جلدية',
     'حساسية طعام',
     'حساسية حشرية',
+    'الحصبة الالمانية الخلقية',
   ];
 
   get isLegacyFinalDiagnosis(): boolean {
@@ -269,6 +270,8 @@ export class FeverRashComponent implements OnInit {
     });
 
     this.feverRashForm.valueChanges.subscribe(() => this.calculateCompletionPercentage());
+    this.feverRashForm.controls['rashDate'].valueChanges.subscribe(() => this.updateFollowupCommitteeLock());
+    this.updateFollowupCommitteeLock();
 
     this.currentId = this.investigationService.currentid;
     this.feverRashForm.controls['patientID'].setValue(this.currentId);
@@ -401,20 +404,18 @@ export class FeverRashComponent implements OnInit {
     const groupId = this.investigationService.diseaseGroupID;
     if (!this.currentId || !groupId) return;
     const f = this.feverRashForm.controls;
-    const needDate = !f['lastCaseDateAdmin'].value;
-    const needDirDate = !f['lastCaseDateDirectorate'].value;
     const needConfirmed = f['confirmedCasesLastMonth'].value == null;
     const needFeverRash = f['feverRashCasesLastMonth'].value == null;
-    if (!needDate && !needDirDate && !needConfirmed && !needFeverRash) return;
     this.investigationService.getFeverRashUnitSummary(this.currentId, groupId).subscribe((res: any) => {
       const s = res?.data;
       if (!s) return;
-      if (needDate && !f['lastCaseDateAdmin'].value && s.lastCaseDate) {
-        f['lastCaseDateAdmin'].setValue(this.d(s.lastCaseDate));
-      }
-      if (needDirDate && !f['lastCaseDateDirectorate'].value && s.lastCaseDateDirectorate) {
-        f['lastCaseDateDirectorate'].setValue(this.d(s.lastCaseDateDirectorate));
-      }
+      const asOf = this.d(s.asOfDate);
+      const refreshLastCaseDate = (key: string, value: any) => {
+        const current = this.d(f[key].value);
+        if (!current || (!!asOf && current > asOf)) f[key].setValue(this.d(value));
+      };
+      refreshLastCaseDate('lastCaseDateAdmin', s.lastCaseDate);
+      refreshLastCaseDate('lastCaseDateDirectorate', s.lastCaseDateDirectorate);
       if (needConfirmed && f['confirmedCasesLastMonth'].value == null) {
         this.applyCaseCount('confirmedCasesLastMonth', 'confirmedCasesCount', s.confirmedCasesLastMonth);
       }
@@ -941,6 +942,22 @@ export class FeverRashComponent implements OnInit {
   }
 
   private readonly followupDateKeys = ['committeeSpecialistDate', 'adminOfficerDate', 'directorateOfficerDate'];
+  private readonly followupCommitteeKeys = ['committeeSpecialistName', 'adminOfficerName', 'directorateOfficerName', ...this.followupDateKeys];
+
+  get isFollowupCommitteeOpen(): boolean {
+    const min = this.followupMinDate;
+    return !!min && this.todayStr() >= min;
+  }
+
+  private updateFollowupCommitteeLock() {
+    const open = this.isFollowupCommitteeOpen;
+    this.followupCommitteeKeys.forEach((key) => {
+      const control = this.feverRashForm.get(key);
+      if (!control) return;
+      if (open && control.disabled) control.enable({ emitEvent: false });
+      else if (!open && control.enabled) control.disable({ emitEvent: false });
+    });
+  }
 
   private hasInvalidFollowupDates(): boolean {
     return this.followupDateKeys.some((k) => this.isBeforeFollowupMin(this.feverRashForm.value[k]));
@@ -955,6 +972,19 @@ export class FeverRashComponent implements OnInit {
   isBeforeDiscoveryInvalid(value: any): boolean {
     const date = this.d(value);
     return !!date && !!this.caseDiscoveryDate && date < this.caseDiscoveryDate;
+  }
+
+  lastCaseDateError(key: 'lastCaseDateAdmin' | 'lastCaseDateDirectorate'): string | null {
+    const date = this.d(this.feverRashForm.value[key]);
+    if (!date) return null;
+    if (this.caseDiscoveryDate && date > this.caseDiscoveryDate) {
+      return `لا يمكن أن يكون بعد تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`;
+    }
+    const adminDate = this.d(this.feverRashForm.value.lastCaseDateAdmin);
+    if (key === 'lastCaseDateDirectorate' && adminDate && date < adminDate) {
+      return `لا يمكن أن يكون قبل تاريخ آخر حالة بالإدارة (${adminDate}) لأن الإدارة تتبع المديرية`;
+    }
+    return null;
   }
 
   private hasInvalidPregnantSampleDates(): boolean {
@@ -1044,6 +1074,16 @@ export class FeverRashComponent implements OnInit {
       this.userMsg.error(`في المسح الميداني 400 طفل: تاريخ الزيارة الميدانية لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.caseDiscoveryDate})`);
       return;
     }
+    const lastAdminError = this.lastCaseDateError('lastCaseDateAdmin');
+    if (lastAdminError) {
+      this.userMsg.error(`تاريخ آخر حالة حمى وطفح بالإدارة ${lastAdminError}`);
+      return;
+    }
+    const lastDirectorateError = this.lastCaseDateError('lastCaseDateDirectorate');
+    if (lastDirectorateError) {
+      this.userMsg.error(`تاريخ آخر حالة حمى وطفح بالمديرية ${lastDirectorateError}`);
+      return;
+    }
     if (this.hasInvalidFollowupDates()) {
       this.userMsg.error(`في متابعة الحالة بعد 21 يوم: تاريخ اللجنة لا يمكن أن يكون قبل مرور 21 يوم من تاريخ طفح الحالة (${this.followupMinDate})`);
       return;
@@ -1076,7 +1116,7 @@ export class FeverRashComponent implements OnInit {
         : parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2))
     );
 
-    const value = this.feverRashForm.value;
+    const value = this.feverRashForm.getRawValue();
     const payload: any = {};
     Object.keys(value).forEach((key) => {
       if (this.arrayKeys.includes(key)) return;
@@ -1113,7 +1153,7 @@ export class FeverRashComponent implements OnInit {
 
   // ===================== Completion percentage =====================
   calculateCompletionPercentage(): void {
-    const data = this.feverRashForm?.value ?? {};
+    const data = this.feverRashForm?.getRawValue() ?? {};
     const excluded = new Set([...this.coreKeys, ...this.arrayKeys, 'createdDate']);
     const baseFields = Object.keys(data).filter((key) => !excluded.has(key));
     const filled = baseFields.reduce((acc, key) => {
