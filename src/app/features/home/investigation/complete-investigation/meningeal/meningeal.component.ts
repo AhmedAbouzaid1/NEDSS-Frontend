@@ -8,8 +8,14 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { finalize } from 'rxjs/operators';
+import { MENINGITIS_OTHER_DIAGNOSES } from 'src/app/features/lab/components/add-lab-test/meningitis-checks-form/meningitis-diagnoses';
 
 type FollowUpRoundId = '48h' | '2weeks' | '4weeks';
+
+const FOLLOW_UP_ROUND_ORDER: FollowUpRoundId[] = ['48h', '2weeks', '4weeks'];
+const FOLLOW_UP_ROUND_MIN_DAYS: Record<FollowUpRoundId, number> = { '48h': 2, '2weeks': 14, '4weeks': 28 };
+const CONTACT_EXPOSURE_WINDOW_DAYS = 10;
+const OTHER_DIAGNOSIS = '__other__';
 
 @Component({
   selector: 'app-meningeal',
@@ -118,6 +124,10 @@ export class MeningealComponent implements OnInit {
     { value: 3, label: 'سنة', labelEn: 'Year' },
   ];
   private readonly jobCategoriesWithoutJobName = [1, 5, 6, 7];
+  readonly contactDiagnosisOptions = MENINGITIS_OTHER_DIAGNOSES;
+  readonly otherDiagnosisValue = OTHER_DIAGNOSIS;
+  readonly contactDiagnosisChoice = new FormControl<string | null>(null);
+  readonly contactDiagnosisOtherText = new FormControl<string | null>(null);
 
   meningealForm: FormGroup;
   patientForm: FormGroup;
@@ -228,6 +238,9 @@ export class MeningealComponent implements OnInit {
       finalResultId: new FormControl(null),
     });
 
+    this.contactDiagnosisChoice.valueChanges.subscribe(() => this.syncContactFinalDiagnosis());
+    this.contactDiagnosisOtherText.valueChanges.subscribe(() => this.syncContactFinalDiagnosis());
+
     this.patientForm.get('homeGovernmentId')?.valueChanges.subscribe((value) => {
       this.loadHomeLookups(value, this.suppressHomeReset);
     });
@@ -240,6 +253,7 @@ export class MeningealComponent implements OnInit {
 
   ngOnInit(): void {
     this.ensureDefaultFollowUps();
+    this.updateFollowUpLocks();
     this.loadGovernorates();
     this.loadCountries();
     this.loadJobCategories();
@@ -304,6 +318,316 @@ export class MeningealComponent implements OnInit {
       return 'NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ONSET_AFTER_ADMISSION';
     }
     return '';
+  }
+
+  get caseDetectionDate(): string | null {
+    return this.toDateInput(this.patient?.caseDiscoveryDate);
+  }
+
+  formatDate(value: any): string {
+    return this.datePipe.transform(value, 'dd/MM/yyyy') ?? '';
+  }
+
+  private addDays(date: string | null, days: number): string | null {
+    if (!date) {
+      return null;
+    }
+    const dt = new Date(date + 'T00:00:00');
+    dt.setDate(dt.getDate() + days);
+    return this.toDateInput(dt);
+  }
+
+  private latestOf(...values: any[]): string | null {
+    const dates = values.map((v) => this.toDateInput(v)).filter((v): v is string => !!v).sort();
+    return dates.length ? dates[dates.length - 1] : null;
+  }
+
+  private earliestOf(...values: any[]): string | null {
+    const dates = values.map((v) => this.toDateInput(v)).filter((v): v is string => !!v).sort();
+    return dates.length ? dates[0] : null;
+  }
+
+  private dateValue(name: string): string | null {
+    return this.toDateInput(this.meningealForm.get(name)?.value);
+  }
+
+  get lastFollowUpMinDate(): string | null {
+    return this.latestOf(this.patientForm.get('infectionDate')?.value, this.patient?.hospitalEntryDate, this.caseDetectionDate);
+  }
+
+  get lastFollowUpDateError(): string {
+    const date = this.dateValue('lastFollowUpDate');
+    const min = this.lastFollowUpMinDate;
+    if (!date || !min || date >= min) {
+      return '';
+    }
+    return this.label(
+      `تاريخ آخر متابعة لا يمكن أن يكون قبل ظهور الأعراض أو دخول المستشفى أو اكتشاف الحالة (${this.formatDate(min)})`,
+      `Last follow-up date cannot be before symptom onset, admission or case detection (${this.formatDate(min)})`
+    );
+  }
+
+  get contactAdmissionMinDate(): string | null {
+    const windowStart = this.addDays(this.caseDetectionDate, -CONTACT_EXPOSURE_WINDOW_DAYS);
+    const arrival = this.meningealForm.get('contactTraveledAbroad')?.value === 1 ? this.dateValue('contactArrivalDate') : null;
+    return this.latestOf(windowStart, arrival);
+  }
+
+  get contactAdmissionDateError(): string {
+    if (this.meningealForm.get('contactHospitalized')?.value !== 1) {
+      return '';
+    }
+    const date = this.dateValue('contactHospitalAdmissionDate');
+    const detection = this.caseDetectionDate;
+    if (!date) {
+      return '';
+    }
+    const arrival = this.contactArrivalDateValue;
+    if (arrival && date < arrival) {
+      return this.label(
+        `تاريخ دخول المخالط المستشفى لا يمكن أن يكون قبل تاريخ قدومه من الخارج (${this.formatDate(arrival)})`,
+        `Contact admission date cannot be before the contact's arrival from abroad (${this.formatDate(arrival)})`
+      );
+    }
+    const windowStart = this.addDays(detection, -CONTACT_EXPOSURE_WINDOW_DAYS);
+    if (detection && windowStart && (date < windowStart || date > detection)) {
+      return this.label(
+        `تاريخ دخول المخالط المستشفى يجب أن يكون خلال ${CONTACT_EXPOSURE_WINDOW_DAYS} أيام قبل تاريخ اكتشاف الحالة (من ${this.formatDate(windowStart)} إلى ${this.formatDate(detection)})`,
+        `Contact admission date must be within ${CONTACT_EXPOSURE_WINDOW_DAYS} days before case detection (${this.formatDate(windowStart)} to ${this.formatDate(detection)})`
+      );
+    }
+    return '';
+  }
+
+  private get contactArrivalDateValue(): string | null {
+    return this.meningealForm.get('contactTraveledAbroad')?.value === 1 ? this.dateValue('contactArrivalDate') : null;
+  }
+
+  private get contactAdmissionDateValue(): string | null {
+    return this.meningealForm.get('contactHospitalized')?.value === 1 ? this.dateValue('contactHospitalAdmissionDate') : null;
+  }
+
+  get contactArrivalMaxDate(): string | null {
+    return this.contactAdmissionDateValue;
+  }
+
+  get contactArrivalDateError(): string {
+    const arrival = this.contactArrivalDateValue;
+    const admission = this.contactAdmissionDateValue;
+    if (!arrival || !admission || arrival <= admission) {
+      return '';
+    }
+    return this.label(
+      `تاريخ قدوم المخالط من الخارج لا يمكن أن يكون بعد تاريخ دخوله المستشفى (${this.formatDate(admission)})`,
+      `Contact arrival from abroad cannot be after the contact's hospital admission (${this.formatDate(admission)})`
+    );
+  }
+
+  get firstFacilityVisitMaxDate(): string | null {
+    return this.earliestOf(this.patient?.hospitalEntryDate, this.caseDetectionDate);
+  }
+
+  get firstFacilityVisitDateError(): string {
+    const date = this.dateValue('firstFacilityVisitDate');
+    if (!date) {
+      return '';
+    }
+    const onset = this.toDateInput(this.patientForm.get('infectionDate')?.value);
+    if (onset && date < onset) {
+      return this.label(
+        `تاريخ أول زيارة لطبيب / منشأة صحية لا يمكن أن يكون قبل تاريخ ظهور الأعراض (${this.formatDate(onset)})`,
+        `First facility visit date cannot be before symptom onset (${this.formatDate(onset)})`
+      );
+    }
+    const max = this.firstFacilityVisitMaxDate;
+    if (max && date > max) {
+      return this.label(
+        `تاريخ أول زيارة لطبيب / منشأة صحية يجب أن يكون في نفس يوم دخول المستشفى / اكتشاف الحالة أو قبله (${this.formatDate(max)})`,
+        `First facility visit date must be on or before the hospital admission / case detection date (${this.formatDate(max)})`
+      );
+    }
+    return '';
+  }
+
+  private readonly vaccineDateFields = ['hibLastDoseDate', 'meningococcalSchoolLastDoseDate', 'meningococcalTravelLastDoseDate'];
+  private readonly vaccineFlagFields: Record<string, string> = {
+    hibLastDoseDate: 'hibVaccinated',
+    meningococcalSchoolLastDoseDate: 'meningococcalSchoolVaccinated',
+    meningococcalTravelLastDoseDate: 'meningococcalTravelVaccinated',
+  };
+
+  vaccineMinDate(field: string): string | null {
+    return this.toDateInput(this.patient?.birthDate);
+  }
+
+  vaccineDateError(field: string): string {
+    if (this.meningealForm.get(this.vaccineFlagFields[field])?.value !== 1) {
+      return '';
+    }
+    const date = this.dateValue(field);
+    if (!date) {
+      return '';
+    }
+    const birth = this.toDateInput(this.patient?.birthDate);
+    if (birth && date < birth) {
+      return this.label(
+        `تاريخ آخر جرعة لا يمكن أن يكون قبل تاريخ الميلاد (${this.formatDate(birth)})`,
+        `Last dose date cannot be before birth date (${this.formatDate(birth)})`
+      );
+    }
+    return '';
+  }
+
+  followUpMinDate(roundIndex: number): string | null {
+    const roundId = this.followUpRounds.at(roundIndex)?.get('round')?.value as FollowUpRoundId;
+    const base = this.addDays(this.caseDetectionDate, FOLLOW_UP_ROUND_MIN_DAYS[roundId] ?? 0);
+    return this.latestOf(base, this.previousFollowUpDate(roundId));
+  }
+
+  private previousFollowUpDate(roundId: FollowUpRoundId): string | null {
+    const order = FOLLOW_UP_ROUND_ORDER.indexOf(roundId);
+    for (let i = order - 1; i >= 0; i--) {
+      const round = this.followUpRounds.controls.find((c) => c.get('round')?.value === FOLLOW_UP_ROUND_ORDER[i]);
+      if (round?.get('followupDone')?.value === 1) {
+        const date = this.toDateInput(round.get('followUpDate')?.value);
+        if (date) {
+          return date;
+        }
+      }
+    }
+    return null;
+  }
+
+  isFollowUpOpen(roundIndex: number): boolean {
+    const roundId = this.followUpRounds.at(roundIndex)?.get('round')?.value as FollowUpRoundId;
+    const opensOn = this.addDays(this.caseDetectionDate, FOLLOW_UP_ROUND_MIN_DAYS[roundId] ?? 0);
+    return !!opensOn && this.todayStr() >= opensOn;
+  }
+
+  followUpOpensOn(roundIndex: number): string | null {
+    const roundId = this.followUpRounds.at(roundIndex)?.get('round')?.value as FollowUpRoundId;
+    return this.addDays(this.caseDetectionDate, FOLLOW_UP_ROUND_MIN_DAYS[roundId] ?? 0);
+  }
+
+  followUpDateError(roundIndex: number): string {
+    const round = this.followUpRounds.at(roundIndex);
+    if (round?.get('followupDone')?.value !== 1) {
+      return '';
+    }
+    const date = this.toDateInput(round.get('followUpDate')?.value);
+    const min = this.followUpMinDate(roundIndex);
+    if (!date || !min || date >= min) {
+      return '';
+    }
+    return this.label(
+      `تاريخ المتابعة لا يمكن أن يكون قبل ${this.formatDate(min)} (حسب مدة المتابعة من تاريخ اكتشاف الحالة والمتابعة السابقة)`,
+      `Follow-up date cannot be before ${this.formatDate(min)} (based on the round duration from case detection and the previous follow-up)`
+    );
+  }
+
+  private rangeText(min: string | null, max: string | null): string {
+    if (min && max) {
+      return this.label(` (من ${this.formatDate(min)} إلى ${this.formatDate(max)})`, ` (${this.formatDate(min)} to ${this.formatDate(max)})`);
+    }
+    if (min) {
+      return this.label(` (من ${this.formatDate(min)})`, ` (from ${this.formatDate(min)})`);
+    }
+    if (max) {
+      return this.label(` (حتى ${this.formatDate(max)})`, ` (until ${this.formatDate(max)})`);
+    }
+    return '';
+  }
+
+  dateHint(field: string, roundIndex?: number): string {
+    switch (field) {
+      case 'lastFollowUpDate':
+        return this.label(
+          'في نفس يوم أو بعد ظهور الأعراض ودخول المستشفى واكتشاف الحالة',
+          'On or after symptom onset, hospital admission and case detection'
+        ) + this.rangeText(this.lastFollowUpMinDate, null);
+      case 'contactHospitalAdmissionDate': {
+        const arrivalNote = this.meningealForm.get('contactTraveledAbroad')?.value === 1
+          ? this.label(' ولا يسبق تاريخ قدوم المخالط من الخارج', ' and not before the contact\'s arrival from abroad')
+          : '';
+        return this.label(
+          `خلال ${CONTACT_EXPOSURE_WINDOW_DAYS} أيام قبل تاريخ اكتشاف الحالة`,
+          `Within ${CONTACT_EXPOSURE_WINDOW_DAYS} days before case detection`
+        ) + arrivalNote + this.rangeText(this.contactAdmissionMinDate, this.caseDetectionDate);
+      }
+      case 'contactArrivalDate':
+        return this.label(
+          'لا يقبل تاريخ في المستقبل، ولا يكون بعد تاريخ دخول المخالط المستشفى',
+          'No future dates, and not after the contact\'s hospital admission'
+        ) + this.rangeText(null, this.contactArrivalMaxDate);
+      case 'hibLastDoseDate':
+      case 'meningococcalSchoolLastDoseDate':
+      case 'meningococcalTravelLastDoseDate':
+        return this.label('لا يمكن أن يكون قبل تاريخ الميلاد ولا في المستقبل', 'Not before birth date and not in the future')
+          + this.rangeText(this.vaccineMinDate(field), null);
+      case 'firstFacilityVisitDate':
+        return this.label(
+          'من تاريخ ظهور الأعراض حتى تاريخ دخول المستشفى أو اكتشاف الحالة',
+          'From symptom onset up to the hospital admission or case detection date'
+        ) + this.rangeText(this.toDateInput(this.patientForm.get('infectionDate')?.value), this.firstFacilityVisitMaxDate);
+      case 'followUpDate':
+        return this.label(
+          'بعد مرور مدة المتابعة من تاريخ اكتشاف الحالة، وفي نفس يوم المتابعة السابقة أو بعدها',
+          'After the round duration from case detection, on or after the previous follow-up'
+        ) + this.rangeText(roundIndex != null ? this.followUpMinDate(roundIndex) : null, null);
+      default:
+        return this.label('لا يقبل تاريخ في المستقبل', 'Future dates are not allowed');
+    }
+  }
+
+  private updateFollowUpLocks(): void {
+    this.followUpRounds.controls.forEach((round, index) => {
+      const control = round.get('followUpDate');
+      if (!control) {
+        return;
+      }
+      if (this.isFollowUpOpen(index)) {
+        control.enable({ emitEvent: false });
+      } else {
+        control.disable({ emitEvent: false });
+      }
+    });
+  }
+
+  private todayStr(): string {
+    return this.toDateInput(new Date()) as string;
+  }
+
+  private investigationDateErrors(): string[] {
+    return [
+      this.lastFollowUpDateError,
+      this.contactAdmissionDateError,
+      this.contactArrivalDateError,
+      this.firstFacilityVisitDateError,
+      ...this.vaccineDateFields.map((f) => this.vaccineDateError(f)),
+      ...this.followUpRounds.controls.map((_, i) => this.followUpDateError(i)),
+    ].filter((e) => !!e);
+  }
+
+  private syncContactFinalDiagnosis(): void {
+    const choice = this.contactDiagnosisChoice.value;
+    const value = choice === OTHER_DIAGNOSIS ? this.contactDiagnosisOtherText.value?.trim() || null : choice;
+    if (this.meningealForm.get('contactFinalDiagnosis')?.value !== value) {
+      this.meningealForm.get('contactFinalDiagnosis')?.setValue(value);
+      this.calculateCompletionPercentage();
+    }
+  }
+
+  private applyContactFinalDiagnosis(value: string | null): void {
+    if (!value) {
+      this.contactDiagnosisChoice.setValue(null, { emitEvent: false });
+      this.contactDiagnosisOtherText.setValue(null, { emitEvent: false });
+    } else if (this.contactDiagnosisOptions.includes(value)) {
+      this.contactDiagnosisChoice.setValue(value, { emitEvent: false });
+      this.contactDiagnosisOtherText.setValue(null, { emitEvent: false });
+    } else {
+      this.contactDiagnosisChoice.setValue(OTHER_DIAGNOSIS, { emitEvent: false });
+      this.contactDiagnosisOtherText.setValue(value, { emitEvent: false });
+    }
   }
 
   get finalDiagnosisDisplay(): string {
@@ -403,6 +727,8 @@ export class MeningealComponent implements OnInit {
       this.followUpRounds.push(round);
     });
     this.ensureDefaultFollowUps();
+    this.applyContactFinalDiagnosis(data?.contactFinalDiagnosis ?? null);
+    this.updateFollowUpLocks();
   }
 
   private loadPatient(): void {
@@ -454,6 +780,7 @@ export class MeningealComponent implements OnInit {
     });
     this.patientForm.markAsPristine();
     this.loadIncidentSources();
+    this.updateFollowUpLocks();
   }
 
   private loadHomeLookups(governorateId: any, preserveSelection = false): void {
@@ -619,6 +946,11 @@ export class MeningealComponent implements OnInit {
   }
 
   save(): void {
+    const dateErrors = this.investigationDateErrors();
+    if (dateErrors.length) {
+      this.userMsg.error(dateErrors[0]);
+      return;
+    }
     if (!this.patientForm.dirty) {
       this.saveInvestigation();
       return;
@@ -636,7 +968,7 @@ export class MeningealComponent implements OnInit {
   }
 
   private saveInvestigation(): void {
-    const payload = { ...this.meningealForm.value };
+    const payload = { ...this.meningealForm.getRawValue() };
     payload.patientID = this.currentId;
     payload.diseaseGroupId = this.diseaseGroupID;
 
@@ -804,7 +1136,7 @@ export class MeningealComponent implements OnInit {
       }
     };
 
-    count(this.meningealForm.value);
+    count(this.meningealForm.getRawValue());
     this.allControllesCount = total;
     this.allFilledControlsCount = filled;
   }

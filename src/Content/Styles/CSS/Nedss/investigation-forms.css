@@ -1,7 +1,7 @@
 .investigation-form {
-  --inv-primary: #007bff;
-  --inv-primary-dark: #0a4fa8;
-  --inv-primary-soft: #eef5ff;
+  --inv-primary: var(--nd-primary);
+  --inv-primary-dark: var(--nd-primary-dark);
+  --inv-primary-soft: var(--nd-primary-soft);
   --inv-primary-tint: #d6e7ff;
   --inv-border: #e4ecf8;
   --inv-input-border: #d6e2f1;
@@ -103,6 +103,18 @@
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
+.investigation-form .card-body > .card-alt {
+  width: auto;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.investigation-form .card-body > .row > .card-alt.card {
+  width: calc(100% - var(--bs-gutter-x, 1.5rem));
+  margin-right: calc(0.5 * var(--bs-gutter-x, 1.5rem)) !important;
+  margin-left: calc(0.5 * var(--bs-gutter-x, 1.5rem)) !important;
+}
+
 .investigation-form .card-alt > .row {
   row-gap: 1rem;
 }
@@ -140,19 +152,6 @@
   font-size: 1.35rem !important;
   font-weight: 700 !important;
   line-height: 1.4;
-}
-
-.investigation-form .form-control:not(.form-control-sm),
-.investigation-form .form-select:not(.form-select-sm) {
-  min-height: 42px;
-  border-radius: 8px;
-  border-color: var(--inv-input-border);
-}
-
-.investigation-form .form-control:focus,
-.investigation-form .form-select:focus {
-  border-color: var(--inv-primary);
-  box-shadow: 0 0 0 0.18rem rgba(0, 123, 255, 0.16);
 }
 
 .investigation-form .has-labels {
@@ -365,7 +364,7 @@
 }
 
 .investigation-form .card-footer {
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.25rem;
   border-top: 1px solid var(--inv-border);
   border-radius: 0 0 8px 8px;
   background: #fbfdff;
@@ -373,8 +372,6 @@
 
 .investigation-form .card-footer .btn {
   min-width: 120px;
-  padding: 0.55rem 1.25rem;
-  font-weight: 700;
 }
 
 .dark-mode .investigation-form .title,
@@ -484,4 +481,130 @@ body .dark-mode .investigation-form .accordion .accordion-button:not(.collapsed)
   .inv-patient-name:not(input) {
     font-size: 1.15rem !important;
   }
+}
+
+/* Label/field pairs authored side by side render stacked, like every other field */
+.investigation-form .inv-pair {
+  --bs-gutter-x: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch !important;
+  margin: 0 0 var(--nd-field-gap) !important;
+}
+
+.investigation-form .inv-pair > * {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 !important;
+  padding: 0;
+}
+
+.investigation-form .inv-pair > :first-child {
+  margin-bottom: var(--nd-label-gap) !important;
+  color: var(--inv-text);
+  font-size: var(--nd-label-fs);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.investigation-form .inv-pair > :first-child > label {
+  margin: 0;
+}
+
+.investigation-form .inv-pair > :last-child > :is(.form-control, .form-select, select, app-date-field),
+.investigation-form .inv-pair > :last-child > ng-multiselect-dropdown .multiselect-dropdown {
+  margin-bottom: 0;
+}
+
+.investigation-form .inv-pair > .has-labels {
+  padding: 0;
+}
+
+.investigation-form .inv-pair-cell,
+.investigation-form .inv-pair-nested,
+.investigation-form .inv-field-cell {
+  margin-top: 0 !important;
+}
+
+.investigation-form .inv-pair > :nth-child(n + 3) {
+  margin-top: var(--nd-field-gap) !important;
+}
+
+.investigation-form .card-body .row > div[class*="col"]:empty {
+  display: none;
+}
+
+.investigation-form .inv-pair-cell > .form-group,
+.investigation-form .inv-pair-nested > .form-group {
+  margin-bottom: 0;
+}
+
+.investigation-form .card-body .row > :is(.inv-pair-cell, .inv-field-cell) {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 992px) {
+  .investigation-form .card-body .row > :is(.inv-pair-cell, .inv-field-cell) {
+    width: 33.333333%;
+  }
+}
+
+.dark-mode .investigation-form .inv-pair > :first-child {
+  color: var(--light-color);
+}
+
+.investigation-form .row > .inv-pair-cell + hr {
+  display: none;
+}
+
+/* Sub-question lists: heading on its own line, items on the same 3-column grid */
+.investigation-form .card-body .row > :is(.inv-group, .inv-group-label) {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 0 !important;
+}
+
+.investigation-form .inv-group-label,
+.investigation-form .inv-group > p {
+  margin-bottom: 0.5rem;
+  color: var(--inv-primary-dark);
+  font-size: var(--nd-label-fs);
+  font-weight: 700;
+}
+
+.investigation-form .inv-group :is(.row, [class*="col"]):has(> .inv-pair-nested, > .inv-pair + .inv-pair) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .investigation-form .inv-group :is(.row, [class*="col"]):has(> .inv-pair-nested, > .inv-pair + .inv-pair) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 992px) {
+  .investigation-form .inv-group :is(.row, [class*="col"]):has(> .inv-pair-nested, > .inv-pair + .inv-pair) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.investigation-form .inv-group .inv-pair-nested {
+  width: auto;
+  max-width: none;
+  margin: 0 !important;
+  padding: 0;
+}
+
+.dark-mode .investigation-form .inv-group-label,
+.dark-mode .investigation-form .inv-group > p {
+  color: var(--light-color);
 }

@@ -65,8 +65,7 @@ function parseComplete(raw: any): string | null {
   if (!v) return null;
   if (isAny(v, YES_TOKENS)) return 'yes';
   if (isAny(v, NO_TOKENS)) return 'no';
-  const dose = SURVEY_DOSES.find((d) => norm(d.label) === v || d.key === v);
-  return dose ? dose.key : (undefined as any);
+  return undefined as any;
 }
 
 function markText(v: any) {
@@ -80,7 +79,7 @@ function statusText(v: any) {
 function completeText(v: any) {
   if (v === 'yes') return YES;
   if (v === 'no') return NO;
-  return SURVEY_DOSES.find((d) => d.key === v)?.label ?? '';
+  return '';
 }
 
 function cellText(key: string, value: any): string {
@@ -154,13 +153,13 @@ export function downloadSurveyTemplate(title: string, rows: any[], minRows: numb
     ['اكتب البيانات في ورقة "' + SHEET_NAME + '" بدءاً من الصف الثالث، صف لكل طفل. لا تغيّر ترتيب الأعمدة أو صفي العناوين.'],
     ['أعمدة الاختيارات تحتوي على قائمة منسدلة: اضغط على الخلية ثم على السهم واختر القيمة.'],
     ['الاطلاع على شهادة الميلاد (4) ومراجعة الميكنة (7): ✓ أو ✗.'],
-    ['شهادة الميلاد مستوفاه (5): ✓ إذا كانت مستوفاة، ✗ إذا لم تسجل بها التطعيمات، أو اسم الجرعة (صفرية، BCG، أولى، ثانية، ثالثة، رابعة، خامسة، منشطة).'],
+    ['شهادة الميلاد مستوفاه (5): ✓ إذا كانت مستوفاة، ✗ إذا لم تسجل بها التطعيمات.'],
     ['حالة تطعيمية (6): ✓ إذا كان مسجلاً على الشهادة، (✓) إذا كان مطعماً حسب أقوال الأب أو الأم، ✗ إذا كان غير مطعم.'],
     ['عند رفع الملف يتم استبدال سجل الأطفال في الشاشة بمحتوى الملف، ثم اضغط "حفظ البيانات".'],
     [''],
     ['١. شارع: اسم الشارع أو أشهر علامة مميزة في حالة عدم وجود اسم. ٢. منزل: رقم المنزل أو اسم صاحبه أو أي علامة مميزة.'],
     ['٣. شقة: رقم الشقة أو الطابق في حالة عدم وجود أرقام. ٤. يتم وضع علامة صح إذا اطلع الفريق على شهادة ميلاد الطفل أو البطاقة الصحية له وخطأ إذا لم تتواجد.'],
-    ['٥. يتم وضع علامات خطأ إذا كانت شهادة الميلاد لم يتم تسجيل التطعيمات بها أو صح إذا كانت مستوفاة بالكامل حتى آخر جرعة أو يتم كتابة الجرعة في حالة عدم استيفاء جميع الجرعات التي تم تطعيم الطفل بها.'],
+    ['٥. يتم وضع علامات خطأ إذا كانت شهادة الميلاد لم يتم تسجيل التطعيمات بها أو صح إذا كانت مستوفاة بالكامل حتى آخر جرعة'],
     ['٦. حالة تطعيمية: توضع علامة صح إذا كان التطعيم مسجل على شهادة الميلاد أو علامة صح داخل دائرة إذا كان الطفل مطعم حسب أقوال الأب أو الأم وخطأ إذا كان الطفل غير مطعم.'],
     ['٧. مراجعات الحالة التطعيمية للطفل بمنظومة الميكنة بعد العودة للوحدة: تسجيل صح أمام الجرعة في حالة الحصول عليها أو خطأ في حالة عدم الحصول عليها.'],
   ];
@@ -180,7 +179,6 @@ export function downloadSurveyTemplate(title: string, rows: any[], minRows: numb
 
 const MARK_LIST = [YES, NO];
 const STATUS_LIST = [YES, BY_PARENT, NO];
-const COMPLETE_LIST = [YES, NO, ...SURVEY_DOSES.map((d) => d.label)];
 
 function columnLetter(index: number): string {
   return XLSX.utils.encode_col(index);
@@ -200,7 +198,7 @@ function validationXml(firstRow: number, lastRow: number): string {
   const reviewCols = SURVEY_DOSES.map((_, i) => firstDoseCol + i * 2 + 1);
   const rules = [
     rule([5], MARK_LIST, 'الاطلاع على شهادة الميلاد'),
-    rule([6], COMPLETE_LIST, 'شهادة الميلاد مستوفاه'),
+    rule([6], MARK_LIST, 'شهادة الميلاد مستوفاه'),
     rule(statusCols, STATUS_LIST, 'حالة تطعيمية'),
     rule(reviewCols, MARK_LIST, 'مراجعة الميكنة'),
   ];

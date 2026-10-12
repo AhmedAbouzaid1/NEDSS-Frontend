@@ -1,0 +1,1533 @@
+/* =====================================================================
+ * NEDSS form design system
+ * One source of truth for every form control across Bootstrap,
+ * PrimeNG, Angular Material (app-date-field), ng-select and
+ * ng-multiselect-dropdown. Imported last from styles.css.
+ * ===================================================================== */
+
+:root {
+  --nd-font: "Tajawal", sans-serif;
+
+  --nd-primary: #0d6efd;
+  --nd-primary-hover: #0b5ed7;
+  --nd-primary-dark: #0a4fa8;
+  --nd-primary-soft: #eef5ff;
+  --nd-accent-text: #0a4fa8;
+  --nd-focus-ring: 0 0 0 3px rgba(13, 110, 253, 0.15);
+
+  --nd-text: #1f2937;
+  --nd-label: #344054;
+  --nd-muted: #667085;
+  --nd-placeholder: #98a2b3;
+
+  --nd-surface: #ffffff;
+  --nd-surface-subtle: #f8fafc;
+  --nd-disabled-bg: #f1f3f5;
+  --nd-disabled-text: #6b7280;
+  --nd-readonly-bg: #f8f9fb;
+
+  --nd-border: #cfd6df;
+  --nd-border-hover: #98a2b3;
+  --nd-border-subtle: #e4e7ec;
+
+  --nd-danger: #d92d20;
+  --nd-danger-ring: 0 0 0 3px rgba(217, 45, 32, 0.12);
+  --nd-warning: #b54708;
+  --nd-warning-border: #f79009;
+  --nd-success: #067647;
+  --nd-success-border: #17b26a;
+
+  --nd-control-h: 38px;
+  --nd-control-h-sm: 31px;
+  --nd-control-px: 0.625rem;
+  --nd-control-fs: 0.8125rem;
+  --nd-label-fs: 0.8125rem;
+  --nd-help-fs: 0.75rem;
+  --nd-icon-size: 1rem;
+  --nd-radius: 6px;
+  --nd-radius-lg: 8px;
+  --nd-field-gap: 0.625rem;
+  --nd-label-gap: 0.25rem;
+  --nd-label-offset: calc(var(--nd-label-fs) * 1.4 + var(--nd-label-gap));
+  --nd-shadow-pop: 0 8px 24px rgba(16, 24, 40, 0.12);
+  --nd-transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+
+  --nd-title-fs: 1.25rem;
+  --nd-section-fs: 1rem;
+
+  --bs-border-radius: var(--nd-radius);
+  --bs-border-radius-sm: 4px;
+  --bs-border-radius-lg: var(--nd-radius-lg);
+  --bs-border-color: var(--nd-border);
+  --bs-form-invalid-color: var(--nd-danger);
+  --bs-form-invalid-border-color: var(--nd-danger);
+  --bs-form-valid-color: var(--nd-success);
+  --bs-form-valid-border-color: var(--nd-success-border);
+}
+
+@media (max-width: 767.98px), (pointer: coarse) {
+  :root {
+    --nd-control-h: 44px;
+    --nd-control-h-sm: 36px;
+    --nd-control-fs: 1rem;
+  }
+}
+
+/* ---------------------------------------------------------------------
+ * Labels, required marker, helper and validation text
+ * ------------------------------------------------------------------- */
+
+label,
+.form-label,
+.col-form-label {
+  display: block;
+  margin-bottom: var(--nd-label-gap);
+  color: var(--nd-label);
+  font-size: var(--nd-label-fs);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.form-check-label,
+.form-check label,
+.has-labels label,
+label.p-checkbox-label,
+label.p-radiobutton-label,
+.p-checkbox + label,
+.p-radiobutton + label {
+  display: inline;
+  margin-bottom: 0;
+  font-weight: 400;
+  color: var(--nd-text);
+}
+
+label .text-danger,
+label .mess-color,
+.required-mark,
+label.required::after {
+  color: var(--nd-danger) !important;
+  font-weight: 700;
+  margin-inline-start: 2px;
+}
+
+label.required::after {
+  content: "*";
+}
+
+label .text-muted {
+  font-weight: 400 !important;
+  margin-inline-start: 0.25em;
+  margin-right: 0;
+}
+
+.form-text,
+.help-text,
+:is(.form-group, [class*="col"]) > small.text-muted {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--nd-muted) !important;
+  font-size: var(--nd-help-fs);
+  line-height: 1.4;
+}
+
+.invalid-feedback,
+.field-error,
+.form-text.text-danger,
+.form-text.mess-color,
+small.text-danger:not(label *),
+span.text-danger.small,
+div.text-danger.small,
+mat-error,
+.mat-mdc-form-field-error {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--nd-danger) !important;
+  font-size: var(--nd-help-fs) !important;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.form-group > span.text-danger.mess-color:not(.bi):not(.pointer),
+.form-group > div.text-danger,
+[class*="col-"] > span.text-danger.mess-color:not(.bi):not(.pointer) {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--nd-danger) !important;
+  font-size: var(--nd-help-fs);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.form-control:has(+ .form-text, + .text-danger, + .mess-color, + .invalid-feedback, + small),
+.form-select:has(+ .form-text, + .text-danger, + .mess-color, + .invalid-feedback, + small),
+ng-multiselect-dropdown:has(+ .form-text, + .text-danger, + .mess-color, + small) .multiselect-dropdown,
+app-date-field:has(+ .form-text, + .text-danger, + .mess-color, + small, + app-recent-days-note) {
+  margin-bottom: 0;
+}
+
+.invalid-feedback {
+  display: none;
+}
+
+.was-validated :invalid ~ .invalid-feedback,
+.is-invalid ~ .invalid-feedback,
+.invalid-feedback.d-block {
+  display: block;
+}
+
+.valid-feedback {
+  color: var(--nd-success);
+  font-size: var(--nd-help-fs);
+}
+
+/* ---------------------------------------------------------------------
+ * Text inputs, selects, textareas
+ * ------------------------------------------------------------------- */
+
+.form-control,
+.form-select,
+.form-control-ar,
+.form-control-en,
+.p-inputtext:where(:not(.p-dropdown-filter):not(.p-multiselect-filter)) {
+  width: 100%;
+  min-height: var(--nd-control-h);
+  padding: 0 var(--nd-control-px) !important;
+  border: 1px solid var(--nd-border);
+  border-radius: var(--nd-radius) !important;
+  background-color: var(--nd-surface);
+  color: var(--nd-text);
+  font-family: var(--nd-font);
+  font-size: var(--nd-control-fs) !important;
+  line-height: 1.4;
+  box-shadow: none;
+  transition: var(--nd-transition);
+}
+
+input.form-control,
+input.form-control-ar,
+input.form-control-en,
+select.form-control,
+.form-select {
+  height: var(--nd-control-h);
+}
+
+.form-control,
+.form-control-ar,
+.form-control-en {
+  margin-bottom: var(--nd-field-gap);
+}
+
+textarea.form-control,
+textarea.p-inputtext,
+textarea {
+  height: auto;
+  min-height: calc(var(--nd-control-h) * 2.2);
+  padding: 0.5rem var(--nd-control-px) !important;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.form-control::placeholder,
+.p-inputtext::placeholder {
+  color: var(--nd-placeholder);
+  opacity: 1;
+}
+
+.form-control:hover:not(:disabled):not([readonly]):not(:focus),
+.form-select:hover:not(:disabled):not(:focus),
+.p-inputtext:enabled:hover:not(:focus) {
+  border-color: var(--nd-border-hover);
+}
+
+.form-control:focus,
+.form-select:focus,
+.p-inputtext:enabled:focus,
+body[class] .form-control:focus {
+  position: relative;
+  top: auto;
+  border-color: var(--nd-primary);
+  background-color: var(--nd-surface) !important;
+  color: var(--nd-text);
+  box-shadow: var(--nd-focus-ring);
+  outline: none;
+}
+
+.form-control:disabled,
+.form-select:disabled,
+.form-control.disabled,
+.p-inputtext:disabled,
+.p-disabled .p-inputtext,
+.p-inputtext.p-disabled {
+  border-color: var(--nd-border-subtle);
+  background-color: var(--nd-disabled-bg) !important;
+  color: var(--nd-disabled-text);
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.form-control[readonly]:not(.mat-datepicker-input),
+.p-inputtext[readonly] {
+  background-color: var(--nd-readonly-bg);
+  border-style: dashed;
+  border-color: var(--nd-border-subtle);
+  color: var(--nd-text);
+}
+
+.form-control[readonly]:focus {
+  box-shadow: none;
+  border-color: var(--nd-border);
+}
+
+select.form-control,
+.form-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-inline-end: 2rem !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23667085' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 11px;
+  cursor: pointer;
+  text-overflow: ellipsis;
+}
+
+[dir="rtl"] select.form-control,
+.ar select.form-control,
+[dir="rtl"] .form-select,
+.ar .form-select {
+  background-position: left 0.75rem center;
+}
+
+select.form-control[multiple],
+select.form-control[size]:not([size="1"]),
+.form-select[multiple] {
+  height: auto;
+  padding: 0.25rem var(--nd-control-px) !important;
+  background-image: none;
+}
+
+.form-control-sm,
+.form-select-sm,
+.p-inputtext-sm {
+  min-height: var(--nd-control-h-sm);
+  height: var(--nd-control-h-sm);
+  font-size: var(--nd-help-fs) !important;
+}
+
+.form-control[type="search"] {
+  font-weight: 400;
+}
+
+.form-control[type="file"] {
+  height: auto;
+  min-height: var(--nd-control-h);
+  padding: 0 !important;
+  line-height: calc(var(--nd-control-h) - 2px);
+  overflow: hidden;
+}
+
+.form-control[type="file"]::file-selector-button {
+  height: calc(var(--nd-control-h) - 2px);
+  margin: 0;
+  margin-inline-end: var(--nd-control-px);
+  padding: 0 0.875rem;
+  border: 0;
+  border-inline-end: 1px solid var(--nd-border);
+  background: var(--nd-surface-subtle);
+  color: var(--nd-label);
+  font-weight: 600;
+}
+
+.form-control[type="color"] {
+  padding: 0.25rem !important;
+  width: 3.5rem;
+}
+
+.input-group > .form-control,
+.input-group > .form-select,
+.input-group .form-control,
+td .form-control,
+td .form-select,
+th .form-control,
+.p-paginator .form-control {
+  margin-bottom: 0;
+}
+
+.input-group-text {
+  min-height: var(--nd-control-h);
+  padding: 0 var(--nd-control-px);
+  border-color: var(--nd-border);
+  background: var(--nd-surface-subtle);
+  color: var(--nd-muted);
+  font-size: var(--nd-control-fs);
+}
+
+.input-group > .btn {
+  min-height: var(--nd-control-h);
+}
+
+/* ---------------------------------------------------------------------
+ * Validation states (reactive / template forms + Bootstrap classes)
+ * ------------------------------------------------------------------- */
+
+.form-control.is-invalid,
+.form-select.is-invalid,
+.form-control.ng-invalid.ng-touched:not(form):not(.ng-untouched),
+.form-select.ng-invalid.ng-touched,
+.ng-submitted .form-control.ng-invalid,
+.ng-submitted .form-select.ng-invalid,
+.p-inputtext.ng-invalid.ng-dirty,
+.p-inputtext.is-invalid {
+  border-color: var(--nd-danger) !important;
+  background-image: none;
+}
+
+select.form-control.is-invalid,
+select.form-control.ng-invalid.ng-touched {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23667085' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.form-control.is-invalid:focus,
+.form-select.is-invalid:focus,
+.form-control.ng-invalid.ng-touched:focus {
+  box-shadow: var(--nd-danger-ring);
+}
+
+.form-control.is-valid,
+.form-select.is-valid {
+  border-color: var(--nd-success-border) !important;
+  background-image: none;
+}
+
+.form-control.is-warning,
+.form-select.is-warning {
+  border-color: var(--nd-warning-border) !important;
+}
+
+/* ---------------------------------------------------------------------
+ * Checkboxes, radios, switches
+ * ------------------------------------------------------------------- */
+
+.form-check-input,
+input[type="checkbox"]:not(.p-hidden-accessible input):not(.mdc-checkbox__native-control):not(.multiselect-item-checkbox input),
+input[type="radio"]:not(.p-hidden-accessible input):not(.mdc-radio__native-control) {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  margin: 0;
+  margin-inline-end: 0.4rem;
+  vertical-align: -0.15em;
+  border: 1.5px solid #8a94a6 !important;
+  accent-color: var(--nd-primary);
+  cursor: pointer;
+}
+
+.form-check-input {
+  position: relative;
+}
+
+label:has(> input[type="checkbox"]),
+label:has(> input[type="radio"]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 400;
+  color: var(--nd-text);
+  cursor: pointer;
+}
+
+label:has(> input[type="checkbox"]) > input,
+label:has(> input[type="radio"]) > input {
+  margin-inline-end: 0;
+}
+
+.form-check-input:checked {
+  background-color: var(--nd-primary);
+  border-color: var(--nd-primary) !important;
+}
+
+.form-check-input:focus {
+  border-color: var(--nd-primary) !important;
+  box-shadow: var(--nd-focus-ring);
+}
+
+.form-check-input:disabled,
+input[type="checkbox"]:disabled,
+input[type="radio"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 1.5rem;
+  margin-bottom: 0.25rem;
+  padding-inline-start: 0;
+}
+
+.form-check .form-check-input {
+  float: none;
+  margin: 0;
+}
+
+.form-check-inline {
+  display: inline-flex;
+  margin-inline-end: 1rem;
+}
+
+.form-switch .form-check-input {
+  width: 2rem;
+  height: 1.1rem;
+  border-radius: 1rem;
+}
+
+.p-checkbox .p-checkbox-box {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #8a94a6;
+  border-radius: 4px;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight {
+  border-color: var(--nd-primary);
+  background: var(--nd-primary);
+}
+
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus,
+.p-radiobutton .p-radiobutton-box.p-focus {
+  border-color: var(--nd-primary);
+  box-shadow: var(--nd-focus-ring);
+}
+
+.p-checkbox {
+  width: 18px;
+  height: 18px;
+}
+
+.p-radiobutton,
+.p-radiobutton .p-radiobutton-box {
+  width: 18px;
+  height: 18px;
+}
+
+.p-radiobutton .p-radiobutton-box {
+  border: 1.5px solid #8a94a6;
+}
+
+.p-radiobutton .p-radiobutton-box.p-highlight {
+  border-color: var(--nd-primary);
+  background: var(--nd-primary);
+}
+
+.p-inputswitch {
+  width: 2.5rem;
+  height: 1.375rem;
+}
+
+.p-inputswitch .p-inputswitch-slider:before {
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.5rem;
+}
+
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+  background: var(--nd-primary);
+}
+
+.p-inputswitch.p-focus .p-inputswitch-slider {
+  box-shadow: var(--nd-focus-ring);
+}
+
+/* ---------------------------------------------------------------------
+ * PrimeNG dropdown / multiselect / calendar / autocomplete
+ * ------------------------------------------------------------------- */
+
+.p-dropdown,
+.p-multiselect,
+.p-calendar,
+.p-autocomplete,
+.p-treeselect {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.p-dropdown,
+.p-multiselect,
+.p-treeselect {
+  width: 100%;
+  min-height: var(--nd-control-h);
+  align-items: center;
+  border: 1px solid var(--nd-border);
+  border-radius: var(--nd-radius);
+  background: var(--nd-surface);
+  transition: var(--nd-transition);
+}
+
+.p-dropdown .p-dropdown-label,
+.p-multiselect .p-multiselect-label,
+.p-treeselect .p-treeselect-label {
+  display: flex;
+  align-items: center;
+  min-height: calc(var(--nd-control-h) - 2px) !important;
+  height: auto;
+  padding: 0 var(--nd-control-px) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--nd-text);
+  font-size: var(--nd-control-fs) !important;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder,
+.p-multiselect .p-multiselect-label.p-placeholder {
+  color: var(--nd-placeholder);
+}
+
+.p-dropdown .p-dropdown-trigger,
+.p-multiselect .p-multiselect-trigger {
+  width: 2rem;
+  color: var(--nd-muted);
+}
+
+.p-dropdown .p-dropdown-trigger-icon,
+.p-multiselect .p-multiselect-trigger-icon,
+.p-dropdown .p-dropdown-clear-icon {
+  font-size: 0.75rem;
+}
+
+.p-dropdown:not(.p-disabled):hover,
+.p-multiselect:not(.p-disabled):hover {
+  border-color: var(--nd-border-hover);
+}
+
+.p-dropdown:not(.p-disabled).p-focus,
+.p-multiselect:not(.p-disabled).p-focus,
+.p-dropdown.p-dropdown-open,
+.p-multiselect.p-multiselect-open {
+  border-color: var(--nd-primary);
+  box-shadow: var(--nd-focus-ring);
+}
+
+.p-dropdown.p-disabled,
+.p-multiselect.p-disabled,
+.p-component:disabled,
+.p-disabled {
+  opacity: 1;
+}
+
+.p-dropdown.p-disabled,
+.p-multiselect.p-disabled {
+  border-color: var(--nd-border-subtle);
+  background: var(--nd-disabled-bg);
+}
+
+.p-dropdown.p-disabled .p-dropdown-label,
+.p-multiselect.p-disabled .p-multiselect-label {
+  color: var(--nd-disabled-text);
+}
+
+.p-dropdown.ng-invalid.ng-dirty,
+.p-dropdown.ng-invalid.ng-touched,
+.p-multiselect.ng-invalid.ng-dirty,
+.p-multiselect.ng-invalid.ng-touched,
+p-dropdown.ng-invalid.ng-touched > .p-dropdown,
+p-multiselect.ng-invalid.ng-touched > .p-multiselect,
+p-dropdown.is-invalid > .p-dropdown,
+p-multiselect.is-invalid > .p-multiselect,
+p-calendar.ng-invalid.ng-touched > .p-calendar > .p-inputtext {
+  border-color: var(--nd-danger);
+}
+
+.p-multiselect.p-multiselect-chip .p-multiselect-token {
+  margin-inline-end: 0.25rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: var(--nd-primary-soft);
+  color: var(--nd-accent-text);
+  font-size: var(--nd-help-fs);
+}
+
+.p-dropdown-panel,
+.p-multiselect-panel,
+.p-autocomplete-panel,
+.p-datepicker:not(.p-datepicker-inline) {
+  max-width: calc(100vw - 16px);
+  border: 1px solid var(--nd-border-subtle);
+  border-radius: var(--nd-radius-lg);
+  box-shadow: var(--nd-shadow-pop);
+}
+
+.p-dropdown-panel .p-dropdown-header,
+.p-multiselect-panel .p-multiselect-header {
+  padding: 0.5rem;
+  background: var(--nd-surface-subtle);
+}
+
+.p-dropdown-panel .p-dropdown-filter,
+.p-multiselect-panel .p-multiselect-filter {
+  min-height: var(--nd-control-h-sm);
+  height: var(--nd-control-h-sm);
+}
+
+.ar .p-dropdown-panel .p-dropdown-filter {
+  padding-right: 0.75rem;
+  padding-left: 1.75rem;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item,
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item,
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item {
+  padding: 0.45rem 0.75rem;
+  color: var(--nd-text);
+  font-size: var(--nd-control-fs);
+  line-height: 1.4;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight {
+  background: var(--nd-primary-soft);
+  color: var(--nd-accent-text);
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover,
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover {
+  background: #f2f4f7;
+}
+
+.p-calendar {
+  width: 100%;
+}
+
+.p-calendar .p-inputtext {
+  height: var(--nd-control-h);
+}
+
+.p-calendar-w-btn .p-datepicker-trigger {
+  width: 2.25rem;
+  border-radius: 0;
+}
+
+.p-autocomplete {
+  width: 100%;
+}
+
+.p-autocomplete .p-autocomplete-input {
+  width: 100%;
+  height: var(--nd-control-h);
+}
+
+/* ---------------------------------------------------------------------
+ * ng-select (searchable select)
+ * ------------------------------------------------------------------- */
+
+.ng-select .ng-select-container {
+  min-height: var(--nd-control-h) !important;
+  border: 1px solid var(--nd-border);
+  border-radius: var(--nd-radius);
+  color: var(--nd-text);
+  font-size: var(--nd-control-fs);
+  transition: var(--nd-transition);
+}
+
+.ng-select.ng-select-single .ng-select-container {
+  height: var(--nd-control-h);
+}
+
+.ng-select .ng-select-container .ng-value-container {
+  padding-inline-start: var(--nd-control-px);
+}
+
+.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: var(--nd-placeholder);
+}
+
+.ng-select:not(.ng-select-disabled) .ng-select-container:hover {
+  border-color: var(--nd-border-hover);
+}
+
+.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container,
+.ng-select.ng-select-opened > .ng-select-container {
+  border-color: var(--nd-primary);
+  box-shadow: var(--nd-focus-ring);
+}
+
+.ng-select.ng-select-disabled > .ng-select-container {
+  border-color: var(--nd-border-subtle);
+  background: var(--nd-disabled-bg);
+}
+
+.ng-select.ng-invalid.ng-touched .ng-select-container {
+  border-color: var(--nd-danger);
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  border-radius: 999px;
+  background: var(--nd-primary-soft);
+  color: var(--nd-accent-text);
+  font-size: var(--nd-help-fs);
+}
+
+.ng-dropdown-panel {
+  max-width: calc(100vw - 16px);
+  border-color: var(--nd-border-subtle);
+  border-radius: var(--nd-radius-lg);
+  box-shadow: var(--nd-shadow-pop);
+  font-size: var(--nd-control-fs);
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  background: #f2f4f7;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+  background: var(--nd-primary-soft);
+  color: var(--nd-accent-text);
+}
+
+/* ---------------------------------------------------------------------
+ * ng-multiselect-dropdown
+ * ------------------------------------------------------------------- */
+
+.multiselect-dropdown {
+  position: relative;
+  width: 100%;
+  margin-bottom: var(--nd-field-gap);
+}
+
+.multiselect-dropdown .dropdown-btn {
+  display: flex !important;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  min-height: var(--nd-control-h);
+  height: auto !important;
+  max-height: calc(var(--nd-control-h) * 2.4);
+  overflow-y: auto !important;
+  padding: 0.2rem var(--nd-control-px) !important;
+  padding-inline-end: 2rem !important;
+  border: 1px solid var(--nd-border) !important;
+  border-radius: var(--nd-radius) !important;
+  background: var(--nd-surface);
+  color: var(--nd-text);
+  font-size: var(--nd-control-fs) !important;
+  line-height: 1.4;
+  transition: var(--nd-transition);
+}
+
+.multiselect-dropdown .dropdown-btn:hover {
+  border-color: var(--nd-border-hover) !important;
+}
+
+.multiselect-dropdown .dropdown-btn:focus,
+.multiselect-dropdown .dropdown-btn:focus-within {
+  border-color: var(--nd-primary) !important;
+  box-shadow: var(--nd-focus-ring);
+}
+
+.multiselect-dropdown .dropdown-btn > span:first-child {
+  color: var(--nd-placeholder);
+}
+
+.multiselect-dropdown .dropdown-btn .selected-item-container {
+  float: none !important;
+  display: inline-flex;
+  max-width: 100%;
+}
+
+.multiselect-dropdown .dropdown-btn .selected-item-container .selected-item {
+  float: none !important;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  margin: 0 !important;
+  padding: 0.1rem 0.5rem !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: var(--nd-primary-soft) !important;
+  color: var(--nd-accent-text) !important;
+  font-size: var(--nd-help-fs);
+  line-height: 1.5;
+}
+
+.multiselect-dropdown .dropdown-btn .selected-item-container .selected-item span,
+.multiselect-dropdown .dropdown-btn .selected-item-container .selected-item a {
+  color: var(--nd-accent-text) !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
+  position: absolute;
+  top: 0;
+  inset-inline-end: 0;
+  width: 2rem;
+  height: 100% !important;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret:before {
+  position: static;
+  margin: 0;
+  border-color: #667085 transparent;
+  border-width: 5px 4px 0;
+}
+
+.multiselect-dropdown.disabled > span,
+.multiselect-dropdown .disabled > span {
+  background: var(--nd-disabled-bg) !important;
+}
+
+.multiselect-dropdown .dropdown-list {
+  max-width: calc(100vw - 16px);
+  margin-top: 4px;
+  padding-top: 0 !important;
+  border: 1px solid var(--nd-border-subtle) !important;
+  border-radius: var(--nd-radius-lg);
+  box-shadow: var(--nd-shadow-pop) !important;
+  overflow: hidden;
+}
+
+.multiselect-dropdown .dropdown-list .filter-textbox {
+  padding: 0.5rem !important;
+  border-bottom: 1px solid var(--nd-border-subtle) !important;
+}
+
+.multiselect-dropdown .dropdown-list .filter-textbox input {
+  height: var(--nd-control-h-sm);
+  padding: 0 var(--nd-control-px) !important;
+  border: 1px solid var(--nd-border) !important;
+  border-radius: var(--nd-radius);
+  font-size: var(--nd-control-fs);
+}
+
+.multiselect-dropdown .multiselect-item-checkbox {
+  padding: 0.4rem 0.75rem !important;
+}
+
+.multiselect-dropdown .multiselect-item-checkbox input[type="checkbox"] + div {
+  margin: 0 !important;
+  color: var(--nd-text);
+  font-size: var(--nd-control-fs) !important;
+  line-height: 1.4;
+}
+
+.multiselect-dropdown .multiselect-item-checkbox input[type="checkbox"] + div:before {
+  width: 14px !important;
+  height: 14px !important;
+  border: 1.5px solid #8a94a6 !important;
+  border-radius: 4px;
+}
+
+.multiselect-dropdown .multiselect-item-checkbox input[type="checkbox"]:checked + div:before {
+  border-color: var(--nd-primary) !important;
+  background: var(--nd-primary) !important;
+}
+
+/* ---------------------------------------------------------------------
+ * Material date field (app-date-field) -> same shape as .form-control
+ * ------------------------------------------------------------------- */
+
+app-date-field {
+  display: block;
+  margin-bottom: var(--nd-field-gap);
+}
+
+td app-date-field,
+th app-date-field {
+  margin-bottom: 0;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+  font-family: var(--nd-font);
+}
+
+.mat-mdc-form-field .mat-mdc-text-field-wrapper,
+.mat-mdc-form-field .mdc-text-field--filled,
+.mat-mdc-form-field .mdc-text-field--filled:not(.mdc-text-field--disabled),
+.mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper,
+.mdc-text-field--disabled.mdc-text-field--filled {
+  height: var(--nd-control-h) !important;
+  padding: 0 0 0 0 !important;
+  padding-inline-start: var(--nd-control-px) !important;
+  border: 1px solid var(--nd-border) !important;
+  border-radius: var(--nd-radius) !important;
+  background-color: var(--nd-surface) !important;
+  direction: ltr;
+  transition: var(--nd-transition);
+}
+
+.mat-mdc-form-field:not(.mat-form-field-disabled):hover .mat-mdc-text-field-wrapper {
+  border-color: var(--nd-border-hover) !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+  border-color: var(--nd-primary) !important;
+  box-shadow: var(--nd-focus-ring);
+}
+
+.mat-mdc-form-field.mat-form-field-invalid.ng-touched .mat-mdc-text-field-wrapper,
+.mat-mdc-form-field.mat-form-field-invalid .mat-mdc-text-field-wrapper:has(.ng-touched),
+.ng-submitted .mat-mdc-form-field.mat-form-field-invalid .mat-mdc-text-field-wrapper {
+  border-color: var(--nd-danger) !important;
+}
+
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-text-field-wrapper {
+  border-color: var(--nd-border-subtle) !important;
+  background-color: var(--nd-disabled-bg) !important;
+}
+
+.mat-mdc-form-field .mdc-line-ripple,
+.mat-mdc-form-field .mdc-line-ripple::before,
+.mat-mdc-form-field .mdc-line-ripple::after,
+.mat-mdc-form-field .mat-mdc-form-field-focus-overlay {
+  display: none !important;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-flex {
+  height: 100%;
+  align-items: center;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-infix {
+  display: flex;
+  align-items: center;
+  width: auto;
+  min-height: 0 !important;
+  height: 100%;
+  padding: 0 !important;
+}
+
+.mat-mdc-form-field .mdc-text-field__input,
+.mat-mdc-form-field .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input,
+.dateField .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  position: static !important;
+  height: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  color: var(--nd-text);
+  font-family: var(--nd-font);
+  font-size: var(--nd-control-fs) !important;
+  line-height: 1.4;
+  box-shadow: none !important;
+}
+
+.mat-mdc-form-field .mdc-text-field--disabled .mdc-text-field__input {
+  color: var(--nd-disabled-text);
+}
+
+.mat-mdc-form-field .mdc-floating-label,
+.mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label,
+.dateField .mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label,
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
+  top: 50% !important;
+  left: 0;
+  margin: 0 !important;
+  color: var(--nd-placeholder) !important;
+  font-family: var(--nd-font);
+  font-size: var(--nd-control-fs) !important;
+  transform: translateY(-50%) !important;
+  transition: opacity 0.12s ease;
+}
+
+.mat-mdc-form-field .mat-mdc-text-field-wrapper,
+.mat-mdc-form-field .mat-mdc-form-field-flex,
+.mat-mdc-form-field .mat-mdc-form-field-infix {
+  overflow: visible;
+}
+
+.mat-mdc-form-field .mdc-floating-label {
+  max-width: calc(100% - 2.5rem) !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mat-mdc-form-field .mdc-floating-label.mdc-floating-label--float-above {
+  top: -1px !important;
+  left: -4px;
+  padding: 0 4px;
+  background: var(--nd-surface);
+  color: var(--nd-muted) !important;
+  font-size: 0.6875rem !important;
+  line-height: 1;
+  transform: translateY(-50%) !important;
+}
+
+.mat-mdc-form-field:not(.mat-focused) .mdc-floating-label.mdc-floating-label--float-above {
+  opacity: 0;
+}
+
+.mat-mdc-form-field.mat-focused .mdc-floating-label.mdc-floating-label--float-above {
+  color: var(--nd-primary) !important;
+}
+
+.mat-mdc-form-field.mat-form-field-disabled .mdc-floating-label.mdc-floating-label--float-above {
+  background: linear-gradient(to bottom, var(--nd-surface) 50%, var(--nd-disabled-bg) 50%);
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-icon-suffix {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 !important;
+  color: var(--nd-muted);
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-icon-suffix .mat-mdc-icon-button.mat-mdc-button-base,
+.mat-datepicker-toggle .mat-mdc-icon-button.mat-mdc-button-base {
+  width: calc(var(--nd-control-h) - 2px);
+  height: calc(var(--nd-control-h) - 2px);
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-icon-suffix .mat-mdc-icon-button svg,
+.dateField .mat-mdc-icon-button svg {
+  width: 18px;
+  height: 18px;
+  margin: 0 !important;
+  vertical-align: middle;
+}
+
+.mat-datepicker-toggle,
+mat-datepicker-toggle {
+  color: var(--nd-muted) !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-datepicker-toggle {
+  color: var(--nd-primary) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+.mat-mdc-form-field:has(mat-error) .mat-mdc-form-field-subscript-wrapper,
+.mat-mdc-form-field:has(mat-hint) .mat-mdc-form-field-subscript-wrapper {
+  display: block;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-subscript-wrapper .mat-mdc-form-field-error-wrapper,
+.mat-mdc-form-field .mat-mdc-form-field-subscript-wrapper .mat-mdc-form-field-hint-wrapper {
+  position: static;
+  padding: 0;
+}
+
+.mat-datepicker-content {
+  border-radius: var(--nd-radius-lg) !important;
+  box-shadow: var(--nd-shadow-pop) !important;
+  font-family: var(--nd-font);
+}
+
+/* ---------------------------------------------------------------------
+ * Buttons
+ * ------------------------------------------------------------------- */
+
+.btn {
+  --bs-btn-padding-x: 0.875rem;
+  --bs-btn-padding-y: 0;
+  --bs-btn-font-size: var(--nd-control-fs);
+  --bs-btn-font-weight: 600;
+  --bs-btn-border-radius: var(--nd-radius);
+  --bs-btn-focus-box-shadow: var(--nd-focus-ring);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  min-height: var(--nd-control-h);
+  line-height: 1.2;
+  white-space: nowrap;
+  font-family: var(--nd-font);
+  transition: var(--nd-transition), color 0.15s ease;
+}
+
+.btn.d-block,
+.btn.w-100 {
+  display: flex;
+}
+
+.btn-sm,
+.btn-group-sm > .btn {
+  --bs-btn-padding-x: 0.625rem;
+  --bs-btn-font-size: var(--nd-help-fs);
+  min-height: var(--nd-control-h-sm);
+}
+
+.btn-lg {
+  --bs-btn-padding-x: 1.25rem;
+  --bs-btn-font-size: 0.875rem;
+  min-height: var(--nd-control-h);
+}
+
+.btn-link {
+  min-height: 0;
+}
+
+.btn .bi,
+.btn .pi,
+.btn .fa,
+.btn .fas,
+.btn svg.svg-inline--fa {
+  font-size: var(--nd-icon-size);
+  line-height: 1;
+}
+
+.btn-sm .bi,
+.btn-sm .pi,
+.btn-sm .fas {
+  font-size: 0.875rem;
+}
+
+.btn:disabled,
+.btn.disabled,
+fieldset:disabled .btn {
+  opacity: 0.55;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+.btn:focus-visible {
+  box-shadow: var(--nd-focus-ring);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--nd-primary);
+  --bs-btn-border-color: var(--nd-primary);
+  --bs-btn-hover-bg: var(--nd-primary-hover);
+  --bs-btn-hover-border-color: var(--nd-primary-hover);
+  --bs-btn-disabled-bg: var(--nd-primary);
+  --bs-btn-disabled-border-color: var(--nd-primary);
+}
+
+.btn-outline-secondary,
+.btn-default,
+.btn-light {
+  --bs-btn-color: var(--nd-label);
+  --bs-btn-border-color: var(--nd-border);
+  --bs-btn-bg: var(--nd-surface);
+  --bs-btn-hover-color: var(--nd-text);
+  --bs-btn-hover-bg: #f2f4f7;
+  --bs-btn-hover-border-color: var(--nd-border-hover);
+  --bs-btn-active-bg: #eaecf0;
+  --bs-btn-active-color: var(--nd-text);
+  --bs-btn-active-border-color: var(--nd-border-hover);
+}
+
+.p-button {
+  min-height: var(--nd-control-h);
+  padding: 0 0.875rem;
+  border-radius: var(--nd-radius);
+  font-family: var(--nd-font);
+  font-size: var(--nd-control-fs);
+  font-weight: 600;
+}
+
+.p-button.p-button-icon-only {
+  width: var(--nd-control-h);
+  padding: 0;
+}
+
+.p-button.p-button-sm {
+  min-height: var(--nd-control-h-sm);
+  font-size: var(--nd-help-fs);
+}
+
+.p-button:focus {
+  box-shadow: var(--nd-focus-ring);
+}
+
+.btn-default {
+  border: 1px solid var(--bs-btn-border-color) !important;
+}
+
+.card-footer {
+  padding: 0.625rem 1rem;
+  border-top: 1px solid var(--nd-border-subtle);
+  background: var(--nd-surface-subtle);
+}
+
+.card-footer > .btn + .btn:not(.float-end):not(.float-start) {
+  margin-inline-start: 0.5rem;
+}
+
+/* Form action bar: primary last in reading order, secondary before it. */
+.form-actions,
+.nd-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--nd-border-subtle);
+}
+
+.modal-footer {
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  border-top-color: var(--nd-border-subtle);
+}
+
+.modal-footer > * {
+  margin: 0;
+}
+
+.p-dialog .p-dialog-footer {
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  border-top: 1px solid var(--nd-border-subtle);
+}
+
+.p-dialog .p-dialog-footer button {
+  margin: 0 !important;
+}
+
+/* ---------------------------------------------------------------------
+ * Hierarchy: page title / section heading / field group
+ * ------------------------------------------------------------------- */
+
+.titles,
+h2.titles,
+.page-title {
+  color: var(--nd-text);
+  font-size: var(--nd-title-fs) !important;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.form-titles {
+  font-size: var(--nd-label-fs);
+}
+
+.modal-header {
+  padding: 0.75rem 1rem;
+  border-bottom-color: var(--nd-border-subtle);
+}
+
+.modal-title,
+.p-dialog .p-dialog-header .p-dialog-title {
+  color: var(--nd-text);
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.p-dialog .p-dialog-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--nd-border-subtle);
+}
+
+.p-dialog .p-dialog-content {
+  padding: 1rem;
+}
+
+.modal-body {
+  padding: 1rem;
+}
+
+fieldset > legend {
+  float: none;
+  width: auto;
+  margin-bottom: 0.5rem;
+  padding: 0 0.25rem;
+  color: var(--nd-text);
+  font-size: var(--nd-section-fs);
+  font-weight: 700;
+}
+
+.form-group {
+  margin-bottom: var(--nd-field-gap);
+}
+
+.form-group > .form-control:last-child,
+.form-group > .form-select:last-child,
+.form-group > app-date-field:last-child,
+.form-group > .multiselect-dropdown:last-child,
+.form-group > ng-multiselect-dropdown:last-child .multiselect-dropdown {
+  margin-bottom: 0;
+}
+
+/* ---------------------------------------------------------------------
+ * Layout safety: no horizontal scroll / clipped controls
+ * ------------------------------------------------------------------- */
+
+.row > [class*="col"] {
+  min-width: 0;
+}
+
+p-dropdown,
+p-multiselect,
+p-calendar,
+p-autocomplete,
+ng-select,
+ng-multiselect-dropdown {
+  display: block;
+  max-width: 100%;
+}
+
+p-checkbox,
+p-radiobutton,
+p-inputswitch {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+@media (max-width: 767.98px) {
+  .form-actions,
+  .nd-form-actions,
+  .form-actions > .btn,
+  .nd-form-actions > .btn,
+  .modal-footer > .btn {
+    flex: 1 1 auto;
+  }
+
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+
+  .p-dialog {
+    max-width: calc(100vw - 16px) !important;
+  }
+
+  .form-check-input,
+  .p-checkbox,
+  .p-checkbox .p-checkbox-box,
+  .p-radiobutton,
+  .p-radiobutton .p-radiobutton-box {
+    width: 20px;
+    height: 20px;
+  }
+
+  .form-check {
+    min-height: 2.25rem;
+  }
+
+  .titles,
+  h2.titles,
+  .page-title {
+    font-size: 1.125rem !important;
+  }
+}
+
+/* ---------------------------------------------------------------------
+ * Dark mode
+ * ------------------------------------------------------------------- */
+
+body .dark-mode {
+  --nd-text: #e5e7eb;
+  --nd-label: #d1d5db;
+  --nd-muted: #9aa3af;
+  --nd-placeholder: #7c8595;
+  --nd-surface: #2a2d3a;
+  --nd-surface-subtle: #2f3342;
+  --nd-disabled-bg: #262935;
+  --nd-disabled-text: #8a92a3;
+  --nd-readonly-bg: #262935;
+  --nd-border: #4a4f66;
+  --nd-border-hover: #6b7280;
+  --nd-border-subtle: #3b3f52;
+  --nd-primary-soft: rgba(13, 110, 253, 0.18);
+  --nd-accent-text: #9ec5ff;
+}
+
+/* ---------------------------------------------------------------------
+ * Investigation forms: rows already space themselves (row-gap)
+ * ------------------------------------------------------------------- */
+
+.investigation-form [class*="col"] > .form-control:last-child,
+.investigation-form [class*="col"] > .form-select:last-child,
+.investigation-form [class*="col"] > select:last-child,
+.investigation-form [class*="col"] > app-date-field:last-child,
+.investigation-form [class*="col"] > ng-multiselect-dropdown:last-child .multiselect-dropdown {
+  margin-bottom: 0;
+}
+
+body .dark-mode :is(.form-control, .form-select, .p-inputtext, .p-dropdown, .p-multiselect, .multiselect-dropdown .dropdown-btn, .mat-mdc-form-field .mat-mdc-text-field-wrapper) {
+  background-color: var(--nd-surface) !important;
+  border-color: var(--nd-border) !important;
+  color: var(--nd-text) !important;
+}
+
+body .dark-mode :is(.form-control, .p-inputtext):disabled,
+body .dark-mode .p-dropdown.p-disabled,
+body .dark-mode .mat-mdc-form-field.mat-form-field-disabled .mat-mdc-text-field-wrapper {
+  background-color: var(--nd-disabled-bg) !important;
+  color: var(--nd-disabled-text) !important;
+}
+
+/* ---------------------------------------------------------------------
+ * Pack fields: a full-width wrapper column holding a single field row is
+ * layout-transparent, so its fields share lines with neighbouring fields.
+ * ------------------------------------------------------------------- */
+
+.row > :is(.col-12, .col-lg-12, .col-md-12):not(.card):not(.inv-pair-nested):not(.inv-group):not([id]):not([class*="border"]):not([class*="bg-"]):not([class*="shadow"]):not([class*=" p-"]):not([class*=" px-"]):not([class*=" py-"]):has(> .row:only-child:not(.inv-pair):not([class*="justify-"]):not([class*="align-"]):not([class*=" g-"]) :is(select, input, textarea, app-date-field, p-dropdown, p-multiselect, ng-multiselect-dropdown)),
+.row > :is(.col-12, .col-lg-12, .col-md-12):not(.card):not(.inv-pair-nested):not(.inv-group):not([id]):not([class*="border"]):not([class*="bg-"]):not([class*="shadow"]):not([class*=" p-"]):not([class*=" px-"]):not([class*=" py-"]):has(> .row:only-child:not(.inv-pair):not([class*="justify-"]):not([class*="align-"]):not([class*=" g-"]) :is(select, input, textarea, app-date-field, p-dropdown, p-multiselect, ng-multiselect-dropdown)) > .row {
+  display: contents;
+}
+
+/* ---------------------------------------------------------------------
+ * Option groups (.has-labels): radios / checkboxes as compact chips
+ * ------------------------------------------------------------------- */
+
+.has-labels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--nd-control-h);
+}
+
+.has-labels label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: var(--nd-control-h-sm);
+  margin: 0;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--nd-border);
+  border-radius: var(--nd-radius);
+  background: var(--nd-surface);
+  color: var(--nd-text);
+  font-size: var(--nd-control-fs);
+  font-weight: 400;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: var(--nd-transition);
+}
+
+.has-labels label::before,
+.has-labels label::after {
+  display: none !important;
+}
+
+.has-labels label:hover {
+  border-color: var(--nd-border-hover);
+}
+
+.has-labels label:has(input:checked) {
+  border-color: var(--nd-primary);
+  background: var(--nd-primary-soft);
+  color: var(--nd-accent-text);
+}
+
+.has-labels label:has(input:focus-visible) {
+  box-shadow: var(--nd-focus-ring);
+}
+
+.has-labels label > input {
+  margin: 0;
+}
