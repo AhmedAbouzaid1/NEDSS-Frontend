@@ -22,7 +22,8 @@
               </div>
               <div class="col-lg-6">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATE" | translate }}</label>
-                <app-date-field formControlName="investigationDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="investigationDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <small class="form-text text-muted d-block mt-0">{{ dateHint('investigationDate') }}</small>
               </div>
               <div class="col-lg-6 mt-2">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_ENTRY_DATE" | translate }}</label>
@@ -131,7 +132,8 @@
             <div class="row mt-3" [appShowIf]="isStudentOrGathering">
               <div class="col-lg-4">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_FACILITY_VISIT_DATE" | translate }}</label>
-                <app-date-field formControlName="lastFacilityVisitDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="lastFacilityVisitDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <small class="form-text text-muted d-block mt-0">{{ dateHint('lastFacilityVisitDate') }}</small>
               </div>
               <div class="col-12 mt-2 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FACILITY_OTHER_GOVERNORATE" | translate }}</div>
               <div class="col-lg-4">
@@ -171,7 +173,8 @@
               </div>
               <div class="col-lg-4" [appShowIf]="meningealForm.get('traveledAbroad')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ARRIVAL_DATE" | translate }}</label>
-                <app-date-field formControlName="travelArrivalDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="travelArrivalDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <small class="form-text text-muted d-block mt-0">{{ dateHint('travelArrivalDate') }}</small>
               </div>
             </div>
           </div>
@@ -188,8 +191,11 @@
               </div>
               <div class="col-lg-4" [formGroup]="patientForm">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SYMPTOM_ONSET_DATE" | translate }}</label>
-                <app-date-field formControlName="infectionDate"></app-date-field>
-                <small class="text-danger" *ngIf="onsetDateError">{{ onsetDateError | translate }}</small>
+                <app-date-field class="date-with-note" formControlName="infectionDate" [max]="caseDetectionDate"></app-date-field>
+                <small class="form-text text-muted d-block mt-0">
+                  {{ label('تاريخ بداية الأعراض يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة', 'Symptom onset date must be on or before the case detection date') }}{{ caseDetectionDate ? ' (' + formatDate(caseDetectionDate) + ')' : '' }}
+                </small>
+                <small class="text-danger d-block" *ngIf="onsetDateError">{{ onsetDateError | translate }}</small>
               </div>
               <div class="col-lg-4">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FINAL_DIAGNOSIS_AFTER_LAB" | translate }}</label>
@@ -204,7 +210,9 @@
               </div>
               <div class="col-lg-4 mt-2">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_FOLLOW_UP_DATE" | translate }}</label>
-                <app-date-field formControlName="lastFollowUpDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="lastFollowUpDate" [min]="lastFollowUpMinDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <small class="form-text text-muted d-block mt-0">{{ dateHint('lastFollowUpDate') }}</small>
+                <small class="form-text text-danger mess-color d-block" *ngIf="lastFollowUpDateError">{{ lastFollowUpDateError }}</small>
               </div>
               <div class="col-lg-4 mt-2">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HEALTH_STATUS" | translate }}</label>
@@ -256,11 +264,21 @@
               </div>
               <div class="col-lg-4 mt-2" [appShowIf]="meningealForm.get('contactHospitalized')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_HOSPITAL_ADMISSION_DATE" | translate }}</label>
-                <app-date-field formControlName="contactHospitalAdmissionDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="contactHospitalAdmissionDate" [min]="contactAdmissionMinDate" [max]="caseDetectionDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <small class="form-text text-muted d-block mt-0">{{ dateHint('contactHospitalAdmissionDate') }}</small>
+                <small class="form-text text-danger mess-color d-block" *ngIf="contactAdmissionDateError">{{ contactAdmissionDateError }}</small>
               </div>
               <div class="col-lg-6 mt-2">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_FINAL_DIAGNOSIS" | translate }}</label>
-                <input class="form-control" formControlName="contactFinalDiagnosis" (blur)="calculateCompletionPercentage()" />
+                <select class="form-control" [formControl]="contactDiagnosisChoice">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let opt of contactDiagnosisOptions" [ngValue]="opt">{{ opt }}</option>
+                  <option [ngValue]="otherDiagnosisValue">{{ label('أخرى (حدد)', 'Other (specify)') }}</option>
+                </select>
+              </div>
+              <div class="col-lg-6 mt-2" [appShowIf]="contactDiagnosisChoice.value === otherDiagnosisValue">
+                <label>{{ label('التشخيص النهائي للمخالط (أخرى)', 'Contact final diagnosis (other)') }}</label>
+                <input class="form-control" [formControl]="contactDiagnosisOtherText" />
               </div>
             </div>
             <div class="row mt-3">
@@ -280,7 +298,9 @@
               </div>
               <div class="col-lg-4" [appShowIf]="meningealForm.get('contactTraveledAbroad')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ARRIVAL_DATE" | translate }}</label>
-                <app-date-field formControlName="contactArrivalDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="contactArrivalDate" [max]="contactArrivalMaxDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <small class="form-text text-muted d-block mt-0">{{ dateHint('contactArrivalDate') }}</small>
+                <small class="form-text text-danger mess-color d-block" *ngIf="contactArrivalDateError">{{ contactArrivalDateError }}</small>
               </div>
             </div>
           </div>
@@ -297,7 +317,9 @@
               </div>
               <div class="col-lg-6" [appShowIf]="meningealForm.get('hibVaccinated')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE" | translate }}</label>
-                <app-date-field formControlName="hibLastDoseDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="hibLastDoseDate" [min]="vaccineMinDate('hibLastDoseDate')" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <small class="form-text text-muted d-block mt-0">{{ dateHint('hibLastDoseDate') }}</small>
+                <small class="form-text text-danger mess-color d-block" *ngIf="vaccineDateError('hibLastDoseDate')">{{ vaccineDateError('hibLastDoseDate') }}</small>
               </div>
               <div class="col-lg-6 mt-2">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_SCHOOLS" | translate }}</label>
@@ -308,7 +330,9 @@
               </div>
               <div class="col-lg-6 mt-2" [appShowIf]="meningealForm.get('meningococcalSchoolVaccinated')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE" | translate }}</label>
-                <app-date-field formControlName="meningococcalSchoolLastDoseDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="meningococcalSchoolLastDoseDate" [min]="vaccineMinDate('meningococcalSchoolLastDoseDate')" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <small class="form-text text-muted d-block mt-0">{{ dateHint('meningococcalSchoolLastDoseDate') }}</small>
+                <small class="form-text text-danger mess-color d-block" *ngIf="vaccineDateError('meningococcalSchoolLastDoseDate')">{{ vaccineDateError('meningococcalSchoolLastDoseDate') }}</small>
               </div>
               <div class="col-lg-6 mt-2">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MENINGOCOCCAL_VACCINATION_TRAVELERS" | translate }}</label>
@@ -319,7 +343,9 @@
               </div>
               <div class="col-lg-6 mt-2" [appShowIf]="meningealForm.get('meningococcalTravelVaccinated')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_DOSE_DATE" | translate }}</label>
-                <app-date-field formControlName="meningococcalTravelLastDoseDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="meningococcalTravelLastDoseDate" [min]="vaccineMinDate('meningococcalTravelLastDoseDate')" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <small class="form-text text-muted d-block mt-0">{{ dateHint('meningococcalTravelLastDoseDate') }}</small>
+                <small class="form-text text-danger mess-color d-block" *ngIf="vaccineDateError('meningococcalTravelLastDoseDate')">{{ vaccineDateError('meningococcalTravelLastDoseDate') }}</small>
               </div>
             </div>
           </div>
@@ -347,7 +373,9 @@
               </div>
               <div class="col-lg-6 mt-2">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FIRST_FACILITY_VISIT_DATE" | translate }}</label>
-                <app-date-field formControlName="firstFacilityVisitDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="firstFacilityVisitDate" [min]="patientForm.get('infectionDate')?.value" [max]="firstFacilityVisitMaxDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <small class="form-text text-muted d-block mt-0">{{ dateHint('firstFacilityVisitDate') }}</small>
+                <small class="form-text text-danger mess-color d-block" *ngIf="firstFacilityVisitDateError">{{ firstFacilityVisitDateError }}</small>
               </div>
               <div class="col-lg-6 mt-2">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ONSET_TO_ADMISSION_DAYS" | translate }}</label>
@@ -455,7 +483,14 @@
                       </div>
                       <div class="col-lg-3" [appShowIf]="round.get('followupDone')?.value === 1">
                         <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.FOLLOW_UP_DATE" | translate }}</label>
-                        <app-date-field formControlName="followUpDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                        <app-date-field class="date-with-note" formControlName="followUpDate" [min]="followUpMinDate(i)" (changed)="calculateCompletionPercentage()"></app-date-field>
+                        <small class="form-text text-muted d-block mt-0" *ngIf="isFollowUpOpen(i)">{{ dateHint('followUpDate', i) }}</small>
+                        <small class="form-text text-muted d-block" *ngIf="!isFollowUpOpen(i)">
+                          {{ followUpOpensOn(i)
+                            ? label('متاح بعد مرور مدة المتابعة من تاريخ اكتشاف الحالة (من ' + formatDate(followUpOpensOn(i)) + ')', 'Available once the round duration from case detection has passed (from ' + formatDate(followUpOpensOn(i)) + ')')
+                            : label('غير متاح: تاريخ اكتشاف الحالة غير مسجل', 'Unavailable: case detection date is missing') }}
+                        </small>
+                        <small class="form-text text-danger mess-color d-block" *ngIf="followUpDateError(i)">{{ followUpDateError(i) }}</small>
                       </div>
                       <div class="col-lg-3" [appShowIf]="round.get('followupDone')?.value === 1">
                         <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_OCCURRED" | translate }}</label>
@@ -466,7 +501,8 @@
                       </div>
                       <div class="col-lg-3" [appShowIf]="round.get('complicationsOccurred')?.value === 1">
                         <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATION_DATE" | translate }}</label>
-                        <app-date-field formControlName="complicationDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                        <app-date-field class="date-with-note" formControlName="complicationDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                        <small class="form-text text-muted d-block mt-0">{{ dateHint('complicationDate') }}</small>
                       </div>
                     </div>
 

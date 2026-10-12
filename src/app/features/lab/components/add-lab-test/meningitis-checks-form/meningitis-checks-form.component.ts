@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { LabService } from '../../../services/lab.service';
+import { MENINGITIS_OTHER_DIAGNOSES } from './meningitis-diagnoses';
 
 @Component({
   selector: 'app-meningitis-checks-form',
@@ -123,35 +124,7 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
 
   readonly mriResultOptions = ['probableEncephalitis', 'freeEncephalitis'];
 
-  readonly finalDiagnosisOtherOptions = [
-    'ADEM syndrome',
-    'AKI',
-    'Auto immune disease',
-    'Auto immune encephalitis',
-    'Brain abscess',
-    'Brain atrophy',
-    'Brain edema',
-    'Brain trauma',
-    'Brain tumor',
-    'Bronchitis with meningeal irritation',
-    'DKA',
-    'Drug intake',
-    'Epilepsy',
-    'Febrile convulsions',
-    'Gastroenteritis',
-    'Guillain-Barré Syndrome',
-    'Hydrocephalus',
-    'Meningeal irritation',
-    'Miller Fischer syndrome',
-    'Multiple sclerosis (MS)',
-    'Otitis with meningeal irritation',
-    'Pneumonia with meningeal irritation',
-    'Sepsis',
-    'Sinusitis with meningeal irritation',
-    'Stroke',
-    'Septicemia',
-    'Septic shock',
-  ];
+  readonly finalDiagnosisOtherOptions = MENINGITIS_OTHER_DIAGNOSES;
 
   readonly chronicDiseaseOptions = [
     'أمراض مناعية',
