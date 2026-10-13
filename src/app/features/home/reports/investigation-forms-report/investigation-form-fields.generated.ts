@@ -176,18 +176,30 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "options": {
         "1": [
-          "وجود إحساس بالأعضاء المصابة"
+          "وجود احساس بالأعضاء المصابة"
         ],
         "2": [
-          "اكتمال الشلل خلال 4 أيام"
+          "اكتمال الشلل خلال 4 ايام"
         ],
         "3": [
           "وجود حرارة"
         ],
         "4": [
           "عدم تناظر الأعضاء المصابة"
+        ],
+        "5": [
+          "أخرى"
         ]
       }
+    },
+    {
+      "key": "otherDangerousCaseReason",
+      "label": [
+        "مؤشرات أخرى (اذكرها)"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
     },
     {
       "key": "caseMovements",
@@ -201,29 +213,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "array": true
     },
     {
-      "key": "visitDate",
-      "label": [
-        "تاريخ الزيارة"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "1) تحركات الحالة خلال 30 يوم قبل بداية الشلل"
-      ]
-    },
-    {
-      "key": "contactPlace",
-      "label": [
-        "مكان المخالطة"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "1) تحركات الحالة خلال 30 يوم قبل بداية الشلل"
-      ]
-    },
-    {
       "key": "address",
       "label": [
-        "العنوان بالتفصيل"
+        "العنوان واسم المنطقة"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -231,27 +223,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "hasCases",
+      "key": "fromDate",
       "label": [
-        "هل يوجد حالات؟"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "1) تحركات الحالة خلال 30 يوم قبل بداية الشلل"
-      ],
-      "options": {
-        "1": [
-          "نعم"
-        ],
-        "2": [
-          "لا"
-        ]
-      }
-    },
-    {
-      "key": "caseData",
-      "label": [
-        "بيانات الحالة"
+        "من تاريخ"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -259,180 +233,127 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "hasPreviousAfpCases",
+      "key": "toDate",
       "label": [
-        "هل يوجد حالات AFP بالمنطقة قبل 60 يوم؟"
+        "الى تاريخ"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "2) خط سير الحالات السابقة لتحديد مصدر العدوى"
-      ],
-      "options": {
-        "1": [
-          "نعم"
-        ],
-        "2": [
-          "لا"
-        ]
-      }
+        "1) تحركات الحالة خلال 30 يوم قبل بداية الشلل"
+      ]
     },
     {
       "key": "previousCases",
       "label": [
-        "2) خط سير الحالات السابقة لتحديد مصدر العدوى"
+        "2) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "2) خط سير الحالات السابقة لتحديد مصدر العدوى"
+        "2) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة"
       ],
       "array": true
     },
     {
       "key": "contactName",
       "label": [
-        "اسم الحالة"
+        "الاسم"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "2) خط سير الحالات السابقة لتحديد مصدر العدوى"
+        "2) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة"
       ]
     },
     {
-      "key": "residenceScope",
+      "key": "visitors",
       "label": [
-        "نطاق السكن"
+        "3) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "2) خط سير الحالات السابقة لتحديد مصدر العدوى"
-      ]
-    },
-    {
-      "key": "caseCode",
-      "label": [
-        "كود الحالة"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "2) خط سير الحالات السابقة لتحديد مصدر العدوى"
-      ]
-    },
-    {
-      "key": "hasHighRiskAreas",
-      "label": [
-        "هل يوجد مناطق عالية الخطورة؟"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "3) المناطق عالية الخطورة أو تجمع الوافدين"
-      ],
-      "options": {
-        "1": [
-          "نعم"
-        ],
-        "2": [
-          "لا"
-        ]
-      }
-    },
-    {
-      "key": "highRiskAreas",
-      "label": [
-        "3) المناطق عالية الخطورة أو تجمع الوافدين"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "3) المناطق عالية الخطورة أو تجمع الوافدين"
+        "3) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
       ],
       "array": true
     },
     {
-      "key": "areaDescription",
+      "key": "visitorNameRelation",
       "label": [
-        "وصف المنطقة"
+        "اسم الوافد وصلته بالحالة"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "3) المناطق عالية الخطورة أو تجمع الوافدين"
+        "3) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
       ]
     },
     {
-      "key": "classificationReason",
+      "key": "residenceArea",
       "label": [
-        "سبب التصنيف"
+        "المنطقة التي يقيم بها - عنوان"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "3) المناطق عالية الخطورة أو تجمع الوافدين"
+        "3) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
       ]
     },
     {
-      "key": "visitedHealthFacility",
+      "key": "residenceAfpCases",
       "label": [
-        "هل الطفل تردد على جهة صحية؟"
+        "4) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي تقيم بها الحالة"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "4) تردد الطفل على جهات صحية بعد ظهور الأعراض"
+        "4) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي تقيم بها الحالة"
       ],
-      "options": {
-        "1": [
-          "نعم"
-        ],
-        "2": [
-          "لا"
-        ]
-      }
+      "array": true
     },
     {
       "key": "healthFacilityVisits",
       "label": [
-        "4) تردد الطفل على جهات صحية بعد ظهور الأعراض"
+        "5) الجهات الصحية التي ترددت عليها الحالة بعد حدوث الشلل"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "4) تردد الطفل على جهات صحية بعد ظهور الأعراض"
+        "5) الجهات الصحية التي ترددت عليها الحالة بعد حدوث الشلل"
       ],
       "array": true
     },
     {
-      "key": "doctor",
-      "label": [
-        "الطبيب"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "4) تردد الطفل على جهات صحية بعد ظهور الأعراض"
-      ]
-    },
-    {
-      "key": "facilityType",
-      "label": [
-        "نوع الجهة"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "4) تردد الطفل على جهات صحية بعد ظهور الأعراض"
-      ]
-    },
-    {
       "key": "facilityName",
       "label": [
-        "اسم الجهة"
+        "اسم الجهة والطبيب"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "4) تردد الطفل على جهات صحية بعد ظهور الأعراض"
+        "5) الجهات الصحية التي ترددت عليها الحالة بعد حدوث الشلل"
+      ]
+    },
+    {
+      "key": "visitDate",
+      "label": [
+        "تاريخ الزيارة من"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "5) الجهات الصحية التي ترددت عليها الحالة بعد حدوث الشلل"
+      ]
+    },
+    {
+      "key": "visitToDate",
+      "label": [
+        "الى"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "5) الجهات الصحية التي ترددت عليها الحالة بعد حدوث الشلل"
       ]
     },
     {
       "key": "immediateReport",
       "label": [
-        "إبلاغ فوري"
+        "بلغت فوريا عن الحالة"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "4) تردد الطفل على جهات صحية بعد ظهور الأعراض"
+        "5) الجهات الصحية التي ترددت عليها الحالة بعد حدوث الشلل"
       ],
       "options": {
         "1": [
@@ -444,23 +365,34 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
-      "key": "actions",
+      "key": "facilityActions",
       "label": [
-        "الإجراءات"
+        "6) الاجراءات الخاصة التي اتخذت حيال الجهات الصحية التي ترددت عليها الحالة ولم تبلغ فورا"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "4) تردد الطفل على جهات صحية بعد ظهور الأعراض"
+        "6) الاجراءات الخاصة التي اتخذت حيال الجهات الصحية التي ترددت عليها الحالة ولم تبلغ فورا"
+      ],
+      "array": true
+    },
+    {
+      "key": "actions",
+      "label": [
+        "الاجراءات المتخذة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "6) الاجراءات الخاصة التي اتخذت حيال الجهات الصحية التي ترددت عليها الحالة ولم تبلغ فورا"
       ]
     },
     {
-      "key": "inspectionDate",
+      "key": "date",
       "label": [
-        "تاريخ التفتيش"
+        "التاريخ"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "4) تردد الطفل على جهات صحية بعد ظهور الأعراض"
+        "6) الاجراءات الخاصة التي اتخذت حيال الجهات الصحية التي ترددت عليها الحالة ولم تبلغ فورا"
       ]
     },
     {
@@ -478,16 +410,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "vaccineType",
       "label": [
         "نوع الطعم"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "التطعيمات الروتينية"
-      ]
-    },
-    {
-      "key": "date",
-      "label": [
-        "التاريخ"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -598,11 +520,11 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "surveyChildren",
       "label": [
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ],
       "array": true
     },
@@ -613,7 +535,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
@@ -623,7 +545,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
@@ -633,27 +555,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ],
       "optionsRef": "AgeType"
-    },
-    {
-      "key": "feverRash",
-      "label": [
-        "حمى/طفح"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
-      ],
-      "options": {
-        "1": [
-          "نعم"
-        ],
-        "2": [
-          "لا"
-        ]
-      }
     },
     {
       "key": "dose0",
@@ -662,7 +566,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ],
       "options": {
         "true": [
@@ -676,11 +580,11 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "dose1",
       "label": [
-        "الجرعات"
+        "الأطفال الذين تم مسحهم"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ],
       "options": {
         "true": [
@@ -694,11 +598,11 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "dose2",
       "label": [
-        "الجرعات"
+        "الأطفال الذين تم مسحهم"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ],
       "options": {
         "true": [
@@ -712,11 +616,11 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "dose3",
       "label": [
-        "الجرعات"
+        "الأطفال الذين تم مسحهم"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ],
       "options": {
         "true": [
@@ -730,11 +634,11 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "dose4",
       "label": [
-        "الجرعات"
+        "الأطفال الذين تم مسحهم"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ],
       "options": {
         "true": [
@@ -748,11 +652,11 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "dose5",
       "label": [
-        "الجرعات"
+        "الأطفال الذين تم مسحهم"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ],
       "options": {
         "true": [
@@ -770,7 +674,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ],
       "options": {
         "true": [
@@ -782,13 +686,31 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
+      "key": "feverRash",
+      "label": [
+        "حمى/طفح"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "الأطفال الذين تم مسحهم"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
       "key": "phone",
       "label": [
         "الهاتف"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
@@ -798,7 +720,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
@@ -808,7 +730,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "مبادرة السلوك"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
@@ -956,13 +878,23 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "aggregatedCases",
       "label": [
-        "نسب التغطية"
+        "تجمع الحالات"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ],
       "array": true
+    },
+    {
+      "key": "caseCode",
+      "label": [
+        "كود الحالة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "تجمع الحالات"
+      ]
     },
     {
       "key": "unit",
@@ -971,7 +903,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ]
     },
     {
@@ -981,7 +913,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ]
     },
     {
@@ -991,7 +923,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ]
     },
     {
@@ -1001,7 +933,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ]
     },
     {
@@ -1011,7 +943,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ],
       "options": {
         "1": [
@@ -1032,7 +964,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ],
       "options": {
         "true": [
@@ -1050,7 +982,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ],
       "options": {
         "true": [
@@ -1068,7 +1000,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ],
       "options": {
         "true": [
@@ -1086,7 +1018,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ]
     },
     {
@@ -1096,7 +1028,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ]
     },
     {
@@ -1106,7 +1038,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ]
     },
     {
@@ -1116,7 +1048,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "تجمع الحالات"
       ]
     },
     {
@@ -9632,9 +9564,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9661,9 +9590,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9690,9 +9616,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9719,9 +9642,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9748,9 +9668,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9777,9 +9694,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9806,9 +9720,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9835,9 +9746,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9855,9 +9763,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9893,9 +9798,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9922,9 +9824,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9960,9 +9859,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -9989,9 +9885,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -10045,9 +9938,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -10065,9 +9955,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -10103,9 +9990,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -11957,9 +11841,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12044,9 +11925,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12064,9 +11942,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12084,9 +11959,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12104,9 +11976,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12124,9 +11993,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12144,9 +12010,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12164,9 +12027,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12184,9 +12044,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12315,9 +12172,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12336,9 +12190,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12357,9 +12208,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12378,9 +12226,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12399,9 +12244,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12420,9 +12262,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12441,9 +12280,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12462,9 +12298,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12483,9 +12316,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12655,9 +12485,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12676,9 +12503,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12697,9 +12521,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12718,9 +12539,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12739,9 +12557,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12760,9 +12575,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12781,9 +12593,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12802,9 +12611,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12823,9 +12629,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -12995,9 +12798,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13016,9 +12816,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13037,9 +12834,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13058,9 +12852,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13079,9 +12870,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13100,9 +12888,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13121,9 +12906,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13142,9 +12924,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13163,9 +12942,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13335,9 +13111,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13356,9 +13129,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13377,9 +13147,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13398,9 +13165,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13419,9 +13183,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13440,9 +13201,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13461,9 +13219,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13482,9 +13237,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13503,9 +13255,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13583,9 +13332,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13614,9 +13360,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13645,9 +13388,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -13696,9 +13436,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20577,9 +20314,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20673,9 +20407,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20693,9 +20424,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20713,9 +20441,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20733,9 +20458,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20753,9 +20475,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20773,9 +20492,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20793,9 +20509,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20813,9 +20526,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20833,9 +20543,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20853,9 +20560,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20873,9 +20577,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20893,9 +20594,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20922,9 +20620,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20942,9 +20637,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20962,9 +20654,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -20982,9 +20671,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21002,9 +20688,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21022,9 +20705,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21042,9 +20722,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21062,9 +20739,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21141,9 +20815,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21197,9 +20868,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21235,9 +20903,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21378,9 +21043,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "4": [
           "دوكسيسيكلين (Doxycycline)"
         ],
-        "5": [
-          "بريماكين (Primaquine)"
-        ],
         "99": [
           "أخرى"
         ]
@@ -21394,6 +21056,23 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.MALARIA.TREATMENT_SECTION"
       ]
+    },
+    {
+      "key": "receivedPrimaquine",
+      "label": [
+        "NEDSS.MALARIA.RECEIVED_PRIMAQUINE"
+      ],
+      "section": [
+        "NEDSS.MALARIA.TREATMENT_SECTION"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
     },
     {
       "key": "caseAssessment",
@@ -21463,9 +21142,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21483,9 +21159,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21503,9 +21176,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21523,9 +21193,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21543,9 +21210,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -21568,1712 +21232,11 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "followD1Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD1Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD1Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.PHONE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD1Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD1MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS"
-        ]
-      }
-    },
-    {
-      "key": "followD1RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD1DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD1Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA_TITLE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD1SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD1DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ]
-    },
-    {
-      "key": "followD1SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.AGE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.PHONE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.GENDER"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD2MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS"
-        ]
-      }
-    },
-    {
-      "key": "followD2RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD2Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA_TITLE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD2SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD2DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ]
-    },
-    {
-      "key": "followD2SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_3",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.PHONE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD7MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS"
-        ]
-      }
-    },
-    {
-      "key": "followD7RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD7Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA_TITLE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD7SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD7DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ]
-    },
-    {
-      "key": "followD7SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.PHONE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD14MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS"
-        ]
-      }
-    },
-    {
-      "key": "followD14RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD14Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA_TITLE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD14SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD14DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ]
-    },
-    {
-      "key": "followD14SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD28Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD28Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.AGE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD28Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.PHONE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD28Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.GENDER"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD28MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS"
-        ]
-      }
-    },
-    {
-      "key": "followD28RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD28DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD28Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD28DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD28CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD28SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD28DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD28JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD28vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD28Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA_TITLE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD28Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD28OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD28SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD28DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ]
-    },
-    {
-      "key": "followD28SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
       "key": "investigationDone",
       "label": [
         "NEDSS.MALARIA.ENTOMOLOGICAL_INVESTIGATION_DONE"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
       ],
       "options": {
@@ -23282,9 +21245,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -23294,7 +21254,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.IF_YES_ENTOMOLOGICAL_RESULT"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
       ]
     },
@@ -23304,7 +21263,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.IF_POSITIVE_MOSQUITO_CONTROL_DONE"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
       ],
       "options": {
@@ -23313,9 +21271,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -23325,90 +21280,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.IF_YES_PROCEDURES"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.ENTOMOLOGICAL_SURVEILLANCE"
-      ]
-    },
-    {
-      "key": "traveledAbroad",
-      "label": [
-        "NEDSS.MALARIA.TRAVELED_ABROAD"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.MALARIA.TRAVEL_SECTION"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "travelPlace",
-      "label": [
-        "NEDSS.MALARIA.IF_YES_TRAVEL_PLACE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.MALARIA.TRAVEL_SECTION"
-      ]
-    },
-    {
-      "key": "entryIntoEgypt",
-      "label": [
-        "NEDSS.MALARIA.RETURN_DATE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.MALARIA.TRAVEL_SECTION"
-      ]
-    },
-    {
-      "key": "transfusedBlood",
-      "label": [
-        "NEDSS.MALARIA.TRANSFUSED_BLOOD"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.MALARIA.TRAVEL_SECTION"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "placeName",
-      "label": [
-        "NEDSS.MALARIA.PLACE_NAME"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.MALARIA.TRAVEL_SECTION"
-      ]
-    },
-    {
-      "key": "date",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DATE"
-      ],
-      "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
-        "NEDSS.MALARIA.TRAVEL_SECTION"
       ]
     },
     {
@@ -23417,7 +21289,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.PROPHYLACTIC_DRUG"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.PREVENTIVE_MEASURES_SECTION"
       ],
       "options": {
@@ -23426,9 +21297,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -23438,7 +21306,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.PROPERTY_TYPE"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.PREVENTIVE_MEASURES_SECTION"
       ]
     },
@@ -23448,7 +21315,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DATE"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.PREVENTIVE_MEASURES_SECTION"
       ]
     },
@@ -23458,7 +21324,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_PATIENT_NAME"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23468,7 +21333,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_MALARIA_UNIT"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23478,7 +21342,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_INFECTION_DATE"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23488,7 +21351,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.PLASMODIUM_TYPE"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23498,7 +21360,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_PATIENT_ADDRESS"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23508,7 +21369,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_SAMPLE_DATE"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23518,7 +21378,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ],
       "array": true
@@ -23529,7 +21388,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_NAME"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23539,7 +21397,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_AGE"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23549,7 +21406,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_GENDER"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ],
       "options": {
@@ -23567,7 +21423,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_ADDRESS"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23577,7 +21432,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_NATIONALITY"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23587,7 +21441,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_PHONE"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23597,7 +21450,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_COLLECTOR"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     },
@@ -23607,7 +21459,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.MALARIA.CONTACT_SAMPLES_UNIT_MANAGER"
       ],
       "section": [
-        "NEDSS.MALARIA.FOLLOW_UP_DAY_28",
         "NEDSS.MALARIA.CONTACT_SAMPLES_TITLE"
       ]
     }
@@ -24023,15 +21874,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "contactHospitalAdmissionDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_HOSPITAL_ADMISSION_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
-      ]
-    },
-    {
-      "key": "contactFinalDiagnosis",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_FINAL_DIAGNOSIS"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS"
@@ -29987,7 +27829,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "bathingSwimming",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.BATHING_SWIMMING"
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.CANAL_WATER_CONTACT"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EPIDEMIOLOGICAL_INVESTIGATION"
@@ -29998,9 +27840,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         ],
         "2": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
@@ -30035,35 +27874,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     },
     {
       "key": "drinkingCanalWaterPlace",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EPIDEMIOLOGICAL_INVESTIGATION"
-      ]
-    },
-    {
-      "key": "washingUtensils",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.WASHING_UTENSILS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EPIDEMIOLOGICAL_INVESTIGATION"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "washingUtensilsPlace",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE"
       ],
@@ -30313,6 +28123,26 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
+      "key": "vegetablesWashedLemon",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.VEGETABLES_WASHED_LEMON"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EPIDEMIOLOGICAL_INVESTIGATION"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ],
+        "3": [
+          "NEDSS.REPORTS.UnKnown"
+        ]
+      }
+    },
+    {
       "key": "hadSchistosomiasis",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.HAD_SCHISTOSOMIASIS"
@@ -30396,26 +28226,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EPIDEMIOLOGICAL_INVESTIGATION"
       ]
-    },
-    {
-      "key": "vegetablesWashedLemon",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.VEGETABLES_WASHED_LEMON"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
     },
     {
       "key": "locationDirectContact",

@@ -114,6 +114,13 @@
                   ></p-multiSelect>
                 </div>
               </div>
+              <div class="col-lg-4 inv-field-cell"
+                [appShowIf]="form.get('isDangerousCase')?.value == 1 && (form.get('selectedDangerousCaseReasons')?.value || []).includes(dangerousCaseOtherCode)">
+                <div class="form-group">
+                  <label>مؤشرات أخرى (اذكرها)</label>
+                  <input type="text" class="form-control" formControlName="otherDangerousCaseReason" maxlength="250" />
+                </div>
+              </div>
             </div>
 
             <!-- 1. Case movements -->
@@ -124,179 +131,138 @@
                 <span>إضافة تحرك جديد</span>
               </button>
             </div>
-            <div class="mb-2" *ngIf="caseMovements.length > 0">
-              <div class="fwb mb-1">عرض السجلات</div>
-              <div class="table-responsive">
-                <table class="table table-bordered text-center align-middle">
-                  <thead><tr><th>#</th><th>تاريخ الزيارة</th><th>مكان المخالطة</th><th>العنوان</th><th>هل يوجد حالات؟</th><th>بيانات الحالة</th></tr></thead>
-                  <tbody>
-                    <tr *ngFor="let m of caseMovements.controls; let i = index">
-                      <td>{{ i + 1 }}</td><td>{{ m.value.visitDate }}</td><td>{{ m.value.contactPlace }}</td><td>{{ m.value.address }}</td><td>{{ yesNo(m.value.hasCases) }}</td><td>{{ m.value.caseData }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div formArrayName="caseMovements">
-              <div class="record-card" *ngFor="let m of caseMovements.controls; let i = index" [formGroupName]="i">
-                <div class="record-card-head">
-                  <span class="fwb">سجل #{{ i + 1 }}</span>
-                  <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(m)"><i class="pi" [ngClass]="isRowOpen(m) ? 'pi-chevron-up' : 'pi-pencil'"></i> {{ isRowOpen(m) ? 'إغلاق' : 'تعديل' }}</button>
-                    <button type="button" class="btn btn-sm btn-danger" (click)="removeCaseMovement(i)"><i class="pi pi-trash"></i> حذف</button>
-                  </div>
-                </div>
-                <div *ngIf="!isRowOpen(m)" class="text-muted small">{{ m.value.visitDate || 'بدون تاريخ' }} <span *ngIf="m.value.address">— {{ m.value.address }}</span></div>
-                <div class="row" *ngIf="isRowOpen(m)">
-                  <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>تاريخ الزيارة</label><app-date-field formControlName="visitDate"></app-date-field></div></div>
-                  <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>مكان المخالطة</label><input type="text" class="form-control" formControlName="contactPlace" /></div></div>
-                  <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>العنوان بالتفصيل</label><input type="text" class="form-control" formControlName="address" /></div></div>
-                  <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>هل يوجد حالات؟</label>
-                    <select class="form-control" formControlName="hasCases"><option [ngValue]="null">اختر</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
-                  <div class="col-lg-9" [appShowIf]="m.get('hasCases')?.value == 1"><div class="form-group"><label>بيانات الحالة</label><input type="text" class="form-control" formControlName="caseData" /></div></div>
-                </div>
-              </div>
+            <div class="table-responsive" formArrayName="caseMovements">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>العنوان واسم المنطقة</th><th>من تاريخ</th><th>الى تاريخ</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let m of caseMovements.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input type="text" class="form-control" formControlName="address" /></td>
+                    <td><app-date-field formControlName="fromDate"></app-date-field></td>
+                    <td><app-date-field formControlName="toDate" [min]="m.get('fromDate')?.value"></app-date-field></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeCaseMovement(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <!-- 2. Previous cases -->
-            <div class="section-bar b2 mt-4">2) خط سير الحالات السابقة لتحديد مصدر العدوى</div>
-            <div class="form-group d-flex gap-3 align-items-center mb-2">
-              <span class="fwb">هل يوجد حالات AFP بالمنطقة قبل 60 يوم؟</span>
-              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasPreviousAfpCases" [value]="1" /> نعم</label>
-              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasPreviousAfpCases" [value]="2" /> لا</label>
+            <div class="section-bar b2 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>2) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة</span>
+              <button type="button" class="btn case-movement-add" (click)="addPreviousCase()">
+                <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                <span>إضافة حالة</span>
+              </button>
             </div>
-            <ng-container *ngIf="form.value.hasPreviousAfpCases === 1">
-              <div class="d-flex justify-content-end mb-2"><button type="button" class="btn btn-add-record btn-sm" (click)="addPreviousCase()"><i class="pi pi-plus"></i> إضافة حالة جديدة</button></div>
-              <div class="mb-2" *ngIf="previousCases.length > 0">
-                <div class="fwb mb-1">عرض السجلات</div>
-                <div class="table-responsive">
-                  <table class="table table-bordered text-center align-middle">
-                    <thead><tr><th>#</th><th>اسم الحالة</th><th>تاريخ ظهور الشلل</th><th>نطاق السكن</th><th>العنوان</th><th>كود الحالة</th></tr></thead>
-                    <tbody>
-                      <tr *ngFor="let p of previousCases.controls; let i = index">
-                        <td>{{ i + 1 }}</td><td>{{ p.value.contactName }}</td><td>{{ p.value.paralysisOnsetDate }}</td><td>{{ p.value.residenceScope }}</td><td>{{ p.value.address }}</td><td>{{ p.value.caseCode }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div formArrayName="previousCases">
-                <div class="record-card" *ngFor="let p of previousCases.controls; let i = index" [formGroupName]="i">
-                  <div class="record-card-head">
-                    <span class="fwb">حالة #{{ i + 1 }}</span>
-                    <div class="d-flex gap-2">
-                      <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(p)"><i class="pi" [ngClass]="isRowOpen(p) ? 'pi-chevron-up' : 'pi-pencil'"></i> {{ isRowOpen(p) ? 'إغلاق' : 'تعديل' }}</button>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="removePreviousCase(i)"><i class="pi pi-trash"></i> حذف</button>
-                    </div>
-                  </div>
-                  <div *ngIf="!isRowOpen(p)" class="text-muted small">{{ p.value.contactName || 'بدون اسم' }}</div>
-                  <div class="row" *ngIf="isRowOpen(p)">
-                    <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>اسم الحالة</label><input type="text" class="form-control" formControlName="contactName" /></div></div>
-                    <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ ظهور الشلل</label><app-date-field formControlName="paralysisOnsetDate"></app-date-field></div></div>
-                    <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>نطاق السكن</label><input type="text" class="form-control" formControlName="residenceScope" /></div></div>
-                    <div class="col-lg-8"><div class="form-group"><label>العنوان</label><input type="text" class="form-control" formControlName="address" /></div></div>
-                    <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>كود الحالة</label><input type="text" class="form-control" formControlName="caseCode" /></div></div>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
+            <div class="table-responsive" formArrayName="previousCases">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>الاسم</th><th>العنوان</th><th>تاريخ بدء الشلل</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let p of previousCases.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input type="text" class="form-control" formControlName="contactName" /></td>
+                    <td><input type="text" class="form-control" formControlName="address" /></td>
+                    <td><app-date-field formControlName="paralysisOnsetDate"></app-date-field></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removePreviousCase(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-            <!-- 3. High risk areas -->
-            <div class="section-bar b3 mt-4">3) المناطق عالية الخطورة أو تجمع الوافدين</div>
-            <div class="form-group d-flex gap-3 align-items-center mb-2">
-              <span class="fwb">هل يوجد مناطق عالية الخطورة؟</span>
-              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasHighRiskAreas" [value]="1" /> نعم</label>
-              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="hasHighRiskAreas" [value]="2" /> لا</label>
+            <div class="section-bar b3 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>3) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل</span>
+              <button type="button" class="btn case-movement-add" (click)="addVisitor()">
+                <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                <span>إضافة وافد</span>
+              </button>
             </div>
-            <ng-container *ngIf="form.value.hasHighRiskAreas === 1">
-              <div class="d-flex justify-content-end mb-2"><button type="button" class="btn btn-add-record btn-sm" (click)="addHighRiskArea()"><i class="pi pi-plus"></i> إضافة منطقة جديدة</button></div>
-              <div class="mb-2" *ngIf="highRiskAreas.length > 0">
-                <div class="fwb mb-1">عرض السجلات</div>
-                <div class="table-responsive">
-                  <table class="table table-bordered text-center align-middle">
-                    <thead><tr><th>#</th><th>تاريخ الزيارة</th><th>وصف المنطقة</th><th>سبب التصنيف</th><th>العنوان</th><th>هل يوجد حالات؟</th><th>بيانات الحالة</th></tr></thead>
-                    <tbody>
-                      <tr *ngFor="let a of highRiskAreas.controls; let i = index">
-                        <td>{{ i + 1 }}</td><td>{{ a.value.visitDate }}</td><td>{{ a.value.areaDescription }}</td><td>{{ a.value.classificationReason }}</td><td>{{ a.value.address }}</td><td>{{ yesNo(a.value.hasCases) }}</td><td>{{ a.value.caseData }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div formArrayName="highRiskAreas">
-                <div class="record-card" *ngFor="let a of highRiskAreas.controls; let i = index" [formGroupName]="i">
-                  <div class="record-card-head">
-                    <span class="fwb">منطقة #{{ i + 1 }}</span>
-                    <div class="d-flex gap-2">
-                      <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(a)"><i class="pi" [ngClass]="isRowOpen(a) ? 'pi-chevron-up' : 'pi-pencil'"></i> {{ isRowOpen(a) ? 'إغلاق' : 'تعديل' }}</button>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="removeHighRiskArea(i)"><i class="pi pi-trash"></i> حذف</button>
-                    </div>
-                  </div>
-                  <div *ngIf="!isRowOpen(a)" class="text-muted small">{{ a.value.visitDate || 'بدون تاريخ' }} <span *ngIf="a.value.areaDescription">— {{ a.value.areaDescription }}</span></div>
-                  <div class="row" *ngIf="isRowOpen(a)">
-                    <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>تاريخ الزيارة</label><app-date-field formControlName="visitDate"></app-date-field></div></div>
-                    <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>وصف المنطقة</label><input type="text" class="form-control" formControlName="areaDescription" /></div></div>
-                    <div class="col-lg-5 inv-field-cell"><div class="form-group"><label>سبب التصنيف</label><input type="text" class="form-control" formControlName="classificationReason" /></div></div>
-                    <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>العنوان</label><input type="text" class="form-control" formControlName="address" /></div></div>
-                    <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>هل يوجد حالات؟</label>
-                      <select class="form-control" formControlName="hasCases"><option [ngValue]="null">اختر</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
-                    <div class="col-lg-3 inv-field-cell" [appShowIf]="a.get('hasCases')?.value == 1"><div class="form-group"><label>بيانات الحالة</label><input type="text" class="form-control" formControlName="caseData" /></div></div>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
+            <div class="table-responsive" formArrayName="visitors">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>اسم الوافد وصلته بالحالة</th><th>المنطقة التي يقيم بها - عنوان</th><th>الزيارة من تاريخ</th><th>الى تاريخ</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let v of visitors.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input type="text" class="form-control" formControlName="visitorNameRelation" /></td>
+                    <td><input type="text" class="form-control" formControlName="residenceArea" /></td>
+                    <td><app-date-field formControlName="fromDate"></app-date-field></td>
+                    <td><app-date-field formControlName="toDate" [min]="v.get('fromDate')?.value"></app-date-field></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeVisitor(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-            <!-- 4. Health facility visits -->
-            <div class="section-bar b4 mt-4">4) تردد الطفل على جهات صحية بعد ظهور الأعراض</div>
-            <div class="form-group d-flex gap-3 align-items-center mb-2">
-              <span class="fwb">هل الطفل تردد على جهة صحية؟</span>
-              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="visitedHealthFacility" [value]="1" /> نعم</label>
-              <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="visitedHealthFacility" [value]="2" /> لا</label>
+            <div class="section-bar b4 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>4) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي تقيم بها الحالة</span>
+              <button type="button" class="btn case-movement-add" (click)="addResidenceAfpCase()">
+                <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                <span>إضافة حالة</span>
+              </button>
             </div>
-            <ng-container *ngIf="form.value.visitedHealthFacility === 1">
-              <div class="d-flex justify-content-end mb-2"><button type="button" class="btn btn-add-record btn-sm" (click)="addFacilityVisit()"><i class="pi pi-plus"></i> إضافة زيارة جديدة</button></div>
-              <div class="mb-2" *ngIf="healthFacilityVisits.length > 0">
-                <div class="fwb mb-1">عرض السجلات</div>
-                <div class="table-responsive">
-                  <table class="table table-bordered text-center align-middle">
-                    <thead><tr><th>#</th><th>تاريخ الزيارة</th><th>الطبيب</th><th>نوع الجهة</th><th>اسم الجهة</th><th>العنوان</th><th>إبلاغ فوري</th><th>الإجراءات</th><th>تاريخ التفتيش</th></tr></thead>
-                    <tbody>
-                      <tr *ngFor="let f of healthFacilityVisits.controls; let i = index">
-                        <td>{{ i + 1 }}</td><td>{{ f.value.visitDate }}</td><td>{{ f.value.doctor }}</td><td>{{ f.value.facilityType }}</td><td>{{ f.value.facilityName }}</td><td>{{ f.value.address }}</td><td>{{ yesNo(f.value.immediateReport) }}</td><td>{{ f.value.actions }}</td><td>{{ f.value.inspectionDate }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div formArrayName="healthFacilityVisits">
-                <div class="record-card" *ngFor="let f of healthFacilityVisits.controls; let i = index" [formGroupName]="i">
-                  <div class="record-card-head">
-                    <span class="fwb">زيارة #{{ i + 1 }}</span>
-                    <div class="d-flex gap-2">
-                      <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(f)"><i class="pi" [ngClass]="isRowOpen(f) ? 'pi-chevron-up' : 'pi-pencil'"></i> {{ isRowOpen(f) ? 'إغلاق' : 'تعديل' }}</button>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="removeFacilityVisit(i)"><i class="pi pi-trash"></i> حذف</button>
-                    </div>
-                  </div>
-                  <div *ngIf="!isRowOpen(f)" class="text-muted small">{{ f.value.visitDate || 'بدون تاريخ' }} <span *ngIf="f.value.facilityName">— {{ f.value.facilityName }}</span></div>
-                  <div class="row" *ngIf="isRowOpen(f)">
-                    <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>تاريخ الزيارة</label><app-date-field formControlName="visitDate"></app-date-field></div></div>
-                    <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>الطبيب</label><input type="text" class="form-control" formControlName="doctor" /></div></div>
-                    <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>نوع الجهة</label><input type="text" class="form-control" formControlName="facilityType" /></div></div>
-                    <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>اسم الجهة</label><input type="text" class="form-control" formControlName="facilityName" /></div></div>
-                    <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>العنوان</label><input type="text" class="form-control" formControlName="address" /></div></div>
-                    <div class="col-lg-2"><div class="form-group"><label>إبلاغ فوري</label>
-                      <select class="form-control" formControlName="immediateReport"><option [ngValue]="null">اختر</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
-                    <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>الإجراءات</label><input type="text" class="form-control" formControlName="actions" /></div></div>
-                    <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>تاريخ التفتيش</label><app-date-field formControlName="inspectionDate"></app-date-field></div></div>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
+            <div class="table-responsive" formArrayName="residenceAfpCases">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>الاسم</th><th>العنوان</th><th>تاريخ بدء الشلل</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let r of residenceAfpCases.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input type="text" class="form-control" formControlName="contactName" /></td>
+                    <td><input type="text" class="form-control" formControlName="address" /></td>
+                    <td><app-date-field formControlName="paralysisOnsetDate"></app-date-field></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeResidenceAfpCase(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="section-bar b1 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>5) الجهات الصحية التي ترددت عليها الحالة بعد حدوث الشلل</span>
+              <button type="button" class="btn case-movement-add" (click)="addFacilityVisit()">
+                <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                <span>إضافة جهة</span>
+              </button>
+            </div>
+            <div class="table-responsive" formArrayName="healthFacilityVisits">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>اسم الجهة والطبيب</th><th>العنوان</th><th>تاريخ الزيارة من</th><th>الى</th><th>بلغت فوريا عن الحالة</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let f of healthFacilityVisits.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input type="text" class="form-control" formControlName="facilityName" /></td>
+                    <td><input type="text" class="form-control" formControlName="address" /></td>
+                    <td><app-date-field formControlName="visitDate"></app-date-field></td>
+                    <td><app-date-field formControlName="visitToDate" [min]="f.get('visitDate')?.value"></app-date-field></td>
+                    <td><select class="form-control" formControlName="immediateReport"><option [ngValue]="null">اختر</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeFacilityVisit(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="section-bar b2 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>6) الاجراءات الخاصة التي اتخذت حيال الجهات الصحية التي ترددت عليها الحالة ولم تبلغ فورا</span>
+              <button type="button" class="btn case-movement-add" (click)="addFacilityAction()">
+                <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                <span>إضافة اجراء</span>
+              </button>
+            </div>
+            <div class="table-responsive" formArrayName="facilityActions">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>الجهة الصحية</th><th>الاجراءات المتخذة</th><th>التاريخ</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let x of facilityActions.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input type="text" class="form-control" formControlName="facilityName" /></td>
+                    <td><input type="text" class="form-control" formControlName="actions" /></td>
+                    <td><app-date-field formControlName="date"></app-date-field></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeFacilityAction(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </ng-container>
 
           <!-- ================= TAB 2: موقف التطعيمات ================= -->
           <ng-container *ngIf="activeTab === 'vaccination'">
-            <div class="title fs-6 fwb mb-2">التطعيمات الروتينية</div>
+            <div class="section-bar b1">التطعيمات الروتينية</div>
             <div class="table-responsive">
               <table class="table table-bordered text-center align-middle" formArrayName="routineVaccinations">
                 <thead><tr><th>الجرعة</th><th>نوع الطعم</th><th>التاريخ</th><th>المصدر</th></tr></thead>
@@ -317,51 +283,32 @@
               </table>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
-              <span class="title fs-6 fwb">موقف الحملات</span>
-              <button type="button" class="btn btn-add-record btn-sm" (click)="addCampaign()"><i class="pi pi-plus"></i> إضافة حملة</button>
-            </div>
-            <div class="mb-2" *ngIf="campaigns.length > 0">
-              <div class="fwb mb-1">عرض السجلات</div>
-              <div class="table-responsive">
-                <table class="table table-bordered text-center align-middle">
-                  <thead><tr><th>#</th><th>تاريخ الحملة</th><th>نوع الحملة</th><th>نوع الطعم</th><th>المصدر</th></tr></thead>
-                  <tbody>
-                    <tr *ngFor="let c of campaigns.controls; let i = index">
-                      <td>{{ i + 1 }}</td><td>{{ c.value.campaignDate }}</td><td>{{ c.value.campaignType }}</td><td>{{ c.value.vaccineType }}</td><td>{{ c.value.source }}</td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div class="section-bar b2 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>موقف الحملات</span>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn case-movement-add" (click)="addCampaign()">
+                  <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                  <span>إضافة حملة</span>
+                </button>
               </div>
             </div>
-            <div formArrayName="campaigns">
-              <div class="record-card" *ngFor="let c of campaigns.controls; let i = index" [formGroupName]="i">
-                <div class="record-card-head">
-                  <span class="fwb">حملة #{{ i + 1 }}</span>
-                  <button type="button" class="btn btn-sm btn-danger" (click)="removeCampaign(i)"><i class="pi pi-trash"></i> حذف</button>
-                </div>
-                <div class="row">
-                  <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>تاريخ الحملة</label><app-date-field formControlName="campaignDate"></app-date-field></div></div>
-                  <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>نوع الحملة</label>
-                    <select class="form-control" formControlName="campaignType">
-                      <option [ngValue]="null">-- اختر --</option>
-                      <option *ngFor="let o of campaignTypes" [ngValue]="o">{{ o }}</option>
-                    </select></div></div>
-                  <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>نوع الطعم</label>
-                    <select class="form-control" formControlName="vaccineType">
-                      <option [ngValue]="null">-- اختر --</option>
-                      <option *ngFor="let o of vaccineTypes" [ngValue]="o">{{ o }}</option>
-                    </select></div></div>
-                  <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>المصدر</label>
-                    <select class="form-control" formControlName="source">
-                      <option [ngValue]="null">-- اختر --</option>
-                      <option *ngFor="let o of sources" [ngValue]="o">{{ o }}</option>
-                    </select></div></div>
-                </div>
-              </div>
+            <div class="table-responsive" formArrayName="campaigns">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>تاريخ الحملة</th><th>نوع الحملة</th><th>نوع الطعم</th><th>المصدر</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let c of campaigns.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><app-date-field formControlName="campaignDate"></app-date-field></td>
+                    <td><select class="form-control" formControlName="campaignType"><option [ngValue]="null">-- اختر --</option><option *ngFor="let o of campaignTypes" [ngValue]="o">{{ o }}</option></select></td>
+                    <td><select class="form-control" formControlName="vaccineType"><option [ngValue]="null">-- اختر --</option><option *ngFor="let o of vaccineTypes" [ngValue]="o">{{ o }}</option></select></td>
+                    <td><select class="form-control" formControlName="source"><option [ngValue]="null">-- اختر --</option><option *ngFor="let o of sources" [ngValue]="o">{{ o }}</option></select></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeCampaign(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <div class="title fs-6 fwb mt-3 mb-2">مبادرة السلوك</div>
+            <div class="section-bar b3 mt-4">مبادرة السلوك</div>
             <div class="row">
               <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>جرعة أولى - تاريخ</label><app-date-field formControlName="behaviorDose1Date"></app-date-field></div></div>
               <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>جرعة أولى - المصدر</label>
@@ -385,62 +332,43 @@
               <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>رقم المربع</label><input type="text" class="form-control" formControlName="surveySquareNumber" /></div></div>
             </div>
 
-            <div class="d-flex justify-content-end mb-2"><button type="button" class="btn btn-add-record btn-sm" (click)="addSurveyChild()"><i class="pi pi-plus"></i> إضافة طفل</button></div>
-            <div class="mb-2" *ngIf="surveyChildren.length > 0">
-              <div class="fwb mb-1">عرض السجلات</div>
-              <div class="table-responsive">
-                <table class="table table-bordered text-center align-middle">
-                  <thead><tr><th>#</th><th>الاسم</th><th>العمر</th><th>صفر</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>منشطة</th><th>حمى/طفح</th><th>التاريخ</th><th>الهاتف</th><th>Long</th><th>Lat</th></tr></thead>
-                  <tbody>
-                    <tr *ngFor="let s of surveyChildren.controls; let i = index">
-                      <td>{{ i + 1 }}</td><td>{{ s.value.name }}</td><td>{{ ageLabel(s.value) }}</td>
-                      <td>{{ mark(s.value.dose0) }}</td><td>{{ mark(s.value.dose1) }}</td><td>{{ mark(s.value.dose2) }}</td><td>{{ mark(s.value.dose3) }}</td><td>{{ mark(s.value.dose4) }}</td><td>{{ mark(s.value.dose5) }}</td><td>{{ mark(s.value.booster) }}</td>
-                      <td>{{ yesNo(s.value.feverRash) }}</td><td>{{ s.value.date }}</td><td>{{ s.value.phone }}</td><td>{{ s.value.long }}</td><td>{{ s.value.lat }}</td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div class="section-bar b2 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>الأطفال الذين تم مسحهم</span>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn case-movement-add" (click)="addSurveyChild()">
+                  <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                  <span>إضافة طفل</span>
+                </button>
               </div>
             </div>
-            <div formArrayName="surveyChildren">
-              <div class="record-card" *ngFor="let s of surveyChildren.controls; let i = index" [formGroupName]="i">
-                <div class="record-card-head">
-                  <span class="fwb">طفل #{{ i + 1 }}</span>
-                  <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleRow(s)"><i class="pi" [ngClass]="isRowOpen(s) ? 'pi-chevron-up' : 'pi-pencil'"></i> {{ isRowOpen(s) ? 'إغلاق' : 'تعديل' }}</button>
-                    <button type="button" class="btn btn-sm btn-danger" (click)="removeSurveyChild(i)"><i class="pi pi-trash"></i> حذف</button>
-                  </div>
-                </div>
-                <div *ngIf="!isRowOpen(s)" class="text-muted small">{{ s.value.name || 'بدون اسم' }}</div>
-                <div class="row" *ngIf="isRowOpen(s)">
-                  <div class="col-lg-4 col-md-6 inv-field-cell"><div class="form-group"><label>الاسم</label><input type="text" class="form-control" formControlName="name" /></div></div>
-                  <div class="col-lg-2 col-md-3 inv-field-cell"><div class="form-group"><label>العمر</label><input type="number" min="0" class="form-control" formControlName="age" /></div></div>
-                  <div class="col-lg-2 col-md-3 inv-field-cell"><div class="form-group"><label>نوع العمر</label>
-                    <select class="form-control" formControlName="ageTypeId"><option *ngFor="let t of ageTypes" [ngValue]="t.id">{{ t.arabicName }}</option></select></div></div>
-                  <div class="col-lg-4 col-md-6 inv-field-cell"><div class="form-group"><label>حمى/طفح</label>
-                    <select class="form-control" formControlName="feverRash"><option [ngValue]="null">--</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></div></div>
-
-                  <div class="col-12">
-                    <label class="fwb d-block mb-1">الجرعات</label>
-                    <div class="d-flex flex-wrap gap-3 mb-2 pb-2 border-bottom">
-                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose0" /> صفر</label>
-                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose1" /> 1</label>
-                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose2" /> 2</label>
-                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose3" /> 3</label>
-                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose4" /> 4</label>
-                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="dose5" /> 5</label>
-                      <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="booster" /> منشطة</label>
-                    </div>
-                  </div>
-
-                  <div class="col-lg-3 col-md-6 inv-field-cell"><div class="form-group"><label>التاريخ</label><app-date-field formControlName="date"></app-date-field></div></div>
-                  <div class="col-lg-3 col-md-6 inv-field-cell"><div class="form-group"><label>الهاتف</label><input type="text" class="form-control" formControlName="phone" /></div></div>
-                  <div class="col-lg-3 col-md-6 inv-field-cell"><div class="form-group"><label>Long</label><input type="text" class="form-control" formControlName="long" /></div></div>
-                  <div class="col-lg-3 col-md-6 inv-field-cell"><div class="form-group"><label>Lat</label><input type="text" class="form-control" formControlName="lat" /></div></div>
-                </div>
-              </div>
+            <div class="table-responsive survey-children-table" formArrayName="surveyChildren">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>الاسم</th><th>العمر</th><th>نوع العمر</th><th>صفر</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>منشطة</th><th>حمى/طفح</th><th>التاريخ</th><th>الهاتف</th><th>Long</th><th>Lat</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let s of surveyChildren.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input type="text" class="form-control" formControlName="name" /></td>
+                    <td><input type="number" min="0" class="form-control" formControlName="age" /></td>
+                    <td><select class="form-control" formControlName="ageTypeId"><option *ngFor="let t of ageTypes" [ngValue]="t.id">{{ t.arabicName }}</option></select></td>
+                    <td><input type="checkbox" formControlName="dose0" /></td>
+                    <td><input type="checkbox" formControlName="dose1" /></td>
+                    <td><input type="checkbox" formControlName="dose2" /></td>
+                    <td><input type="checkbox" formControlName="dose3" /></td>
+                    <td><input type="checkbox" formControlName="dose4" /></td>
+                    <td><input type="checkbox" formControlName="dose5" /></td>
+                    <td><input type="checkbox" formControlName="booster" /></td>
+                    <td><select class="form-control" formControlName="feverRash"><option [ngValue]="null">--</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
+                    <td><app-date-field formControlName="date"></app-date-field></td>
+                    <td><input type="text" class="form-control" formControlName="phone" /></td>
+                    <td><input type="text" class="form-control" formControlName="long" /></td>
+                    <td><input type="text" class="form-control" formControlName="lat" /></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeSurveyChild(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <div class="title fs-6 fwb mt-3 mb-2">نسب التغطية</div>
+            <div class="section-bar b3 mt-4">نسب التغطية</div>
             <div class="row mb-2">
               <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>الشهر</label><input type="text" class="form-control" formControlName="surveyMonth" /></div></div>
             </div>
@@ -473,38 +401,34 @@
 
           <!-- ================= TAB 4: تجمع الحالات ================= -->
           <ng-container *ngIf="activeTab === 'aggregation'">
-            <div class="d-flex justify-content-end gap-2 mb-2">
-              <button type="button" class="btn btn-add-record btn-sm" (click)="addAggregatedCase()"><i class="pi pi-plus"></i> إضافة حالة</button>
-              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="copyAggregatedCase()"><i class="pi pi-copy"></i> نسخ سطر</button>
-            </div>
-            <div class="mb-2" *ngIf="aggregatedCases.length > 0">
-              <div class="fwb mb-1">عرض السجلات</div>
-              <div class="table-responsive">
-                <table class="table table-bordered text-center align-middle">
-                  <thead><tr><th>#</th><th>كود الحالة</th><th>الاسم</th><th>الوحدة</th><th>العمر</th></tr></thead>
-                  <tbody>
-                    <tr *ngFor="let a of aggregatedCases.controls; let i = index">
-                      <td>{{ i + 1 }}</td><td>{{ a.value.caseCode }}</td><td>{{ a.value.name }}</td><td>{{ a.value.unit }}</td><td>{{ ageLabel(a.value) }}</td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div class="section-bar b1 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>تجمع الحالات</span>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn case-movement-add" (click)="addAggregatedCase()">
+                  <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                  <span>إضافة حالة</span>
+                </button>
+                <button type="button" class="btn case-movement-add" (click)="copyAggregatedCase()">
+                  <i class="pi pi-copy" aria-hidden="true"></i>
+                  <span>نسخ سطر</span>
+                </button>
               </div>
             </div>
-            <div formArrayName="aggregatedCases">
-              <div class="record-card" *ngFor="let a of aggregatedCases.controls; let i = index" [formGroupName]="i">
-                <div class="record-card-head">
-                  <span class="fwb">حالة #{{ i + 1 }}</span>
-                  <button type="button" class="btn btn-sm btn-danger" (click)="removeAggregatedCase(i)"><i class="pi pi-trash"></i> حذف</button>
-                </div>
-                <div class="row">
-                  <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>كود الحالة</label><input type="text" class="form-control" formControlName="caseCode" /></div></div>
-                  <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>الاسم</label><input type="text" class="form-control" formControlName="name" /></div></div>
-                  <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>الوحدة</label><input type="text" class="form-control" formControlName="unit" /></div></div>
-                  <div class="col-lg-3 col-md-6 inv-field-cell"><div class="form-group"><label>العمر</label><input type="number" min="0" class="form-control" formControlName="age" /></div></div>
-                  <div class="col-lg-3 col-md-6 inv-field-cell"><div class="form-group"><label>نوع العمر</label>
-                    <select class="form-control" formControlName="ageTypeId"><option *ngFor="let t of ageTypes" [ngValue]="t.id">{{ t.arabicName }}</option></select></div></div>
-                </div>
-              </div>
+            <div class="table-responsive" formArrayName="aggregatedCases">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>كود الحالة</th><th>الاسم</th><th>الوحدة</th><th>العمر</th><th>نوع العمر</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let a of aggregatedCases.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input type="text" class="form-control" formControlName="caseCode" /></td>
+                    <td><input type="text" class="form-control" formControlName="name" /></td>
+                    <td><input type="text" class="form-control" formControlName="unit" /></td>
+                    <td><input type="number" min="0" class="form-control" formControlName="age" /></td>
+                    <td><select class="form-control" formControlName="ageTypeId"><option *ngFor="let t of ageTypes" [ngValue]="t.id">{{ t.arabicName }}</option></select></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeAggregatedCase(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </ng-container>
 
@@ -545,35 +469,28 @@
               <div class="col-12"><div class="form-group"><label>CSF</label><textarea rows="2" class="form-control" formControlName="csf"></textarea></div></div>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
-              <span class="title fs-6 fwb">لجنة المتابعة</span>
-              <button type="button" class="btn btn-add-record btn-sm" (click)="addCommittee()"><i class="pi pi-plus"></i> إضافة طبيب</button>
-            </div>
-            <div class="mb-2" *ngIf="followupCommittee.length > 0">
-              <div class="fwb mb-1">عرض السجلات</div>
-              <div class="table-responsive">
-                <table class="table table-bordered text-center align-middle">
-                  <thead><tr><th>#</th><th>الاسم</th><th>الوظيفة</th><th>التاريخ</th></tr></thead>
-                  <tbody>
-                    <tr *ngFor="let c of followupCommittee.controls; let i = index">
-                      <td>{{ i + 1 }}</td><td>{{ c.value.name }}</td><td>{{ c.value.position }}</td><td>{{ c.value.date }}</td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div class="section-bar b2 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>لجنة المتابعة</span>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn case-movement-add" (click)="addCommittee()">
+                  <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                  <span>إضافة طبيب</span>
+                </button>
               </div>
             </div>
-            <div formArrayName="followupCommittee">
-              <div class="record-card" *ngFor="let c of followupCommittee.controls; let i = index" [formGroupName]="i">
-                <div class="record-card-head">
-                  <span class="fwb">عضو #{{ i + 1 }}</span>
-                  <button type="button" class="btn btn-sm btn-danger" (click)="removeCommittee(i)"><i class="pi pi-trash"></i> حذف</button>
-                </div>
-                <div class="row">
-                  <div class="col-lg-5 inv-field-cell"><div class="form-group"><label>الاسم</label><input type="text" class="form-control" formControlName="name" /></div></div>
-                  <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>الوظيفة</label><input type="text" class="form-control" formControlName="position" /></div></div>
-                  <div class="col-lg-3 inv-field-cell"><div class="form-group"><label>التاريخ</label><app-date-field formControlName="date"></app-date-field></div></div>
-                </div>
-              </div>
+            <div class="table-responsive" formArrayName="followupCommittee">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>الاسم</th><th>الوظيفة</th><th>التاريخ</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let c of followupCommittee.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input type="text" class="form-control" formControlName="name" /></td>
+                    <td><input type="text" class="form-control" formControlName="position" /></td>
+                    <td><app-date-field formControlName="date"></app-date-field></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeCommittee(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
             <div class="d-flex justify-content-center gap-3 mt-3">
@@ -584,9 +501,14 @@
 
           <!-- ================= TAB 6: عينات المخالطين ================= -->
           <ng-container *ngIf="activeTab === 'contactSamples'">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="title fs-6 fwb">نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد</span>
-              <button type="button" class="btn btn-add-record btn-sm" (click)="addContactSample()"><i class="pi pi-plus"></i> إضافة مخالط</button>
+            <div class="section-bar b1 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>نموذج جمع وارسال عينات من مخالطي حالات الشلل الرخو الحاد</span>
+              <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn case-movement-add" (click)="addContactSample()">
+                  <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                  <span>إضافة مخالط</span>
+                </button>
+              </div>
             </div>
             <div class="table-responsive mb-3">
               <table class="table table-bordered text-center align-middle" formArrayName="contactSamples">
@@ -659,7 +581,7 @@
                 <input type="text" maxlength="200" class="form-control" formControlName="contactSamplesDelivererName" /></div></div>
             </div>
 
-            <div class="title fs-6 fwb mt-3 mb-2">معلومات يتم إستيفائها بواسطة المعمل</div>
+            <div class="section-bar b2 mt-4">معلومات يتم إستيفائها بواسطة المعمل</div>
             <div class="row">
               <div class="col-lg-6 inv-field-cell" *ngFor="let q of labChecklist">
                 <div class="form-group">

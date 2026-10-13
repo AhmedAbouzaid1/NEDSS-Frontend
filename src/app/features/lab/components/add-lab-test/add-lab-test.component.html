@@ -290,12 +290,18 @@
                 class="lab-result-select"
                 [appDropdownLoading]="labCheckResultsLoading"
                 [placeholder]="currentLang == 'ar' ? 'اختر' : 'Choose'"
-                [settings]="isMultiResultDiseaseSelected() ? multipleDropdownSettings : singleResultDropdownSettings"
+                [settings]="isMultiResultSelected() ? multipleDropdownSettings : singleResultDropdownSettings"
                 [data]="labCheckResults"
                 [(ngModel)]="selectedLabCheckResult"
                 name="labCheckResults"
               >
               </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mt-4" *ngIf="isMalariaBloodFilmSelected()">
+            <div class="form-group">
+              <label for="">{{ "NEDSS.LAB_VIEW.ADD_PATIENT.LAB_DENSITY" | translate }}</label>
+              <input type="number" min="0" step="any" class="form-control" [(ngModel)]="patientAddCheck.labDensity" name="labDensity" />
             </div>
           </div>
           <div class="col-lg-4 col-md-6 mt-4" *ngIf="isFeverRashSelected() && isPcrPositiveSelected()">
