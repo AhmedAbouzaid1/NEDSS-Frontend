@@ -37,6 +37,7 @@ export const INVESTIGATION_FORM_BY_ROUTER: Record<string, string> = {
   "trachoma": "trachoma",
   "tuberculosis": "tuberculosis",
   "typhoid": "typhoid",
+  "visceral-leishmania": "visceral-leishmania",
   "whooping-cough": "whooping-cough"
 };
 
@@ -243,34 +244,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "previousCases",
-      "label": [
-        "2) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "2) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة"
-      ],
-      "array": true
-    },
-    {
-      "key": "contactName",
-      "label": [
-        "الاسم"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "2) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة"
-      ]
-    },
-    {
       "key": "visitors",
       "label": [
-        "3) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
+        "2) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "3) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
+        "2) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
       ],
       "array": true
     },
@@ -281,7 +261,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "3) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
+        "2) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
       ]
     },
     {
@@ -291,7 +271,28 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "3) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
+        "2) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل"
+      ]
+    },
+    {
+      "key": "previousCases",
+      "label": [
+        "3) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "3) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة"
+      ],
+      "array": true
+    },
+    {
+      "key": "contactName",
+      "label": [
+        "الاسم"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "3) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة"
       ]
     },
     {
@@ -20243,370 +20244,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
   ],
   "leishmania": [
     {
-      "key": "numberUlcers",
-      "label": [
-        "NOUR.word9"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ]
-    },
-    {
-      "key": "ulcerType",
-      "label": [
-        "NOUR.word10"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ],
-      "options": {
-        "1": [
-          "رطبة"
-        ],
-        "2": [
-          "جافة"
-        ]
-      }
-    },
-    {
-      "key": "ulcerPlace",
-      "label": [
-        "NOUR.word181"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ]
-    },
-    {
-      "key": "ulcerStage",
-      "label": [
-        "NOUR.word11"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ],
-      "options": {
-        "1": [
-          "حبة"
-        ],
-        "2": [
-          "ندبة"
-        ],
-        "3": [
-          "قرحة مائية"
-        ],
-        "4": [
-          "قرحة صديدية"
-        ]
-      }
-    },
-    {
-      "key": "leishmaniaTreatmentProtocolImplemented",
-      "label": [
-        "NOUR.word12"
-      ],
-      "section": [
-        "NOUR.word13"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "treatmentStartDate",
-      "label": [
-        "NOUR.word15"
-      ],
-      "section": [
-        "NOUR.word13"
-      ]
-    },
-    {
-      "key": "typeTreatment",
-      "label": [
-        "NOUR.word16"
-      ],
-      "section": [
-        "NOUR.word13"
-      ]
-    },
-    {
-      "key": "numberSessions",
-      "label": [
-        "NOUR.word17"
-      ],
-      "section": [
-        "NOUR.word13"
-      ]
-    },
-    {
-      "key": "dose",
-      "label": [
-        "NOUR.word18"
-      ],
-      "section": [
-        "NOUR.word13"
-      ]
-    },
-    {
-      "key": "conditionAssessment",
-      "label": [
-        "NOUR.word20"
-      ],
-      "section": [
-        "NOUR.word19"
-      ],
-      "options": {
-        "1": [
-          "NOUR.word21"
-        ],
-        "2": [
-          "NOUR.word22"
-        ],
-        "3": [
-          "NOUR.word23"
-        ]
-      }
-    },
-    {
-      "key": "result",
-      "label": [
-        "NOUR.word24"
-      ],
-      "section": [
-        "NOUR.word19"
-      ],
-      "options": {
-        "1": [
-          "NOUR.word25"
-        ],
-        "2": [
-          "NOUR.word26"
-        ],
-        "3": [
-          "NOUR.word27"
-        ]
-      }
-    },
-    {
-      "key": "chronicChestDiseases",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Chronic_Chest_Diseases"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "chronicHeartDisease",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Chronic_Heart_Disease"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "highBloodPressure",
-      "label": [
-        "NOUR.word37"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "excessiveObesity",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Excessive_Obesity"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "immuneDisease",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.immune_disease"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "aids",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.HIV_NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "pregnantWomen",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Pregnant_Women"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "diabetes",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Pregnant_Women"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "liverDiseases",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Liver_Diseases"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "kidneyDisease",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Liver_Diseases"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "diseasesNervousMuscular",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Diseases_NervousMuscular_System"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "bloodBiseases",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Blood_Diseases"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Other_Remember"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
-      ]
-    },
-    {
       "key": "routineMonitoring",
       "label": [
         "NOUR.word40"
@@ -20759,6 +20396,157 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NOUR.word38"
       ]
+    },
+    {
+      "key": "numberUlcers",
+      "label": [
+        "NOUR.word9"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
+      ]
+    },
+    {
+      "key": "ulcerType",
+      "label": [
+        "NOUR.word10"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
+      ],
+      "options": {
+        "1": [
+          "رطبة"
+        ],
+        "2": [
+          "جافة"
+        ]
+      }
+    },
+    {
+      "key": "ulcerPlace",
+      "label": [
+        "NOUR.word181"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
+      ]
+    },
+    {
+      "key": "ulcerStage",
+      "label": [
+        "NOUR.word11"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
+      ],
+      "options": {
+        "1": [
+          "حبة"
+        ],
+        "2": [
+          "ندبة"
+        ],
+        "3": [
+          "قرحة مائية"
+        ],
+        "4": [
+          "قرحة صديدية"
+        ]
+      }
+    },
+    {
+      "key": "leishmaniaTreatmentProtocolImplemented",
+      "label": [
+        "NOUR.word12"
+      ],
+      "section": [
+        "NOUR.word13"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "treatmentStartDate",
+      "label": [
+        "NOUR.word15"
+      ],
+      "section": [
+        "NOUR.word13"
+      ]
+    },
+    {
+      "key": "typeTreatment",
+      "label": [
+        "NOUR.word16"
+      ],
+      "section": [
+        "NOUR.word13"
+      ]
+    },
+    {
+      "key": "numberSessions",
+      "label": [
+        "NOUR.word17"
+      ],
+      "section": [
+        "NOUR.word13"
+      ]
+    },
+    {
+      "key": "dose",
+      "label": [
+        "NOUR.PENTOSTAM_DOSES_COUNT"
+      ],
+      "section": [
+        "NOUR.word13"
+      ]
+    },
+    {
+      "key": "conditionAssessment",
+      "label": [
+        "NOUR.word20"
+      ],
+      "section": [
+        "NOUR.word19"
+      ],
+      "options": {
+        "1": [
+          "NOUR.word21"
+        ],
+        "2": [
+          "NOUR.word22"
+        ],
+        "3": [
+          "NOUR.word23"
+        ]
+      }
+    },
+    {
+      "key": "result",
+      "label": [
+        "NOUR.word24"
+      ],
+      "section": [
+        "NOUR.word19"
+      ],
+      "options": {
+        "1": [
+          "NOUR.word25"
+        ],
+        "2": [
+          "NOUR.word26"
+        ],
+        "3": [
+          "NOUR.word27"
+        ]
+      }
     }
   ],
   "leper": [
@@ -31399,6 +31187,221 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
           "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.WATER_RESULT_POSITIVE"
         ]
       }
+    }
+  ],
+  "visceral-leishmania": [
+    {
+      "key": "chronicChestDiseases",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Chronic_Chest_Diseases"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "chronicHeartDisease",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Chronic_Heart_Disease"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "highBloodPressure",
+      "label": [
+        "NOUR.word37"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "excessiveObesity",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Excessive_Obesity"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "immuneDisease",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.immune_disease"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "aids",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HIV_NAME"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "pregnantWomen",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Pregnant_Women"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "diabetes",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Diabetes"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "liverDiseases",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Liver_Diseases"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "kidneyDisease",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Kidney_Disease"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "diseasesNervousMuscular",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Diseases_NervousMuscular_System"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "bloodBiseases",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Blood_Diseases"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "other",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.Other_Remember"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors"
+      ]
     }
   ],
   "whooping-cough": [
