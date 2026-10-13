@@ -1,0 +1,244 @@
+<form [formGroup]="visceralLeishmaniaForm" (ngSubmit)="save()">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow mt-4 color mb-4">
+        <div class="card-body">
+          <h5 style="text-align: center; border: 1px solid; padding: 1%">
+            {{ "NOUR.VISCERAL_LEISHMANIA" | translate }}
+          </h5>
+          <app-investigation-summary [patientName]="patientName" [allFilledControlsCount]="allFilledControlsCount"
+            [allControllesCount]="allControllesCount">
+          </app-investigation-summary>
+
+          <div class="row color">
+            <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-12 title fs-6 fwb">
+                  <font style="vertical-align: inherit">
+                    <font style="vertical-align: inherit">
+                      {{ "NEDSS.COMPLETE_INVESTEGATION.Risk_Factors" | translate }}
+                    </font>
+                  </font>
+                </div>
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit">
+                          {{
+                          "NEDSS.COMPLETE_INVESTEGATION.Chronic_Chest_Diseases" |
+                          translate
+                          }}
+                        </font>
+                      </font>
+                    </label>
+                    <select formControlName="chronicChestDiseases" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit"> {{ "NEDSS.COMPLETE_INVESTEGATION.Chronic_Heart_Disease" |
+                          translate }}</font>
+                      </font>
+                    </label>
+                    <select formControlName="chronicHeartDisease" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit">{{"NOUR.word37" | translate }}</font>
+                      </font>
+                    </label>
+                    <select formControlName="highBloodPressure" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit"> {{ "NEDSS.COMPLETE_INVESTEGATION.Excessive_Obesity" |
+                          translate }}</font>
+                      </font>
+                    </label>
+                    <select formControlName="excessiveObesity" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit"> {{ "NEDSS.COMPLETE_INVESTEGATION.immune_disease" |
+                          translate }}</font>
+                      </font>
+                    </label>
+                    <select formControlName="immuneDisease" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit"> {{ "NEDSS.COMPLETE_INVESTEGATION.HIV_NAME" | translate }}
+                        </font>
+                      </font>
+                    </label>
+                    <select formControlName="aids" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit"> {{ "NEDSS.COMPLETE_INVESTEGATION.Pregnant_Women" |
+                          translate }}</font>
+                      </font>
+                    </label>
+                    <select formControlName="pregnantWomen" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit"> {{ "NEDSS.COMPLETE_INVESTEGATION.Diabetes" | translate }}</font>
+                      </font>
+                    </label>
+                    <select formControlName="diabetes" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit"> {{ "NEDSS.COMPLETE_INVESTEGATION.Liver_Diseases" |
+                          translate }}</font>
+                      </font>
+                    </label>
+                    <select formControlName="liverDiseases" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit"> {{ "NEDSS.COMPLETE_INVESTEGATION.Kidney_Disease" | translate }}</font>
+                      </font>
+                    </label>
+                    <select formControlName="kidneyDisease" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit"> {{
+                          "NEDSS.COMPLETE_INVESTEGATION.Diseases_NervousMuscular_System" | translate }}</font>
+                      </font>
+                    </label>
+                    <select formControlName="diseasesNervousMuscular" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6 inv-field-cell">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit"> {{ "NEDSS.COMPLETE_INVESTEGATION.Blood_Diseases" |
+                          translate }}</font>
+                      </font>
+                    </label>
+                    <select formControlName="bloodBiseases" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()">
+                      <option value="1">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                      <option value="2">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label for="">
+                      <font style="vertical-align: inherit">
+                        <font style="vertical-align: inherit"> {{ "NEDSS.COMPLETE_INVESTEGATION.Other_Remember" |
+                          translate }}</font>
+                      </font>
+                    </label>
+                    <input formControlName="other" type="text" name="" id="" class="form-control"
+                      (blur)="calculateCompletionPercentage()" />
+                  </div>
+                </div>
+                <!-- /.col-lg-12 -->
+              </div>
+              <!-- / .row -->
+            </div>
+            <!-- / .col-12 -->
+          </div>
+
+        </div>
+        <div class="card-footer text-start">
+          <button type="submit" class="btn bg rounded-2 text-light">
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

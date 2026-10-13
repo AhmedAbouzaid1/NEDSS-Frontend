@@ -147,29 +147,7 @@
             </div>
 
             <div class="section-bar b2 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
-              <span>2) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة</span>
-              <button type="button" class="btn case-movement-add" (click)="addPreviousCase()">
-                <i class="pi pi-plus-circle" aria-hidden="true"></i>
-                <span>إضافة حالة</span>
-              </button>
-            </div>
-            <div class="table-responsive" formArrayName="previousCases">
-              <table class="table table-bordered text-center align-middle">
-                <thead><tr><th>#</th><th>الاسم</th><th>العنوان</th><th>تاريخ بدء الشلل</th><th></th></tr></thead>
-                <tbody>
-                  <tr *ngFor="let p of previousCases.controls; let i = index" [formGroupName]="i">
-                    <td>{{ i + 1 }}</td>
-                    <td><input type="text" class="form-control" formControlName="contactName" /></td>
-                    <td><input type="text" class="form-control" formControlName="address" /></td>
-                    <td><app-date-field formControlName="paralysisOnsetDate"></app-date-field></td>
-                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removePreviousCase(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="section-bar b3 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
-              <span>3) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل</span>
+              <span>2) زيارات وافدة الى المنطقة المقيم فيها الحالة 30 يوم قبل بدء الشلل</span>
               <button type="button" class="btn case-movement-add" (click)="addVisitor()">
                 <i class="pi pi-plus-circle" aria-hidden="true"></i>
                 <span>إضافة وافد</span>
@@ -186,6 +164,28 @@
                     <td><app-date-field formControlName="fromDate"></app-date-field></td>
                     <td><app-date-field formControlName="toDate" [min]="v.get('fromDate')?.value"></app-date-field></td>
                     <td><button type="button" class="btn btn-sm btn-danger" (click)="removeVisitor(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="section-bar b3 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>3) حالات شلل رخو حاد 60 يوم قبل بدء الشلل في المنطقة التي زارتها الحالة</span>
+              <button type="button" class="btn case-movement-add" (click)="addPreviousCase()">
+                <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                <span>إضافة حالة</span>
+              </button>
+            </div>
+            <div class="table-responsive" formArrayName="previousCases">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>الاسم</th><th>العنوان</th><th>تاريخ بدء الشلل</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let p of previousCases.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input type="text" class="form-control" formControlName="contactName" /></td>
+                    <td><input type="text" class="form-control" formControlName="address" /></td>
+                    <td><app-date-field formControlName="paralysisOnsetDate"></app-date-field></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removePreviousCase(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
                   </tr>
                 </tbody>
               </table>

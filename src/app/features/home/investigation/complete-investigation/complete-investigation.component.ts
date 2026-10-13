@@ -48,6 +48,10 @@ export class CompleteInvestigationComponent implements OnInit {
       this.InvestigationService.view = true;
     }
   }
+  isSelected(item: any): boolean {
+    return item?.diseaseGroupId != null && item.diseaseGroupId == this.InvestigationService.diseaseGroupID;
+  }
+
   setDesiese(item: any) {
     this.InvestigationService.diseaseGroupID = item.diseaseGroupId;
     this.Router.navigateByUrl(

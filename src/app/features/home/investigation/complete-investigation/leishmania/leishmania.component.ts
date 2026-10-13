@@ -1,7 +1,7 @@
 import { virtualExamination } from './../../../../../core/constants';
 import { calculateCompletionStats } from '../shared/investigation-summary.utils';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,36 +19,29 @@ export class LeishmaniaComponent implements OnInit {
       ? localStorage.getItem('ls.currentLang')
       : 'ar';
   leishmaniaForm: FormGroup;
+  readonly treatmentTypes = ['موضعي', 'كي بالتبريد', 'كي حراري', 'مضاد فطريات'];
+  private readonly legacyRiskFactorFields = [
+    'chronicChestDiseases',
+    'chronicHeartDisease',
+    'highBloodPressure',
+    'excessiveObesity',
+    'immuneDisease',
+    'aids',
+    'pregnantWomen',
+    'diabetes',
+    'liverDiseases',
+    'kidneyDisease',
+    'diseasesNervousMuscular',
+    'bloodBiseases',
+    'other',
+  ];
   allFilledControlsCount: number = 0;
   allControllesCount: number = 0;
   patientName: string;
 
-  get patientVisitHistory(): FormArray {
-    return this.leishmaniaForm.get('patientVisitHistory') as FormArray;
-  }
-
-  createPatientVisitHistoryGroup(data?: any): FormGroup {
-    return new FormGroup({
-      id: new FormControl(data?.id || null),
-      nameHealthFacility: new FormControl(data?.nameHealthFacility || null),
-      healthFacilityBelongs: new FormControl(data?.healthFacilityBelongs || null),
-      dateVisit: new FormControl(data?.dateVisit || null),
-      initialDiagnosis: new FormControl(data?.initialDiagnosis || null),
-      admissionHospital: new FormControl(data?.admissionHospital || null),
-      dateEntry: new FormControl(data?.dateEntry || null),
-      exitDate: new FormControl(data?.exitDate || null)
-    });
-  }
-
-
-  addPatientVisit(): void {
-    this.patientVisitHistory.push(this.createPatientVisitHistoryGroup());
-  }
-
-  removePatientVisit(index: number): void {
-    if (this.patientVisitHistory.length > 1) {
-      this.patientVisitHistory.removeAt(index);
-    }
+  get treatmentTypeOptions(): string[] {
+    const current = this.leishmaniaForm?.get('typeTreatment')?.value;
+    return current && !this.treatmentTypes.includes(current) ? [...this.treatmentTypes, current] : this.treatmentTypes;
   }
 
   constructor(private investigationService: InvestigationService,
@@ -75,7 +68,6 @@ export class LeishmaniaComponent implements OnInit {
       dose: new FormControl(),
       conditionAssessment: new FormControl(),
       result: new FormControl(),
-      patientVisitHistory: new FormArray([]),
 
       chronicChestDiseases: new FormControl(),
       chronicHeartDisease: new FormControl(),
@@ -132,20 +124,6 @@ export class LeishmaniaComponent implements OnInit {
           this.datePipe.transform(this.leishmaniaForm.value.treatmentStartDate, 'yyyy-MM-dd')
         );
 
-        const apiVisits = v?.PatientVisitHistory ?? v?.patientVisitHistory;
-        if (Array.isArray(apiVisits) && apiVisits.length > 0) {
-          while (this.patientVisitHistory.length > 0) {
-            this.patientVisitHistory.removeAt(0);
-          }
-          apiVisits.forEach((item) => {
-            this.patientVisitHistory.push(this.createPatientVisitHistoryGroup({
-              ...item,
-              dateVisit: this.datePipe.transform(item?.dateVisit, 'yyyy-MM-dd'),
-              dateEntry: this.datePipe.transform(item?.dateEntry, 'yyyy-MM-dd'),
-              exitDate: this.datePipe.transform(item?.exitDate, 'yyyy-MM-dd')
-            }));
-          });
-        }
         this.calculateCompletionPercentage();
 
       }
@@ -200,7 +178,7 @@ export class LeishmaniaComponent implements OnInit {
   }
 
   calculateCompletionPercentage() {
-    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate'];
+    const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate', ...this.legacyRiskFactorFields];
 
     // If treatment protocol is not "Yes", exclude the hidden treatment fields.
     if (!this.isYes('leishmaniaTreatmentProtocolImplemented')) {
@@ -209,7 +187,6 @@ export class LeishmaniaComponent implements OnInit {
 
     const stats = calculateCompletionStats(this.leishmaniaForm.value, {
       excludedFields,
-      formArrays: [{ value: this.patientVisitHistory, excludedFields: ['id'] }]
     });
 
     this.allControllesCount = stats.totalFields;

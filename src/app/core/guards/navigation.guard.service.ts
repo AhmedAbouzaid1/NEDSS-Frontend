@@ -115,6 +115,7 @@ export class NavigationGuard {
     { Comingroute: 'filariasis', id: 10 },
     { Comingroute: 'trachoma', id: 10 },
     { Comingroute: 'leishmania', id: 10 },
+    { Comingroute: 'visceral-leishmania', id: 10 },
     { Comingroute: 'tuberculosis', id: 10 },
     { Comingroute: 'diarrhea', id: 10 },
     { Comingroute: 'falseChickenpox', id: 10 },
