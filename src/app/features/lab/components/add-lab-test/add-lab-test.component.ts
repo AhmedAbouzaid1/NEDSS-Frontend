@@ -47,6 +47,7 @@ export class AddLabTestComponent {
     labNumber: null,
     genotype: null,
     geneticNumber: null,
+    labDensity: null,
   };
   checkFilter = {
     pageSize: 10,
@@ -86,6 +87,12 @@ export class AddLabTestComponent {
   readonly meningitisAndEncephalitisDiseaseGroupIds = [2, 23];
   readonly feverRashDiseaseGroupId = 5;
   readonly multiResultDiseaseGroupIds = [1, 19, 25, 27];
+  readonly malariaDiseaseGroupId = 11;
+  readonly malariaBloodFilm = { sampleId: 1, labTestId: 11 };
+  readonly malariaMultiResultSampleTests = [
+    this.malariaBloodFilm,
+    { sampleId: 16, labTestId: 124 },
+  ];
 
   underDeleting = {
     nameAr: '',
@@ -247,14 +254,31 @@ export class AddLabTestComponent {
         }
       );
   }
-  isMultiResultDiseaseSelected(): boolean {
-    return this.multiResultDiseaseGroupIds.includes(
-      Number(this.patientAddCheck.diseaseGroupId)
+  isMultiResultSelected(): boolean {
+    return (
+      this.multiResultDiseaseGroupIds.includes(Number(this.patientAddCheck.diseaseGroupId)) ||
+      this.isMalariaMultiResultTestSelected()
+    );
+  }
+
+  isMalariaMultiResultTestSelected(): boolean {
+    return this.malariaMultiResultSampleTests.some((x) => this.isMalariaSampleTestSelected(x));
+  }
+
+  isMalariaBloodFilmSelected(): boolean {
+    return this.isMalariaSampleTestSelected(this.malariaBloodFilm);
+  }
+
+  private isMalariaSampleTestSelected(x: { sampleId: number; labTestId: number }): boolean {
+    return (
+      Number(this.patientAddCheck.diseaseGroupId) === this.malariaDiseaseGroupId &&
+      x.sampleId === Number(this.selectedCheckSample) &&
+      x.labTestId === Number(this.selectedLabCheck)
     );
   }
 
   filterdDiseaseChange() {
-    if (!this.isMultiResultDiseaseSelected() && this.selectedLabCheckResult?.length > 1) {
+    if (!this.isMultiResultSelected() && this.selectedLabCheckResult?.length > 1) {
       this.selectedLabCheckResult = this.selectedLabCheckResult.slice(0, 1);
     }
     if (!this.isMeningitisOrEncephalitisSelected()) {
@@ -284,7 +308,10 @@ export class AddLabTestComponent {
     );
   }
 
-  private clearFeverRashFieldsIfHidden() {
+  private clearHiddenConditionalFields() {
+    if (!this.isMalariaBloodFilmSelected()) {
+      this.patientAddCheck.labDensity = null;
+    }
     if (!this.isFeverRashSelected()) {
       this.patientAddCheck.labNumber = null;
     }
@@ -585,7 +612,7 @@ export class AddLabTestComponent {
     if (this.saving) {
       return;
     }
-    this.clearFeverRashFieldsIfHidden();
+    this.clearHiddenConditionalFields();
     this.patientAddCheck.patientId = this.id;
     if (this.patientAddCheck.id == null) {
       const resultIds = this.selectedLabCheckResult?.length
@@ -698,6 +725,7 @@ export class AddLabTestComponent {
       labNumber: null,
       genotype: null,
       geneticNumber: null,
+      labDensity: null,
     };
     this.selectedCheckSample = null;
     this.selectedLabCheck = null;

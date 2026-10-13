@@ -62,9 +62,10 @@ export class MalariaComponent implements OnInit {
     { value: 2, label: 'كينين أقراص' },
     { value: 3, label: 'كليندامايسين (Clindamycin)' },
     { value: 4, label: 'دوكسيسيكلين (Doxycycline)' },
-    { value: 5, label: 'بريماكين (Primaquine)' },
     { value: 99, label: 'أخرى' },
   ];
+  private readonly legacyPrimaquineCode = 5;
+  prophylacticDrugTypes = ['دوكسيسيكلين ١٠٠ مج', 'ميفلوكين ٢٥٠ مج'];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -274,11 +275,6 @@ export class MalariaComponent implements OnInit {
       payload[field] = Array.isArray(payload[field]) && payload[field].length ? payload[field].join(',') : null;
     });
     const stringOnlyFields = new Set([
-      'followD1Phone',
-      'followD2Phone',
-      'followD7Phone',
-      'followD14Phone',
-      'followD28Phone',
       ...this.drugListFields,
       'firstLineTreatmentOther',
       'secondLineTreatmentOther',
@@ -315,9 +311,6 @@ export class MalariaComponent implements OnInit {
 
   ngOnInit() {
     this.malariaForm = new FormGroup({
-      transfusedBlood: new FormControl(),
-      placeName: new FormControl(),
-      date: new FormControl(),
       hadMalaria: new FormControl(),
       hadMalariaplaceName: new FormControl(),
       hadMalariaDate: new FormControl(),
@@ -338,6 +331,7 @@ export class MalariaComponent implements OnInit {
       secondLineTreatmentReceived: new FormControl(),
       secondLineTreatmentDrugs: new FormControl(),
       secondLineTreatmentOther: new FormControl(),
+      receivedPrimaquine: new FormControl(),
       caseAssessment: new FormControl(),
       result: new FormControl(),
       patientVisitHistory: this.formBuilder.array([]),
@@ -362,123 +356,12 @@ export class MalariaComponent implements OnInit {
       contactWithConfirmedCase: new FormControl(),
       theNumberDirectContacts: new FormControl(),
       theNumberIndirectContacts: new FormControl(),
-      followD1Name: new FormControl(),
-      followD1Age: new FormControl(),
-      followD1Phone: new FormControl(),
-      followD1Type: new FormControl(),
-      followD1MixingType: new FormControl(),
-      followD1RelationshipSituation: new FormControl(),
-      followD1DateOfSymptoms: new FormControl(),
-      followD1Fever: new FormControl(),
-      followD1DryCough: new FormControl(),
-      followD1CoughingWithSpitting: new FormControl(),
-      followD1SoreThroat: new FormControl(),
-      followD1DifficultyBreathing: new FormControl(),
-      followD1JointPain: new FormControl(),
-      followD1vomit: new FormControl(),
-      followD1Diarrhea: new FormControl(),
-      followD1Other: new FormControl(),
-      followD1OtherSymptoms: new FormControl(),
-      // followD1SampleTaken: new FormControl('3'),
-      followD1SampleTaken: new FormControl(),
-      followD1DateSampleTaken: new FormControl(),
-      followD1SampleResult: new FormControl(),
-      // followD1SampleResult: new FormControl('3'),
-      followD2Name: new FormControl(),
-      followD2Age: new FormControl(),
-      followD2Phone: new FormControl(),
-      followD2Type: new FormControl(),
-      followD2MixingType: new FormControl(),
-      followD2RelationshipSituation: new FormControl(),
-      followD2DateOfSymptoms: new FormControl(),
-      followD2Fever: new FormControl(),
-      followD2DryCough: new FormControl(),
-      followD2CoughingWithSpitting: new FormControl(),
-      followD2SoreThroat: new FormControl(),
-      followD2DifficultyBreathing: new FormControl(),
-      followD2JointPain: new FormControl(),
-      followD2vomit: new FormControl(),
-      followD2Diarrhea: new FormControl(),
-      followD2Other: new FormControl(),
-      followD2OtherSymptoms: new FormControl(),
-      // followD2SampleTaken: new FormControl('3'),
-      followD2SampleTaken: new FormControl(),
-      followD2DateSampleTaken: new FormControl(),
-      // followD2SampleResult: new FormControl('3'),
-      followD2SampleResult: new FormControl(),
-      followD7Name: new FormControl(),
-      followD7Age: new FormControl(),
-      followD7Phone: new FormControl(),
-      followD7Type: new FormControl(),
-      followD7MixingType: new FormControl(),
-      followD7RelationshipSituation: new FormControl(),
-      followD7DateOfSymptoms: new FormControl(),
-      followD7Fever: new FormControl(),
-      followD7DryCough: new FormControl(),
-      followD7CoughingWithSpitting: new FormControl(),
-      followD7SoreThroat: new FormControl(),
-      followD7DifficultyBreathing: new FormControl(),
-      followD7JointPain: new FormControl(),
-      followD7vomit: new FormControl(),
-      followD7Diarrhea: new FormControl(),
-      followD7Other: new FormControl(),
-      followD7OtherSymptoms: new FormControl(),
-      // followD7SampleTaken: new FormControl('3'),
-      followD7SampleTaken: new FormControl(),
-      followD7DateSampleTaken: new FormControl(),
-      // followD7SampleResult: new FormControl('3'),
-      followD7SampleResult: new FormControl(),
-      followD14Name: new FormControl(),
-      followD14Age: new FormControl(),
-      followD14Phone: new FormControl(),
-      followD14Type: new FormControl(),
-      followD14MixingType: new FormControl(),
-      followD14RelationshipSituation: new FormControl(),
-      followD14DateOfSymptoms: new FormControl(),
-      followD14Fever: new FormControl(),
-      followD14DryCough: new FormControl(),
-      followD14CoughingWithSpitting: new FormControl(),
-      followD14SoreThroat: new FormControl(),
-      followD14DifficultyBreathing: new FormControl(),
-      followD14JointPain: new FormControl(),
-      followD14vomit: new FormControl(),
-      followD14Diarrhea: new FormControl(),
-      followD14Other: new FormControl(),
-      followD14OtherSymptoms: new FormControl(),
-      // followD14SampleTaken: new FormControl('3'),
-      followD14SampleTaken: new FormControl(),
-      followD14DateSampleTaken: new FormControl(),
-      // followD14SampleResult: new FormControl('3'),
-      followD14SampleResult: new FormControl(),
-      followD28Name: new FormControl(),
-      followD28Age: new FormControl(),
-      followD28Phone: new FormControl(),
-      followD28Type: new FormControl(),
-      followD28MixingType: new FormControl(),
-      followD28RelationshipSituation: new FormControl(),
-      followD28DateOfSymptoms: new FormControl(),
-      followD28Fever: new FormControl(),
-      followD28DryCough: new FormControl(),
-      followD28CoughingWithSpitting: new FormControl(),
-      followD28SoreThroat: new FormControl(),
-      followD28DifficultyBreathing: new FormControl(),
-      followD28JointPain: new FormControl(),
-      followD28vomit: new FormControl(),
-      followD28Diarrhea: new FormControl(),
-      followD28Other: new FormControl(),
-      followD28OtherSymptoms: new FormControl(),
-      followD28SampleTaken: new FormControl(),
-      followD28DateSampleTaken: new FormControl(),
-      followD28SampleResult: new FormControl(),
 
       investigationDone: new FormControl(),
       resultInvestigation: new FormControl(),
       controlMosquitoesDone: new FormControl(),
       procedures: new FormControl(),
-      traveledAbroad: new FormControl(),
-      travelPlace: new FormControl(),
       travelHistoryEgyptians: new FormControl(),
-      entryIntoEgypt: new FormControl(),
       prophylacticDrug: new FormControl(),
       propertyType: new FormControl(),
       propertydate: new FormControl(),
@@ -501,27 +384,19 @@ export class MalariaComponent implements OnInit {
         console.log(res);
         var v = res.data;
         console.log('v1', v);
-        // if (v.followD1SampleTaken == null) { v.followD1SampleTaken = 2; }
-        // if (v.followD2SampleTaken == null) { v.followD2SampleTaken = 2; }
-        // if (v.followD7SampleTaken == null) { v.followD7SampleTaken = 2; }
-        // if (v.followD14SampleTaken == null) { v.followD14SampleTaken = 2; }
-        // //followD1SampleResult
-        // if (v.followD1SampleResult == null) { v.followD1SampleResult = 2; }
-        // if (v.followD2SampleResult == null) { v.followD2SampleResult = 2; }
-        // if (v.followD7SampleResult == null) { v.followD7SampleResult = 2; }
-        // if (v.followD14SampleResult == null) { v.followD14SampleResult = 2; }
         this.malariaForm.patchValue(v);
+        const parsedSecondLineDrugs = this.parseDrugList(v?.secondLineTreatmentDrugs);
+        const hadLegacyPrimaquine = !!parsedSecondLineDrugs?.includes(this.legacyPrimaquineCode);
+        const remainingSecondLineDrugs = parsedSecondLineDrugs?.filter((code) => code !== this.legacyPrimaquineCode) ?? null;
+        const secondLineDrugs = remainingSecondLineDrugs?.length ? remainingSecondLineDrugs : null;
         this.malariaForm.patchValue({
           discoveryMethod: v?.routineSurveillance == 1 ? 1 : v?.contactFollowUp == 1 ? 2 : null,
           firstLineTreatmentDrugs: this.parseDrugList(v?.firstLineTreatmentDrugs),
-          secondLineTreatmentDrugs: this.parseDrugList(v?.secondLineTreatmentDrugs),
+          secondLineTreatmentDrugs: secondLineDrugs,
+          receivedPrimaquine: hadLegacyPrimaquine && v?.receivedPrimaquine == null ? '1' : v?.receivedPrimaquine,
           caseAssessment: v?.caseAssessment == 2 ? 1 : v?.caseAssessment,
         }, { emitEvent: false });
 
-        //date
-        this.malariaForm.controls['date'].setValue(
-          this.datePipe.transform(this.malariaForm.value.date, 'yyyy-MM-dd')
-        );
         //hadMalariaDate
         this.malariaForm.controls['hadMalariaDate'].setValue(
           this.datePipe.transform(
@@ -560,121 +435,6 @@ export class MalariaComponent implements OnInit {
         );
         this.prefillContactSamplesHeader();
 
-        //days
-        //followD1DateOfSymptoms
-        this.malariaForm.controls['followD1DateOfSymptoms'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.followD1DateOfSymptoms,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.patchValue({
-          followD1SampleTaken: this.malariaForm.value.followD1SampleTaken + '',
-          tc: true,
-        });
-        this.malariaForm.controls['followD1DateSampleTaken'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.followD1DateSampleTaken,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.patchValue({
-          followD1SampleResult:
-            this.malariaForm.value.followD1SampleResult + '',
-          tc: true,
-        });
-        //
-        this.malariaForm.controls['followD2DateOfSymptoms'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.followD2DateOfSymptoms,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.patchValue({
-          followD2SampleTaken: this.malariaForm.value.followD2SampleTaken + '',
-          tc: true,
-        });
-        this.malariaForm.controls['followD2DateSampleTaken'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.followD2DateSampleTaken,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.patchValue({
-          followD2SampleResult:
-            this.malariaForm.value.followD2SampleResult + '',
-          tc: true,
-        });
-
-        //
-        this.malariaForm.controls['followD7DateOfSymptoms'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.followD7DateOfSymptoms,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.patchValue({
-          followD7SampleTaken: this.malariaForm.value.followD7SampleTaken + '',
-          tc: true,
-        });
-        this.malariaForm.controls['followD7DateSampleTaken'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.followD7DateSampleTaken,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.patchValue({
-          followD7SampleResult:
-            this.malariaForm.value.followD7SampleResult + '',
-          tc: true,
-        });
-        //
-        this.malariaForm.controls['followD14DateOfSymptoms'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.followD14DateOfSymptoms,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.patchValue({
-          followD14SampleTaken:
-            this.malariaForm.value.followD14SampleTaken + '',
-          tc: true,
-        });
-        this.malariaForm.controls['followD14DateSampleTaken'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.followD14DateSampleTaken,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.patchValue({
-          followD14SampleResult:
-            this.malariaForm.value.followD14SampleResult + '',
-          tc: true,
-        });
-        //
-        this.malariaForm.controls['followD28DateOfSymptoms'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.followD28DateOfSymptoms,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.patchValue({
-          followD28SampleTaken:
-            this.malariaForm.value.followD28SampleTaken + '',
-          tc: true,
-        });
-        this.malariaForm.controls['followD28DateSampleTaken'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.followD28DateSampleTaken,
-            'yyyy-MM-dd'
-          )
-        );
-        this.malariaForm.patchValue({
-          followD28SampleResult:
-            this.malariaForm.value.followD28SampleResult + '',
-          tc: true,
-        });
-
         //travelHistoryEgyptians
         this.malariaForm.controls['travelHistoryEgyptians'].setValue(
           this.datePipe.transform(
@@ -685,13 +445,6 @@ export class MalariaComponent implements OnInit {
         this.malariaForm.controls['travelHistoryEgyptians'].setValue(
           this.datePipe.transform(
             this.malariaForm.value.travelHistoryEgyptians,
-            'yyyy-MM-dd'
-          )
-        );
-        //entryIntoEgypt
-        this.malariaForm.controls['entryIntoEgypt'].setValue(
-          this.datePipe.transform(
-            this.malariaForm.value.entryIntoEgypt,
             'yyyy-MM-dd'
           )
         );

@@ -86,16 +86,17 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   ];
 
   dangerousCaseReasons = [
-    { value: 1, label: 'وجود إحساس بالأعضاء المصابة' },
-    { value: 2, label: 'اكتمال الشلل خلال 4 أيام' },
+    { value: 1, label: 'وجود احساس بالأعضاء المصابة' },
+    { value: 2, label: 'اكتمال الشلل خلال 4 ايام' },
     { value: 3, label: 'وجود حرارة' },
     { value: 4, label: 'عدم تناظر الأعضاء المصابة' },
+    { value: 5, label: 'أخرى' },
   ];
 
-  private openRows = new Set<AbstractControl>();
+  readonly dangerousCaseOtherCode = 5;
 
   private arrayKeys = [
-    'caseMovements', 'previousCases', 'highRiskAreas', 'healthFacilityVisits',
+    'caseMovements', 'previousCases', 'highRiskAreas', 'healthFacilityVisits', 'visitors', 'residenceAfpCases', 'facilityActions',
     'routineVaccinations', 'campaigns', 'surveyChildren', 'aggregatedCases', 'followupCommittee',
     'selectedDangerousCaseReasons', 'contactSamples',
   ];
@@ -140,6 +141,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       otherInitialClinicalDiagnosis: new FormControl(),
       isDangerousCase: new FormControl(),
       selectedDangerousCaseReasons: new FormControl([]),
+      otherDangerousCaseReason: new FormControl(),
       caseMovements: new FormArray([]),
       hasPreviousAfpCases: new FormControl(),
       previousCases: new FormArray([]),
@@ -147,6 +149,9 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       highRiskAreas: new FormArray([]),
       visitedHealthFacility: new FormControl(),
       healthFacilityVisits: new FormArray([]),
+      visitors: new FormArray([]),
+      residenceAfpCases: new FormArray([]),
+      facilityActions: new FormArray([]),
 
       // Tab 2 - vaccination
       routineVaccinations: new FormArray([]),
@@ -217,6 +222,12 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     this.form.controls['isDangerousCase'].valueChanges.subscribe((value) => {
       if (Number(value) !== 1) {
         this.form.controls['selectedDangerousCaseReasons'].setValue([], { emitEvent: false });
+        this.form.controls['otherDangerousCaseReason'].setValue(null, { emitEvent: false });
+      }
+    });
+    this.form.controls['selectedDangerousCaseReasons'].valueChanges.subscribe((value) => {
+      if (!(value || []).includes(this.dangerousCaseOtherCode)) {
+        this.form.controls['otherDangerousCaseReason'].setValue(null, { emitEvent: false });
       }
     });
 
@@ -281,6 +292,16 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     this.parseInto(v.previousCasesJson, (x) => this.previousCases.push(this.buildPreviousCase(x)));
     this.parseInto(v.highRiskAreasJson, (x) => this.highRiskAreas.push(this.buildHighRiskArea(x)));
     this.parseInto(v.healthFacilityVisitsJson, (x) => this.healthFacilityVisits.push(this.buildFacilityVisit(x)));
+    this.parseInto(v.visitorsJson, (x) => this.visitors.push(this.buildVisitor(x)));
+    this.parseInto(v.residenceAfpCasesJson, (x) => this.residenceAfpCases.push(this.buildPreviousCase(x)));
+    this.parseInto(v.facilityActionsJson, (x) => this.facilityActions.push(this.buildFacilityAction(x)));
+    if (this.facilityActions.length === 0) {
+      this.parseInto(v.healthFacilityVisitsJson, (x) => {
+        if (x?.actions || x?.inspectionDate) {
+          this.facilityActions.push(this.buildFacilityAction({ facilityName: x.facilityName, actions: x.actions, date: x.inspectionDate }));
+        }
+      });
+    }
     this.parseInto(v.routineVaccinationsJson, (x) => this.routineVaccinations.push(this.buildRoutine(x.doseLabel, x)));
     this.parseInto(v.campaignsJson, (x) => this.campaigns.push(this.buildCampaign(x)));
     this.parseInto(v.surveyChildrenJson, (x) => this.surveyChildren.push(this.buildSurveyChild(x)));
@@ -309,21 +330,15 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   get previousCases(): FormArray { return this.form.get('previousCases') as FormArray; }
   get highRiskAreas(): FormArray { return this.form.get('highRiskAreas') as FormArray; }
   get healthFacilityVisits(): FormArray { return this.form.get('healthFacilityVisits') as FormArray; }
+  get visitors(): FormArray { return this.form.get('visitors') as FormArray; }
+  get residenceAfpCases(): FormArray { return this.form.get('residenceAfpCases') as FormArray; }
+  get facilityActions(): FormArray { return this.form.get('facilityActions') as FormArray; }
   get routineVaccinations(): FormArray { return this.form.get('routineVaccinations') as FormArray; }
   get campaigns(): FormArray { return this.form.get('campaigns') as FormArray; }
   get surveyChildren(): FormArray { return this.form.get('surveyChildren') as FormArray; }
   get aggregatedCases(): FormArray { return this.form.get('aggregatedCases') as FormArray; }
   get followupCommittee(): FormArray { return this.form.get('followupCommittee') as FormArray; }
   get contactSamples(): FormArray { return this.form.get('contactSamples') as FormArray; }
-
-  // ===================== Display helpers (summary tables) =====================
-  yesNo(v: any): string { return String(v) === '1' ? 'نعم' : String(v) === '2' ? 'لا' : ''; }
-  mark(v: any): string { return v ? '✓' : ''; }
-  ageLabel(v: any): string {
-    if (v?.age === null || v?.age === undefined || v?.age === '') return '';
-    const type = AgeType.find((t) => t.id != null && t.id === Number(v.ageTypeId));
-    return type ? `${v.age} ${type.arabicName}` : `${v.age}`;
-  }
 
   private legacySurveyAge(s: any): { age: any; ageTypeId: number | null } {
     if (s.age !== undefined || s.ageTypeId !== undefined) {
@@ -340,26 +355,46 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
 
   // ===================== Card expand / collapse =====================
   setTab(tab: any) { this.activeTab = tab; }
-  toggleRow(c: AbstractControl) { this.openRows.has(c) ? this.openRows.delete(c) : this.openRows.add(c); }
-  isRowOpen(c: AbstractControl): boolean { return this.openRows.has(c); }
 
   // ===================== Row builders =====================
   private buildCaseMovement(m: any = {}): FormGroup {
-    return new FormGroup({
-      visitDate: new FormControl(this.d(m.visitDate)),
-      contactPlace: new FormControl(m.contactPlace ?? null),
+    const group = new FormGroup<any>({
       address: new FormControl(m.address ?? null),
-      hasCases: new FormControl(m.hasCases ?? null),
-      caseData: new FormControl(m.caseData ?? null),
+      fromDate: new FormControl(this.d(m.fromDate ?? m.visitDate)),
+      toDate: new FormControl(this.d(m.toDate)),
     });
+    ['contactPlace', 'hasCases', 'caseData'].forEach((key) => {
+      if (m[key] != null) group.addControl(key, new FormControl(m[key]));
+    });
+    return group;
   }
   private buildPreviousCase(p: any = {}): FormGroup {
-    return new FormGroup({
+    const group = new FormGroup<any>({
       contactName: new FormControl(p.contactName ?? null),
-      paralysisOnsetDate: new FormControl(this.d(p.paralysisOnsetDate)),
-      residenceScope: new FormControl(p.residenceScope ?? null),
       address: new FormControl(p.address ?? null),
-      caseCode: new FormControl(p.caseCode ?? null),
+      paralysisOnsetDate: new FormControl(this.d(p.paralysisOnsetDate)),
+    });
+    this.keepLegacy(group, p, ['residenceScope', 'caseCode']);
+    return group;
+  }
+  private buildVisitor(v: any = {}): FormGroup {
+    return new FormGroup({
+      visitorNameRelation: new FormControl(v.visitorNameRelation ?? null),
+      residenceArea: new FormControl(v.residenceArea ?? null),
+      fromDate: new FormControl(this.d(v.fromDate)),
+      toDate: new FormControl(this.d(v.toDate)),
+    });
+  }
+  private buildFacilityAction(x: any = {}): FormGroup {
+    return new FormGroup({
+      facilityName: new FormControl(x.facilityName ?? null),
+      actions: new FormControl(x.actions ?? null),
+      date: new FormControl(this.d(x.date)),
+    });
+  }
+  private keepLegacy(group: FormGroup, source: any, keys: string[]) {
+    keys.forEach((key) => {
+      if (source[key] != null) group.addControl(key, new FormControl(source[key]));
     });
   }
   private buildHighRiskArea(a: any = {}): FormGroup {
@@ -373,16 +408,16 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     });
   }
   private buildFacilityVisit(f: any = {}): FormGroup {
-    return new FormGroup({
-      visitDate: new FormControl(this.d(f.visitDate)),
-      doctor: new FormControl(f.doctor ?? null),
-      facilityType: new FormControl(f.facilityType ?? null),
-      facilityName: new FormControl(f.facilityName ?? null),
+    const facilityName = [f.facilityName, f.doctor].filter((x) => x != null && `${x}`.trim() !== '').join(' - ');
+    const group = new FormGroup<any>({
+      facilityName: new FormControl(facilityName || null),
       address: new FormControl(f.address ?? null),
+      visitDate: new FormControl(this.d(f.visitDate)),
+      visitToDate: new FormControl(this.d(f.visitToDate)),
       immediateReport: new FormControl(f.immediateReport ?? null),
-      actions: new FormControl(f.actions ?? null),
-      inspectionDate: new FormControl(this.d(f.inspectionDate)),
     });
+    this.keepLegacy(group, f, ['facilityType']);
+    return group;
   }
   private buildRoutine(label: string, r: any = {}): FormGroup {
     return new FormGroup({
@@ -461,7 +496,9 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     }
     if (this.caseMovements.length === 0) this.addCaseMovement();
     if (this.previousCases.length === 0) this.addPreviousCase();
-    if (this.highRiskAreas.length === 0) this.addHighRiskArea();
+    if (this.visitors.length === 0) this.addVisitor();
+    if (this.residenceAfpCases.length === 0) this.addResidenceAfpCase();
+    if (this.facilityActions.length === 0) this.addFacilityAction();
     if (this.healthFacilityVisits.length === 0) this.addFacilityVisit();
     if (this.campaigns.length === 0) this.addCampaign();
     if (this.surveyChildren.length === 0) this.addSurveyChild();
@@ -470,30 +507,33 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     if (this.contactSamples.length === 0) this.addContactSample();
   }
 
-  private pushOpen(arr: FormArray, g: FormGroup) { arr.push(g); this.openRows.add(g); }
-  private removeAt(arr: FormArray, i: number) { this.openRows.delete(arr.at(i)); arr.removeAt(i); }
+  private removeAt(arr: FormArray, i: number) { arr.removeAt(i); }
 
-  addCaseMovement() { this.pushOpen(this.caseMovements, this.buildCaseMovement()); }
+  addCaseMovement() { this.caseMovements.push(this.buildCaseMovement()); }
   removeCaseMovement(i: number) { this.removeAt(this.caseMovements, i); }
-  addPreviousCase() { this.pushOpen(this.previousCases, this.buildPreviousCase()); }
+  addPreviousCase() { this.previousCases.push(this.buildPreviousCase()); }
   removePreviousCase(i: number) { this.removeAt(this.previousCases, i); }
-  addHighRiskArea() { this.pushOpen(this.highRiskAreas, this.buildHighRiskArea()); }
-  removeHighRiskArea(i: number) { this.removeAt(this.highRiskAreas, i); }
-  addFacilityVisit() { this.pushOpen(this.healthFacilityVisits, this.buildFacilityVisit()); }
+  addVisitor() { this.visitors.push(this.buildVisitor()); }
+  removeVisitor(i: number) { this.removeAt(this.visitors, i); }
+  addResidenceAfpCase() { this.residenceAfpCases.push(this.buildPreviousCase()); }
+  removeResidenceAfpCase(i: number) { this.removeAt(this.residenceAfpCases, i); }
+  addFacilityAction() { this.facilityActions.push(this.buildFacilityAction()); }
+  removeFacilityAction(i: number) { this.removeAt(this.facilityActions, i); }
+  addFacilityVisit() { this.healthFacilityVisits.push(this.buildFacilityVisit()); }
   removeFacilityVisit(i: number) { this.removeAt(this.healthFacilityVisits, i); }
-  addCampaign() { this.pushOpen(this.campaigns, this.buildCampaign()); }
+  addCampaign() { this.campaigns.push(this.buildCampaign()); }
   removeCampaign(i: number) { this.removeAt(this.campaigns, i); }
-  addSurveyChild() { this.pushOpen(this.surveyChildren, this.buildSurveyChild()); }
+  addSurveyChild() { this.surveyChildren.push(this.buildSurveyChild()); }
   removeSurveyChild(i: number) { this.removeAt(this.surveyChildren, i); }
-  addAggregatedCase() { this.pushOpen(this.aggregatedCases, this.buildAggregatedCase()); }
+  addAggregatedCase() { this.aggregatedCases.push(this.buildAggregatedCase()); }
   removeAggregatedCase(i: number) { this.removeAt(this.aggregatedCases, i); }
   copyAggregatedCase() {
     const last = this.aggregatedCases.at(this.aggregatedCases.length - 1);
-    this.pushOpen(this.aggregatedCases, this.buildAggregatedCase(last ? last.value : {}));
+    this.aggregatedCases.push(this.buildAggregatedCase(last ? last.value : {}));
   }
-  addCommittee() { this.pushOpen(this.followupCommittee, this.buildCommittee()); }
+  addCommittee() { this.followupCommittee.push(this.buildCommittee()); }
   removeCommittee(i: number) { this.removeAt(this.followupCommittee, i); }
-  addContactSample() { this.pushOpen(this.contactSamples, this.buildContactSample()); }
+  addContactSample() { this.contactSamples.push(this.buildContactSample()); }
   removeContactSample(i: number) {
     this.removeAt(this.contactSamples, i);
     if (this.contactSamples.length === 0) this.addContactSample();
@@ -519,6 +559,9 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     payload.previousCasesJson = JSON.stringify(value.previousCases || []);
     payload.highRiskAreasJson = JSON.stringify(value.highRiskAreas || []);
     payload.healthFacilityVisitsJson = JSON.stringify(value.healthFacilityVisits || []);
+    payload.facilityActionsJson = JSON.stringify(value.facilityActions || []);
+    payload.visitorsJson = JSON.stringify(value.visitors || []);
+    payload.residenceAfpCasesJson = JSON.stringify(value.residenceAfpCases || []);
     payload.routineVaccinationsJson = JSON.stringify(value.routineVaccinations || []);
     payload.campaignsJson = JSON.stringify(value.campaigns || []);
     payload.surveyChildrenJson = JSON.stringify(value.surveyChildren || []);

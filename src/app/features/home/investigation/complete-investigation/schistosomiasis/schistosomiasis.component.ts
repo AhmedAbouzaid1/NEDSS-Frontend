@@ -46,8 +46,6 @@ export class SchistosomiasisComponent implements OnInit {
       swimmingPlace: new FormControl(),
       drinkingCanalWater: new FormControl(),
       drinkingCanalWaterPlace: new FormControl(),
-      washingUtensils: new FormControl(),
-      washingUtensilsPlace: new FormControl(),
       workAgriculture: new FormControl(),
       workAgriculturePlace: new FormControl(),
       urinateCanal: new FormControl(),
@@ -101,6 +99,7 @@ export class SchistosomiasisComponent implements OnInit {
         console.log(res);
         var v = res.data;
         this.belharisyaForm.patchValue(v)
+        this.mergeLegacyCanalContact(v);
         //hadSchistosomiasisDate
         this.belharisyaForm.controls['hadSchistosomiasisDate'].setValue(this.datePipe.transform(this.belharisyaForm.value.hadSchistosomiasisDate, 'yyyy-MM-dd'));
         this.belharisyaForm.controls['dateDose'].setValue(this.datePipe.transform(this.belharisyaForm.value.dateDose, 'yyyy-MM-dd'));
@@ -160,6 +159,20 @@ export class SchistosomiasisComponent implements OnInit {
         }
       )
     }
+  }
+
+  private mergeLegacyCanalContact(v: any): void {
+    if (!v || v.washingUtensils == null) return;
+    const places = [v.swimmingPlace, v.washingUtensilsPlace]
+      .map(p => (p ?? '').toString().trim())
+      .filter((p, i, arr) => p && arr.indexOf(p) === i);
+    const contact = v.bathingSwimming == 1 || v.washingUtensils == 1 ? 1
+      : v.bathingSwimming == 2 || v.washingUtensils == 2 ? 2
+      : null;
+    this.belharisyaForm.patchValue({
+      bathingSwimming: contact,
+      swimmingPlace: contact == 1 && places.length ? places.join(' - ') : v.swimmingPlace,
+    });
   }
 
   calculateCompletionPercentage(): void {
