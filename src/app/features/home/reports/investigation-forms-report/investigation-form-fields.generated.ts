@@ -71,39 +71,535 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "investigationDate",
-      "label": [
-        "تاريخ التقصي"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)"
-      ]
-    },
-    {
-      "key": "investigatingPhysicianName",
-      "label": [
-        "اسم الطبيب القائم بالتقصي"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)"
-      ]
-    },
-    {
       "key": "paralysisOnsetDate",
       "label": [
-        "تاريخ بداية شلل الحالة"
+        "تاريخ بداية الشلل"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
+      "key": "paralysisCompletionDate",
+      "label": [
+        "تاريخ اكتمال الشلل"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
+      "key": "paralysisCompletedWithin4Days",
+      "label": [
+        "اكتمال الشلل خلال 4 أيام"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "paralysisSinceBirth",
+      "label": [
+        "هل الشلل موجود منذ الولادة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "paralysisDueToAccident",
+      "label": [
+        "هل حدث الشلل بسبب حادث أو كسر"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "paralysisAccidentCause",
+      "label": [
+        "إذا نعم، اذكر السبب"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
+      "key": "injectionBeforeParalysis",
+      "label": [
+        "هل تلقى الطفل أي حقن خلال الـ 3 أيام قبل حدوث الشلل؟"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "injectionBodySite",
+      "label": [
+        "اذكر مكان الحقن بالجسم"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
+      "key": "injectionFacility",
+      "label": [
+        "الموقع الذي تم الحقن به"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
+      "key": "injectionFacilityAwareness",
+      "label": [
+        "هل تمت التوعية بالموقع"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "paralysisSiteRightArm",
+      "label": [
+        "Right Arm"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "مكان الشلل"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "paralysisSiteRightLeg",
+      "label": [
+        "Right Leg"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "مكان الشلل"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "paralysisSiteLeftArm",
+      "label": [
+        "Left Arm"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "مكان الشلل"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "paralysisSiteLeftLeg",
+      "label": [
+        "Left Leg"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "مكان الشلل"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "paralysisSiteOther",
+      "label": [
+        "Other (specify)"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "مكان الشلل"
+      ]
+    },
+    {
+      "key": "asymmetry",
+      "label": [
+        "Asymmetry"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "مكان الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "paralyzedPartFlaccid",
+      "label": [
+        "Paralyzed part is flaccid"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "مكان الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "intactSensation",
+      "label": [
+        "Intact sensation in paralyzed parts"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "مكان الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "musclePain",
+      "label": [
+        "Muscle pain"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "مكان الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "onsetFever",
+      "label": [
+        "Fever",
+        "Yes / No"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "onsetFeverDate",
+      "label": [
+        "Fever",
+        "If yes, date"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ]
+    },
+    {
+      "key": "onsetDiarrhea",
+      "label": [
+        "Diarrhea",
+        "Yes / No"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "onsetDiarrheaDate",
+      "label": [
+        "Diarrhea",
+        "If yes, date"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ]
+    },
+    {
+      "key": "onsetVomiting",
+      "label": [
+        "Vomiting",
+        "Yes / No"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "onsetVomitingDate",
+      "label": [
+        "Vomiting",
+        "If yes, date"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ]
+    },
+    {
+      "key": "onsetCoryza",
+      "label": [
+        "Coryza (cold-runny nose)",
+        "Yes / No"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "onsetCoryzaDate",
+      "label": [
+        "Coryza (cold-runny nose)",
+        "If yes, date"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ]
+    },
+    {
+      "key": "sphincterControl",
+      "label": [
+        "Sphincter control"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "neckStiffness",
+      "label": [
+        "Neck stiffness"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "convulsions",
+      "label": [
+        "Convulsions"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "babinskiSign",
+      "label": [
+        "Babinski Sign"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ],
+      "options": {
+        "1": [
+          "Yes"
+        ],
+        "2": [
+          "No"
+        ]
+      }
+    },
+    {
+      "key": "reflexes",
+      "label": [
+        "Reflexes"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ],
+      "options": {
+        "1": [
+          "Hyper-reflexia"
+        ],
+        "2": [
+          "Hypo-reflexia"
+        ]
+      }
+    },
+    {
+      "key": "muscleTone",
+      "label": [
+        "Muscle Tone"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ],
+      "options": {
+        "1": [
+          "Hypertonia"
+        ],
+        "2": [
+          "Hypotonia"
+        ]
+      }
+    },
+    {
+      "key": "otherClinicalSigns",
+      "label": [
+        "Any other clinical signs (specify)"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
       ]
     },
     {
       "key": "initialClinicalDiagnosis",
       "label": [
-        "التشخيص الإكلينيكي الأولي"
+        "Provisional Clinical Diagnosis / التشخيص الأولي للحالة (اسم المرض المسبب للشلل)"
       ],
       "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)"
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
       ],
       "options": {
         "1": [
@@ -144,10 +640,31 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "otherInitialClinicalDiagnosis",
       "label": [
-        "التشخيص الآخر"
+        "Other Diagnosis (specify)"
       ],
       "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)"
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ]
+    },
+    {
+      "key": "investigationDate",
+      "label": [
+        "تاريخ التقصي"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
+      ]
+    },
+    {
+      "key": "investigatingPhysicianName",
+      "label": [
+        "اسم الطبيب القائم بالتقصي"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
       ]
     },
     {
@@ -156,7 +673,8 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "هل الحالة خطرة؟"
       ],
       "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)"
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
       ],
       "options": {
         "1": [
@@ -173,7 +691,8 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "مؤشرات خطورة الحالة"
       ],
       "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)"
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
       ],
       "options": {
         "1": [
@@ -199,7 +718,8 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "مؤشرات أخرى (اذكرها)"
       ],
       "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)"
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل"
       ]
     },
     {
@@ -901,16 +1421,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "unit",
       "label": [
         "الوحدة"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
-      ]
-    },
-    {
-      "key": "paralysisStartDate",
-      "label": [
-        "تاريخ بداية الشلل"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",

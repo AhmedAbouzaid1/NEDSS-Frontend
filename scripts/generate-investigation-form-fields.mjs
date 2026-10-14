@@ -346,7 +346,8 @@ function extractForm(htmlFile, constantRefs, localOptions = {}, jsonAliases = {}
         }
 
         if (type === 'checkbox') {
-          let tokens = ctx.wrappingLabel ? directTokens(ctx.wrappingLabel) : followingTokens(nodes, i, ctx);
+          const ariaLabel = cleanText(attr(node, 'aria-label'));
+          let tokens = ariaLabel ? [ariaLabel] : ctx.wrappingLabel ? directTokens(ctx.wrappingLabel) : followingTokens(nodes, i, ctx);
           if (!tokens.length && ctx.rowLabel) tokens = [...ctx.rowLabel, ...(ctx.colHeader || [])];
           const saved = state.label;
           if (tokens.length) state.label = tokens;
