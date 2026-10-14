@@ -28,8 +28,9 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   allControllesCount = 0;
   patientName: string = '';
 
-  activeTab: 'field' | 'vaccination' | 'survey' | 'aggregation' | 'followup' | 'contactSamples' = 'field';
+  activeTab: 'clinical' | 'field' | 'vaccination' | 'survey' | 'aggregation' | 'followup' | 'contactSamples' = 'clinical';
   tabs = [
+    { key: 'clinical', label: 'الفحص الاكلينيكي' },
     { key: 'field', label: 'التقصي الميداني للحالة' },
     { key: 'vaccination', label: 'موقف التطعيمات' },
     { key: 'survey', label: 'المسح الميداني' },
@@ -103,9 +104,10 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage', 'caseCodeDisplay'];
 
   private dateFields = new Set([
-    'homeVisitDate', 'entryDate', 'paralysisOnsetDate', 'investigationDate',
+    'homeVisitDate', 'entryDate', 'paralysisOnsetDate', 'paralysisCompletionDate', 'investigationDate',
+    'onsetFeverDate', 'onsetDiarrheaDate', 'onsetVomitingDate', 'onsetCoryzaDate',
     'behaviorDose1Date', 'behaviorDose2Date', 'surveyVisitDate',
-    'paralysisStartDate', 'followupDate', 'deathDate', 'labReceiveDate',
+    'followupDate', 'deathDate', 'labReceiveDate',
   ]);
 
   constructor(
@@ -133,12 +135,47 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       homeVisitDate: new FormControl(),
       entryDate: new FormControl(),
 
-      // Tab 1 - field investigation
+      // Tab 0 - clinical examination
       paralysisOnsetDate: new FormControl(),
-      investigationDate: new FormControl(),
-      investigatingPhysicianName: new FormControl(),
+      paralysisCompletionDate: new FormControl(),
+      paralysisCompletedWithin4Days: new FormControl(),
+      paralysisSinceBirth: new FormControl(),
+      paralysisDueToAccident: new FormControl(),
+      paralysisAccidentCause: new FormControl(),
+      injectionBeforeParalysis: new FormControl(),
+      injectionBodySite: new FormControl(),
+      injectionFacility: new FormControl(),
+      injectionFacilityAwareness: new FormControl(),
+      paralysisSiteRightArm: new FormControl(false),
+      paralysisSiteRightLeg: new FormControl(false),
+      paralysisSiteLeftArm: new FormControl(false),
+      paralysisSiteLeftLeg: new FormControl(false),
+      paralysisSiteOther: new FormControl(),
+      asymmetry: new FormControl(),
+      paralyzedPartFlaccid: new FormControl(),
+      intactSensation: new FormControl(),
+      musclePain: new FormControl(),
+      onsetFever: new FormControl(),
+      onsetFeverDate: new FormControl(),
+      onsetDiarrhea: new FormControl(),
+      onsetDiarrheaDate: new FormControl(),
+      onsetVomiting: new FormControl(),
+      onsetVomitingDate: new FormControl(),
+      onsetCoryza: new FormControl(),
+      onsetCoryzaDate: new FormControl(),
+      sphincterControl: new FormControl(),
+      neckStiffness: new FormControl(),
+      convulsions: new FormControl(),
+      babinskiSign: new FormControl(),
+      reflexes: new FormControl(),
+      muscleTone: new FormControl(),
+      otherClinicalSigns: new FormControl(),
       initialClinicalDiagnosis: new FormControl(),
       otherInitialClinicalDiagnosis: new FormControl(),
+
+      // Tab 1 - field investigation
+      investigationDate: new FormControl(),
+      investigatingPhysicianName: new FormControl(),
       isDangerousCase: new FormControl(),
       selectedDangerousCaseReasons: new FormControl([]),
       otherDangerousCaseReason: new FormControl(),
@@ -183,7 +220,6 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       aggregatedCases: new FormArray([]),
 
       // Tab 5 - follow-up
-      paralysisStartDate: new FormControl(),
       followupDate: new FormControl(),
       labResult: new FormControl(),
       patientStatus: new FormControl(),
@@ -219,6 +255,8 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
         this.form.controls['otherInitialClinicalDiagnosis'].setValue(null, { emitEvent: false });
       }
     });
+    this.form.controls['paralysisOnsetDate'].valueChanges.subscribe(() => this.updateCompletedWithin4Days());
+    this.form.controls['paralysisCompletionDate'].valueChanges.subscribe(() => this.updateCompletedWithin4Days());
     this.form.controls['isDangerousCase'].valueChanges.subscribe((value) => {
       if (Number(value) !== 1) {
         this.form.controls['selectedDangerousCaseReasons'].setValue([], { emitEvent: false });
@@ -253,6 +291,15 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     });
   }
 
+  private updateCompletedWithin4Days() {
+    const onset = this.form.controls['paralysisOnsetDate'].value;
+    const completion = this.form.controls['paralysisCompletionDate'].value;
+    if (!onset || !completion) return;
+    const days = (new Date(completion).getTime() - new Date(onset).getTime()) / 86400000;
+    if (days < 0) return;
+    this.form.controls['paralysisCompletedWithin4Days'].setValue(days <= 4 ? 1 : 2);
+  }
+
   private todayStr(): string { return this.datePipe.transform(new Date(), 'yyyy-MM-dd') as string; }
   private d(x: any) { return x ? this.datePipe.transform(x, 'yyyy-MM-dd') : null; }
 
@@ -280,6 +327,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       if (v[key] === undefined) return;
       patch[key] = this.dateFields.has(key) && v[key] ? this.d(v[key]) : v[key];
     });
+    if (!patch.paralysisOnsetDate && v.paralysisStartDate) patch.paralysisOnsetDate = this.d(v.paralysisStartDate);
     this.form.patchValue(patch);
     this.form.controls['caseCodeDisplay'].setValue(v.caseCode ?? null);
     this.form.controls['selectedDangerousCaseReasons'].setValue(
@@ -555,6 +603,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       if (this.arrayKeys.includes(key)) return;
       payload[key] = value[key] === '' ? null : value[key];
     });
+    payload.paralysisStartDate = payload.paralysisOnsetDate;
     payload.caseMovementsJson = JSON.stringify(value.caseMovements || []);
     payload.previousCasesJson = JSON.stringify(value.previousCases || []);
     payload.highRiskAreasJson = JSON.stringify(value.highRiskAreas || []);

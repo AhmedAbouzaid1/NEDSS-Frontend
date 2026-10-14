@@ -54,6 +54,234 @@
       <div class="card shadow color">
         <div class="card-body">
 
+          <!-- ================= TAB 0: الفحص الاكلينيكي ================= -->
+          <ng-container *ngIf="activeTab === 'clinical'">
+            <div class="row">
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ بداية الشلل</label>
+                <app-date-field formControlName="paralysisOnsetDate"></app-date-field></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ اكتمال الشلل</label>
+                <app-date-field formControlName="paralysisCompletionDate" [min]="form.get('paralysisOnsetDate')?.value"></app-date-field></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>اكتمال الشلل خلال 4 أيام</label>
+                <select class="form-control" formControlName="paralysisCompletedWithin4Days">
+                  <option [ngValue]="null">اختر</option>
+                  <option [ngValue]="1">نعم</option>
+                  <option [ngValue]="2">لا</option>
+                </select></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>هل الشلل موجود منذ الولادة</label>
+                <select class="form-control" formControlName="paralysisSinceBirth">
+                  <option [ngValue]="null">اختر</option>
+                  <option [ngValue]="1">نعم</option>
+                  <option [ngValue]="2">لا</option>
+                </select></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>هل حدث الشلل بسبب حادث أو كسر</label>
+                <select class="form-control" formControlName="paralysisDueToAccident">
+                  <option [ngValue]="null">اختر</option>
+                  <option [ngValue]="1">نعم</option>
+                  <option [ngValue]="2">لا</option>
+                </select></div></div>
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="form.get('paralysisDueToAccident')?.value == 1">
+                <div class="form-group"><label>إذا نعم، اذكر السبب</label>
+                  <input type="text" class="form-control" formControlName="paralysisAccidentCause" maxlength="250" /></div>
+              </div>
+            </div>
+
+            <div class="alert alert-warning fwb py-2"
+              *ngIf="form.get('paralysisSinceBirth')?.value == 1 || form.get('paralysisDueToAccident')?.value == 1">
+              إذا كانت الإجابة "نعم" لأحد السؤالين الأخيرين توقف عن الفحص واكتب التشخيص الأولي للحالة في آخر خانة من الاستمارة
+            </div>
+
+            <div class="row">
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>هل تلقى الطفل أي حقن خلال الـ 3 أيام قبل حدوث الشلل؟</label>
+                <select class="form-control" formControlName="injectionBeforeParalysis">
+                  <option [ngValue]="null">اختر</option>
+                  <option [ngValue]="1">نعم</option>
+                  <option [ngValue]="2">لا</option>
+                </select></div></div>
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="form.get('injectionBeforeParalysis')?.value == 1">
+                <div class="form-group"><label>اذكر مكان الحقن بالجسم</label>
+                  <input type="text" class="form-control" formControlName="injectionBodySite" maxlength="250" /></div>
+              </div>
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="form.get('injectionBeforeParalysis')?.value == 1">
+                <div class="form-group"><label>الموقع الذي تم الحقن به</label>
+                  <input type="text" class="form-control" formControlName="injectionFacility" maxlength="250" /></div>
+              </div>
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="form.get('injectionBeforeParalysis')?.value == 1">
+                <div class="form-group"><label>هل تمت التوعية بالموقع</label>
+                  <select class="form-control" formControlName="injectionFacilityAwareness">
+                    <option [ngValue]="null">اختر</option>
+                    <option [ngValue]="1">نعم</option>
+                    <option [ngValue]="2">لا</option>
+                  </select></div>
+              </div>
+            </div>
+
+            <div class="section-bar b1 mt-4">مكان الشلل</div>
+            <div class="afp-ltr" dir="ltr">
+            <div class="afp-en-grid">
+              <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Right</span></label>
+                <div class="afp-site-box" dir="ltr">
+                  <label class="afp-check"><input type="checkbox" class="form-check-input" formControlName="paralysisSiteRightArm" aria-label="Right Arm" /> Arm</label>
+                  <label class="afp-check"><input type="checkbox" class="form-check-input" formControlName="paralysisSiteRightLeg" aria-label="Right Leg" /> Leg</label>
+                </div></div></div>
+              <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Left</span></label>
+                <div class="afp-site-box" dir="ltr">
+                  <label class="afp-check"><input type="checkbox" class="form-check-input" formControlName="paralysisSiteLeftArm" aria-label="Left Arm" /> Arm</label>
+                  <label class="afp-check"><input type="checkbox" class="form-check-input" formControlName="paralysisSiteLeftLeg" aria-label="Left Leg" /> Leg</label>
+                </div></div></div>
+              <div class="afp-en-cell afp-en-wide"><div class="form-group"><label><span dir="ltr">Other (specify)</span></label>
+                <input type="text" class="form-control" formControlName="paralysisSiteOther" maxlength="250" /></div></div>
+                <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Asymmetry</span></label>
+                  <select class="form-control" formControlName="asymmetry">
+                    <option [ngValue]="null">--</option>
+                    <option [ngValue]="1">Yes</option>
+                    <option [ngValue]="2">No</option>
+                  </select></div></div>
+                <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Paralyzed part is flaccid</span></label>
+                  <select class="form-control" formControlName="paralyzedPartFlaccid">
+                    <option [ngValue]="null">--</option>
+                    <option [ngValue]="1">Yes</option>
+                    <option [ngValue]="2">No</option>
+                  </select></div></div>
+                <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Intact sensation in paralyzed parts</span></label>
+                  <select class="form-control" formControlName="intactSensation">
+                    <option [ngValue]="null">--</option>
+                    <option [ngValue]="1">Yes</option>
+                    <option [ngValue]="2">No</option>
+                  </select></div></div>
+                <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Muscle pain</span></label>
+                  <select class="form-control" formControlName="musclePain">
+                    <option [ngValue]="null">--</option>
+                    <option [ngValue]="1">Yes</option>
+                    <option [ngValue]="2">No</option>
+                  </select></div></div>
+            </div>
+            </div>
+
+            <div class="section-bar b2 mt-4">هل ظهر أي من الأعراض التالية قبل أو عند بداية الشلل</div>
+            <div class="afp-ltr" dir="ltr">
+            <table class="table table-bordered align-middle afp-symptoms-table">
+              <thead><tr><th dir="ltr">Symptom</th><th dir="ltr">Yes / No</th><th dir="ltr">If yes, date</th></tr></thead>
+              <tbody>
+                <tr>
+                  <th scope="row" dir="ltr">Fever</th>
+                  <td>
+                    <select class="form-control" formControlName="onsetFever" aria-label="Fever">
+                      <option [ngValue]="null">--</option>
+                      <option [ngValue]="1">Yes</option>
+                      <option [ngValue]="2">No</option>
+                    </select>
+                  </td>
+                  <td>
+                    <div [appShowIf]="form.get('onsetFever')?.value == 1">
+                      <app-date-field formControlName="onsetFeverDate" aria-label="Fever - if yes, date"></app-date-field>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" dir="ltr">Diarrhea</th>
+                  <td>
+                    <select class="form-control" formControlName="onsetDiarrhea" aria-label="Diarrhea">
+                      <option [ngValue]="null">--</option>
+                      <option [ngValue]="1">Yes</option>
+                      <option [ngValue]="2">No</option>
+                    </select>
+                  </td>
+                  <td>
+                    <div [appShowIf]="form.get('onsetDiarrhea')?.value == 1">
+                      <app-date-field formControlName="onsetDiarrheaDate" aria-label="Diarrhea - if yes, date"></app-date-field>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" dir="ltr">Vomiting</th>
+                  <td>
+                    <select class="form-control" formControlName="onsetVomiting" aria-label="Vomiting">
+                      <option [ngValue]="null">--</option>
+                      <option [ngValue]="1">Yes</option>
+                      <option [ngValue]="2">No</option>
+                    </select>
+                  </td>
+                  <td>
+                    <div [appShowIf]="form.get('onsetVomiting')?.value == 1">
+                      <app-date-field formControlName="onsetVomitingDate" aria-label="Vomiting - if yes, date"></app-date-field>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" dir="ltr">Coryza (cold-runny nose)</th>
+                  <td>
+                    <select class="form-control" formControlName="onsetCoryza" aria-label="Coryza (cold-runny nose)">
+                      <option [ngValue]="null">--</option>
+                      <option [ngValue]="1">Yes</option>
+                      <option [ngValue]="2">No</option>
+                    </select>
+                  </td>
+                  <td>
+                    <div [appShowIf]="form.get('onsetCoryza')?.value == 1">
+                      <app-date-field formControlName="onsetCoryzaDate" aria-label="Coryza (cold-runny nose) - if yes, date"></app-date-field>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="afp-en-grid mt-4">
+              <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Sphincter control</span></label>
+                <select class="form-control" formControlName="sphincterControl">
+                  <option [ngValue]="null">--</option>
+                  <option [ngValue]="1">Yes</option>
+                  <option [ngValue]="2">No</option>
+                </select></div></div>
+              <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Neck stiffness</span></label>
+                <select class="form-control" formControlName="neckStiffness">
+                  <option [ngValue]="null">--</option>
+                  <option [ngValue]="1">Yes</option>
+                  <option [ngValue]="2">No</option>
+                </select></div></div>
+              <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Convulsions</span></label>
+                <select class="form-control" formControlName="convulsions">
+                  <option [ngValue]="null">--</option>
+                  <option [ngValue]="1">Yes</option>
+                  <option [ngValue]="2">No</option>
+                </select></div></div>
+              <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Babinski Sign</span></label>
+                <select class="form-control" formControlName="babinskiSign">
+                  <option [ngValue]="null">--</option>
+                  <option [ngValue]="1">Yes</option>
+                  <option [ngValue]="2">No</option>
+                </select></div></div>
+              <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Reflexes</span></label>
+                <select class="form-control" formControlName="reflexes">
+                  <option [ngValue]="null">--</option>
+                  <option [ngValue]="1">Hyper-reflexia</option>
+                  <option [ngValue]="2">Hypo-reflexia</option>
+                </select></div></div>
+              <div class="afp-en-cell"><div class="form-group"><label><span dir="ltr">Muscle Tone</span></label>
+                <select class="form-control" formControlName="muscleTone">
+                  <option [ngValue]="null">--</option>
+                  <option [ngValue]="1">Hypertonia</option>
+                  <option [ngValue]="2">Hypotonia</option>
+                </select></div></div>
+              <div class="afp-en-cell afp-en-wide"><div class="form-group"><label><span dir="ltr">Any other clinical signs (specify)</span></label>
+                <input type="text" class="form-control" formControlName="otherClinicalSigns" maxlength="1000" /></div></div>
+            </div>
+
+            <div class="afp-en-grid mt-2">
+              <div class="afp-en-cell afp-en-wide"><div class="form-group"><label>Provisional Clinical Diagnosis / التشخيص الأولي للحالة (اسم المرض المسبب للشلل)</label>
+                <select class="form-control" formControlName="initialClinicalDiagnosis">
+                  <option [ngValue]="null">--</option>
+                  <option *ngFor="let diagnosis of initialClinicalDiagnoses" [ngValue]="diagnosis.value">
+                    {{ diagnosis.label }}
+                  </option>
+                </select></div></div>
+              <div class="afp-en-cell afp-en-wide" [appShowIf]="form.get('initialClinicalDiagnosis')?.value == 11">
+                <div class="form-group"><label>Other Diagnosis (specify)</label>
+                  <input type="text" class="form-control" formControlName="otherInitialClinicalDiagnosis" maxlength="250" /></div>
+              </div>
+            </div>
+            </div>
+          </ng-container>
+
           <!-- ================= TAB 1: التقصي الميداني للحالة ================= -->
           <ng-container *ngIf="activeTab === 'field'">
 
@@ -63,31 +291,6 @@
               <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>اسم الطبيب القائم بالتقصي</label>
                 <input type="text" class="form-control" formControlName="investigatingPhysicianName"
                   maxlength="200" /></div></div>
-            
-              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ بداية شلل الحالة</label>
-                <app-date-field formControlName="paralysisOnsetDate"></app-date-field></div></div>
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label>التشخيص الإكلينيكي الأولي</label>
-                  <select class="form-control" formControlName="initialClinicalDiagnosis">
-                    <option [ngValue]="null">اختر</option>
-                    <option *ngFor="let diagnosis of initialClinicalDiagnoses" [ngValue]="diagnosis.value">
-                      {{ diagnosis.label }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4 inv-field-cell" *ngIf="form.get('initialClinicalDiagnosis')?.value == 11">
-                <div class="form-group">
-                  <label>التشخيص الآخر</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="otherInitialClinicalDiagnosis"
-                    maxlength="250"
-                  />
-                </div>
-              </div>
               <div class="col-lg-4 inv-field-cell">
                 <div class="form-group">
                   <label>هل الحالة خطرة؟</label>
@@ -435,7 +638,7 @@
           <!-- ================= TAB 5: المتابعة ================= -->
           <ng-container *ngIf="activeTab === 'followup'">
             <div class="row">
-              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ بداية الشلل</label><app-date-field formControlName="paralysisStartDate"></app-date-field></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ بداية الشلل</label><app-date-field formControlName="paralysisOnsetDate"></app-date-field></div></div>
               <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ المتابعة</label><app-date-field formControlName="followupDate"></app-date-field></div></div>
               <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>نتيجة المعمل</label>
                 <select class="form-control" formControlName="labResult">
@@ -464,9 +667,9 @@
             </div>
 
             <div class="row mt-2">
-              <div class="col-12"><div class="form-group"><label>CT / MRI</label><textarea rows="2" class="form-control" formControlName="ctMri"></textarea></div></div>
-              <div class="col-12"><div class="form-group"><label>Myelograph (EMG)</label><textarea rows="2" class="form-control" formControlName="myelographEmg"></textarea></div></div>
-              <div class="col-12"><div class="form-group"><label>CSF</label><textarea rows="2" class="form-control" formControlName="csf"></textarea></div></div>
+              <div class="col-12"><div class="form-group"><label><span dir="ltr">CT / MRI</span></label><textarea rows="2" class="form-control" formControlName="ctMri"></textarea></div></div>
+              <div class="col-12"><div class="form-group"><label><span dir="ltr">Myelograph (EMG)</span></label><textarea rows="2" class="form-control" formControlName="myelographEmg"></textarea></div></div>
+              <div class="col-12"><div class="form-group"><label><span dir="ltr">CSF</span></label><textarea rows="2" class="form-control" formControlName="csf"></textarea></div></div>
             </div>
 
             <div class="section-bar b2 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
