@@ -300,10 +300,11 @@
                             <font style="vertical-align: inherit">{{"NOUR.word16" | translate }}</font>
                           </font>
                         </label>
-                        <select formControlName="typeTreatment" class="form-control"
-                          (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                          <option *ngFor="let type of treatmentTypeOptions" [value]="type">{{ type }}</option>
-                        </select>
+                        <p-multiSelect formControlName="typeTreatment" [options]="treatmentTypeOptions"
+                          [style]="{ width: '100%' }" [showToggleAll]="false" [filter]="false" appendTo="body"
+                          [placeholder]="currentLang == 'ar' ? 'اختر' : 'Choose'"
+                          (onChange)="calculateCompletionPercentage()">
+                        </p-multiSelect>
                       </div>
                     </div>
                     <!-- /.col-lg-6 -->

@@ -10062,9 +10062,135 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
   ],
   "fasciola": [
     {
+      "key": "locationDirectContact",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.LOCATION_DIRECT_CONTACT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "nameCanal",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NAME_CANAL"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
+      ]
+    },
+    {
+      "key": "lengthStream",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.LENGTH_STREAM"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
+      ]
+    },
+    {
+      "key": "possibleDirect",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.POSSIBLE_DIRECT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "mentionTest",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.MENTION_TEST"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
+      ]
+    },
+    {
+      "key": "numberPolynesque",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_POLYNESQUE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
+      ]
+    },
+    {
+      "key": "numberBiomflaria",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_BIOMFLARIA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
+      ]
+    },
+    {
+      "key": "numberYemeni",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_YEMENI"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
+      ]
+    },
+    {
+      "key": "snailsPositive",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE_OPTION_1"
+        ],
+        "2": [
+          "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE_OPTION_2"
+        ],
+        "3": [
+          "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE_OPTION_3"
+        ]
+      }
+    },
+    {
+      "key": "mentionPesticide",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.MENTION_PESTICIDE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
+      ]
+    },
+    {
+      "key": "pesticideConcentration",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PESTICIDE_CONCENTRATION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
+      ]
+    },
+    {
       "key": "bathingSwimming",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.BATHING_SWIMMING"
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.CANAL_WATER_CONTACT"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EPIDEMIOLOGICAL_INVESTIGATION"
@@ -10106,32 +10232,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     },
     {
       "key": "drinkingCanalWaterPlace",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EPIDEMIOLOGICAL_INVESTIGATION"
-      ]
-    },
-    {
-      "key": "washingUtensils",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.WASHING_UTENSILS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EPIDEMIOLOGICAL_INVESTIGATION"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "washingUtensilsPlace",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.IF_YES_MENTION_PLACE"
       ],
@@ -10357,6 +10457,23 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
+      "key": "vegetablesWashedLemon",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.VEGETABLES_WASHED_LEMON"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EPIDEMIOLOGICAL_INVESTIGATION"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
       "key": "hadSchistosomiasis",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.HAD_SCHISTOSOMIASIS"
@@ -10433,149 +10550,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.EPIDEMIOLOGICAL_INVESTIGATION"
-      ]
-    },
-    {
-      "key": "vegetablesWashedLemon",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.VEGETABLES_WASHED_LEMON"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "locationDirectContact",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.LOCATION_DIRECT_CONTACT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "nameCanal",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NAME_CANAL"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ]
-    },
-    {
-      "key": "lengthStream",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.LENGTH_STREAM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ]
-    },
-    {
-      "key": "possibleDirect",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.POSSIBLE_DIRECT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "mentionTest",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.MENTION_TEST"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ]
-    },
-    {
-      "key": "numberPolynesque",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_POLYNESQUE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ]
-    },
-    {
-      "key": "numberBiomflaria",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_BIOMFLARIA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ]
-    },
-    {
-      "key": "numberYemeni",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.NUMBER_YEMENI"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ]
-    },
-    {
-      "key": "snailsPositive",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE_OPTION_1"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE_OPTION_2"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.SNAILS_POSITIVE_OPTION_3"
-        ]
-      }
-    },
-    {
-      "key": "mentionPesticide",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.MENTION_PESTICIDE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
-      ]
-    },
-    {
-      "key": "pesticideConcentration",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PESTICIDE_CONCENTRATION"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.SCHISTOSOMIASIS_FASCIOLA.PREVENTIVE_MEASURES"
       ]
     }
   ],
@@ -12339,90 +12313,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
   ],
   "filariasis": [
     {
-      "key": "filariasisTreatmentProtocolImplemented",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TREATMENT_PROTOCOL_IMPLEMENTED"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "treatmentStartDate",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TREATMENT_START_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ]
-    },
-    {
-      "key": "typeTreatment",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TREATMENT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ]
-    },
-    {
-      "key": "dose",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DOSE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
-      ]
-    },
-    {
-      "key": "conditionAssessment",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONDITION_ASSESSMENT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONDITION"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SIMPLE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.MODERATE"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SEVERE"
-        ]
-      }
-    },
-    {
-      "key": "result",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONDITION"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.HEALED"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.UNDER_TREATMENT"
-        ],
-        "3": [
-          "NEDSS.REPORTS.DEATH"
-        ]
-      }
-    },
-    {
       "key": "routineMonitoring",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.ROUTINE_SURVEILLANCE"
@@ -12460,23 +12350,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "key": "historyTravelOutsideEgypt",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY_OUTSIDE_EGYPT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.EPIDEMIOLOGICAL_INVESTIGATION"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "medicalTeam",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.MEDICAL_TEAM"
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.EPIDEMIOLOGICAL_INVESTIGATION"
@@ -12577,1254 +12450,106 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "nameDay1",
+      "key": "filariasisType",
       "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.FILARIASIS_TYPE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "ageDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "telephoneDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.PHONE_NUMBER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "genderDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
       ],
       "options": {
         "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.MALE"
+          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.ELEPHANTIASIS"
         ],
         "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "contactTypeDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.HOUSEHOLD_STAY"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.WORK_CONTACT"
+          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.HYDROCELE"
         ],
         "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.VISITED_PATIENT_OR_VICE_VERSA"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.OTHER_CONTACT_METHODS"
+          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CHYLURIA"
         ]
       }
     },
     {
-      "key": "relationshipPatientDay1",
+      "key": "filariasisTreatmentProtocolImplemented",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.RELATIONSHIP_TO_CASE"
+        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TREATMENT_PROTOCOL_IMPLEMENTED"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
+      ],
+      "options": {
+        "1": [
+          "NEDSS.COMMON.YES"
+        ],
+        "2": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "treatmentStartDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TREATMENT_START_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
       ]
     },
     {
-      "key": "dateOnsetSymptomsDay1",
+      "key": "typeTreatment",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SYMPTOM_ONSET_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TREATMENT_TYPE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
       ]
     },
     {
-      "key": "feverDay1",
+      "key": "dose",
       "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
+        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DOSE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dryCoughDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "coughingWithSpittingDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "soreThroatDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "breathingDifficultyDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "jointPainDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "vomitDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "diarrheaDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "otherDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "otherSymptomsDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.Clinical_Data"
       ]
     },
     {
-      "key": "isSampleTakenDay1",
+      "key": "conditionAssessment",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_TAKEN"
+        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONDITION_ASSESSMENT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
+        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONDITION"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SIMPLE"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dateSampleTakenDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_TAKEN_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
-      ]
-    },
-    {
-      "key": "sampleResultDay1",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
+          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.MODERATE"
         ],
         "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
+          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SEVERE"
         ]
       }
     },
     {
-      "key": "nameDay2",
+      "key": "result",
       "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.RESULT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "ageDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "telephoneDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.PHONE_NUMBER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "genderDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONDITION"
       ],
       "options": {
         "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.MALE"
+          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.HEALED"
         ],
         "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "contactTypeDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.HOUSEHOLD_STAY"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.WORK_CONTACT"
+          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.UNDER_TREATMENT"
         ],
         "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.VISITED_PATIENT_OR_VICE_VERSA"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.OTHER_CONTACT_METHODS"
-        ]
-      }
-    },
-    {
-      "key": "relationshipPatientDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.RELATIONSHIP_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "dateOnsetSymptomsDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SYMPTOM_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "feverDay2",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dryCoughDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "coughingWithSpittingDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "soreThroatDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "breathingDifficultyDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "jointPainDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "vomitDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "diarrheaDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "otherDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "otherSymptomsDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "isSampleTakenDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dateSampleTakenDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_TAKEN_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
-      ]
-    },
-    {
-      "key": "sampleResultDay2",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
-        ]
-      }
-    },
-    {
-      "key": "nameDay7",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "ageDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "telephoneDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.PHONE_NUMBER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "genderDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "contactTypeDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.HOUSEHOLD_STAY"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.WORK_CONTACT"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.VISITED_PATIENT_OR_VICE_VERSA"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.OTHER_CONTACT_METHODS"
-        ]
-      }
-    },
-    {
-      "key": "relationshipPatientDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.RELATIONSHIP_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "dateOnsetSymptomsDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SYMPTOM_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "feverDay7",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dryCoughDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "coughingWithSpittingDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "soreThroatDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "breathingDifficultyDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "jointPainDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "vomitDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "diarrheaDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "otherDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "otherSymptomsDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "isSampleTakenDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dateSampleTakenDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_TAKEN_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
-      ]
-    },
-    {
-      "key": "sampleResultDay7",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
-        ]
-      }
-    },
-    {
-      "key": "nameDay14",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "ageDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "telephoneDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.PHONE_NUMBER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "genderDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "contactTypeDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.HOUSEHOLD_STAY"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.WORK_CONTACT"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.VISITED_PATIENT_OR_VICE_VERSA"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.OTHER_CONTACT_METHODS"
-        ]
-      }
-    },
-    {
-      "key": "relationshipPatientDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.RELATIONSHIP_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "dateOnsetSymptomsDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SYMPTOM_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "feverDay14",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dryCoughDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "coughingWithSpittingDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "soreThroatDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "breathingDifficultyDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "jointPainDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "vomitDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "diarrheaDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "otherDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "otherSymptomsDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "isSampleTakenDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dateSampleTakenDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_TAKEN_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
-      ]
-    },
-    {
-      "key": "sampleResultDay14",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.LABORATORY"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
+          "NEDSS.REPORTS.DEATH"
         ]
       }
     },
@@ -13834,7 +12559,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.ENTOMOLOGICAL_INVESTIGATION_RADIUS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.ENTOMOLOGICAL_SURVEILLANCE"
       ],
       "options": {
@@ -13852,7 +12576,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.ENTOMOLOGICAL_INVESTIGATION_RESULT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.ENTOMOLOGICAL_SURVEILLANCE"
       ]
     },
@@ -13862,7 +12585,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.MOSQUITO_CONTROL_PROCEDURES"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.ENTOMOLOGICAL_SURVEILLANCE"
       ],
       "options": {
@@ -13880,7 +12602,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.MENTION_PROCEDURES"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.ENTOMOLOGICAL_SURVEILLANCE"
       ]
     },
@@ -13890,7 +12611,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_OUTSIDE_EGYPT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY"
       ],
       "options": {
@@ -13908,7 +12628,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.WHERE_TO_TRAVEL"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY"
       ]
     },
@@ -13918,7 +12637,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_DATE_EGYPTIANS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY"
       ]
     },
@@ -13928,7 +12646,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DATE_ENTRY_EGYPT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY"
       ]
     },
@@ -13938,7 +12655,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_INSIDE_EGYPT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY"
       ],
       "options": {
@@ -13956,7 +12672,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.WHERE_TO_TRAVEL_INSIDE_EGYPT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY"
       ]
     },
@@ -13966,7 +12681,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY"
       ]
     },
@@ -13976,7 +12690,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.INVESTIGATION_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY"
       ]
     },
@@ -13986,7 +12699,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.HEALTH_OBSERVER_NAME"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY"
       ]
     },
@@ -13996,7 +12708,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.SURVEILLANCE_OFFICER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY"
       ]
     },
@@ -14006,7 +12717,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.APPROVED_BY_ADMIN_DIRECTOR"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.FILARIASIS.TRAVEL_HISTORY"
       ]
     }
