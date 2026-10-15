@@ -46,8 +46,6 @@ export class FasciolaComponent implements OnInit {
       swimmingPlace: new FormControl(),
       drinkingCanalWater: new FormControl(),
       drinkingCanalWaterPlace: new FormControl(),
-      washingUtensils: new FormControl(),
-      washingUtensilsPlace: new FormControl(),
       workAgriculture: new FormControl(),
       workAgriculturePlace: new FormControl(),
       urinateCanal: new FormControl(),
