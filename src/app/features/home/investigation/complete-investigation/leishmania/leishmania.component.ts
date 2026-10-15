@@ -39,9 +39,16 @@ export class LeishmaniaComponent implements OnInit {
   allControllesCount: number = 0;
   patientName: string;
 
-  get treatmentTypeOptions(): string[] {
-    const current = this.leishmaniaForm?.get('typeTreatment')?.value;
-    return current && !this.treatmentTypes.includes(current) ? [...this.treatmentTypes, current] : this.treatmentTypes;
+  treatmentTypeOptions: string[] = [...this.treatmentTypes];
+
+  private parseTreatmentTypes(value: any): string[] {
+    if (Array.isArray(value)) return value;
+    return `${value ?? ''}`.split(/[،,]/).map((x) => x.trim()).filter((x) => x !== '');
+  }
+
+  private joinTreatmentTypes(value: any): string | null {
+    const types = this.parseTreatmentTypes(value);
+    return types.length ? types.join('، ') : null;
   }
 
   constructor(private investigationService: InvestigationService,
@@ -63,7 +70,7 @@ export class LeishmaniaComponent implements OnInit {
       ulcerStage: new FormControl(),
       leishmaniaTreatmentProtocolImplemented: new FormControl(),
       treatmentStartDate: new FormControl(),
-      typeTreatment: new FormControl(),
+      typeTreatment: new FormControl([]),
       numberSessions: new FormControl(),
       dose: new FormControl(),
       conditionAssessment: new FormControl(),
@@ -118,6 +125,9 @@ export class LeishmaniaComponent implements OnInit {
         // if (v.sampleResultDay7 == null) { v.sampleResultDay7 = 2; }
         // if (v.sampleResultDay14 == null) { v.sampleResultDay14 = 2; }
         this.leishmaniaForm.patchValue(v)
+        const treatmentTypes = this.parseTreatmentTypes(v?.typeTreatment);
+        this.treatmentTypeOptions = [...this.treatmentTypes, ...treatmentTypes.filter((x) => !this.treatmentTypes.includes(x))];
+        this.leishmaniaForm.controls['typeTreatment'].setValue(treatmentTypes);
 
         //treatmentStartDate
         this.leishmaniaForm.controls['treatmentStartDate'].setValue(
@@ -147,7 +157,7 @@ export class LeishmaniaComponent implements OnInit {
     this.leishmaniaForm.controls['investigationCompletePercentage'].setValue(parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2)));
     this.leishmaniaForm.controls['diseaseGroupId'].setValue(this.investigationService.diseaseGroupID);
     if (this.leishmaniaForm.value.id != null) {
-      this.investigationService.updateSevereleishmania(this.leishmaniaForm.value).subscribe(
+      this.investigationService.updateSevereleishmania(this.buildPayload()).subscribe(
         (response: any) => {
           if (response) {
             this.translateService
@@ -161,7 +171,7 @@ export class LeishmaniaComponent implements OnInit {
         }
       )
     } else {
-      this.investigationService.addInvestigationleishmania(this.leishmaniaForm.value).subscribe(
+      this.investigationService.addInvestigationleishmania(this.buildPayload()).subscribe(
         (response: any) => {
           if (response) {
             this.translateService
@@ -177,6 +187,11 @@ export class LeishmaniaComponent implements OnInit {
     }
   }
 
+  private buildPayload(): any {
+    const value = this.leishmaniaForm.value;
+    return { ...value, typeTreatment: this.joinTreatmentTypes(value.typeTreatment) };
+  }
+
   calculateCompletionPercentage() {
     const excludedFields = ['id', 'patientID', 'investigationCompletePercentage', 'diseaseGroupId', 'createdDate', ...this.legacyRiskFactorFields];
 
@@ -185,7 +200,7 @@ export class LeishmaniaComponent implements OnInit {
       excludedFields.push('treatmentStartDate', 'typeTreatment', 'numberSessions', 'dose');
     }
 
-    const stats = calculateCompletionStats(this.leishmaniaForm.value, {
+    const stats = calculateCompletionStats(this.buildPayload(), {
       excludedFields,
     });
 
