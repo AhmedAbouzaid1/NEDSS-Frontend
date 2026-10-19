@@ -10615,7 +10615,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
           "نقص المناعة"
         ],
         "7": [
-          "داء الفطط"
+          "داء القطط"
         ],
         "8": [
           "طفيلية وردية"
@@ -12165,8 +12165,8 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "نقص المناعة": [
           "نقص المناعة"
         ],
-        "داء الفطط": [
-          "داء الفطط"
+        "داء القطط": [
+          "داء القطط"
         ],
         "طفيلية وردية": [
           "طفيلية وردية"

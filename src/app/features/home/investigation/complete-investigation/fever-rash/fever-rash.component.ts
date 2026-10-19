@@ -87,7 +87,7 @@ export class FeverRashComponent implements OnInit {
     'اثر جانبى بعد التطعيم',
     'حمى قرمزية',
     'نقص المناعة',
-    'داء الفطط',
+    'داء القطط',
     'طفيلية وردية',
     'عدوى بكتيرية',
     'كواساكى',
@@ -416,10 +416,10 @@ export class FeverRashComponent implements OnInit {
       };
       refreshLastCaseDate('lastCaseDateAdmin', s.lastCaseDate);
       refreshLastCaseDate('lastCaseDateDirectorate', s.lastCaseDateDirectorate);
-      if (needConfirmed && f['confirmedCasesLastMonth'].value == null) {
+      if (needConfirmed && s.confirmedCasesLastMonth != null && f['confirmedCasesLastMonth'].value == null) {
         this.applyCaseCount('confirmedCasesLastMonth', 'confirmedCasesCount', s.confirmedCasesLastMonth);
       }
-      if (needFeverRash && f['feverRashCasesLastMonth'].value == null) {
+      if (needFeverRash && s.feverRashCasesLastMonth != null && f['feverRashCasesLastMonth'].value == null) {
         this.applyCaseCount('feverRashCasesLastMonth', 'feverRashCasesCount', s.feverRashCasesLastMonth);
       }
       this.calculateCompletionPercentage();
