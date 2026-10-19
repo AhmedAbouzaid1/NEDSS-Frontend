@@ -85,7 +85,7 @@ export class AppComponent {
       this.idleState = 'Timed out!';
       this.timedOut = true;
       this.hideSessionWarning();
-      this.finishLogout();
+      this.finishLogout(this.router.url);
     });
 
     idle.onIdleStart.subscribe(() => {
@@ -264,12 +264,13 @@ export class AppComponent {
     this.warningSoundPlayed = false;
   }
 
-  private finishLogout() {
+  private finishLogout(returnUrl?: string) {
     this.hideSessionWarning();
     this.authService.logout().subscribe({ next: () => {}, error: () => {} });
     this.session.clear();
     this.authService.setUserLoggedIn(false);
-    this.router.navigate(['/']);
+    const keepUrl = returnUrl && returnUrl !== '/' && !returnUrl.startsWith('/?');
+    this.router.navigate(['/'], keepUrl ? { queryParams: { returnUrl } } : {});
   }
 
   private playSessionWarningSound() {

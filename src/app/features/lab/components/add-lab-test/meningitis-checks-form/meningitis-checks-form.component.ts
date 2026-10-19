@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { LabService } from '../../../services/lab.service';
-import { MENINGITIS_OTHER_DIAGNOSES } from './meningitis-diagnoses';
+import { MENINGITIS_OTHER_DIAGNOSES, MENINGITIS_OTHER_DIAGNOSIS_OPTION } from './meningitis-diagnoses';
 
 @Component({
   selector: 'app-meningitis-checks-form',
@@ -125,6 +125,7 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
   readonly mriResultOptions = ['probableEncephalitis', 'freeEncephalitis'];
 
   readonly finalDiagnosisOtherOptions = MENINGITIS_OTHER_DIAGNOSES;
+  readonly otherDiagnosisOption = MENINGITIS_OTHER_DIAGNOSIS_OPTION;
 
   readonly chronicDiseaseOptions = [
     'أمراض مناعية',
@@ -382,6 +383,8 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
     if (!((v.chronicDisease as string[]) ?? []).includes('أخرى')) this.clearControls(['chronicDiseaseOtherText']);
 
     if (v.complicationsExist !== 'yes') this.clearControls(['complicationDate', 'complicationItems']);
+
+    if (v.finalDiagnosisOther !== MENINGITIS_OTHER_DIAGNOSIS_OPTION) this.clearControls(['finalDiagnosisOtherText']);
   }
 
   private clearControls(names: string[]): void {
@@ -507,6 +510,7 @@ export class MeningitisChecksFormComponent implements OnInit, OnChanges {
           testsOutsideHospital: toArray(data.testsOutsideHospital),
           externalLabType: toArray(data.externalLabType),
           chronicDisease: toArray(data.chronicDisease),
+          finalDiagnosisOther: data.finalDiagnosisOther || (data.finalDiagnosisOtherText ? MENINGITIS_OTHER_DIAGNOSIS_OPTION : null),
         });
       },
       () => {
