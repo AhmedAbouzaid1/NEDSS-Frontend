@@ -103,983 +103,122 @@
           </div>
 
           <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-            <div class="accordion" id="accordionExample">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                    aria-expanded="true" aria-controls="collapseOne">
-                    {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.FOLLOW_UP_DAY_ONE" | translate }}
-                  </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="nameDay1" [(ngModel)]="diarrheaData.nameDay1"
-                            #nameDay1="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.AGE" | translate }}</label>
-                          <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
-                            name="ageDay1" [(ngModel)]="diarrheaData.ageDay1" #ageDay1="ngModel" min="0" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.PHONE_NUMBER" | translate
-                            }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="telephoneDay1"
-                            [(ngModel)]="diarrheaData.telephoneDay1" #telephoneDay1="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.GENDER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.genderDay1">
-                            <option *ngFor="let case of genderDay1s" [value]="case.id">
-                              {{ case.arabicName }}
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACTS_FOLLOW_UP" | translate }}</div>
+
+              <div class="col-12">
+                <div class="table-scroll">
+                  <table class="table table-bordered align-middle contacts-follow-up-table mb-3">
+                    <thead>
+                      <tr>
+                        <th class="col-no" rowspan="2">#</th>
+                        <th class="col-name" rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_NAME" | translate }}</th>
+                        <th class="col-age" rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.AGE" | translate }}</th>
+                        <th class="col-phone" rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.PHONE_NUMBER" | translate }}</th>
+                        <th class="col-type" rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_TYPE" | translate }}</th>
+                        <th class="col-relation" rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.RELATIONSHIP_TO_CASE" | translate }}</th>
+                        <th class="col-visit" colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.FU_FIRST_DAY" | translate }}</th>
+                        <th class="col-visit" colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.FU_AFTER_48_HOURS" | translate }}</th>
+                        <th class="col-actions" rowspan="2"></th>
+                      </tr>
+                      <tr>
+                        <th class="col-visit-q visit-start">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.HAS_SYMPTOMS" | translate }}</th>
+                        <th class="col-visit-q">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.IF_YES_HAS_DIARRHEA" | translate }}</th>
+                        <th class="col-visit-q visit-start">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.HAS_SYMPTOMS" | translate }}</th>
+                        <th class="col-visit-q">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.IF_YES_HAS_DIARRHEA" | translate }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="!contactFollowUps.length">
+                        <td colspan="11" class="empty-row">
+                          {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.NO_CONTACTS" | translate }}
+                        </td>
+                      </tr>
+                      <tr *ngFor="let contact of contactFollowUps; let i = index">
+                        <td><span class="row-no">{{ i + 1 }}</span></td>
+                        <td>
+                          <input type="text" maxlength="100" class="form-control" name="fuName{{ i }}"
+                            [(ngModel)]="contact.name" (blur)="syncContactFollowUps()" />
+                        </td>
+                        <td>
+                          <input type="number" min="0" max="120" class="form-control" name="fuAge{{ i }}"
+                            [(ngModel)]="contact.age" (blur)="syncContactFollowUps()" />
+                        </td>
+                        <td>
+                          <input type="text" inputmode="numeric" maxlength="15" class="form-control" name="fuTelephone{{ i }}"
+                            [(ngModel)]="contact.telephone" (blur)="syncContactFollowUps()" />
+                        </td>
+                        <td>
+                          <select class="form-control" name="fuContactType{{ i }}" [(ngModel)]="contact.contactType"
+                            (change)="syncContactFollowUps()">
+                            <option *ngFor="let type of contactTypes" [ngValue]="type.id">
+                              {{ currentLang === 'ar' ? type.arabicName : type.englishName }}
                             </option>
                           </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_TYPE" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.contactTypeDay1">
-                            <option *ngFor="let case of contactTypeDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
+                        </td>
+                        <td>
+                          <input type="text" maxlength="100" class="form-control" name="fuRelationship{{ i }}"
+                            [(ngModel)]="contact.relationship" (blur)="syncContactFollowUps()" />
+                        </td>
+                        <td class="visit-start">
+                          <label class="visually-hidden">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.HAS_SYMPTOMS" | translate }}</label>
+                          <select class="form-control" name="fuHasSymptoms{{ i }}_day1" [(ngModel)]="contact.day1.hasSymptoms"
+                            (change)="onHasSymptomsChanged(contact.day1)">
+                            <option [ngValue]="null"></option>
+                            <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
                           </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.RELATIONSHIP_TO_CASE" |
-                            translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="relationshipPatientDay1" [(ngModel)]="
-                              diarrheaData.relationshipPatientDay1
-                            " #relationshipPatientDay1="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SYMPTOM_ONSET_DATE" | translate
-                            }}</label>
-                          <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="diarrheaData.dateOnsetSymptomsDay1"></app-date-field>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.feverDay1">
-                            <option *ngFor="let case of feverDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DRY_COUGH" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.dryCoughDay1">
-                            <option *ngFor="let case of dryCoughDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.COUGH_WITH_SPUTUM" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="
-                              diarrheaData.coughingWithSpittingDay1
-                            ">
-                            <option *ngFor="let case of coughingWithSpittingDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SORE_THROAT" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.soreThroatDay1">
-                            <option *ngFor="let case of soreThroatDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DIFFICULTY_BREATHING" |
-                            translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="
-                              diarrheaData.breathingDifficultyDay1
-                            ">
-                            <option *ngFor="let case of breathingDifficultyDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.JOINT_PAIN" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.jointPainDay1">
-                            <option *ngFor="let case of jointPainDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.VOMITING" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.vomitDay1">
-                            <option *ngFor="let case of vomitDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DIARRHEA" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.diarrheaDay1">
-                            <option *ngFor="let case of diarrheaDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.OTHER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.otherDay1">
-                            <option *ngFor="let case of otherDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 inv-field-cell" [appShowIf]="diarrheaData.otherDay1 == 1">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="otherSymptomsDay1"
-                            [(ngModel)]="diarrheaData.otherSymptomsDay1" #otherSymptomsDay1="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.LABORATORY" | translate }}
-                      </div>
-                      <div class="col-4 inv-pair-cell">
-                        <div class="row inv-pair">
-                          <div class="col-6">
-                            {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_TAKEN_QUESTION" | translate }}
-                          </div>
-                          <div class="col-6">
-                            <select class="form-control" name="isSampleTakenDay1" [(ngModel)]="diarrheaData.isSampleTakenDay1" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                        </td>
+                        <td>
+                          <div [appShowIf]="contact.day1.hasSymptoms === 0">
+                            <label class="visually-hidden">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.IF_YES_HAS_DIARRHEA" | translate }}</label>
+                            <select class="form-control" name="fuDiarrhea{{ i }}_day1" [(ngModel)]="contact.day1.diarrhea"
+                              (change)="syncContactFollowUps()">
+                              <option [ngValue]="null"></option>
                               <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
                               <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
                             </select>
                           </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-pair-cell" [appShowIf]="diarrheaData.isSampleTakenDay1?.toString() === '0'">
-                        <div class="form-group row inv-pair">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{
-                              "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_TAKEN_DATE" | translate }}</label>
-                          </div>
-                          <div class="col-lg-8">
-                            <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="diarrheaData.dateSampleTakenDay1"></app-date-field>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4 inv-pair-cell" [appShowIf]="diarrheaData.isSampleTakenDay1?.toString() === '0'">
-                        <div class="row inv-pair">
-                          <div class="col-4">
-                            {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_RESULT" | translate }}
-                          </div>
-                          <div class="col-8">
-                            <select class="form-control" name="sampleResultDay1" [(ngModel)]="diarrheaData.sampleResultDay1" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.NOT_RECEIVED" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseOne">
-                    {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.FOLLOW_UP_DAY_TWO" | translate }}
-                  </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="collapseTwo"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="nameDay2" [(ngModel)]="diarrheaData.nameDay2"
-                            #nameDay2="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.AGE" | translate }}</label>
-                          <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
-                            name="ageDay2" [(ngModel)]="diarrheaData.ageDay2" #ageDay2="ngModel" min="0" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.PHONE_NUMBER" | translate
-                            }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="telephoneDay2"
-                            [(ngModel)]="diarrheaData.telephoneDay2" #telephoneDay2="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.GENDER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.genderDay2">
-                            <option *ngFor="let case of genderDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
+                          <span class="not-applicable" *ngIf="contact.day1.hasSymptoms !== 0 && contact.day1.diarrhea == null">—</span>
+                        </td>
+                        <td class="visit-start">
+                          <label class="visually-hidden">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.HAS_SYMPTOMS" | translate }}</label>
+                          <select class="form-control" name="fuHasSymptoms{{ i }}_after48h" [(ngModel)]="contact.after48h.hasSymptoms"
+                            (change)="onHasSymptomsChanged(contact.after48h)">
+                            <option [ngValue]="null"></option>
+                            <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
                           </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_TYPE" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.contactTypeDay2">
-                            <option *ngFor="let case of contactTypeDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.RELATIONSHIP_TO_CASE" |
-                            translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="relationshipPatientDay2" [(ngModel)]="
-                              diarrheaData.relationshipPatientDay2
-                            " #relationshipPatientDay2="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SYMPTOM_ONSET_DATE" | translate
-                            }}</label>
-                          <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="diarrheaData.dateOnsetSymptomsDay2"></app-date-field>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.feverDay2">
-                            <option *ngFor="let case of feverDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DRY_COUGH" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.dryCoughDay2">
-                            <option *ngFor="let case of dryCoughDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.COUGH_WITH_SPUTUM" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="
-                              diarrheaData.coughingWithSpittingDay2
-                            ">
-                            <option *ngFor="let case of coughingWithSpittingDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SORE_THROAT" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.soreThroatDay2">
-                            <option *ngFor="let case of soreThroatDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DIFFICULTY_BREATHING" |
-                            translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="
-                              diarrheaData.breathingDifficultyDay2
-                            ">
-                            <option *ngFor="let case of breathingDifficultyDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.JOINT_PAIN" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.jointPainDay2">
-                            <option *ngFor="let case of jointPainDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.VOMITING" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.vomitDay2">
-                            <option *ngFor="let case of vomitDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DIARRHEA" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.diarrheaDay2">
-                            <option *ngFor="let case of diarrheaDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.OTHER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.otherDay2">
-                            <option *ngFor="let case of otherDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 inv-field-cell" [appShowIf]="diarrheaData.otherDay2 == 1">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="otherSymptomsDay2"
-                            [(ngModel)]="diarrheaData.otherSymptomsDay2" #otherSymptomsDay2="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.LABORATORY" | translate }}
-                      </div>
-                      <div class="col-4 inv-pair-cell">
-                        <div class="row inv-pair">
-                          <div class="col-6">
-                            {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_TAKEN_QUESTION" | translate }}
-                          </div>
-                          <div class="col-6">
-                            <select class="form-control" name="isSampleTakenDay2" [(ngModel)]="diarrheaData.isSampleTakenDay2" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
+                        </td>
+                        <td>
+                          <div [appShowIf]="contact.after48h.hasSymptoms === 0">
+                            <label class="visually-hidden">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.IF_YES_HAS_DIARRHEA" | translate }}</label>
+                            <select class="form-control" name="fuDiarrhea{{ i }}_after48h" [(ngModel)]="contact.after48h.diarrhea"
+                              (change)="syncContactFollowUps()">
+                              <option [ngValue]="null"></option>
                               <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
                               <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
                             </select>
                           </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-pair-cell" [appShowIf]="diarrheaData.isSampleTakenDay2?.toString() === '0'">
-                        <div class="form-group row inv-pair">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{
-                              "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_TAKEN_DATE" | translate }}</label>
-                          </div>
-                          <div class="col-lg-8">
-                            <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="diarrheaData.dateSampleTakenDay2"></app-date-field>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4 inv-pair-cell" [appShowIf]="diarrheaData.isSampleTakenDay2?.toString() === '0'">
-                        <div class="row inv-pair">
-                          <div class="col-4">
-                            {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_RESULT" | translate }}
-                          </div>
-                          <div class="col-8">
-                            <select class="form-control" name="sampleResultDay2" [(ngModel)]="diarrheaData.sampleResultDay2" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.NOT_RECEIVED" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSeven">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-                    {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.FOLLOW_UP_AFTER_7_DAYS" | translate }}
-                  </button>
-                </h2>
-                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="collapseSeven"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="nameDay7" [(ngModel)]="diarrheaData.nameDay7"
-                            #nameDay7="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.AGE" | translate }}</label>
-                          <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
-                            name="ageDay7" [(ngModel)]="diarrheaData.ageDay7" #ageDay7="ngModel" min="0" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.PHONE_NUMBER" | translate
-                            }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="telephoneDay7"
-                            [(ngModel)]="diarrheaData.telephoneDay7" #telephoneDay7="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.GENDER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.genderDay7">
-                            <option *ngFor="let case of genderDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_TYPE" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.contactTypeDay7">
-                            <option *ngFor="let case of contactTypeDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.RELATIONSHIP_TO_CASE" |
-                            translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="relationshipPatientDay7" [(ngModel)]="
-                              diarrheaData.relationshipPatientDay7
-                            " #relationshipPatientDay7="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SYMPTOM_ONSET_DATE" | translate
-                            }}</label>
-                          <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="diarrheaData.dateOnsetSymptomsDay7"></app-date-field>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.feverDay7">
-                            <option *ngFor="let case of feverDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DRY_COUGH" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.dryCoughDay7">
-                            <option *ngFor="let case of dryCoughDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.COUGH_WITH_SPUTUM" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="
-                              diarrheaData.coughingWithSpittingDay7
-                            ">
-                            <option *ngFor="let case of coughingWithSpittingDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SORE_THROAT" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.soreThroatDay7">
-                            <option *ngFor="let case of soreThroatDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DIFFICULTY_BREATHING" |
-                            translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="
-                              diarrheaData.breathingDifficultyDay7
-                            ">
-                            <option *ngFor="let case of breathingDifficultyDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.JOINT_PAIN" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.jointPainDay7">
-                            <option *ngFor="let case of jointPainDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.VOMITING" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.vomitDay7">
-                            <option *ngFor="let case of vomitDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DIARRHEA" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.diarrheaDay7">
-                            <option *ngFor="let case of diarrheaDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.OTHER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.otherDay7">
-                            <option *ngFor="let case of otherDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 inv-field-cell" [appShowIf]="diarrheaData.otherDay7 == 1">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="otherSymptomsDay7"
-                            [(ngModel)]="diarrheaData.otherSymptomsDay7" #otherSymptomsDay7="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.LABORATORY" | translate }}
-                      </div>
-                      <div class="col-4 inv-pair-cell">
-                        <div class="row inv-pair">
-                          <div class="col-6">
-                            {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_TAKEN_QUESTION" | translate }}
-                          </div>
-                          <div class="col-6">
-                            <select class="form-control" name="isSampleTakenDay7" [(ngModel)]="diarrheaData.isSampleTakenDay7" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-pair-cell" [appShowIf]="diarrheaData.isSampleTakenDay7?.toString() === '0'">
-                        <div class="form-group row inv-pair">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{
-                              "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_TAKEN_DATE" | translate }}</label>
-                          </div>
-                          <div class="col-lg-8">
-                            <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="diarrheaData.dateSampleTakenDay7"></app-date-field>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4 inv-pair-cell" [appShowIf]="diarrheaData.isSampleTakenDay7?.toString() === '0'">
-                        <div class="row inv-pair">
-                          <div class="col-4">
-                            {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_RESULT" | translate }}
-                          </div>
-                          <div class="col-8">
-                            <select class="form-control" name="sampleResultDay7" [(ngModel)]="diarrheaData.sampleResultDay7" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.NOT_RECEIVED" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                          <span class="not-applicable" *ngIf="contact.after48h.hasSymptoms !== 0 && contact.after48h.diarrhea == null">—</span>
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeContactFollowUp(i)"
+                            [title]="'NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.REMOVE_CONTACT' | translate">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSevenTeen">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseSevenTeen" aria-expanded="true" aria-controls="collapseSevenTeen">
-                    {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.FOLLOW_UP_AFTER_14_DAYS" | translate }}
-                  </button>
-                </h2>
-                <div id="collapseSevenTeen" class="accordion-collapse collapse" aria-labelledby="collapseSevenTeen"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="nameDay1"
-                            [(ngModel)]="diarrheaData.nameDay14" #nameDay14="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.AGE" | translate }}</label>
-                          <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
-                            name="ageDay14" [(ngModel)]="diarrheaData.ageDay14" #ageDay14="ngModel" min="0" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.PHONE_NUMBER" | translate
-                            }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="telephoneDay14"
-                            [(ngModel)]="diarrheaData.telephoneDay14" #v="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.GENDER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.genderDay14">
-                            <option *ngFor="let case of genderDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.CONTACT_TYPE" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.contactTypeDay14">
-                            <option *ngFor="let case of contactTypeDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.RELATIONSHIP_TO_CASE" |
-                            translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="relationshipPatientDay14" [(ngModel)]="
-                              diarrheaData.relationshipPatientDay14
-                            " #relationshipPatientDay14="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SYMPTOM_ONSET_DATE" | translate
-                            }}</label>
-                          <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="diarrheaData.dateOnsetSymptomsDay14"></app-date-field>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.feverDay14">
-                            <option *ngFor="let case of feverDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DRY_COUGH" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.dryCoughDay14">
-                            <option *ngFor="let case of dryCoughDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.COUGH_WITH_SPUTUM" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="
-                              diarrheaData.coughingWithSpittingDay14
-                            ">
-                            <option *ngFor="let case of coughingWithSpittingDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SORE_THROAT" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.soreThroatDay14">
-                            <option *ngFor="let case of soreThroatDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DIFFICULTY_BREATHING" |
-                            translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="
-                              diarrheaData.breathingDifficultyDay14
-                            ">
-                            <option *ngFor="let case of breathingDifficultyDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.JOINT_PAIN" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.jointPainDay14">
-                            <option *ngFor="let case of jointPainDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.VOMITING" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.vomitDay14">
-                            <option *ngFor="let case of vomitDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.DIARRHEA" | translate
-                            }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.diarrheaDay14">
-                            <option *ngFor="let case of diarrheaDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.OTHER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="diarrheaData.otherDay14">
-                            <option *ngFor="let case of otherDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 inv-field-cell" [appShowIf]="diarrheaData.otherDay14 == 1">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="otherSymptomsDay14"
-                            [(ngModel)]="diarrheaData.otherSymptomsDay14" #otherSymptomsDay14="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.LABORATORY" | translate }}
-                      </div>
-                      <div class="col-4 inv-pair-cell">
-                        <div class="row inv-pair">
-                          <div class="col-6">
-                            {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_TAKEN_QUESTION" | translate }}
-                          </div>
-                          <div class="col-6">
-                            <select class="form-control" name="isSampleTakenDay14" [(ngModel)]="diarrheaData.isSampleTakenDay14" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-pair-cell" [appShowIf]="diarrheaData.isSampleTakenDay14?.toString() === '0'">
-                        <div class="form-group row inv-pair">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{
-                              "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_TAKEN_DATE" | translate }}</label>
-                          </div>
-                          <div class="col-lg-8">
-                            <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="diarrheaData.dateSampleTakenDay14"></app-date-field>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4 inv-pair-cell" [appShowIf]="diarrheaData.isSampleTakenDay14?.toString() === '0'">
-                        <div class="row inv-pair">
-                          <div class="col-4">
-                            {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SAMPLE_RESULT" | translate }}
-                          </div>
-                          <div class="col-8">
-                            <select class="form-control" name="sampleResultDay14" [(ngModel)]="diarrheaData.sampleResultDay14" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.NOT_RECEIVED" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="col-12">
+                <button type="button" class="btn btn-primary" (click)="addContactFollowUp()">
+                  <i class="bi bi-plus-lg"></i>
+                  {{ "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.ADD_CONTACT" | translate }}
+                </button>
               </div>
             </div>
           </div>

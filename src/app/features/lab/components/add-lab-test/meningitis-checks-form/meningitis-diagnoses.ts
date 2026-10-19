@@ -27,3 +27,5 @@ export const MENINGITIS_OTHER_DIAGNOSES: readonly string[] = [
   'Septicemia',
   'Septic shock',
 ];
+
+export const MENINGITIS_OTHER_DIAGNOSIS_OPTION = 'other';
