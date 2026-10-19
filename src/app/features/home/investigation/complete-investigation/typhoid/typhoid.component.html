@@ -92,891 +92,183 @@
           </div>
 
           <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-            <div class="accordion" id="accordionExample">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                    aria-expanded="true" aria-controls="collapseOne">
-                    {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_1_FOLLOW_UP" | translate }}
-                  </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="nameDay1" [(ngModel)]="typhoidData.nameDay1"
-                            #nameDay1="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.AGE" | translate }}</label>
-                          <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
-                            name="ageDay1" [(ngModel)]="typhoidData.ageDay1" #ageDay1="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.PHONE_NUMBER" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="telephoneDay1"
-                            [(ngModel)]="typhoidData.telephoneDay1" #telephoneDay1="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.GENDER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.genderDay1">
-                            <option *ngFor="let case of genderDay1s" [value]="case.id">
-                              {{ case.arabicName }}
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.TITLE" | translate }}</div>
+
+              <div class="col-12">
+                <div class="table-scroll">
+                  <table class="table table-bordered align-middle contacts-follow-up-table mb-3">
+                    <thead>
+                      <tr>
+                        <th class="col-no" rowspan="2">#</th>
+                        <th class="col-name" rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.CONTACT_NAME" | translate }}</th>
+                        <th class="col-age" rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.AGE" | translate }}</th>
+                        <th class="col-phone" rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.PHONE_NUMBER" | translate }}</th>
+                        <th class="col-type" rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.CONTACT_TYPE" | translate }}</th>
+                        <th class="col-relation" rowspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.RELATIONSHIP_TO_CASE" | translate }}</th>
+                        <th class="col-visit" colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.FU_DAY_1" | translate }}</th>
+                        <th class="col-visit" colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.FU_DAY_2" | translate }}</th>
+                        <th class="col-visit" colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.FU_DAY_7" | translate }}</th>
+                        <th class="col-visit" colspan="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.FU_DAY_14" | translate }}</th>
+                        <th class="col-actions" rowspan="2"></th>
+                      </tr>
+                      <tr>
+                        <th class="col-visit-q visit-start">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.HAS_SYMPTOMS" | translate }}</th>
+                        <th class="col-visit-s">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.CHOOSE_SYMPTOMS" | translate }}</th>
+                        <th class="col-visit-q visit-start">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.HAS_SYMPTOMS" | translate }}</th>
+                        <th class="col-visit-s">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.CHOOSE_SYMPTOMS" | translate }}</th>
+                        <th class="col-visit-q visit-start">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.HAS_SYMPTOMS" | translate }}</th>
+                        <th class="col-visit-s">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.CHOOSE_SYMPTOMS" | translate }}</th>
+                        <th class="col-visit-q visit-start">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.HAS_SYMPTOMS" | translate }}</th>
+                        <th class="col-visit-s">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.CHOOSE_SYMPTOMS" | translate }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="!contactFollowUps.length">
+                        <td colspan="15" class="empty-row">
+                          {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.NO_CONTACTS" | translate }}
+                        </td>
+                      </tr>
+                      <tr *ngFor="let contact of contactFollowUps; let i = index">
+                        <td><span class="row-no">{{ i + 1 }}</span></td>
+                        <td>
+                          <input type="text" maxlength="100" class="form-control" name="fuName{{ i }}"
+                            [(ngModel)]="contact.name" (blur)="syncContactFollowUps()" />
+                        </td>
+                        <td>
+                          <input type="number" min="0" max="120" class="form-control" name="fuAge{{ i }}"
+                            [(ngModel)]="contact.age" (blur)="syncContactFollowUps()" />
+                        </td>
+                        <td>
+                          <input type="text" inputmode="numeric" maxlength="15" class="form-control" name="fuTelephone{{ i }}"
+                            [(ngModel)]="contact.telephone" (blur)="syncContactFollowUps()" />
+                        </td>
+                        <td>
+                          <label class="visually-hidden" for="fuContactType{{ i }}">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.CONTACT_TYPE" | translate }}</label>
+                          <select class="form-control" id="fuContactType{{ i }}" name="fuContactType{{ i }}" [(ngModel)]="contact.contactType"
+                            (change)="syncContactFollowUps()">
+                            <option *ngFor="let type of contactTypes" [ngValue]="type.id">
+                              {{ currentLang === 'ar' ? type.arabicName : type.englishName }}
                             </option>
                           </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_TYPE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.contactTypeDay1">
-                            <option *ngFor="let case of contactTypeDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
+                        </td>
+                        <td>
+                          <input type="text" maxlength="100" class="form-control" name="fuRelationship{{ i }}"
+                            [(ngModel)]="contact.relationship" (blur)="syncContactFollowUps()" />
+                        </td>
+                        <td class="visit-start">
+                          <label class="visually-hidden">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.HAS_SYMPTOMS" | translate }}</label>
+                          <select class="form-control" name="fuHasSymptoms{{ i }}_day1" [(ngModel)]="contact.day1.hasSymptoms"
+                            (change)="onHasSymptomsChanged(contact.day1)">
+                            <option [ngValue]="null"></option>
+                            <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
                           </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.RELATIONSHIP_TO_CASE" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="relationshipPatientDay1"
-                            [(ngModel)]="typhoidData.relationshipPatientDay1" #relationshipPatientDay1="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SYMPTOM_ONSET_DATE" | translate }}</label>
-                          <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="typhoidData.dateOnsetSymptomsDay1"></app-date-field>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.feverDay1">
-                            <option *ngFor="let case of feverDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.headacheDay1">
-                            <option *ngFor="let case of headacheDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.abdominalPainDay1">
-                            <option *ngFor="let case of abdominalPainDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.diarrheaDay1">
-                            <option *ngFor="let case of diarrheaDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.constipationDay1">
-                            <option *ngFor="let case of constipationDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.bradycardiaDay1">
-                            <option *ngFor="let case of bradycardiaDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.lossOfAppetiteDay1">
-                            <option *ngFor="let case of lossOfAppetiteDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.dryCoughDay1">
-                            <option *ngFor="let case of dryCoughDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.otherDay1">
-                            <option *ngFor="let case of otherDay1s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 inv-field-cell" [appShowIf]="typhoidData.otherDay1 == 1">
-                        <div class="form-group">
-                          <label for=""> {{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }} </label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="otherSymptomsDay1"
-                            [(ngModel)]="typhoidData.otherSymptomsDay1" #otherSymptomsDay1="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LAB" | translate }}</div>
-                      <div class="col-4 inv-pair-cell">
-                        <div class="row inv-pair">
-                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6">
-                            <select class="form-control" name="isSampleTakenDay1" [(ngModel)]="typhoidData.isSampleTakenDay1" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            </select>
+                        </td>
+                        <td>
+                          <div class="symptom-list" [appShowIf]="contact.day1.hasSymptoms === 0">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="fu_fever{{ i }}_day1" name="fu_fever{{ i }}_day1"
+                                [(ngModel)]="contact.day1.fever" (change)="syncContactFollowUps()" />
+                              <label class="form-check-label" for="fu_fever{{ i }}_day1">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.FEVER" | translate }}</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="fu_intestinalUpset{{ i }}_day1" name="fu_intestinalUpset{{ i }}_day1"
+                                [(ngModel)]="contact.day1.intestinalUpset" (change)="syncContactFollowUps()" />
+                              <label class="form-check-label" for="fu_intestinalUpset{{ i }}_day1">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.INTESTINAL_UPSET" | translate }}</label>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-pair-cell" [appShowIf]="typhoidData.isSampleTakenDay1?.toString() === '0'">
-                        <div class="form-group row inv-pair">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_DATE" | translate }}</label>
+                          <span class="not-applicable" *ngIf="contact.day1.hasSymptoms !== 0 && !hasAnySymptom(contact.day1)">—</span>
+                        </td>
+                        <td class="visit-start">
+                          <label class="visually-hidden">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.HAS_SYMPTOMS" | translate }}</label>
+                          <select class="form-control" name="fuHasSymptoms{{ i }}_day2" [(ngModel)]="contact.day2.hasSymptoms"
+                            (change)="onHasSymptomsChanged(contact.day2)">
+                            <option [ngValue]="null"></option>
+                            <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          </select>
+                        </td>
+                        <td>
+                          <div class="symptom-list" [appShowIf]="contact.day2.hasSymptoms === 0">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="fu_fever{{ i }}_day2" name="fu_fever{{ i }}_day2"
+                                [(ngModel)]="contact.day2.fever" (change)="syncContactFollowUps()" />
+                              <label class="form-check-label" for="fu_fever{{ i }}_day2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.FEVER" | translate }}</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="fu_intestinalUpset{{ i }}_day2" name="fu_intestinalUpset{{ i }}_day2"
+                                [(ngModel)]="contact.day2.intestinalUpset" (change)="syncContactFollowUps()" />
+                              <label class="form-check-label" for="fu_intestinalUpset{{ i }}_day2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.INTESTINAL_UPSET" | translate }}</label>
+                            </div>
                           </div>
-                          <div class="col-lg-8">
-                            <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="typhoidData.dateSampleTakenDay1"></app-date-field>
+                          <span class="not-applicable" *ngIf="contact.day2.hasSymptoms !== 0 && !hasAnySymptom(contact.day2)">—</span>
+                        </td>
+                        <td class="visit-start">
+                          <label class="visually-hidden">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.HAS_SYMPTOMS" | translate }}</label>
+                          <select class="form-control" name="fuHasSymptoms{{ i }}_day7" [(ngModel)]="contact.day7.hasSymptoms"
+                            (change)="onHasSymptomsChanged(contact.day7)">
+                            <option [ngValue]="null"></option>
+                            <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          </select>
+                        </td>
+                        <td>
+                          <div class="symptom-list" [appShowIf]="contact.day7.hasSymptoms === 0">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="fu_fever{{ i }}_day7" name="fu_fever{{ i }}_day7"
+                                [(ngModel)]="contact.day7.fever" (change)="syncContactFollowUps()" />
+                              <label class="form-check-label" for="fu_fever{{ i }}_day7">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.FEVER" | translate }}</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="fu_intestinalUpset{{ i }}_day7" name="fu_intestinalUpset{{ i }}_day7"
+                                [(ngModel)]="contact.day7.intestinalUpset" (change)="syncContactFollowUps()" />
+                              <label class="form-check-label" for="fu_intestinalUpset{{ i }}_day7">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.INTESTINAL_UPSET" | translate }}</label>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                      <div class="col-4 inv-pair-cell" [appShowIf]="typhoidData.isSampleTakenDay1?.toString() === '0'">
-                        <div class="row inv-pair">
-                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8">
-                            <select class="form-control" name="sampleResultDay1" [(ngModel)]="typhoidData.sampleResultDay1" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.NO_RESULT_YET" | translate }}</option>
-                            </select>
+                          <span class="not-applicable" *ngIf="contact.day7.hasSymptoms !== 0 && !hasAnySymptom(contact.day7)">—</span>
+                        </td>
+                        <td class="visit-start">
+                          <label class="visually-hidden">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.HAS_SYMPTOMS" | translate }}</label>
+                          <select class="form-control" name="fuHasSymptoms{{ i }}_day14" [(ngModel)]="contact.day14.hasSymptoms"
+                            (change)="onHasSymptomsChanged(contact.day14)">
+                            <option [ngValue]="null"></option>
+                            <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
+                            <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
+                          </select>
+                        </td>
+                        <td>
+                          <div class="symptom-list" [appShowIf]="contact.day14.hasSymptoms === 0">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="fu_fever{{ i }}_day14" name="fu_fever{{ i }}_day14"
+                                [(ngModel)]="contact.day14.fever" (change)="syncContactFollowUps()" />
+                              <label class="form-check-label" for="fu_fever{{ i }}_day14">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.FEVER" | translate }}</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="fu_intestinalUpset{{ i }}_day14" name="fu_intestinalUpset{{ i }}_day14"
+                                [(ngModel)]="contact.day14.intestinalUpset" (change)="syncContactFollowUps()" />
+                              <label class="form-check-label" for="fu_intestinalUpset{{ i }}_day14">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.INTESTINAL_UPSET" | translate }}</label>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseOne">
-                    {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_2_FOLLOW_UP" | translate }}
-                  </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="collapseTwo"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="nameDay2" [(ngModel)]="typhoidData.nameDay2"
-                            #nameDay2="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.AGE" | translate }}</label>
-                          <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
-                            name="ageDay2" [(ngModel)]="typhoidData.ageDay2" #ageDay2="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.PHONE_NUMBER" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="telephoneDay2"
-                            [(ngModel)]="typhoidData.telephoneDay2" #telephoneDay2="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.GENDER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.genderDay2">
-                            <option *ngFor="let case of genderDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_TYPE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.contactTypeDay2">
-                            <option *ngFor="let case of contactTypeDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.RELATIONSHIP_TO_CASE" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="relationshipPatientDay2"
-                            [(ngModel)]="typhoidData.relationshipPatientDay2" #relationshipPatientDay2="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SYMPTOM_ONSET_DATE" | translate }}</label>
-                          <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="typhoidData.dateOnsetSymptomsDay2"></app-date-field>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.feverDay2">
-                            <option *ngFor="let case of feverDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.headacheDay2">
-                            <option *ngFor="let case of headacheDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.abdominalPainDay2">
-                            <option *ngFor="let case of abdominalPainDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.diarrheaDay2">
-                            <option *ngFor="let case of diarrheaDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.constipationDay2">
-                            <option *ngFor="let case of constipationDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.bradycardiaDay2">
-                            <option *ngFor="let case of bradycardiaDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.lossOfAppetiteDay2">
-                            <option *ngFor="let case of lossOfAppetiteDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.dryCoughDay2">
-                            <option *ngFor="let case of dryCoughDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.otherDay2">
-                            <option *ngFor="let case of otherDay2s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 inv-field-cell" [appShowIf]="typhoidData.otherDay2 == 1">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="otherSymptomsDay2"
-                            [(ngModel)]="typhoidData.otherSymptomsDay2" #otherSymptomsDay2="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LAB" | translate }}</div>
-                      <div class="col-4 inv-pair-cell">
-                        <div class="row inv-pair">
-                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6">
-                            <select class="form-control" name="isSampleTakenDay2" [(ngModel)]="typhoidData.isSampleTakenDay2" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-pair-cell" [appShowIf]="typhoidData.isSampleTakenDay2?.toString() === '0'">
-                        <div class="form-group row inv-pair">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_DATE" | translate }}</label>
-                          </div>
-                          <div class="col-lg-8">
-                            <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="typhoidData.dateSampleTakenDay2"></app-date-field>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4 inv-pair-cell" [appShowIf]="typhoidData.isSampleTakenDay2?.toString() === '0'">
-                        <div class="row inv-pair">
-                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8">
-                            <select class="form-control" name="sampleResultDay2" [(ngModel)]="typhoidData.sampleResultDay2" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.NO_RESULT_YET" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSeven">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-                    {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_7_FOLLOW_UP" | translate }}
-                  </button>
-                </h2>
-                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="collapseSeven"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="nameDay7" [(ngModel)]="typhoidData.nameDay7"
-                            #nameDay7="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.AGE" | translate }}</label>
-                          <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
-                            name="ageDay7" [(ngModel)]="typhoidData.ageDay7" #ageDay7="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.PHONE_NUMBER" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="telephoneDay7"
-                            [(ngModel)]="typhoidData.telephoneDay7" #telephoneDay7="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.GENDER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.genderDay7">
-                            <option *ngFor="let case of genderDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_TYPE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.contactTypeDay7">
-                            <option *ngFor="let case of contactTypeDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.RELATIONSHIP_TO_CASE" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="relationshipPatientDay7"
-                            [(ngModel)]="typhoidData.relationshipPatientDay7" #relationshipPatientDay7="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SYMPTOM_ONSET_DATE" | translate }}</label>
-                          <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="typhoidData.dateOnsetSymptomsDay7"></app-date-field>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.feverDay7">
-                            <option *ngFor="let case of feverDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.headacheDay7">
-                            <option *ngFor="let case of headacheDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.abdominalPainDay7">
-                            <option *ngFor="let case of abdominalPainDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.diarrheaDay7">
-                            <option *ngFor="let case of diarrheaDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.constipationDay7">
-                            <option *ngFor="let case of constipationDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.bradycardiaDay7">
-                            <option *ngFor="let case of bradycardiaDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.lossOfAppetiteDay7">
-                            <option *ngFor="let case of lossOfAppetiteDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.dryCoughDay7">
-                            <option *ngFor="let case of dryCoughDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.otherDay7">
-                            <option *ngFor="let case of otherDay7s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 inv-field-cell" [appShowIf]="typhoidData.otherDay7 == 1">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="otherSymptomsDay7"
-                            [(ngModel)]="typhoidData.otherSymptomsDay7" #otherSymptomsDay7="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LAB" | translate }}</div>
-                      <div class="col-4 inv-pair-cell">
-                        <div class="row inv-pair">
-                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6">
-                            <select class="form-control" name="isSampleTakenDay7" [(ngModel)]="typhoidData.isSampleTakenDay7" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-pair-cell" [appShowIf]="typhoidData.isSampleTakenDay7?.toString() === '0'">
-                        <div class="form-group row inv-pair">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_DATE" | translate }}</label>
-                          </div>
-                          <div class="col-lg-8">
-                            <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="typhoidData.dateSampleTakenDay7"></app-date-field>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4 inv-pair-cell" [appShowIf]="typhoidData.isSampleTakenDay7?.toString() === '0'">
-                        <div class="row inv-pair">
-                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8">
-                            <select class="form-control" name="fesampleResultDay7ver" [(ngModel)]="typhoidData.sampleResultDay7" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.NO_RESULT_YET" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                          <span class="not-applicable" *ngIf="contact.day14.hasSymptoms !== 0 && !hasAnySymptom(contact.day14)">—</span>
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeContactFollowUp(i)"
+                            [title]="'NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.REMOVE_CONTACT' | translate">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSevenTeen">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseSevenTeen" aria-expanded="true" aria-controls="collapseSevenTeen">
-                    {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DAY_14_FOLLOW_UP" | translate }}
-                  </button>
-                </h2>
-                <div id="collapseSevenTeen" class="accordion-collapse collapse" aria-labelledby="collapseSevenTeen"
-                  data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-                    <div class="row">
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_CASE_DATA" | translate }}
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{"NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate}}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="nameDay14"
-                            [(ngModel)]="typhoidData.nameDay14" #nameDay14="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.AGE" | translate }}</label>
-                          <input type="number" class="form-control" (blur)="calculateCompletionPercentage()"
-                            name="ageDay14" [(ngModel)]="typhoidData.ageDay14" #ageDay14="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.PHONE_NUMBER" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="telephoneDay14"
-                            [(ngModel)]="typhoidData.telephoneDay14" #telephoneDay14="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.GENDER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.genderDay14">
-                            <option *ngFor="let case of genderDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONTACT_TYPE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.contactTypeDay14">
-                            <option *ngFor="let case of contactTypeDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.RELATIONSHIP_TO_CASE" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="relationshipPatientDay14"
-                            [(ngModel)]="typhoidData.relationshipPatientDay14" #relationshipPatientDay14="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">
-                        {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.IF_SYMPTOMS_APPEAR" | translate }}
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SYMPTOM_ONSET_DATE" | translate }}</label>
-                          <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="typhoidData.dateOnsetSymptomsDay14"></app-date-field>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.feverDay14">
-                            <option *ngFor="let case of feverDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.HEADACHE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.headacheDay14">
-                            <option *ngFor="let case of headacheDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.ABDOMINAL_PAIN" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.abdominalPainDay14">
-                            <option *ngFor="let case of abdominalPainDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DIARRHEA" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.diarrheaDay14">
-                            <option *ngFor="let case of diarrheaDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.CONSTIPATION" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.constipationDay14">
-                            <option *ngFor="let case of constipationDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.BRADYCARDIA" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.bradycardiaDay14">
-                            <option *ngFor="let case of bradycardiaDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LOSS_OF_APPETITE" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.lossOfAppetiteDay14">
-                            <option *ngFor="let case of lossOfAppetiteDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.DRY_COUGH" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.dryCoughDay14">
-                            <option *ngFor="let case of dryCoughDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 inv-field-cell">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.OTHER" | translate }}</label>
-                          <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                            [(ngModel)]="typhoidData.otherDay14">
-                            <option *ngFor="let case of otherDay14s" [value]="case.id">
-                              {{ case.arabicName }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 inv-field-cell" [appShowIf]="typhoidData.otherDay14 == 1">
-                        <div class="form-group">
-                          <label for="">{{ "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms" | translate }}</label>
-                          <input type="text" maxlength="100" class="form-control"
-                            (blur)="calculateCompletionPercentage()" name="otherSymptomsDay14"
-                            [(ngModel)]="typhoidData.otherSymptomsDay14" #otherSymptomsDay14="ngModel" />
-                        </div>
-                      </div>
-                      <div class="col-12 title fs-6 fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.LAB" | translate }}</div>
-                      <div class="col-4 inv-pair-cell">
-                        <div class="row inv-pair">
-                          <div class="col-6">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_TAKEN" | translate }}</div>
-                          <div class="col-6">
-                            <select class="form-control" name="isSampleTakenDay14" [(ngModel)]="typhoidData.isSampleTakenDay14" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4 inv-pair-cell" [appShowIf]="typhoidData.isSampleTakenDay14?.toString() === '0'">
-                        <div class="form-group row inv-pair">
-                          <div class="col-lg-4">
-                            <label class="mt-2" for="">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_DATE" | translate }}</label>
-                          </div>
-                          <div class="col-lg-8">
-                            <app-date-field (blurred)="calculateCompletionPercentage()" [(ngModel)]="typhoidData.dateSampleTakenDay14"></app-date-field>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4 inv-pair-cell" [appShowIf]="typhoidData.isSampleTakenDay14?.toString() === '0'">
-                        <div class="row inv-pair">
-                          <div class="col-4">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.SAMPLE_RESULT" | translate }}</div>
-                          <div class="col-8">
-                            <select class="form-control" name="sampleResultDay14" [(ngModel)]="typhoidData.sampleResultDay14" (blur)="calculateCompletionPercentage()" (change)="calculateCompletionPercentage()">
-                              <option [ngValue]="0">{{ "NEDSS.COMMON.YES" | translate }}</option>
-                              <option [ngValue]="1">{{ "NEDSS.COMMON.NO" | translate }}</option>
-                              <option [ngValue]="2">{{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID.NO_RESULT_YET" | translate }}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="col-12">
+                <button type="button" class="btn btn-primary" (click)="addContactFollowUp()">
+                  <i class="bi bi-plus-lg"></i>
+                  {{ "NEDSS.COMPLETE_INVESTEGATION.TYPHOID_CONTACTS.ADD_CONTACT" | translate }}
+                </button>
               </div>
             </div>
           </div>
