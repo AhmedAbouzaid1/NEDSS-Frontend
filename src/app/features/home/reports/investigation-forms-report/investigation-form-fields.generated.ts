@@ -71,6 +71,33 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
+      "key": "examiningDoctorName",
+      "label": [
+        "اسم الطبيب القائم بالفحص"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
+      "key": "examiningDoctorSpecialty",
+      "label": [
+        "تخصصه"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
+      "key": "examinationPlace",
+      "label": [
+        "مكان فحص المريض"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)"
+      ]
+    },
+    {
       "key": "paralysisOnsetDate",
       "label": [
         "تاريخ بداية الشلل"
@@ -1052,7 +1079,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "name",
       "label": [
-        "الاسم"
+        "اسم الطفل"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -1060,9 +1087,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "age",
+      "key": "birthDate",
       "label": [
-        "العمر"
+        "تاريخ الميلاد"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -1070,164 +1097,9 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "ageTypeId",
+      "key": "registrationNo",
       "label": [
-        "نوع العمر"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "الأطفال الذين تم مسحهم"
-      ],
-      "optionsRef": "AgeType"
-    },
-    {
-      "key": "dose0",
-      "label": [
-        "صفر"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "الأطفال الذين تم مسحهم"
-      ],
-      "options": {
-        "true": [
-          "NEDSS.COMMON.YES"
-        ],
-        "false": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dose1",
-      "label": [
-        "الأطفال الذين تم مسحهم"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "الأطفال الذين تم مسحهم"
-      ],
-      "options": {
-        "true": [
-          "NEDSS.COMMON.YES"
-        ],
-        "false": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dose2",
-      "label": [
-        "الأطفال الذين تم مسحهم"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "الأطفال الذين تم مسحهم"
-      ],
-      "options": {
-        "true": [
-          "NEDSS.COMMON.YES"
-        ],
-        "false": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dose3",
-      "label": [
-        "الأطفال الذين تم مسحهم"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "الأطفال الذين تم مسحهم"
-      ],
-      "options": {
-        "true": [
-          "NEDSS.COMMON.YES"
-        ],
-        "false": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dose4",
-      "label": [
-        "الأطفال الذين تم مسحهم"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "الأطفال الذين تم مسحهم"
-      ],
-      "options": {
-        "true": [
-          "NEDSS.COMMON.YES"
-        ],
-        "false": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "dose5",
-      "label": [
-        "الأطفال الذين تم مسحهم"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "الأطفال الذين تم مسحهم"
-      ],
-      "options": {
-        "true": [
-          "NEDSS.COMMON.YES"
-        ],
-        "false": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "booster",
-      "label": [
-        "منشطة"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "الأطفال الذين تم مسحهم"
-      ],
-      "options": {
-        "true": [
-          "NEDSS.COMMON.YES"
-        ],
-        "false": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "feverRash",
-      "label": [
-        "حمى/طفح"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "الأطفال الذين تم مسحهم"
-      ],
-      "options": {
-        "1": [
-          "نعم"
-        ],
-        "2": [
-          "لا"
-        ]
-      }
-    },
-    {
-      "key": "phone",
-      "label": [
-        "الهاتف"
+        "رقم القيد"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -1235,9 +1107,10 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "long",
+      "key": "dose0Date",
       "label": [
-        "Long"
+        "تاريخ",
+        "ج صفرية"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -1245,9 +1118,11 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "lat",
+      "key": "dose1SabinDate",
       "label": [
-        "Lat"
+        "تاريخ",
+        "ج 1",
+        "سابين"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
@@ -1255,145 +1130,96 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "surveyMonth",
+      "key": "dose1SalkDate",
       "label": [
-        "الشهر"
+        "تاريخ",
+        "ج 1",
+        "سولك"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
-      "key": "covUnitDose3Target",
+      "key": "dose2SabinDate",
       "label": [
-        "الوحدة",
-        "ج3 مستهدف"
+        "تاريخ",
+        "ج 2",
+        "سابين"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
-      "key": "covUnitDose3Vaccinated",
+      "key": "dose2SalkDate",
       "label": [
-        "الوحدة",
-        "ج3 متطعم"
+        "تاريخ",
+        "ج 2",
+        "سولك"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
-      "key": "covUnitDose4Target",
+      "key": "dose3SabinDate",
       "label": [
-        "الوحدة",
-        "ج4 مستهدف"
+        "تاريخ",
+        "ج 3",
+        "سابين"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
-      "key": "covUnitDose4Vaccinated",
+      "key": "dose3SalkDate",
       "label": [
-        "الوحدة",
-        "ج4 متطعم"
+        "تاريخ",
+        "ج 3",
+        "سولك"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
-      "key": "covUnitBoosterTarget",
+      "key": "dose4Date",
       "label": [
-        "الوحدة",
-        "منشطة مستهدف"
+        "تاريخ",
+        "ج 4"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
-      "key": "covUnitBoosterVaccinated",
+      "key": "dose5Date",
       "label": [
-        "الوحدة",
-        "منشطة متطعم"
+        "تاريخ",
+        "ج 5"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
-      "key": "covAdminDose3Target",
+      "key": "boosterDate",
       "label": [
-        "الإدارة",
-        "ج3 مستهدف"
+        "تاريخ",
+        "المنشطة"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
-      ]
-    },
-    {
-      "key": "covAdminDose3Vaccinated",
-      "label": [
-        "الإدارة",
-        "ج3 متطعم"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
-      ]
-    },
-    {
-      "key": "covAdminDose4Target",
-      "label": [
-        "الإدارة",
-        "ج4 مستهدف"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
-      ]
-    },
-    {
-      "key": "covAdminDose4Vaccinated",
-      "label": [
-        "الإدارة",
-        "ج4 متطعم"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
-      ]
-    },
-    {
-      "key": "covAdminBoosterTarget",
-      "label": [
-        "الإدارة",
-        "منشطة مستهدف"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
-      ]
-    },
-    {
-      "key": "covAdminBoosterVaccinated",
-      "label": [
-        "الإدارة",
-        "منشطة متطعم"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "نسب التغطية"
+        "الأطفال الذين تم مسحهم"
       ]
     },
     {
@@ -1426,6 +1252,27 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "إدارة حالات الشلل الرخو الحاد (AFP)",
         "تجمع الحالات"
       ]
+    },
+    {
+      "key": "age",
+      "label": [
+        "العمر"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "تجمع الحالات"
+      ]
+    },
+    {
+      "key": "ageTypeId",
+      "label": [
+        "نوع العمر"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "تجمع الحالات"
+      ],
+      "optionsRef": "AgeType"
     },
     {
       "key": "followupDate",

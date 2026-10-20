@@ -27,13 +27,14 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   allFilledControlsCount = 0;
   allControllesCount = 0;
   patientName: string = '';
+  hospitalEntryDate: string | null = null;
 
   activeTab: 'clinical' | 'field' | 'vaccination' | 'survey' | 'aggregation' | 'followup' | 'contactSamples' = 'clinical';
   tabs = [
     { key: 'clinical', label: 'الفحص الاكلينيكي' },
     { key: 'field', label: 'التقصي الميداني للحالة' },
     { key: 'vaccination', label: 'موقف التطعيمات' },
-    { key: 'survey', label: 'المسح الميداني' },
+    { key: 'survey', label: 'الجشنى الميدانى' },
     { key: 'aggregation', label: 'تجمع الحالات' },
     { key: 'followup', label: 'المتابعة' },
     { key: 'contactSamples', label: 'عينات المخالطين' },
@@ -103,6 +104,8 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   ];
   private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage', 'caseCodeDisplay'];
 
+  readonly surveyDoseKeys = ['dose0Date', 'dose1SabinDate', 'dose1SalkDate', 'dose2SabinDate', 'dose2SalkDate', 'dose3SabinDate', 'dose3SalkDate', 'dose4Date', 'dose5Date', 'boosterDate'];
+
   private dateFields = new Set([
     'homeVisitDate', 'entryDate', 'paralysisOnsetDate', 'paralysisCompletionDate', 'investigationDate',
     'onsetFeverDate', 'onsetDiarrheaDate', 'onsetVomitingDate', 'onsetCoryzaDate',
@@ -136,6 +139,9 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       entryDate: new FormControl(),
 
       // Tab 0 - clinical examination
+      examiningDoctorName: new FormControl(),
+      examiningDoctorSpecialty: new FormControl(),
+      examinationPlace: new FormControl(),
       paralysisOnsetDate: new FormControl(),
       paralysisCompletionDate: new FormControl(),
       paralysisCompletedWithin4Days: new FormControl(),
@@ -201,20 +207,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       // Tab 3 - field survey
       surveyVisitDate: new FormControl(),
       surveySquareNumber: new FormControl(),
-      surveyMonth: new FormControl(),
       surveyChildren: new FormArray([]),
-      covUnitDose3Target: new FormControl(),
-      covUnitDose3Vaccinated: new FormControl(),
-      covUnitDose4Target: new FormControl(),
-      covUnitDose4Vaccinated: new FormControl(),
-      covUnitBoosterTarget: new FormControl(),
-      covUnitBoosterVaccinated: new FormControl(),
-      covAdminDose3Target: new FormControl(),
-      covAdminDose3Vaccinated: new FormControl(),
-      covAdminDose4Target: new FormControl(),
-      covAdminDose4Vaccinated: new FormControl(),
-      covAdminBoosterTarget: new FormControl(),
-      covAdminBoosterVaccinated: new FormControl(),
 
       // Tab 4 - case aggregation
       aggregatedCases: new FormArray([]),
@@ -285,6 +278,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     if (!this.currentId) return;
     this.generalDataService.getBy(this.currentId).subscribe((res: any) => {
       const p = res?.data;
+      this.hospitalEntryDate = this.d(p?.hospitalEntryDate);
       if (p?.homeVisitDate && !this.form.value.homeVisitDate) {
         this.form.controls['homeVisitDate'].setValue(this.d(p.homeVisitDate));
       }
@@ -384,22 +378,19 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   get routineVaccinations(): FormArray { return this.form.get('routineVaccinations') as FormArray; }
   get campaigns(): FormArray { return this.form.get('campaigns') as FormArray; }
   get surveyChildren(): FormArray { return this.form.get('surveyChildren') as FormArray; }
+
+  get surveyCoverage(): { vaccinated: number; children: number; rate: number | null }[] {
+    const rows = (this.surveyChildren.value as any[]).filter((r) =>
+      [r.name, r.birthDate, r.registrationNo, ...this.surveyDoseKeys.map((k) => r[k])].some((v) => v !== null && v !== undefined && v !== '')
+    );
+    return this.surveyDoseKeys.map((key) => {
+      const vaccinated = rows.filter((r) => !!r[key]).length;
+      return { vaccinated, children: rows.length, rate: rows.length ? Math.round((vaccinated / rows.length) * 1000) / 10 : null };
+    });
+  }
   get aggregatedCases(): FormArray { return this.form.get('aggregatedCases') as FormArray; }
   get followupCommittee(): FormArray { return this.form.get('followupCommittee') as FormArray; }
   get contactSamples(): FormArray { return this.form.get('contactSamples') as FormArray; }
-
-  private legacySurveyAge(s: any): { age: any; ageTypeId: number | null } {
-    if (s.age !== undefined || s.ageTypeId !== undefined) {
-      return { age: s.age ?? null, ageTypeId: s.ageTypeId ?? null };
-    }
-    const has = (x: any) => x !== null && x !== undefined && x !== '';
-    const years = has(s.ageYear) ? Number(s.ageYear) : null;
-    const months = has(s.ageMonth) ? Number(s.ageMonth) : null;
-    if (years && months) return { age: years * 12 + months, ageTypeId: 2 };
-    if (years !== null && !months) return { age: years, ageTypeId: 3 };
-    if (months !== null) return { age: months, ageTypeId: 2 };
-    return { age: null, ageTypeId: null };
-  }
 
   // ===================== Card expand / collapse =====================
   setTab(tab: any) { this.activeTab = tab; }
@@ -484,23 +475,20 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     });
   }
   private buildSurveyChild(s: any = {}): FormGroup {
-    const age = this.legacySurveyAge(s);
     return new FormGroup({
       name: new FormControl(s.name ?? null),
-      age: new FormControl(age.age),
-      ageTypeId: new FormControl(age.ageTypeId),
-      dose0: new FormControl(!!s.dose0),
-      dose1: new FormControl(!!s.dose1),
-      dose2: new FormControl(!!s.dose2),
-      dose3: new FormControl(!!s.dose3),
-      dose4: new FormControl(!!s.dose4),
-      dose5: new FormControl(!!s.dose5),
-      booster: new FormControl(!!s.booster),
-      feverRash: new FormControl(s.feverRash ?? null),
-      date: new FormControl(this.d(s.date)),
-      phone: new FormControl(s.phone ?? null),
-      long: new FormControl(s.long ?? null),
-      lat: new FormControl(s.lat ?? null),
+      birthDate: new FormControl(this.d(s.birthDate)),
+      registrationNo: new FormControl(s.registrationNo ?? null),
+      dose0Date: new FormControl(this.d(s.dose0Date)),
+      dose1SabinDate: new FormControl(this.d(s.dose1SabinDate)),
+      dose1SalkDate: new FormControl(this.d(s.dose1SalkDate)),
+      dose2SabinDate: new FormControl(this.d(s.dose2SabinDate)),
+      dose2SalkDate: new FormControl(this.d(s.dose2SalkDate)),
+      dose3SabinDate: new FormControl(this.d(s.dose3SabinDate)),
+      dose3SalkDate: new FormControl(this.d(s.dose3SalkDate)),
+      dose4Date: new FormControl(this.d(s.dose4Date)),
+      dose5Date: new FormControl(this.d(s.dose5Date)),
+      boosterDate: new FormControl(this.d(s.boosterDate)),
     });
   }
   private buildAggregatedCase(a: any = {}): FormGroup {

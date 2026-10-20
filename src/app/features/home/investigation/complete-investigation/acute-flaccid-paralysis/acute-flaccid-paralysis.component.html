@@ -57,6 +57,14 @@
           <!-- ================= TAB 0: الفحص الاكلينيكي ================= -->
           <ng-container *ngIf="activeTab === 'clinical'">
             <div class="row">
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>اسم الطبيب القائم بالفحص</label>
+                <input type="text" class="form-control" formControlName="examiningDoctorName" /></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تخصصه</label>
+                <input type="text" class="form-control" formControlName="examiningDoctorSpecialty" /></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>مكان فحص المريض</label>
+                <input type="text" class="form-control" formControlName="examinationPlace" /></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ دخول المستشفى</label>
+                <input type="text" class="form-control" [value]="hospitalEntryDate ? (hospitalEntryDate | date: 'dd/MM/yyyy') : ''" readonly disabled /></div></div>
               <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ بداية الشلل</label>
                 <app-date-field formControlName="paralysisOnsetDate"></app-date-field></div></div>
               <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ اكتمال الشلل</label>
@@ -528,7 +536,7 @@
             </div>
           </ng-container>
 
-          <!-- ================= TAB 3: المسح الميداني ================= -->
+          <!-- ================= TAB 3: الجشنى الميدانى ================= -->
           <ng-container *ngIf="activeTab === 'survey'">
             <div class="row">
               <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>تاريخ الزيارة</label><app-date-field formControlName="surveyVisitDate"></app-date-field></div></div>
@@ -546,56 +554,84 @@
             </div>
             <div class="table-responsive survey-children-table" formArrayName="surveyChildren">
               <table class="table table-bordered text-center align-middle">
-                <thead><tr><th>#</th><th>الاسم</th><th>العمر</th><th>نوع العمر</th><th>صفر</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>منشطة</th><th>حمى/طفح</th><th>التاريخ</th><th>الهاتف</th><th>Long</th><th>Lat</th><th></th></tr></thead>
+                <thead>
+                  <tr>
+                    <th rowspan="3">م</th>
+                    <th rowspan="3">اسم الطفل</th>
+                    <th rowspan="3">تاريخ الميلاد</th>
+                    <th rowspan="3">رقم القيد</th>
+                    <th colspan="10">تاريخ</th>
+                    <th rowspan="3"></th>
+                  </tr>
+                  <tr>
+                    <th rowspan="2">ج صفرية</th>
+                    <th colspan="2">ج 1</th>
+                    <th colspan="2">ج 2</th>
+                    <th colspan="2">ج 3</th>
+                    <th rowspan="2">ج 4</th>
+                    <th rowspan="2">ج 5</th>
+                    <th rowspan="2">المنشطة</th>
+                  </tr>
+                  <tr>
+                    <th>سابين</th><th>سولك</th>
+                    <th>سابين</th><th>سولك</th>
+                    <th>سابين</th><th>سولك</th>
+                  </tr>
+                </thead>
                 <tbody>
                   <tr *ngFor="let s of surveyChildren.controls; let i = index" [formGroupName]="i">
                     <td>{{ i + 1 }}</td>
                     <td><input type="text" class="form-control" formControlName="name" /></td>
-                    <td><input type="number" min="0" class="form-control" formControlName="age" /></td>
-                    <td><select class="form-control" formControlName="ageTypeId"><option *ngFor="let t of ageTypes" [ngValue]="t.id">{{ t.arabicName }}</option></select></td>
-                    <td><input type="checkbox" formControlName="dose0" /></td>
-                    <td><input type="checkbox" formControlName="dose1" /></td>
-                    <td><input type="checkbox" formControlName="dose2" /></td>
-                    <td><input type="checkbox" formControlName="dose3" /></td>
-                    <td><input type="checkbox" formControlName="dose4" /></td>
-                    <td><input type="checkbox" formControlName="dose5" /></td>
-                    <td><input type="checkbox" formControlName="booster" /></td>
-                    <td><select class="form-control" formControlName="feverRash"><option [ngValue]="null">--</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
-                    <td><app-date-field formControlName="date"></app-date-field></td>
-                    <td><input type="text" class="form-control" formControlName="phone" /></td>
-                    <td><input type="text" class="form-control" formControlName="long" /></td>
-                    <td><input type="text" class="form-control" formControlName="lat" /></td>
+                    <td><app-date-field formControlName="birthDate"></app-date-field></td>
+                    <td><input type="text" class="form-control" formControlName="registrationNo" /></td>
+                    <td><app-date-field formControlName="dose0Date" [min]="s.get('birthDate')?.value"></app-date-field></td>
+                    <td><app-date-field formControlName="dose1SabinDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
+                    <td><app-date-field formControlName="dose1SalkDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
+                    <td><app-date-field formControlName="dose2SabinDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
+                    <td><app-date-field formControlName="dose2SalkDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
+                    <td><app-date-field formControlName="dose3SabinDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
+                    <td><app-date-field formControlName="dose3SalkDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
+                    <td><app-date-field formControlName="dose4Date" [min]="s.get('birthDate')?.value"></app-date-field></td>
+                    <td><app-date-field formControlName="dose5Date" [min]="s.get('birthDate')?.value"></app-date-field></td>
+                    <td><app-date-field formControlName="boosterDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
                     <td><button type="button" class="btn btn-sm btn-danger" (click)="removeSurveyChild(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <div class="section-bar b3 mt-4">نسب التغطية</div>
-            <div class="row mb-2">
-              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>الشهر</label><input type="text" class="form-control" formControlName="surveyMonth" /></div></div>
-            </div>
-            <div class="table-responsive">
+            <div class="section-bar b3 mt-4">نسبة التغطية</div>
+            <div class="table-responsive survey-coverage-table">
               <table class="table table-bordered text-center align-middle">
-                <thead><tr><th>المستوى</th><th>ج3 مستهدف</th><th>ج3 متطعم</th><th>ج4 مستهدف</th><th>ج4 متطعم</th><th>منشطة مستهدف</th><th>منشطة متطعم</th></tr></thead>
-                <tbody>
+                <thead>
                   <tr>
-                    <td class="fwb">الوحدة</td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose3Target" /></td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose3Vaccinated" /></td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose4Target" /></td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose4Vaccinated" /></td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitBoosterTarget" /></td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitBoosterVaccinated" /></td>
+                    <th rowspan="2"></th>
+                    <th rowspan="2">الجرعة الصفرية</th>
+                    <th colspan="2">الجرعة الأولى</th>
+                    <th colspan="2">الجرعة الثانية</th>
+                    <th colspan="2">الجرعة الثالثة</th>
+                    <th rowspan="2">الجرعة الرابعة</th>
+                    <th rowspan="2">الجرعة الخامسة</th>
+                    <th rowspan="2">الجرعة المنشطة</th>
                   </tr>
                   <tr>
-                    <td class="fwb">الإدارة</td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose3Target" /></td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose3Vaccinated" /></td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose4Target" /></td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose4Vaccinated" /></td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminBoosterTarget" /></td>
-                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminBoosterVaccinated" /></td>
+                    <th>سابين</th><th>السولك</th>
+                    <th>سابين</th><th>السولك</th>
+                    <th>سابين</th><th>السولك</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="fwb">عدد المتطعمين</td>
+                    <td *ngFor="let c of surveyCoverage">{{ c.vaccinated }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fwb">عدد الأطفال</td>
+                    <td *ngFor="let c of surveyCoverage">{{ c.children }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fwb">النسبة</td>
+                    <td *ngFor="let c of surveyCoverage">{{ c.rate === null ? '-' : c.rate + '%' }}</td>
                   </tr>
                 </tbody>
               </table>
