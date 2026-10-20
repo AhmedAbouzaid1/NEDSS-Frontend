@@ -13377,1830 +13377,1361 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
   ],
   "hemorrhagic-fevers": [
     {
-      "key": "contactWithSuspectedCase",
+      "key": "hospitalPhoneFax",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WITH_SUSPECTED_CASE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.HOSPITAL_PHONE_FAX"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.HUMAN_CONTACT"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "partEpidemicOutbreakOrSimilarSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.PART_OF_EPIDEMIC_OUTBREAK_OR_SIMILAR_SITUATION"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.HUMAN_CONTACT"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "contactWithConfirmedCase",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WITH_CONFIRMED_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.HUMAN_CONTACT"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "contactDeceasedPersonUnknownRespiratoryDisease",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_DECEASED_PERSON_UNKNOWN_RESPIRATORY_DISEASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.HUMAN_CONTACT"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "theNumberDirectContacts",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.NUMBER_DIRECT_CONTACTS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.HUMAN_CONTACT"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.HOSPITAL_DATA"
       ]
     },
     {
-      "key": "theNumberIndirectContacts",
+      "key": "formDate",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.NUMBER_INDIRECT_CONTACTS"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.FORM_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.EPIDEMIOLOGICAL_INVESTIGATION",
-        "NEDSS.COMPLETE_INVESTEGATION.HUMAN_CONTACT"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.HOSPITAL_DATA"
       ]
     },
     {
-      "key": "followD1Name",
+      "key": "hospitalized",
       "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.HOSPITALIZED"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "hospitalEntryDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ADMISSION_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA"
       ]
     },
     {
-      "key": "followD1Age",
+      "key": "hospitalLeaveDate",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.AGE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.DISCHARGE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA"
       ]
     },
     {
-      "key": "followD1Phone",
+      "key": "transferredFromHospital",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.PHONE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRANSFERRED_FROM"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA"
       ]
     },
     {
-      "key": "followD1Type",
+      "key": "infectionDate",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.GENDER"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ONSET_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD1MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS"
-        ]
-      }
-    },
-    {
-      "key": "followD1RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA"
       ]
     },
     {
-      "key": "followD1DateOfSymptoms",
+      "key": "symptomFever",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.FEVER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomHeadache",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.HEADACHE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomAbdominalPain",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ABDOMINAL_PAIN"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "bleedingSkinSpots",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SKIN_SPOTS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "bleedingHematemesis",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.HEMATEMESIS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomSkinRash",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SKIN_RASH"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomMusclePain",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.MUSCLE_PAIN"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomArthritis",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ARTHRITIS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "bleedingStool",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.BLOODY_STOOL"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "bleedingHematuria",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.HEMATURIA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomJointPain",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.JOINT_PAIN"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomDiarrhea",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.DIARRHEA"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomConsciousnessDisturbance",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CONSCIOUSNESS_DISTURBANCE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "bleedingNose",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.NOSE_BLEEDING"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "bleedingGums",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.GUM_BLEEDING"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomRetroOrbitalPain",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RETRO_ORBITAL_PAIN"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomVomiting",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.VOMITING"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomJaundice",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.JAUNDICE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "bleedingVaginal",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.VAGINAL_BLEEDING"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomSuddenBlindness",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SUDDEN_BLINDNESS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "symptomConjunctivalCongestion",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CONJUNCTIVAL_CONGESTION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "capillaryLeakAscites",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ASCITES"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "capillaryLeakPleuralEffusion",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.PLEURAL_EFFUSION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "capillaryLeakOther",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.OTHER"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "capillaryLeakOtherDetails",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.OTHER_DETAILS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS"
       ]
     },
     {
-      "key": "followD1Fever",
+      "key": "riskBloodTransfusion",
       "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.BLOOD_TRANSFUSION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
       ],
       "options": {
-        "1": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "2": [
+        "false": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
     {
-      "key": "followD1DryCough",
+      "key": "riskDiabetes",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.DIABETES"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
       ],
       "options": {
-        "1": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "2": [
+        "false": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
     {
-      "key": "followD1CoughingWithSpitting",
+      "key": "riskHeartDisease",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.HEART_DISEASE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
       ],
       "options": {
-        "1": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "2": [
+        "false": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
     {
-      "key": "followD1SoreThroat",
+      "key": "riskChestDisease",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CHEST_DISEASE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
       ],
       "options": {
-        "1": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "2": [
+        "false": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
     {
-      "key": "followD1DifficultyBreathing",
+      "key": "riskKidneyDisease",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.KIDNEY_DISEASE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
       ],
       "options": {
-        "1": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "2": [
+        "false": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
     {
-      "key": "followD1JointPain",
+      "key": "riskImmuneDisease",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.IMMUNE_DISEASE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
       ],
       "options": {
-        "1": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "2": [
+        "false": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
     {
-      "key": "followD1vomit",
+      "key": "riskOtherChronicDisease",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.OTHER_CHRONIC"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
       ],
       "options": {
-        "1": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "2": [
+        "false": [
           "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
         ]
       }
     },
     {
-      "key": "followD1Diarrhea",
+      "key": "riskOtherChronicDiseaseDetails",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.OTHER_CHRONIC_DETAILS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
       ]
     },
     {
-      "key": "followD1SampleTaken",
+      "key": "riskIcuAdmission",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ICU_ADMISSION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
       ],
       "options": {
-        "1": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "2": [
+        "false": [
           "NEDSS.COMMON.NO"
         ]
       }
     },
     {
-      "key": "followD1DateSampleTaken",
+      "key": "riskMechanicalVentilation",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.MECHANICAL_VENTILATION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "riskPregnancy",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.PREGNANCY"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "pregnancyMonths",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.PREGNANCY_MONTHS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
       ]
     },
     {
-      "key": "followD1SampleResult",
+      "key": "finalResultId",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.DISCHARGE_STATUS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_1",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
-        ]
-      }
-    },
-    {
-      "key": "followD2Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CLINICAL_DATA",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RISK_FACTORS"
       ]
     },
     {
-      "key": "followD2Age",
+      "key": "yellowFeverVaccinated",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.AGE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.YELLOW_FEVER_VACCINE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.VACCINATION"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "yellowFeverVaccinationDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.VACCINATION_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.VACCINATION"
       ]
     },
     {
-      "key": "followD2Phone",
+      "key": "hasTravelHistory",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.PHONE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.HAS_TRAVEL"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "travelledAbroad",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL_ABROAD"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ABROAD"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "abroadCountryId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.COUNTRY"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ABROAD"
       ]
     },
     {
-      "key": "followD2Type",
+      "key": "abroadReturnDate",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.GENDER"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RETURN_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD2MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS"
-        ]
-      }
-    },
-    {
-      "key": "followD2RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ABROAD"
       ]
     },
     {
-      "key": "followD2DateOfSymptoms",
+      "key": "abroadTravelReason",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL_REASON"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ABROAD"
       ]
     },
     {
-      "key": "followD2Fever",
+      "key": "travelledInsideEgypt",
       "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL_INSIDE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.INSIDE"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "غير معروف"
         ]
       }
     },
     {
-      "key": "followD2DryCough",
+      "key": "insideGovernorateId",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.GOVERNORATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.INSIDE"
       ]
     },
     {
-      "key": "followD2SampleTaken",
+      "key": "insideReturnDate",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RETURN_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD2DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.INSIDE"
       ]
     },
     {
-      "key": "followD2SampleResult",
+      "key": "insideTravelReason",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL_REASON"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_2",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
-        ]
-      }
-    },
-    {
-      "key": "followD7Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRAVEL",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.INSIDE"
       ]
     },
     {
-      "key": "followD7Age",
+      "key": "animalExposure14Days",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.AGE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ANIMAL_EXPOSURE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "لا أعلم"
+        ]
+      }
+    },
+    {
+      "key": "sickAnimalsAtHome",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SICK_ANIMALS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "لا أعلم"
+        ]
+      }
+    },
+    {
+      "key": "sickAnimalsDetails",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SICK_ANIMALS_DETAILS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
       ]
     },
     {
-      "key": "followD7Phone",
+      "key": "animalAbortionsNearHome",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.PHONE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ANIMAL_ABORTIONS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "لا أعلم"
+        ]
+      }
+    },
+    {
+      "key": "touchedAbortionProducts",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TOUCHED_ABORTION"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "لا أعلم"
+        ]
+      }
+    },
+    {
+      "key": "touchedAbortionProductsDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TOUCHED_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
       ]
     },
     {
-      "key": "followD7Type",
+      "key": "livesNearAnimalFarm",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.GENDER"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.NEAR_FARM"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
       ],
       "options": {
         "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.MALE"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD7MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK"
+          "لا"
         ],
         "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD7RelationshipSituation",
+      "key": "mosquitoBites2Weeks",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.MOSQUITO"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "لا أعلم"
+        ]
+      }
+    },
+    {
+      "key": "foreignerWithHemorrhagicSymptomsContact",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.FOREIGNER"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "لا أعلم"
+        ]
+      }
+    },
+    {
+      "key": "foreignerNationalityId",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.NATIONALITY"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
       ]
     },
     {
-      "key": "followD7DateOfSymptoms",
+      "key": "exposedToHemorrhagicPatientFluids",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.FLUIDS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ],
+        "3": [
+          "لا أعلم"
+        ]
+      }
+    },
+    {
+      "key": "exposedToFluidsDate",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.FLUIDS_DATE"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE"
       ]
     },
     {
-      "key": "followD7Fever",
+      "key": "animalActivityCamels",
       "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CAMELS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ANIMAL_ACTIVITY"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD7DryCough",
+      "key": "animalActivityGoats",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.GOATS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ANIMAL_ACTIVITY"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD7CoughingWithSpitting",
+      "key": "animalActivitySheep",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SHEEP"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ANIMAL_ACTIVITY"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD7SoreThroat",
+      "key": "animalActivityCattle",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CATTLE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ANIMAL_ACTIVITY"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD7DifficultyBreathing",
+      "key": "animalActivityAnimalWaste",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ANIMAL_WASTE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ANIMAL_ACTIVITY"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD7JointPain",
+      "key": "animalActivityOther",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ANIMAL_OTHER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.IF_SYMPTOMS_APPEAR"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ANIMAL_ACTIVITY"
       ]
     },
     {
-      "key": "followD7SampleTaken",
+      "key": "rodentExposure",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RODENTS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CONTACT_WITH"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD7DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ]
-    },
-    {
-      "key": "followD7SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_7",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "لم ترد"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD14Name",
+      "key": "primateExposure",
       "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.PRIMATES"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.PHONE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CONTACT_WITH"
       ],
       "options": {
         "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.MALE"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD14MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WORK"
+          "لا"
         ],
         "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.CONTACT_OTHER_METHODS"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD14RelationshipSituation",
+      "key": "tickExposure",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.RELATION_TO_CASE"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TICKS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SYMPTOMS_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "في حالة ظهور أعراض"
-      ]
-    },
-    {
-      "key": "followD14Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "في حالة ظهور أعراض"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CONTACT_WITH"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD14DryCough",
+      "key": "batExposure",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DRY_COUGH"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.BATS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "في حالة ظهور أعراض"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.CONTACT_WITH"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD14CoughingWithSpitting",
+      "key": "healthcareProviderForSuspectedCases",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.COUGH_WITH_SPUTUM"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.HEALTHCARE_PROVIDER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "في حالة ظهور أعراض"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.OCCUPATIONAL_EXPOSURE"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD14SoreThroat",
+      "key": "hemorrhagicFeverLabWorker",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SORE_THROAT"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.LAB_WORKER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "في حالة ظهور أعراض"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.OCCUPATIONAL_EXPOSURE"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD14DifficultyBreathing",
+      "key": "researchLabRodentsBatsWorker",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIFFICULTY_BREATHING"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.RESEARCH_LAB"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "في حالة ظهور أعراض"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.EXPOSURE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.OCCUPATIONAL_EXPOSURE"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "نعم"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
+          "لا"
         ],
         "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "لا أعلم"
         ]
       }
     },
     {
-      "key": "followD14JointPain",
+      "key": "malariaRdtResult",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.JOINT_PAIN"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.MALARIA_RDT"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "في حالة ظهور أعراض"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.LAB_RESULTS"
       ],
       "options": {
         "1": [
-          "NEDSS.COMMON.YES"
+          "Negative"
         ],
         "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
+          "Positive"
         ]
       }
     },
     {
-      "key": "followD14vomit",
+      "key": "surveillanceOfficerName",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.VOMITING"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SURVEILLANCE_OFFICER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "في حالة ظهور أعراض"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Diarrhea"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "في حالة ظهور أعراض"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "في حالة ظهور أعراض"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.Othe_Srymptoms"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "في حالة ظهور أعراض"
-      ]
-    },
-    {
-      "key": "followD14SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD14DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ]
-    },
-    {
-      "key": "followD14SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
-        ]
-      }
-    },
-    {
-      "key": "mosquitoBittenInjury",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.EXPOSURE_MOSQUITO_BITES"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.ANIMAL_EXPOSURE"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "exposedBloodSecretionsExcretions",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.EXPOSURE_RODENT_BLOOD_SECRETIONS_EXCRETIONS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.ANIMAL_EXPOSURE"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "exposedGorillasChimpanzees",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.EXPOSURE_GORILLAS_CHIMPANZEES_MONKEYS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.ANIMAL_EXPOSURE"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "bittenTick",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.BITTEN_BY_TICK"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.ANIMAL_EXPOSURE"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "cattleExposed",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.EXPOSURE_INFECTED_CATTLE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.ANIMAL_EXPOSURE"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "batExposed",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.EXPOSURE_BAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.ANIMAL_EXPOSURE"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "outCountry",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.PATIENT_OUTSIDE_COUNTRY_21_DAYS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.TRAVEL_AND_MOVEMENTS"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "nameCountry",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.COUNTRY_NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.TRAVEL_AND_MOVEMENTS"
-      ]
-    },
-    {
-      "key": "reasonTraveling",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.TRAVEL_REASON"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.TRAVEL_AND_MOVEMENTS"
-      ]
-    },
-    {
-      "key": "departureDate",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DEPARTURE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.TRAVEL_AND_MOVEMENTS"
-      ]
-    },
-    {
-      "key": "returnDate",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.RETURN_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.TRAVEL_AND_MOVEMENTS"
-      ]
-    },
-    {
-      "key": "yellowFeverVaccine",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.YELLOW_FEVER_VACCINE_QUESTION"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.VACCINATION_STATUS"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "vaccinationHistory",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.VACCINATION_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.VACCINATION_STATUS"
-      ]
-    },
-    {
-      "key": "ebolaVaccine",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.EBOLA_VACCINE_QUESTION"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.VACCINATION_STATUS"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "date",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.VACCINATION_STATUS"
-      ]
-    },
-    {
-      "key": "healthCareExposedCondition",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.HEALTHCARE_WORKER_EXPOSED_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.OCCUPATIONAL_EXPOSURE"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "placeExposure",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.EXPOSURE_PLACE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.OCCUPATIONAL_EXPOSURE"
-      ]
-    },
-    {
-      "key": "employedResearchLaboratories",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.RESEARCH_LAB_WORKER_WITH_ANIMALS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.OCCUPATIONAL_EXPOSURE"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "contactInfectedCountry",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.CONTACT_WITH_INFECTED_PERSON_FROM_OTHER_COUNTRY"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER_EXPOSURES"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "nationality",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.IF_YES_NATIONALITY"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER_EXPOSURES"
-      ]
-    },
-    {
-      "key": "hemorrhagicFever",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.EXPOSED_TO_FLUIDS_OF_HEMORRHAGIC_FEVER_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER_EXPOSURES"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "hemorrhagicFeverdate",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.IF_YES_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.FOLLOW_UP_DAY_14",
-        "NEDSS.COMPLETE_INVESTEGATION.OTHER_EXPOSURES"
+        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SURVEILLANCE_OFFICER"
       ]
     }
   ],
