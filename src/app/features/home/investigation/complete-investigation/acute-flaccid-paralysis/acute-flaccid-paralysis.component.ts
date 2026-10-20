@@ -99,7 +99,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
 
   private arrayKeys = [
     'caseMovements', 'previousCases', 'highRiskAreas', 'healthFacilityVisits', 'visitors', 'residenceAfpCases', 'facilityActions',
-    'routineVaccinations', 'campaigns', 'surveyChildren', 'aggregatedCases', 'followupCommittee',
+    'routineVaccinations', 'campaigns', 'surveyChildren', 'aggregatedCases', 'followupCommittee', 'fieldContacts',
     'selectedDangerousCaseReasons', 'contactSamples',
   ];
   private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage', 'caseCodeDisplay'];
@@ -203,6 +203,24 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       behaviorDose1Source: new FormControl(),
       behaviorDose2Date: new FormControl(),
       behaviorDose2Source: new FormControl(),
+      covUnitDose3Target: new FormControl(),
+      covUnitDose3Vaccinated: new FormControl(),
+      covFieldDose3Target: new FormControl(),
+      covFieldDose3Vaccinated: new FormControl(),
+      covAdminDose3Target: new FormControl(),
+      covAdminDose3Vaccinated: new FormControl(),
+      covUnitDose4Target: new FormControl(),
+      covUnitDose4Vaccinated: new FormControl(),
+      covFieldDose4Target: new FormControl(),
+      covFieldDose4Vaccinated: new FormControl(),
+      covAdminDose4Target: new FormControl(),
+      covAdminDose4Vaccinated: new FormControl(),
+      covUnitBoosterTarget: new FormControl(),
+      covUnitBoosterVaccinated: new FormControl(),
+      covFieldBoosterTarget: new FormControl(),
+      covFieldBoosterVaccinated: new FormControl(),
+      covAdminBoosterTarget: new FormControl(),
+      covAdminBoosterVaccinated: new FormControl(),
 
       // Tab 3 - field survey
       surveyVisitDate: new FormControl(),
@@ -211,6 +229,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
 
       // Tab 4 - case aggregation
       aggregatedCases: new FormArray([]),
+      fieldContacts: new FormArray([]),
 
       // Tab 5 - follow-up
       followupDate: new FormControl(),
@@ -348,6 +367,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     this.parseInto(v.campaignsJson, (x) => this.campaigns.push(this.buildCampaign(x)));
     this.parseInto(v.surveyChildrenJson, (x) => this.surveyChildren.push(this.buildSurveyChild(x)));
     this.parseInto(v.aggregatedCasesJson, (x) => this.aggregatedCases.push(this.buildAggregatedCase(x)));
+    this.parseInto(v.fieldContactsJson, (x) => this.fieldContacts.push(this.buildFieldContact(x)));
     this.parseInto(v.followupCommitteeJson, (x) => this.followupCommittee.push(this.buildCommittee(x)));
     this.parseInto(v.contactSamplesJson, (x) => this.contactSamples.push(this.buildContactSample(x)));
   }
@@ -379,6 +399,83 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   get campaigns(): FormArray { return this.form.get('campaigns') as FormArray; }
   get surveyChildren(): FormArray { return this.form.get('surveyChildren') as FormArray; }
 
+  coverageExceeds(targetKey: string, vaccinatedKey: string): boolean {
+    const target = this.form.get(targetKey)?.value;
+    const vaccinated = this.form.get(vaccinatedKey)?.value;
+    if (vaccinated === null || vaccinated === undefined || vaccinated === '') return false;
+    return Number(vaccinated) > Number(target || 0);
+  }
+
+  private coverageError(): string {
+    const levels: Record<string, string> = {
+      Unit: 'من سجلات التطعيم للشهر السابق من حدوث الشلل',
+      Field: 'ميدانيا',
+      Admin: 'على مستوى الإدارة',
+    };
+    const doses: Record<string, string> = { Dose3: 'الثالثة شلل', Dose4: 'الرابعة شلل', Booster: 'المنشطة' };
+    for (const [dose, doseLabel] of Object.entries(doses)) {
+      for (const [level, levelLabel] of Object.entries(levels)) {
+        if (this.coverageExceeds(`cov${level}${dose}Target`, `cov${level}${dose}Vaccinated`)) {
+          return `قياس نسبة التغطية (${doseLabel} - ${levelLabel}): عدد المطعمين لا يمكن أن يكون أكبر من عدد الأطفال`;
+        }
+      }
+    }
+    return '';
+  }
+
+  coverageRate(targetKey: string, vaccinatedKey: string): number | null {
+    const target = Number(this.form.get(targetKey)?.value);
+    const vaccinated = this.form.get(vaccinatedKey)?.value;
+    if (!target || vaccinated === null || vaccinated === undefined || vaccinated === '') return null;
+    return Math.round((Number(vaccinated) / target) * 1000) / 10;
+  }
+
+  private readonly surveyDoseLevels: { keys: string[]; label: string }[] = [
+    { keys: ['dose0Date'], label: 'الجرعة الصفرية' },
+    { keys: ['dose1SabinDate', 'dose1SalkDate'], label: 'الجرعة الأولى' },
+    { keys: ['dose2SabinDate', 'dose2SalkDate'], label: 'الجرعة الثانية' },
+    { keys: ['dose3SabinDate', 'dose3SalkDate'], label: 'الجرعة الثالثة' },
+    { keys: ['dose4Date'], label: 'الجرعة الرابعة' },
+    { keys: ['dose5Date'], label: 'الجرعة الخامسة' },
+    { keys: ['boosterDate'], label: 'الجرعة المنشطة' },
+  ];
+
+  private surveyDoseFloor(row: AbstractControl, key: string): { date: string; label: string } | null {
+    const level = this.surveyDoseLevels.findIndex((l) => l.keys.includes(key));
+    let floor: { date: string; label: string } | null = null;
+    const consider = (value: any, label: string) => {
+      const date = this.d(value);
+      if (date && (!floor || date > floor.date)) floor = { date, label };
+    };
+    consider(row.get('birthDate')?.value, 'تاريخ الميلاد');
+    this.surveyDoseLevels.slice(0, Math.max(level, 0)).forEach((l) => l.keys.forEach((k) => consider(row.get(k)?.value, l.label)));
+    return floor;
+  }
+
+  surveyDoseMin(row: AbstractControl, key: string): string | null {
+    return this.surveyDoseFloor(row, key)?.date ?? null;
+  }
+
+  surveyDoseError(row: AbstractControl, key: string): string {
+    const date = this.d(row.get(key)?.value);
+    const floor = this.surveyDoseFloor(row, key);
+    if (!date || !floor || date >= floor.date) return '';
+    return `لا يمكن أن يكون قبل ${floor.label} (${this.datePipe.transform(floor.date, 'dd/MM/yyyy')})`;
+  }
+
+  private surveyDoseOrderError(): string {
+    for (let i = 0; i < this.surveyChildren.length; i++) {
+      const row = this.surveyChildren.at(i);
+      for (const level of this.surveyDoseLevels) {
+        for (const key of level.keys) {
+          const error = this.surveyDoseError(row, key);
+          if (error) return `الأطفال الذين تم مسحهم - الطفل رقم ${i + 1}: تاريخ ${level.label} ${error}`;
+        }
+      }
+    }
+    return '';
+  }
+
   get surveyCoverage(): { vaccinated: number; children: number; rate: number | null }[] {
     const rows = (this.surveyChildren.value as any[]).filter((r) =>
       [r.name, r.birthDate, r.registrationNo, ...this.surveyDoseKeys.map((k) => r[k])].some((v) => v !== null && v !== undefined && v !== '')
@@ -389,6 +486,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     });
   }
   get aggregatedCases(): FormArray { return this.form.get('aggregatedCases') as FormArray; }
+  get fieldContacts(): FormArray { return this.form.get('fieldContacts') as FormArray; }
   get followupCommittee(): FormArray { return this.form.get('followupCommittee') as FormArray; }
   get contactSamples(): FormArray { return this.form.get('contactSamples') as FormArray; }
 
@@ -491,6 +589,15 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       boosterDate: new FormControl(this.d(s.boosterDate)),
     });
   }
+  private buildFieldContact(c: any = {}): FormGroup {
+    return new FormGroup({
+      name: new FormControl(c.name ?? null),
+      ageMonths: new FormControl(c.ageMonths ?? null),
+      relationship: new FormControl(c.relationship ?? null),
+      sampleDate: new FormControl(this.d(c.sampleDate)),
+      sendDate: new FormControl(this.d(c.sendDate)),
+    });
+  }
   private buildAggregatedCase(a: any = {}): FormGroup {
     return new FormGroup({
       caseCode: new FormControl(a.caseCode ?? null),
@@ -539,6 +646,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     if (this.campaigns.length === 0) this.addCampaign();
     if (this.surveyChildren.length === 0) this.addSurveyChild();
     if (this.aggregatedCases.length === 0) this.addAggregatedCase();
+    if (this.fieldContacts.length === 0) this.addFieldContact();
     if (this.followupCommittee.length === 0) this.addCommittee();
     if (this.contactSamples.length === 0) this.addContactSample();
   }
@@ -562,6 +670,8 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   addSurveyChild() { this.surveyChildren.push(this.buildSurveyChild()); }
   removeSurveyChild(i: number) { this.removeAt(this.surveyChildren, i); }
   addAggregatedCase() { this.aggregatedCases.push(this.buildAggregatedCase()); }
+  addFieldContact() { this.fieldContacts.push(this.buildFieldContact()); }
+  removeFieldContact(i: number) { this.removeAt(this.fieldContacts, i); }
   removeAggregatedCase(i: number) { this.removeAt(this.aggregatedCases, i); }
   copyAggregatedCase() {
     const last = this.aggregatedCases.at(this.aggregatedCases.length - 1);
@@ -577,6 +687,18 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
 
   // ===================== Save =====================
   save() {
+    const surveyError = this.surveyDoseOrderError();
+    if (surveyError) {
+      this.activeTab = 'survey';
+      this.userMsg.error(surveyError);
+      return;
+    }
+    const coverageError = this.coverageError();
+    if (coverageError) {
+      this.activeTab = 'vaccination';
+      this.userMsg.error(coverageError);
+      return;
+    }
     this.form.controls['diseaseGroupID'].setValue(this.investigationService.diseaseGroupID);
     this.calculateCompletionPercentage();
     this.form.controls['investigationCompletePercentage'].setValue(
@@ -603,6 +725,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     payload.campaignsJson = JSON.stringify(value.campaigns || []);
     payload.surveyChildrenJson = JSON.stringify(value.surveyChildren || []);
     payload.aggregatedCasesJson = JSON.stringify(value.aggregatedCases || []);
+    payload.fieldContactsJson = JSON.stringify(value.fieldContacts || []);
     payload.followupCommitteeJson = JSON.stringify(value.followupCommittee || []);
     payload.contactSamplesJson = JSON.stringify(
       (value.contactSamples || []).filter((row: any) =>

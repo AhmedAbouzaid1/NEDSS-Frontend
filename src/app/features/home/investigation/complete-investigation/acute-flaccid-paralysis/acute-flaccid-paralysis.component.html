@@ -469,6 +469,30 @@
                 </tbody>
               </table>
             </div>
+
+            <div class="section-bar b2 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>7) المخالطين (خاص بالحالات الخطرة - الحالات التي ليست لها عينات براز كافية والحالات من المحافظات الحدودية)</span>
+              <button type="button" class="btn case-movement-add" (click)="addFieldContact()">
+                <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                <span>إضافة مخالط</span>
+              </button>
+            </div>
+            <div class="table-responsive" formArrayName="fieldContacts">
+              <table class="table table-bordered text-center align-middle">
+                <thead><tr><th>#</th><th>اسم المخالط</th><th>عمره بالأشهر</th><th>صلته بالحالة (القرابة)</th><th>تاريخ أخذ العينة</th><th>تاريخ إرسالها</th><th></th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let c of fieldContacts.controls; let i = index" [formGroupName]="i">
+                    <td>{{ i + 1 }}</td>
+                    <td><input type="text" class="form-control" formControlName="name" /></td>
+                    <td><input type="number" min="0" class="form-control" formControlName="ageMonths" /></td>
+                    <td><input type="text" class="form-control" formControlName="relationship" /></td>
+                    <td><app-date-field formControlName="sampleDate"></app-date-field></td>
+                    <td><app-date-field formControlName="sendDate" [min]="c.get('sampleDate')?.value"></app-date-field></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeFieldContact(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </ng-container>
 
           <!-- ================= TAB 2: موقف التطعيمات ================= -->
@@ -534,6 +558,65 @@
                   <option *ngFor="let o of sources" [ngValue]="o">{{ o }}</option>
                 </select></div></div>
             </div>
+            <div class="section-bar b2 mt-4">قياس نسبة التغطية بالتطعيمات</div>
+            <div class="table-responsive vaccination-coverage-table">
+              <table class="table table-bordered text-center align-middle">
+                <thead>
+                  <tr>
+                    <th rowspan="3">الجرعة</th>
+                    <th colspan="6">نسبة التغطية على مستوى الوحدة</th>
+                    <th colspan="3" rowspan="2">نسبة التغطية على مستوى الإدارة للشهر السابق من حدوث الشلل</th>
+                  </tr>
+                  <tr>
+                    <th colspan="3">من سجلات التطعيم للشهر السابق من حدوث الشلل</th>
+                    <th colspan="3">ميدانيا</th>
+                  </tr>
+                  <tr>
+                    <th>عدد الأطفال</th><th>عدد المطعمين</th><th>النسبة</th>
+                    <th>عدد الأطفال</th><th>عدد المطعمين</th><th>النسبة</th>
+                    <th>عدد الأطفال</th><th>عدد المطعمين</th><th>النسبة</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="fwb text-nowrap">الثالثة شلل</td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose3Target" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose3Vaccinated" [attr.max]="form.get('covUnitDose3Target')?.value" [class.is-invalid]="coverageExceeds('covUnitDose3Target', 'covUnitDose3Vaccinated')" /><small class="text-danger d-block" *ngIf="coverageExceeds('covUnitDose3Target', 'covUnitDose3Vaccinated')">أكبر من عدد الأطفال</small></td>
+                    <td>{{ coverageRate('covUnitDose3Target', 'covUnitDose3Vaccinated') === null ? '-' : coverageRate('covUnitDose3Target', 'covUnitDose3Vaccinated') + '%' }}</td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covFieldDose3Target" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covFieldDose3Vaccinated" [attr.max]="form.get('covFieldDose3Target')?.value" [class.is-invalid]="coverageExceeds('covFieldDose3Target', 'covFieldDose3Vaccinated')" /><small class="text-danger d-block" *ngIf="coverageExceeds('covFieldDose3Target', 'covFieldDose3Vaccinated')">أكبر من عدد الأطفال</small></td>
+                    <td>{{ coverageRate('covFieldDose3Target', 'covFieldDose3Vaccinated') === null ? '-' : coverageRate('covFieldDose3Target', 'covFieldDose3Vaccinated') + '%' }}</td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose3Target" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose3Vaccinated" [attr.max]="form.get('covAdminDose3Target')?.value" [class.is-invalid]="coverageExceeds('covAdminDose3Target', 'covAdminDose3Vaccinated')" /><small class="text-danger d-block" *ngIf="coverageExceeds('covAdminDose3Target', 'covAdminDose3Vaccinated')">أكبر من عدد الأطفال</small></td>
+                    <td>{{ coverageRate('covAdminDose3Target', 'covAdminDose3Vaccinated') === null ? '-' : coverageRate('covAdminDose3Target', 'covAdminDose3Vaccinated') + '%' }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fwb text-nowrap">الرابعة شلل</td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose4Target" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitDose4Vaccinated" [attr.max]="form.get('covUnitDose4Target')?.value" [class.is-invalid]="coverageExceeds('covUnitDose4Target', 'covUnitDose4Vaccinated')" /><small class="text-danger d-block" *ngIf="coverageExceeds('covUnitDose4Target', 'covUnitDose4Vaccinated')">أكبر من عدد الأطفال</small></td>
+                    <td>{{ coverageRate('covUnitDose4Target', 'covUnitDose4Vaccinated') === null ? '-' : coverageRate('covUnitDose4Target', 'covUnitDose4Vaccinated') + '%' }}</td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covFieldDose4Target" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covFieldDose4Vaccinated" [attr.max]="form.get('covFieldDose4Target')?.value" [class.is-invalid]="coverageExceeds('covFieldDose4Target', 'covFieldDose4Vaccinated')" /><small class="text-danger d-block" *ngIf="coverageExceeds('covFieldDose4Target', 'covFieldDose4Vaccinated')">أكبر من عدد الأطفال</small></td>
+                    <td>{{ coverageRate('covFieldDose4Target', 'covFieldDose4Vaccinated') === null ? '-' : coverageRate('covFieldDose4Target', 'covFieldDose4Vaccinated') + '%' }}</td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose4Target" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminDose4Vaccinated" [attr.max]="form.get('covAdminDose4Target')?.value" [class.is-invalid]="coverageExceeds('covAdminDose4Target', 'covAdminDose4Vaccinated')" /><small class="text-danger d-block" *ngIf="coverageExceeds('covAdminDose4Target', 'covAdminDose4Vaccinated')">أكبر من عدد الأطفال</small></td>
+                    <td>{{ coverageRate('covAdminDose4Target', 'covAdminDose4Vaccinated') === null ? '-' : coverageRate('covAdminDose4Target', 'covAdminDose4Vaccinated') + '%' }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fwb text-nowrap">المنشطة</td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitBoosterTarget" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covUnitBoosterVaccinated" [attr.max]="form.get('covUnitBoosterTarget')?.value" [class.is-invalid]="coverageExceeds('covUnitBoosterTarget', 'covUnitBoosterVaccinated')" /><small class="text-danger d-block" *ngIf="coverageExceeds('covUnitBoosterTarget', 'covUnitBoosterVaccinated')">أكبر من عدد الأطفال</small></td>
+                    <td>{{ coverageRate('covUnitBoosterTarget', 'covUnitBoosterVaccinated') === null ? '-' : coverageRate('covUnitBoosterTarget', 'covUnitBoosterVaccinated') + '%' }}</td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covFieldBoosterTarget" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covFieldBoosterVaccinated" [attr.max]="form.get('covFieldBoosterTarget')?.value" [class.is-invalid]="coverageExceeds('covFieldBoosterTarget', 'covFieldBoosterVaccinated')" /><small class="text-danger d-block" *ngIf="coverageExceeds('covFieldBoosterTarget', 'covFieldBoosterVaccinated')">أكبر من عدد الأطفال</small></td>
+                    <td>{{ coverageRate('covFieldBoosterTarget', 'covFieldBoosterVaccinated') === null ? '-' : coverageRate('covFieldBoosterTarget', 'covFieldBoosterVaccinated') + '%' }}</td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminBoosterTarget" /></td>
+                    <td><input type="number" min="0" class="form-control form-control-sm" formControlName="covAdminBoosterVaccinated" [attr.max]="form.get('covAdminBoosterTarget')?.value" [class.is-invalid]="coverageExceeds('covAdminBoosterTarget', 'covAdminBoosterVaccinated')" /><small class="text-danger d-block" *ngIf="coverageExceeds('covAdminBoosterTarget', 'covAdminBoosterVaccinated')">أكبر من عدد الأطفال</small></td>
+                    <td>{{ coverageRate('covAdminBoosterTarget', 'covAdminBoosterVaccinated') === null ? '-' : coverageRate('covAdminBoosterTarget', 'covAdminBoosterVaccinated') + '%' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </ng-container>
 
           <!-- ================= TAB 3: الجشنى الميدانى ================= -->
@@ -584,16 +667,16 @@
                     <td><input type="text" class="form-control" formControlName="name" /></td>
                     <td><app-date-field formControlName="birthDate"></app-date-field></td>
                     <td><input type="text" class="form-control" formControlName="registrationNo" /></td>
-                    <td><app-date-field formControlName="dose0Date" [min]="s.get('birthDate')?.value"></app-date-field></td>
-                    <td><app-date-field formControlName="dose1SabinDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
-                    <td><app-date-field formControlName="dose1SalkDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
-                    <td><app-date-field formControlName="dose2SabinDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
-                    <td><app-date-field formControlName="dose2SalkDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
-                    <td><app-date-field formControlName="dose3SabinDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
-                    <td><app-date-field formControlName="dose3SalkDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
-                    <td><app-date-field formControlName="dose4Date" [min]="s.get('birthDate')?.value"></app-date-field></td>
-                    <td><app-date-field formControlName="dose5Date" [min]="s.get('birthDate')?.value"></app-date-field></td>
-                    <td><app-date-field formControlName="boosterDate" [min]="s.get('birthDate')?.value"></app-date-field></td>
+                    <td><app-date-field formControlName="dose0Date" [min]="surveyDoseMin(s, 'dose0Date')" [class.is-invalid]="!!surveyDoseError(s, 'dose0Date')"></app-date-field><small class="text-danger d-block" *ngIf="surveyDoseError(s, 'dose0Date')">{{ surveyDoseError(s, 'dose0Date') }}</small></td>
+                    <td><app-date-field formControlName="dose1SabinDate" [min]="surveyDoseMin(s, 'dose1SabinDate')" [class.is-invalid]="!!surveyDoseError(s, 'dose1SabinDate')"></app-date-field><small class="text-danger d-block" *ngIf="surveyDoseError(s, 'dose1SabinDate')">{{ surveyDoseError(s, 'dose1SabinDate') }}</small></td>
+                    <td><app-date-field formControlName="dose1SalkDate" [min]="surveyDoseMin(s, 'dose1SalkDate')" [class.is-invalid]="!!surveyDoseError(s, 'dose1SalkDate')"></app-date-field><small class="text-danger d-block" *ngIf="surveyDoseError(s, 'dose1SalkDate')">{{ surveyDoseError(s, 'dose1SalkDate') }}</small></td>
+                    <td><app-date-field formControlName="dose2SabinDate" [min]="surveyDoseMin(s, 'dose2SabinDate')" [class.is-invalid]="!!surveyDoseError(s, 'dose2SabinDate')"></app-date-field><small class="text-danger d-block" *ngIf="surveyDoseError(s, 'dose2SabinDate')">{{ surveyDoseError(s, 'dose2SabinDate') }}</small></td>
+                    <td><app-date-field formControlName="dose2SalkDate" [min]="surveyDoseMin(s, 'dose2SalkDate')" [class.is-invalid]="!!surveyDoseError(s, 'dose2SalkDate')"></app-date-field><small class="text-danger d-block" *ngIf="surveyDoseError(s, 'dose2SalkDate')">{{ surveyDoseError(s, 'dose2SalkDate') }}</small></td>
+                    <td><app-date-field formControlName="dose3SabinDate" [min]="surveyDoseMin(s, 'dose3SabinDate')" [class.is-invalid]="!!surveyDoseError(s, 'dose3SabinDate')"></app-date-field><small class="text-danger d-block" *ngIf="surveyDoseError(s, 'dose3SabinDate')">{{ surveyDoseError(s, 'dose3SabinDate') }}</small></td>
+                    <td><app-date-field formControlName="dose3SalkDate" [min]="surveyDoseMin(s, 'dose3SalkDate')" [class.is-invalid]="!!surveyDoseError(s, 'dose3SalkDate')"></app-date-field><small class="text-danger d-block" *ngIf="surveyDoseError(s, 'dose3SalkDate')">{{ surveyDoseError(s, 'dose3SalkDate') }}</small></td>
+                    <td><app-date-field formControlName="dose4Date" [min]="surveyDoseMin(s, 'dose4Date')" [class.is-invalid]="!!surveyDoseError(s, 'dose4Date')"></app-date-field><small class="text-danger d-block" *ngIf="surveyDoseError(s, 'dose4Date')">{{ surveyDoseError(s, 'dose4Date') }}</small></td>
+                    <td><app-date-field formControlName="dose5Date" [min]="surveyDoseMin(s, 'dose5Date')" [class.is-invalid]="!!surveyDoseError(s, 'dose5Date')"></app-date-field><small class="text-danger d-block" *ngIf="surveyDoseError(s, 'dose5Date')">{{ surveyDoseError(s, 'dose5Date') }}</small></td>
+                    <td><app-date-field formControlName="boosterDate" [min]="surveyDoseMin(s, 'boosterDate')" [class.is-invalid]="!!surveyDoseError(s, 'boosterDate')"></app-date-field><small class="text-danger d-block" *ngIf="surveyDoseError(s, 'boosterDate')">{{ surveyDoseError(s, 'boosterDate') }}</small></td>
                     <td><button type="button" class="btn btn-sm btn-danger" (click)="removeSurveyChild(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
                   </tr>
                 </tbody>
