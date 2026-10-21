@@ -1504,23 +1504,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     {
       "key": "aggregatedCases",
       "label": [
-        "تجمع الحالات"
+        "فحص تجمع حالات الشلل الرخو الحاد"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
+        "فحص تجمع حالات الشلل الرخو الحاد"
       ],
       "array": true
-    },
-    {
-      "key": "caseCode",
-      "label": [
-        "كود الحالة"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
-      ]
     },
     {
       "key": "unit",
@@ -1529,7 +1519,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
+        "فحص تجمع حالات الشلل الرخو الحاد"
       ]
     },
     {
@@ -1539,19 +1529,279 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
+        "فحص تجمع حالات الشلل الرخو الحاد"
       ]
     },
     {
       "key": "ageTypeId",
       "label": [
-        "نوع العمر"
+        "العمر"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
+        "فحص تجمع حالات الشلل الرخو الحاد"
       ],
       "optionsRef": "AgeType"
+    },
+    {
+      "key": "samplesAdequate",
+      "label": [
+        "كفاية العينات"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "caseVaccination",
+      "label": [
+        "تطعيم الحالة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "unitCoverage",
+      "label": [
+        "نسبة التغطية بالوحدة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "fieldCoverage",
+      "label": [
+        "نسبة التغطية ميدانيا"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "endemicAreaVisit",
+      "label": [
+        "زيارة من أو إلى جهة متوطن بها المرض"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "fever",
+      "label": [
+        "ارتفاع الحرارة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "symmetricParalysis",
+      "label": [
+        "تناظر الشلل"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "completedWithin4Days",
+      "label": [
+        "اكتمال الشلل خلال 4 أيام"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "otherTests",
+      "label": [
+        "الفحوصات الأخرى"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "initialDiagnosis",
+      "label": [
+        "التشخيص الابتدائي"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "zeroReportComplete",
+      "label": [
+        "اكتمال البلاغ الصفري"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "activeSurveillanceComplete",
+      "label": [
+        "اكتمال الترصد الإيجابي"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "silentSitesExist",
+      "label": [
+        "وجود مواقع صامتة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "unreportedCasesSearched",
+      "label": [
+        "البحث عن حالات لم تبلغ"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "mayBePolio",
+      "label": [
+        "الخلاصة: هل تجمع الحالات من الممكن أن يكون بسبب مرض شلل الأطفال"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ],
+      "options": {
+        "1": [
+          "نعم"
+        ],
+        "2": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "aggregationAdminSurveillanceOfficer",
+      "label": [
+        "مسئول الترصد بالإدارة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "aggregationDirectorateSurveillanceOfficer",
+      "label": [
+        "مسئول الترصد بالمديرية"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ]
+    },
+    {
+      "key": "aggregationDirectoratePreventiveManager",
+      "label": [
+        "مدير وقائي المديرية"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "فحص تجمع حالات الشلل الرخو الحاد"
+      ]
     },
     {
       "key": "followupDate",
@@ -1560,91 +1810,57 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
       ]
     },
     {
-      "key": "labResult",
+      "key": "followupPlace",
       "label": [
-        "نتيجة المعمل"
+        "مكان المتابعة"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
+      ]
+    },
+    {
+      "key": "followupDoctorName",
+      "label": [
+        "اسم الطبيب القائم بالمتابعة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
+      ]
+    },
+    {
+      "key": "followupDoctorSpecialty",
+      "label": [
+        "تخصصه"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
       ]
     },
     {
       "key": "patientStatus",
       "label": [
-        "حالة المريض"
+        "المتابعة"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
       ],
       "options": {
         "1": [
-          "موجودة"
+          "موجود"
         ],
         "2": [
-          "غير موجودة"
+          "غير موجود"
         ],
         "3": [
           "وفاة"
-        ]
-      }
-    },
-    {
-      "key": "hasResidualParalysis",
-      "label": [
-        "هل يوجد شلل رخو متبقي"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
-      ],
-      "options": {
-        "true": [
-          "NEDSS.COMMON.YES"
-        ],
-        "false": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "hasMuscleAtrophy",
-      "label": [
-        "هل يوجد ضمور بالعضلات"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
-      ],
-      "options": {
-        "true": [
-          "NEDSS.COMMON.YES"
-        ],
-        "false": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "hasSensationInAffected",
-      "label": [
-        "هل الاحساس موجود بالأعضاء المصابة"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
-      ],
-      "options": {
-        "true": [
-          "NEDSS.COMMON.YES"
-        ],
-        "false": [
-          "NEDSS.COMMON.NO"
         ]
       }
     },
@@ -1655,58 +1871,183 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
+      ]
+    },
+    {
+      "key": "deathCause",
+      "label": [
+        "سبب الوفاة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
+      ]
+    },
+    {
+      "key": "hasResidualParalysis",
+      "label": [
+        "هل يوجد شلل رخو متبقي بعد 60 يوم؟"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
+      ],
+      "options": {
+        "true": [
+          "نعم"
+        ],
+        "false": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "residualParalysisSite",
+      "label": [
+        "حدد مكان الشلل المتبقي"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
+      ]
+    },
+    {
+      "key": "hasMuscleAtrophy",
+      "label": [
+        "هل يوجد ضمور بالعضلات؟"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
+      ],
+      "options": {
+        "true": [
+          "نعم"
+        ],
+        "false": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "muscleAtrophySite",
+      "label": [
+        "حدد مكان الضمور"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
+      ]
+    },
+    {
+      "key": "hasSensationInAffected",
+      "label": [
+        "هل الإحساس موجود بالأعضاء المصابة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "المتابعة بعد 60 يوم لحالة شلل رخو حاد"
+      ],
+      "options": {
+        "true": [
+          "نعم"
+        ],
+        "false": [
+          "لا"
+        ]
+      }
+    },
+    {
+      "key": "labResult",
+      "label": [
+        "نتائج الفحص المعملي لعينات البراز للحالة"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نتائج الفحص المعملي"
+      ]
+    },
+    {
+      "key": "contactLabResults",
+      "label": [
+        "نتائج الفحص المعملي لعينات البراز للمخالطين"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نتائج الفحص المعملي لعينات البراز للمخالطين"
+      ],
+      "array": true
+    },
+    {
+      "key": "result",
+      "label": [
+        "نتائج الفحص المعملي لعينات البراز للمخالطين"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "نتائج الفحص المعملي لعينات البراز للمخالطين"
       ]
     },
     {
       "key": "ctMri",
       "label": [
-        "CT / MRI"
+        "1- CT/MRI"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
+        "Test results"
       ]
     },
     {
       "key": "myelographEmg",
       "label": [
-        "Myelograph (EMG)"
+        "2- Electro-myelograph (EMG)"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
+        "Test results"
       ]
     },
     {
       "key": "csf",
       "label": [
-        "CSF"
+        "3- Cerebro-Spinal Fluid (CSF) results"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "تجمع الحالات"
+        "Test results"
+      ],
+      "options": {
+        "Normal": [
+          "Normal"
+        ],
+        "Septic": [
+          "Septic"
+        ],
+        "Aseptic": [
+          "Aseptic"
+        ]
+      }
+    },
+    {
+      "key": "followupOtherClinicalSigns",
+      "label": [
+        "Other clinical signs"
+      ],
+      "section": [
+        "إدارة حالات الشلل الرخو الحاد (AFP)",
+        "Test results"
       ]
     },
     {
-      "key": "followupCommittee",
+      "key": "finalDiagnosis",
       "label": [
-        "لجنة المتابعة"
+        "Final diagnosis (causing paralysis)"
       ],
       "section": [
         "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "لجنة المتابعة"
-      ],
-      "array": true
-    },
-    {
-      "key": "position",
-      "label": [
-        "الوظيفة"
-      ],
-      "section": [
-        "إدارة حالات الشلل الرخو الحاد (AFP)",
-        "لجنة المتابعة"
+        "Test results"
       ]
     },
     {
@@ -4137,6 +4478,15 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
     }
   ],
   "cholera": [
+    {
+      "key": "diarrheaCount",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.DIARRHEA_COUNT"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.CHOLERA.EPIDEMIOLOGICAL_INVESTIGATION"
+      ]
+    },
     {
       "key": "contactSuspectedCase",
       "label": [
@@ -19280,42 +19630,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
-      ]
-    },
-    {
-      "key": "investigatorName",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATOR_NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
-      ]
-    },
-    {
-      "key": "surveillanceOfficerName",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SURVEILLANCE_OFFICER_NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
-      ]
-    },
-    {
-      "key": "preventiveDirectorName",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_DIRECTOR_NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
-      ]
-    },
-    {
-      "key": "administrationDirectorName",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ADMINISTRATION_DIRECTOR_NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.SIGNATURES"
       ]
     }
   ],

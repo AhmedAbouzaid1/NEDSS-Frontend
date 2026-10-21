@@ -683,6 +683,8 @@
               </table>
             </div>
 
+            <ng-container *ngTemplateOutlet="formAttachmentBlock; context: { group: surveyAttachments, label: 'إرفاق نموذج الأطفال الذين تم مسحهم' }"></ng-container>
+
             <div class="section-bar b3 mt-4">نسبة التغطية</div>
             <div class="table-responsive survey-coverage-table">
               <table class="table table-bordered text-center align-middle">
@@ -724,100 +726,239 @@
           <!-- ================= TAB 4: تجمع الحالات ================= -->
           <ng-container *ngIf="activeTab === 'aggregation'">
             <div class="section-bar b1 case-movements-bar d-flex justify-content-between align-items-center">
-              <span>تجمع الحالات</span>
-              <div class="d-flex flex-wrap gap-2">
-                <button type="button" class="btn case-movement-add" (click)="addAggregatedCase()">
-                  <i class="pi pi-plus-circle" aria-hidden="true"></i>
-                  <span>إضافة حالة</span>
-                </button>
-                <button type="button" class="btn case-movement-add" (click)="copyAggregatedCase()">
-                  <i class="pi pi-copy" aria-hidden="true"></i>
-                  <span>نسخ سطر</span>
-                </button>
-              </div>
+              <span>فحص تجمع حالات الشلل الرخو الحاد</span>
+              <button type="button" class="btn case-movement-add" (click)="addAggregatedCase()">
+                <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                <span>إضافة حالة</span>
+              </button>
             </div>
-            <div class="table-responsive" formArrayName="aggregatedCases">
-              <table class="table table-bordered text-center align-middle">
-                <thead><tr><th>#</th><th>كود الحالة</th><th>الاسم</th><th>الوحدة</th><th>العمر</th><th>نوع العمر</th><th></th></tr></thead>
+            <div class="row">
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>إدارة</label><input type="text" class="form-control" [value]="caseAdministrationName" readonly disabled /></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>محافظة</label><input type="text" class="form-control" [value]="caseGovernorateName" readonly disabled /></div></div>
+            </div>
+            <div class="table-responsive aggregation-table" formArrayName="aggregatedCases">
+              <table class="table table-bordered align-middle">
+                <thead>
+                  <tr>
+                    <th class="agg-label">البيانات</th>
+                    <th *ngFor="let c of aggregatedCases.controls; let i = index">
+                      <div class="d-flex align-items-center justify-content-center gap-2">
+                        <span>{{ aggregatedCaseTitle(i) }}</span>
+                        <button type="button" class="btn btn-sm btn-danger" (click)="removeAggregatedCase(i)" title="حذف"><i class="pi pi-trash"></i></button>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr *ngFor="let a of aggregatedCases.controls; let i = index" [formGroupName]="i">
-                    <td>{{ i + 1 }}</td>
-                    <td><input type="text" class="form-control" formControlName="caseCode" /></td>
-                    <td><input type="text" class="form-control" formControlName="name" /></td>
-                    <td><input type="text" class="form-control" formControlName="unit" /></td>
-                    <td><input type="number" min="0" class="form-control" formControlName="age" /></td>
-                    <td><select class="form-control" formControlName="ageTypeId"><option *ngFor="let t of ageTypes" [ngValue]="t.id">{{ t.arabicName }}</option></select></td>
-                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeAggregatedCase(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  <tr class="aggregation-section-row"><td class="agg-label fwb" [attr.colspan]="aggregatedCases.length + 1">أولاً: البيانات الديموجرافية</td></tr>
+                  <tr>
+                    <td class="agg-label agg-item">الاسم</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><input type="text" class="form-control" formControlName="name" /></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">الوحدة</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><input type="text" class="form-control" formControlName="unit" /></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">العمر</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><div class="d-flex gap-2"><input type="number" min="0" class="form-control" formControlName="age" /><select class="form-control" formControlName="ageTypeId"><option [ngValue]="null">--</option><option *ngFor="let t of ageTypes" [ngValue]="t.id">{{ t.arabicName }}</option></select></div></td>
+                  </tr>
+                  <tr class="aggregation-section-row"><td class="agg-label fwb" [attr.colspan]="aggregatedCases.length + 1">ثانياً: التقصي الوبائي</td></tr>
+                  <tr>
+                    <td class="agg-label agg-item">تاريخ بداية الشلل</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><app-date-field formControlName="paralysisOnsetDate"></app-date-field></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">كفاية العينات</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><select class="form-control" formControlName="samplesAdequate"><option [ngValue]="null">-- اختر --</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">تطعيم الحالة</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><input type="text" class="form-control" formControlName="caseVaccination" /></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">نسبة التغطية بالوحدة</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><input type="number" min="0" max="100" class="form-control" formControlName="unitCoverage" /></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">نسبة التغطية ميدانيا</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><input type="number" min="0" max="100" class="form-control" formControlName="fieldCoverage" /></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">زيارة من أو إلى جهة متوطن بها المرض</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><select class="form-control" formControlName="endemicAreaVisit"><option [ngValue]="null">-- اختر --</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
+                  </tr>
+                  <tr class="aggregation-section-row"><td class="agg-label fwb" [attr.colspan]="aggregatedCases.length + 1">ثالثاً: الفحص الإكلينيكي</td></tr>
+                  <tr>
+                    <td class="agg-label agg-item">ارتفاع الحرارة</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><select class="form-control" formControlName="fever"><option [ngValue]="null">-- اختر --</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">تناظر الشلل</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><select class="form-control" formControlName="symmetricParalysis"><option [ngValue]="null">-- اختر --</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">اكتمال الشلل خلال 4 أيام</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><select class="form-control" formControlName="completedWithin4Days"><option [ngValue]="null">-- اختر --</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">الفحوصات الأخرى</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><input type="text" class="form-control" formControlName="otherTests" /></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">التشخيص الابتدائي</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><input type="text" class="form-control" formControlName="initialDiagnosis" /></td>
+                  </tr>
+                  <tr class="aggregation-section-row"><td class="agg-label fwb" [attr.colspan]="aggregatedCases.length + 1">رابعاً: ترصد حالات الشلل الرخو الحاد</td></tr>
+                  <tr>
+                    <td class="agg-label agg-item">اكتمال البلاغ الصفري</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><select class="form-control" formControlName="zeroReportComplete"><option [ngValue]="null">-- اختر --</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">اكتمال الترصد الإيجابي</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><select class="form-control" formControlName="activeSurveillanceComplete"><option [ngValue]="null">-- اختر --</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">وجود مواقع صامتة</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><select class="form-control" formControlName="silentSitesExist"><option [ngValue]="null">-- اختر --</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label agg-item">البحث عن حالات لم تبلغ</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><select class="form-control" formControlName="unreportedCasesSearched"><option [ngValue]="null">-- اختر --</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
+                  </tr>
+                  <tr>
+                    <td class="agg-label fwb">الخلاصة: هل تجمع الحالات من الممكن أن يكون بسبب مرض شلل الأطفال</td>
+                    <td *ngFor="let c of aggregatedCases.controls; let i = index" [formGroupName]="i"><select class="form-control" formControlName="mayBePolio"><option [ngValue]="null">-- اختر --</option><option [ngValue]="1">نعم</option><option [ngValue]="2">لا</option></select></td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div class="row mt-3">
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>مسئول الترصد بالإدارة</label><input type="text" class="form-control" formControlName="aggregationAdminSurveillanceOfficer" /></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>مسئول الترصد بالمديرية</label><input type="text" class="form-control" formControlName="aggregationDirectorateSurveillanceOfficer" /></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>مدير وقائي المديرية</label><input type="text" class="form-control" formControlName="aggregationDirectoratePreventiveManager" /></div></div>
             </div>
           </ng-container>
 
           <!-- ================= TAB 5: المتابعة ================= -->
           <ng-container *ngIf="activeTab === 'followup'">
+            <div class="section-bar b1">المتابعة بعد 60 يوم لحالة شلل رخو حاد</div>
             <div class="row">
-              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ بداية الشلل</label><app-date-field formControlName="paralysisOnsetDate"></app-date-field></div></div>
-              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ المتابعة</label><app-date-field formControlName="followupDate"></app-date-field></div></div>
-              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>نتيجة المعمل</label>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ بدء حدوث الشلل</label><app-date-field formControlName="paralysisOnsetDate"></app-date-field></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ المتابعة</label>
+                <app-date-field class="date-with-note" formControlName="followupDate" [min]="followupMinDate"></app-date-field>
+                <small class="form-text text-muted d-block mt-0" *ngIf="followupMinDate">بعد 60 يوم على الأقل من بدء الشلل (من {{ followupMinDate | date: 'dd/MM/yyyy' }})</small>
+                <small class="form-text text-danger d-block mt-0" *ngIf="followupDateError">{{ followupDateError }}</small></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>مكان المتابعة</label><input type="text" class="form-control" formControlName="followupPlace" /></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>اسم الطبيب القائم بالمتابعة</label><input type="text" class="form-control" formControlName="followupDoctorName" /></div></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تخصصه</label><input type="text" class="form-control" formControlName="followupDoctorSpecialty" /></div></div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-12 inv-pair-cell">
+                <div class="row inv-pair">
+                  <div class="col-lg-4"><label class="fwb">المتابعة</label></div>
+                  <div class="col-lg-8 has-labels">
+                    <label><input type="radio" class="form-check-input" formControlName="patientStatus" [value]="1" /> موجود</label>
+                    <label><input type="radio" class="form-check-input" formControlName="patientStatus" [value]="2" /> غير موجود</label>
+                    <label><input type="radio" class="form-check-input" formControlName="patientStatus" [value]="3" /> وفاة</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="form.get('patientStatus')?.value === 3"><div class="form-group"><label>تاريخ الوفاة</label>
+                <app-date-field class="date-with-note" formControlName="deathDate" [min]="form.get('paralysisOnsetDate')?.value"></app-date-field>
+                <small class="form-text text-danger d-block mt-0" *ngIf="deathDateError">{{ deathDateError }}</small></div></div>
+              <div class="col-lg-8 inv-field-cell" [appShowIf]="form.get('patientStatus')?.value === 3"><div class="form-group"><label>سبب الوفاة</label><input type="text" class="form-control" formControlName="deathCause" /></div></div>
+            </div>
+
+            <div class="row mt-2" [appShowIf]="form.get('patientStatus')?.value === 1">
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>هل يوجد شلل رخو متبقي بعد 60 يوم؟</label>
+                <select class="form-control" formControlName="hasResidualParalysis">
+                  <option [ngValue]="null">-- اختر --</option>
+                  <option [ngValue]="true">نعم</option>
+                  <option [ngValue]="false">لا</option>
+                </select></div></div>
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="form.get('hasResidualParalysis')?.value === true"><div class="form-group"><label>حدد مكان الشلل المتبقي</label><input type="text" class="form-control" formControlName="residualParalysisSite" /></div></div>
+              <div class="col-12"></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>هل يوجد ضمور بالعضلات؟</label>
+                <select class="form-control" formControlName="hasMuscleAtrophy">
+                  <option [ngValue]="null">-- اختر --</option>
+                  <option [ngValue]="true">نعم</option>
+                  <option [ngValue]="false">لا</option>
+                </select></div></div>
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="form.get('hasMuscleAtrophy')?.value === true"><div class="form-group"><label>حدد مكان الضمور</label><input type="text" class="form-control" formControlName="muscleAtrophySite" /></div></div>
+              <div class="col-12"></div>
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>هل الإحساس موجود بالأعضاء المصابة</label>
+                <select class="form-control" formControlName="hasSensationInAffected">
+                  <option [ngValue]="null">-- اختر --</option>
+                  <option [ngValue]="true">نعم</option>
+                  <option [ngValue]="false">لا</option>
+                </select></div></div>
+            </div>
+
+            <div class="section-bar b2 mt-4">نتائج الفحص المعملي</div>
+            <div class="row">
+              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>نتائج الفحص المعملي لعينات البراز للحالة</label>
                 <select class="form-control" formControlName="labResult">
                   <option [ngValue]="null">-- اختر --</option>
                   <option *ngFor="let o of labResults" [ngValue]="o">{{ o }}</option>
                 </select></div></div>
             </div>
 
-            <div class="form-group mt-2">
-              <label class="fwb d-block">حالة المريض</label>
-              <div class="d-flex gap-4">
-                <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="patientStatus" [value]="1" /> موجودة</label>
-                <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="patientStatus" [value]="2" /> غير موجودة</label>
-                <label class="d-flex align-items-center gap-1"><input type="radio" formControlName="patientStatus" [value]="3" /> وفاة</label>
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="formAttachmentBlock; context: { group: followupAttachments, label: 'رفع أورنيك الحالة' }"></ng-container>
 
-            <div class="mt-2" *ngIf="form.value.patientStatus === 1">
-              <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="hasResidualParalysis" /> هل يوجد شلل رخو متبقي</label>
-              <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="hasMuscleAtrophy" /> هل يوجد ضمور بالعضلات</label>
-              <label class="d-flex align-items-center gap-1"><input type="checkbox" formControlName="hasSensationInAffected" /> هل الاحساس موجود بالأعضاء المصابة</label>
+            <div class="section-bar b3 mt-3 case-movements-bar d-flex justify-content-between align-items-center">
+              <span>نتائج الفحص المعملي لعينات البراز للمخالطين</span>
+              <button type="button" class="btn case-movement-add" (click)="addContactLabResult()">
+                <i class="pi pi-plus-circle" aria-hidden="true"></i>
+                <span>إضافة مخالط</span>
+              </button>
             </div>
-
-            <div class="row mt-2" *ngIf="form.value.patientStatus === 3">
-              <div class="col-lg-4 inv-field-cell"><div class="form-group"><label>تاريخ الوفاة</label><app-date-field formControlName="deathDate"></app-date-field></div></div>
-            </div>
-
-            <div class="row mt-2">
-              <div class="col-12"><div class="form-group"><label><span dir="ltr">CT / MRI</span></label><textarea rows="2" class="form-control" formControlName="ctMri"></textarea></div></div>
-              <div class="col-12"><div class="form-group"><label><span dir="ltr">Myelograph (EMG)</span></label><textarea rows="2" class="form-control" formControlName="myelographEmg"></textarea></div></div>
-              <div class="col-12"><div class="form-group"><label><span dir="ltr">CSF</span></label><textarea rows="2" class="form-control" formControlName="csf"></textarea></div></div>
-            </div>
-
-            <div class="section-bar b2 mt-4 case-movements-bar d-flex justify-content-between align-items-center">
-              <span>لجنة المتابعة</span>
-              <div class="d-flex flex-wrap gap-2">
-                <button type="button" class="btn case-movement-add" (click)="addCommittee()">
-                  <i class="pi pi-plus-circle" aria-hidden="true"></i>
-                  <span>إضافة طبيب</span>
-                </button>
-              </div>
-            </div>
-            <div class="table-responsive" formArrayName="followupCommittee">
-              <table class="table table-bordered text-center align-middle">
-                <thead><tr><th>#</th><th>الاسم</th><th>الوظيفة</th><th>التاريخ</th><th></th></tr></thead>
+            <div class="table-responsive" formArrayName="contactLabResults">
+              <table class="table table-bordered text-center align-middle contact-lab-results-table">
+                <thead>
+                  <tr>
+                    <th *ngFor="let r of contactLabResults.controls; let i = index">
+                      <div class="d-flex align-items-center justify-content-center gap-2">
+                        <span>مخالط ({{ i + 1 }})</span>
+                        <button type="button" class="btn btn-sm btn-danger" (click)="removeContactLabResult(i)" title="حذف"><i class="pi pi-trash"></i></button>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr *ngFor="let c of followupCommittee.controls; let i = index" [formGroupName]="i">
-                    <td>{{ i + 1 }}</td>
-                    <td><input type="text" class="form-control" formControlName="name" /></td>
-                    <td><input type="text" class="form-control" formControlName="position" /></td>
-                    <td><app-date-field formControlName="date"></app-date-field></td>
-                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeCommittee(i)" title="حذف"><i class="pi pi-trash"></i></button></td>
+                  <tr>
+                    <td *ngFor="let r of contactLabResults.controls; let i = index" [formGroupName]="i">
+                      <select class="form-control" formControlName="result">
+                        <option [ngValue]="null">-- اختر --</option>
+                        <option *ngFor="let o of labResults" [ngValue]="o">{{ o }}</option>
+                      </select>
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <div class="d-flex justify-content-center gap-3 mt-3">
-              <button type="submit" class="btn btn-success px-4">اعتماد المتابعة</button>
-              <button type="button" class="btn btn-secondary px-4" onclick="window.print()">طباعة التقرير</button>
+            <div class="afp-ltr-section" dir="ltr">
+            <div class="section-bar b2 mt-4">Test results</div>
+            <div class="row">
+              <div class="col-12"><div class="form-group"><label>1- CT/MRI</label><textarea rows="2" class="form-control" formControlName="ctMri"></textarea></div></div>
+              <div class="col-12"><div class="form-group"><label>2- Electro-myelograph (EMG)</label><textarea rows="2" class="form-control" formControlName="myelographEmg"></textarea></div></div>
+              <div class="col-12 inv-pair-cell">
+                <div class="row inv-pair">
+                  <div class="col-lg-4"><label>3- Cerebro-Spinal Fluid (CSF) results</label></div>
+                  <div class="col-lg-8 has-labels">
+                    <label><input type="radio" class="form-check-input" formControlName="csf" value="Normal" /> Normal</label>
+                    <label><input type="radio" class="form-check-input" formControlName="csf" value="Septic" /> Septic</label>
+                    <label><input type="radio" class="form-check-input" formControlName="csf" value="Aseptic" /> Aseptic</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12"><div class="form-group"><label>Other clinical signs</label><textarea rows="2" class="form-control" formControlName="followupOtherClinicalSigns"></textarea></div></div>
+              <div class="col-12"><div class="form-group"><label>Final diagnosis (causing paralysis)</label>
+                <input type="text" class="form-control" formControlName="finalDiagnosis" />
+                <small class="form-text text-muted d-block mt-0">يذكر اسم المرض الذي سبب الشلل عند الإبلاغ عن الحالة</small></div></div>
+            </div>
             </div>
           </ng-container>
 
@@ -896,6 +1037,8 @@
               </table>
             </div>
 
+            <ng-container *ngTemplateOutlet="formAttachmentBlock; context: { group: contactSamplesAttachments, label: 'إرفاق نموذج جمع وإرسال عينات المخالطين' }"></ng-container>
+
             <div class="row">
               <div class="col-lg-6 inv-field-cell"><div class="form-group"><label>اسم المسئول عن جمع العينات</label>
                 <input type="text" maxlength="200" class="form-control" formControlName="contactSamplesCollectorName" /></div></div>
@@ -938,3 +1081,29 @@
     </div>
   </div>
 </form>
+
+<ng-template #formAttachmentBlock let-group="group" let-label="label">
+  <div class="form-group mt-3 afp-attachment">
+    <label class="d-block">{{ label }}</label>
+    <button type="button" class="btn btn-add-record d-inline-flex align-items-center gap-2" (click)="attachInput.click()">
+      <i class="pi pi-paperclip" aria-hidden="true"></i>
+      <span>اختيار ملف</span>
+    </button>
+    <input type="file" #attachInput class="d-none" accept="image/*,application/pdf" multiple (change)="onAttachmentSelect(group, $event.target)" />
+    <small class="text-muted d-block">صورة أو PDF للنموذج الورقي - الحد الأقصى {{ maxAttachmentFiles }} ملفات، ويتم الرفع عند الحفظ</small>
+    <div *ngFor="let url of group.savedFiles; let i = index" class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mt-1">
+      <span class="text-truncate me-2">{{ attachmentName(url) }}</span>
+      <div class="d-flex gap-1">
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="openSavedAttachment(url)">عرض</button>
+        <button type="button" class="btn btn-sm btn-outline-danger" (click)="group.savedFiles.splice(i, 1)">حذف</button>
+      </div>
+    </div>
+    <div *ngFor="let file of group.pendingFiles; let i = index" class="d-flex align-items-center justify-content-between border rounded px-2 py-1 mt-1">
+      <span class="text-truncate me-2">{{ file.name }} <small class="text-muted">(لم يتم الرفع بعد)</small></span>
+      <div class="d-flex gap-1">
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="openPendingAttachment(file)">عرض</button>
+        <button type="button" class="btn btn-sm btn-outline-danger" (click)="group.pendingFiles.splice(i, 1)">حذف</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

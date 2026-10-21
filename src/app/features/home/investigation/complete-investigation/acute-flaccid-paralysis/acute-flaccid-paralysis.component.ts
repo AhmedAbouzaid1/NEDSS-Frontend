@@ -4,6 +4,8 @@ import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { InvestigationService } from '../../services/investigation.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
+import { AttachemntApiService } from 'src/app/core/services/attachemnt-api.service';
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
 import { AgeType } from 'src/app/core/constants';
 
@@ -28,6 +30,12 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   allControllesCount = 0;
   patientName: string = '';
   hospitalEntryDate: string | null = null;
+  readonly maxAttachmentFiles = 3;
+  surveyAttachments: { key: string; savedFiles: string[]; pendingFiles: File[] } = { key: 'surveyAttachmentUrlsJson', savedFiles: [], pendingFiles: [] };
+  contactSamplesAttachments: { key: string; savedFiles: string[]; pendingFiles: File[] } = { key: 'contactSamplesAttachmentUrlsJson', savedFiles: [], pendingFiles: [] };
+  followupAttachments: { key: string; savedFiles: string[]; pendingFiles: File[] } = { key: 'followupAttachmentUrlsJson', savedFiles: [], pendingFiles: [] };
+  caseGovernorateName = '';
+  caseAdministrationName = '';
 
   activeTab: 'clinical' | 'field' | 'vaccination' | 'survey' | 'aggregation' | 'followup' | 'contactSamples' = 'clinical';
   tabs = [
@@ -36,8 +44,8 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     { key: 'vaccination', label: 'موقف التطعيمات' },
     { key: 'survey', label: 'الجشنى الميدانى' },
     { key: 'aggregation', label: 'تجمع الحالات' },
-    { key: 'followup', label: 'المتابعة' },
     { key: 'contactSamples', label: 'عينات المخالطين' },
+    { key: 'followup', label: 'المتابعة' },
   ];
 
   routineDoseLabels = ['الصفرية', 'الأولى', 'الثانية', 'الثالثة', 'الرابعة', 'الخامسة', 'المنشطة'];
@@ -99,7 +107,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
 
   private arrayKeys = [
     'caseMovements', 'previousCases', 'highRiskAreas', 'healthFacilityVisits', 'visitors', 'residenceAfpCases', 'facilityActions',
-    'routineVaccinations', 'campaigns', 'surveyChildren', 'aggregatedCases', 'followupCommittee', 'fieldContacts',
+    'routineVaccinations', 'campaigns', 'surveyChildren', 'aggregatedCases', 'contactLabResults', 'fieldContacts',
     'selectedDangerousCaseReasons', 'contactSamples',
   ];
   private coreKeys = ['id', 'patientID', 'diseaseGroupID', 'investigationCompletePercentage', 'caseCodeDisplay'];
@@ -118,7 +126,8 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     private translateService: TranslateService,
     private userMsg: UserMessageService,
     private datePipe: DatePipe,
-    private generalDataService: GeneralDataService
+    private generalDataService: GeneralDataService,
+    private attachmentApi: AttachemntApiService
   ) { }
 
   ngOnInit() {
@@ -229,20 +238,31 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
 
       // Tab 4 - case aggregation
       aggregatedCases: new FormArray([]),
+      aggregationAdminSurveillanceOfficer: new FormControl(),
+      aggregationDirectorateSurveillanceOfficer: new FormControl(),
+      aggregationDirectoratePreventiveManager: new FormControl(),
       fieldContacts: new FormArray([]),
 
       // Tab 5 - follow-up
       followupDate: new FormControl(),
+      followupPlace: new FormControl(),
+      followupDoctorName: new FormControl(),
+      followupDoctorSpecialty: new FormControl(),
       labResult: new FormControl(),
       patientStatus: new FormControl(),
-      hasResidualParalysis: new FormControl(false),
-      hasMuscleAtrophy: new FormControl(false),
-      hasSensationInAffected: new FormControl(false),
+      hasResidualParalysis: new FormControl(null),
+      residualParalysisSite: new FormControl(),
+      hasMuscleAtrophy: new FormControl(null),
+      muscleAtrophySite: new FormControl(),
+      hasSensationInAffected: new FormControl(null),
       deathDate: new FormControl(),
+      deathCause: new FormControl(),
       ctMri: new FormControl(),
       myelographEmg: new FormControl(),
       csf: new FormControl(),
-      followupCommittee: new FormArray([]),
+      followupOtherClinicalSigns: new FormControl(),
+      finalDiagnosis: new FormControl(),
+      contactLabResults: new FormArray([]),
 
       // Tab 6 - contact samples
       contactSamples: new FormArray([]),
@@ -298,6 +318,8 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     this.generalDataService.getBy(this.currentId).subscribe((res: any) => {
       const p = res?.data;
       this.hospitalEntryDate = this.d(p?.hospitalEntryDate);
+      this.caseGovernorateName = p?.incidentGovernmentName ?? '';
+      this.caseAdministrationName = p?.incidentHealthAdministrationName ?? '';
       if (p?.homeVisitDate && !this.form.value.homeVisitDate) {
         this.form.controls['homeVisitDate'].setValue(this.d(p.homeVisitDate));
       }
@@ -368,8 +390,66 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     this.parseInto(v.surveyChildrenJson, (x) => this.surveyChildren.push(this.buildSurveyChild(x)));
     this.parseInto(v.aggregatedCasesJson, (x) => this.aggregatedCases.push(this.buildAggregatedCase(x)));
     this.parseInto(v.fieldContactsJson, (x) => this.fieldContacts.push(this.buildFieldContact(x)));
-    this.parseInto(v.followupCommitteeJson, (x) => this.followupCommittee.push(this.buildCommittee(x)));
+    this.parseInto(v.contactLabResultsJson, (x) => this.contactLabResults.push(this.buildContactLabResult(x)));
+    this.attachmentGroups.forEach((g) => {
+      g.savedFiles = this.parseJsonArray(v[g.key]).filter((x: any) => typeof x === 'string');
+      g.pendingFiles = [];
+    });
     this.parseInto(v.contactSamplesJson, (x) => this.contactSamples.push(this.buildContactSample(x)));
+  }
+
+  private get attachmentGroups() {
+    return [this.surveyAttachments, this.contactSamplesAttachments, this.followupAttachments];
+  }
+
+  onAttachmentSelect(group: { savedFiles: string[]; pendingFiles: File[] }, target: EventTarget | null): void {
+    const input = target as HTMLInputElement;
+    const files = Array.from(input?.files ?? []);
+    input.value = '';
+    const slots = this.maxAttachmentFiles - group.savedFiles.length - group.pendingFiles.length;
+    if (slots <= 0) {
+      this.userMsg.error(`الحد الأقصى ${this.maxAttachmentFiles} ملفات`);
+      return;
+    }
+    const accepted = files.filter((f) => !group.pendingFiles.some((p) => p.name === f.name)).slice(0, slots);
+    group.pendingFiles.push(...accepted);
+    if (files.length > slots) {
+      this.userMsg.error(`تم قبول ${slots} ملفات فقط (الحد الأقصى ${this.maxAttachmentFiles})`);
+    }
+  }
+
+  openPendingAttachment(file: File): void {
+    window.open(URL.createObjectURL(file), '_blank');
+  }
+
+  openSavedAttachment(url: string): void {
+    if (url) window.open(url, '_blank');
+  }
+
+  attachmentName(url: string): string {
+    return decodeURIComponent((url || '').split('/').pop() || url);
+  }
+
+  private async uploadPendingAttachments(): Promise<boolean> {
+    for (const group of this.attachmentGroups) {
+      if (!group.pendingFiles.length) continue;
+      try {
+        const fd = new FormData();
+        group.pendingFiles.forEach((f) => fd.append('files', f));
+        const res: any = await firstValueFrom(this.attachmentApi.upload(fd));
+        const urls: string[] = res?.data || res?.Data || [];
+        if (!urls.length) {
+          this.userMsg.error('لم يتم رفع الملفات. حاول مرة أخرى.');
+          return false;
+        }
+        group.savedFiles = [...group.savedFiles, ...urls];
+        group.pendingFiles = [];
+      } catch {
+        this.translateService.get('NEDSS.COMMON.SENT_FAILD').subscribe((msg: string) => this.userMsg.error(msg));
+        return false;
+      }
+    }
+    return true;
   }
 
   private parseInto(json: string, push: (item: any) => void) {
@@ -486,8 +566,37 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     });
   }
   get aggregatedCases(): FormArray { return this.form.get('aggregatedCases') as FormArray; }
+
+  private readonly caseOrdinals = ['الأولى', 'الثانية', 'الثالثة', 'الرابعة', 'الخامسة', 'السادسة', 'السابعة', 'الثامنة', 'التاسعة', 'العاشرة'];
+
+  aggregatedCaseTitle(i: number): string {
+    return `الحالة ${this.caseOrdinals[i] ?? i + 1}`;
+  }
   get fieldContacts(): FormArray { return this.form.get('fieldContacts') as FormArray; }
-  get followupCommittee(): FormArray { return this.form.get('followupCommittee') as FormArray; }
+  get contactLabResults(): FormArray { return this.form.get('contactLabResults') as FormArray; }
+
+  get followupMinDate(): string | null {
+    const onset = this.d(this.form.get('paralysisOnsetDate')?.value);
+    if (!onset) return null;
+    const dt = new Date(onset + 'T00:00:00');
+    dt.setDate(dt.getDate() + 60);
+    return this.d(dt);
+  }
+
+  get followupDateError(): string {
+    const date = this.d(this.form.get('followupDate')?.value);
+    const min = this.followupMinDate;
+    if (!date || !min || date >= min) return '';
+    return `تاريخ المتابعة يجب أن يكون بعد 60 يوم على الأقل من تاريخ بدء الشلل (من ${this.datePipe.transform(min, 'dd/MM/yyyy')})`;
+  }
+
+  get deathDateError(): string {
+    if (this.form.get('patientStatus')?.value !== 3) return '';
+    const date = this.d(this.form.get('deathDate')?.value);
+    const onset = this.d(this.form.get('paralysisOnsetDate')?.value);
+    if (!date || !onset || date >= onset) return '';
+    return `تاريخ الوفاة لا يمكن أن يكون قبل تاريخ بدء الشلل (${this.datePipe.transform(onset, 'dd/MM/yyyy')})`;
+  }
   get contactSamples(): FormArray { return this.form.get('contactSamples') as FormArray; }
 
   // ===================== Card expand / collapse =====================
@@ -600,11 +709,26 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   }
   private buildAggregatedCase(a: any = {}): FormGroup {
     return new FormGroup({
-      caseCode: new FormControl(a.caseCode ?? null),
       name: new FormControl(a.name ?? null),
       unit: new FormControl(a.unit ?? null),
       age: new FormControl(a.age ?? null),
       ageTypeId: new FormControl(a.ageTypeId ?? null),
+      paralysisOnsetDate: new FormControl(this.d(a.paralysisOnsetDate)),
+      samplesAdequate: new FormControl(a.samplesAdequate ?? null),
+      caseVaccination: new FormControl(a.caseVaccination ?? null),
+      unitCoverage: new FormControl(a.unitCoverage ?? null),
+      fieldCoverage: new FormControl(a.fieldCoverage ?? null),
+      endemicAreaVisit: new FormControl(a.endemicAreaVisit ?? null),
+      fever: new FormControl(a.fever ?? null),
+      symmetricParalysis: new FormControl(a.symmetricParalysis ?? null),
+      completedWithin4Days: new FormControl(a.completedWithin4Days ?? null),
+      otherTests: new FormControl(a.otherTests ?? null),
+      initialDiagnosis: new FormControl(a.initialDiagnosis ?? null),
+      zeroReportComplete: new FormControl(a.zeroReportComplete ?? null),
+      activeSurveillanceComplete: new FormControl(a.activeSurveillanceComplete ?? null),
+      silentSitesExist: new FormControl(a.silentSitesExist ?? null),
+      unreportedCasesSearched: new FormControl(a.unreportedCasesSearched ?? null),
+      mayBePolio: new FormControl(a.mayBePolio ?? null),
     });
   }
   private buildContactSample(c: any = {}): FormGroup {
@@ -624,11 +748,9 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
       sampleSendDate: new FormControl(this.d(c.sampleSendDate)),
     });
   }
-  private buildCommittee(c: any = {}): FormGroup {
+  private buildContactLabResult(r: any = {}): FormGroup {
     return new FormGroup({
-      name: new FormControl(c.name ?? null),
-      position: new FormControl(c.position ?? null),
-      date: new FormControl(this.d(c.date)),
+      result: new FormControl(r.result ?? null),
     });
   }
 
@@ -647,7 +769,7 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     if (this.surveyChildren.length === 0) this.addSurveyChild();
     if (this.aggregatedCases.length === 0) this.addAggregatedCase();
     if (this.fieldContacts.length === 0) this.addFieldContact();
-    if (this.followupCommittee.length === 0) this.addCommittee();
+    if (this.contactLabResults.length === 0) this.addContactLabResult();
     if (this.contactSamples.length === 0) this.addContactSample();
   }
 
@@ -673,12 +795,8 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   addFieldContact() { this.fieldContacts.push(this.buildFieldContact()); }
   removeFieldContact(i: number) { this.removeAt(this.fieldContacts, i); }
   removeAggregatedCase(i: number) { this.removeAt(this.aggregatedCases, i); }
-  copyAggregatedCase() {
-    const last = this.aggregatedCases.at(this.aggregatedCases.length - 1);
-    this.aggregatedCases.push(this.buildAggregatedCase(last ? last.value : {}));
-  }
-  addCommittee() { this.followupCommittee.push(this.buildCommittee()); }
-  removeCommittee(i: number) { this.removeAt(this.followupCommittee, i); }
+  addContactLabResult() { this.contactLabResults.push(this.buildContactLabResult()); }
+  removeContactLabResult(i: number) { this.removeAt(this.contactLabResults, i); }
   addContactSample() { this.contactSamples.push(this.buildContactSample()); }
   removeContactSample(i: number) {
     this.removeAt(this.contactSamples, i);
@@ -686,7 +804,13 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
   }
 
   // ===================== Save =====================
-  save() {
+  async save() {
+    const followupError = this.followupDateError || this.deathDateError;
+    if (followupError) {
+      this.activeTab = 'followup';
+      this.userMsg.error(followupError);
+      return;
+    }
     const surveyError = this.surveyDoseOrderError();
     if (surveyError) {
       this.activeTab = 'survey';
@@ -697,6 +821,9 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     if (coverageError) {
       this.activeTab = 'vaccination';
       this.userMsg.error(coverageError);
+      return;
+    }
+    if (!(await this.uploadPendingAttachments())) {
       return;
     }
     this.form.controls['diseaseGroupID'].setValue(this.investigationService.diseaseGroupID);
@@ -726,7 +853,17 @@ export class AcuteFlaccidParalysisComponent implements OnInit {
     payload.surveyChildrenJson = JSON.stringify(value.surveyChildren || []);
     payload.aggregatedCasesJson = JSON.stringify(value.aggregatedCases || []);
     payload.fieldContactsJson = JSON.stringify(value.fieldContacts || []);
-    payload.followupCommitteeJson = JSON.stringify(value.followupCommittee || []);
+    payload.contactLabResultsJson = JSON.stringify(value.contactLabResults || []);
+    this.attachmentGroups.forEach((g) => (payload[g.key] = JSON.stringify(g.savedFiles)));
+    if (payload.patientStatus !== 3) {
+      payload.deathDate = null;
+      payload.deathCause = null;
+    }
+    if (payload.patientStatus !== 1) {
+      ['hasResidualParalysis', 'residualParalysisSite', 'hasMuscleAtrophy', 'muscleAtrophySite', 'hasSensationInAffected'].forEach((k) => (payload[k] = null));
+    }
+    if (payload.hasResidualParalysis !== true) payload.residualParalysisSite = null;
+    if (payload.hasMuscleAtrophy !== true) payload.muscleAtrophySite = null;
     payload.contactSamplesJson = JSON.stringify(
       (value.contactSamples || []).filter((row: any) =>
         Object.values(row || {}).some((x) => x !== null && x !== undefined && `${x}`.trim() !== '')
