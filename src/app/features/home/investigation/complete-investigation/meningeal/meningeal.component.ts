@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
@@ -13,7 +13,7 @@ import { MENINGITIS_OTHER_DIAGNOSES } from 'src/app/features/lab/components/add-
 type FollowUpRoundId = '48h' | '2weeks' | '4weeks';
 
 const FOLLOW_UP_ROUND_ORDER: FollowUpRoundId[] = ['48h', '2weeks', '4weeks'];
-const FOLLOW_UP_ROUND_MIN_DAYS: Record<FollowUpRoundId, number> = { '48h': 2, '2weeks': 14, '4weeks': 28 };
+const FOLLOW_UP_ROUND_MIN_DAYS: Record<FollowUpRoundId, number> = { '48h': 0, '2weeks': 14, '4weeks': 28 };
 const CONTACT_EXPOSURE_WINDOW_DAYS = 10;
 const OTHER_DIAGNOSIS = '__other__';
 
@@ -173,7 +173,6 @@ export class MeningealComponent implements OnInit {
       travelCountryId: new FormControl(null),
       travelArrivalDate: new FormControl(null),
       lastFollowUpDate: new FormControl(null),
-      currentHealthStatus: new FormControl(null),
       contactWithSimilarCase: new FormControl(null),
       contactCaseName: new FormControl(null),
       contactType: new FormControl(null),
@@ -206,10 +205,6 @@ export class MeningealComponent implements OnInit {
       chemoprophylaxisContactsCount: new FormControl(null),
       relatedCasesIdentified: new FormControl(null),
       totalContactsCount: new FormControl(null),
-      investigatorName: new FormControl(null),
-      surveillanceOfficerName: new FormControl(null),
-      preventiveDirectorName: new FormControl(null),
-      administrationDirectorName: new FormControl(null),
       followUpRounds: this.fb.array([]),
     });
 
@@ -379,7 +374,7 @@ export class MeningealComponent implements OnInit {
     }
     const date = this.dateValue('contactHospitalAdmissionDate');
     const detection = this.caseDetectionDate;
-    if (!date) {
+    if (!date || this.contactArrivalAfterDetection) {
       return '';
     }
     const arrival = this.contactArrivalDateValue;
@@ -408,18 +403,126 @@ export class MeningealComponent implements OnInit {
   }
 
   get contactArrivalMaxDate(): string | null {
-    return this.contactAdmissionDateValue;
+    return this.earliestOf(this.contactAdmissionDateValue, this.caseDetectionDate);
+  }
+
+  private get contactArrivalAfterDetection(): boolean {
+    const arrival = this.contactArrivalDateValue;
+    const detection = this.caseDetectionDate;
+    return !!arrival && !!detection && arrival > detection;
   }
 
   get contactArrivalDateError(): string {
     const arrival = this.contactArrivalDateValue;
     const admission = this.contactAdmissionDateValue;
+    if (this.contactArrivalAfterDetection) {
+      return this.label(
+        `تاريخ قدوم المخالط من الخارج لا يمكن أن يكون بعد تاريخ اكتشاف الحالة (${this.formatDate(this.caseDetectionDate)})`,
+        `Contact arrival from abroad cannot be after the case detection date (${this.formatDate(this.caseDetectionDate)})`
+      );
+    }
     if (!arrival || !admission || arrival <= admission) {
       return '';
     }
     return this.label(
       `تاريخ قدوم المخالط من الخارج لا يمكن أن يكون بعد تاريخ دخوله المستشفى (${this.formatDate(admission)})`,
       `Contact arrival from abroad cannot be after the contact's hospital admission (${this.formatDate(admission)})`
+    );
+  }
+
+  private latestRound(predicate: (round: AbstractControl) => boolean): AbstractControl | null {
+    for (let i = FOLLOW_UP_ROUND_ORDER.length - 1; i >= 0; i--) {
+      const round = this.followUpRounds.controls.find((c) => c.get('round')?.value === FOLLOW_UP_ROUND_ORDER[i]);
+      if (round && predicate(round)) {
+        return round;
+      }
+    }
+    return null;
+  }
+
+  private get lastFollowUpRound(): AbstractControl | null {
+    return this.latestRound((r) => r.get('followupDone')?.value === 1);
+  }
+
+  get summaryDischargeStatus(): string {
+    const id = this.patientForm.get('finalResultId')?.value;
+    const item = this.finalResults?.find((x: any) => x.id === id);
+    if (item) {
+      return this.currentLang === 'ar' ? item.arabicName : item.englishName;
+    }
+    return id != null ? this.patient?.finalResult ?? '' : '';
+  }
+
+  get summaryLastFollowUpDate(): string {
+    const round = this.latestRound((r) => r.get('followupDone')?.value === 1 && !!this.toDateInput(r.get('followUpDate')?.value));
+    return this.formatDate(this.toDateInput(round?.get('followUpDate')?.value));
+  }
+
+  get summaryHealthStatus(): string {
+    const round = this.latestRound((r) => r.get('followupDone')?.value === 1 && r.get('currentHealthStatus')?.value != null);
+    const option = this.currentHealthStatusOptions.find((o) => o.value === round?.get('currentHealthStatus')?.value);
+    return option ? this.optionLabel(option) : '';
+  }
+
+  get summaryComplications(): string {
+    const round = this.lastFollowUpRound;
+    const occurred = round?.get('complicationsOccurred')?.value;
+    if (occurred == null) {
+      return '';
+    }
+    if (occurred !== 1) {
+      return this.label('لا توجد مضاعفات', 'No complications');
+    }
+    const items = ((round?.get('complications')?.value as string[]) ?? [])
+      .filter((item) => item !== 'other_complications')
+      .map((item) => this.translateService.instant('NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS.' + item));
+    const other = round?.get('otherComplicationsDetails')?.value?.trim();
+    if (other) {
+      items.push(other);
+    } else if (((round?.get('complications')?.value as string[]) ?? []).includes('other_complications')) {
+      items.push(this.translateService.instant('NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS.other_complications'));
+    }
+    return items.join('، ');
+  }
+
+  get reportDate(): string | null {
+    return this.toDateInput(this.patient?.incidentDate || this.patient?.createdDate);
+  }
+
+  get incidentSourceName(): string {
+    return [this.patient?.incidentSourceName, this.patient?.incidentHealthAdministrationName, this.patient?.incidentGovernmentName]
+      .filter((x) => !!x)
+      .join(' - ');
+  }
+
+  get investigationDateError(): string {
+    const date = this.dateValue('investigationDate');
+    const min = this.caseDetectionDate;
+    if (!date || !min || date >= min) {
+      return '';
+    }
+    return this.label(
+      `تاريخ تحرير التقصي لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.formatDate(min)})`,
+      `Investigation date cannot be before the case detection date (${this.formatDate(min)})`
+    );
+  }
+
+  get travelArrivalMaxDate(): string | null {
+    return this.toDateInput(this.patient?.hospitalEntryDate);
+  }
+
+  get travelArrivalDateError(): string {
+    if (this.meningealForm.get('traveledAbroad')?.value !== 1) {
+      return '';
+    }
+    const arrival = this.dateValue('travelArrivalDate');
+    const admission = this.travelArrivalMaxDate;
+    if (!arrival || !admission || arrival <= admission) {
+      return '';
+    }
+    return this.label(
+      `تاريخ القدوم من السفر لا يمكن أن يكون بعد تاريخ دخول المستشفى (${this.formatDate(admission)})`,
+      `Arrival from travel cannot be after the hospital admission date (${this.formatDate(admission)})`
     );
   }
 
@@ -504,6 +607,30 @@ export class MeningealComponent implements OnInit {
     return !!opensOn && this.todayStr() >= opensOn;
   }
 
+  isRoundLocked(roundIndex: number): boolean {
+    const roundId = this.followUpRounds.at(roundIndex)?.get('round')?.value as FollowUpRoundId;
+    return roundId !== '48h' && !this.isFollowUpOpen(roundIndex);
+  }
+
+  roundLockReason(roundIndex: number): string {
+    const opensOn = this.followUpOpensOn(roundIndex);
+    return opensOn
+      ? this.label(
+        `${this.roundName(roundIndex)}: غير متاحة قبل ${this.formatDate(opensOn)} (حسب مدة المتابعة من تاريخ اكتشاف الحالة)`,
+        `${this.roundName(roundIndex)}: not available before ${this.formatDate(opensOn)} (based on the round duration from case detection)`
+      )
+      : this.label(
+        `${this.roundName(roundIndex)}: غير متاحة لعدم تسجيل تاريخ اكتشاف الحالة`,
+        `${this.roundName(roundIndex)}: unavailable because the case detection date is missing`
+      );
+  }
+
+  onRoundHeaderClick(roundIndex: number): void {
+    if (this.isRoundLocked(roundIndex)) {
+      this.userMsg.warn(this.roundLockReason(roundIndex));
+    }
+  }
+
   followUpOpensOn(roundIndex: number): string | null {
     const roundId = this.followUpRounds.at(roundIndex)?.get('round')?.value as FollowUpRoundId;
     return this.addDays(this.caseDetectionDate, FOLLOW_UP_ROUND_MIN_DAYS[roundId] ?? 0);
@@ -519,10 +646,63 @@ export class MeningealComponent implements OnInit {
     if (!date || !min || date >= min) {
       return '';
     }
+    if (round.get('round')?.value === '48h') {
+      return this.label(
+        `تاريخ المتابعة خلال 48 ساعة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.formatDate(min)})`,
+        `The 48-hour follow-up date cannot be before the case detection date (${this.formatDate(min)})`
+      );
+    }
     return this.label(
       `تاريخ المتابعة لا يمكن أن يكون قبل ${this.formatDate(min)} (حسب مدة المتابعة من تاريخ اكتشاف الحالة والمتابعة السابقة)`,
       `Follow-up date cannot be before ${this.formatDate(min)} (based on the round duration from case detection and the previous follow-up)`
     );
+  }
+
+  isComplicationsOccurredRequired(roundIndex: number): boolean {
+    const round = this.followUpRounds.at(roundIndex);
+    return round?.get('followupDone')?.value === 1 && !!this.toDateInput(round.get('followUpDate')?.value);
+  }
+
+  isComplicationDetailsRequired(roundIndex: number): boolean {
+    return this.followUpRounds.at(roundIndex)?.get('complicationsOccurred')?.value === 1;
+  }
+
+  complicationsOccurredError(roundIndex: number): string {
+    const round = this.followUpRounds.at(roundIndex);
+    if (!this.isComplicationsOccurredRequired(roundIndex) || round.get('complicationsOccurred')?.value != null) {
+      return '';
+    }
+    return this.label(
+      `${this.roundName(roundIndex)}: يجب تحديد هل الحالة أصيبت بأي مضاعفات بعد إدخال تاريخ المتابعة`,
+      `${this.roundName(roundIndex)}: please specify whether complications occurred once the follow-up date is entered`
+    );
+  }
+
+  complicationDateRequiredError(roundIndex: number): string {
+    const round = this.followUpRounds.at(roundIndex);
+    if (!this.isComplicationDetailsRequired(roundIndex) || this.toDateInput(round.get('complicationDate')?.value)) {
+      return '';
+    }
+    return this.label(
+      `${this.roundName(roundIndex)}: تاريخ حدوث المضاعفات مطلوب`,
+      `${this.roundName(roundIndex)}: complication date is required`
+    );
+  }
+
+  complicationsSelectionError(roundIndex: number): string {
+    const round = this.followUpRounds.at(roundIndex);
+    if (!this.isComplicationDetailsRequired(roundIndex) || ((round.get('complications')?.value as string[]) ?? []).length > 0) {
+      return '';
+    }
+    return this.label(
+      `${this.roundName(roundIndex)}: يجب اختيار مضاعفة واحدة على الأقل`,
+      `${this.roundName(roundIndex)}: select at least one complication`
+    );
+  }
+
+  private roundName(roundIndex: number): string {
+    const key = this.getRoundLabel(this.followUpRounds.at(roundIndex)?.get('round')?.value);
+    return this.translateService.instant(key);
   }
 
   private rangeText(min: string | null, max: string | null): string {
@@ -540,12 +720,24 @@ export class MeningealComponent implements OnInit {
 
   dateHint(field: string, roundIndex?: number): string {
     switch (field) {
+      case 'investigationDate':
+        return this.label('في نفس يوم أو بعد تاريخ اكتشاف الحالة', 'On or after the case detection date')
+          + this.rangeText(this.caseDetectionDate, null);
+      case 'travelArrivalDate':
+        return this.label('لا يقبل تاريخ في المستقبل، ولا يكون بعد تاريخ دخول المستشفى', 'No future dates, and not after the hospital admission date')
+          + this.rangeText(null, this.travelArrivalMaxDate);
       case 'lastFollowUpDate':
         return this.label(
           'في نفس يوم أو بعد ظهور الأعراض ودخول المستشفى واكتشاف الحالة',
           'On or after symptom onset, hospital admission and case detection'
         ) + this.rangeText(this.lastFollowUpMinDate, null);
       case 'contactHospitalAdmissionDate': {
+        if (this.contactArrivalAfterDetection) {
+          return this.label(
+            'صحح تاريخ قدوم المخالط من الخارج أولاً، فهو بعد تاريخ اكتشاف الحالة',
+            'Fix the contact\'s arrival date first; it is after the case detection date'
+          );
+        }
         const arrivalNote = this.meningealForm.get('contactTraveledAbroad')?.value === 1
           ? this.label(' ولا يسبق تاريخ قدوم المخالط من الخارج', ' and not before the contact\'s arrival from abroad')
           : '';
@@ -556,8 +748,8 @@ export class MeningealComponent implements OnInit {
       }
       case 'contactArrivalDate':
         return this.label(
-          'لا يقبل تاريخ في المستقبل، ولا يكون بعد تاريخ دخول المخالط المستشفى',
-          'No future dates, and not after the contact\'s hospital admission'
+          'لا يكون بعد تاريخ دخول المخالط المستشفى ولا بعد تاريخ اكتشاف الحالة',
+          'Not after the contact\'s hospital admission or the case detection date'
         ) + this.rangeText(null, this.contactArrivalMaxDate);
       case 'hibLastDoseDate':
       case 'meningococcalSchoolLastDoseDate':
@@ -570,6 +762,10 @@ export class MeningealComponent implements OnInit {
           'From symptom onset up to the hospital admission or case detection date'
         ) + this.rangeText(this.toDateInput(this.patientForm.get('infectionDate')?.value), this.firstFacilityVisitMaxDate);
       case 'followUpDate':
+        if (roundIndex != null && this.followUpRounds.at(roundIndex)?.get('round')?.value === '48h') {
+          return this.label('في نفس يوم أو بعد تاريخ اكتشاف الحالة', 'On or after the case detection date')
+            + this.rangeText(this.followUpMinDate(roundIndex), null);
+        }
         return this.label(
           'بعد مرور مدة المتابعة من تاريخ اكتشاف الحالة، وفي نفس يوم المتابعة السابقة أو بعدها',
           'After the round duration from case detection, on or after the previous follow-up'
@@ -599,12 +795,19 @@ export class MeningealComponent implements OnInit {
 
   private investigationDateErrors(): string[] {
     return [
+      this.investigationDateError,
+      this.travelArrivalDateError,
       this.lastFollowUpDateError,
       this.contactAdmissionDateError,
       this.contactArrivalDateError,
       this.firstFacilityVisitDateError,
       ...this.vaccineDateFields.map((f) => this.vaccineDateError(f)),
-      ...this.followUpRounds.controls.map((_, i) => this.followUpDateError(i)),
+      ...this.followUpRounds.controls.flatMap((_, i) => [
+        this.followUpDateError(i),
+        this.complicationsOccurredError(i),
+        this.complicationDateRequiredError(i),
+        this.complicationsSelectionError(i),
+      ]),
     ].filter((e) => !!e);
   }
 
@@ -651,6 +854,7 @@ export class MeningealComponent implements OnInit {
       round: new FormControl(round),
       followupDone: new FormControl(null),
       followUpDate: new FormControl(null),
+      currentHealthStatus: new FormControl(null),
       complicationsOccurred: new FormControl(null),
       complicationDate: new FormControl(null),
       complications: new FormControl([]),
@@ -1055,6 +1259,7 @@ export class MeningealComponent implements OnInit {
     (payload.followUpRounds ?? []).forEach((round: any) => {
       if (round.followupDone !== 1) {
         round.followUpDate = null;
+        round.currentHealthStatus = null;
         round.complicationsOccurred = null;
       }
       if (round.complicationsOccurred !== 1) {
@@ -1083,6 +1288,20 @@ export class MeningealComponent implements OnInit {
   hasComplication(roundIndex: number, complication: string): boolean {
     const values = (this.followUpRounds.at(roundIndex).get('complications')?.value as string[]) ?? [];
     return values.includes(complication);
+  }
+
+  private readonly collapsedSections = new Set<string>();
+
+  isSectionCollapsed(key: string): boolean {
+    return this.collapsedSections.has(key);
+  }
+
+  toggleSection(key: string): void {
+    if (this.collapsedSections.has(key)) {
+      this.collapsedSections.delete(key);
+    } else {
+      this.collapsedSections.add(key);
+    }
   }
 
   getRoundLabel(round: string): string {

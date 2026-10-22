@@ -311,6 +311,9 @@ export class GeneralDataService {
   updateFromInvestigation(patient: any) {
     return this.APIs.update(this.controllerURL + 'UpdateFromInvestigation', patient);
   }
+  updateClinicalFromInvestigation(data: any) {
+    return this.APIs.update(this.controllerURL + 'UpdateClinicalFromInvestigation', data);
+  }
   updateInvestigation(patient: any) {
     return this.APIs.update(
       this.controllerURL + 'UpdateNotInvetigation',

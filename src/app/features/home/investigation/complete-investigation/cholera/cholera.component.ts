@@ -76,6 +76,7 @@ export class CholeraComponent implements OnInit {
     // bookedIntensiveCare: null,
     // dateAdmissionHospital: null,
 
+    diarrheaCount: null,
     contactSuspectedCase: null,
     contactConfirmedCase: null,
     epidemicOutbreak: null,
