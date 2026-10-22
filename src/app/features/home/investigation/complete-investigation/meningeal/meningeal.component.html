@@ -10,8 +10,25 @@
             [allControllesCount]="allControllesCount">
           </app-investigation-summary>
 
-          <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATA" | translate }}</h3>
           <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-lg-4 inv-field-cell">
+                <label>{{ label('تاريخ الإبلاغ', 'Report Date') }}</label>
+                <input class="form-control" [value]="formatDate(reportDate)" readonly disabled />
+              </div>
+              <div class="col-lg-4 inv-field-cell">
+                <label>{{ label('تاريخ اكتشاف الحالة', 'Case Detection Date') }}</label>
+                <input class="form-control" [value]="formatDate(caseDetectionDate)" readonly disabled />
+              </div>
+              <div class="col-lg-4 inv-field-cell">
+                <label>{{ label('مصدر الإبلاغ', 'Reporting Source') }}</label>
+                <input class="form-control" [value]="incidentSourceName" readonly disabled />
+              </div>
+            </div>
+          </div>
+
+          <h3 class="fs-5 text-success fwb d-flex align-items-center justify-content-between" [attr.dir]="currentLang === 'ar' ? 'rtl' : 'ltr'" role="button" tabindex="0" [attr.aria-expanded]="!isSectionCollapsed('INVESTIGATION_DATA')" (click)="toggleSection('INVESTIGATION_DATA')" (keydown.enter)="toggleSection('INVESTIGATION_DATA')"><span>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATA" | translate }}</span><i class="pi mx-2" [ngClass]="isSectionCollapsed('INVESTIGATION_DATA') ? 'pi-chevron-down' : 'pi-chevron-up'"></i></h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt" [hidden]="isSectionCollapsed('INVESTIGATION_DATA')">
             <div class="row">
               <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DISEASE_TYPE" | translate }}</label>
@@ -22,8 +39,9 @@
               </div>
               <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_DATE" | translate }}</label>
-                <app-date-field class="date-with-note" formControlName="investigationDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="investigationDate" [min]="caseDetectionDate" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('investigationDate') }}</small>
+                <small class="form-text text-danger mess-color d-block" *ngIf="investigationDateError">{{ investigationDateError }}</small>
               </div>
               <div class="col-lg-6 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.INVESTIGATION_ENTRY_DATE" | translate }}</label>
@@ -36,8 +54,8 @@
             </div>
           </div>
 
-          <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA" | translate }}</h3>
-          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+          <h3 class="fs-5 text-success fwb d-flex align-items-center justify-content-between" [attr.dir]="currentLang === 'ar' ? 'rtl' : 'ltr'" role="button" tabindex="0" [attr.aria-expanded]="!isSectionCollapsed('DEMOGRAPHIC_DATA')" (click)="toggleSection('DEMOGRAPHIC_DATA')" (keydown.enter)="toggleSection('DEMOGRAPHIC_DATA')"><span>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DEMOGRAPHIC_DATA" | translate }}</span><i class="pi mx-2" [ngClass]="isSectionCollapsed('DEMOGRAPHIC_DATA') ? 'pi-chevron-down' : 'pi-chevron-up'"></i></h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt" [hidden]="isSectionCollapsed('DEMOGRAPHIC_DATA')">
             <small class="text-muted d-block mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PATIENT_DATA_NOTE" | translate }}</small>
             <div class="row" [formGroup]="patientForm">
               <div class="col-lg-3 inv-field-cell">
@@ -173,14 +191,15 @@
               </div>
               <div class="col-lg-4 inv-field-cell" [appShowIf]="meningealForm.get('traveledAbroad')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.ARRIVAL_DATE" | translate }}</label>
-                <app-date-field class="date-with-note" formControlName="travelArrivalDate" (changed)="calculateCompletionPercentage()"></app-date-field>
+                <app-date-field class="date-with-note" formControlName="travelArrivalDate" [max]="travelArrivalMaxDate" (changed)="calculateCompletionPercentage()"></app-date-field>
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('travelArrivalDate') }}</small>
+                <small class="form-text text-danger mess-color d-block" *ngIf="travelArrivalDateError">{{ travelArrivalDateError }}</small>
               </div>
             </div>
           </div>
 
-          <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA" | translate }}</h3>
-          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+          <h3 class="fs-5 text-success fwb d-flex align-items-center justify-content-between" [attr.dir]="currentLang === 'ar' ? 'rtl' : 'ltr'" role="button" tabindex="0" [attr.aria-expanded]="!isSectionCollapsed('CLINICAL_DATA')" (click)="toggleSection('CLINICAL_DATA')" (keydown.enter)="toggleSection('CLINICAL_DATA')"><span>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA" | translate }}</span><i class="pi mx-2" [ngClass]="isSectionCollapsed('CLINICAL_DATA') ? 'pi-chevron-down' : 'pi-chevron-up'"></i></h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt" [hidden]="isSectionCollapsed('CLINICAL_DATA')">
             <div class="row">
               <div class="col-lg-4 inv-field-cell" [formGroup]="patientForm">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.REPORTING_SOURCE" | translate }}</label>
@@ -214,18 +233,11 @@
                 <small class="form-text text-muted d-block mt-0">{{ dateHint('lastFollowUpDate') }}</small>
                 <small class="form-text text-danger mess-color d-block" *ngIf="lastFollowUpDateError">{{ lastFollowUpDateError }}</small>
               </div>
-              <div class="col-lg-4 mt-2 inv-field-cell">
-                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HEALTH_STATUS" | translate }}</label>
-                <select class="form-control" formControlName="currentHealthStatus" (change)="calculateCompletionPercentage()">
-                  <option [ngValue]="null"></option>
-                  <option *ngFor="let o of currentHealthStatusOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
-                </select>
-              </div>
             </div>
           </div>
 
-          <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS" | translate }}</h3>
-          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+          <h3 class="fs-5 text-success fwb d-flex align-items-center justify-content-between" [attr.dir]="currentLang === 'ar' ? 'rtl' : 'ltr'" role="button" tabindex="0" [attr.aria-expanded]="!isSectionCollapsed('RISK_FACTORS')" (click)="toggleSection('RISK_FACTORS')" (keydown.enter)="toggleSection('RISK_FACTORS')"><span>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.RISK_FACTORS" | translate }}</span><i class="pi mx-2" [ngClass]="isSectionCollapsed('RISK_FACTORS') ? 'pi-chevron-down' : 'pi-chevron-up'"></i></h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt" [hidden]="isSectionCollapsed('RISK_FACTORS')">
             <div class="row">
               <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_WITH_SIMILAR_CASE" | translate }}</label>
@@ -305,8 +317,8 @@
             </div>
           </div>
 
-          <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS" | translate }}</h3>
-          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+          <h3 class="fs-5 text-success fwb d-flex align-items-center justify-content-between" [attr.dir]="currentLang === 'ar' ? 'rtl' : 'ltr'" role="button" tabindex="0" [attr.aria-expanded]="!isSectionCollapsed('VACCINATION_STATUS')" (click)="toggleSection('VACCINATION_STATUS')" (keydown.enter)="toggleSection('VACCINATION_STATUS')"><span>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.VACCINATION_STATUS" | translate }}</span><i class="pi mx-2" [ngClass]="isSectionCollapsed('VACCINATION_STATUS') ? 'pi-chevron-down' : 'pi-chevron-up'"></i></h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt" [hidden]="isSectionCollapsed('VACCINATION_STATUS')">
             <div class="row">
               <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HIB_VACCINATION" | translate }}</label>
@@ -350,8 +362,8 @@
             </div>
           </div>
 
-          <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE" | translate }}</h3>
-          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+          <h3 class="fs-5 text-success fwb d-flex align-items-center justify-content-between" [attr.dir]="currentLang === 'ar' ? 'rtl' : 'ltr'" role="button" tabindex="0" [attr.aria-expanded]="!isSectionCollapsed('HEALTH_SEEKING_TIMELINE')" (click)="toggleSection('HEALTH_SEEKING_TIMELINE')" (keydown.enter)="toggleSection('HEALTH_SEEKING_TIMELINE')"><span>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.HEALTH_SEEKING_TIMELINE" | translate }}</span><i class="pi mx-2" [ngClass]="isSectionCollapsed('HEALTH_SEEKING_TIMELINE') ? 'pi-chevron-down' : 'pi-chevron-up'"></i></h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt" [hidden]="isSectionCollapsed('HEALTH_SEEKING_TIMELINE')">
             <div class="row">
               <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.WENT_TO_HOSPITAL_ON_ONSET" | translate }}</label>
@@ -403,8 +415,8 @@
             </div>
           </div>
 
-          <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CASE_MOVEMENTS" | translate }}</h3>
-          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+          <h3 class="fs-5 text-success fwb d-flex align-items-center justify-content-between" [attr.dir]="currentLang === 'ar' ? 'rtl' : 'ltr'" role="button" tabindex="0" [attr.aria-expanded]="!isSectionCollapsed('CASE_MOVEMENTS')" (click)="toggleSection('CASE_MOVEMENTS')" (keydown.enter)="toggleSection('CASE_MOVEMENTS')"><span>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CASE_MOVEMENTS" | translate }}</span><i class="pi mx-2" [ngClass]="isSectionCollapsed('CASE_MOVEMENTS') ? 'pi-chevron-down' : 'pi-chevron-up'"></i></h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt" [hidden]="isSectionCollapsed('CASE_MOVEMENTS')">
             <div class="row">
               <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.MOVED_BETWEEN_FACILITIES" | translate }}</label>
@@ -423,8 +435,8 @@
             </div>
           </div>
 
-          <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES" | translate }}</h3>
-          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+          <h3 class="fs-5 text-success fwb d-flex align-items-center justify-content-between" [attr.dir]="currentLang === 'ar' ? 'rtl' : 'ltr'" role="button" tabindex="0" [attr.aria-expanded]="!isSectionCollapsed('PREVENTIVE_MEASURES')" (click)="toggleSection('PREVENTIVE_MEASURES')" (keydown.enter)="toggleSection('PREVENTIVE_MEASURES')"><span>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.PREVENTIVE_MEASURES" | translate }}</span><i class="pi mx-2" [ngClass]="isSectionCollapsed('PREVENTIVE_MEASURES') ? 'pi-chevron-down' : 'pi-chevron-up'"></i></h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt" [hidden]="isSectionCollapsed('PREVENTIVE_MEASURES')">
             <div class="row">
               <div class="col-lg-6 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACTS_TRACED_AND_MANAGED" | translate }}</label>
@@ -458,8 +470,8 @@
             </div>
           </div>
 
-          <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP" | translate }}</h3>
-          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+          <h3 class="fs-5 text-success fwb d-flex align-items-center justify-content-between" [attr.dir]="currentLang === 'ar' ? 'rtl' : 'ltr'" role="button" tabindex="0" [attr.aria-expanded]="!isSectionCollapsed('COMPLICATIONS_FOLLOW_UP')" (click)="toggleSection('COMPLICATIONS_FOLLOW_UP')" (keydown.enter)="toggleSection('COMPLICATIONS_FOLLOW_UP')"><span>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP" | translate }}</span><i class="pi mx-2" [ngClass]="isSectionCollapsed('COMPLICATIONS_FOLLOW_UP') ? 'pi-chevron-down' : 'pi-chevron-up'"></i></h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt" [hidden]="isSectionCollapsed('COMPLICATIONS_FOLLOW_UP')">
             <small class="text-muted mb-2">{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP_NOTE" | translate }}</small>
             <div formArrayName="followUpRounds" class="accordion" id="meningealFollowupAccordion">
               <div class="accordion-item" *ngFor="let round of followUpRounds.controls; let i = index" [formGroupName]="i">
@@ -514,6 +526,13 @@
                         <small class="form-text text-muted d-block mt-0">{{ dateHint('complicationDate') }}</small>
                         <small class="form-text text-danger mess-color d-block" *ngIf="complicationDateRequiredError(i)">{{ label('تاريخ حدوث المضاعفات مطلوب', 'Complication date is required') }}</small>
                       </div>
+                      <div class="col-lg-3 inv-field-cell" [appShowIf]="round.get('followupDone')?.value === 1">
+                        <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HEALTH_STATUS" | translate }}</label>
+                        <select class="form-control" formControlName="currentHealthStatus" (change)="calculateCompletionPercentage()">
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let o of currentHealthStatusOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
+                        </select>
+                      </div>
                     </div>
 
                     <div [appShowIf]="round.get('complicationsOccurred')?.value === 1">
@@ -537,6 +556,28 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="fs-5 text-success fwb d-flex align-items-center justify-content-between" [attr.dir]="currentLang === 'ar' ? 'rtl' : 'ltr'" role="button" tabindex="0" [attr.aria-expanded]="!isSectionCollapsed('CASE_SUMMARY')" (click)="toggleSection('CASE_SUMMARY')" (keydown.enter)="toggleSection('CASE_SUMMARY')"><span>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CASE_SUMMARY" | translate }}</span><i class="pi mx-2" [ngClass]="isSectionCollapsed('CASE_SUMMARY') ? 'pi-chevron-down' : 'pi-chevron-up'"></i></h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt" [hidden]="isSectionCollapsed('CASE_SUMMARY')">
+            <div class="row">
+              <div class="col-lg-3 inv-field-cell">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.DISCHARGE_STATUS" | translate }}</label>
+                <input class="form-control" [value]="summaryDischargeStatus" readonly disabled />
+              </div>
+              <div class="col-lg-3 inv-field-cell">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.LAST_FOLLOW_UP_DATE" | translate }}</label>
+                <input class="form-control" [value]="summaryLastFollowUpDate" readonly disabled />
+              </div>
+              <div class="col-lg-3 inv-field-cell">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HEALTH_STATUS" | translate }}</label>
+                <input class="form-control" [value]="summaryHealthStatus" readonly disabled />
+              </div>
+              <div class="col-lg-3 inv-field-cell">
+                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_SUMMARY" | translate }}</label>
+                <textarea rows="2" class="form-control" [value]="summaryComplications" readonly disabled></textarea>
               </div>
             </div>
           </div>

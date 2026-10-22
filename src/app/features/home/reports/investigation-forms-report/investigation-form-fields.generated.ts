@@ -19107,29 +19107,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "currentHealthStatus",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HEALTH_STATUS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CLINICAL_DATA"
-      ],
-      "options": {
-        "1": [
-          "وفاة"
-        ],
-        "2": [
-          "سيئة"
-        ],
-        "3": [
-          "نفس الوضع"
-        ],
-        "4": [
-          "تحسن"
-        ]
-      }
-    },
-    {
       "key": "contactWithSimilarCase",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CONTACT_WITH_SIMILAR_CASE"
@@ -19622,6 +19599,29 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
       ]
+    },
+    {
+      "key": "currentHealthStatus",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.CURRENT_HEALTH_STATUS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.MENINGEAL.COMPLICATIONS_FOLLOW_UP"
+      ],
+      "options": {
+        "1": [
+          "وفاة"
+        ],
+        "2": [
+          "سيئة"
+        ],
+        "3": [
+          "نفس الوضع"
+        ],
+        "4": [
+          "تحسن"
+        ]
+      }
     },
     {
       "key": "otherComplicationsDetails",
