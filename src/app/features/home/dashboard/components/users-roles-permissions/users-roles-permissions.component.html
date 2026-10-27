@@ -8,7 +8,7 @@
     </div>
     <div class="card shadow">
       <div class="card-body">
-        <div class="row">
+        <div class="row role-fields">
           <div class="col-lg-3">
             <div class="form-group">
               <label
@@ -78,7 +78,7 @@
             </div>
           </div>
           <div class="col-lg-3">
-            <label class="col-md-4">
+            <label>
               {{
                 "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ORGANIZATIONS"
                   | translate
@@ -131,7 +131,7 @@
             </div>
           </div>
           <div class="col-lg-3">
-            <label class="col-md-4">
+            <label>
               {{
                 "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.LEVEL"
                   | translate
@@ -206,199 +206,173 @@
               </small>
             </div>
           </div>
-        
-          <div class="col-lg-6 mt-4">
-            <div class="row">
-              <div class="fwb mb-2">
-                {{
-                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.PERMISSIONS"
-                    | translate
-                }}
-              </div>
-              <div class="mb-2">
-                <div class="form-group">
-                  <label for="chkAllSystemPage">
-                    <input
-                      type="checkbox"
-                      (change)="chkAllSystemPageChange($event)"
-                      name="chkAllSystemPage"
-                      id="chkAllSystemPage"
-                    />
-                    {{
-                      "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL"
-                        | translate
-                    }}
-                  </label>
-                </div>
-              </div>
+        </div>
+        <div class="perm-grid">
+          <section class="perm-block">
+            <header class="perm-block-header">
+              <span class="perm-block-title">{{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.PERMISSIONS" | translate
+              }}</span>
+              <label class="perm-select-all" for="chkAllSystemPage">
+                <input
+                  type="checkbox"
+                  (change)="chkAllSystemPageChange($event)"
+                  name="chkAllSystemPage"
+                  id="chkAllSystemPage"
+                />
+                {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL" | translate }}
+              </label>
+            </header>
+            <div class="perm-block-body">
+              <label
+                class="perm-item"
+                *ngFor="let option of systemPages"
+                for="{{ option.name }}"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="option.isSelected"
+                  (change)="chkSystemPageChange($event)"
+                  [value]="option.id"
+                  name="systemPages"
+                  id="{{ option.name }}"
+                />
+                <span>{{ option.name }}</span>
+              </label>
             </div>
-            <div class="card color rounded">
-              <div class="card-body bg-dark-mode shadow-bord">
-                <div class="row fzs">
-                  <div class="col-lg-6 mb-0" *ngFor="let option of systemPages">
-                    <div class="form-group">
-                      <label for="{{ option.name }}">
-                        <input
-                          type="checkbox"
-                          [checked]="option.isSelected"
-                          (change)="chkSystemPageChange($event)"
-                          [value]="option.id"
-                          name="systemPages"
-                          id="{{ option.name }}"
-                        />
-                        {{ option.name }}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          </section>
+          <section class="perm-block" *ngIf="investigationFormPages.length">
+            <header class="perm-block-header">
+              <span class="perm-block-title">{{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.INVESTIGATION_FORMS" | translate
+              }}</span>
+              <label class="perm-select-all" for="chkAllInvestigationFormPage">
+                <input
+                  type="checkbox"
+                  (change)="chkAllSystemPageChange($event, 'investigationFormPages')"
+                  name="chkAllInvestigationFormPage"
+                  id="chkAllInvestigationFormPage"
+                />
+                {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL" | translate }}
+              </label>
+            </header>
+            <div class="perm-block-body">
+              <label
+                class="perm-item"
+                *ngFor="let option of investigationFormPages"
+                for="InvForm{{ option.id }}"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="option.isSelected"
+                  (change)="chkSystemPageChange($event)"
+                  [value]="option.id"
+                  name="investigationFormPages"
+                  id="InvForm{{ option.id }}"
+                />
+                <span>{{ option.name }}</span>
+              </label>
             </div>
-          </div>
-
-          <div class="col-lg-6 mt-4">
-            <div class="row">
-              <div class="mb-2 fwb">
-                {{
-                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.DISEASES"
-                    | translate
-                }}
-              </div>
-              <div class="mb-2">
-                <div class="form-group">
-                  <label for="chkAllDisease">
-                    <input
-                      type="checkbox"
-                      (change)="chkAllDiseaseChange($event)"
-                      name="chkAllDisease"
-                      id="chkAllDisease"
-                    />
-                    {{
-                      "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL"
-                        | translate
-                    }}
-                  </label>
-                </div>
-              </div>
+          </section>
+          <section class="perm-block">
+            <header class="perm-block-header">
+              <span class="perm-block-title">{{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.DISEASES" | translate
+              }}</span>
+              <label class="perm-select-all" for="chkAllDisease">
+                <input
+                  type="checkbox"
+                  (change)="chkAllDiseaseChange($event)"
+                  name="chkAllDisease"
+                  id="chkAllDisease"
+                />
+                {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL" | translate }}
+              </label>
+            </header>
+            <div class="perm-block-body">
+              <label
+                class="perm-item"
+                *ngFor="let option of diseases"
+                for="{{ option.name }}"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="option.isSelected"
+                  (change)="chkDiseaseChange($event)"
+                  [value]="option.id"
+                  name="chkdiseases"
+                  id="{{ option.name }}"
+                />
+                <span>{{ option.name }}</span>
+              </label>
             </div>
-            <div class="card color rounded">
-              <div class="card-body bg-dark-mode shadow-bord">
-                <div class="row fzs">
-                  <div class="col-lg-6" *ngFor="let option of diseases">
-                    <div class="form-group">
-                      <label for="{{ option.name }}">
-                        <input
-                          type="checkbox"
-                          [checked]="option.isSelected"
-                          (change)="chkDiseaseChange($event)"
-                          [value]="option.id"
-                          name="chkdiseases"
-                          id="{{ option.name }}"
-                        />
-                        {{ option.name }}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          </section>
+          <section class="perm-block">
+            <header class="perm-block-header">
+              <span class="perm-block-title">{{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.Ratings" | translate
+              }}</span>
+              <label class="perm-select-all" for="chkAll">
+                <input
+                  type="checkbox"
+                  (change)="chkAllChange($event)"
+                  name="chkAll"
+                  id="chkAll"
+                />
+                {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL" | translate }}
+              </label>
+            </header>
+            <div class="perm-block-body">
+              <label
+                class="perm-item"
+                *ngFor="let option of selectedFieldlist"
+                for="{{ option.name }}"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="option.isSelected"
+                  (change)="chkDiseasefiledChange($event)"
+                  [value]="option.id"
+                  name="chks"
+                  id="{{ option.name }}"
+                />
+                <span>{{ option.name }}</span>
+              </label>
             </div>
-          </div>
-          <div class="col-lg-6 mt-4">
-            <div class="row">
-              <div class="mb-2 fwb">
-                {{
-                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.Ratings"
-                    | translate
-                }}
-              </div>
-              <div class="mb-2">
-                <div class="form-group">
-                  <label for="chkAll">
-                    <input
-                      type="checkbox"
-                      (change)="chkAllChange($event)"
-                      name="chkAll"
-                      id="chkAll"
-                    />
-                    {{
-                      "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL"
-                        | translate
-                    }}
-                  </label>
-                </div>
-              </div>
+          </section>
+          <section class="perm-block">
+            <header class="perm-block-header">
+              <span class="perm-block-title">{{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECTEDSITES" | translate
+              }}</span>
+              <label class="perm-select-all" for="chkAllSelectedDiseases">
+                <input
+                  type="checkbox"
+                  (change)="chkAllSelectedDiseaseChange($event)"
+                  name="chkAllSelectedDiseases"
+                  id="chkAllSelectedDiseases"
+                />
+                {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL" | translate }}
+              </label>
+            </header>
+            <div class="perm-block-body">
+              <label
+                class="perm-item"
+                *ngFor="let option of selectedDiseases"
+                for="Selected{{ option.name }}"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="option.isSelected"
+                  (change)="chkSelectedDiseaseChange($event)"
+                  [value]="option.id"
+                  name="chkSelectedDiseases"
+                  id="Selected{{ option.name }}"
+                />
+                <span>{{ option.name }}</span>
+              </label>
             </div>
-            <div class="card color rounded">
-              <div class="card-body bg-dark-mode shadow-bord">
-                <div class="row fzs">
-                  <div
-                    class="col-lg-6"
-                    *ngFor="let option of selectedFieldlist"
-                  >
-                    <div class="form-group">
-                      <label for="{{ option.name }}">
-                        <input
-                          type="checkbox"
-                          [checked]="option.isSelected"
-                          (change)="chkDiseasefiledChange($event)"
-                          [value]="option.id"
-                          name="chks"
-                          id="{{ option.name }}"
-                        />
-                        {{ option.name }}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 mt-4">
-            <div class="row">
-              <div class="fwb mb-2">
-                {{
-                  "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECTEDSITES"
-                    | translate
-                }}
-              </div>
-              <div class="mb-2">
-                <div class="form-group">
-                  <label for="chkAllSelectedDiseases">
-                    <input
-                      type="checkbox"
-                      (change)="chkAllSelectedDiseaseChange($event)"
-                      name="chkAllSelectedDiseases"
-                      id="chkAllSelectedDiseases"
-                    />
-                    {{
-                      "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL"
-                        | translate
-                    }}
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="card color rounded">
-              <div class="card-body bg-dark-mode shadow-bord">
-                <div class="row fzs">
-                  <div class="col-lg-6" *ngFor="let option of selectedDiseases">
-                    <div class="form-group">
-                      <label for="Selected{{ option.name }}">
-                        <input
-                          type="checkbox"
-                          [checked]="option.isSelected"
-                          (change)="chkSelectedDiseaseChange($event)"
-                          [value]="option.id"
-                          name="chkSelectedDiseases"
-                          id="Selected{{ option.name }}"
-                        />
-                        {{ option.name }}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          </section>
         </div>
         <div class="card-footer text-start">
           <button type="submit" class="btn btn-lg bg text-light">
