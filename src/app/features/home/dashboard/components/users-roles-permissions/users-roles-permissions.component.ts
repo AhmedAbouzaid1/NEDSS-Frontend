@@ -12,6 +12,7 @@ import { DiseaseFormService } from '../disease-special-symptoms/services/disease
 import { Organiztion } from '../../../chat/Models/organiztion';
 import { Result } from 'src/app/features/Result';
 import { finalize } from 'rxjs/operators';
+import { INVESTIGATION_FORM_PAGE_OFFSET } from 'src/app/core/services/page-permission.service';
 
 @Component({
   selector: 'app-users-roles-permissions',
@@ -37,6 +38,7 @@ export class UsersRolesPermissionsComponent {
   diseases!: any[];
   selectedDiseases!: any[];
   systemPages!: any[];
+  investigationFormPages: any[] = [];
   // systemPageIds!: any[];
   systemPageIds: Array<number> = [];
   diseaseIds: Array<number> = [];
@@ -177,7 +179,9 @@ export class UsersRolesPermissionsComponent {
       .subscribe(
         (result: any) => {
           if (result != null && result != undefined) {
-            this.systemPages = result.data;
+            const pages: any[] = result.data ?? [];
+            this.systemPages = pages.filter((p) => p.id < INVESTIGATION_FORM_PAGE_OFFSET);
+            this.investigationFormPages = pages.filter((p) => p.id >= INVESTIGATION_FORM_PAGE_OFFSET);
           }
           this.loadingPanel = false;
         },
@@ -200,35 +204,22 @@ export class UsersRolesPermissionsComponent {
     this.getUsersRolesPermissions();
   }
   valueChecked: HTMLInputElement;
-  chkAllSystemPageChange(e) {
-    let checkbox = document.getElementsByName('systemPages');
-    if (e.target.checked) {
-      if (checkbox != null) {
-        this.systemPageIds = [];
-        for (var i = 0; i < checkbox.length; i++) {
-          this.valueChecked = checkbox[i] as HTMLInputElement;
-          this.valueChecked.checked = true;
-          this.systemPageIds.push(Number(this.valueChecked.value));
-        }
-      }
-    } else {
-      if (checkbox != null) {
-        for (var i = 0; i < checkbox.length; i++) {
-          this.valueChecked = checkbox[i] as HTMLInputElement;
-          this.valueChecked.checked = false;
-          this.systemPageIds = [];
-        }
-      }
+  chkAllSystemPageChange(e, name = 'systemPages') {
+    const checkboxes = document.getElementsByName(name);
+    for (let i = 0; i < checkboxes.length; i++) {
+      const checkbox = checkboxes[i] as HTMLInputElement;
+      const id = Number(checkbox.value);
+      const index = this.systemPageIds.indexOf(id);
+      checkbox.checked = e.target.checked;
+      if (e.target.checked && index < 0) this.systemPageIds.push(id);
+      if (!e.target.checked && index >= 0) this.systemPageIds.splice(index, 1);
     }
-    console.log(this.systemPageIds);
   }
   chkSystemPageChange(e) {
-    if (e.target.checked) this.systemPageIds.push(e.target.value);
-    else
-      this.systemPageIds.splice(
-        this.systemPageIds.indexOf(parseInt(e.target.value)),
-        1
-      );
+    const id = Number(e.target.value);
+    const index = this.systemPageIds.indexOf(id);
+    if (e.target.checked && index < 0) this.systemPageIds.push(id);
+    else if (!e.target.checked && index >= 0) this.systemPageIds.splice(index, 1);
   }
   chkAllDiseaseChange(e) {
     let checkbox = document.getElementsByName('chkdiseases');
@@ -375,7 +366,7 @@ export class UsersRolesPermissionsComponent {
           );
 
         if (result.data.rolePermissions != null)
-          this.systemPageIds = result.data.rolePermissions.map((a) => a.pageId);
+          this.systemPageIds = result.data.rolePermissions.map((a) => Number(a.pageId));
 
         if (result.data.organizationId != null){
           this.selectedOrganizationId = result.data.organizationId;
