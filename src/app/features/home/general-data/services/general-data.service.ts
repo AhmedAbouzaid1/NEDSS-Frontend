@@ -8,6 +8,7 @@ import { ActiveUserService } from 'src/app/core/services/active-user.service';
 import { NationalityEnum } from '../models/nationality-enum';
 import { PatientModel } from '../models/patient-model';
 import { DepartmentEnum } from '../models/department-enum';
+import { normalizeArabicNameChars } from 'src/app/core/shared/utilis/arabic-text';
 
 @Injectable({
   providedIn: 'root',
@@ -1498,8 +1499,7 @@ export class GeneralDataService {
   normalizeNameInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     let value = input.value;
-    value = value.replace(/[\u0623\u0625]/g, '\u0627');
-    value = value.replace(/\u0649/g, '\u064A');
+    value = normalizeArabicNameChars(value);
     value = value.replace(/^\s+/, '');
     if (value !== input.value) {
       input.value = value;
