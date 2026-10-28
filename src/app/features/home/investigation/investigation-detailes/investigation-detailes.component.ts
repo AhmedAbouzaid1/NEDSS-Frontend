@@ -10,6 +10,7 @@ import { PatientModel } from '../../general-data/models/patient-model';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { SingleDropdownSettings } from 'src/app/core/constants';
 import { firstValueFrom } from 'rxjs';
+import { NationalityEnum } from '../../general-data/models/nationality-enum';
 
 @Component({
   selector: 'app-investigation-detailes',
@@ -17,6 +18,7 @@ import { firstValueFrom } from 'rxjs';
   styleUrls: ['./investigation-detailes.component.css'],
 })
 export class InvestigationDetailesComponent implements OnInit, OnDestroy {
+  readonly egyptianNationalityId = NationalityEnum.Egyptian;
   currentId: any;
   data: any = {};
   notFoundForm: FormGroup;

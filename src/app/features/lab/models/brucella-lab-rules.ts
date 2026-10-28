@@ -60,17 +60,14 @@ export function brucellaSecondSerumError(
   secondSampleDate: any,
   otherChecks: BrucellaLabCheckLike[]
 ): string | null {
-  const firstSamples = (otherChecks ?? []).filter((c) => isBrucellaFirstSerum(ids, c));
-  if (!firstSamples.length) {
-    return 'لا يمكن إضافة عينة السيرم (عينة ثانية) قبل إدخال عينة السيرم (عينة أولى) لنفس الحالة';
-  }
-  const titer160Dates = firstSamples
+  const titer160Dates = (otherChecks ?? [])
+    .filter((c) => isBrucellaFirstSerum(ids, c))
     .filter((c) => Number(c.diseaseLabTestResultId) === ids.titer160ResultId)
     .map((c) => toDayKey(c.getSampleDate))
     .filter((d): d is string => !!d)
     .sort();
   if (!titer160Dates.length) {
-    return 'لا يمكن إضافة عينة السيرم (عينة ثانية) إلا إذا كانت نتيجة عينة السيرم (عينة أولى) = 1/160';
+    return null;
   }
   const firstDate = titer160Dates[0];
   const allowedFrom = addDays(firstDate, BRUCELLA_MIN_DAYS_AFTER_FIRST_SERUM);

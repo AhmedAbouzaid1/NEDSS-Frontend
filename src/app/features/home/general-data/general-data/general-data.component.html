@@ -1,9 +1,15 @@
 <app-loader *ngIf="loadingPanel"></app-loader>
-<div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
-  <h2 id="general-data-top" class="titles h5 fw-bold mb-0">
-    {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.PUBLICREPORTING" | translate }}
-  </h2>
-  <div class="d-flex flex-wrap align-items-center gap-2">
+<div class="gd-header">
+  <div class="gd-header__title">
+    <h2 id="general-data-top" class="titles mb-0">
+      {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.PUBLICREPORTING" | translate }}
+    </h2>
+    <span *ngIf="patient?.id != null" class="gd-header__badge">
+      <span class="gd-header__badge-label">{{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.CASE_ID" | translate }}</span>
+      <span class="gd-header__badge-value">{{ patient.id }}</span>
+    </span>
+  </div>
+  <div class="gd-header__actions">
     <button
       type="button"
       *ngIf="patient?.id != null"
@@ -21,121 +27,177 @@
     ></app-not-inferring-modal>
   </div>
 </div>
-<!-- <nav>
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <button
-      class="nav-link active"
-      id="nav-home-tab"
-      data-bs-toggle="tab"
-      data-bs-target="#nav-home"
-      type="button"
-      role="tab"
-      aria-controls="nav-home"
-      aria-selected="true"
-    >
-      Home
-    </button>
-    <button
-      class="nav-link"
-      id="nav-profile-tab"
-      data-bs-toggle="tab"
-      data-bs-target="#nav-profile"
-      type="button"
-      role="tab"
-      aria-controls="nav-profile"
-      aria-selected="false"
-    >
-      Profile
-    </button>
-    <button
-      class="nav-link disabled"
-      id="nav-contact-tab"
-      data-bs-toggle="tab"
-      data-bs-target="#nav-contact"
-      type="button"
-      role="tab"
-      aria-controls="nav-contact"
-      aria-selected="false"
-    >
-      Contact
-    </button>
-  </div>
-</nav> -->
-<!-- <div class="tab-content" id="nav-tabContent">
-  <div
-    class="tab-pane fade show active"
-    id="nav-home"
-    role="tabpanel"
-    aria-labelledby="nav-home-tab"
-  >
-    1
-  </div>
-  <div
-    class="tab-pane fade"
-    id="nav-profile"
-    role="tabpanel"
-    aria-labelledby="nav-profile-tab"
-  >
-    2
-  </div>
-  <div
-    class="tab-pane fade"
-    id="nav-contact"
-    role="tabpanel"
-    aria-labelledby="nav-contact-tab"
-  >
-    3
-  </div>
-</div> -->
+
 <div class="general-data-form w-100" *ngIf="!isLoadingData">
+  <nav class="gd-nav" aria-label="sections">
+    <button
+      type="button"
+      *ngFor="let section of navSections; trackBy: trackSection"
+      class="gd-nav__chip"
+      [class.is-active]="activeSection === section.key"
+      (click)="scrollToSection(section.key)"
+    >
+      <i [class]="'bi ' + section.icon" aria-hidden="true"></i>
+      <span>{{ section.title | translate }}</span>
+    </button>
+  </nav>
+
   <div class="general-data-form__sections w-100">
-    <h5 class="fw-bold mt-3 mb-2">
-      {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.REPORTING_DATA" | translate }}
-    </h5>
-    <app-incident-info></app-incident-info>
+    <section #gdSection id="gd-sec-incident" data-key="incident" class="gd-section" [class.is-collapsed]="collapsedSections['incident']">
+      <header
+        class="gd-section__head"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="!collapsedSections['incident']"
+        (click)="toggleSection('incident')"
+        (keydown.enter)="toggleSection('incident')"
+        (keydown.space)="$event.preventDefault(); toggleSection('incident')"
+      >
+        <span class="gd-section__icon"><i class="bi bi-megaphone" aria-hidden="true"></i></span>
+        <h3 class="gd-section__title">
+          {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.REPORTING_DATA" | translate }}
+        </h3>
+        <i class="bi bi-chevron-down gd-section__chevron" aria-hidden="true"></i>
+      </header>
+      <div class="gd-section__body" [hidden]="collapsedSections['incident']">
+        <app-incident-info></app-incident-info>
+      </div>
+    </section>
 
-    <ng-container *ngIf="sectionsReady[1]">
-      <h5 class="fw-bold mt-4 mb-2">
-        {{ "NEDSS.GENERAL_DATA_SIDEMENU.DEMOGRAPHIC_INFO" | translate }}
-      </h5>
-      <app-demographic-data></app-demographic-data>
-    </ng-container>
+    <section #gdSection *ngIf="sectionsReady[1]" id="gd-sec-demographic" data-key="demographic" class="gd-section" [class.is-collapsed]="collapsedSections['demographic']">
+      <header
+        class="gd-section__head"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="!collapsedSections['demographic']"
+        (click)="toggleSection('demographic')"
+        (keydown.enter)="toggleSection('demographic')"
+        (keydown.space)="$event.preventDefault(); toggleSection('demographic')"
+      >
+        <span class="gd-section__icon"><i class="bi bi-person-vcard" aria-hidden="true"></i></span>
+        <h3 class="gd-section__title">
+          {{ "NEDSS.GENERAL_DATA_SIDEMENU.DEMOGRAPHIC_INFO" | translate }}
+        </h3>
+        <i class="bi bi-chevron-down gd-section__chevron" aria-hidden="true"></i>
+      </header>
+      <div class="gd-section__body" [hidden]="collapsedSections['demographic']">
+        <app-demographic-data></app-demographic-data>
+      </div>
+    </section>
 
-    <ng-container *ngIf="sectionsReady[2]">
-      <h5 class="fw-bold mt-4 mb-2">
-        {{ "NEDSS.GENERAL_DATA_SIDEMENU.RESIDENCEINFO" | translate }}
-      </h5>
-      <app-residence-info></app-residence-info>
-    </ng-container>
+    <section #gdSection *ngIf="sectionsReady[2]" id="gd-sec-residence" data-key="residence" class="gd-section" [class.is-collapsed]="collapsedSections['residence']">
+      <header
+        class="gd-section__head"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="!collapsedSections['residence']"
+        (click)="toggleSection('residence')"
+        (keydown.enter)="toggleSection('residence')"
+        (keydown.space)="$event.preventDefault(); toggleSection('residence')"
+      >
+        <span class="gd-section__icon"><i class="bi bi-geo-alt" aria-hidden="true"></i></span>
+        <h3 class="gd-section__title">
+          {{ "NEDSS.GENERAL_DATA_SIDEMENU.RESIDENCEINFO" | translate }}
+        </h3>
+        <i class="bi bi-chevron-down gd-section__chevron" aria-hidden="true"></i>
+      </header>
+      <div class="gd-section__body" [hidden]="collapsedSections['residence']">
+        <app-residence-info></app-residence-info>
+      </div>
+    </section>
 
     <ng-container *ngIf="sectionsReady[3]">
-      <h5 class="fw-bold mt-4 mb-2">
-        {{ "NEDSS.GENERAL_DATA_SIDEMENU.DIAGNOISTICIFO" | translate }}
-      </h5>
-      <app-diagonistics></app-diagonistics>
+      <section #gdSection id="gd-sec-diagnostics" data-key="diagnostics" class="gd-section" [class.is-collapsed]="collapsedSections['diagnostics']">
+        <header
+        class="gd-section__head"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="!collapsedSections['diagnostics']"
+        (click)="toggleSection('diagnostics')"
+        (keydown.enter)="toggleSection('diagnostics')"
+        (keydown.space)="$event.preventDefault(); toggleSection('diagnostics')"
+      >
+          <span class="gd-section__icon"><i class="bi bi-clipboard2-pulse" aria-hidden="true"></i></span>
+          <h3 class="gd-section__title">
+            {{ "NEDSS.GENERAL_DATA_SIDEMENU.DIAGNOISTICIFO" | translate }}
+          </h3>
+          <i class="bi bi-chevron-down gd-section__chevron" aria-hidden="true"></i>
+      </header>
+        <div class="gd-section__body" [hidden]="collapsedSections['diagnostics']">
+          <app-diagonistics></app-diagonistics>
+        </div>
+      </section>
 
-      <h5 class="fw-bold mt-4 mb-2">
-        {{ "NEDSS.GENERAL_DATA_SIDEMENU.CLINICALSYMPTOMS" | translate }}
-      </h5>
-      <app-clinical-symptoms></app-clinical-symptoms>
+      <section #gdSection id="gd-sec-clinical" data-key="clinical" class="gd-section" [class.is-collapsed]="collapsedSections['clinical']">
+        <header
+        class="gd-section__head"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="!collapsedSections['clinical']"
+        (click)="toggleSection('clinical')"
+        (keydown.enter)="toggleSection('clinical')"
+        (keydown.space)="$event.preventDefault(); toggleSection('clinical')"
+      >
+          <span class="gd-section__icon"><i class="bi bi-thermometer-half" aria-hidden="true"></i></span>
+          <h3 class="gd-section__title">
+            {{ "NEDSS.GENERAL_DATA_SIDEMENU.CLINICALSYMPTOMS" | translate }}
+          </h3>
+          <i class="bi bi-chevron-down gd-section__chevron" aria-hidden="true"></i>
+      </header>
+        <div class="gd-section__body" [hidden]="collapsedSections['clinical']">
+          <app-clinical-symptoms></app-clinical-symptoms>
+        </div>
+      </section>
     </ng-container>
 
-    <ng-container *ngIf="sectionsReady[4] && patient.fields?.length">
-      <h5 class="fw-bold mt-4 mb-2">
-        {{ "NEDSS.GENERAL_DATA_SIDEMENU.SPECIALSYMTOMS" | translate }}
-      </h5>
-      <app-special-symptoms></app-special-symptoms>
-    </ng-container>
+    <section #gdSection *ngIf="sectionsReady[4] && patient.fields?.length" id="gd-sec-special" data-key="special" class="gd-section" [class.is-collapsed]="collapsedSections['special']">
+      <header
+        class="gd-section__head"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="!collapsedSections['special']"
+        (click)="toggleSection('special')"
+        (keydown.enter)="toggleSection('special')"
+        (keydown.space)="$event.preventDefault(); toggleSection('special')"
+      >
+        <span class="gd-section__icon"><i class="bi bi-list-check" aria-hidden="true"></i></span>
+        <h3 class="gd-section__title">
+          {{ "NEDSS.GENERAL_DATA_SIDEMENU.SPECIALSYMTOMS" | translate }}
+        </h3>
+        <i class="bi bi-chevron-down gd-section__chevron" aria-hidden="true"></i>
+      </header>
+      <div class="gd-section__body" [hidden]="collapsedSections['special']">
+        <app-special-symptoms></app-special-symptoms>
+      </div>
+    </section>
 
-    <ng-container *ngIf="sectionsReady[4] && sharedDataService.ShowSentinel">
-      <h5 class="fw-bold mt-4 mb-2">
-        {{ "NEDSS.GENERAL_DATA_SIDEMENU.SENTINEL" | translate }}
-      </h5>
-      <app-sentinel></app-sentinel>
-    </ng-container>
+    <section #gdSection *ngIf="sectionsReady[4] && sharedDataService.ShowSentinel" id="gd-sec-sentinel" data-key="sentinel" class="gd-section" [class.is-collapsed]="collapsedSections['sentinel']">
+      <header
+        class="gd-section__head"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="!collapsedSections['sentinel']"
+        (click)="toggleSection('sentinel')"
+        (keydown.enter)="toggleSection('sentinel')"
+        (keydown.space)="$event.preventDefault(); toggleSection('sentinel')"
+      >
+        <span class="gd-section__icon"><i class="bi bi-broadcast" aria-hidden="true"></i></span>
+        <h3 class="gd-section__title">
+          {{ "NEDSS.GENERAL_DATA_SIDEMENU.SENTINEL" | translate }}
+        </h3>
+        <i class="bi bi-chevron-down gd-section__chevron" aria-hidden="true"></i>
+      </header>
+      <div class="gd-section__body" [hidden]="collapsedSections['sentinel']">
+        <app-sentinel></app-sentinel>
+      </div>
+    </section>
   </div>
-  <div class="save-button-bar w-100">
+
+  <div class="save-button-bar w-100" *ngIf="sectionsReady[4]">
     <div class="save-button-bar__inner">
+      <span class="save-button-bar__hint">
+        {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.REQUIRED_LEGEND" | translate }}
+      </span>
       <button
         type="submit"
         tabindex="0"

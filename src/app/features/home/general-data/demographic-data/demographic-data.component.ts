@@ -27,6 +27,7 @@ import { NationalityEnum } from '../models/nationality-enum';
 import { DepartmentEnum } from '../models/department-enum';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { isConscriptOrPrisonerCategory } from '../models/job-category';
 
 @Component({
   selector: 'app-demographic-data',
@@ -240,8 +241,9 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
 
       this.isOthers = this.selectedJobCategoryId == 4 ? true : false;
 
-      this.isConscriptOrPrisoner =
-        this.selectedJobCategoryId == 6 || this.selectedJobCategoryId == 7;
+      this.isConscriptOrPrisoner = isConscriptOrPrisonerCategory(
+        this.jobCategories?.find((c) => c.id == this.selectedJobCategoryId)
+      );
       if (this.isConscriptOrPrisoner) {
         this.patient.patientJobId = null;
         this.selectedJobId = -1;
@@ -345,7 +347,7 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
 
   disableFieldsDueToNationalId(): boolean {
     return (
-      this.patient.nationalityId == 1 &&
+      this.patient.nationalityId == NationalityEnum.Egyptian &&
       this.patient.relationShipDegreeId == 0 &&
       this.patient.incidentDepartmentId == 1 &&
       this.generalDataService.validateEmptyField(this.patient.nationalId) &&

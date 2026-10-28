@@ -8,6 +8,7 @@ import { MultipleDropdownSettings, SingleDropdownSettings } from 'src/app/core/c
 import { FormGroup } from '@angular/forms';
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
 import { ExportService } from '../../../../../core/services/export.service';
+import { NationalityEnum } from '../../../general-data/models/nationality-enum';
 
 @Component({
   selector: 'app-reported-cases',
@@ -40,7 +41,7 @@ export class ReportedCasesComponent {
     startDate: null,
     endDate: null,
     "fullName": "",
-    "nationalityId": 1,
+    "nationalityId": NationalityEnum.Egyptian,
     "nationalId": null,
     "passportNo": null,
     "relativeTypeId": null,

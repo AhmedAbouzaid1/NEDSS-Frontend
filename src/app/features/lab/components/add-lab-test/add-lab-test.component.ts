@@ -92,10 +92,10 @@ export class AddLabTestComponent {
   readonly feverRashDiseaseGroupId = 5;
   readonly multiResultDiseaseGroupIds = [1, 19, 25, 27];
   readonly malariaDiseaseGroupId = 11;
-  readonly malariaBloodFilm = { sampleId: 1, labTestId: 11 };
+  readonly malariaBloodFilm = { sample: ['blood', 'الدم'], labTest: ['blood film', 'شريحة دم'] };
   readonly malariaMultiResultSampleTests = [
     this.malariaBloodFilm,
-    { sampleId: 16, labTestId: 124 },
+    { sample: ['serum', 'السيرم'], labTest: ['serology (rdt)', 'سيرولوجى (الاختبار السريع)'] },
   ];
 
   underDeleting = {
@@ -276,11 +276,19 @@ export class AddLabTestComponent {
     return this.isMalariaSampleTestSelected(this.malariaBloodFilm);
   }
 
-  private isMalariaSampleTestSelected(x: { sampleId: number; labTestId: number }): boolean {
+  private isMalariaSampleTestSelected(x: { sample: string[]; labTest: string[] }): boolean {
+    const sample = this.checkSamples?.find((item) => item.id == this.selectedCheckSample);
+    const labTest = this.labChecks?.find((item) => item.id == this.selectedLabCheck);
     return (
       Number(this.patientAddCheck.diseaseGroupId) === this.malariaDiseaseGroupId &&
-      x.sampleId === Number(this.selectedCheckSample) &&
-      x.labTestId === Number(this.selectedLabCheck)
+      this.lookupNameIn(sample, x.sample) &&
+      this.lookupNameIn(labTest, x.labTest)
+    );
+  }
+
+  private lookupNameIn(item: any, names: string[]): boolean {
+    return [item?.englishName, item?.arabicName].some(
+      (value) => value != null && names.includes(String(value).trim().toLowerCase())
     );
   }
 

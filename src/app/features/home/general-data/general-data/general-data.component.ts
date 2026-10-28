@@ -1,6 +1,6 @@
 import { InvestigationService } from './../../investigation/services/investigation.service';
 import { GeneralDataService } from './../services/general-data.service';
-import { Component, ElementRef, HostListener, Input, NgZone, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, NgZone, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { SharedDataService } from '../services/shared-data.service';
@@ -20,7 +20,7 @@ import { PagePermissionService } from 'src/app/core/services/page-permission.ser
   templateUrl: './general-data.component.html',
   styleUrls: ['./general-data.component.css']
 })
-export class GeneralDataComponent implements OnDestroy {
+export class GeneralDataComponent implements AfterViewInit, OnDestroy {
   @Input() finalTab2: boolean;
   loadingPanel: boolean = false;
   patient: PatientModel = new PatientModel();
@@ -40,6 +40,13 @@ export class GeneralDataComponent implements OnDestroy {
   canEnterLabSample = false;
   canFillInvestigation = false;
   canEnterAnotherPatient = false;
+
+  @ViewChildren('gdSection') sectionEls: QueryList<ElementRef<HTMLElement>>;
+  activeSection = 'incident';
+  collapsedSections: Record<string, boolean> = {};
+  private sectionTrackingPausedUntil = 0;
+  private scrollContainer: HTMLElement | Window | null = null;
+  private scrollFrame = 0;
 
   constructor(
     private generalDataService: GeneralDataService,
@@ -105,6 +112,87 @@ export class GeneralDataComponent implements OnDestroy {
       });
   }
 
+  get navSections(): { key: string; icon: string; title: string }[] {
+    const ready = this.sectionsReady;
+    return [
+      { key: 'incident', icon: 'bi-megaphone', title: 'NEDSS.HOME.GENERAL_DATA_COMPLETION.REPORTING_DATA', show: true },
+      { key: 'demographic', icon: 'bi-person-vcard', title: 'NEDSS.GENERAL_DATA_SIDEMENU.DEMOGRAPHIC_INFO', show: ready[1] },
+      { key: 'residence', icon: 'bi-geo-alt', title: 'NEDSS.GENERAL_DATA_SIDEMENU.RESIDENCEINFO', show: ready[2] },
+      { key: 'diagnostics', icon: 'bi-clipboard2-pulse', title: 'NEDSS.GENERAL_DATA_SIDEMENU.DIAGNOISTICIFO', show: ready[3] },
+      { key: 'clinical', icon: 'bi-thermometer-half', title: 'NEDSS.GENERAL_DATA_SIDEMENU.CLINICALSYMPTOMS', show: ready[3] },
+      { key: 'special', icon: 'bi-list-check', title: 'NEDSS.GENERAL_DATA_SIDEMENU.SPECIALSYMTOMS', show: ready[4] && !!this.patient?.fields?.length },
+      { key: 'sentinel', icon: 'bi-broadcast', title: 'NEDSS.GENERAL_DATA_SIDEMENU.SENTINEL', show: ready[4] && !!this.sharedDataService.ShowSentinel },
+    ].filter(section => section.show);
+  }
+
+  trackSection = (_: number, section: { key: string }) => section.key;
+
+  toggleSection(key: string): void {
+    this.collapsedSections[key] = !this.collapsedSections[key];
+  }
+
+  scrollToSection(key: string): void {
+    this.collapsedSections[key] = false;
+    this.setActiveSection(key);
+    this.sectionTrackingPausedUntil = Date.now() + 1000;
+    const host = this.hostRef?.nativeElement as HTMLElement;
+    host?.querySelector(`#gd-sec-${key}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  private setActiveSection(key: string): void {
+    this.activeSection = key;
+    setTimeout(() => {
+      const nav = (this.hostRef?.nativeElement as HTMLElement)?.querySelector('.gd-nav') as HTMLElement | null;
+      const chip = nav?.querySelector('.gd-nav__chip.is-active') as HTMLElement | null;
+      if (!nav || !chip) return;
+      const navRect = nav.getBoundingClientRect();
+      const chipRect = chip.getBoundingClientRect();
+      if (chipRect.left < navRect.left) {
+        nav.scrollBy({ left: chipRect.left - navRect.left - 8 });
+      } else if (chipRect.right > navRect.right) {
+        nav.scrollBy({ left: chipRect.right - navRect.right + 8 });
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    const host = this.hostRef?.nativeElement as HTMLElement;
+    this.scrollContainer = (host?.closest('.rout-layout') as HTMLElement) || window;
+    this.ngZone.runOutsideAngular(() => {
+      this.scrollContainer!.addEventListener('scroll', this.onContainerScroll, { passive: true });
+    });
+  }
+
+  private onContainerScroll = (): void => {
+    if (this.scrollFrame) return;
+    this.scrollFrame = requestAnimationFrame(() => {
+      this.scrollFrame = 0;
+      if (Date.now() < this.sectionTrackingPausedUntil) return;
+      const key = this.findCurrentSection();
+      if (key && key !== this.activeSection) {
+        this.ngZone.run(() => this.setActiveSection(key));
+      }
+    });
+  };
+
+  private findCurrentSection(): string | null {
+    const sections = this.sectionEls?.map(el => el.nativeElement) ?? [];
+    if (!sections.length) return null;
+    const container = this.scrollContainer;
+    const isWindow = container === window;
+    const el = isWindow ? document.documentElement : (container as HTMLElement);
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 4) {
+      return sections[sections.length - 1].dataset['key'] ?? null;
+    }
+    const containerTop = isWindow ? 0 : el.getBoundingClientRect().top;
+    const threshold = containerTop + 120;
+    let current = sections[0];
+    for (const section of sections) {
+      if (section.getBoundingClientRect().top <= threshold) current = section;
+    }
+    return current.dataset['key'] ?? null;
+  }
+
   private revealSections(): void {
     this.sectionsReady = [true, false, false, false, false];
     this.ngZone.runOutsideAngular(() => {
@@ -140,6 +228,16 @@ export class GeneralDataComponent implements OnDestroy {
   }
 
   private scrollToFirstError(): void {
+    setTimeout(() => {
+      const host = this.hostRef?.nativeElement as HTMLElement;
+      if (!host) return;
+      host.querySelectorAll<HTMLElement>('.gd-section').forEach(section => {
+        const key = section.dataset['key'];
+        if (key && this.collapsedSections[key] && section.querySelector('.form-text.text-danger')) {
+          this.collapsedSections[key] = false;
+        }
+      });
+    }, 100);
     if (!this.isMobileView()) return;
     setTimeout(() => {
       const host = this.hostRef?.nativeElement as HTMLElement;
@@ -788,6 +886,8 @@ export class GeneralDataComponent implements OnDestroy {
     return true;
   }
   ngOnDestroy(): void {
+    this.scrollContainer?.removeEventListener('scroll', this.onContainerScroll);
+    if (this.scrollFrame) cancelAnimationFrame(this.scrollFrame);
     this.patientObjectSub?.unsubscribe();
     this.sharedDataService.duplicateNationalIdMatchCount = 0;
     this.sharedDataService.setPatientObject(new PatientModel());
