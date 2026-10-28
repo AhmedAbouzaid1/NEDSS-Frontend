@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { LookupsGetterService } from './../../../../../../core/services/lookups-getter.service';
 import { UserMessageService } from './../../../../../../core/services/user.message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +17,7 @@ import { SortOrder } from 'src/app/core/constants';
   styleUrls: ['./government.component.css']
 })
 export class GovernmentComponent implements OnInit {
+  @ViewChild('governmentForm') governmentForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -166,6 +169,7 @@ export class GovernmentComponent implements OnInit {
             this.userMsg.success(res);
           });
           this.getGovernments();
+          resetFormState(this.governmentForm);
           this.government = { id: null, code: null, arabicName: null, englishName: null, isParent: false, parentId: null, };
         }
       }, (error) => {
@@ -252,6 +256,7 @@ export class GovernmentComponent implements OnInit {
           this.userMsg.success(res);
         });
         this.getGovernments();
+        resetFormState(this.governmentForm);
         this.government = { id: null, code: null, arabicName: null, englishName: null, isParent: false, parentId: null, };
       }
     }, (error) => {

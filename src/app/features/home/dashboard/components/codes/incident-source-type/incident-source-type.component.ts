@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
@@ -13,6 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./incident-source-type.component.css']
 })
 export class IncidentSourceTypeComponent {
+  @ViewChild('incidentSourceTypeForm') incidentSourceTypeForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -148,6 +151,7 @@ export class IncidentSourceTypeComponent {
                 this.userMsg.success(res);
               });
             this.getIncidentSourceHospitalTypes();
+            resetFormState(this.incidentSourceTypeForm);
             this.incidentSourceType = {
               id: null,
               code: null,
@@ -231,6 +235,7 @@ export class IncidentSourceTypeComponent {
               this.userMsg.success(res);
             });
           this.getIncidentSourceHospitalTypes();
+          resetFormState(this.incidentSourceTypeForm);
           this.incidentSourceType = {
             id: null,
             code: null,

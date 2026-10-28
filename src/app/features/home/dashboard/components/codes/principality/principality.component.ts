@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { LookupsGetterService } from './../../../../../../core/services/lookups-getter.service';
 import { UserMessageService } from './../../../../../../core/services/user.message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +17,7 @@ import { SortOrder } from 'src/app/core/constants';
   styleUrls: ['./principality.component.css'],
 })
 export class PrincipalityComponent {
+  @ViewChild('principalityForm') principalityForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -264,6 +267,7 @@ export class PrincipalityComponent {
               this.userMsg.success(res);
             });
             this.getPrincipalitys();
+            resetFormState(this.principalityForm);
             this.principality = {
               id: null,
               code: null,
@@ -391,6 +395,7 @@ export class PrincipalityComponent {
             this.userMsg.success(res);
           });
           this.getPrincipalitys();
+          resetFormState(this.principalityForm);
           this.principality = {
             id: null,
             code: null,

@@ -85,6 +85,11 @@ export class LabService {
       PatientLabCheck
     );
   }
+  getBrucellaSerumIds() {
+    return this.APIs.get(
+      this.PatientLabCheckControllerURL + 'GetBrucellaSerumIds'
+    );
+  }
   addPatientLabCheck(PatientLabCheck: any) {
     return this.APIs.post(
       this.PatientLabCheckControllerURL + 'Add',

@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
@@ -13,6 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./organization.component.css']
 })
 export class OrganizationComponent implements OnInit {
+  @ViewChild('organizationForm') organizationForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -156,6 +159,7 @@ export class OrganizationComponent implements OnInit {
             this.userMsg.success(res);
           });
           this.getOrganizations();
+          resetFormState(this.organizationForm);
           this.organization = { id: null, code: null, arabicName: null, englishName: null };
         }
       }, (error) => {
@@ -241,6 +245,7 @@ export class OrganizationComponent implements OnInit {
           this.userMsg.success(res);
         });
         this.getOrganizations();
+        resetFormState(this.organizationForm);
         this.organization = { id: null, code: null, arabicName: null, englishName: null };
       }
     }, (error) => {

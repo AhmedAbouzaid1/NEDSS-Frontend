@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { LookupsGetterService } from './../../../../../../core/services/lookups-getter.service';
 import { UserMessageService } from './../../../../../../core/services/user.message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +17,7 @@ import { SortOrder } from 'src/app/core/constants';
   styleUrls: ['./city.component.css'],
 })
 export class CityComponent {
+  @ViewChild('cityForm') cityForm: NgForm;
   currentLang =
     localStorage.getItem('ls.currentLang') !== undefined &&
       localStorage.getItem('ls.currentLang') !== 'undefined'
@@ -173,6 +176,7 @@ export class CityComponent {
                 this.userMsg.success(res);
               });
             this.getCitys();
+            resetFormState(this.cityForm);
             this.city = {
               id: null,
               code: null,
@@ -250,6 +254,7 @@ export class CityComponent {
               this.userMsg.success(res);
             });
           this.getCitys();
+          resetFormState(this.cityForm);
           this.city = {
             id: null,
             code: null,

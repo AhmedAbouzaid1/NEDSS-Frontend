@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
@@ -13,6 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./nationality.component.css'],
 })
 export class NationalityComponent {
+  @ViewChild('nationalityForm') nationalityForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -146,6 +149,7 @@ export class NationalityComponent {
                 this.userMsg.success(res);
               });
             this.getNationalitys();
+            resetFormState(this.nationalityForm);
             this.nationality = {
               id: null,
               code: null,
@@ -262,6 +266,7 @@ export class NationalityComponent {
               this.userMsg.success(res);
             });
           this.getNationalitys();
+          resetFormState(this.nationalityForm);
           this.nationality = {
             id: null,
             code: null,

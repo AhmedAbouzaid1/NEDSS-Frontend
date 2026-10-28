@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { LookupsGetterService } from './../../../../../../core/services/lookups-getter.service';
 import { UserMessageService } from './../../../../../../core/services/user.message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +17,7 @@ import { SortOrder } from 'src/app/core/constants';
   styleUrls: ['./health-office.component.css'],
 })
 export class HealthOfficeComponent {
+  @ViewChild('healthOfficeForm') healthOfficeForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -161,6 +164,7 @@ export class HealthOfficeComponent {
                 this.userMsg.success(res);
               });
             this.getHealthOffices();
+            resetFormState(this.healthOfficeForm);
             this.healthOffice = {
               id: null,
               code: null,
@@ -200,6 +204,7 @@ export class HealthOfficeComponent {
               this.userMsg.success(res);
             });
           this.getHealthOffices();
+          resetFormState(this.healthOfficeForm);
           this.healthOffice = {
             id: null,
             code: null,

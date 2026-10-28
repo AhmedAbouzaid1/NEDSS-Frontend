@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { LookupsGetterService } from './../../../../../../core/services/lookups-getter.service';
 import { UserMessageService } from './../../../../../../core/services/user.message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +17,7 @@ import { SortOrder } from 'src/app/core/constants';
   styleUrls: ['./device-category.component.css'],
 })
 export class DeviceCategoryComponent {
+  @ViewChild('deviceCategoryForm') deviceCategoryForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -149,6 +152,7 @@ export class DeviceCategoryComponent {
                   this.userMsg.success(res);
                 });
               this.getDeviceCategorys();
+              resetFormState(this.deviceCategoryForm);
               this.deviceCategory = {
                 id: null,
                 code: null,
@@ -252,6 +256,7 @@ export class DeviceCategoryComponent {
                 this.userMsg.success(res);
               });
             this.getDeviceCategorys();
+            resetFormState(this.deviceCategoryForm);
             this.deviceCategory = {
               id: null,
               code: null,

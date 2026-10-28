@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { LookupsGetterService } from './../../../../../../core/services/lookups-getter.service';
 import { UserMessageService } from './../../../../../../core/services/user.message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +17,7 @@ import { SortOrder } from 'src/app/core/constants';
   styleUrls: ['./disease-category.component.css'],
 })
 export class DiseaseCategoryComponent {
+  @ViewChild('diseaseCategoryForm') diseaseCategoryForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -148,6 +151,7 @@ export class DiseaseCategoryComponent {
                   this.userMsg.success(res);
                 });
               this.getDiseaseCategorys();
+              resetFormState(this.diseaseCategoryForm);
               this.diseaseCategory = {
                 id: null,
                 code: null,
@@ -268,6 +272,7 @@ export class DiseaseCategoryComponent {
                 this.userMsg.success(res);
               });
             this.getDiseaseCategorys();
+            resetFormState(this.diseaseCategoryForm);
             this.diseaseCategory = {
               id: null,
               code: null,

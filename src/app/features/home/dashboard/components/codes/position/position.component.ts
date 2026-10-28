@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
@@ -13,6 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./position.component.css']
 })
 export class PositionComponent {
+  @ViewChild('positionForm') positionForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -145,6 +148,7 @@ export class PositionComponent {
                 this.userMsg.success(res);
               });
             this.getPositions();
+            resetFormState(this.positionForm);
             this.position = {
               id: null,
               code: null,
@@ -262,6 +266,7 @@ export class PositionComponent {
               this.userMsg.success(res);
             });
           this.getPositions();
+          resetFormState(this.positionForm);
           this.position = {
             id: null,
             code: null,

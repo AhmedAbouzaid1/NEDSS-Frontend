@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { LookupsGetterService } from './../../../../../../core/services/lookups-getter.service';
 import { UserMessageService } from './../../../../../../core/services/user.message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +17,7 @@ import { SortOrder } from 'src/app/core/constants';
   styleUrls: ['./lab-places.component.css'],
 })
 export class LabPlacesComponent {
+  @ViewChild('labPlaceForm') labPlaceForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -138,6 +141,7 @@ export class LabPlacesComponent {
                 this.userMsg.success(res);
               });
             this.getLabPlaces();
+            resetFormState(this.labPlaceForm);
             this.labPlace = {
               id: null,
               code: null,
@@ -255,6 +259,7 @@ export class LabPlacesComponent {
               this.userMsg.success(res);
             });
           this.getLabPlaces();
+          resetFormState(this.labPlaceForm);
           this.labPlace = {
             id: null,
             code: null,
