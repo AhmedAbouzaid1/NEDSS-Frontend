@@ -31,6 +31,11 @@ export class HepatitisVirusesComponent implements OnInit {
     { id: 1, arabicName: 'لا', englishName: 'No' },
     { id: 2, arabicName: 'غير معروف', englishName: 'Unknown' },
   ];
+  readonly hepatitisTypeOptions = [
+    { id: 1, arabicName: 'الإلتهاب الكبدى A او E' },
+    { id: 2, arabicName: 'الإلتهاب الكبدى B او C او D' },
+  ];
+  hepatitisTypeTouched = false;
 
   currentLang =
     localStorage.getItem('ls.currentLang') !== undefined &&
@@ -63,6 +68,7 @@ export class HepatitisVirusesComponent implements OnInit {
   hepatitisVirusesData = {
     id: null,
     patientID: null,
+    hepatitisTypes: [] as number[],
     patientHospitalized: null,
     bookedIntensiveCare: null,
     dateAdmissionHospital: null,
@@ -399,6 +405,7 @@ export class HepatitisVirusesComponent implements OnInit {
         if (v != null) {
 
           this.hepatitisVirusesData = v;
+          this.hepatitisVirusesData.hepatitisTypes = this.parseHepatitisTypes(v.hepatitisTypes);
 
           console.log("hepatitisVirusesData", this.hepatitisVirusesData )
           this.hepatitisVirusesData.dateAdmissionHospital =
@@ -461,7 +468,23 @@ export class HepatitisVirusesComponent implements OnInit {
     );
   }
 
+  hasHepatitisType(id: number): boolean {
+    return (this.hepatitisVirusesData.hepatitisTypes || []).includes(id);
+  }
+
+  private parseHepatitisTypes(value: any): number[] {
+    if (value === null || value === undefined || value === '') {
+      return [];
+    }
+    return String(value).split(',').map((code) => Number(code.trim())).filter((code) => !Number.isNaN(code));
+  }
+
   save() {
+    this.hepatitisTypeTouched = true;
+    if (!this.hepatitisVirusesData.hepatitisTypes?.length) {
+      this.userMsg.error('يجب اختيار نوع الالتهاب الكبدى');
+      return;
+    }
     this.calculateCompletionPercentage();
     this.hepatitisVirusesData.investigationCompletePercentage = parseFloat(((this.allFilledControlsCount / this.allControllesCount) * 100).toFixed(2));
     this.hepatitisVirusesData.diseaseGroupId = this.investigationService.diseaseGroupID;
@@ -470,7 +493,7 @@ export class HepatitisVirusesComponent implements OnInit {
       this.hepatitisVirusesData.id != null
     ) {
       this.investigationService
-        .updatehepatitis(this.hepatitisVirusesData)
+        .updatehepatitis(this.buildSavePayload())
         .subscribe(
           (response: any) => {
             if (response) {
@@ -486,7 +509,7 @@ export class HepatitisVirusesComponent implements OnInit {
         );
     } else {
       this.investigationService
-        .addInvestigationhepatitis(this.hepatitisVirusesData)
+        .addInvestigationhepatitis(this.buildSavePayload())
         .subscribe(
           (response: any) => {
             if (response) {
@@ -503,6 +526,13 @@ export class HepatitisVirusesComponent implements OnInit {
     }
   }
 
+  private buildSavePayload(): any {
+    return {
+      ...this.hepatitisVirusesData,
+      hepatitisTypes: [...this.hepatitisVirusesData.hepatitisTypes].sort().join(','),
+    };
+  }
+
   //BL
   calculateCompletionPercentage() {
     this.allFilledControlsCount = 0;
@@ -515,7 +545,7 @@ export class HepatitisVirusesComponent implements OnInit {
     this.allControllesCount = totalFields;
 
     Object.keys(data).forEach((key) => {
-        if (!excludedFields.includes(key) && data[key] !== null && data[key] !== '') {
+        if (!excludedFields.includes(key) && data[key] !== null && data[key] !== '' && !(Array.isArray(data[key]) && !data[key].length)) {
             this.allFilledControlsCount++;
         }
     });

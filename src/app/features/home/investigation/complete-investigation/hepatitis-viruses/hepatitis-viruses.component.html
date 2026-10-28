@@ -27,6 +27,20 @@
               <!-- /.col-lg-4 -->
               <div class="col-lg-4 inv-field-cell">
                 <div class="form-group">
+                  <label for="hepatitisTypes">نوع الالتهاب الكبدى <span class="text-danger">*</span></label>
+                  <p-multiSelect inputId="hepatitisTypes" name="hepatitisTypes" [options]="hepatitisTypeOptions"
+                    optionLabel="arabicName" optionValue="id" [(ngModel)]="hepatitisVirusesData.hepatitisTypes"
+                    [style]="{ width: '100%' }" [showToggleAll]="false" [filter]="false" appendTo="body"
+                    [styleClass]="currentLang === 'ar' ? 'ms-rtl' : ''" [panelStyleClass]="currentLang === 'ar' ? 'ms-rtl' : ''"
+                    placeholder="اختر نوع الالتهاب الكبدى" (onChange)="calculateCompletionPercentage()">
+                  </p-multiSelect>
+                  <small class="text-danger" *ngIf="hepatitisTypeTouched && !hepatitisVirusesData.hepatitisTypes?.length">
+                    يجب اختيار نوع الالتهاب الكبدى
+                  </small>
+                </div>
+              </div>
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
                   <label for="">هل تم حجز المريض بالمستشفى</label>
                   <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.patientHospitalized"
                     (blur)="calculateCompletionPercentage()">
@@ -146,7 +160,7 @@
           <!-- / .row -->
         </div>
 
-        <div class="row color">
+        <div class="row color" [appShowIf]="hasHepatitisType(1)">
           <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
               <div class="col-12 title fs-6 fwb">
@@ -256,6 +270,655 @@
                 </div>
               </div>
               <!-- /.col-lg-12 -->
+            </div>
+            <!-- / .row -->
+          </div>
+          <!-- / .col-12 -->
+        </div>
+
+        <div class="row color" [appShowIf]="hasHepatitisType(2)">
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">
+                التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى
+                B أو الإلتهاب الكبدى C أو الإلتهاب الكبدى D)
+              </div>
+              <div class="col-lg-12 section-note">
+                التعرض فى الفترة من 6 أسابيع – 6 شهور قبل ظهور الأعراض
+              </div>
+              <div class="col-lg-12 color-d-2 fwb">
+                التعرض المرتبط بتقديم الرعاية الصحية
+              </div>
+              <!-- / .col-lg-12 color-d-2 -->
+              <div class="col-lg-12 section-note">
+                هل تعرضت لأي مما يلي في خلال الستة أشهر السابقة للمرض؟
+              </div>
+              <!-- / .col-lg-12 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">دخول مستشفى</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.enteringHospital"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of enteringHospitals" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.enteringHospital == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم نوع المنشأة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentH"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeEstablishmentHs" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.enteringHospital == 1">
+                <div class="form-group">
+                  <label for="">اسم المنشأة</label>
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameH"
+                    [(ngModel)]="hepatitisVirusesData.facilityNameH" #facilityNameH="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">زيارة عيادة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.visitClinic"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of visitClinics" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.visitClinic == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم نوع المنشأة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentC"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeEstablishmentCs" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.visitClinic == 1">
+                <div class="form-group">
+                  <label for="">اسم المنشأة</label>
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameC"
+                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.facilityNameC"
+                    #facilityNameC="ngModel" />
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">نقل دم</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.bloodTransfusion"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of bloodTransfusions" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.bloodTransfusion == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم نوع المنشأة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentB"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeEstablishmentBs" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.bloodTransfusion == 1">
+                <div class="form-group">
+                  <label for="">اسم المنشأة</label>
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameB"
+                    [(ngModel)]="hepatitisVirusesData.facilityNameB" #facilityNameB="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">جراحة/خياطة جراحية</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.surgerySutures"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of surgerySuturess" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.surgerySutures == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم نوع المنشأة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentS"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeEstablishmentSs" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.surgerySutures == 1">
+                <div class="form-group">
+                  <label for="">اسم المنشأة</label>
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameS"
+                    [(ngModel)]="hepatitisVirusesData.facilityNameS" #facilityNameS="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">مناظير</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.binoculars"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of binocularss" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.binoculars == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم نوع المنشأة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentBin"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeEstablishmentBins" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.binoculars == 1">
+                <div class="form-group">
+                  <label for="">اسم المنشأة</label>
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameBin"
+                    [(ngModel)]="hepatitisVirusesData.facilityNameBin" #facilityNameBin="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">قسطرة بولية</label>
+                  <select name="case" id="" class="form-control"
+                    [(ngModel)]="hepatitisVirusesData.urinaryCatheterization" (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of urinaryCatheterizations" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.urinaryCatheterization == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم نوع المنشأة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentU"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeEstablishmentUs" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.urinaryCatheterization == 1">
+                <div class="form-group">
+                  <label for="">اسم المنشأة</label>
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameU"
+                    [(ngModel)]="hepatitisVirusesData.facilityNameU" #facilityNameU="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">تقطير وريدي</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.ivDrip"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of ivDrips" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.ivDrip == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم نوع المنشأة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentIv"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeEstablishmentIvs" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.ivDrip == 1">
+                <div class="form-group">
+                  <label for="">اسم المنشأة</label>
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameIv"
+                    [(ngModel)]="hepatitisVirusesData.facilityNameIv" #facilityNameIv="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">غسيل كلوي</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dialysis"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of dialysiss" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.dialysis == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم نوع المنشأة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentD"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeEstablishmentDs" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.dialysis == 1">
+                <div class="form-group">
+                  <label for="">اسم المنشأة</label>
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameD"
+                    [(ngModel)]="hepatitisVirusesData.facilityNameD" #facilityNameD="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">إجراء طبي في الأسنان (حشو، خلع، تنظيف، عمليات)</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dentalProcedures"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of dentalProceduress" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.dentalProcedures == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم نوع المنشأة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentDen"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeEstablishmentDens" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.dentalProcedures == 1">
+                <div class="form-group">
+                  <label for="">اسم المنشأة</label>
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameDen"
+                    [(ngModel)]="hepatitisVirusesData.facilityNameDen" #facilityNameDen="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+
+              <div class="col-lg-12 color-d-2 fwb">التعرض المجتمعي</div>
+              <div class="col-lg-12">
+                هل تم عمل أى مما يلي فى خلال آخر 6 شهورقبل ظهور الأعراض؟
+              </div>
+              <!-- / .col-lg-12 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">الإبر الصينية</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.chineseNeedles"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of ChineseNeedless" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">طهارة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.purity"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of puritys" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">الوشم</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.tattoo"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of tattoos" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">حجامة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.cupping"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of cuppings" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">للسيدات : خرم الأذن</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.earPiercing"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of earPiercings" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">زيارة مركز تجميل /حلاقة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.visitBeautyShop"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of visitBeautyShops" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+
+              <div class="col-lg-12 fwb color-d-2">
+                التعرض من خلال نمط الحياة اليومي
+              </div>
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">هل تشارك في استخدام فرشاة أسنان مع آخرين ؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.shareToothbrush"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of shareToothbrushs" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">
+                    هل تشارك في استخدام أدوات حادة مع آخرين مثل (المقص،
+                    القصافة، الملقاط،، شفرة حلاقة......الخ) ؟
+                  </label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.shareSharpTools"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of shareSharpToolss" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">هل أنت مخالط لحالة التهاب كبدى ؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.contactHepatitis"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of contactHepatitiss" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.contactHepatitis == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم ما نوع الالتهاب الكبدى؟ </label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeHepatitis"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeHepatitiss" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">
+                    هل تعرضت للدم خارج أماكن تقديم الخدمة الصحية خلال آخر 6
+                    شهور؟
+                  </label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.exposedBloodOutside"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of exposedBloodOutsides" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-12 fwb color-d-2">
+                تعرضات خاصة بالرجال
+              </div>
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">هل كنت فى الخدمة العسكرية خلال آخر 6 شهور ؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.inMilitaryService"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of inMilitaryServices" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-12 -->
+              <div class="col-lg-12 fwb color-d-2">
+                تعرضات خاصة بالنساء
+              </div>
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">هل يوجد حمل</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.pregnancy"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of pregnancys" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">هل تعرضت ولادة / إجهاض في خلال آخر 6 شهور ؟</label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                    [(ngModel)]="hepatitisVirusesData.experiencedChildbirth">
+                    <option *ngFor="let case of experiencedChildbirths" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.experiencedChildbirth == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم حدد نوع المنشأة</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeFacility"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeFacilitys" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.experiencedChildbirth == 1">
+                <div class="form-group">
+                  <label for="">اسم المنشأة</label>
+                  <input type="text" maxlength="100" class="form-control" name="facilityNameW"
+                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.facilityNameW"
+                    #facilityNameW="ngModel" />
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-12 fwb color-d-2">تعرضات أخرى</div>
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">هل كنت فى السجن خلال آخر 6 شهور ؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.inPrison"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of inPrisons" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">حالياً ، هل تتعاطى أى مواد مخدرة عن طريق الحقن ؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.injectDrugs"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of injectDrugss" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.injectDrugs == 1">
+                <div class="form-group">
+                  <label for="">
+                    إذا نعم، هل شاركت نفس السرنجة أو السن مع آخرين خلال آخر 6
+                    شهور؟
+                  </label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.sharedSameSyringe"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of sharedSameSyringes" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-12 fwb color-d-2">
+                التاريخ المرضي
+              </div>
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">هل المريض يعانى من أمراض مزمنة؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.chronicDiseases"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of chronicDiseasess" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.chronicDiseases == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم ما هو ؟ </label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeChronicDiseases"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of typeChronicDiseasess" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.typeChronicDiseases == 4">
+                <div class="form-group">
+                  <label for="">في حالة أخرى. ماهي؟</label>
+                  <input type="text" maxlength="100" class="form-control" name="anotherCaseChronicDiseases"
+                    [(ngModel)]="hepatitisVirusesData.anotherCaseChronicDiseases"
+                    (blur)="calculateCompletionPercentage()" #anotherCaseChronicDiseases="ngModel" />
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">عل توجد إصابة سابقة لفيروس HCV ؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.infectionHcv"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of infectionHcvs" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.infectionHcv == 1">
+                <div class="form-group">
+                  <label for="">إذا نعم عل تم أخذ علاج بالكامل؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.treatmentTaken"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of treatmentTakens" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">هل تم أخذ 3 جرعات متتالية ضد الالتهاب الكبدى B؟</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.consecutiveDoses"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of consecutiveDosess" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
             </div>
             <!-- / .row -->
           </div>
@@ -1650,646 +2313,6 @@
         
           <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
-              <div class="col-12 title fs-6 fwb">
-                التعرض خلال 2-6 شهور السابقة لظهور المرض (فى حالة الإلتهاب الكبدى
-                B أو الإلتهاب الكبدى C)
-              </div>
-              <div class="col-lg-12 section-note">
-                التعرض فى الفترة من 6 أسابيع – 6 شهور قبل ظهور الأعراض
-              </div>
-              <div class="col-lg-12 color-d-2 fwb">
-                التعرض المرتبط بتقديم الرعاية الصحية
-              </div>
-              <!-- / .col-lg-12 color-d-2 -->
-              <div class="col-lg-12 section-note">
-                هل تعرضت لأي مما يلي في خلال الستة أشهر السابقة للمرض؟
-              </div>
-              <!-- / .col-lg-12 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">دخول مستشفى</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.enteringHospital"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of enteringHospitals" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.enteringHospital == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentH"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeEstablishmentHs" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.enteringHospital == 1">
-                <div class="form-group">
-                  <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameH"
-                    [(ngModel)]="hepatitisVirusesData.facilityNameH" #facilityNameH="ngModel"
-                    (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">زيارة عيادة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.visitClinic"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of visitClinics" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.visitClinic == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentC"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeEstablishmentCs" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.visitClinic == 1">
-                <div class="form-group">
-                  <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameC"
-                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.facilityNameC"
-                    #facilityNameC="ngModel" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">نقل دم</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.bloodTransfusion"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of bloodTransfusions" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.bloodTransfusion == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentB"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeEstablishmentBs" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.bloodTransfusion == 1">
-                <div class="form-group">
-                  <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameB"
-                    [(ngModel)]="hepatitisVirusesData.facilityNameB" #facilityNameB="ngModel"
-                    (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">جراحة/خياطة جراحية</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.surgerySutures"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of surgerySuturess" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.surgerySutures == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentS"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeEstablishmentSs" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.surgerySutures == 1">
-                <div class="form-group">
-                  <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameS"
-                    [(ngModel)]="hepatitisVirusesData.facilityNameS" #facilityNameS="ngModel"
-                    (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">مناظير</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.binoculars"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of binocularss" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.binoculars == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentBin"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeEstablishmentBins" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.binoculars == 1">
-                <div class="form-group">
-                  <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameBin"
-                    [(ngModel)]="hepatitisVirusesData.facilityNameBin" #facilityNameBin="ngModel"
-                    (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">قسطرة بولية</label>
-                  <select name="case" id="" class="form-control"
-                    [(ngModel)]="hepatitisVirusesData.urinaryCatheterization" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of urinaryCatheterizations" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.urinaryCatheterization == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentU"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeEstablishmentUs" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.urinaryCatheterization == 1">
-                <div class="form-group">
-                  <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameU"
-                    [(ngModel)]="hepatitisVirusesData.facilityNameU" #facilityNameU="ngModel"
-                    (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">تقطير وريدي</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.ivDrip"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of ivDrips" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.ivDrip == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentIv"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeEstablishmentIvs" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.ivDrip == 1">
-                <div class="form-group">
-                  <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameIv"
-                    [(ngModel)]="hepatitisVirusesData.facilityNameIv" #facilityNameIv="ngModel"
-                    (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">غسيل كلوي</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dialysis"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of dialysiss" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.dialysis == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentD"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeEstablishmentDs" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.dialysis == 1">
-                <div class="form-group">
-                  <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameD"
-                    [(ngModel)]="hepatitisVirusesData.facilityNameD" #facilityNameD="ngModel"
-                    (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">إجراء طبي في الأسنان (حشو، خلع، تنظيف، عمليات)</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.dentalProcedures"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of dentalProceduress" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.dentalProcedures == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeEstablishmentDen"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeEstablishmentDens" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.dentalProcedures == 1">
-                <div class="form-group">
-                  <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameDen"
-                    [(ngModel)]="hepatitisVirusesData.facilityNameDen" #facilityNameDen="ngModel"
-                    (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-
-              <div class="col-lg-12 color-d-2 fwb">التعرض المجتمعي</div>
-              <div class="col-lg-12">
-                هل تم عمل أى مما يلي فى خلال آخر 6 شهورقبل ظهور الأعراض؟
-              </div>
-              <!-- / .col-lg-12 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">الإبر الصينية</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.chineseNeedles"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of ChineseNeedless" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">طهارة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.purity"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of puritys" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">الوشم</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.tattoo"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of tattoos" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">حجامة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.cupping"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of cuppings" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">للسيدات : خرم الأذن</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.earPiercing"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of earPiercings" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">زيارة مركز تجميل /حلاقة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.visitBeautyShop"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of visitBeautyShops" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-
-              <div class="col-lg-12 fwb color-d-2">
-                التعرض من خلال نمط الحياة اليومي
-              </div>
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">هل تشارك في استخدام فرشاة أسنان مع آخرين ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.shareToothbrush"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of shareToothbrushs" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">
-                    هل تشارك في استخدام أدوات حادة مع آخرين مثل (المقص،
-                    القصافة، الملقاط،، شفرة حلاقة......الخ) ؟
-                  </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.shareSharpTools"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of shareSharpToolss" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">هل أنت مخالط لحالة التهاب كبدى ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.contactHepatitis"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of contactHepatitiss" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.contactHepatitis == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم ما نوع الالتهاب الكبدى؟ </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeHepatitis"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeHepatitiss" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">
-                    هل تعرضت للدم خارج أماكن تقديم الخدمة الصحية خلال آخر 6
-                    شهور؟
-                  </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.exposedBloodOutside"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of exposedBloodOutsides" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-12 fwb color-d-2">
-                تعرضات خاصة بالرجال
-              </div>
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">هل كنت فى الخدمة العسكرية خلال آخر 6 شهور ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.inMilitaryService"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of inMilitaryServices" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-12 -->
-              <div class="col-lg-12 fwb color-d-2">
-                تعرضات خاصة بالنساء
-              </div>
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">هل يوجد حمل</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.pregnancy"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of pregnancys" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">هل تعرضت ولادة / إجهاض في خلال آخر 6 شهور ؟</label>
-                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                    [(ngModel)]="hepatitisVirusesData.experiencedChildbirth">
-                    <option *ngFor="let case of experiencedChildbirths" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.experiencedChildbirth == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم حدد نوع المنشأة</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeFacility"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeFacilitys" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.experiencedChildbirth == 1">
-                <div class="form-group">
-                  <label for="">اسم المنشأة</label>
-                  <input type="text" maxlength="100" class="form-control" name="facilityNameW"
-                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.facilityNameW"
-                    #facilityNameW="ngModel" />
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-12 fwb color-d-2">تعرضات أخرى</div>
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">هل كنت فى السجن خلال آخر 6 شهور ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.inPrison"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of inPrisons" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">حالياً ، هل تتعاطى أى مواد مخدرة عن طريق الحقن ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.injectDrugs"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of injectDrugss" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.injectDrugs == 1">
-                <div class="form-group">
-                  <label for="">
-                    إذا نعم، هل شاركت نفس السرنجة أو السن مع آخرين خلال آخر 6
-                    شهور؟
-                  </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.sharedSameSyringe"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of sharedSameSyringes" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-12 fwb color-d-2">
-                التاريخ المرضي
-              </div>
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">هل المريض يعانى من أمراض مزمنة؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.chronicDiseases"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of chronicDiseasess" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.chronicDiseases == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم ما هو ؟ </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.typeChronicDiseases"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of typeChronicDiseasess" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.typeChronicDiseases == 4">
-                <div class="form-group">
-                  <label for="">في حالة أخرى. ماهي؟</label>
-                  <input type="text" maxlength="100" class="form-control" name="anotherCaseChronicDiseases"
-                    [(ngModel)]="hepatitisVirusesData.anotherCaseChronicDiseases"
-                    (blur)="calculateCompletionPercentage()" #anotherCaseChronicDiseases="ngModel" />
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">عل توجد إصابة سابقة لفيروس HCV ؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.infectionHcv"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of infectionHcvs" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.infectionHcv == 1">
-                <div class="form-group">
-                  <label for="">إذا نعم عل تم أخذ علاج بالكامل؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.treatmentTaken"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of treatmentTakens" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">هل تم أخذ 3 جرعات متتالية ضد الالتهاب الكبدى B؟</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.consecutiveDoses"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of consecutiveDosess" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
             
               <div class="col-lg-4 inv-field-cell">
                 <div class="form-group">
