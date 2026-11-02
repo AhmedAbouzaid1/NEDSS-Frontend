@@ -1,4 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
 import { Subject } from 'rxjs';
@@ -14,6 +16,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./clinical-symptoms.component.css'],
 })
 export class ClinicalSymptomsCodesComponent implements OnInit, OnDestroy {
+  @ViewChild('clinicalSymptomForm') clinicalSymptomForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null as number | null,
@@ -154,6 +157,7 @@ export class ClinicalSymptomsCodesComponent implements OnInit, OnDestroy {
             .subscribe((res: string) => {
               this.userMsg.success(res);
             });
+          resetFormState(this.clinicalSymptomForm);
           this.clinicalSymptom = {
             id: null,
             code: null,
@@ -244,6 +248,7 @@ export class ClinicalSymptomsCodesComponent implements OnInit, OnDestroy {
           .subscribe((res: string) => {
             this.userMsg.success(res);
           });
+        resetFormState(this.clinicalSymptomForm);
         this.clinicalSymptom = {
           id: null,
           code: null,

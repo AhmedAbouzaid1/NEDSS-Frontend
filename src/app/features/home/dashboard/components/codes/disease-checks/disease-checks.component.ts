@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
@@ -13,6 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./disease-checks.component.css'],
 })
 export class DiseaseChecksComponent {
+  @ViewChild('diseaseCheckForm') diseaseCheckForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -163,6 +166,7 @@ export class DiseaseChecksComponent {
                 this.userMsg.success(res);
               });
             this.getDiseaseChecks();
+            resetFormState(this.diseaseCheckForm);
             this.diseaseCheck = {
               id: null,
               code: null,
@@ -280,6 +284,7 @@ export class DiseaseChecksComponent {
               this.userMsg.success(res);
             });
           this.getDiseaseChecks();
+          resetFormState(this.diseaseCheckForm);
           this.diseaseCheck = {
             id: null,
             code: null,

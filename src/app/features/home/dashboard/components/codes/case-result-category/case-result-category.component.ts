@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
@@ -13,6 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./case-result-category.component.css'],
 })
 export class CaseResultCategoryComponent {
+  @ViewChild('caseResultCategoryForm') caseResultCategoryForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -169,6 +172,7 @@ export class CaseResultCategoryComponent {
                   this.userMsg.success(res);
                 });
               this.getCaseResultCategorys();
+              resetFormState(this.caseResultCategoryForm);
               this.caseResultCategory = {
                 id: null,
                 code: null,
@@ -291,6 +295,7 @@ export class CaseResultCategoryComponent {
                 this.userMsg.success(res);
               });
             this.getCaseResultCategorys();
+            resetFormState(this.caseResultCategoryForm);
             this.caseResultCategory = {
               id: null,
               code: null,

@@ -288,7 +288,7 @@
               </div>
             </div>
           </ng-container>
-          <div class="col-lg-12 mt-3">
+          <div class="col-lg-12 mt-3 lab-place" [class.lab-place--expanded]="patient.isHospitalLab || patient.isSpecialLabLab">
             <label class="form-group fzs">
               {{
               "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.PLACE_LAB"
@@ -380,7 +380,35 @@
               "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.SPECIALLAB"
               | translate
               }}
-              <div class="row mt-3">
+            </div>
+            <div class="row mt-3" *ngIf="patient.isHospitalLab">
+              <div class="col-lg-4 mt-2" *ngIf="patient.isHospitalLab">
+                <label for="hospitalLabSelection">
+                  {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITAL_LAB_SELECTION" | translate }}
+                </label>
+                <p-dropdown inputId="hospitalLabSelection" [options]="hospitalLabOptions"
+                  [(ngModel)]="patient.hospitalLabSelection" (onChange)="onHospitalLabSelectionChanged()"
+                  [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
+                  [style]="{ width: '100%' }" name="hospitalLabSelection">
+                </p-dropdown>
+                <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isHospitalLabSelectionValid"
+                  class="form-text text-danger mess-color">
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+              <div class="col-lg-4 mt-2" *ngIf="patient.isHospitalLab && patient.hospitalLabSelection === 2">
+                <label for="otherHospitalLabName">
+                  {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.OTHER_HOSPITAL_NAME" | translate }}
+                </label>
+                <input id="otherHospitalLabName" type="text" [(ngModel)]="patient.otherHospitalLabName"
+                  name="otherHospitalLabName" pInputText class="w-100" />
+                <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isOtherHospitalLabNameValid"
+                  class="form-text text-danger mess-color">
+                  {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+                </small>
+              </div>
+            </div>
+            <div class="row mt-3" *ngIf="patient.isSpecialLabLab">
                 <div class="col-lg-4 mt-2" *ngIf="patient.isSpecialLabLab">
                   <label for="">
                     {{
@@ -431,35 +459,6 @@
                     {{ "NEDSS.COMMON.SPECIAL_LAB_NAME_VALIDATION" | translate }}
                   </small>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row mt-3" *ngIf="patient.isHospitalLab">
-            <div class="col-lg-4 mt-2" *ngIf="patient.isHospitalLab">
-              <label for="hospitalLabSelection">
-                {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITAL_LAB_SELECTION" | translate }}
-              </label>
-              <p-dropdown inputId="hospitalLabSelection" [options]="hospitalLabOptions"
-                [(ngModel)]="patient.hospitalLabSelection" (onChange)="onHospitalLabSelectionChanged()"
-                [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
-                [style]="{ width: '100%' }" name="hospitalLabSelection">
-              </p-dropdown>
-              <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isHospitalLabSelectionValid"
-                class="form-text text-danger mess-color">
-                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
-              </small>
-            </div>
-            <div class="col-lg-4 mt-2" *ngIf="patient.isHospitalLab && patient.hospitalLabSelection === 2">
-              <label for="otherHospitalLabName">
-                {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.OTHER_HOSPITAL_NAME" | translate }}
-              </label>
-              <input id="otherHospitalLabName" type="text" [(ngModel)]="patient.otherHospitalLabName"
-                name="otherHospitalLabName" pInputText class="w-100" />
-              <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isOtherHospitalLabNameValid"
-                class="form-text text-danger mess-color">
-                {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
-              </small>
             </div>
           </div>
 

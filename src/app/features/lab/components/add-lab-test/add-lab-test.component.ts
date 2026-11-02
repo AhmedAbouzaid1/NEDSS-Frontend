@@ -15,6 +15,7 @@ import {
 } from 'src/app/core/constants';
 import { from } from 'rxjs';
 import { concatMap, finalize, toArray } from 'rxjs/operators';
+import { BrucellaSerumIds, brucellaSecondSerumError, isBrucellaSecondSerum } from '../../models/brucella-lab-rules';
 
 declare const bootstrap: any;
 
@@ -32,6 +33,9 @@ export class AddLabTestComponent {
   patient: any;
   caseDiscoveryDate: string | null = null;
   patientChecks: [];
+  allPatientChecks: any[] = [];
+  brucellaSerumIds: BrucellaSerumIds | null = null;
+  editingBrucellaSecondSerum = false;
   id: any;
   patientAddCheck = {
     id: null,
@@ -88,10 +92,10 @@ export class AddLabTestComponent {
   readonly feverRashDiseaseGroupId = 5;
   readonly multiResultDiseaseGroupIds = [1, 19, 25, 27];
   readonly malariaDiseaseGroupId = 11;
-  readonly malariaBloodFilm = { sampleId: 1, labTestId: 11 };
+  readonly malariaBloodFilm = { sample: ['blood', 'الدم'], labTest: ['blood film', 'شريحة دم'] };
   readonly malariaMultiResultSampleTests = [
     this.malariaBloodFilm,
-    { sampleId: 16, labTestId: 124 },
+    { sample: ['serum', 'السيرم'], labTest: ['serology (rdt)', 'سيرولوجى (الاختبار السريع)'] },
   ];
 
   underDeleting = {
@@ -116,6 +120,9 @@ export class AddLabTestComponent {
     if (this.id != null) {
       this.getById(this.id);
     }
+    this.labService.getBrucellaSerumIds().subscribe((result: any) => {
+      this.brucellaSerumIds = result?.data ?? null;
+    });
 
     this.singleDropdownSettings = SingleDropdownSettings;
     this.multipleDropdownSettings = {
@@ -269,11 +276,19 @@ export class AddLabTestComponent {
     return this.isMalariaSampleTestSelected(this.malariaBloodFilm);
   }
 
-  private isMalariaSampleTestSelected(x: { sampleId: number; labTestId: number }): boolean {
+  private isMalariaSampleTestSelected(x: { sample: string[]; labTest: string[] }): boolean {
+    const sample = this.checkSamples?.find((item) => item.id == this.selectedCheckSample);
+    const labTest = this.labChecks?.find((item) => item.id == this.selectedLabCheck);
     return (
       Number(this.patientAddCheck.diseaseGroupId) === this.malariaDiseaseGroupId &&
-      x.sampleId === Number(this.selectedCheckSample) &&
-      x.labTestId === Number(this.selectedLabCheck)
+      this.lookupNameIn(sample, x.sample) &&
+      this.lookupNameIn(labTest, x.labTest)
+    );
+  }
+
+  private lookupNameIn(item: any, names: string[]): boolean {
+    return [item?.englishName, item?.arabicName].some(
+      (value) => value != null && names.includes(String(value).trim().toLowerCase())
     );
   }
 
@@ -432,6 +447,7 @@ export class AddLabTestComponent {
           if (!this.caseDiscoveryDate) this.loadCaseDiscoveryDate(id);
           this.checkFilter.patientId = this.patient.id;
           this.getPatientChecks();
+          this.getAllPatientChecks();
         }
       },
       (error) => {
@@ -476,10 +492,34 @@ export class AddLabTestComponent {
     );
   }
 
+  getAllPatientChecks() {
+    this.labService
+      .getPagePatientLabChecks({ ...this.checkFilter, pageIndex: 0, pageSize: 0 })
+      .subscribe((result: any) => {
+        this.allPatientChecks = result?.data?.patientLabChecks ?? [];
+      });
+  }
+
+  brucellaSecondSerumMessage(): string | null {
+    const candidate = {
+      diseaseGroupId: this.patientAddCheck.diseaseGroupId,
+      diseaseCheckId: this.selectedCheckSample,
+    };
+    if (!isBrucellaSecondSerum(this.brucellaSerumIds, candidate) || this.editingBrucellaSecondSerum) {
+      return null;
+    }
+    return brucellaSecondSerumError(
+      this.brucellaSerumIds,
+      this.patientAddCheck.getSampleDate,
+      this.allPatientChecks.filter((c) => c.id !== this.patientAddCheck.id)
+    );
+  }
+
   getCheckById(id: number) {
     this.labService.getPatientLabCheckById(id).subscribe(
       (result: any) => {
         this.patientAddCheck = result.data;
+        this.editingBrucellaSecondSerum = isBrucellaSecondSerum(this.brucellaSerumIds, result.data);
         this.patientAddCheck.getSampleDate = this.datePipe.transform(
           this.patientAddCheck.getSampleDate,
           'yyyy-MM-dd'
@@ -592,6 +632,11 @@ export class AddLabTestComponent {
     const dateOrderError = this.dateOrderError();
     if (dateOrderError) {
       this.userMsg.error(dateOrderError);
+      return;
+    }
+    const brucellaError = this.brucellaSecondSerumMessage();
+    if (brucellaError) {
+      this.userMsg.error(brucellaError);
       return;
     }
     if (this.validateRequiredData()) {
@@ -730,6 +775,7 @@ export class AddLabTestComponent {
     this.selectedCheckSample = null;
     this.selectedLabCheck = null;
     this.selectedLabCheckResult = [];
+    this.editingBrucellaSecondSerum = false;
   }
 
   validateRequiredData(): boolean {

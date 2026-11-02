@@ -5,11 +5,9 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { GeneralDataService } from '../../general-data/services/general-data.service';
-import { FormControl, FormGroup } from '@angular/forms';
-import { PatientModel } from '../../general-data/models/patient-model';
-import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { SingleDropdownSettings } from 'src/app/core/constants';
 import { firstValueFrom } from 'rxjs';
+import { NationalityEnum } from '../../general-data/models/nationality-enum';
 
 @Component({
   selector: 'app-investigation-detailes',
@@ -17,42 +15,12 @@ import { firstValueFrom } from 'rxjs';
   styleUrls: ['./investigation-detailes.component.css'],
 })
 export class InvestigationDetailesComponent implements OnInit, OnDestroy {
+  readonly egyptianNationalityId = NationalityEnum.Egyptian;
   currentId: any;
   data: any = {};
-  notFoundForm: FormGroup;
   isLoadingInvestigationData = false;
   hasLoadedPatientData = false;
   singleDropdownSettings = SingleDropdownSettings;
-  patient: PatientModel = new PatientModel();
-  phone;
-  Address;
-
-  selectedGovernment;
-  selectedGovernmentId;
-  selectedHealthAdministrationId;
-  selectedCityId;
-  selectedHealthOfficeId;
-
-  selectedHealthAdministration;
-  selectedCity;
-  selectedHealthOffice;
-  healthAdministration: any[];
-
-  loadingPanel: boolean;
-  governmentsLoading: boolean = false;
-  healthAdministrationsLoading: boolean = false;
-  citiesLoading: boolean = false;
-  healthOfficesLoading: boolean = false;
-  governments: any;
-  healthOffices: any[];
-  healthAdministrations: any[];
-  cities: any[];
-  collectedObj: {
-    cityID: number;
-    healthAdministrationID: number;
-    governmentID: number;
-  };
-  ObjToUpdate: any;
   currentLang: string;
   dir: string;
   constructor(
@@ -62,7 +30,6 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
     private Router: Router,
     private userMsg: UserMessageService,
     public generalDataService: GeneralDataService,
-    private lookupsService: LookupsGetterService,
     private invetigationService: InvestigationService
   ) { }
 
@@ -88,23 +55,9 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
   }
   async loadData() {
     this.isLoadingInvestigationData = true;
-    this.notFoundForm = new FormGroup({
-      patientId: new FormControl(),
-      notInvestigationType: new FormControl(),
-      notInvestigationReason: new FormControl(),
-      homeGovernmentId: new FormControl(),
-      homeCityId: new FormControl(),
-      homeHealthAdministration: new FormControl(),
-      homeHealthOffice: new FormControl(),
-      phoneNo1: new FormControl(),
-      livingAddress: new FormControl(),
-    });
 
     try {
       await this.getById(this.currentId);
-      this.getGovernments();
-      this.getHealthAdministration(this.notFoundForm.value.homeGovernmentId);
-      this.getCities(this.notFoundForm.value.homeGovernmentId);
     } finally {
       this.isLoadingInvestigationData = false;
     }
@@ -116,13 +69,6 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
       if (result != null && result != undefined) {
         this.hasLoadedPatientData = true;
         this.data = result.data;
-        this.phone = result.data.phoneNo1;
-        this.Address = result.data.livingAddress;
-        this.selectedGovernmentId = result.data.homeGovernmentId;
-        this.selectedHealthAdministrationId =
-          result.data.homeHealthAdministrationId;
-        this.selectedHealthOfficeId = result.data.homeHealthOfficeId;
-        this.selectedCityId = result.data.homeCityId;
 
         this.investigation.patient.firstName = this.data.firstName;
         this.investigation.patient.secondName = this.data.secondName;
@@ -149,222 +95,6 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
     return !this.isLoadingInvestigationData && this.hasLoadedPatientData;
   }
 
-  getGovernments() {
-    this.governmentsLoading = true;
-    this.lookupsService.getAllGovernments().subscribe(
-      (result: any) => {
-        if (result != null && result != undefined) {
-          this.governments = result.data;
-          this.governments = [
-            { id: -1, arabicName: 'إختر', englishName: 'Select' },
-          ];
-          result.data.forEach((gov) => {
-            this.governments.push(gov);
-          });
-          if (this.selectedGovernmentId > 0) {
-            this.patient.homeGovernmentId = this.selectedGovernmentId;
-            this.selectedGovernment = this.governments.filter(
-              (item) => item.id === this.patient.homeGovernmentId
-            );
-            this.getHealthAdministration(this.patient.homeGovernmentId);
-            this.getCities(this.patient.homeGovernmentId);
-          }
-        }
-        this.governmentsLoading = false;
-        this.loadingPanel = false;
-      },
-      (error) => {
-        this.governmentsLoading = false;
-        this.loadingPanel = false;
-        this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
-    );
-  }
-  getHealthAdministration(governmentID: any) {
-    this.healthAdministrationsLoading = true;
-    this.lookupsService
-      .getPageHealthAdministrations({ governmentID: governmentID })
-      .subscribe(
-        (result: any) => {
-          if (result != null && result != undefined) {
-            this.healthAdministrations = result.data;
-            if (this.selectedHealthAdministrationId > 0) {
-              this.selectedHealthAdministration =
-                this.healthAdministrations.filter(
-                  (item) => item.id === this.patient.homeHealthAdministrationId
-                );
-              // this.patient.homeCityId=this.collectedObj?.cityID;
-              this.getHealthOffices(this.selectedHealthAdministrationId);
-            }
-            // if(this.collectedObj.healthAdministrationID>0){
-            //   this.selectedHealthAdministration = this.healthAdministrations.filter(
-            //     item => item.id === this.collectedObj.healthAdministrationID);
-            //     this.patient.homeHealthAdministrationId=this.collectedObj.healthAdministrationID;
-            //     this.getCities(this.collectedObj.healthAdministrationID);
-            // }
-          }
-          this.healthAdministrationsLoading = false;
-          this.loadingPanel = false;
-        },
-        (error) => {
-          this.healthAdministrationsLoading = false;
-          this.loadingPanel = false;
-          this.translateService
-            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
-      );
-  }
-  getCities(governmentID: any) {
-    this.citiesLoading = true;
-    this.lookupsService.getPageCitys({ governmentID: governmentID }).subscribe(
-      (result: any) => {
-        if (result != null && result != undefined) {
-          this.cities = result.data;
-          if (this.patient.homeCityId > 0) {
-            this.selectedCity = this.cities.filter(
-              (item) => item.id === this.patient.homeCityId
-            );
-          }
-          if (this.collectedObj?.cityID) {
-            this.selectedCity = this.cities.filter(
-              (item) => item.id === this.collectedObj?.cityID
-            );
-          }
-        }
-        this.citiesLoading = false;
-        this.loadingPanel = false;
-      },
-      (error) => {
-        this.citiesLoading = false;
-        this.loadingPanel = false;
-        this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
-    );
-  }
-  getHealthOffices(healthAdministrationId: any) {
-    //, reportingOrResidence: 2
-    this.healthOfficesLoading = true;
-    this.lookupsService
-      .getPageIncidentSourceHospitals({
-        healthAdministrationID: healthAdministrationId,
-      })
-      .subscribe(
-        (result: any) => {
-          if (result != null && result != undefined) {
-            this.healthOffices = result.data;
-
-            if (this.selectedHealthOfficeId > 0) {
-              this.selectedHealthOffice = this.healthOffices.find(
-                (item) => item.id == this.selectedHealthOfficeId
-              );
-              this.notFoundForm.patchValue({
-                homeHealthOffice: this.selectedHealthOffice
-              })
-            }
-          }
-          this.healthOfficesLoading = false;
-          this.loadingPanel = false;
-        },
-        (error) => {
-          this.healthOfficesLoading = false;
-          this.loadingPanel = false;
-          this.translateService
-            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
-      );
-  }
-  onGovernmentChanged() {
-    if (this.selectedGovernmentId > 0) {
-      this.patient.homeGovernmentId = this.selectedGovernmentId;
-      this.getHealthAdministration(this.patient.homeGovernmentId);
-      this.getCities(this.patient.homeGovernmentId);
-    } else {
-      this.patient.homeGovernmentId = null;
-      this.healthAdministrations = [];
-      this.selectedHealthAdministration = null;
-    }
-  }
-
-  onHealthAdministrationChanged() {
-    if (this.selectedHealthAdministration) {
-      this.patient.homeHealthAdministrationId =
-        this.selectedHealthAdministration;
-      this.getHealthOffices(this.patient.homeHealthAdministrationId);
-    } else {
-      this.patient.homeHealthAdministrationId = null;
-      // this.cities = [];
-      // this.selectedCity = null;
-    }
-  }
-
-  onCityChanged() {
-    if (this.selectedCity > 0) {
-      this.patient.homeCityId = this.selectedCity;
-    } else {
-      this.patient.homeCityId = null;
-      this.healthOffices = [];
-      this.selectedHealthOffice = null;
-    }
-  }
-
-  updateInvestigatio() {
-    // this.patient.phoneNo1= this.phone;
-    // this.patient.livingAddress=this.Address;
-    this.notFoundForm.value.patientId = this.currentId;
-    this.ObjToUpdate = this.notFoundForm.value;
-    if (this.notFoundForm.value.homeGovernmentId != null) {
-      this.ObjToUpdate.homeGovernmentId =
-        this.notFoundForm.value.homeGovernmentId;
-    }
-    if (this.notFoundForm.value.homeCityId != null) {
-      this.ObjToUpdate.homeCityId = this.notFoundForm.value.homeCityId;
-    }
-    if (this.notFoundForm.value.homeHealthAdministration != null) {
-      this.ObjToUpdate.homeHealthAdministration =
-        this.notFoundForm.value.homeHealthAdministration;
-    }
-    if (this.notFoundForm.value.homeHealthOffice != null) {
-      this.ObjToUpdate.homeHealthOffice =
-        this.notFoundForm.value.homeHealthOffice;
-    }
-    if (this.notFoundForm.value.phoneNo1 != null) {
-      this.ObjToUpdate.phoneNo1 = this.notFoundForm.value.phoneNo1;
-    }
-    if (this.notFoundForm.value.livingAddress != null) {
-      this.ObjToUpdate.livingAddress = this.notFoundForm.value.livingAddress;
-    }
-
-    this.generalDataService.updateInvestigation(this.ObjToUpdate).subscribe(
-      (res: any) => {
-        if (res != null) {
-          this.loadingPanel = false;
-          this.notFoundForm.patchValue({
-            notInvestigationType: null,
-          });
-
-          this.userMsg.success('تم تحديث البيانات بنجاح');
-        } else {
-          this.loadingPanel = false;
-          this.userMsg.error('حدث خطأ اثناء تحديث البيانات');
-        }
-      },
-      (err) => console.error(err)
-    );
-  }
   ngOnDestroy(): void {
     if (
       this.Router.url.includes(

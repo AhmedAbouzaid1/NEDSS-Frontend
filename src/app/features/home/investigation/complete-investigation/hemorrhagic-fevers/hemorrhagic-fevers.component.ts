@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, of } from 'rxjs';
-import { catchError, finalize, switchMap } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
@@ -37,7 +37,23 @@ const GENERAL_CHRONIC_NAMES: Record<string, string> = {
   riskPregnancy: 'سيدات حوامل',
 };
 
+const GENERAL_DATA_SYMPTOMS: Record<string, { ar: string[]; en: string[] }> = {
+  symptomHeadache: { ar: ['صداع'], en: ['headache'] },
+  symptomAbdominalPain: { ar: ['مغص / الم بطني', 'الم بطني'], en: ['colic / intestinal distress / abdominal pain', 'abdominal pain'] },
+  symptomMusclePain: { ar: ['الم العضلات'], en: ['musclepain', 'muscle pain'] },
+  symptomJointPain: { ar: ['الم المفاصل'], en: ['jointpain', 'joint pain'] },
+  symptomDiarrhea: { ar: ['اسهال', 'اسهال مائي'], en: ['diarrhea', 'materydiarrhea', 'watery diarrhea'] },
+  symptomVomiting: { ar: ['قيء'], en: ['vomit', 'vomiting'] },
+  symptomConsciousnessDisturbance: { ar: ['اضطراب الحاله الذهنيه'], en: ['impairedmentalstate', 'impaired mental state'] },
+  symptomJaundice: { ar: ['صفراء', 'يرقان'], en: ['yellow', 'jaundice'] },
+};
+
 const GENERAL_DATA_FIELDS = ['hospitalEntryDate', 'hospitalLeaveDate', 'infectionDate', 'finalResultId'];
+
+const GENERAL_DATA_LOCKED_FIELDS = [
+  ...GENERAL_DATA_FIELDS, ...Object.keys(GENERAL_CHRONIC_NAMES), 'riskOtherChronicDisease', 'riskOtherChronicDiseaseDetails',
+  ...SYMPTOM_FIELDS, 'capillaryLeakOtherDetails',
+];
 
 const DISCHARGE_STATUS_NAMES = ['شفاء', 'تحويل', 'هروب', 'وفاه'];
 
@@ -90,8 +106,7 @@ export class HemorrhagicFeversComponent implements OnInit {
   governoratesLoading = false;
   finalResultsLoading = false;
   private chronicDiseases: any[] = [];
-  private otherChronicPrefix = '';
-  private generalDataSnapshot = '';
+  private clinicalSymptoms: any[] = [];
 
   readonly yesNoOptions = [
     { value: 1, label: 'نعم', labelEn: 'Yes' },
@@ -106,10 +121,6 @@ export class HemorrhagicFeversComponent implements OnInit {
     { value: 1, label: 'نعم', labelEn: 'Yes' },
     { value: 2, label: 'لا', labelEn: 'No' },
     { value: 3, label: 'لا أعلم', labelEn: "Don't know" },
-  ];
-  readonly rdtResultOptions = [
-    { value: 1, label: 'Negative', labelEn: 'Negative' },
-    { value: 2, label: 'Positive', labelEn: 'Positive' },
   ];
 
   hemorrhagicForm: FormGroup;
@@ -171,6 +182,7 @@ export class HemorrhagicFeversComponent implements OnInit {
     CHECKBOX_FIELDS.forEach((name) => (controls[name] = new FormControl(false)));
     EXPOSURE_QUESTIONS.forEach((name) => (controls[name] = new FormControl(null)));
     this.hemorrhagicForm = new FormGroup(controls);
+    GENERAL_DATA_LOCKED_FIELDS.forEach((name) => this.hemorrhagicForm.get(name)?.disable({ emitEvent: false }));
   }
 
   ngOnInit(): void {
@@ -186,10 +198,6 @@ export class HemorrhagicFeversComponent implements OnInit {
 
   get showFemaleFields(): boolean {
     return Number(this.patient?.genderId) !== 1;
-  }
-
-  get caseDiscoveryLabel(): string {
-    return this.formatDate(this.patient?.caseDiscoveryDate);
   }
 
   get onsetDate(): string | null {
@@ -232,69 +240,6 @@ export class HemorrhagicFeversComponent implements OnInit {
       return this.label(
         `تاريخ تحرير الاستمارة لا يمكن أن يكون قبل تاريخ اكتشاف الحالة (${this.formatDate(discovery)})`,
         `Form date cannot be before the case discovery date (${this.formatDate(discovery)})`
-      );
-    }
-    return '';
-  }
-
-  get onsetDateError(): string {
-    const onset = this.onsetDate;
-    if (!onset) {
-      return '';
-    }
-    const birth = this.toDateInput(this.patient?.birthDate);
-    if (birth && onset < birth) {
-      return this.label(
-        `تاريخ ظهور الأعراض لا يمكن أن يكون قبل تاريخ الميلاد (${this.formatDate(birth)})`,
-        `Symptom onset cannot be before the birth date (${this.formatDate(birth)})`
-      );
-    }
-    const discovery = this.toDateInput(this.patient?.caseDiscoveryDate);
-    if (discovery && onset > discovery) {
-      return this.label(
-        `تاريخ بداية الأعراض يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة (${this.formatDate(discovery)})`,
-        `Symptom onset cannot be after the case discovery date (${this.formatDate(discovery)})`
-      );
-    }
-    const fever = this.toDateInput(this.patient?.feverSymptoms?.feverDate);
-    if (fever && onset > fever) {
-      return this.label(
-        `تاريخ ظهور الأعراض لا يمكن أن يكون بعد تاريخ الحمى في البيانات العامة (${this.formatDate(fever)})`,
-        `Symptom onset cannot be after the General Data fever date (${this.formatDate(fever)})`
-      );
-    }
-    return '';
-  }
-
-  get admissionDateError(): string {
-    const admission = this.dateValue('hospitalEntryDate');
-    if (!admission) {
-      return '';
-    }
-    const birth = this.toDateInput(this.patient?.birthDate);
-    if (birth && admission < birth) {
-      return this.label(
-        `تاريخ الحجز لا يمكن أن يكون قبل تاريخ الميلاد (${this.formatDate(birth)})`,
-        `Admission date cannot be before the birth date (${this.formatDate(birth)})`
-      );
-    }
-    const discovery = this.toDateInput(this.patient?.caseDiscoveryDate);
-    if (discovery && admission < discovery) {
-      return this.label(
-        `تاريخ الحجز يجب أن يكون بعد أو في نفس يوم تاريخ اكتشاف الحالة (${this.formatDate(discovery)})`,
-        `Admission date must be on or after the case discovery date (${this.formatDate(discovery)})`
-      );
-    }
-    return '';
-  }
-
-  get dischargeDateError(): string {
-    const discharge = this.dateValue('hospitalLeaveDate');
-    const admission = this.dateValue('hospitalEntryDate');
-    if (discharge && admission && discharge < admission) {
-      return this.label(
-        `تاريخ الخروج يجب أن يكون بعد أو في نفس يوم تاريخ الحجز (${this.formatDate(admission)})`,
-        `Discharge date cannot be before the admission date (${this.formatDate(admission)})`
       );
     }
     return '';
@@ -360,9 +305,6 @@ export class HemorrhagicFeversComponent implements OnInit {
   private validationErrors(): string[] {
     return [
       this.formDateError,
-      this.onsetDateError,
-      this.admissionDateError,
-      this.dischargeDateError,
       this.vaccinationDateError,
       this.returnDateError('abroadReturnDate'),
       this.returnDateError('insideReturnDate'),
@@ -376,11 +318,13 @@ export class HemorrhagicFeversComponent implements OnInit {
     forkJoin({
       patient: this.generalDataService.getPatientByIdForInvestigation(this.currentId),
       chronic: this.lookupsService.getChronicDiseases().pipe(catchError(() => of(null))),
+      symptoms: this.lookupsService.getAllClinicalSymptoms().pipe(catchError(() => of(null))),
       investigation: this.investigationService.getByIdHemorrhagicFever(this.currentId),
     }).subscribe(
-      ({ patient, chronic, investigation }: any) => {
+      ({ patient, chronic, symptoms, investigation }: any) => {
         this.patient = patient?.data ?? {};
         this.chronicDiseases = chronic?.data ?? [];
+        this.clinicalSymptoms = symptoms?.data ?? [];
         if (this.patient?.firstName) {
           this.patientName = [this.patient.firstName, this.patient.secondName, this.patient.thirdName]
             .filter((x) => !!x)
@@ -388,7 +332,6 @@ export class HemorrhagicFeversComponent implements OnInit {
         }
         this.applyInvestigation(investigation?.data);
         this.applyGeneralData(!investigation?.data?.id);
-        this.generalDataSnapshot = JSON.stringify(this.buildGeneralDataPayload());
         this.calculateCompletionPercentage();
       },
       () => {
@@ -428,61 +371,38 @@ export class HemorrhagicFeversComponent implements OnInit {
     };
     Object.entries(GENERAL_CHRONIC_NAMES).forEach(([field, name]) => (patch[field] = selectedNames.includes(name)));
 
+    const symptomIds = new Set<number>((p.clinicalSymptomIds ?? []).map((x: any) => Number(x)));
+    const selectedSymptoms = this.clinicalSymptoms.filter((c) => symptomIds.has(Number(c.id)));
+    Object.entries(GENERAL_DATA_SYMPTOMS).forEach(([field, names]) => {
+      const ar = names.ar.map((n) => this.normalize(n));
+      patch[field] = selectedSymptoms.some(
+        (c) => ar.includes(this.normalize(c.arabicName)) || names.en.includes(String(c.englishName ?? '').trim().toLowerCase())
+      );
+    });
+    patch.symptomFever = !!p.feverSymptoms?.feverDate || selectedSymptoms.some((c) => this.isFeverSymptom(c));
+
     const otherNames = selectedChronic
       .filter((c) => !knownNames.includes(this.normalize(c.arabicName)))
       .map((c) => this.lookupName(c));
-    this.otherChronicPrefix = otherNames.join('، ');
     const anotherText = p.anotherChronicDisease?.trim() || '';
-    const details = [this.otherChronicPrefix, anotherText].filter((x) => !!x).join('، ');
+    const details = [otherNames.join('، '), anotherText].filter((x) => !!x).join('، ');
     patch.riskOtherChronicDisease = !!details;
     patch.riskOtherChronicDiseaseDetails = details || null;
 
     const department = Number(p.incidentDepartmentId);
-    if (isNewInvestigation) {
-      if (department === DepartmentEnum.Internal || department === DepartmentEnum.ICU || p.hospitalEntryDate) {
-        patch.hospitalized = 1;
-      }
-      if (department === DepartmentEnum.ICU) {
-        patch.riskIcuAdmission = true;
-      }
-    } else if (this.hemorrhagicForm.get('hospitalized')?.value == null && p.hospitalEntryDate) {
+    if (p.hospitalEntryDate) {
+      patch.hospitalized = 1;
+    } else if (isNewInvestigation && (department === DepartmentEnum.Internal || department === DepartmentEnum.ICU)) {
       patch.hospitalized = 1;
     }
+    if (isNewInvestigation && department === DepartmentEnum.ICU) {
+      patch.riskIcuAdmission = true;
+    }
     this.hemorrhagicForm.patchValue(patch);
-    ['bleedingVaginal', 'riskPregnancy', 'pregnancyMonths'].forEach((name) => {
-      const control = this.hemorrhagicForm.get(name);
-      this.showFemaleFields ? control?.enable({ emitEvent: false }) : control?.disable({ emitEvent: false });
-    });
-  }
-
-  private buildGeneralDataPayload(): any {
-    const v = this.hemorrhagicForm.getRawValue();
-    const hospitalized = v.hospitalized === 1;
-    const otherChronic = v.riskOtherChronicDisease === true;
-    const knownNames = Object.values(GENERAL_CHRONIC_NAMES);
-    const chronicIds: number[] = Object.entries(GENERAL_CHRONIC_NAMES)
-      .filter(([field]) => v[field] === true && (field !== 'riskPregnancy' || this.showFemaleFields))
-      .map(([, name]) => this.chronicDiseases.find((c) => this.normalize(c.arabicName) === name)?.id)
-      .filter((id) => id != null);
-    if (otherChronic) {
-      const existingIds = new Set<number>((this.patient?.chronicDiseasesIds ?? []).map((x: any) => Number(x)));
-      this.chronicDiseases
-        .filter((c) => existingIds.has(Number(c.id)) && !knownNames.includes(this.normalize(c.arabicName)))
-        .forEach((c) => chronicIds.push(c.id));
-    }
-    let another: string = otherChronic ? (v.riskOtherChronicDiseaseDetails ?? '').trim() : '';
-    if (another && this.otherChronicPrefix && another.startsWith(this.otherChronicPrefix)) {
-      another = another.slice(this.otherChronicPrefix.length).replace(/^[\s،,]+/, '').trim();
-    }
-    return {
-      patientId: Number(this.currentId),
-      hospitalEntryDate: hospitalized ? v.hospitalEntryDate : null,
-      hospitalLeaveDate: hospitalized ? v.hospitalLeaveDate : null,
-      infectionDate: v.infectionDate,
-      finalResultId: v.finalResultId,
-      chronicDiseasesIds: chronicIds.sort((x, y) => x - y),
-      anotherChronicDisease: another || null,
-    };
+    const hospitalized = this.hemorrhagicForm.get('hospitalized');
+    p.hospitalEntryDate ? hospitalized?.disable({ emitEvent: false }) : hospitalized?.enable({ emitEvent: false });
+    const pregnancyMonths = this.hemorrhagicForm.get('pregnancyMonths');
+    this.showFemaleFields ? pregnancyMonths?.enable({ emitEvent: false }) : pregnancyMonths?.disable({ emitEvent: false });
   }
 
   save(): void {
@@ -506,27 +426,15 @@ export class HemorrhagicFeversComponent implements OnInit {
       ((this.allFilledControlsCount / (this.allControllesCount || 1)) * 100).toFixed(2)
     );
 
-    const generalData = this.buildGeneralDataPayload();
-    const generalDataJson = JSON.stringify(generalData);
-    const generalData$ =
-      generalDataJson !== this.generalDataSnapshot
-        ? this.generalDataService.updateClinicalFromInvestigation(generalData)
-        : of(null);
-    generalData$
-      .pipe(
-        switchMap(() => {
-          this.generalDataSnapshot = generalDataJson;
-          return payload.id
-            ? this.investigationService.updateHemorrhagicFever(payload)
-            : this.investigationService.addInvestigationHemorrhagicFever(payload);
-        })
-      )
-      .subscribe((response: any) => {
-        if (!payload.id && response?.data?.id) {
-          this.hemorrhagicForm.controls['id'].setValue(response.data.id);
-        }
-        this.translateService.get('NEDSS.COMMON.SENT_SUCESSFULLY').subscribe((msg: string) => this.userMsg.success(msg));
-      });
+    const request$ = payload.id
+      ? this.investigationService.updateHemorrhagicFever(payload)
+      : this.investigationService.addInvestigationHemorrhagicFever(payload);
+    request$.subscribe((response: any) => {
+      if (!payload.id && response?.data?.id) {
+        this.hemorrhagicForm.controls['id'].setValue(response.data.id);
+      }
+      this.translateService.get('NEDSS.COMMON.SENT_SUCESSFULLY').subscribe((msg: string) => this.userMsg.success(msg));
+    });
   }
 
   private clearInapplicable(payload: any): void {
@@ -547,7 +455,7 @@ export class HemorrhagicFeversComponent implements OnInit {
 
   calculateCompletionPercentage(): void {
     const v = this.hemorrhagicForm.getRawValue();
-    const applicable = ['formDate', 'hospitalPhoneFax', 'hospitalized', 'infectionDate', 'finalResultId', 'yellowFeverVaccinated', 'hasTravelHistory', ...EXPOSURE_QUESTIONS, 'animalActivityOther', 'malariaRdtResult', 'surveillanceOfficerName'];
+    const applicable = ['formDate', 'hospitalPhoneFax', 'hospitalized', 'infectionDate', 'finalResultId', 'yellowFeverVaccinated', 'hasTravelHistory', ...EXPOSURE_QUESTIONS, 'animalActivityOther'];
     FOLLOW_UPS.forEach(({ parent, value, fields }) => {
       if (v[parent] === value && !CHECKBOX_FIELDS.includes(parent)) {
         applicable.push(...fields.filter((field) => field !== 'transferredFromHospital'));
@@ -580,6 +488,13 @@ export class HemorrhagicFeversComponent implements OnInit {
       .getAllGovernments()
       .pipe(finalize(() => (this.governoratesLoading = false)))
       .subscribe((result: any) => (this.governorates = result?.data ?? []));
+  }
+
+  private isFeverSymptom(symptom: any): boolean {
+    const code = String(symptom?.code ?? '').trim().toUpperCase();
+    const arabicName = String(symptom?.arabicName ?? '');
+    const englishName = String(symptom?.englishName ?? '').toLowerCase();
+    return code === 'FEVER' || arabicName.includes('حمى') || arabicName.includes('حرارة') || englishName.includes('fever');
   }
 
   private normalize(value: any): string {

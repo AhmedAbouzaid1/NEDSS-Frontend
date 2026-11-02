@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
@@ -13,6 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./final-result.component.css'],
 })
 export class FinalResultComponent {
+  @ViewChild('finalResultForm') finalResultForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -146,6 +149,7 @@ export class FinalResultComponent {
                 this.userMsg.success(res);
               });
             this.getFinalResults();
+            resetFormState(this.finalResultForm);
             this.finalResult = {
               id: null,
               code: null,
@@ -263,6 +267,7 @@ export class FinalResultComponent {
               this.userMsg.success(res);
             });
           this.getFinalResults();
+          resetFormState(this.finalResultForm);
           this.finalResult = {
             id: null,
             code: null,

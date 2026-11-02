@@ -185,7 +185,7 @@ export class SearchDemoghraphComponent implements OnInit {
 
   disableFieldsDueToNationalId(): boolean {
     var isValid =
-      this.patient.nationalityId == 1 &&
+      this.patient.nationalityId == NationalityEnum.Egyptian &&
       (this.patient.incidentDepartmentId == 1 ||
         (this.generalDataService.validateEmptyField(this.patient.nationalId) &&
           this.generalDataService.isCardIdValid));

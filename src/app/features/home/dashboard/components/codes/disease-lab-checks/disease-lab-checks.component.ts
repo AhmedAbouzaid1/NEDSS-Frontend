@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { LookupsGetterService } from './../../../../../../core/services/lookups-getter.service';
 import { UserMessageService } from './../../../../../../core/services/user.message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +17,7 @@ import { SortOrder } from 'src/app/core/constants';
   styleUrls: ['./disease-lab-checks.component.css'],
 })
 export class DiseaseLabChecksComponent {
+  @ViewChild('diseaseLabCheckForm') diseaseLabCheckForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -148,6 +151,7 @@ export class DiseaseLabChecksComponent {
                   this.userMsg.success(res);
                 });
               this.getDiseaseLabTests();
+              resetFormState(this.diseaseLabCheckForm);
               this.diseaseLabCheck = {
                 id: null,
                 code: null,
@@ -267,6 +271,7 @@ export class DiseaseLabChecksComponent {
                 this.userMsg.success(res);
               });
             this.getDiseaseLabTests();
+            resetFormState(this.diseaseLabCheckForm);
             this.diseaseLabCheck = {
               id: null,
               code: null,

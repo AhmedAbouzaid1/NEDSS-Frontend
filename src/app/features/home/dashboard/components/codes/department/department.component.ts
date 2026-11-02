@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
@@ -13,6 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./department.component.css'],
 })
 export class DepartmentComponent implements OnInit {
+  @ViewChild('departmentForm') departmentForm: NgForm;
   governments: any;
   healthAdministration: any;
   selectedIncidentSource: any;
@@ -409,6 +412,7 @@ export class DepartmentComponent implements OnInit {
     );
   }
   clearSelections() {
+    resetFormState(this.departmentForm);
     this.department = {
       id: null,
       code: null,

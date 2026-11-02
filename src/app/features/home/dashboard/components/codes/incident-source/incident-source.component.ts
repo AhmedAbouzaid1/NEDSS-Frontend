@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { TypereportingOrResidence } from './../../../../../../core/constants';
 import { LookupsGetterService } from './../../../../../../core/services/lookups-getter.service';
 import { UserMessageService } from './../../../../../../core/services/user.message.service';
@@ -16,6 +18,7 @@ import { SortOrder } from 'src/app/core/constants';
   styleUrls: ['./incident-source.component.css'],
 })
 export class IncidentSourceComponent {
+  @ViewChild('incidentSourceForm') incidentSourceForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -311,6 +314,7 @@ export class IncidentSourceComponent {
                   this.userMsg.success(res);
                 });
               this.getIncidentSources();
+              resetFormState(this.incidentSourceForm);
               this.incidentSource = {
                 id: null,
                 code: null,
@@ -436,6 +440,7 @@ export class IncidentSourceComponent {
                 this.userMsg.success(res);
               });
             this.getIncidentSources();
+            resetFormState(this.incidentSourceForm);
             this.incidentSource = {
               id: null,
               code: null,

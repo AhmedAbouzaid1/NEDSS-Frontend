@@ -20,6 +20,7 @@ import { RepeatedService } from 'src/app/features/home/repeated-records/Repeated
 import { Patient } from 'src/app/features/home/search/models/patient';
 
 import { finalize } from 'rxjs/operators';
+import { BrucellaSerumIds, brucellaSecondSerumError, isBrucellaSecondSerum } from '../../models/brucella-lab-rules';
 @Component({
   selector: 'app-add-lab-patient',
   templateUrl: './add-lab-patient.component.html',
@@ -224,6 +225,9 @@ export class AddLabPatientComponent {
   }
 
   ngOnInit() {
+    this.labService.getBrucellaSerumIds().subscribe((result: any) => {
+      this.brucellaSerumIds = result?.data ?? null;
+    });
     this.levelId = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     )?.user?.levelId;
@@ -746,7 +750,26 @@ export class AddLabPatientComponent {
       );
   }
 
+  editingBrucellaSecondSerum = false;
+  brucellaSerumIds: BrucellaSerumIds | null = null;
+
+  brucellaSecondSerumMessage(): string | null {
+    if (!isBrucellaSecondSerum(this.brucellaSerumIds, this.patientAddCheck) || this.editingBrucellaSecondSerum) {
+      return null;
+    }
+    return brucellaSecondSerumError(
+      this.brucellaSerumIds,
+      this.patientGridCheck.checkDate,
+      this.patientAddChecks.filter((c) => c !== this.patientAddCheck)
+    );
+  }
+
   addSample() {
+    const brucellaError = this.brucellaSecondSerumMessage();
+    if (brucellaError) {
+      this.userMsg.error(brucellaError);
+      return;
+    }
     if (this.validateSampleRequiredData()) {
       if (
         this.patientAddCheck.id == null &&
@@ -798,6 +821,7 @@ export class AddLabPatientComponent {
     this.patientAddCheck = this.patientAddChecks.filter(
       (item) => item.id === sampleId
     )[0];
+    this.editingBrucellaSecondSerum = !!this.patientAddCheck?.id && isBrucellaSecondSerum(this.brucellaSerumIds, this.patientAddCheck);
 
     await this.getLabSamples(this.patientGridCheck.diseaseGroupId);
     await this.getLabChecks();
@@ -1001,6 +1025,7 @@ export class AddLabPatientComponent {
   }
 
   resetLabCheck() {
+    this.editingBrucellaSecondSerum = false;
 
     this.patientGridCheck = {
       id: null,
