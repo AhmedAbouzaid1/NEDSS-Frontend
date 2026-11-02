@@ -42,14 +42,10 @@
               <div class="col-lg-4 mt-2 inv-field-cell" [appShowIf]="hemorrhagicForm.get('hospitalized')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ADMISSION_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="hospitalEntryDate" (changed)="calculateCompletionPercentage()"></app-date-field>
-                <small class="form-text text-muted d-block mt-0" *ngIf="caseDiscoveryLabel">{{ label('بعد أو في نفس يوم تاريخ اكتشاف الحالة (' + caseDiscoveryLabel + ')', 'On or after the case discovery date (' + caseDiscoveryLabel + ')') }}</small>
-                <small class="form-text text-danger d-block mt-0" *ngIf="admissionDateError">{{ admissionDateError }}</small>
               </div>
               <div class="col-lg-4 mt-2 inv-field-cell" [appShowIf]="hemorrhagicForm.get('hospitalized')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.DISCHARGE_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="hospitalLeaveDate" (changed)="calculateCompletionPercentage()"></app-date-field>
-                <small class="form-text text-muted d-block mt-0" *ngIf="true">{{ label('بعد أو في نفس يوم تاريخ الحجز', 'On or after the admission date') }}</small>
-                <small class="form-text text-danger d-block mt-0" *ngIf="dischargeDateError">{{ dischargeDateError }}</small>
               </div>
               <div class="col-lg-4 mt-2 inv-field-cell" [appShowIf]="hemorrhagicForm.get('hospitalized')?.value === 1">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.TRANSFERRED_FROM" | translate }}</label>
@@ -58,8 +54,6 @@
               <div class="col-lg-4 mt-2 inv-field-cell">
                 <label>{{ "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.ONSET_DATE" | translate }}</label>
                 <app-date-field class="date-with-note" formControlName="infectionDate" (changed)="calculateCompletionPercentage()"></app-date-field>
-                <small class="form-text text-muted d-block mt-0" *ngIf="caseDiscoveryLabel">{{ label('قبل أو في نفس يوم تاريخ اكتشاف الحالة (' + caseDiscoveryLabel + ')', 'On or before the case discovery date (' + caseDiscoveryLabel + ')') }}</small>
-                <small class="form-text text-danger d-block mt-0" *ngIf="onsetDateError">{{ onsetDateError }}</small>
               </div>
               <div class="col-12 mt-3">
                 <div class="color-d-2 fwb section-title">{{ "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SYMPTOMS" | translate }}</div>
@@ -368,29 +362,6 @@
                   <option [ngValue]="null"></option>
                   <option *ngFor="let o of yesNoDontKnowOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
                 </select>
-              </div>
-            </div>
-          </div>
-
-          <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.LAB_RESULTS" | translate }}</h3>
-          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-            <div class="row">
-              <div class="col-lg-4 mt-2 inv-field-cell">
-                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.MALARIA_RDT" | translate }}</label>
-                <select class="form-control" formControlName="malariaRdtResult" (change)="calculateCompletionPercentage()">
-                  <option [ngValue]="null"></option>
-                  <option *ngFor="let o of rdtResultOptions" [ngValue]="o.value">{{ optionLabel(o) }}</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <h3 class="fs-5 text-success fwb">{{ "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SURVEILLANCE_OFFICER" | translate }}</h3>
-          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-            <div class="row">
-              <div class="col-lg-6 mt-2 inv-field-cell">
-                <label>{{ "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SURVEILLANCE_OFFICER" | translate }}</label>
-                <input class="form-control" type="text" formControlName="surveillanceOfficerName" (blur)="calculateCompletionPercentage()" />
               </div>
             </div>
           </div>

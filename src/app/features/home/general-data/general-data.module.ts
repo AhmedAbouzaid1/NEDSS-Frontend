@@ -80,6 +80,6 @@ import { DialogModule } from 'primeng/dialog';
     DiseaseFieldListResolver,
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
   ],
-  exports: [TranslateModule],
+  exports: [TranslateModule, NotInferringModalComponent],
 })
 export class GeneralDataModule {}
