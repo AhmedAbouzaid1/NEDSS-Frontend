@@ -8,9 +8,8 @@
   [class.fw-bold]="hasNotInferringData"
   data-bs-toggle="modal"
   data-bs-target="#notInferringModal"
+  (click)="confirmingUndo = false"
 >
-  <i *ngIf="hasNotInferringData" class="bi bi-info-circle-fill" aria-hidden="true"></i>
-  <i *ngIf="!hasNotInferringData" class="bi bi-question-circle-fill" aria-hidden="true"></i>
   <span>{{ (hasNotInferringData
     ? "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.NOTINFERING"
     : "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.NOTINFERING_QUESTION") | translate }}</span>
@@ -162,9 +161,28 @@
           </div>
         </div>
         <div class="modal-footer">
-          <div class="d-flex align-items-center justify-content-end gap-3 w-100">
+          <div
+            *ngIf="confirmingUndo"
+            class="d-flex flex-wrap align-items-center justify-content-end gap-2 w-100"
+          >
+            <span class="fw-bold">
+              {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.UNDONOTINFERING_CONFIRM" | translate }}
+            </span>
+            <button type="button" class="btn btn-danger" (click)="undoNotInferring()" data-bs-dismiss="modal">
+              {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.UNDONOTINFERING" | translate }}
+            </button>
+            <button type="button" class="btn border border-color" (click)="confirmingUndo = false">
+              {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.Exit" | translate }}
+            </button>
+          </div>
+          <div *ngIf="!confirmingUndo" class="d-flex align-items-center justify-content-end gap-3 w-100">
+            <div class="me-auto" *ngIf="hasNotInferringData">
+              <button type="button" class="btn btn-outline-danger" (click)="confirmingUndo = true">
+                {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.UNDONOTINFERING" | translate }}
+              </button>
+            </div>
             <div>
-              <button type="button" class="btn bg text-light" (click)="updateInvestigatio()" data-bs-dismiss="modal">
+              <button type="button" class="btn bg text-light" [disabled]="!(notFoundForm.value.notInvestigationType > 0)" (click)="updateInvestigatio()" data-bs-dismiss="modal">
                 {{ "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.SAVENOTINFERING" | translate }}
               </button>
             </div>

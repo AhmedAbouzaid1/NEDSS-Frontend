@@ -9,6 +9,7 @@ import { GeneralDataService } from '../../../general-data/services/general-data.
 import { InvestigationService } from '../../services/investigation.service';
 import { finalize } from 'rxjs/operators';
 import { MENINGITIS_OTHER_DIAGNOSES } from 'src/app/features/lab/components/add-lab-test/meningitis-checks-form/meningitis-diagnoses';
+import { isConscriptOrPrisonerCategory } from '../../../general-data/models/job-category';
 
 type FollowUpRoundId = '48h' | '2weeks' | '4weeks';
 
@@ -123,7 +124,14 @@ export class MeningealComponent implements OnInit {
     { value: 2, label: 'شهر', labelEn: 'Month' },
     { value: 3, label: 'سنة', labelEn: 'Year' },
   ];
-  private readonly jobCategoriesWithoutJobName = [1, 5, 6, 7];
+  private readonly jobCategoriesWithoutJobName = [1, 5];
+
+  private hidesJobName(categoryId: any): boolean {
+    return (
+      this.jobCategoriesWithoutJobName.includes(Number(categoryId)) ||
+      isConscriptOrPrisonerCategory(this.jobCategories.find((c) => c.id == categoryId))
+    );
+  }
   readonly contactDiagnosisOptions = MENINGITIS_OTHER_DIAGNOSES;
   readonly otherDiagnosisValue = OTHER_DIAGNOSIS;
   readonly contactDiagnosisChoice = new FormControl<string | null>(null);
@@ -240,7 +248,7 @@ export class MeningealComponent implements OnInit {
       this.loadHomeLookups(value, this.suppressHomeReset);
     });
     this.patientForm.get('patientJobCategoryId')?.valueChanges.subscribe((value) => {
-      if (this.jobCategoriesWithoutJobName.includes(Number(value))) {
+      if (this.hidesJobName(value)) {
         this.patientForm.get('patientJobName')?.setValue(null);
       }
     });
@@ -278,7 +286,7 @@ export class MeningealComponent implements OnInit {
 
   get showJobName(): boolean {
     const category = this.patientForm.get('patientJobCategoryId')?.value;
-    return category != null && !this.jobCategoriesWithoutJobName.includes(Number(category));
+    return category != null && !this.hidesJobName(category);
   }
 
   get identityLockedByNationalId(): boolean {

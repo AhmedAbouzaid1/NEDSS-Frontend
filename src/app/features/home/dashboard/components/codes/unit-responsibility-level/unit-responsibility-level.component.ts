@@ -1,3 +1,5 @@
+import { NgForm } from '@angular/forms';
+import { resetFormState } from '../share/reset-form-state';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
@@ -13,6 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./unit-responsibility-level.component.css'],
 })
 export class UnitResponsibilityLevelComponent {
+  @ViewChild('unitResponsibilityLevelForm') unitResponsibilityLevelForm: NgForm;
   underDeleting = {
     arabicName: '',
     id: null
@@ -149,6 +152,7 @@ export class UnitResponsibilityLevelComponent {
                   this.userMsg.success(res);
                 });
               this.getUnitResponsibilityLevels();
+              resetFormState(this.unitResponsibilityLevelForm);
               this.unitResponsibilityLevel = {
                 id: null,
                 code: null,
@@ -227,6 +231,7 @@ export class UnitResponsibilityLevelComponent {
                 this.userMsg.success(res);
               });
             this.getUnitResponsibilityLevels();
+            resetFormState(this.unitResponsibilityLevelForm);
             this.unitResponsibilityLevel = {
               id: null,
               code: null,

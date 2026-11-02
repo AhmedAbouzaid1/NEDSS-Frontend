@@ -33,6 +33,7 @@ import * as Highcharts from 'highcharts';
 import { CardsPeriodDto } from '../dashboard/models/cardsPeriodDto';
 import { CardsPeriodTypeEnum } from 'src/app/enums/CardsPeriodTypeEnum';
 import { CardsPeriodDurationUnitEnum } from 'src/app/enums/CardsPeriodDurationUnitEnum';
+import { NationalityEnum } from '../general-data/models/nationality-enum';
 declare const bootstrap: any;
 @Component({
   selector: 'app-charts-dashboard',
@@ -3138,7 +3139,7 @@ export class ChartsDashboardComponent {
                   startDate: null,
                   fullName: '',
                   endDate: null,
-                  nationalityId: 1,
+                  nationalityId: NationalityEnum.Egyptian,
                   nationalId: null,
                   passportNo: null,
                   relativeTypeId: null,

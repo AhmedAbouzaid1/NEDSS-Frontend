@@ -19,6 +19,7 @@ import { ClearInvalidMinDateDirective } from './directives/clear-invalid-min-dat
 import { ScrollIntoViewOnResultsDirective } from './directives/scroll-into-view-on-results.directive';
 import { DropdownLoadingDirective } from './directives/dropdown-loading.directive';
 import { DropdownNoAutofocusFilterDirective } from './directives/dropdown-no-autofocus-filter.directive';
+import { DropdownArabicFilterDirective } from './directives/dropdown-arabic-filter.directive';
 import { NoNegativeNumberDirective } from './directives/no-negative-number.directive';
 import { ShowIfDirective } from './directives/show-if.directive';
 import { RecentDaysNoteComponent } from './components/recent-days-note/recent-days-note.component';
@@ -43,6 +44,7 @@ import { DateFieldComponent } from './components/date-field/date-field.component
     ScrollIntoViewOnResultsDirective,
     DropdownLoadingDirective,
     DropdownNoAutofocusFilterDirective,
+    DropdownArabicFilterDirective,
     NoNegativeNumberDirective,
     ShowIfDirective,
     DateFieldComponent,
@@ -65,6 +67,7 @@ import { DateFieldComponent } from './components/date-field/date-field.component
     ScrollIntoViewOnResultsDirective,
     DropdownLoadingDirective,
     DropdownNoAutofocusFilterDirective,
+    DropdownArabicFilterDirective,
     NoNegativeNumberDirective,
     ShowIfDirective,
     DateFieldComponent,

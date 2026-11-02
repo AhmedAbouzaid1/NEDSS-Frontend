@@ -49,6 +49,7 @@ export class NotInferringModalComponent implements OnChanges {
   // reason, so the trigger button can render distinctly.
   hasNotInferringData: boolean = false;
   notInferringReasonKey: string = '';
+  confirmingUndo: boolean = false;
 
   private readonly reasonKeys: { [key: number]: string } = {
     1: 'NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.NUMBER',
@@ -280,5 +281,34 @@ export class NotInferringModalComponent implements OnChanges {
       },
       (err) => console.error(err)
     );
+  }
+
+  undoNotInferring() {
+    this.confirmingUndo = false;
+    this.generalDataService
+      .updateInvestigation({ patientId: this.patient?.id, notInvestigationType: null })
+      .subscribe(
+        (res: any) => {
+          if (res != null) {
+            if (this.patient) {
+              Object.assign(this.patient, {
+                misInvistegationType: null,
+                misInvistegationReason: null,
+                newHomeGovernmentId: null,
+                newHomeCityId: null,
+                newHomeHealthAdministrationId: null,
+                newHomeHealthOfficeId: null,
+                newPhoneNo1: null,
+                newLivingAddress: null,
+              });
+            }
+            this.init();
+            this.userMsg.success('تم التراجع عن عدم الاستدلال بنجاح');
+          } else {
+            this.userMsg.error('حدث خطأ اثناء تحديث البيانات');
+          }
+        },
+        (err) => console.error(err)
+      );
   }
 }

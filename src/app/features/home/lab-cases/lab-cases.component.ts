@@ -13,6 +13,7 @@ import {
 import { ExportService } from '../../../core/services/export.service';
 import { GeneralDataService } from '../general-data/services/general-data.service';
 import { ExportAsConfig } from 'ngx-export-as';
+import { NationalityEnum } from '../general-data/models/nationality-enum';
 @Component({
   selector: 'app-lab-cases',
   templateUrl: './lab-cases.component.html',
@@ -147,7 +148,7 @@ export class LabCasesComponent {
   onNationalityChanged() {
     if (this.selectedNationality > 0) {
       this.patientsFilter.nationalityId = this.selectedNationality;
-      if (this.selectedNationality != 1) this.isForeign = true;
+      if (this.selectedNationality != NationalityEnum.Egyptian) this.isForeign = true;
       else this.isForeign = false;
     } else {
       this.patientsFilter.nationalityId = null;
