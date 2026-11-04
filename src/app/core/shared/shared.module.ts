@@ -25,6 +25,7 @@ import { ShowIfDirective } from './directives/show-if.directive';
 import { RecentDaysNoteComponent } from './components/recent-days-note/recent-days-note.component';
 import { MaterialModule } from './material-module';
 import { DateFieldComponent } from './components/date-field/date-field.component';
+import { RespiratoryDiagnosisPickerComponent } from './components/respiratory-diagnosis-picker/respiratory-diagnosis-picker.component';
 @NgModule({
   declarations: [
     RecentDaysNoteComponent,
@@ -48,6 +49,7 @@ import { DateFieldComponent } from './components/date-field/date-field.component
     NoNegativeNumberDirective,
     ShowIfDirective,
     DateFieldComponent,
+    RespiratoryDiagnosisPickerComponent,
   ],
   imports: [CommonModule, SidebarModule, TranslateModule, ReactiveFormsModule, FormsModule, MaterialModule],
   exports: [
@@ -71,6 +73,7 @@ import { DateFieldComponent } from './components/date-field/date-field.component
     NoNegativeNumberDirective,
     ShowIfDirective,
     DateFieldComponent,
+    RespiratoryDiagnosisPickerComponent,
   ],
 })
 export class SharedModule { }

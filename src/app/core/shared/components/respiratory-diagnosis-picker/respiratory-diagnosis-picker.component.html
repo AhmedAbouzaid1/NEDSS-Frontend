@@ -1,0 +1,36 @@
+<div class="rdp" [class.is-disabled]="disabled" [attr.dir]="lang == 'ar' ? 'rtl' : 'ltr'">
+  <div class="rdp__options" role="group">
+    <button
+      type="button"
+      *ngFor="let option of options"
+      class="rdp__option"
+      role="checkbox"
+      [attr.aria-checked]="isSelected(option.id)"
+      [class.is-selected]="isSelected(option.id)"
+      [disabled]="disabled"
+      (click)="toggle(option.id)"
+    >
+      <span class="rdp__icon"><i [class]="'bi ' + option.icon" aria-hidden="true"></i></span>
+      <span class="rdp__text">
+        <span class="rdp__name">{{ lang == 'en' ? option.englishName : option.arabicName }}</span>
+      </span>
+      <i class="bi rdp__check" [class.bi-check-circle-fill]="isSelected(option.id)" [class.bi-circle]="!isSelected(option.id)" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="rdp__footer">
+    <span class="rdp__note">
+      <i class="bi bi-info-circle" aria-hidden="true"></i>
+      {{ lang == 'en' ? 'You can pick one or both.' : 'يمكنك اختيار أحدهما أو كليهما.' }}
+    </span>
+    <button
+      type="button"
+      class="rdp__both"
+      [class.is-active]="allSelected"
+      [disabled]="disabled"
+      (click)="toggleAll()"
+    >
+      <i class="bi" [class.bi-check2-all]="!allSelected" [class.bi-x-lg]="allSelected" aria-hidden="true"></i>
+      {{ allSelected ? (lang == 'en' ? 'Clear selection' : 'إلغاء التحديد') : (lang == 'en' ? 'Select both' : 'اختيار الاثنين معًا') }}
+    </button>
+  </div>
+</div>
