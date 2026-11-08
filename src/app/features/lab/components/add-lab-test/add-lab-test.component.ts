@@ -15,6 +15,7 @@ import {
 } from 'src/app/core/constants';
 import { from } from 'rxjs';
 import { concatMap, finalize, toArray } from 'rxjs/operators';
+import { normalizeArabicForSearch } from 'src/app/core/shared/utilis/arabic-text';
 import { BrucellaSerumIds, brucellaSecondSerumError, isBrucellaSecondSerum } from '../../models/brucella-lab-rules';
 
 declare const bootstrap: any;
@@ -778,11 +779,20 @@ export class AddLabTestComponent {
     this.editingBrucellaSecondSerum = false;
   }
 
+  isNoSampleSelected(): boolean {
+    if (this.selectedCheckSample == null) {
+      return false;
+    }
+    const sample = this.checkSamples?.find((item) => item.id == this.selectedCheckSample);
+    const name = normalizeArabicForSearch(sample?.arabicName).replace(/ء/g, '');
+    return name === 'لا شي' || name === 'لاشي';
+  }
+
   validateRequiredData(): boolean {
     if (
       this.patientAddCheck.dieaseLabTestId == null ||
       this.patientAddCheck.diseaseCheckId == null ||
-      this.patientAddCheck.getSampleDate == null
+      (this.patientAddCheck.getSampleDate == null && !this.isNoSampleSelected())
     )
       return false;
     return true;
