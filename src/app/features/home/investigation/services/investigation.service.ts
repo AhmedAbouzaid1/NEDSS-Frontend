@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { BaseAPIService } from 'src/app/core/services/BaseAPI.service';
 import { environment } from 'src/environments/environment';
@@ -228,9 +228,10 @@ export class InvestigationService {
       ivestigation
     );
   }
-  getByIdHemorrhagicFever(id: any) {
+  getByIdHemorrhagicFever(id: any, diseaseGroupId?: any) {
+    const diseaseGroupQuery = diseaseGroupId ? '&diseaseGroupId=' + diseaseGroupId : '';
     return this.APIs.get(
-      this.controllerURL + 'GetHemorrhagicFeverByPatientId?id=' + id
+      this.controllerURL + 'GetHemorrhagicFeverByPatientId?id=' + id + diseaseGroupQuery
     );
   }
   //Schistosomiasis
