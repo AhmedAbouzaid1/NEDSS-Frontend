@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+﻿import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,23 +28,23 @@ const RISK_FIELDS = [
 
 const CHECKBOX_FIELDS = [...SYMPTOM_FIELDS, ...RISK_FIELDS];
 
-const GENERAL_CHRONIC_NAMES: Record<string, string> = {
-  riskHeartDisease: 'امراض القلب',
-  riskChestDisease: 'امراض الصدر المزمنه',
-  riskKidneyDisease: 'امراض الكلي',
-  riskDiabetes: 'مرض السكري',
-  riskImmuneDisease: 'نقص المناعه',
-  riskPregnancy: 'سيدات حوامل',
+const GENERAL_CHRONIC_NAMES: Record<string, string[]> = {
+  riskHeartDisease: ['امراض القلب', 'heart diseases'],
+  riskChestDisease: ['امراض الصدر المزمنه', 'chronic respiratory diseases'],
+  riskKidneyDisease: ['امراض الكلي', 'kidney diseases'],
+  riskDiabetes: ['مرض السكري', 'diabetes'],
+  riskImmuneDisease: ['نقص المناعه', 'immunodeficiency'],
+  riskPregnancy: ['سيدات حوامل', 'pregnant women'],
 };
 
 const GENERAL_DATA_SYMPTOMS: Record<string, { ar: string[]; en: string[] }> = {
   symptomHeadache: { ar: ['صداع'], en: ['headache'] },
-  symptomAbdominalPain: { ar: ['مغص / الم بطني', 'الم بطني'], en: ['colic / intestinal distress / abdominal pain', 'abdominal pain'] },
-  symptomMusclePain: { ar: ['الم العضلات'], en: ['musclepain', 'muscle pain'] },
-  symptomJointPain: { ar: ['الم المفاصل'], en: ['jointpain', 'joint pain'] },
-  symptomDiarrhea: { ar: ['اسهال', 'اسهال مائي'], en: ['diarrhea', 'materydiarrhea', 'watery diarrhea'] },
+  symptomAbdominalPain: { ar: ['مغص / الم بطني', 'الم بطني', 'الام و تقلصات في البطن'], en: ['colic / intestinal distress / abdominal pain', 'abdominal pain', 'abdominal pain and cramps'] },
+  symptomMusclePain: { ar: ['الم العضلات', 'الام بالعضلات'], en: ['musclepain', 'muscle pain'] },
+  symptomJointPain: { ar: ['الم المفاصل', 'الام المفاصل', 'الم بالمفاصل'], en: ['jointpain', 'joint pain', 'arthralgia', 'arthralgia / joint pain'] },
+  symptomDiarrhea: { ar: ['اسهال', 'اسهال مائي', '3 نوبات اسهال او اكثر في اليوم'], en: ['diarrhea', 'materydiarrhea', 'watery diarrhea', 'frequent loose bowel movements (≥3 times/day)'] },
   symptomVomiting: { ar: ['قيء'], en: ['vomit', 'vomiting'] },
-  symptomConsciousnessDisturbance: { ar: ['اضطراب الحاله الذهنيه'], en: ['impairedmentalstate', 'impaired mental state'] },
+  symptomConsciousnessDisturbance: { ar: ['اضطراب الحاله الذهنيه', 'اضطراب درجه الوعي'], en: ['impairedmentalstate', 'impaired mental state', 'disturbances conscious level'] },
   symptomJaundice: { ar: ['صفراء', 'يرقان'], en: ['yellow', 'jaundice'] },
 };
 
@@ -319,7 +319,7 @@ export class HemorrhagicFeversComponent implements OnInit {
       patient: this.generalDataService.getPatientByIdForInvestigation(this.currentId),
       chronic: this.lookupsService.getChronicDiseases().pipe(catchError(() => of(null))),
       symptoms: this.lookupsService.getAllClinicalSymptoms().pipe(catchError(() => of(null))),
-      investigation: this.investigationService.getByIdHemorrhagicFever(this.currentId),
+      investigation: this.investigationService.getByIdHemorrhagicFever(this.currentId, this.diseaseGroupID),
     }).subscribe(
       ({ patient, chronic, symptoms, investigation }: any) => {
         this.patient = patient?.data ?? {};
@@ -361,29 +361,32 @@ export class HemorrhagicFeversComponent implements OnInit {
     const p = this.patient ?? {};
     const chronicIds = new Set<number>((p.chronicDiseasesIds ?? []).map((x: any) => Number(x)));
     const selectedChronic = this.chronicDiseases.filter((c) => chronicIds.has(Number(c.id)));
-    const selectedNames = selectedChronic.map((c) => this.normalize(c.arabicName));
-    const knownNames = Object.values(GENERAL_CHRONIC_NAMES);
+    const selectedNames = selectedChronic.map((c) => this.matchKey(this.chronicName(c)));
+    const knownNames = Object.values(GENERAL_CHRONIC_NAMES).flat().map((n) => this.matchKey(n));
     const patch: any = {
       hospitalEntryDate: this.toDateInput(p.hospitalEntryDate),
       hospitalLeaveDate: this.toDateInput(p.hospitalLeaveDate),
       infectionDate: this.toDateInput(p.infectionDate),
       finalResultId: p.finalResultId ?? null,
     };
-    Object.entries(GENERAL_CHRONIC_NAMES).forEach(([field, name]) => (patch[field] = selectedNames.includes(name)));
+    Object.entries(GENERAL_CHRONIC_NAMES).forEach(
+      ([field, names]) => (patch[field] = names.some((n) => selectedNames.includes(this.matchKey(n))))
+    );
 
     const symptomIds = new Set<number>((p.clinicalSymptomIds ?? []).map((x: any) => Number(x)));
     const selectedSymptoms = this.clinicalSymptoms.filter((c) => symptomIds.has(Number(c.id)));
     Object.entries(GENERAL_DATA_SYMPTOMS).forEach(([field, names]) => {
-      const ar = names.ar.map((n) => this.normalize(n));
+      const keys = [...names.ar, ...names.en].map((n) => this.matchKey(n));
       patch[field] = selectedSymptoms.some(
-        (c) => ar.includes(this.normalize(c.arabicName)) || names.en.includes(String(c.englishName ?? '').trim().toLowerCase())
+        (c) => keys.includes(this.matchKey(c.arabicName)) || keys.includes(this.matchKey(c.englishName))
       );
     });
     patch.symptomFever = !!p.feverSymptoms?.feverDate || selectedSymptoms.some((c) => this.isFeverSymptom(c));
 
     const otherNames = selectedChronic
-      .filter((c) => !knownNames.includes(this.normalize(c.arabicName)))
-      .map((c) => this.lookupName(c));
+      .filter((c) => !knownNames.includes(this.matchKey(this.chronicName(c))))
+      .map((c) => this.chronicName(c))
+      .filter((name) => !!name);
     const anotherText = p.anotherChronicDisease?.trim() || '';
     const details = [otherNames.join('، '), anotherText].filter((x) => !!x).join('، ');
     patch.riskOtherChronicDisease = !!details;
@@ -495,6 +498,14 @@ export class HemorrhagicFeversComponent implements OnInit {
     const arabicName = String(symptom?.arabicName ?? '');
     const englishName = String(symptom?.englishName ?? '').toLowerCase();
     return code === 'FEVER' || arabicName.includes('حمى') || arabicName.includes('حرارة') || englishName.includes('fever');
+  }
+
+  private chronicName(item: any): string {
+    return String(item?.name ?? item?.arabicName ?? item?.englishName ?? '').trim();
+  }
+
+  private matchKey(value: any): string {
+    return this.normalize(value).toLowerCase();
   }
 
   private normalize(value: any): string {
