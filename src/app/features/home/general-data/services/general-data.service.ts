@@ -81,6 +81,8 @@ export class GeneralDataService {
       ['transferIncidentSourceId', 'TransferIncidentSourceId'],
       ['specialLabSourceId', 'SpecialLabSourceId'],
       ['isSpecialLabLab', 'IsSpecialLabLab'],
+      ['respiratoryDiagnosisTypes', 'RespiratoryDiagnosisTypes'],
+      ['respiratoryChoiceAvailable', 'RespiratoryChoiceAvailable'],
     ];
     for (const [camel, pascal] of pairs) {
       alias(d, camel, pascal);

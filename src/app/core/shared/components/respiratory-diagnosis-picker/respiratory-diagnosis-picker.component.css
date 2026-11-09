@@ -1,0 +1,129 @@
+.rdp__options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.rdp__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #dbe3ec;
+  border-radius: 12px;
+  background: #fff;
+  color: #1d2b3a;
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rdp__option:hover:not(:disabled) {
+  border-color: #9cc3f0;
+  background: #f8fbff;
+}
+
+.rdp__option:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(11, 111, 216, 0.25);
+}
+
+.rdp__option.is-selected {
+  border-color: #0b6fd8;
+  background: #eef5fe;
+  box-shadow: 0 2px 10px rgba(11, 111, 216, 0.12);
+}
+
+.rdp__icon {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8f1fe;
+  color: #0b6fd8;
+  font-size: 1.25rem;
+}
+
+.rdp__option.is-selected .rdp__icon {
+  background: #0b6fd8;
+  color: #fff;
+}
+
+.rdp__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.rdp__name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.rdp__check {
+  flex: 0 0 auto;
+  font-size: 1.2rem;
+  color: #b6c2cf;
+}
+
+.rdp__option.is-selected .rdp__check {
+  color: #0b6fd8;
+}
+
+.rdp__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.rdp__note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #6b7b8c;
+}
+
+.rdp__both {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border: 1px solid #cfe0f7;
+  border-radius: 20px;
+  background: #fff;
+  color: #0b6fd8;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rdp__both:hover:not(:disabled) {
+  background: #eef5fe;
+}
+
+.rdp__both.is-active {
+  color: #4a5868;
+  border-color: #d5dce4;
+}
+
+.rdp.is-disabled .rdp__option,
+.rdp.is-disabled .rdp__both {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 575.98px) {
+  .rdp__options {
+    grid-template-columns: 1fr;
+  }
+}

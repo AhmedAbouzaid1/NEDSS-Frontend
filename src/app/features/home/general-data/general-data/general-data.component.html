@@ -124,6 +124,30 @@
         </div>
       </section>
 
+      <section #gdSection *ngIf="showRespiratoryDiagnosisSection" id="gd-sec-respiratory" data-key="respiratory" class="gd-section" [class.is-collapsed]="collapsedSections['respiratory']">
+        <header
+        class="gd-section__head"
+        role="button"
+        tabindex="0"
+        [attr.aria-expanded]="!collapsedSections['respiratory']"
+        (click)="toggleSection('respiratory')"
+        (keydown.enter)="toggleSection('respiratory')"
+        (keydown.space)="$event.preventDefault(); toggleSection('respiratory')"
+      >
+          <span class="gd-section__icon"><i class="bi bi-lungs" aria-hidden="true"></i></span>
+          <h3 class="gd-section__title">
+            {{ "NEDSS.GENERAL_DATA_SIDEMENU.RESPIRATORY_DIAGNOSIS" | translate }}
+          </h3>
+          <i class="bi bi-chevron-down gd-section__chevron" aria-hidden="true"></i>
+      </header>
+        <div class="gd-section__body" [hidden]="collapsedSections['respiratory']">
+          <app-respiratory-diagnosis-picker
+            [(ngModel)]="patient.respiratoryDiagnosisTypes"
+            name="respiratoryDiagnosisTypes"
+          ></app-respiratory-diagnosis-picker>
+        </div>
+      </section>
+
       <section #gdSection id="gd-sec-clinical" data-key="clinical" class="gd-section" [class.is-collapsed]="collapsedSections['clinical']">
         <header
         class="gd-section__head"

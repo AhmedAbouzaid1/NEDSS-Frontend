@@ -274,6 +274,369 @@
             <!-- / .row -->
           </div>
           <!-- / .col-12 -->
+
+          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-12 title fs-6 fwb">التقصي البيئي</div>
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">نوع مصدر المياه بالمنزل</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.waterSourceHouse"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of waterSourceHouses" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.waterSourceHouse == 5">
+                <div class="form-group">
+                  <label for="">في حالة أخرى</label>
+                  <input type="text" maxlength="100" class="form-control" name="anotherCase"
+                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.anotherCase"
+                    #anotherCase="ngModel" />
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">هل يتم تخزين المياه</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.waterStored"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of waterStoreds" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.waterStored == 1">
+                <div class="form-group">
+                  <label for="">في حالة نعم. نوع الخزان</label>
+                  <input type="text" maxlength="100" class="form-control" name="tankType"
+                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.tankType"
+                    #tankType="ngModel" />
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">نوع نظام المجارى المستخدم بمنزل المريض</label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.sewageSystem"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of sewageSystems" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">ما هى المسافه بين مصادر المياه والمجارى؟</label>
+                  <select name="case" id="" class="form-control"
+                    [(ngModel)]="hepatitisVirusesData.distanceWaterSourcesSewage"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of distanceWaterSourcesSewages" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">هل توجد صيانه جيده لنظام المجارى الموجود؟</label>
+                  <select name="case" id="" class="form-control"
+                    [(ngModel)]="hepatitisVirusesData.maintenanceSewerSystem" (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of maintenanceSewerSystems" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">
+                    هل تعلم بوجود كسر فى مواسير شبكه مياه الشرب خلال الثلاث
+                    أسابيع الماضية ؟
+                  </label>
+                  <select name="case" id="" class="form-control"
+                    [(ngModel)]="hepatitisVirusesData.breakPipesDrinkingWater" (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of breakPipesDrinkingWaters" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">
+                    هل تعلم بوجود طفح من شبكه المجارى خلال الثلاث أسابيع
+                    الماضية ؟
+                  </label>
+                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.overflowSewerSystem"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of overflowSewerSystems" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">
+                    هل لوحظ تغير في طعم أو لون أو رائحة في مياه الشرب خلال
+                    أسبوع من ظهور الأعراض؟
+                  </label>
+                  <select name="case" id="" class="form-control"
+                    [(ngModel)]="hepatitisVirusesData.changeTasteColorSmellwater"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of changeTasteColorSmellwaters" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">
+                    هل توجد تقارير عن تلوث مصادر المياه بالمجارى فى هذه
+                    المنطقة؟
+                  </label>
+                  <select name="case" id="" class="form-control"
+                    [(ngModel)]="hepatitisVirusesData.reportsContaminationWater"
+                    (blur)="calculateCompletionPercentage()">
+                    <option *ngFor="let case of reportsContaminationWaters" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-6 -->
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="">
+                    هل تم أخذ عينات مياه للتحليل من منزل المريض / من
+                    المنطقة؟
+                  </label>
+                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
+                    [(ngModel)]="hepatitisVirusesData.samplesAnalysisPatienhome">
+                    <option *ngFor="let case of samplesAnalysisPatienhomes" [value]="case.id">
+                      {{ case.arabicName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- /.col-lg-4 -->
+              <div class="col-lg-8 border-right inv-group" [appShowIf]="hepatitisVirusesData.samplesAnalysisPatienhome == 1">
+                <p>فى حاله نعم ، هل كانت العينه إيجابيه لأى من :</p>
+                <div class="row contaminant-grid">
+                  <div class="col-12 inv-pair-nested">
+                    <div class="row inv-pair">
+                      <div class="col-6">Entamoeba Histolytica</div>
+                      <div class="col-6">
+                        <select class="form-control" name="entamoebaHistolytica"
+                          [(ngModel)]="hepatitisVirusesData.entamoebaHistolytica"
+                          (change)="calculateCompletionPercentage()">
+                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 inv-pair-nested">
+                    <div class="row inv-pair">
+                      <div class="col-6">Shigella species</div>
+                      <div class="col-6">
+                        <select class="form-control" name="shigellaSpecies"
+                          [(ngModel)]="hepatitisVirusesData.shigellaSpecies"
+                          (change)="calculateCompletionPercentage()">
+                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 inv-pair-nested">
+                    <div class="row inv-pair">
+                      <div class="col-6">Campylobacter</div>
+                      <div class="col-6">
+                        <select class="form-control" name="campylobacter"
+                          [(ngModel)]="hepatitisVirusesData.campylobacter"
+                          (change)="calculateCompletionPercentage()">
+                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 inv-pair-nested">
+                    <div class="row inv-pair">
+                      <div class="col-6">Salmonella species</div>
+                      <div class="col-6">
+                        <select class="form-control" name="salmonellaSpecies"
+                          [(ngModel)]="hepatitisVirusesData.salmonellaSpecies"
+                          (change)="calculateCompletionPercentage()">
+                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 inv-pair-nested">
+                    <div class="row inv-pair">
+                      <div class="col-6">Pathogenic E. coli</div>
+                      <div class="col-6">
+                        <select class="form-control" name="pathogenicColi"
+                          [(ngModel)]="hepatitisVirusesData.pathogenicColi"
+                          (change)="calculateCompletionPercentage()">
+                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 inv-pair-nested">
+                    <div class="row inv-pair">
+                      <div class="col-6">Salmonella Typhi</div>
+                      <div class="col-6">
+                        <select class="form-control" name="salmonellaTyphi"
+                          [(ngModel)]="hepatitisVirusesData.salmonellaTyphi"
+                          (change)="calculateCompletionPercentage()">
+                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 inv-pair-nested">
+                    <div class="row inv-pair">
+                      <div class="col-6">Vibrio Cholera</div>
+                      <div class="col-6">
+                        <select class="form-control" name="vibrioCholera"
+                          [(ngModel)]="hepatitisVirusesData.vibrioCholera"
+                          (change)="calculateCompletionPercentage()">
+                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <label>أخرى</label>
+                    <input type="text" maxlength="100" class="form-control" name="otherSamplesAnalysisPatienhome"
+                      (blur)="calculateCompletionPercentage()" [(ngModel)]="
+                        hepatitisVirusesData.otherSamplesAnalysisPatienhome
+                      " #otherSamplesAnalysisPatienhome="ngModel" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-12 form-divider">
+                <hr />
+              </div>
+              <div class="col-lg-12 water-samples-title inv-group-label">
+                ما هى أنواع عينات المياه التى ثبت تلوثها؟
+              </div>
+              <div class="col-lg-12 inv-group">
+                <div class="col-12 water-sample-grid inv-pair-nested">
+                  <div class="row inv-pair">
+                    <div class="col-4">مياة مرشحة</div>
+                    <div class="col-8">
+                      <select class="form-control" name="filteredWater"
+                        [(ngModel)]="hepatitisVirusesData.filteredWater" (change)="calculateCompletionPercentage()">
+                        <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                          {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row inv-pair">
+                    <div class="col-4">أبار</div>
+                    <div class="col-8">
+                      <select class="form-control" name="wells" [(ngModel)]="hepatitisVirusesData.wells"
+                        (change)="calculateCompletionPercentage()">
+                        <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                          {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row inv-pair">
+                    <div class="col-4">طلمبة حبشى</div>
+                    <div class="col-8">
+                      <select class="form-control" name="ethiopianPump"
+                        [(ngModel)]="hepatitisVirusesData.ethiopianPump" (change)="calculateCompletionPercentage()">
+                        <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                          {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row inv-pair">
+                    <div class="col-4">قناة / ترعة</div>
+                    <div class="col-8">
+                      <select class="form-control" name="canal" [(ngModel)]="hepatitisVirusesData.canal"
+                        (change)="calculateCompletionPercentage()">
+                        <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                          {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row inv-pair">
+                    <div class="col-4">مياه مخزنة</div>
+                    <div class="col-8">
+                      <select class="form-control" name="storedWater"
+                        [(ngModel)]="hepatitisVirusesData.storedWater" (change)="calculateCompletionPercentage()">
+                        <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                          {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 form-divider">
+                <hr />
+              </div>
+              <div class="col-lg-4 inv-field-cell">
+                <div class="form-group">
+                  <label for="sampledSewerSystemTaken">هل تم أخذ عينه من نظام المجارى؟</label>
+                  <select id="sampledSewerSystemTaken" class="form-control" name="sampledSewerSystemTaken"
+                    [(ngModel)]="hepatitisVirusesData.sampledSewerSystemTaken"
+                    (change)="calculateCompletionPercentage()">
+                    <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
+                      {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-4 inv-field-cell" [appShowIf]="[0, '0'].includes(hepatitisVirusesData.sampledSewerSystemTaken)">
+                <div class="form-group">
+                  <label for="">فى حاله نعم، ماذا كانت نتيجة العينة ؟</label>
+                  <input type="text" maxlength="100" class="form-control" name="sampleResult"
+                    [(ngModel)]="hepatitisVirusesData.sampleResult" #sampleResult="ngModel"
+                    (blur)="calculateCompletionPercentage()" />
+                </div>
+              </div>
+            </div>
+            <!-- / .row -->
+          </div>
+          <!-- / .col-12 -->
         </div>
 
         <div class="row color" [appShowIf]="hasHepatitisType(2)">
@@ -1948,369 +2311,6 @@
         <!-- / .row -->
 
         <div class="row color">
-          <div class="col-12 card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
-            <div class="row">
-              <div class="col-12 title fs-6 fwb">التقصي البيئي</div>
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">نوع مصدر المياه بالمنزل</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.waterSourceHouse"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of waterSourceHouses" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.waterSourceHouse == 5">
-                <div class="form-group">
-                  <label for="">في حالة أخرى</label>
-                  <input type="text" maxlength="100" class="form-control" name="anotherCase"
-                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.anotherCase"
-                    #anotherCase="ngModel" />
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">هل يتم تخزين المياه</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.waterStored"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of waterStoreds" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="hepatitisVirusesData.waterStored == 1">
-                <div class="form-group">
-                  <label for="">في حالة نعم. نوع الخزان</label>
-                  <input type="text" maxlength="100" class="form-control" name="tankType"
-                    (blur)="calculateCompletionPercentage()" [(ngModel)]="hepatitisVirusesData.tankType"
-                    #tankType="ngModel" />
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">نوع نظام المجارى المستخدم بمنزل المريض</label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.sewageSystem"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of sewageSystems" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">ما هى المسافه بين مصادر المياه والمجارى؟</label>
-                  <select name="case" id="" class="form-control"
-                    [(ngModel)]="hepatitisVirusesData.distanceWaterSourcesSewage"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of distanceWaterSourcesSewages" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">هل توجد صيانه جيده لنظام المجارى الموجود؟</label>
-                  <select name="case" id="" class="form-control"
-                    [(ngModel)]="hepatitisVirusesData.maintenanceSewerSystem" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of maintenanceSewerSystems" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">
-                    هل تعلم بوجود كسر فى مواسير شبكه مياه الشرب خلال الثلاث
-                    أسابيع الماضية ؟
-                  </label>
-                  <select name="case" id="" class="form-control"
-                    [(ngModel)]="hepatitisVirusesData.breakPipesDrinkingWater" (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of breakPipesDrinkingWaters" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">
-                    هل تعلم بوجود طفح من شبكه المجارى خلال الثلاث أسابيع
-                    الماضية ؟
-                  </label>
-                  <select name="case" id="" class="form-control" [(ngModel)]="hepatitisVirusesData.overflowSewerSystem"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of overflowSewerSystems" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">
-                    هل لوحظ تغير في طعم أو لون أو رائحة في مياه الشرب خلال
-                    أسبوع من ظهور الأعراض؟
-                  </label>
-                  <select name="case" id="" class="form-control"
-                    [(ngModel)]="hepatitisVirusesData.changeTasteColorSmellwater"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of changeTasteColorSmellwaters" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">
-                    هل توجد تقارير عن تلوث مصادر المياه بالمجارى فى هذه
-                    المنطقة؟
-                  </label>
-                  <select name="case" id="" class="form-control"
-                    [(ngModel)]="hepatitisVirusesData.reportsContaminationWater"
-                    (blur)="calculateCompletionPercentage()">
-                    <option *ngFor="let case of reportsContaminationWaters" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-6 -->
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="">
-                    هل تم أخذ عينات مياه للتحليل من منزل المريض / من
-                    المنطقة؟
-                  </label>
-                  <select name="case" id="" class="form-control" (blur)="calculateCompletionPercentage()"
-                    [(ngModel)]="hepatitisVirusesData.samplesAnalysisPatienhome">
-                    <option *ngFor="let case of samplesAnalysisPatienhomes" [value]="case.id">
-                      {{ case.arabicName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <!-- /.col-lg-4 -->
-              <div class="col-lg-8 border-right inv-group" [appShowIf]="hepatitisVirusesData.samplesAnalysisPatienhome == 1">
-                <p>فى حاله نعم ، هل كانت العينه إيجابيه لأى من :</p>
-                <div class="row contaminant-grid">
-                  <div class="col-12 inv-pair-nested">
-                    <div class="row inv-pair">
-                      <div class="col-6">Entamoeba Histolytica</div>
-                      <div class="col-6">
-                        <select class="form-control" name="entamoebaHistolytica"
-                          [(ngModel)]="hepatitisVirusesData.entamoebaHistolytica"
-                          (change)="calculateCompletionPercentage()">
-                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 inv-pair-nested">
-                    <div class="row inv-pair">
-                      <div class="col-6">Shigella species</div>
-                      <div class="col-6">
-                        <select class="form-control" name="shigellaSpecies"
-                          [(ngModel)]="hepatitisVirusesData.shigellaSpecies"
-                          (change)="calculateCompletionPercentage()">
-                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 inv-pair-nested">
-                    <div class="row inv-pair">
-                      <div class="col-6">Campylobacter</div>
-                      <div class="col-6">
-                        <select class="form-control" name="campylobacter"
-                          [(ngModel)]="hepatitisVirusesData.campylobacter"
-                          (change)="calculateCompletionPercentage()">
-                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 inv-pair-nested">
-                    <div class="row inv-pair">
-                      <div class="col-6">Salmonella species</div>
-                      <div class="col-6">
-                        <select class="form-control" name="salmonellaSpecies"
-                          [(ngModel)]="hepatitisVirusesData.salmonellaSpecies"
-                          (change)="calculateCompletionPercentage()">
-                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 inv-pair-nested">
-                    <div class="row inv-pair">
-                      <div class="col-6">Pathogenic E. coli</div>
-                      <div class="col-6">
-                        <select class="form-control" name="pathogenicColi"
-                          [(ngModel)]="hepatitisVirusesData.pathogenicColi"
-                          (change)="calculateCompletionPercentage()">
-                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 inv-pair-nested">
-                    <div class="row inv-pair">
-                      <div class="col-6">Salmonella Typhi</div>
-                      <div class="col-6">
-                        <select class="form-control" name="salmonellaTyphi"
-                          [(ngModel)]="hepatitisVirusesData.salmonellaTyphi"
-                          (change)="calculateCompletionPercentage()">
-                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 inv-pair-nested">
-                    <div class="row inv-pair">
-                      <div class="col-6">Vibrio Cholera</div>
-                      <div class="col-6">
-                        <select class="form-control" name="vibrioCholera"
-                          [(ngModel)]="hepatitisVirusesData.vibrioCholera"
-                          (change)="calculateCompletionPercentage()">
-                          <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                            {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-12">
-                    <label>أخرى</label>
-                    <input type="text" maxlength="100" class="form-control" name="otherSamplesAnalysisPatienhome"
-                      (blur)="calculateCompletionPercentage()" [(ngModel)]="
-                        hepatitisVirusesData.otherSamplesAnalysisPatienhome
-                      " #otherSamplesAnalysisPatienhome="ngModel" />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-12 form-divider">
-                <hr />
-              </div>
-              <div class="col-lg-12 water-samples-title inv-group-label">
-                ما هى أنواع عينات المياه التى ثبت تلوثها؟
-              </div>
-              <div class="col-lg-12 inv-group">
-                <div class="col-12 water-sample-grid inv-pair-nested">
-                  <div class="row inv-pair">
-                    <div class="col-4">مياة مرشحة</div>
-                    <div class="col-8">
-                      <select class="form-control" name="filteredWater"
-                        [(ngModel)]="hepatitisVirusesData.filteredWater" (change)="calculateCompletionPercentage()">
-                        <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                          {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row inv-pair">
-                    <div class="col-4">أبار</div>
-                    <div class="col-8">
-                      <select class="form-control" name="wells" [(ngModel)]="hepatitisVirusesData.wells"
-                        (change)="calculateCompletionPercentage()">
-                        <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                          {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row inv-pair">
-                    <div class="col-4">طلمبة حبشى</div>
-                    <div class="col-8">
-                      <select class="form-control" name="ethiopianPump"
-                        [(ngModel)]="hepatitisVirusesData.ethiopianPump" (change)="calculateCompletionPercentage()">
-                        <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                          {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row inv-pair">
-                    <div class="col-4">قناة / ترعة</div>
-                    <div class="col-8">
-                      <select class="form-control" name="canal" [(ngModel)]="hepatitisVirusesData.canal"
-                        (change)="calculateCompletionPercentage()">
-                        <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                          {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row inv-pair">
-                    <div class="col-4">مياه مخزنة</div>
-                    <div class="col-8">
-                      <select class="form-control" name="storedWater"
-                        [(ngModel)]="hepatitisVirusesData.storedWater" (change)="calculateCompletionPercentage()">
-                        <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                          {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-12 form-divider">
-                <hr />
-              </div>
-              <div class="col-lg-4 inv-field-cell">
-                <div class="form-group">
-                  <label for="sampledSewerSystemTaken">هل تم أخذ عينه من نظام المجارى؟</label>
-                  <select id="sampledSewerSystemTaken" class="form-control" name="sampledSewerSystemTaken"
-                    [(ngModel)]="hepatitisVirusesData.sampledSewerSystemTaken"
-                    (change)="calculateCompletionPercentage()">
-                    <option *ngFor="let option of yesNoUnknownOptions" [ngValue]="option.id">
-                      {{ currentLang === 'ar' ? option.arabicName : option.englishName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-4 inv-field-cell" [appShowIf]="[0, '0'].includes(hepatitisVirusesData.sampledSewerSystemTaken)">
-                <div class="form-group">
-                  <label for="">فى حاله نعم، ماذا كانت نتيجة العينة ؟</label>
-                  <input type="text" maxlength="100" class="form-control" name="sampleResult"
-                    [(ngModel)]="hepatitisVirusesData.sampleResult" #sampleResult="ngModel"
-                    (blur)="calculateCompletionPercentage()" />
-                </div>
-              </div>
-            </div>
-            <!-- / .row -->
-          </div>
-          <!-- / .col-12 -->
-        
           <div class="col-12 card card-body rounded-2 mx-2 mb-4 card-alt">
             <div class="row">
             
