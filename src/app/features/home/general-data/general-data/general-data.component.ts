@@ -119,10 +119,15 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
       { key: 'demographic', icon: 'bi-person-vcard', title: 'NEDSS.GENERAL_DATA_SIDEMENU.DEMOGRAPHIC_INFO', show: ready[1] },
       { key: 'residence', icon: 'bi-geo-alt', title: 'NEDSS.GENERAL_DATA_SIDEMENU.RESIDENCEINFO', show: ready[2] },
       { key: 'diagnostics', icon: 'bi-clipboard2-pulse', title: 'NEDSS.GENERAL_DATA_SIDEMENU.DIAGNOISTICIFO', show: ready[3] },
+      { key: 'respiratory', icon: 'bi-lungs', title: 'NEDSS.GENERAL_DATA_SIDEMENU.RESPIRATORY_DIAGNOSIS', show: ready[3] && this.showRespiratoryDiagnosisSection },
       { key: 'clinical', icon: 'bi-thermometer-half', title: 'NEDSS.GENERAL_DATA_SIDEMENU.CLINICALSYMPTOMS', show: ready[3] },
       { key: 'special', icon: 'bi-list-check', title: 'NEDSS.GENERAL_DATA_SIDEMENU.SPECIALSYMTOMS', show: ready[4] && !!this.patient?.fields?.length },
       { key: 'sentinel', icon: 'bi-broadcast', title: 'NEDSS.GENERAL_DATA_SIDEMENU.SENTINEL', show: ready[4] && !!this.sharedDataService.ShowSentinel },
     ].filter(section => section.show);
+  }
+
+  get showRespiratoryDiagnosisSection(): boolean {
+    return !!this.patient?.id && !!this.patient?.respiratoryChoiceAvailable;
   }
 
   trackSection = (_: number, section: { key: string }) => section.key;

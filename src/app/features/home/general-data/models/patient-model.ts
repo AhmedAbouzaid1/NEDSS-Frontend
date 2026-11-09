@@ -64,6 +64,8 @@ export class PatientModel {
   isCentralLabLab!: boolean;
   isGovernmentLab!: boolean;
   isMalariaLab?: boolean;
+  respiratoryDiagnosisTypes?: string | null;
+  respiratoryChoiceAvailable?: boolean;
   isRegionalLab!: boolean;
   regionalLabId!: number;
   isSpecialLabLab!: boolean;
