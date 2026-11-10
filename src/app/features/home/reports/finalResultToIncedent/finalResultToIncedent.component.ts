@@ -1,3 +1,5 @@
+import { isFinalDiagnosisResult } from 'src/app/core/shared/utilis/final-diagnoses';
+import { finalize } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
@@ -20,6 +22,8 @@ export class FinalResultToIncedentComponent implements OnInit {
 
   Categories: any;
   diseases: any;
+  finalDiseases: any[] = [];
+  finalDiseasesLoading = true;
   selectedDiseases: any[] = [];
   selectedyears;
   years = [
@@ -119,8 +123,16 @@ export class FinalResultToIncedentComponent implements OnInit {
     incidentInfoLink.classList.remove('active');
     this.getCaseCategories();
     this.getDiseases();
+    this.lookUpsService
+      .getFinalDiagnoses()
+      .pipe(finalize(() => (this.finalDiseasesLoading = false)))
+      .subscribe((diseases) => (this.finalDiseases = diseases));
     this.getAllFinalResults();
   }
+  get isFinalResult(): boolean {
+    return isFinalDiagnosisResult(this.resultType);
+  }
+
   getDiseases() {
     this.lookUpsService.getAllDiseaseGroups().subscribe(
       (result: any) => {

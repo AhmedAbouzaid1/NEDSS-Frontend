@@ -1,3 +1,5 @@
+import { isFinalDiagnosisResult } from 'src/app/core/shared/utilis/final-diagnoses';
+import { finalize } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
@@ -21,6 +23,8 @@ export class WithJobTitleReportComponent implements OnInit {
 
   Categories: any;
   diseases: any;
+  finalDiseases: any[] = [];
+  finalDiseasesLoading = true;
   selectedDiseases: any[] = [];
   selectedJobs: any[] = [];
   selectedyears;
@@ -120,9 +124,17 @@ export class WithJobTitleReportComponent implements OnInit {
     incidentInfoLink.classList.remove('active');
     this.getCaseCategories();
     this.getDiseases();
+    this.lookUpsService
+      .getFinalDiagnoses()
+      .pipe(finalize(() => (this.finalDiseasesLoading = false)))
+      .subscribe((diseases) => (this.finalDiseases = diseases));
     this.getJobs();
     this.getAllFinalResults();
   }
+  get isFinalResult(): boolean {
+    return isFinalDiagnosisResult(this.resultType);
+  }
+
   getDiseases() {
     this.diseasesLoading = true;
     this.lookUpsService.getAllDiseaseGroups().subscribe(
@@ -302,6 +314,7 @@ export class WithJobTitleReportComponent implements OnInit {
           from_Date: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd'),
           to_Date: this.datePipe.transform(this.toDate, 'yyyy-MM-dd'),
           ids_PationtJop: this.Jobsids,
+          result: this.resultType?.[0]?.id,
 
         }
 

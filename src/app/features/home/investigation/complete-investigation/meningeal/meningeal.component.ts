@@ -842,9 +842,6 @@ export class MeningealComponent implements OnInit {
   }
 
   get finalDiagnosisDisplay(): string {
-    if (this.patient?.finalDiagonistics) {
-      return this.patient.finalDiagonistics;
-    }
     const data = this.patient?.finalDiagonisticsData ?? [];
     return data.map((d: any) => d.finalResult).filter((x: any) => !!x).join(' , ');
   }

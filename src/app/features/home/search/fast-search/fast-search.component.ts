@@ -1,3 +1,4 @@
+import { finalDiagnosisOptionsWithOther } from 'src/app/core/shared/utilis/final-diagnoses';
 import {
   Component,
   ElementRef,
@@ -1057,7 +1058,7 @@ export class FastSearchComponent implements OnInit {
           this.finalDiseases = [
             { id: -1, arabicName: 'إختر', englishName: 'select' },
           ];
-          result.data.forEach((nat) => {
+          finalDiagnosisOptionsWithOther(result.data).forEach((nat) => {
             this.finalDiseases.push(nat);
           });
         }

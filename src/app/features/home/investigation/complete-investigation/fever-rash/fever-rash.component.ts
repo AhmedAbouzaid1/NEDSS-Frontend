@@ -330,7 +330,6 @@ export class FeverRashComponent implements OnInit {
   // (e.g. "حصبة مؤكدة" or "حصبة الماني مؤكدة").
   private evaluateConfirmedMeasles(p: any) {
     const texts: string[] = [];
-    if (p?.finalDiagonistics) texts.push(String(p.finalDiagonistics));
     (p?.finalDiagonisticsData || []).forEach((d: any) => {
       texts.push(`${d?.caseResultCategory ?? ''} ${d?.finalResult ?? ''}`);
     });

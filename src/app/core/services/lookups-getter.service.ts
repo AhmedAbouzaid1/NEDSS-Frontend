@@ -7,6 +7,7 @@ import { Result } from 'src/app/features/Result';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
+import { orderFinalDiagnoses } from 'src/app/core/shared/utilis/final-diagnoses';
 import { dispatch } from '../../../../node_modules/@types/d3';
 import { SystemUserMainDataFilter } from 'src/app/features/home/epidemiological-thresholds/epidemiological-thresholds-users/Model/system-user-main-data-filter';
 
@@ -1019,6 +1020,11 @@ export class LookupsGetterService {
   ///#region  DiseaseLookup
   getAllDiseases() {
     return this.APIs.get(this.DiseaseControllerURL + 'GetAll');
+  }
+  getFinalDiagnoses(): Observable<any[]> {
+    return this.APIs.get(this.DiseaseControllerURL + 'GetAll').pipe(
+      map((result: any) => orderFinalDiagnoses(result?.data))
+    );
   }
   getPageDiseases(DiseaseFilter: any) {
     return this.APIs.create(

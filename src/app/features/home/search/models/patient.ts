@@ -29,7 +29,6 @@ export interface Patient {
   labPlaceId?: number;
   caseResultCategoryId?: number;
   diseaseSeverityId?: number;
-  labPrimaryDiagonistics?: number;
   caseDiscoveryDate?: Date;
   firstName?: string;
   secondName?: string;

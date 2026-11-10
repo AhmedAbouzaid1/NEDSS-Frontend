@@ -1,3 +1,4 @@
+import { finalize } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -30,6 +31,8 @@ export class HealthAdministrationReportComponent implements OnInit {
   isValid: boolean = true;
   Categories: any;
   diseases: any;
+  finalDiseases: any[] = [];
+  finalDiseasesLoading = true;
   departments: any;
   selectedDiseases: any = 0;
   selectedyears;
@@ -152,6 +155,10 @@ export class HealthAdministrationReportComponent implements OnInit {
     this.getCaseCategories();
     this.getAllFinalResults();
     this.getDiseases();
+    this.lookUpsService
+      .getFinalDiagnoses()
+      .pipe(finalize(() => (this.finalDiseasesLoading = false)))
+      .subscribe((diseases) => (this.finalDiseases = diseases));
     this.getDepartments();
   }
   getDepartments() {
@@ -374,7 +381,7 @@ export class HealthAdministrationReportComponent implements OnInit {
 
 
     let EndSelectedDiseaseIds = "";
-    this.StartselectedDiseases.forEach(element => {
+    this.EndselectedDiseases.forEach(element => {
       EndSelectedDiseaseIds = EndSelectedDiseaseIds + element.id + ","
     });
     EndSelectedDiseaseIds = EndSelectedDiseaseIds.slice(0, -1);

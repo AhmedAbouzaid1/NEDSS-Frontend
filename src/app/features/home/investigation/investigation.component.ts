@@ -1,3 +1,4 @@
+import { finalDiagnosisOptionsWithOther } from 'src/app/core/shared/utilis/final-diagnoses';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { InvestigationService } from './services/investigation.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -722,7 +723,7 @@ export class InvestigationComponent implements OnInit {
           this.finalDiagnostics = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
           ];
-          result.data.forEach((nat) => {
+          finalDiagnosisOptionsWithOther(result.data).forEach((nat) => {
             this.finalDiagnostics.push(nat);
           });
         }

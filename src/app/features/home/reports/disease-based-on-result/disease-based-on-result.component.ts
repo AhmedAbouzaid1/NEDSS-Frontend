@@ -1,3 +1,4 @@
+import { orderFinalDiagnoses } from 'src/app/core/shared/utilis/final-diagnoses';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
@@ -292,7 +293,7 @@ export class DiseaseBasedOnResultComponent implements OnInit {
     this.lookUpsService.getAllDiseases().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
-          this.diseases = result.data;
+          this.diseases = orderFinalDiagnoses(result.data);
         }
         this.loadingPanel = false;
       },

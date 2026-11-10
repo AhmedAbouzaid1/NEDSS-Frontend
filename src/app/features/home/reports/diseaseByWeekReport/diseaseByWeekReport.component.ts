@@ -1,3 +1,5 @@
+import { isFinalDiagnosisResult } from 'src/app/core/shared/utilis/final-diagnoses';
+import { finalize } from 'rxjs/operators';
 import { MultipleDropdownSettings, SingleDropdownSettings, WEAKS, YEARS } from './../../../../core/constants';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -21,6 +23,8 @@ export class DiseaseByWeekReportComponent implements OnInit {
 
   Categories: any;
   diseases: any;
+  finalDiseases: any[] = [];
+  finalDiseasesLoading = true;
   selectedDiseases: any[] = [];
   selectedyears;
   years = YEARS
@@ -131,7 +135,15 @@ export class DiseaseByWeekReportComponent implements OnInit {
     this.getAllFinalResults();
     this.getCaseCategories();
     this.getDiseases();
+    this.lookUpsService
+      .getFinalDiagnoses()
+      .pipe(finalize(() => (this.finalDiseasesLoading = false)))
+      .subscribe((diseases) => (this.finalDiseases = diseases));
   }
+  get isFinalResult(): boolean {
+    return isFinalDiagnosisResult(this.resultType);
+  }
+
   getDiseases() {
     this.diseasesLoading = true;
     this.lookUpsService.getAllDiseaseGroups().subscribe(
@@ -293,6 +305,7 @@ export class DiseaseByWeekReportComponent implements OnInit {
             from_Date: this.currentLang == 'ar' ? (this.selectedYear[0].arabicName).toString() : (this.selectedYear[0].englishName).toString(),
 
             numOfWeek: this.weakids,
+            result: this.resultType?.[0]?.id,
 
           }
 

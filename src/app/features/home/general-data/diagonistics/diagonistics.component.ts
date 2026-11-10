@@ -105,9 +105,6 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
   }
 
   get finalDiagnosisDisplay(): string {
-    if (this.patient?.finalDiagonistics) {
-      return this.patient.finalDiagonistics;
-    }
     const data = this.patient?.finalDiagonisticsData;
     if (data && data.length) {
       return data.map((d) => d.finalResult).filter((x) => !!x).join(' , ');
