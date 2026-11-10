@@ -14,8 +14,6 @@ export interface FinalDiagnosisOption {
   [key: string]: any;
 }
 
-const SUBTYPE_PREFIX = '— ';
-
 const SUBTYPES_BY_MAIN: Record<string, string[]> = {
   'meningitis': ['bacterial meningitis', 'fungal meningitis', 'tuberculous meningitis'],
   'bacterial meningitis': [
@@ -53,18 +51,13 @@ export function orderFinalDiagnoses<T extends FinalDiagnosisOption>(list: T[] | 
   });
 
   const result: T[] = [];
-  const append = (item: T, depth: number) => {
-    const prefix = SUBTYPE_PREFIX.repeat(depth);
-    result.push(
-      depth === 0
-        ? item
-        : { ...item, arabicName: prefix + (item.arabicName ?? ''), englishName: prefix + (item.englishName ?? '') }
-    );
+  const append = (item: T) => {
+    result.push(item);
     for (const name of SUBTYPES_BY_MAIN[nameKey(item)] ?? []) {
-      (byName.get(name) ?? []).forEach((child) => append(child, depth + 1));
+      (byName.get(name) ?? []).forEach((child) => append(child));
     }
   };
-  items.filter((d) => !childIds.has(d.id)).forEach((d) => append(d, 0));
+  items.filter((d) => !childIds.has(d.id)).forEach((d) => append(d));
   return result;
 }
 
