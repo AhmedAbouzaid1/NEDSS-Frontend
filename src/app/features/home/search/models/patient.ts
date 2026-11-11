@@ -8,6 +8,7 @@ export interface Patient {
   sortOrder?: string;
   searchText?: string;
   id?: number;
+  patientId?: number;
   fullName?: string;
   incidentGovernmentId?: number;
   incidentGovernmentName?: string;

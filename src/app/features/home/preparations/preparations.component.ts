@@ -9,6 +9,6 @@ import { MenuItem } from 'primeng/api';
 export class PreparationsComponent {
   constructor() {
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
   }
 }

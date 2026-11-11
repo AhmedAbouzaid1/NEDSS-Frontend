@@ -151,7 +151,7 @@ export class HealthAdministrationReportComponent implements OnInit {
 
     const date = new Date();
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.getCaseCategories();
     this.getAllFinalResults();
     this.getDiseases();

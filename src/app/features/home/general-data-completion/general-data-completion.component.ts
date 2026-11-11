@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SortEvent } from 'primeng/api';
-import { fromEvent, map, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subscription, fromEvent, map, debounceTime, distinctUntilChanged } from 'rxjs';
 import {
   MultipleDropdownSettings,
   SingleDropdownSettings,
@@ -93,7 +93,23 @@ export class GeneralDataCompletionComponent {
 
   selecteddepartmentId: number;
   selectedDepartment: any[] = [];
-  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
+  private searchInputSub?: Subscription;
+  @ViewChild('searchInput') set searchInput(ref: ElementRef | undefined) {
+    this.searchInputSub?.unsubscribe();
+    this.searchInputSub = undefined;
+    if (!ref) {
+      return;
+    }
+    this.searchInputSub = fromEvent(ref.nativeElement, 'keyup')
+      .pipe(
+        map((event: any) => event.target.value),
+        debounceTime(environment.DebounceWaiting),
+        distinctUntilChanged()
+      )
+      .subscribe(() => {
+        this.search();
+      });
+  }
   messageService: any;
   pleaseComplete: boolean;
   Diseasies: any[] = [];
@@ -134,25 +150,12 @@ export class GeneralDataCompletionComponent {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.getGovernment();
     this.getAllDiseases();
     this.Diseasies.forEach((element) => {
       element.selected = false;
     });
-    if (this.searchInput.nativeElement != undefined) {
-      fromEvent(this.searchInput.nativeElement, 'keyup')
-        .pipe(
-          map((event: any) => {
-            return event.target.value;
-          }),
-          debounceTime(environment.DebounceWaiting),
-          distinctUntilChanged()
-        )
-        .subscribe(() => {
-          this.search();
-        });
-    }
     this.router.routerState.root.queryParams.subscribe((params) => {
       if (params.def == null || params.def == undefined) {
         this.generalDataCompletionFilter = {

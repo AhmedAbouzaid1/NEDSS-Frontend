@@ -46,6 +46,7 @@ export class LabCasesComponent {
     sortOrder: '',
     searchText: '',
     id: null,
+    patientId: null,
     nationalityId: null,
     homeGovernmentId: null,
     homeHealthAdministrationId: null,
@@ -123,7 +124,7 @@ export class LabCasesComponent {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.loadingPanel = true;
     this.levelId = JSON.parse(
       localStorage.getItem('ls.authorizationData')
@@ -204,15 +205,21 @@ export class LabCasesComponent {
     }
   }
 
+  toNullableBoolean(value: any): boolean | null {
+    if (value === true || value === 'true') {
+      return true;
+    }
+    if (value === false || value === 'false') {
+      return false;
+    }
+    return null;
+  }
+
   getPatients(skipCount?: boolean) {
-    this.patientsFilter.mandatoryDataCompleted =
-      this.patientsFilter.mandatoryDataCompleted === 'true'
-        ? true
-        : this.patientsFilter.mandatoryDataCompleted === 'false'
-        ? false
-        : null;
+    this.patientsFilter.mandatoryDataCompleted = this.toNullableBoolean(this.patientsFilter.mandatoryDataCompleted);
     this.Delay();
     this.loadError = false;
+    this.patientsFilter.patientId = this.generalDataService.parsePatientId(this.patientsFilter.patientId);
     this.labService.getPatientsFromLab(this.patientsFilter).subscribe(
       (result: any) => {
         this.loadError = false;

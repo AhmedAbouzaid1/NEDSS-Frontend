@@ -6,7 +6,7 @@
     <div class="card shadow">
       <div class="card-body bg-dark-mode">
         <div class="row">
-          <div class="col-lg-4 mb-3">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -89,7 +89,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -171,7 +171,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -257,8 +257,7 @@
               </div>
             </div>
           </div>
-
-          <div class="col-lg-4 mb-4">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">{{ "NEDSS.COMMON.NAME" | translate }}</label>
               <input
@@ -267,26 +266,26 @@
                 id="fullName"
                 class="w-100"
                 pInputText
+                maxlength="60"
                 [(ngModel)]="notInferringFilter.fullName"
+                (keypress)="generalDataService.onSearchNameKeyPress($event)"
+                (input)="generalDataService.normalizeNameInput($event)"
               />
               <small
                 *ngIf="
-                  generalDataService.validateName(
-                    notInferringFilter.fullName,
-                    false
-                  ) !== ''
+                  notInferringFilter.fullName &&
+                  !generalDataService.isValidSearchName(notInferringFilter.fullName)
                 "
                 class="form-text text-danger mess-color"
               >
                 {{
-                  "NEDSS.COMMON.INVALID_NAME_CHARACTERS"
-                    | translate : { maxLength: 25 }
+                  "NEDSS.COMMON.INVALID_NAME_CHARACTERS_TWO"
+                    | translate : { maxLength: 60 }
                 }}
               </small>
             </div>
           </div>
-
-          <div class="col-md-4">
+          <div class="col-xl-3 col-md-6 mb-2">
             <label for="">{{ "NEDSS.COMMON.Start_Date" | translate }}</label>
             <mat-form-field appearance="fill">
               <mat-label></mat-label>
@@ -304,9 +303,7 @@
               <mat-datepicker #startPicker></mat-datepicker>
             </mat-form-field>
           </div>
-
-
-          <div class="col-md-4">
+          <div class="col-xl-3 col-md-6 mb-2">
             <label for="">{{ "NEDSS.COMMON.End_Date" | translate }}</label>
             <mat-form-field appearance="fill">
               <mat-label></mat-label>
@@ -324,13 +321,12 @@
               <mat-datepicker #endPicker></mat-datepicker>
             </mat-form-field>
           </div>
-        
-          <div class="col-12 col-lg-2">
+          <div class="col-12 border-top mt-2 pt-3 mb-2 fwb color-d-2">
             {{ "NEDSS.HOME.NOT_INFERENCE_CASES.SUBJECT_TYPE" | translate }}
           </div>
-          <div class="col-10">
+          <div class="col-12">
             <div class="row">
-              <div class="col-lg-4 border-cheack-box pb-4">
+              <div class="col-xl-3 col-md-6 pb-2">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -350,7 +346,7 @@
                 </div>
               </div>
 
-              <div class="col-lg-4 border-cheack-box pb-4">
+              <div class="col-xl-3 col-md-6 pb-2">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -370,7 +366,7 @@
                 </div>
               </div>
 
-              <div class="col-lg-4 pb-4">
+              <div class="col-xl-3 col-md-6 pb-2">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -389,7 +385,7 @@
                 </div>
               </div>
             
-              <div class="col-lg-4 border-cheack-box pb-4">
+              <div class="col-xl-3 col-md-6 pb-2">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -409,7 +405,7 @@
                 </div>
               </div>
 
-              <div class="col-lg-4 border-cheack-box pb-4">
+              <div class="col-xl-3 col-md-6 pb-2">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -429,7 +425,7 @@
                 </div>
               </div>
 
-              <div class="col-lg-4 pb-4">
+              <div class="col-xl-3 col-md-6 pb-2">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -452,13 +448,12 @@
           </div>
         </div>
       </div>
-      <div class="card-footer d-flex justify-content-end mt-3">
-        <span class="float-end mess-color text-danger" *ngIf="pleaseComplete">
-          {{ "NOUR.Please-select-one-of-the-fields" | translate }}
+      <div class="card-footer d-flex flex-wrap align-items-center justify-content-between gap-3 mt-2 mb-0">
+        <span class="mess-color text-danger">
+          <ng-container *ngIf="pleaseComplete">{{ "NOUR.Please-select-one-of-the-fields" | translate }}</ng-container>
         </span>
         <button type="submit" class="btn btn-lg bg text-light">
-          <span class="bi bi-check2-circle"></span>
-          {{ "NEDSS.COMMON.SEARCH" | translate }}
+          <span class="pi pi-search"></span> {{ "NEDSS.COMMON.SEARCH" | translate }}
         </button>
       </div>
     </div>

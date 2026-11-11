@@ -28,6 +28,7 @@ export class PatientChecksComponent implements OnInit {
     sortOrder: '',
     searchText: '',
     id: null,
+    patientId: null,
     nationalityId: null,
     homeGovernmentId: null,
     homeHealthAdministrationId: null,
@@ -115,7 +116,7 @@ export class PatientChecksComponent implements OnInit {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.loadingPanel = true;
     this.getLookups();
     this.singleDropdownSettings = SingleDropdownSettings;
@@ -132,6 +133,7 @@ export class PatientChecksComponent implements OnInit {
           sortOrder: '',
           searchText: '',
           id: null,
+          patientId: null,
           nationalityId: null,
           homeGovernmentId: null,
           homeHealthAdministrationId: null,
@@ -158,6 +160,7 @@ export class PatientChecksComponent implements OnInit {
           sortOrder: '',
           searchText: '',
           id: null,
+          patientId: null,
           nationalityId: null,
           homeGovernmentId: null,
           homeHealthAdministrationId: null,
@@ -173,7 +176,7 @@ export class PatientChecksComponent implements OnInit {
           toDate: null,
           diseaseGroupId: null,
           insertedByLab: null,
-          hasLabChecks: params.done,
+          hasLabChecks: this.toNullableBoolean(params.done),
           firstTime: true,
         };
         //alert("will search becuase filter");
@@ -246,17 +249,23 @@ export class PatientChecksComponent implements OnInit {
     }
   }
 
+  toNullableBoolean(value: any): boolean | null {
+    if (value === true || value === 'true') {
+      return true;
+    }
+    if (value === false || value === 'false') {
+      return false;
+    }
+    return null;
+  }
+
   getPatients(firstTime?: boolean, skipCount?: boolean) {
-    this.patientsFilter.hasLabChecks =
-      this.patientsFilter.hasLabChecks === 'true'
-        ? true
-        : this.patientsFilter.hasLabChecks === 'false'
-        ? false
-        : null;
+    this.patientsFilter.hasLabChecks = this.toNullableBoolean(this.patientsFilter.hasLabChecks);
     //alert("has lab checks " + this.patientsFilter.hasLabChecks);
     this.patientsFilter.firstTime = firstTime;
     this.loadError = false;
     this.Delay();
+    this.patientsFilter.patientId = this.generalDataService.parsePatientId(this.patientsFilter.patientId);
     this.labService.getPatients(this.patientsFilter).subscribe(
       (result: any) => {
         this.RemoveDelay();

@@ -158,7 +158,7 @@ export class UsersComponent {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.primengConfig.ripple = true;
     this.currentLang =
       localStorage.getItem('ls.currentLang') !== undefined &&

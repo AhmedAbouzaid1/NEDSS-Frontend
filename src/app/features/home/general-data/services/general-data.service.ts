@@ -1235,6 +1235,17 @@ export class GeneralDataService {
     }
     return ageTypeId;
   }
+  onDigitsKeyPress(event: KeyboardEvent): void {
+    if (!/^\d$/.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  parsePatientId(value: any): number | null {
+    const id = Number(String(value ?? '').trim());
+    return Number.isInteger(id) && id > 0 ? id : null;
+  }
+
   onIdentityCardKeyPress(event: KeyboardEvent): void {
     let inputKey = event.key;
     if (
@@ -1371,8 +1382,8 @@ export class GeneralDataService {
     }
   }
 
-  validateFirstName(name: string, isRequired: boolean): boolean {
-    this.firstNameValidationMessage = this.validateFirstNamePattern(name, isRequired);
+  validateFirstName(name: string, isRequired: boolean, forSearch: boolean = false): boolean {
+    this.firstNameValidationMessage = this.validateFirstNamePattern(name, isRequired, forSearch);
     return this.firstNameValidationMessage === '';
   }
 
@@ -1380,8 +1391,27 @@ export class GeneralDataService {
     if (!this.validateEmptyField(name)) {
       return !isRequired;
     }
-    const namePattern = /^[A-Za-z؀-ۿ ]{3,25}$/;
-    return namePattern.test(name);
+    return this.isValidSearchName(name, 3);
+  }
+
+  isValidSearchName(name: string, minChars: number = 2): boolean {
+    const value = (name ?? '').trim();
+    return (
+      value.length <= 60 &&
+      /^[A-Za-z0-9؀-ۿ \-]+$/.test(value) &&
+      value.replace(/\s/g, '').length >= minChars
+    );
+  }
+
+  onSearchNameKeyPress(event: KeyboardEvent): void {
+    if (!/^[A-Za-z0-9؀-ۿ \-]$/.test(event.key)) {
+      event.preventDefault();
+      return;
+    }
+    const input = event.target as HTMLInputElement;
+    if (event.key === ' ' && (input.selectionStart === 0 || !input.value)) {
+      event.preventDefault();
+    }
   }
   validateBirthDate(birthDate: string, isRequired: boolean): boolean {
     this.birthDateValidationMessage = this.validBirthDate(
@@ -1391,18 +1421,18 @@ export class GeneralDataService {
     return this.birthDateValidationMessage === '';
   }
 
-  validateSecondName(name: string, isRequired: boolean): boolean {
-    this.secondNameValidationMessage = this.validateFirstNamePattern(name, isRequired);
+  validateSecondName(name: string, isRequired: boolean, forSearch: boolean = false): boolean {
+    this.secondNameValidationMessage = this.validateFirstNamePattern(name, isRequired, forSearch);
     return this.secondNameValidationMessage === '';
   }
 
-  validateThirdName(name: string, isRequired: boolean): boolean {
-    this.thirdNameValidationMessage = this.validateFirstNamePattern(name, isRequired);
+  validateThirdName(name: string, isRequired: boolean, forSearch: boolean = false): boolean {
+    this.thirdNameValidationMessage = this.validateFirstNamePattern(name, isRequired, forSearch);
     return this.thirdNameValidationMessage === '';
   }
 
-  validateFamilyName(name: string, isRequired: boolean): boolean {
-    this.familyNameValidationMessage = this.validateTwoCharsPattern(name);
+  validateFamilyName(name: string, isRequired: boolean, forSearch: boolean = false): boolean {
+    this.familyNameValidationMessage = this.validateTwoCharsPattern(name, forSearch);
     return this.familyNameValidationMessage === '';
   }
 
@@ -1442,7 +1472,7 @@ export class GeneralDataService {
     return '';
   }
 
-  validateFirstNamePattern(name: string, isRequired: boolean): string {
+  validateFirstNamePattern(name: string, isRequired: boolean, forSearch: boolean = false): string {
     if (!this.validateEmptyField(name)) {
       if (isRequired) {
         return 'NEDSS.COMMON.FILEDREQUIRED';
@@ -1451,15 +1481,18 @@ export class GeneralDataService {
     }
 
 
-    return this.validateTwoCharsPattern(name);
+    return this.validateTwoCharsPattern(name, forSearch);
 
   }
-  validateTwoCharsPattern(name: string) {
-    let namePattern = /^[A-Za-z\u0600-\u06FF ]{2,15}$/;
+  validateTwoCharsPattern(name: string, forSearch: boolean = false) {
+    let namePattern = /^[A-Za-z؀-ۿ ]{2,15}$/;
     if (name) {
-      if (!namePattern.test(name) || name.split('')?.filter(x => x != ' ')?.length < 2) {
+      const valid = forSearch
+        ? this.isValidSearchName(name)
+        : namePattern.test(name) && name.split('')?.filter(x => x != ' ')?.length >= 2;
+      if (!valid) {
         return this.translate.instant('NEDSS.COMMON.INVALID_NAME_CHARACTERS_TWO', {
-          maxLength: 15,
+          maxLength: forSearch ? 60 : 15,
         });
       }
     }

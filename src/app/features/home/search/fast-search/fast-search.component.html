@@ -5,7 +5,7 @@
     <div class="card-body bg-dark-mode">
       <div class="row">
         <div
-          class="col-lg-4 mb-4"
+          class="col-xl-3 col-md-6 mb-2"
           *ngIf="activeUSerService.getAccessibleParts?.showGovernments"
         >
           <div class="form-group">
@@ -70,9 +70,8 @@
             </div>
           </div>
         </div>
-
         <div
-          class="col-lg-4 mb-4"
+          class="col-xl-3 col-md-6 mb-2"
           *ngIf="activeUSerService.getAccessibleParts?.showDepartments"
         >
           <div class="form-group">
@@ -138,9 +137,8 @@
             </div>
           </div>
         </div>
-
         <div
-          class="col-lg-4 mb-4"
+          class="col-xl-3 col-md-6 mb-2"
           *ngIf="activeUSerService.getAccessibleParts?.showUniversities"
         >
           <div class="form-group">
@@ -193,9 +191,8 @@
             </div>
           </div>
         </div>
-
         <div
-          class="col-lg-4 mb-4"
+          class="col-xl-3 col-md-6 mb-2"
           *ngIf="activeUSerService.getAccessibleParts?.showBranches"
         >
           <div class="form-group">
@@ -246,9 +243,8 @@
             </div>
           </div>
         </div>
-
         <div
-          class="col-lg-4 mb-4"
+          class="col-xl-3 col-md-6 mb-2"
           *ngIf="activeUSerService.getAccessibleParts?.showAreas"
         >
           <div class="form-group">
@@ -293,9 +289,8 @@
             </div>
           </div>
         </div>
-
         <div
-          class="col-lg-4 mb-4"
+          class="col-xl-3 col-md-6 mb-2"
           *ngIf="activeUSerService.getAccessibleParts?.showSources"
         >
           <div class="form-group">
@@ -362,8 +357,7 @@
             </div>
           </div>
         </div>
-
-        <div class="col-lg-4 mb-4">
+        <div class="col-xl-3 col-md-6 mb-2">
           <div class="form-group">
             <label for="department">
               {{ "NEDSS.SEARCH.DEPARTMENT" | translate }}
@@ -419,8 +413,23 @@
             </div>
           </div>
         </div>
-
-        <div class="col-lg-4 mb-4">
+        <div class="col-xl-3 col-md-6 mb-2">
+          <div class="form-group">
+            <label for="">
+              {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.CASE_ID" | translate }}
+            </label>
+            <input
+              type="text"
+              inputmode="numeric"
+              maxlength="10"
+              class="w-100"
+              pInputText
+              formControlName="patientId"
+              (keypress)="generalDataService.onDigitsKeyPress($event)"
+            />
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-2">
           <div class="form-group">
             <label for=""> {{ "NEDSS.INVESTIGATIONS.NAME" | translate }}</label>
 
@@ -436,10 +445,11 @@
                 generalDataService.isFirstNameValid =
                   generalDataService.validateFirstName(
                     fullnameInput.value,
+                    true,
                     true
                   )
               "
-              (keypress)="generalDataService.onNameKeyPress($event)"
+              (keypress)="generalDataService.onSearchNameKeyPress($event)"
               (input)="generalDataService.normalizeNameInput($event)"
               #fullnameInput
             />
@@ -451,8 +461,62 @@
             </small>
           </div>
         </div>
+        <div class="col-xl-3 col-md-6 mb-2 fast-search-date-field">
+          <div class="form-group mb-0">
+            <label for="startDate">
+              {{ "NEDSS.EVENTS.FROM_DATE" | translate }}
+            </label>
 
-        <div class="col-lg-4 mb-4">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>
+                {{
+                  "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+                }}</mat-label
+              >
+              <input
+                [min]="minDate"
+                [max]="maxDate"
+                matInput
+                [matDatepicker]="picker"
+                formControlName="startDate"
+              />
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-2 fast-search-date-field">
+          <div class="form-group mb-0">
+            <label for="endDate">
+              {{ "NEDSS.EVENTS.TO_DATE" | translate }}
+            </label>
+
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>
+                {{
+                  "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+                }}</mat-label
+              >
+              <input
+                [min]="generalReportForm.controls.startDate.value"
+                [max]="maxDate"
+                matInput
+                [matDatepicker]="picker1"
+                formControlName="endDate"
+              />
+
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker1"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-2">
           <div class="form-group">
             <label for="">
               {{
@@ -511,52 +575,7 @@
             </div>
           </div>
         </div>
-
-        <div class="col-lg-4 mb-4">
-          <div class="form-group">
-            <label for="">
-              {{
-                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULTCATEGORY"
-                  | translate
-              }}
-            </label>
-
-            <div *ngIf="currentLang == 'ar'">
-              <p-dropdown
-                [appDropdownLoading]="caseResultCategoriesLoading"
-                (onChange)="setCaseResultCategoryValue()"
-                [options]="caseResultCategories"
-                [(ngModel)]="selectedCaseResultCategoryId"
-                optionLabel="arabicName"
-                optionValue="id"
-                autoWidth="false"
-                [style]="{ width: '100%' }"
-                formControlName="caseResultCategoryId"
-                [filter]="true"
-                filterBy="arabicName"
-              >
-              </p-dropdown>
-            </div>
-            <div *ngIf="currentLang == 'en'">
-              <p-dropdown
-                [appDropdownLoading]="caseResultCategoriesLoading"
-                (onChange)="setCaseResultCategoryValue()"
-                [options]="caseResultCategories"
-                [(ngModel)]="selectedCaseResultCategoryId"
-                optionLabel="englishName"
-                optionValue="id"
-                autoWidth="false"
-                [style]="{ width: '100%' }"
-                formControlName="caseResultCategoryId"
-                [filter]="true"
-                filterBy="englishName"
-              >
-              </p-dropdown>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4 mb-4">
+        <div class="col-xl-3 col-md-6 mb-2">
           <div class="form-group">
             <label for="">
               {{
@@ -599,65 +618,50 @@
             </div>
           </div>
         </div>
-
-        <div class="col-lg-4 mb-3 fast-search-date-field">
-          <div class="form-group mb-0">
-            <label for="startDate">
-              {{ "NEDSS.EVENTS.FROM_DATE" | translate }}
+        <div class="col-xl-3 col-md-6 mb-2">
+          <div class="form-group">
+            <label for="">
+              {{
+                "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULTCATEGORY"
+                  | translate
+              }}
             </label>
 
-            <mat-form-field appearance="fill" class="w-100">
-              <mat-label>
-                {{
-                  "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
-                }}</mat-label
+            <div *ngIf="currentLang == 'ar'">
+              <p-dropdown
+                [appDropdownLoading]="caseResultCategoriesLoading"
+                (onChange)="setCaseResultCategoryValue()"
+                [options]="caseResultCategories"
+                [(ngModel)]="selectedCaseResultCategoryId"
+                optionLabel="arabicName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                formControlName="caseResultCategoryId"
+                [filter]="true"
+                filterBy="arabicName"
               >
-              <input
-                [min]="minDate"
-                [max]="maxDate"
-                matInput
-                [matDatepicker]="picker"
-                formControlName="startDate"
-              />
-              <mat-datepicker-toggle
-                matIconSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
+              </p-dropdown>
+            </div>
+            <div *ngIf="currentLang == 'en'">
+              <p-dropdown
+                [appDropdownLoading]="caseResultCategoriesLoading"
+                (onChange)="setCaseResultCategoryValue()"
+                [options]="caseResultCategories"
+                [(ngModel)]="selectedCaseResultCategoryId"
+                optionLabel="englishName"
+                optionValue="id"
+                autoWidth="false"
+                [style]="{ width: '100%' }"
+                formControlName="caseResultCategoryId"
+                [filter]="true"
+                filterBy="englishName"
+              >
+              </p-dropdown>
+            </div>
           </div>
         </div>
-
-        <div class="col-lg-4 mb-3 fast-search-date-field">
-          <div class="form-group mb-0">
-            <label for="endDate">
-              {{ "NEDSS.EVENTS.TO_DATE" | translate }}
-            </label>
-
-            <mat-form-field appearance="fill" class="w-100">
-              <mat-label>
-                {{
-                  "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
-                }}</mat-label
-              >
-              <input
-                [min]="generalReportForm.controls.startDate.value"
-                [max]="maxDate"
-                matInput
-                [matDatepicker]="picker1"
-                formControlName="endDate"
-              />
-
-              <mat-datepicker-toggle
-                matIconSuffix
-                [for]="picker1"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="col-lg-4 mb-3 fast-search-nationality-field">
+        <div class="col-xl-3 col-md-6 mb-2 fast-search-nationality-field">
           <div class="form-group mb-0">
             <label for="nationalty">
               {{ "NEDSS.SEARCH.NATIONALITY" | translate }}
@@ -712,8 +716,7 @@
             </div>
           </div>
         </div>
-
-        <div class="col-lg-4 mb-4" *ngIf="!selectedNationalityId || selectedNationalityId == NationalityEnum.NotSelected || selectedNationalityId == NationalityEnum.Egyptian">
+        <div class="col-xl-3 col-md-6 mb-2" *ngIf="!selectedNationalityId || selectedNationalityId == NationalityEnum.NotSelected || selectedNationalityId == NationalityEnum.Egyptian">
           <div class="form-group">
             <label for="nationalId">
               {{ "NEDSS.EVENTS.NATIONAL_ID" | translate }}
@@ -743,8 +746,7 @@
             </div>
           </div>
         </div>
-
-        <div class="col-lg-4 mb-4" 
+        <div class="col-xl-3 col-md-6 mb-2" 
         *ngIf="selectedNationalityId != NationalityEnum.Egyptian && selectedNationalityId != NationalityEnum.NotSelected && selectedNationalityId">
           <div class="form-group">
             <label for="passport">
@@ -760,8 +762,7 @@
             />
           </div>
         </div>
-
-        <div class="col-lg-4 mb-4" *ngIf="selectedNationalityId == NationalityEnum.Egyptian">
+        <div class="col-xl-3 col-md-6 mb-2" *ngIf="selectedNationalityId == NationalityEnum.Egyptian">
           <div class="form-group">
             <label for="relational">
               {{ "NEDSS.SEARCH.RELATIONAL" | translate }}
@@ -817,12 +818,11 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="card-footer my-4 d-flex justify-content-end">
-    <button type="submit" class="btn btn-lg bg text-light" (click)="search()">
-      <span class="pi pi-search"></span> {{ "NEDSS.SEARCH.SEARCH" | translate }}
-    </button>
+    <div class="card-footer d-flex flex-wrap align-items-center justify-content-end gap-3 mt-2 mb-0">
+      <button type="submit" class="btn btn-lg bg text-light" (click)="search()">
+        <span class="pi pi-search"></span> {{ "NEDSS.SEARCH.SEARCH" | translate }}
+      </button>
+    </div>
   </div>
 </form>
 <div

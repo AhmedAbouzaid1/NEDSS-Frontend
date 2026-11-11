@@ -4,7 +4,6 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 
-import { ControlPanelModule } from './dashboard/controlPanel.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -344,7 +343,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MaterialModule,
     NgbPaginationModule,
     ReactiveFormsModule,
-    ControlPanelModule,
     GeneralDataModule,
     TableModule,
     MatIconModule,

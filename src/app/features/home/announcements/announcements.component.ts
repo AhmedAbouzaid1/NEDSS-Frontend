@@ -69,7 +69,7 @@ export class AnnouncementsComponent implements OnInit {
     private userMsg: UserMessageService, private attahcmentService: AttachemntApiService, private http: HttpClient) {
 
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.addAnounceForm = new FormGroup({
       subject: new FormControl(),
       body: new FormControl(),

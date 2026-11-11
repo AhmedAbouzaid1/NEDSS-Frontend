@@ -6,7 +6,7 @@
     <form [formGroup]="investigationForm" (ngSubmit)="search()">
       <div class="card-body bg-dark-mode">
         <div class="row">
-          <div class="col-lg-4 mb-2">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -90,8 +90,7 @@
               </div>
             </div>
           </div>
-
-          <div class="col-lg-4 mb-2">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -175,8 +174,7 @@
               </div>
             </div>
           </div>
-
-          <div class="col-lg-4 mb-2">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -252,7 +250,23 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 mb-2">
+          <div class="col-xl-3 col-md-6 mb-2">
+            <div class="form-group">
+              <label for="">
+                {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.CASE_ID" | translate }}</label
+              >
+              <input
+                type="text"
+                inputmode="numeric"
+                maxlength="10"
+                class="w-100"
+                pInputText
+                formControlName="patientId"
+                (keypress)="generalDataService.onDigitsKeyPress($event)"
+              />
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{ "NEDSS.INVESTIGATIONS.NAME" | translate }}</label
@@ -264,7 +278,7 @@
                 class="w-100"
                 pInputText
                 formControlName="fullName"
-                (keypress)="generalDataService.onNameKeyPress($event)"
+                (keypress)="generalDataService.onSearchNameKeyPress($event)"
                 (input)="generalDataService.normalizeNameInput($event)"
                 (blur)="
                   generalDataService.isFirstNameValid =
@@ -280,12 +294,12 @@
               >
                 {{
                   "NEDSS.COMMON.INVALID_NAME_CHARACTERS"
-                    | translate : { maxLength: 25 }
+                    | translate : { maxLength: 60 }
                 }}
               </small>
             </div>
           </div>
-          <div class="col-lg-6 mb-2">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{ "NEDSS.INVESTIGATIONS.NATIONAL_ID" | translate }}</label
@@ -315,7 +329,63 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 mb-2">
+          <div class="col-xl-3 col-md-6 mb-2">
+            <div class="form-group">
+              <label for="">
+                {{ "NEDSS.INVESTIGATIONS.FROM_DATE" | translate }}</label
+              >
+
+              <mat-form-field appearance="fill">
+                <mat-label>
+                  {{
+                    "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+                  }}</mat-label
+                >
+                <input
+                  [min]="minDate"
+                  [max]="maxDate"
+                  matInput
+                  [matDatepicker]="picker"
+                  formControlName="startDate"
+                />
+
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-2">
+            <div class="form-group">
+              <label for="">
+                {{ "NEDSS.INVESTIGATIONS.TO_DATE" | translate }}</label
+              >
+
+              <mat-form-field appearance="fill">
+                <mat-label>
+                  {{
+                    "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
+                  }}</mat-label
+                >
+                <input
+                  [min]="investigationForm.controls.startDate.value"
+                  [max]="maxDate"
+                  matInput
+                  [matDatepicker]="picker1"
+                  formControlName="endDate"
+                />
+
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker1"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{ "NEDSS.INVESTIGATIONS.PATIENTDISEASES" | translate }}</label
@@ -388,7 +458,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 mb-2">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -447,7 +517,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 mb-2">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{ "NEDSS.INVESTIGATIONS.CATEGORY" | translate }}</label
@@ -517,7 +587,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 mb-2">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -593,109 +663,48 @@
               </div>
             </div>
           </div>
-
-          <div class="col-lg-4 mb-2">
-            <div class="form-group">
-              <label for="">
-                {{ "NEDSS.INVESTIGATIONS.FROM_DATE" | translate }}</label
-              >
-
-              <mat-form-field appearance="fill">
-                <mat-label>
-                  {{
-                    "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
-                  }}</mat-label
-                >
-                <input
-                  [min]="minDate"
-                  [max]="maxDate"
-                  matInput
-                  [matDatepicker]="picker"
-                  formControlName="startDate"
-                />
-
-                <mat-datepicker-toggle
-                  matIconSuffix
-                  [for]="picker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="col-lg-4 mb-2">
-            <div class="form-group">
-              <label for="">
-                {{ "NEDSS.INVESTIGATIONS.TO_DATE" | translate }}</label
-              >
-
-              <mat-form-field appearance="fill">
-                <mat-label>
-                  {{
-                    "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
-                  }}</mat-label
-                >
-                <input
-                  [min]="investigationForm.controls.startDate.value"
-                  [max]="maxDate"
-                  matInput
-                  [matDatepicker]="picker1"
-                  formControlName="endDate"
-                />
-
-                <mat-datepicker-toggle
-                  matIconSuffix
-                  [for]="picker1"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-2">
-            <div class="form-group">
-              <label class="form-label">
-                {{ "NEDSS.INVESTIGATIONS.INVESTIGATIONSS_STATUS" | translate }}
-              </label>
-              <div class="has-labels">
-                <label for="Done">
-                  <input
-                    type="radio"
-                    name="InvestigationStatus"
-                    id="Done"
-                    value="1"
-                    formControlName="InvestigationStatus"
-                  />
-                  {{ "NEDSS.INVESTIGATIONS.DONE" | translate }}
-                </label>
-                <label for="NotDone">
-                  <input
-                    type="radio"
-                    name="InvestigationStatus"
-                    id="NotDone"
-                    value="2"
-                    formControlName="InvestigationStatus"
-                  />
-                  {{ "NEDSS.INVESTIGATIONS.NOT_DONE" | translate }}
-                </label>
-                <label for="All">
-                  <input
-                    type="radio"
-                    name="InvestigationStatus"
-                    id="All"
-                    value="0"
-                    formControlName="InvestigationStatus"
-                  />
-                  {{ "NEDSS.INVESTIGATIONS.ALL" | translate }}
-                </label>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-      <div class="card-footer text-start mt-2 mb-0">
+      <div class="card-footer d-flex flex-wrap align-items-center justify-content-between gap-3 mt-2 mb-0">
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <label class="form-label mb-0">
+            {{ "NEDSS.INVESTIGATIONS.INVESTIGATIONSS_STATUS" | translate }}
+          </label>
+          <div class="has-labels">
+            <label for="Done">
+              <input
+                type="radio"
+                name="InvestigationStatus"
+                id="Done"
+                value="1"
+                formControlName="InvestigationStatus"
+              />
+              {{ "NEDSS.INVESTIGATIONS.DONE" | translate }}
+            </label>
+            <label for="NotDone">
+              <input
+                type="radio"
+                name="InvestigationStatus"
+                id="NotDone"
+                value="2"
+                formControlName="InvestigationStatus"
+              />
+              {{ "NEDSS.INVESTIGATIONS.NOT_DONE" | translate }}
+            </label>
+            <label for="All">
+              <input
+                type="radio"
+                name="InvestigationStatus"
+                id="All"
+                value="0"
+                formControlName="InvestigationStatus"
+              />
+              {{ "NEDSS.INVESTIGATIONS.ALL" | translate }}
+            </label>
+          </div>
+        </div>
         <button type="submit" class="btn btn-lg bg text-light">
-          <span class="bi bi-check2-circle"></span>
-          {{ "NEDSS.EVENTS.SEARCH" | translate }}
+          <span class="pi pi-search"></span> {{ "NEDSS.EVENTS.SEARCH" | translate }}
         </button>
       </div>
     </form>

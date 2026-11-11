@@ -228,6 +228,7 @@ export class FastSearchComponent implements OnInit {
       incidentDepartmentId: new FormControl(),
       startDate: new FormControl(),
       fullName: new FormControl(''),
+      patientId: new FormControl(null),
       endDate: new FormControl(),
       nationalityId: new FormControl(NationalityEnum.Egyptian),
       nationalId: new FormControl(),
@@ -705,7 +706,8 @@ export class FastSearchComponent implements OnInit {
     return (
       this.generalDataService.validateFirstName(
         this.generalReportForm.value.fullName,
-        false
+        false,
+        true
       ) &&
       this.generalDataService.validateNationalID(
         this.generalReportForm.value.nationalId,
@@ -747,6 +749,9 @@ export class FastSearchComponent implements OnInit {
 
     this.loadingPanel = true;
     this.filter.fullName = this.generalReportForm.value.fullName;
+    this.filter.patientId = this.generalDataService.parsePatientId(
+      this.generalReportForm.value.patientId
+    );
     this.filter.startDate = this.generalReportForm.value.startDate;
     this.filter.endDate = this.generalReportForm.value.endDate;
     this.filter.nationalId = this.generalReportForm.value.nationalId;

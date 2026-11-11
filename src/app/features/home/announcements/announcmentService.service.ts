@@ -1,62 +1,31 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { BaseAPIService } from 'src/app/core/services/BaseAPI.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnnouncmentServiceService {
+  private controllerURL: string = environment.baseApiUrl + 'Announcement/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private APIs: BaseAPIService) { }
 
   addNewAnnouncment(data): Observable<any> {
-    try {
-      return this.http.post(`${environment.baseApiUrl}Announcement/Add`, data).pipe(
-        map(
-          (res) => {
-            console.log(res);
-
-          }
-        )
-      )
-    } catch (error) {
-      return null
-    }
+    return this.APIs.create(this.controllerURL + 'Add', data).pipe(map(() => undefined));
   }
 
   updateAnnouncment(data): Observable<any> {
-    try {
-      return this.http.put(`${environment.baseApiUrl}Announcement/Update`, data).pipe(
-        map(
-          (res) => {
-            console.log(res);
-          }
-        )
-      )
-    } catch (error) {
-      return null
-    }
+    return this.APIs.update(this.controllerURL + 'Update', data).pipe(map(() => undefined));
   }
 
   getAllAnnouncment(data): Observable<any> {
-    try {
-      return this.http.post(`${environment.baseApiUrl}Announcement/GetPage`, data).pipe(
-        map(
-          (res: any) => {
-            return res.data
-
-          }
-        )
-      )
-    } catch (error) {
-      return null
-    }
+    return this.APIs.create(this.controllerURL + 'GetPage', data).pipe(
+      map((res: any) => res.data)
+    );
   }
 
   delete(id): Observable<any> {
-    return this.http.delete(`${environment.baseApiUrl}Announcement/Delete?id=${id}`);
+    return this.APIs.delete(`${this.controllerURL}Delete?id=${id}`);
   }
-
-
 }

@@ -125,7 +125,7 @@ export class InvestigationComponent implements OnInit {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
 
     if (
       this.router.url.includes('/home/investigations/investigation-detailes')
@@ -146,6 +146,7 @@ export class InvestigationComponent implements OnInit {
       homeHealthAdministrationId: new FormControl(),
       department: new FormControl(),
       fullName: new FormControl(),
+      patientId: new FormControl(),
       nationalId: new FormControl(),
       patientDiseases: new FormControl(),
       //
@@ -258,6 +259,7 @@ export class InvestigationComponent implements OnInit {
       }
 
       formObj = this.investigationForm.value;
+      formObj.patientId = this.generalDataService.parsePatientId(formObj.patientId);
       if (this.selectedDiseaseId != null && this.selectedDiseaseId != -1) {
         formObj.diseaseId = this.selectedDiseaseId;
       }

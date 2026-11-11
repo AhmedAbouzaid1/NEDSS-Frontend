@@ -133,7 +133,7 @@ export class DiseaseByMonthReportComponent implements OnInit {
     this.dir = this.currentLang == 'ar' ? 'rtl' : 'ltr';
 
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.moreDetails = this.currentLang == 'ar' ? 'المزيد من التفاصيل >' : 'More Details >';
 
     this.getCaseCategories();

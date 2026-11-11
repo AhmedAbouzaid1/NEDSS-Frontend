@@ -134,7 +134,7 @@ export class IncidentDepartmentReportComponent implements OnInit {
     this.moreDetails = this.currentLang == 'ar' ? 'المزيد من التفاصيل >' : 'More Details >';
 
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.getCaseCategories();
     this.getDiseases();
     this.getDepartments();

@@ -4,7 +4,7 @@
     <div class="card shadow">
       <div class="card-body bg-dark-mode">
         <div class="row">
-          <div class="col-lg-4 col-md-6 mb-3">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="government">
                 {{ "NEDSS.EVENTS.GOVERNMENT" | translate }}
@@ -77,7 +77,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mb-3">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="administration">
                 {{ "NEDSS.EVENTS.ADMINISTRATION" | translate }}
@@ -150,7 +150,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mb-3">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="" class="form-label">
                 {{ "NEDSS.EVENTS.CITY" | translate }}
@@ -222,7 +222,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mb-3">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="" class="form-label">
                 {{ "NEDSS.EVENTS.HEALTH_OFFICE" | translate }}
@@ -293,12 +293,12 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mb-3">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="" class="form-label">
                 {{ "NEDSS.EVENTS.DESIEASE_CATEGORY" | translate }}
               </label>
-              <ng-multiselect-dropdown
+              <ng-multiselect-dropdown [placeholder]="'NEDSS.COMMON.SELECT' | translate"
                 [appDropdownLoading]="diseasesLoading"
                 [settings]="multipleDropdownSettings"
                 [data]="Diseasies"
@@ -308,7 +308,7 @@
               </ng-multiselect-dropdown>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mb-3">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="" class="form-label">
                 {{ "NEDSS.EVENTS.CASE_CATEGORY" | translate }}
@@ -379,7 +379,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mb-3">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="startDate">
                 {{ "NEDSS.EVENTS.FROM_DATE" | translate }}
@@ -408,7 +408,7 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mb-3">
+          <div class="col-xl-3 col-md-6 mb-2">
             <div class="form-group">
               <label for="endDate">
                 {{ "NEDSS.EVENTS.TO_DATE" | translate }}
@@ -436,54 +436,51 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mb-3">
-            <label class="form-label">
-              {{ "NEDSS.EVENTS.EVENT" | translate }}
-            </label>
-            <div class="has-labels">
-              <label for="IsEventEnded">
-                <input
-                  name="IsEventEnded"
-                  type="radio"
-                  [value]="null"
-                  [(ngModel)]="generalReportFormfilter.isEventEnded"
-                  formControlName="IsEventEnded"
-                />
-                {{ "NEDSS.EVENTS.ALL" | translate }}
-              </label>
-
-              <label for="IsEventEnded">
-                <input
-                  name="IsEventEnded"
-                  type="radio"
-                  [value]="true"
-                  [(ngModel)]="generalReportFormfilter.isEventEnded"
-                  formControlName="IsEventEnded"
-                />
-                {{ "NEDSS.EVENTS.EVENT_ENDED" | translate }}
-              </label>
-
-              <label for="">
-                <input
-                  name="IsEventEnded"
-                  type="radio"
-                  [value]="false"
-                  [(ngModel)]="generalReportFormfilter.isEventEnded"
-                  formControlName="IsEventEnded"
-                />
-
-                {{ "NEDSS.EVENTS.EVENT_NOT_ENDED" | translate }}
-              </label>
-            </div>
-          </div>
         </div>
       </div>
-      <div
-        class="card-footer d-flex align-items-center justify-content-end mt-2 mb-0"
-      >
+      <div class="card-footer d-flex flex-wrap align-items-center justify-content-between gap-3 mt-2 mb-0">
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <label class="form-label mb-0">
+            {{ "NEDSS.EVENTS.EVENT" | translate }}
+          </label>
+          <div class="has-labels">
+            <label for="IsEventEnded">
+              <input
+                name="IsEventEnded"
+                type="radio"
+                [value]="null"
+                [(ngModel)]="generalReportFormfilter.isEventEnded"
+                formControlName="IsEventEnded"
+              />
+              {{ "NEDSS.EVENTS.ALL" | translate }}
+            </label>
+
+            <label for="IsEventEnded">
+              <input
+                name="IsEventEnded"
+                type="radio"
+                [value]="true"
+                [(ngModel)]="generalReportFormfilter.isEventEnded"
+                formControlName="IsEventEnded"
+              />
+              {{ "NEDSS.EVENTS.EVENT_ENDED" | translate }}
+            </label>
+
+            <label for="">
+              <input
+                name="IsEventEnded"
+                type="radio"
+                [value]="false"
+                [(ngModel)]="generalReportFormfilter.isEventEnded"
+                formControlName="IsEventEnded"
+              />
+
+              {{ "NEDSS.EVENTS.EVENT_NOT_ENDED" | translate }}
+            </label>
+          </div>
+        </div>
         <button type="submit" class="btn btn-lg bg text-light">
-          <span class="bi bi-check2-circle"></span>
-          {{ "NEDSS.EVENTS.SEARCH" | translate }}
+          <span class="pi pi-search"></span> {{ "NEDSS.EVENTS.SEARCH" | translate }}
         </button>
       </div>
     </div>
@@ -1472,7 +1469,7 @@
                       "
                     >
                     </p-dropdown> -->
-                  <ng-multiselect-dropdown
+                  <ng-multiselect-dropdown [placeholder]="'NEDSS.COMMON.SELECT' | translate"
                     [appDropdownLoading]="governmentsLoading"
                     [settings]="multipleDropdownSettings"
                     [data]="multiGovernments"
@@ -1537,7 +1534,7 @@
                       "
                     >
                     </p-dropdown> -->
-                  <ng-multiselect-dropdown
+                  <ng-multiselect-dropdown [placeholder]="'NEDSS.COMMON.SELECT' | translate"
                     [appDropdownLoading]="addHealthAdministrationsLoading"
                     [settings]="multipleDropdownSettings"
                     [data]="checkHealthAdministration"
@@ -1583,7 +1580,7 @@
                     >
                   </label>
 
-                  <ng-multiselect-dropdown
+                  <ng-multiselect-dropdown [placeholder]="'NEDSS.COMMON.SELECT' | translate"
                     [appDropdownLoading]="branchesLoading"
                     [settings]="multipleDropdownSettings"
                     [data]="checkBranches"
@@ -1625,7 +1622,7 @@
                     >
                   </label>
 
-                  <ng-multiselect-dropdown
+                  <ng-multiselect-dropdown [placeholder]="'NEDSS.COMMON.SELECT' | translate"
                     [appDropdownLoading]="branchesLoading"
                     [settings]="multipleDropdownSettings"
                     [data]="checkBranches"
@@ -1665,7 +1662,7 @@
                     >
                   </label>
 
-                  <ng-multiselect-dropdown
+                  <ng-multiselect-dropdown [placeholder]="'NEDSS.COMMON.SELECT' | translate"
                     [appDropdownLoading]="areasLoading"
                     [settings]="multipleDropdownSettings"
                     [data]="checkAreas"
@@ -1709,7 +1706,7 @@
                     >
                   </label>
 
-                  <ng-multiselect-dropdown
+                  <ng-multiselect-dropdown [placeholder]="'NEDSS.COMMON.SELECT' | translate"
                     [appDropdownLoading]="addIncidentSourcesLoading"
                     [settings]="multipleDropdownSettings"
                     [data]="checkIncidentSource"

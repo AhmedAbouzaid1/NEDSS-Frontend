@@ -108,7 +108,7 @@ export class DataMonitoringReportComponent implements OnInit {
     this.levelId = JSON.parse(localStorage.getItem('ls.authorizationData'))?.user?.levelId;
 
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.getCaseCategories();
     this.getDiseases();
   }

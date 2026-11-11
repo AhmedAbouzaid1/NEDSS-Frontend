@@ -231,6 +231,7 @@ export class AdvancedSearchComponent implements OnInit {
             .subscribe((msg) => this.userMsg.info(msg));
         }
       }, 500);
+      this.patient.patientId = this.searchService.parsePatientId(this.patient.patientId);
       this.loadError = false;
       this.searchService.getAll(this.patient).subscribe(
         (result: any) => {
@@ -284,10 +285,10 @@ export class AdvancedSearchComponent implements OnInit {
 
   isValidPatient() {
     if (
-      this.searchService.validateFirstName(this.patient.firstName, false) &&
-      this.searchService.validateSecondName(this.patient.secondName, false) &&
-      this.searchService.validateThirdName(this.patient.thirdName, false) &&
-      this.searchService.validateFamilyName(this.patient.familyName, false) &&
+      this.searchService.validateFirstName(this.patient.firstName, false, true) &&
+      this.searchService.validateSecondName(this.patient.secondName, false, true) &&
+      this.searchService.validateThirdName(this.patient.thirdName, false, true) &&
+      this.searchService.validateFamilyName(this.patient.familyName, false, true) &&
       this.searchService.validatePhoneNumber1(this.patient.phoneNo1, false) &&
       this.searchService.validatePhoneNumber2(this.patient.phoneNo2, false) &&
       this.searchService.validateNationalID(this.patient.nationalId, false) &&

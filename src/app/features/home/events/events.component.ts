@@ -255,7 +255,7 @@ export class EventsComponent {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.generalReportForm = new FormGroup({
       homeGovernmentId: new FormControl(),
       homeHealthAdministrationId: new FormControl(),

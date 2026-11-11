@@ -158,7 +158,7 @@ export class RepeatedRecordsComponent implements OnInit {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
 
     this.repeatedRecordsForm = this.fb.group({
       fromDate: [

@@ -1,50 +1,29 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { Observable } from 'rxjs';
+import { BaseAPIService } from 'src/app/core/services/BaseAPI.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserManualService {
+  private controllerURL: string = environment.baseApiUrl + 'OptionsHelp/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private APIs: BaseAPIService) { }
 
   addNewManual(data): Observable<any> {
-    try {
-      return this.http.post(`${environment.baseApiUrl}OptionsHelp/Save`, data).pipe(
-        map(
-          (res) => {
-            console.log(res);
-
-          }
-        )
-      )
-    } catch (error) {
-      return null
-    }
+    return this.APIs.create(this.controllerURL + 'Save', data).pipe(map(() => undefined));
   }
 
-
   getAllMauals(): Observable<any> {
-    try {
-      return this.http.post(`${environment.baseApiUrl}OptionsHelp/GetPage`, {}).pipe(
-        map(
-          (res: any) => {
-            console.log(res);
-            return res.data[0]
-
-          }
-        )
-      )
-    } catch (error) {
-      return null
-    }
+    return this.APIs.create(this.controllerURL + 'GetPage', {}).pipe(
+      map((res: any) => res.data[0])
+    );
   }
 
   delete(id): Observable<any> {
-    return this.http.delete(`${environment.baseApiUrl}OptionsHelp/Delete?id=${id}`);
+    return this.APIs.delete(`${this.controllerURL}Delete?id=${id}`);
   }
 
 }

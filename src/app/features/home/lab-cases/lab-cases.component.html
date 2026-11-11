@@ -5,54 +5,7 @@
 <div class="card shadow color rounded">
   <div class="card-body bg-dark-mode">
     <div class="row">
-      <div class="col-lg-4 col-md-6">
-        <div class="form-group">
-          <label for="">
-            {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME" | translate }}
-          </label>
-          <input
-            type="text"
-            [(ngModel)]="patientsFilter.fullName"
-            (blur)="
-              generalDataService.isFirstNameValid =
-                generalDataService.validateFirstName(
-                  patientsFilter.fullName,
-                  false
-                )
-            "
-            (keypress)="generalDataService.onNameKeyPress($event)"
-            (input)="generalDataService.normalizeNameInput($event)"
-            class="form-control"
-          />
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-6">
-        <div class="form-group">
-          <label for="">
-            {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.NATIONALID" | translate }}
-          </label>
-          <input
-            type="text"
-            [(ngModel)]="patientsFilter.nationalId"
-            class="form-control"
-            (keypress)="generalDataService.onIdentityCardKeyPress($event)"
-            (blur)="
-              generalDataService.isCardIdValid =
-                generalDataService.validateNationalID(
-                  patientsFilter.nationalId,
-                  false
-                )
-            "
-          />
-          <div
-            *ngIf="!generalDataService.isCardIdValid"
-            class="form-text text-danger mess-color"
-          >
-            {{ generalDataService.cardIdValidationMessage | translate }}
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-6">
+      <div class="col-xl-3 col-md-6 mb-2">
         <div class="form-group">
           <label for="">
             {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.GOVERBMENT" | translate }}
@@ -99,7 +52,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6">
+      <div class="col-xl-3 col-md-6 mb-2">
         <div class="form-group">
           <label for="">
             {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.HEALTHADMIN" | translate }}
@@ -146,7 +99,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6">
+      <div class="col-xl-3 col-md-6 mb-2">
         <div class="form-group">
           <label for="">
             {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.CITY" | translate }}
@@ -191,8 +144,7 @@
           </div>
         </div>
       </div>
-
-      <div class="col-lg-4 col-md-6">
+      <div class="col-xl-3 col-md-6 mb-2">
         <div class="form-group">
           <label for="">
             {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.HEALTH_OFFICE" | translate }}
@@ -237,7 +189,71 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6">
+      <div class="col-xl-3 col-md-6 mb-2">
+        <div class="form-group">
+          <label for="">
+            {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.CASE_ID" | translate }}
+          </label>
+          <input
+            type="text"
+            inputmode="numeric"
+            maxlength="10"
+            [(ngModel)]="patientsFilter.patientId"
+            (keypress)="generalDataService.onDigitsKeyPress($event)"
+            class="w-100"
+            pInputText
+          />
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 mb-2">
+        <div class="form-group">
+          <label for="">
+            {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME" | translate }}
+          </label>
+          <input
+            type="text"
+            [(ngModel)]="patientsFilter.fullName"
+            (blur)="
+              generalDataService.isFirstNameValid =
+                generalDataService.validateFirstName(
+                  patientsFilter.fullName,
+                  false,
+                  true
+                )
+            "
+            (keypress)="generalDataService.onSearchNameKeyPress($event)"
+            (input)="generalDataService.normalizeNameInput($event)"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 mb-2">
+        <div class="form-group">
+          <label for="">
+            {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.NATIONALID" | translate }}
+          </label>
+          <input
+            type="text"
+            [(ngModel)]="patientsFilter.nationalId"
+            class="form-control"
+            (keypress)="generalDataService.onIdentityCardKeyPress($event)"
+            (blur)="
+              generalDataService.isCardIdValid =
+                generalDataService.validateNationalID(
+                  patientsFilter.nationalId,
+                  false
+                )
+            "
+          />
+          <div
+            *ngIf="!generalDataService.isCardIdValid"
+            class="form-text text-danger mess-color"
+          >
+            {{ generalDataService.cardIdValidationMessage | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 mb-2">
         <div class="form-group">
           <label for="">
             {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.NATIONALITY" | translate }}
@@ -282,7 +298,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6">
+      <div class="col-xl-3 col-md-6 mb-2">
         <div class="form-group">
           <label for="">
             {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.MOBILE" | translate }}
@@ -308,7 +324,7 @@
           </small>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6">
+      <div class="col-xl-3 col-md-6 mb-2">
         <div class="form-group">
           <label for="">
             {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.FROM_DATE" | translate }}
@@ -334,8 +350,7 @@
           </mat-form-field>
         </div>
       </div>
-
-      <div class="col-lg-4 col-md-6">
+      <div class="col-xl-3 col-md-6 mb-2">
         <div class="form-group">
           <label for="">
             {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.TO_DATE" | translate }}
@@ -362,52 +377,48 @@
           </mat-form-field>
         </div>
       </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="form-group">
-          <label class="form-label">
-            {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.CHECK" | translate }}
-          </label>
-          <div class="has-labels">
-            <label for="Done">
-              <input
-                id="Done"
-                type="radio"
-                name="hasCheck"
-                [(ngModel)]="patientsFilter.mandatoryDataCompleted"
-                value="true"
-              />
-              {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.DONE" | translate }}
-            </label>
-            <label for="NotDone">
-              <input
-                id="NotDone"
-                type="radio"
-                name="hasCheck"
-                [(ngModel)]="patientsFilter.mandatoryDataCompleted"
-                value="false"
-              />
-              {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.NOT_DONE" | translate }}
-            </label>
-            <label for="All">
-              <input
-                id="All"
-                type="radio"
-                name="hasCheck"
-                [(ngModel)]="patientsFilter.mandatoryDataCompleted"
-                value="null"
-              />
-              {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.ALL" | translate }}
-            </label>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
-  <div class="card-footer text-start mb-0">
-    <button class="btn bg text-white rounded-2" (click)="getPatients()">
-      <i class="bi bi-search"></i>
-      {{ "NEDSS.COMMON.SEARCH" | translate }}
+  <div class="card-footer d-flex flex-wrap align-items-center justify-content-between gap-3 mt-2 mb-0">
+    <div class="d-flex flex-wrap align-items-center gap-3">
+      <label class="form-label mb-0">
+        {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.CHECK" | translate }}
+      </label>
+      <div class="has-labels">
+        <label for="Done">
+          <input
+            id="Done"
+            type="radio"
+            name="hasCheck"
+            [(ngModel)]="patientsFilter.mandatoryDataCompleted"
+            [value]="true"
+          />
+          {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.DONE" | translate }}
+        </label>
+        <label for="NotDone">
+          <input
+            id="NotDone"
+            type="radio"
+            name="hasCheck"
+            [(ngModel)]="patientsFilter.mandatoryDataCompleted"
+            [value]="false"
+          />
+          {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.NOT_DONE" | translate }}
+        </label>
+        <label for="All">
+          <input
+            id="All"
+            type="radio"
+            name="hasCheck"
+            [(ngModel)]="patientsFilter.mandatoryDataCompleted"
+            [value]="null"
+          />
+          {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.ALL" | translate }}
+        </label>
+      </div>
+    </div>
+    <button type="button" class="btn btn-lg bg text-light" (click)="getPatients()">
+      <span class="pi pi-search"></span> {{ "NEDSS.COMMON.SEARCH" | translate }}
     </button>
   </div>
 </div>

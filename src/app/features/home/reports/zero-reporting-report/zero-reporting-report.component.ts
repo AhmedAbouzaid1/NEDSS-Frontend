@@ -164,7 +164,7 @@ export class ZeroReportingReportComponent implements OnInit {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.getCaseCategories();
     this.getDepartments();
   }
