@@ -1,6 +1,7 @@
 import { Patient } from './../../search/models/patient';
 export class PatientModel {
   id!: number;
+  isMigrated?: boolean;
   incidentGovernmentId?: number;
   incidentHealthAdministrationId?: number;
   incidentSourceId?: number;

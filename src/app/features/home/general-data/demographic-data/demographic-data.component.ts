@@ -347,11 +347,10 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
 
   disableFieldsDueToNationalId(): boolean {
     return (
+      !this.patient?.isMigrated &&
+      this.patient?.relationShipDegreeId === RelativeEnum.Himself &&
       this.patient.nationalityId == NationalityEnum.Egyptian &&
-      this.patient.relationShipDegreeId == 0 &&
-      this.patient.incidentDepartmentId == 1 &&
-      this.generalDataService.validateEmptyField(this.patient.nationalId) &&
-      this.generalDataService.isCardIdValid
+      !!this.patient.nationalId
     );
   }
   onBirthDateChanged() {
