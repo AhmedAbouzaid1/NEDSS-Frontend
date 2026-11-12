@@ -168,7 +168,7 @@ export class ExportService {
     <br>
     <header
         style="display: flex; justify-content: space-between; align-items: center; padding-inline: 24px; padding-block-start: 24px;padding-block-end: 12px;">
-        <img src="../../../Content/Images/logo.png" style="width: 90px; aspect-ratio: 1/1; align-self: flex-start">
+        <img src="Content/Images/logo.png" style="width: 90px; aspect-ratio: 1/1; align-self: flex-start">
         <div dir="rtl">
             <br>
             <br>
@@ -214,7 +214,7 @@ export class ExportService {
             </div>
         </div>
         <div style="align-self: flex-start">
-            <img src="../../../Content/Images/mohp.png" style="width: 60px; aspect-ratio: 1/1;">
+            <img src="Content/Images/mohp.png" style="width: 60px; aspect-ratio: 1/1;">
             <div style="margin-bottom: 2px; margin-top: 8px; font-weight: 700;">القطاع الوقائي</div>
             <small style="font-weight: 800;">الإدارة العامة للوبائيات والترصد</small>
         </div>
@@ -265,7 +265,7 @@ export class ExportService {
     <br>
     <header
         style="display: flex; justify-content: space-between; align-items: center; padding-inline: 24px; padding-block-start: 24px;padding-block-end: 12px;">
-        <img src="../../../Content/Images/logo.png" style="width: 90px; aspect-ratio: 1/1; align-self: flex-start">
+        <img src="Content/Images/logo.png" style="width: 90px; aspect-ratio: 1/1; align-self: flex-start">
         <div dir="rtl">
             <br>
             <br>
@@ -296,7 +296,7 @@ export class ExportService {
             </div>
         </div>
         <div style="align-self: flex-start">
-            <img src="../../../Content/Images/mohp.png" style="width: 60px; aspect-ratio: 1/1;">
+            <img src="Content/Images/mohp.png" style="width: 60px; aspect-ratio: 1/1;">
             <div style="margin-bottom: 2px; margin-top: 8px; font-weight: 700;">القطاع الوقائي</div>
             <small style="font-weight: 800;">الإدارة العامة للوبائيات والترصد</small>
         </div>
@@ -342,7 +342,7 @@ export class ExportService {
     <br>
     <header
         style="display: flex; justify-content: space-between; align-items: center; padding-inline: 24px; padding-block-start: 24px;padding-block-end: 12px;">
-        <img src="../../../Content/Images/logo.png" style="width: 90px; aspect-ratio: 1/1; align-self: flex-start">
+        <img src="Content/Images/logo.png" style="width: 90px; aspect-ratio: 1/1; align-self: flex-start">
         <div dir="rtl">
             <br>
             <br>
@@ -351,7 +351,7 @@ export class ExportService {
             <br> 
         </div>
         <div style="align-self: flex-start">
-            <img src="../../../Content/Images/mohp.png" style="width: 60px; aspect-ratio: 1/1;">
+            <img src="Content/Images/mohp.png" style="width: 60px; aspect-ratio: 1/1;">
             <div style="margin-bottom: 2px; margin-top: 8px; font-weight: 700;">القطاع الوقائي</div>
             <small style="font-weight: 800;">الإدارة العامة للوبائيات والترصد</small>
         </div>

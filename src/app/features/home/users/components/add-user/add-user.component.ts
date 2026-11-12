@@ -1102,7 +1102,7 @@ export class AddUserComponent {
           return;
         }
         this.inviteResult = {
-          url: window.location.origin + '/#/user-onboarding/' + data.token,
+          url: new URL('#/user-onboarding/' + data.token, document.baseURI).href,
           code: data.code,
           expiresAt: data.expiresAt,
         };

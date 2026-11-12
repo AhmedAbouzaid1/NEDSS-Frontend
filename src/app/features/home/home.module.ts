@@ -183,7 +183,7 @@ import { MonitorUnitsTeamMembersReportPDFComponent } from './reports/monitor-uni
 import { MonitorUnitsTeamMembersDetailsReportPDFComponent } from './reports/monitor-units-team-members-details-report/monitor-units-team-members-details-report-pdf/monitor-units-team-members-details-report-pdf.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http);
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 @NgModule({
   declarations: [
