@@ -275,6 +275,8 @@ export class PatientChecksComponent implements OnInit {
           this.noData = true;
           this.pages = 0;
           this.hasNextPage = false;
+          this.countLoading = false;
+          this.totalCount = null;
           this.translateService
             .get('NOUR.NO_RESULTS')
             .subscribe((msg) => this.userMsg.warn(msg));
@@ -332,6 +334,12 @@ export class PatientChecksComponent implements OnInit {
     const hasFilter = Object.keys(filter).some(k => !skip.includes(k) && filter[k] != null && filter[k] !== '' && filter[k] !== false);
     if (!hasFilter) {
       this.totalCount = null;
+      return;
+    }
+    if (!this.hasNextPage) {
+      this.countLoading = false;
+      this.totalCount =
+        filter.pageIndex * filter.pageSize + this.patientsForLab.length;
       return;
     }
     this.countLoading = true;
