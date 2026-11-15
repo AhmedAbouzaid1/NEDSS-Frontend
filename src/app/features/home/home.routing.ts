@@ -23,7 +23,6 @@ import { PopulationIncreaseCoefficientComponent } from './population-data/popula
 import { SearchPopulationExpectationComponent } from './population-data/search-populationExpectation/search-populationExpectation.component';
 import { DuplicationViewComponent } from './repeated-records/duplicationView/duplicationView.component';
 import { DuplicationReviewComponent } from './repeated-records/duplicationReview/duplicationReview.component';
-import { ChatComponent } from './chat/chat.component';
 import { AddUserComponent } from './users/components/add-user/add-user.component';
 import { UserApprovalsComponent } from './users/components/user-approvals/user-approvals.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
@@ -879,9 +878,8 @@ const routes: Routes = [
       },
       {
         path: 'chat',
-        component: ChatComponent,
-        canActivate: [AuthGuard, NavigationGuard],
-        data: { types: [1, 2, 3] },
+        redirectTo: 'welcome',
+        pathMatch: 'full',
       },
       //Remove this FOR TESTING ONLY
       {

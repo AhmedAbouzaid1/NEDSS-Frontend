@@ -30,7 +30,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   sigrID: string = '';
   unreadCount = 0;
   private unreadCountSub: Subscription;
-  chatNotifications: NotificationDTO = {};
   private hubConnection: signalR.HubConnection;
   userId: number = 0;
   readonly defaultUserImage = 'assets/default-user.webp';
@@ -114,59 +113,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     this.hubConnection.onreconnected(() => this.UserConnected());
 
+    this.hubConnection.on('UsersConnectedIncrement', (ConnectedUsersCount) => {
+      this.lookupService.$ConnectedUsersCount.next(ConnectedUsersCount);
+    });
+    this.hubConnection.on('notificationReceived', (data: NotificationDTO) => {
+      if (data.title != 'chat') this.notificationService.notifyReceived(data);
+    });
+
     this.hubConnection
       .start()
-      .then(() => {
-        this.UserConnected();
-
-        this.hubConnection.on(
-          'UsersConnectedIncrement',
-          (ConnectedUsersCount) => {
-            this.lookupService.$ConnectedUsersCount.next(ConnectedUsersCount);
-          }
-        );
-        //message received
-        this.hubConnection.on(
-          'notificationReceived',
-          (data: NotificationDTO) => {
-            if (data.title != 'chat') this.notificationService.notifyReceived(data);
-            if (
-              this.chatNotifications != null &&
-              this.chatNotifications != undefined &&
-              Number(this.chatNotifications.message) >= 0 &&
-              data.title === 'chat'
-            ) {
-              this.chatNotifications.message = (
-                Number(this.chatNotifications.message) + Number(data.message)
-              ).toString();
-            } else if (data.title === 'chat') {
-              this.chatNotifications = data;
-            }
-          }
-        );
-
-        //updatedChatNotificationsCount
-        this.hubConnection.on(
-          'updatedChatNotificationsCount',
-          (data: string) => {
-            if (data != null) this.chatNotifications.message = data;
-          }
-        );
-      })
+      .then(() => this.UserConnected())
       .catch((err) => {
         console.log('Error while starting connection: ' + err);
       });
   }
 
-  RemoveChatNotifications() {
-    this.notificationService
-      .removeNotification(this.chatNotifications)
-      .subscribe({
-        next: (x) => null,
-        error: (err) => console.error(err),
-        complete: () => {},
-      });
-  }
   ngOnDestroy() {
     this.unreadCountSub?.unsubscribe();
     this.hubConnection?.stop();
@@ -176,7 +137,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.unreadCountSub = this.notificationService.unreadCount$.subscribe(
       (count) => (this.unreadCount = count)
     );
-    this.chatNotifications.message = '0';
     this.getAppLanguages();
     this.language =
       localStorage.getItem('ls.currentLang') !== undefined &&
@@ -201,11 +161,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.notificationService.getMySummary().subscribe({
       next: (res: any) => {
         this.notificationService.setUnreadCount(res?.data?.unreadCount ?? 0);
-        const chat: NotificationDTO = res?.data?.chat;
-        this.chatNotifications =
-          chat && Number(chat.message) >= 0
-            ? chat
-            : { message: '0', title: 'chat' };
       },
       error: (err) => console.error(err),
     });
