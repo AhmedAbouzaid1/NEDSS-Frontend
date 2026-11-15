@@ -46,6 +46,10 @@ export class AppComponent {
   private pwGateSkipped = false;
   @ViewChild(ChangePasswordComponent) pwGateForm: ChangePasswordComponent;
 
+  private applyDocumentLang(lang: string): void {
+    document.documentElement.lang = lang === 'en' ? 'en' : 'ar';
+  }
+
   constructor(
     private translate: TranslateService,
     private idle: Idle,
@@ -67,6 +71,8 @@ export class AppComponent {
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
     this.translate.setDefaultLang(this.lang);
+    this.applyDocumentLang(this.lang);
+    this.translate.onLangChange.subscribe(({ lang }) => this.applyDocumentLang(lang));
     translate.use(this.lang);
 
     idle.setIdle(this.idleSeconds);
