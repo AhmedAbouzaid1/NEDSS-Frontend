@@ -96,9 +96,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
   get unreadBadge(): string {
     return this.unreadCount > 99 ? '99+' : `${this.unreadCount}`;
   }
+  private hubStopped = false;
+  private hubRestartTimer?: ReturnType<typeof setTimeout>;
+
   public UserConnected = () => {
-    this.hubConnection.invoke('UserConnected', this.userId);
+    this.hubConnection.invoke('UserConnected', this.userId).catch(() => {});
   };
+
+  private reconnectDelayMs(attempt: number): number {
+    const base = Math.min(60_000, 2_000 * Math.pow(2, Math.min(attempt, 5)));
+    return base / 2 + Math.random() * base;
+  }
+
   public startConnection() {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(`${environment.baseApiUrl}NotificationHub`, {
@@ -108,27 +117,42 @@ export class NavbarComponent implements OnInit, OnDestroy {
           signalR.HttpTransportType.LongPolling,
         withCredentials: false,
       })
-      .withAutomaticReconnect()
+      .withAutomaticReconnect({
+        nextRetryDelayInMilliseconds: (context) => this.reconnectDelayMs(context.previousRetryCount),
+      })
       .build();
 
     this.hubConnection.onreconnected(() => this.UserConnected());
+    this.hubConnection.onclose(() => this.scheduleHubRestart(0));
 
-    this.hubConnection.on('UsersConnectedIncrement', (ConnectedUsersCount) => {
-      this.lookupService.$ConnectedUsersCount.next(ConnectedUsersCount);
-    });
     this.hubConnection.on('notificationReceived', (data: NotificationDTO) => {
       if (data.title != 'chat') this.notificationService.notifyReceived(data);
     });
 
+    this.connectHub(0);
+  }
+
+  private connectHub(attempt: number) {
+    if (this.hubStopped) {
+      return;
+    }
     this.hubConnection
       .start()
       .then(() => this.UserConnected())
-      .catch((err) => {
-        console.log('Error while starting connection: ' + err);
-      });
+      .catch(() => this.scheduleHubRestart(attempt + 1));
+  }
+
+  private scheduleHubRestart(attempt: number) {
+    if (this.hubStopped) {
+      return;
+    }
+    clearTimeout(this.hubRestartTimer);
+    this.hubRestartTimer = setTimeout(() => this.connectHub(attempt), this.reconnectDelayMs(attempt));
   }
 
   ngOnDestroy() {
+    this.hubStopped = true;
+    clearTimeout(this.hubRestartTimer);
     this.unreadCountSub?.unsubscribe();
     this.hubConnection?.stop();
   }
@@ -148,13 +172,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     );
     this.startConnection();
 
-    this.notificationService.getInactiveUsers(this.userId).subscribe({
-      next: (res) => {},
-      error: () => {},
-      complete: () => {
-        this.getAllNotifications();
-      },
-    });
+    this.getAllNotifications();
   }
 
   getAllNotifications() {

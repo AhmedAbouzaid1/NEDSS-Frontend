@@ -361,9 +361,6 @@ export class UsersReportComponent implements OnInit {
       .subscribe(() => { });
   }
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     this.filterdData = this.myData.filter((m) =>
       m.fullName.toLowerCase().includes(e.target.value.toLowerCase())
     );

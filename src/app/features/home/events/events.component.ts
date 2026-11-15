@@ -1792,9 +1792,20 @@ export class EventsComponent {
     this.underDeleting.pname = ele.patientName;
   }
 
+  private tableSearchTimer?: ReturnType<typeof setTimeout>;
+  private lastTableSearch = '';
+
   Tablesearch(e) {
-    this.searchText = e.target.value;
-    this.search();
+    const value = e.target.value ?? '';
+    clearTimeout(this.tableSearchTimer);
+    this.tableSearchTimer = setTimeout(() => {
+      if (value === this.lastTableSearch) {
+        return;
+      }
+      this.lastTableSearch = value;
+      this.searchText = value;
+      this.search();
+    }, 400);
     // if (e.target.value.toLowerCase()?.length ) {
     //   this.search();
     // }

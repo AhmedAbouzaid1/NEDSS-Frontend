@@ -16,6 +16,8 @@ export class DataFetchDaysComponent {
   isNationalIdValid: boolean = true;
   reportsMaxRangeDays: number = DEFAULT_REPORTS_MAX_RANGE_DAYS;
   isReportsRangeValid: boolean = true;
+  auditRetentionDays: number = 7;
+  isAuditRetentionValid: boolean = true;
   currentLang: string = 'ar';
 
   constructor(
@@ -34,6 +36,19 @@ export class DataFetchDaysComponent {
     this.getDataDaysLimit();
     this.getNationalIdSearchDaysLimit();
     this.getReportsMaxRangeDays();
+    this.getAuditRetentionDays();
+  }
+
+  getAuditRetentionDays() {
+    this.lookupsService.getAuditRetentionDays().subscribe(
+      (result: any) => {
+        const parsed = parseInt(result?.data);
+        if (!isNaN(parsed) && parsed > 0) {
+          this.auditRetentionDays = parsed;
+        }
+      },
+      () => this.showLoadError()
+    );
   }
 
   getReportsMaxRangeDays() {
@@ -100,7 +115,8 @@ export class DataFetchDaysComponent {
     const dataValid = this.validate();
     const nationalIdValid = this.validateNationalId();
     const reportsRangeValid = this.validateReportsRange();
-    if (!dataValid || !nationalIdValid || !reportsRangeValid) {
+    const auditRetentionValid = this.validateAuditRetention();
+    if (!dataValid || !nationalIdValid || !reportsRangeValid || !auditRetentionValid) {
       return;
     }
 
@@ -117,11 +133,18 @@ export class DataFetchDaysComponent {
                   .subscribe(
                     () => {
                       this.reportDateRange.setMaxDays(this.reportsMaxRangeDays);
-                      this.translateService
-                        .get('NEDSS.COMMON.SENT_SUCESSFULLY')
-                        .subscribe((res: string) => {
-                          this.userMsg.success(res);
-                        });
+                      this.lookupsService
+                        .updateAuditRetentionDays({ daysLimit: this.auditRetentionDays })
+                        .subscribe(
+                          () => {
+                            this.translateService
+                              .get('NEDSS.COMMON.SENT_SUCESSFULLY')
+                              .subscribe((res: string) => {
+                                this.userMsg.success(res);
+                              });
+                          },
+                          () => this.showSaveError()
+                        );
                     },
                     () => this.showSaveError()
                   );
@@ -175,6 +198,16 @@ export class DataFetchDaysComponent {
       return false;
     }
     this.isReportsRangeValid = true;
+    return true;
+  }
+
+  validateAuditRetention(): boolean {
+    this.auditRetentionDays = parseInt(this.auditRetentionDays.toString());
+    if (isNaN(this.auditRetentionDays) || this.auditRetentionDays < 7) {
+      this.isAuditRetentionValid = false;
+      return false;
+    }
+    this.isAuditRetentionValid = true;
     return true;
   }
 }

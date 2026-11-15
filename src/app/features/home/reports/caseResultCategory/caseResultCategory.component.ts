@@ -443,9 +443,6 @@ export class CaseResultCategoryComponent implements OnInit {
   //   this.exportService.exportTemplateAsPdf(document.getElementById(this.currentConfig), 'عدد الحالات حسب ادارة الابلاغ', [selectedGov, selectedAdm, [], selectedDep], [sDate, eDate]);
   // }
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     if (this.myData.length > 0) {
       this.filterdData = this.myData.filter((m) =>
         m.incidentHealthAr.toLowerCase().includes(e.target.value.toLowerCase())

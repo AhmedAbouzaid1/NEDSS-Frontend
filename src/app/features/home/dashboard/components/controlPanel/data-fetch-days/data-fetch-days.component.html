@@ -60,6 +60,24 @@
             </div>
           </div>
         </div>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="auditRetentionDays">
+              {{ "NEDSS.HOME.CONTROL_PANEL.AUDIT_RETENTION_DAYS" | translate }}
+              <span class="text-muted">{{ "NEDSS.HOME.CONTROL_PANEL.AUDIT_RETENTION_DAYS_HINT" | translate }}</span>
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" name="auditRetentionDays" [(ngModel)]="auditRetentionDays" class="form-control"
+              (keypress)="onNumberKeyPress($event)" required>
+            <div *ngIf="userForm.controls.auditRetentionDays?.touched && userForm.controls.auditRetentionDays?.errors?.required"
+              class="form-text text-danger">
+              {{"NEDSS.COMMON.FILEDREQUIRED" | translate}}
+            </div>
+            <div *ngIf="!isAuditRetentionValid" class="form-text text-danger">
+              {{"NEDSS.HOME.CONTROL_PANEL.AUDIT_RETENTION_DAYS_MIN" | translate }}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="card-footer text-start" style="text-align:center !important">

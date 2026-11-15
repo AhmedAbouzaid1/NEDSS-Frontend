@@ -518,9 +518,6 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
     this.exportService.exportTemplateAsPdf(document.getElementById(this.currentConfig), ' عدد الحالات حسب قسم ومصادر الابلاغ', [selectedGov, selectedAdm, selectedIncs, selectedDep], [sDate, eDate]);
   }
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     this.filterdData = this.myData.filter((m) =>
       m.incidentHealthAr.toLowerCase().includes(e.target.value.toLowerCase())
     );

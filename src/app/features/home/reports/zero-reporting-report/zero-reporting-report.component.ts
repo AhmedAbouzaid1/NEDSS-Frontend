@@ -604,9 +604,6 @@ export class ZeroReportingReportComponent implements OnInit {
   }
 
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     this.filterdData = this.myData.filter((m) =>
       m.incidentHealthAr.toLowerCase().includes(e.target.value.toLowerCase())
     );

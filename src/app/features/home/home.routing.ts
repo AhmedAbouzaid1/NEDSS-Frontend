@@ -119,7 +119,7 @@ import { MonitorUnitsTeamMembersReportComponent } from './reports/monitor-units-
 import { MonitorUnitsTeamMembersDetailsReportComponent } from './reports/monitor-units-team-members-details-report/monitor-units-team-members-details-report.component';
 const routes: Routes = [
   {
-    path: 'home',
+    path: '',
     component: HomeComponent,
     canActivate: [AuthGuard],
     data: { types: [3] },

@@ -128,18 +128,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     InputTextModule,
     MultiSelectModule,
     NgMultiSelectDropDownModule.forRoot(),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-      defaultLanguage:
-        localStorage.getItem('ls.currentLang') !== undefined &&
-        localStorage.getItem('ls.currentLang') !== 'undefined'
-          ? localStorage.getItem('ls.currentLang')
-          : 'ar',
-    }),
+    TranslateModule.forChild({ extend: true }),
   ],
 })
 export class ControlPanelModule {}

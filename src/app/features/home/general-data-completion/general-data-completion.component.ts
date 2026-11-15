@@ -88,7 +88,9 @@ export class GeneralDataCompletionComponent {
   loadingPanel: boolean = false;
   first: number = 0;
   last: number = 0;
-  pages: number = 0;
+  hasNextPage: boolean = false;
+  totalCount: number | null = null;
+  countLoading: boolean = false;
   all: string = 'all';
 
   selecteddepartmentId: number;
@@ -558,61 +560,50 @@ export class GeneralDataCompletionComponent {
     this.showCheckbox = !this.showCheckbox;
   }
 
-  getGeneralDataCompletions() {
+  getGeneralDataCompletions(skipCount?: boolean) {
     this.loadingPanel = true;
     this.loadError = false;
+    const dts = { ...this.generalDataCompletionFilter };
     this.Delay();
     this.generalDataCompletionServiceService
-      .getPageGeneralDataCompletions2(this.generalDataCompletionFilter)
+      .getPageGeneralDataCompletions2(dts)
       .subscribe(
         (result: any) => {
           this.loadError = false;
           if (result != null && result != undefined) {
-            //TODO Remove !p.incidentSourceId condition when backend be edited
-            console.log('general-data-completion', result.data);
             this.generalDataCompletions = result?.data ?? [];
-            // ?.filter(
-            //   (p: any) =>
-            //     this.lookupsService.incidentsForOrg.includes(
-            //       p.incidentSourceId
-            //     ) || !p.incidentSourceId
-            // );
             if (
               this.generalDataCompletions != undefined &&
               this.generalDataCompletions.length == 0
             ) {
               this.RemoveDelay();
-
               this.noData = true;
-              this.pages = 0;
+              this.hasNextPage = false;
               this.translateService
                 .get('NOUR.NO_RESULTS')
                 .subscribe((msg) => this.userMsg.warn(msg));
             } else {
               this.RemoveDelay();
               this.noData = false;
-              this.pages = result.data[0].totalCount;
-
+              this.hasNextPage = this.getHasNextPage(result.data[0]);
               this.last =
                 this.generalDataCompletionFilter.pageIndex *
                 this.generalDataCompletionFilter.pageSize;
-              document
-                .getElementById('goto')
-                .scrollIntoView({ behavior: 'smooth' });
-              //window.location.href = '#goto'
+              if (!skipCount) this.fetchCount(dts);
             }
           }
-
-          this.loadingPanel = false;
           this.delay = false;
+          this.loadingPanel = false;
         },
         (error) => {
           this.loadingPanel = false;
           this.delay = false;
+          this.RemoveDelay();
           this.loadError = true;
           this.noData = false;
           this.generalDataCompletions = [];
-          this.pages = 0;
+          this.hasNextPage = false;
+          this.totalCount = null;
           this.translateService
             .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
             .subscribe((res: string) => this.userMsg.error(res));
@@ -623,30 +614,70 @@ export class GeneralDataCompletionComponent {
   sort(event: SortEvent) {
     if (
       event.order == -1 &&
-      this.generalDataCompletionFilter.sortOrder != SortOrder.desc
+      (this.generalDataCompletionFilter.sortOrder != SortOrder.desc ||
+        this.generalDataCompletionFilter.sortColumn != event.field)
     ) {
       this.generalDataCompletionFilter.sortOrder = SortOrder.desc;
-      if (typeof event.field === 'string')
-        this.generalDataCompletionFilter.sortColumn = event.field;
-      this.getGeneralDataCompletions();
+      this.generalDataCompletionFilter.sortColumn = event.field as string;
+      this.getGeneralDataCompletions(true);
     } else if (
       event.order == 1 &&
-      this.generalDataCompletionFilter.sortOrder != SortOrder.asc
+      (this.generalDataCompletionFilter.sortOrder != SortOrder.asc ||
+        this.generalDataCompletionFilter.sortColumn != event.field)
     ) {
       this.generalDataCompletionFilter.sortOrder = SortOrder.asc;
-      if (typeof event.field === 'string')
-        this.generalDataCompletionFilter.sortColumn = event.field;
-      this.getGeneralDataCompletions();
+      this.generalDataCompletionFilter.sortColumn = event.field as string;
+      this.getGeneralDataCompletions(true);
     }
   }
-  paginate(event: any) {
-    this.first = event.first;
-    this.last = event.last;
-    // this.all= this.pages.toString();
 
-    this.generalDataCompletionFilter.pageIndex = event.page;
-    this.generalDataCompletionFilter.pageSize = event.rows;
+  previousPage() {
+    if (this.generalDataCompletionFilter.pageIndex > 0) {
+      this.generalDataCompletionFilter.pageIndex--;
+      this.first =
+        this.generalDataCompletionFilter.pageIndex *
+        this.generalDataCompletionFilter.pageSize;
+      this.getGeneralDataCompletions(true);
+    }
+  }
+
+  nextPage() {
+    if (this.hasNextPage) {
+      this.generalDataCompletionFilter.pageIndex++;
+      this.first =
+        this.generalDataCompletionFilter.pageIndex *
+        this.generalDataCompletionFilter.pageSize;
+      this.getGeneralDataCompletions(true);
+    }
+  }
+
+  onPageSizeChange(newSize: number) {
+    this.generalDataCompletionFilter.pageSize = newSize;
+    this.generalDataCompletionFilter.pageIndex = 0;
+    this.first = 0;
     this.getGeneralDataCompletions();
+  }
+
+  private getHasNextPage(firstRow: any): boolean {
+    return firstRow?.['hasNextPage'] === true;
+  }
+
+  private fetchCount(filter: any) {
+    this.countLoading = true;
+    this.totalCount = null;
+    this.generalDataCompletionServiceService
+      .getGeneralDataCompletionsCount({ ...filter })
+      .subscribe(
+        (res: any) => {
+          this.countLoading = false;
+          if (res?.data?.length > 0) {
+            this.totalCount = res.data[0].totalCount;
+          }
+        },
+        () => {
+          this.countLoading = false;
+        }
+      );
   }
 
   clearSearch() {
