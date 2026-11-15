@@ -322,7 +322,9 @@ export class UsersComponent {
     this.rolesLoading = true;
     this.userService.getPageRoles({
       organizationId:this.userFilter.organizationId,
-      levelId:this.userFilter.levelId
+      levelId:this.userFilter.levelId,
+      pageIndex: 0,
+      pageSize: 1000
     }).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {

@@ -11,6 +11,7 @@ import { UsersRolesPermissionsService } from '../../../dashboard/components/user
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
 import { ExportService } from '../../../../../core/services/export.service';
 import { ActiveUserService } from 'src/app/core/services/active-user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-user',
@@ -203,7 +204,9 @@ export class AddUserComponent {
     this.rolesLoading = true;
     this.userService.getPageRoles({
       organizationId:this.user.organizationId,
-      levelId:this.user.levelId
+      levelId:this.user.levelId,
+      pageIndex: 0,
+      pageSize: 1000
     }).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -221,11 +224,7 @@ export class AddUserComponent {
       (error) => {
         this.rolesLoading = false;
         this.loadingPanel = false;
-        this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
+        this.showApiError(error, 'NEDSS.HOME.USERS.ADD_USER.ERRORS.LoadRolesFailed');
       }
     );
   }
@@ -1001,23 +1000,8 @@ export class AddUserComponent {
       if (this.user.id == null) {
         this.userService.addUser(this.user).subscribe(
           (response: any) => {
-            if (response?.statusCode === 500) {
-              response.messages.forEach((msg) => {
-                this.translateService
-                  .get('NEDSS.HOME.USERS.ADD_USER.' + msg)
-                  .subscribe((res) => {
-                    if (msg.includes('Username')) {
-                      this.usernameValidationMsg = res;
-                    } else if (msg.includes('Email')) {
-                      this.emailValidationMsg = res;
-                    }
-                  });
-              });
-              this.translateService
-                .get('NEDSS.COMMON.SENT_FAILD')
-                .subscribe((res: string) => {
-                  this.userMsg.error(res);
-                });
+            if (response?.statusCode && response.statusCode >= 400) {
+              this.showApiError(response, 'NEDSS.COMMON.SENT_FAILD');
               return;
             }
             if (response) {
@@ -1057,11 +1041,7 @@ export class AddUserComponent {
             }
           },
           (error) => {
-            this.translateService
-              .get('NEDSS.COMMON.SENT_FAILD')
-              .subscribe((res: string) => {
-                this.userMsg.error(res);
-              });
+            this.showApiError(error, 'NEDSS.COMMON.SENT_FAILD');
           }
         );
       } else this.update();
@@ -1096,9 +1076,7 @@ export class AddUserComponent {
         this.creatingInvite = false;
         const data = response?.data;
         if (!data || !data.token) {
-          this.translateService
-            .get('NEDSS.COMMON.SENT_FAILD')
-            .subscribe((res: string) => this.userMsg.error(res));
+          this.showApiError(response, 'NEDSS.COMMON.SENT_FAILD');
           return;
         }
         this.inviteResult = {
@@ -1112,9 +1090,7 @@ export class AddUserComponent {
       },
       (error) => {
         this.creatingInvite = false;
-        this.translateService
-          .get('NEDSS.COMMON.SENT_FAILD')
-          .subscribe((res: string) => this.userMsg.error(res));
+        this.showApiError(error, 'NEDSS.COMMON.SENT_FAILD');
       }
     );
   }
@@ -1141,6 +1117,10 @@ export class AddUserComponent {
   update() {
     this.userService.updateUser(this.user).subscribe(
       (response: any) => {
+        if (response?.statusCode && response.statusCode >= 400) {
+          this.showApiError(response, 'NEDSS.COMMON.UPDATE_FAILD');
+          return;
+        }
         if (response) {
           this.translateService
             .get('NEDSS.COMMON.UPDATE_SUCESSFULLY')
@@ -1178,11 +1158,7 @@ export class AddUserComponent {
         }
       },
       (error) => {
-        this.translateService
-          .get('NEDSS.COMMON.UPDATE_FAILD')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
+        this.showApiError(error, 'NEDSS.COMMON.UPDATE_FAILD');
       }
     );
   }
@@ -1289,6 +1265,53 @@ export class AddUserComponent {
             this.userMsg.error(res);
           });
       },
+    });
+  }
+
+  private showApiError(source: any, fallbackKey: string) {
+    if (source instanceof HttpErrorResponse) {
+      if (source.status === 0 || source.status === 401 || source.status >= 500) {
+        return;
+      }
+    } else if (source instanceof Error && source.message === 'OFFLINE') {
+      this.translateService
+        .get('NEDSS.COMMON.NETWORK_ERROR')
+        .subscribe((res: string) => this.userMsg.error(res));
+      return;
+    }
+
+    const body = source instanceof HttpErrorResponse ? source.error : source;
+    const raw = body?.messages ?? body?.Messages;
+    const messages: string[] = (Array.isArray(raw) ? raw : [])
+      .map((m) => `${m ?? ''}`.trim())
+      .filter((m) => !!m);
+    if (!messages.length && typeof body === 'string' && body.trim()) {
+      messages.push(body.trim());
+    }
+    if (!messages.length && source instanceof HttpErrorResponse && source.status === 403) {
+      messages.push('AccessDenied');
+    }
+    if (!messages.length) {
+      this.translateService
+        .get(fallbackKey)
+        .subscribe((res: string) => this.userMsg.error(res));
+      return;
+    }
+
+    messages.forEach((msg) => {
+      const keys = [
+        'NEDSS.HOME.USERS.ADD_USER.ERRORS.' + msg,
+        'NEDSS.HOME.USERS.ADD_USER.' + msg,
+      ];
+      this.translateService.get(keys).subscribe((res: any) => {
+        const translated = keys.map((k) => res[k]).find((v, i) => v && v !== keys[i]);
+        if (msg.includes('Username')) {
+          this.usernameValidationMsg = translated || msg;
+        } else if (msg.includes('Email')) {
+          this.emailValidationMsg = translated || msg;
+        }
+        this.userMsg.error(translated || msg);
+      });
     });
   }
 }
