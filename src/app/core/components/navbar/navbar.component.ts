@@ -103,11 +103,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public startConnection() {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(`${environment.baseApiUrl}NotificationHub`, {
-        transport: signalR.HttpTransportType.WebSockets,
+        transport:
+          signalR.HttpTransportType.WebSockets |
+          signalR.HttpTransportType.ServerSentEvents |
+          signalR.HttpTransportType.LongPolling,
         withCredentials: false,
       })
       .withAutomaticReconnect()
       .build();
+
+    this.hubConnection.onreconnected(() => this.UserConnected());
 
     this.hubConnection
       .start()
@@ -164,6 +169,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.unreadCountSub?.unsubscribe();
+    this.hubConnection?.stop();
   }
 
   ngOnInit() {

@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ReportDateRangeService } from 'src/app/core/services/report-date-range.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -38,6 +39,7 @@ interface Option {
   providers: [DatePipe],
 })
 export class InvestigationFormsReportComponent implements OnInit, OnDestroy {
+  private readonly reportDateRange = inject(ReportDateRangeService);
   readonly reportLocationType = ReportLocationType;
   readonly pageSizes = [10, 25, 50, 100];
   readonly multipleDropdownSettings = { ...MultipleDropdownSettings, enableCheckAll: false };
@@ -177,8 +179,7 @@ export class InvestigationFormsReportComponent implements OnInit, OnDestroy {
       this.warn('DISEASE_REQUIRED');
       return;
     }
-    if (this.fromDate && this.toDate && this.fromDate > this.toDate) {
-      this.warn('INVALID_DATE_RANGE');
+    if (!this.reportDateRange.validate(this.fromDate, this.toDate)) {
       return;
     }
     this.appliedFilter = this.buildFilter();
@@ -342,7 +343,7 @@ export class InvestigationFormsReportComponent implements OnInit, OnDestroy {
     } else if (err.status === 403) {
       this.userMsg.error(this.t(message === 'DiseaseGroupAccessDenied' ? 'DISEASE_ACCESS_DENIED' : 'ACCESS_DENIED'));
       if (message !== 'DiseaseGroupAccessDenied') this.router.navigateByUrl('/home/reports');
-    } else if (err.status === 400) {
+    } else if (err.status === 400 && !`${message ?? ''}`.startsWith('ReportDateRange')) {
       this.warn('DISEASE_REQUIRED');
     }
   }

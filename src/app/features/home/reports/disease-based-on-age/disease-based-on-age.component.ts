@@ -1,5 +1,6 @@
 import { orderFinalDiagnoses } from 'src/app/core/shared/utilis/final-diagnoses';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { ReportDateRangeService } from 'src/app/core/services/report-date-range.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
 import {
@@ -26,6 +27,7 @@ import { DiagnosisType } from '../enums/DiagnosisType';
   styleUrls: ['./disease-based-on-age.component.css'],
 })
 export class DiseaseBasedOnAgeComponent implements OnInit {
+  private readonly reportDateRange = inject(ReportDateRangeService);
   maxDate = new Date();
   minDate = new Date(1900, 0, 1);
   currentLang: string;
@@ -862,6 +864,9 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
   }
 
   getReportResult() {
+    if (!this.reportDateRange.validate(this.fromDate, this.toDate)) {
+      return;
+    }
     this.lookUpsService
       .GetDiseasesReport({
         governmentsIds: this.selectedgovernment?.map((x) => x.id),

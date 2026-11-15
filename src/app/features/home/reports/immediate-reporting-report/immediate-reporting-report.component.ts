@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { ReportDateRangeService } from 'src/app/core/services/report-date-range.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
@@ -24,6 +25,7 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./immediate-reporting-report.component.css'],
 })
 export class ImmediateReportingReportComponent implements OnInit {
+  private readonly reportDateRange = inject(ReportDateRangeService);
   maxDate = new Date();
   minDate = new Date(1900, 0, 1);
   currentLang: string;
@@ -613,6 +615,9 @@ export class ImmediateReportingReportComponent implements OnInit {
   }
 
   getReportResult() {
+    if (!this.reportDateRange.validate(this.fromDate, this.toDate)) {
+      return;
+    }
     this.lookUpsService
       .GetImmediateReport({
         reportLevel: Number(this.reportLevel),

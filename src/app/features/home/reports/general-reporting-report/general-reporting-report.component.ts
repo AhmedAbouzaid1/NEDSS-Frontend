@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ReportDateRangeService } from 'src/app/core/services/report-date-range.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,6 +30,7 @@ export const GENERAL_REPORTING_EXPORT_PAGE_ID = 101;
   providers: [DatePipe],
 })
 export class GeneralReportingReportComponent implements OnInit, OnDestroy {
+  private readonly reportDateRange = inject(ReportDateRangeService);
   readonly reportLocationType = ReportLocationType;
   readonly pageSizes = [10, 25, 50, 100];
   readonly multipleDropdownSettings = { ...MultipleDropdownSettings, enableCheckAll: false };
@@ -137,8 +139,7 @@ export class GeneralReportingReportComponent implements OnInit, OnDestroy {
   }
 
   search(): void {
-    if (this.fromDate && this.toDate && this.fromDate > this.toDate) {
-      this.userMsg.warn(this.t('INVALID_DATE_RANGE'));
+    if (!this.reportDateRange.validate(this.fromDate, this.toDate)) {
       return;
     }
     this.appliedFilter = this.buildFilter();

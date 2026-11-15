@@ -2260,6 +2260,14 @@ export class LookupsGetterService {
     return this.APIs.create(this.appSettingsApiUrl + 'SetDataDaysLimit', daysLimitEntity);
   }
 
+  getReportsMaxDateRangeDays() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/12');
+  }
+
+  updateReportsMaxDateRangeDays(daysLimitEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetReportsMaxDateRangeDays', daysLimitEntity);
+  }
+
   getNationalIdSearchDaysLimit() {
     return this.APIs.get(this.appSettingsApiUrl + 'Get/9');
   }

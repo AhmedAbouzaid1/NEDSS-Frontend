@@ -121,6 +121,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       case this.isFutureDateRejection(error):
         this.surfaceBackendMessage(error, 'NEDSS.COMMON.FutureDateNotAllowed');
         break;
+      case this.isReportDateRangeRejection(error):
+        this.surfaceBackendMessage(error, 'NEDSS.COMMON.ReportDateRangeExceeded');
+        break;
       case this.isInvestigationSave(error):
         this.surfaceBackendMessage(error, 'NEDSS.COMMON.SENT_FAILD');
         break;
@@ -133,6 +136,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   private isFutureDateRejection(error: HttpErrorResponse): boolean {
     return error.status === 400 && this.extractBackendMessage(error) === 'FutureDateNotAllowed';
+  }
+
+  private isReportDateRangeRejection(error: HttpErrorResponse): boolean {
+    return error.status === 400 && (this.extractBackendMessage(error) ?? '').startsWith('ReportDateRange');
   }
 
   private isInvestigationSave(error: HttpErrorResponse): boolean {
