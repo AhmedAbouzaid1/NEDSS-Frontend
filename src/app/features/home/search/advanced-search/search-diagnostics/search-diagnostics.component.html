@@ -1,0 +1,357 @@
+<div class="card-body bg-dark-mode">
+  <div class="row">
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.PATIENT_HOSPITAL_NO" | translate }}
+        </label>
+        <input type="text" pInputText class="w-100" name="patientHospitalNo" [(ngModel)]="patient.patientHospitalNo" />
+        <small class="form-text text-muted d-block">{{ "NEDSS.SEARCH.PARTIAL_MATCH_NOTE" | translate }}</small>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DOCTOR_NAME" | translate }}
+        </label>
+        <input type="text" pInputText class="w-100" name="doctorName" [(ngModel)]="patient.doctorName" />
+        <small class="form-text text-muted d-block">{{ "NEDSS.SEARCH.PARTIAL_MATCH_NOTE" | translate }}</small>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES" | translate }}
+        </label>
+        <p-dropdown
+          [appDropdownLoading]="diseaseGroupsLoading"
+          [options]="diseaseGroups"
+          [(ngModel)]="patient.diseaseGroupId"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="diseaseGroupId"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.SEARCH.DISCHARGE_STATUS" | translate }}</label>
+        <p-dropdown
+          [appDropdownLoading]="finalResultsLoading"
+          [options]="finalResults"
+          [(ngModel)]="patient.finalResultId"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="finalResultId"
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-2">
+      <label class="form-label">
+        {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE" | translate }}
+      </label>
+      <div class="row g-2">
+        <div class="col-6">
+          <small class="text-muted">{{ "NEDSS.COMMON.FROM" | translate }}</small>
+          <app-date-field name="infectionDateFrom" [max]="patient.infectionDateTo" [(ngModel)]="patient.infectionDateFrom"></app-date-field>
+        </div>
+        <div class="col-6">
+          <small class="text-muted">{{ "NEDSS.COMMON.TO" | translate }}</small>
+          <app-date-field name="infectionDateTo" [min]="patient.infectionDateFrom" [(ngModel)]="patient.infectionDateTo"></app-date-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-6 mb-2">
+      <label class="form-label">
+        {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALENTRYDATE" | translate }}
+      </label>
+      <div class="row g-2">
+        <div class="col-6">
+          <small class="text-muted">{{ "NEDSS.COMMON.FROM" | translate }}</small>
+          <app-date-field name="hospitalEntryDateFrom" [max]="patient.hospitalEntryDateTo" [(ngModel)]="patient.hospitalEntryDateFrom"></app-date-field>
+        </div>
+        <div class="col-6">
+          <small class="text-muted">{{ "NEDSS.COMMON.TO" | translate }}</small>
+          <app-date-field name="hospitalEntryDateTo" [min]="patient.hospitalEntryDateFrom" [(ngModel)]="patient.hospitalEntryDateTo"></app-date-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-6 mb-2">
+      <label class="form-label">
+        {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITAL_LEAVE_DATE" | translate }}
+      </label>
+      <div class="row g-2">
+        <div class="col-6">
+          <small class="text-muted">{{ "NEDSS.COMMON.FROM" | translate }}</small>
+          <app-date-field name="hospitalLeaveDateFrom" [max]="patient.hospitalLeaveDateTo" [(ngModel)]="patient.hospitalLeaveDateFrom"></app-date-field>
+        </div>
+        <div class="col-6">
+          <small class="text-muted">{{ "NEDSS.COMMON.TO" | translate }}</small>
+          <app-date-field name="hospitalLeaveDateTo" [min]="patient.hospitalLeaveDateFrom" [(ngModel)]="patient.hospitalLeaveDateTo"></app-date-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-4 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.GOVERNMENT_TRANSLATE" | translate }}
+        </label>
+        <p-dropdown
+          [appDropdownLoading]="transferGovernmentsLoading"
+          [options]="transferGovernments"
+          [(ngModel)]="patient.transferGovernmentId"
+          (onChange)="onTransferGovernmentChange()"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="transferGovernmentId"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HEALTH_TRANSLATE" | translate }}
+        </label>
+        <p-dropdown
+          [appDropdownLoading]="transferHealthAdminsLoading"
+          [options]="transferHealthAdmins"
+          [(ngModel)]="patient.transferHealthAdministrationId"
+          (onChange)="onTransferHealthAdminChange()"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="transferHealthAdministrationId"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.SEARCH.TRANSFER_INCIDENT_SOURCE" | translate }}</label>
+        <p-dropdown
+          [appDropdownLoading]="transferIncidentSourcesLoading"
+          [options]="transferIncidentSources"
+          [(ngModel)]="patient.transferIncidentSourceId"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="transferIncidentSourceId"
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <div class="col-12 mt-2 mb-2">
+      <label class="form-label fw-bold">
+        {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.PLACE_LAB" | translate }}
+      </label>
+      <div class="lab-flags">
+        <label class="lab-flag text-muted">
+          <input class="form-check-input" type="checkbox" name="isCentralLabLab"
+            [ngModel]="patient.isCentralLabLab === true" (ngModelChange)="onLabFlagChange('isCentralLabLab', $event)" />
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.CENTRALLAB" | translate }}
+        </label>
+        <label class="lab-flag text-muted">
+          <input class="form-check-input" type="checkbox" name="isHospitalLab"
+            [ngModel]="patient.isHospitalLab === true" (ngModelChange)="onLabFlagChange('isHospitalLab', $event)" />
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALLAB" | translate }}
+        </label>
+        <label class="lab-flag text-muted">
+          <input class="form-check-input" type="checkbox" name="isGovernmentLab"
+            [ngModel]="patient.isGovernmentLab === true" (ngModelChange)="onLabFlagChange('isGovernmentLab', $event)" />
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.LAB_GOVERNMENT" | translate }}
+        </label>
+        <label class="lab-flag text-muted">
+          <input class="form-check-input" type="checkbox" name="isMalariaLab"
+            [ngModel]="patient.isMalariaLab === true" (ngModelChange)="onLabFlagChange('isMalariaLab', $event)" />
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.MALARIA_LAB" | translate }}
+        </label>
+        <label class="lab-flag text-muted">
+          <input class="form-check-input" type="checkbox" name="isRegionalLab"
+            [ngModel]="patient.isRegionalLab === true" (ngModelChange)="onLabFlagChange('isRegionalLab', $event)" />
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.REGIONALLAB" | translate }}
+        </label>
+        <label class="lab-flag text-muted">
+          <input class="form-check-input" type="checkbox" name="isSpecialLabLab"
+            [ngModel]="patient.isSpecialLabLab === true" (ngModelChange)="onLabFlagChange('isSpecialLabLab', $event)" />
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.SPECIALLAB" | translate }}
+        </label>
+      </div>
+      <small class="form-text text-muted d-block">{{ "NEDSS.SEARCH.LAB_FLAGS_NOTE" | translate }}</small>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALLAB" | translate }} -
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITAL_LAB_SELECTION" | translate }}
+        </label>
+        <p-dropdown
+          [options]="hospitalLabOptions"
+          [(ngModel)]="patient.hospitalLabSelection"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="hospitalLabSelection"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.OTHER_HOSPITAL_NAME" | translate }}
+        </label>
+        <input type="text" pInputText class="w-100" name="otherHospitalLabName" [(ngModel)]="patient.otherHospitalLabName" />
+        <small class="form-text text-muted d-block">{{ "NEDSS.SEARCH.PARTIAL_MATCH_NOTE" | translate }}</small>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.REGIONALLAB" | translate }}
+        </label>
+        <p-dropdown
+          [appDropdownLoading]="regionalLabsLoading"
+          [options]="regionalLabs"
+          [(ngModel)]="patient.regionalLabId"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="regionalLabId"
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.SPECIALLAB" | translate }} -
+          {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_GOVERNMENT" | translate }}
+        </label>
+        <p-dropdown
+          [appDropdownLoading]="specialGovernmentsLoading"
+          [options]="specialGovernments"
+          [(ngModel)]="patient.specialLabGovernmentId"
+          (onChange)="onSpecialGovernmentChange()"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="specialLabGovernmentId"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.SPECIALLAB" | translate }} -
+          {{ "NEDSS.HOME.CONTROL_PANEL.CODES.LOOKUP_THE_Department" | translate }}
+        </label>
+        <p-dropdown
+          [appDropdownLoading]="specialHealthAdminsLoading"
+          [options]="specialHealthAdmins"
+          [(ngModel)]="patient.specialLabHealthAdministrationId"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="specialLabHealthAdministrationId"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.DELEGATED_TO" | translate }}
+        </label>
+        <input type="text" pInputText class="w-100" name="specialLabName" [(ngModel)]="patient.specialLabName" />
+        <small class="form-text text-muted d-block">{{ "NEDSS.SEARCH.PARTIAL_MATCH_NOTE" | translate }}</small>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.RESULTCATEGORY" | translate }}
+        </label>
+        <p-dropdown
+          [appDropdownLoading]="caseResultCategoriesLoading"
+          [options]="caseResultCategories"
+          [(ngModel)]="patient.caseResultCategoryId"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="caseResultCategoryId"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.FINAL_DISEASES" | translate }}
+        </label>
+        <p-dropdown
+          [appDropdownLoading]="finalDiseasesLoading"
+          [options]="finalDiseases"
+          [(ngModel)]="patient.diseaseId"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="diseaseId"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-12 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.FINAL_DIAGNOSIS_BY_TICKET" | translate }}
+        </label>
+        <input type="text" pInputText class="w-100" name="finalDiagonisticsByTicket" [(ngModel)]="patient.finalDiagonisticsByTicket" />
+        <small class="form-text text-muted d-block">{{ "NEDSS.SEARCH.PARTIAL_MATCH_NOTE" | translate }}</small>
+      </div>
+    </div>
+  </div>
+</div>

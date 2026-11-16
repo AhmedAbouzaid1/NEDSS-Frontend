@@ -34,6 +34,7 @@ import { PeriodOfCardsComponent } from './components/period-of-cards/period-of-c
 import { DataFetchDaysComponent } from './components/controlPanel/data-fetch-days/data-fetch-days.component';
 import { ChartsTabVisibilityComponent } from './components/controlPanel/charts-tab-visibility/charts-tab-visibility.component';
 import { PasswordExpiryDaysComponent } from './components/controlPanel/password-expiry-days/password-expiry-days.component';
+import { NotificationsSettingsComponent } from './components/controlPanel/notifications-settings/notifications-settings.component';
 
 const routes: Routes = [
   { path: '', component: ControlPanelComponent },
@@ -200,6 +201,11 @@ const routes: Routes = [
   {
     path: 'password-expiry-days',
     component: PasswordExpiryDaysComponent,
+    canActivate: [NavigationGuard],
+  },
+  {
+    path: 'notifications-settings',
+    component: NotificationsSettingsComponent,
     canActivate: [NavigationGuard],
   },
 ];

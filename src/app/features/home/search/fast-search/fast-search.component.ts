@@ -69,6 +69,7 @@ export class FastSearchComponent implements OnInit {
   SelectedbranchId: number = 0;
   governments: any;
   loadingPanel: boolean = false;
+  searching: boolean = false;
   fullName: string;
   levelId: any;
   organizationId: any;
@@ -271,15 +272,7 @@ export class FastSearchComponent implements OnInit {
     this.underDeleting.id = 0;
     this.underDeleting.fullName = '';
 
-    this.loadingPanel = true;
     this.getLookups();
-    this.lookupsService
-      .getPageIncidentSourceHospitals({
-        healthAdministrationID: -1,
-        reportingOrResidence: -1,
-      })
-      .subscribe((result: any) => {});
-    this.loadingPanel = false;
 
     this.generalDataService.cardIdValidationMessage = '';
     this.generalDataService.firstNameValidationMessage = '';
@@ -355,6 +348,13 @@ export class FastSearchComponent implements OnInit {
     this.generalReportForm.value.nationalityId = this.selectedNationalityId;
     this.filter.nationalityId =
       this.selectedNationalityId == -1 ? null : this.selectedNationalityId;
+    if (this.selectedNationalityId == NationalityEnum.Egyptian) {
+      this.generalReportForm.controls.passportNo.setValue(null);
+    } else {
+      this.generalReportForm.controls.nationalId.setValue(null);
+      this.selectedRelationId = 0;
+      this.filter.relationShipDegreeId = null;
+    }
   }
   setNationalityDValue() {
     this.generalReportForm.value.nationalityId = null;
@@ -362,12 +362,12 @@ export class FastSearchComponent implements OnInit {
   }
   SetRelative() {
     this.generalReportForm.value.relativeTypeId = this.selectedRelationId;
-    this.filter.relativeTypeId =
-      this.selectedRelationId == 0 ? null : this.selectedRelationId;
+    this.filter.relationShipDegreeId =
+      this.selectedRelationId > 0 ? this.selectedRelationId : null;
   }
   SetDRelative() {
     this.generalReportForm.value.relativeTypeId = null;
-    this.filter.relativeTypeId = null;
+    this.filter.relationShipDegreeId = null;
   }
   setValue() {
     this.nationalty = (
@@ -386,24 +386,24 @@ export class FastSearchComponent implements OnInit {
     this.getNationalties();
     this.getCaseResultCategories();
   }
-  getGovernments() {
+  getGovernments(allowUserScopeFallback: boolean = true) {
     this.governmentsLoading = true;
-    this.lookupsService.getAllGovernments().subscribe(
+    const source$ = allowUserScopeFallback
+      ? this.lookupsService.getAllGovernmentsExplicit(false, 'incident-gov')
+      : this.lookupsService.getAllGovernmentsForUser(true);
+    source$.subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
-          // this.governments = [
-          //   { id: -1, arabicName: 'إختر', englishName: 'Select' },
-          // ];
-          // result.data.forEach((he) => {
-          //   this.governments.push(he);
-          // });
-          this.governments = result.data;
-          this.governments.unshift({
-            id: -1,
-            arabicName: 'إختر',
-            englishName: 'Select',
-          });
-          if (result.data.length > 0) {
+          const rows = Array.isArray(result?.data) ? result.data : [];
+          if (rows.length === 0 && allowUserScopeFallback) {
+            this.getGovernments(false);
+            return;
+          }
+          this.governments = [
+            { id: -1, arabicName: 'إختر', englishName: 'Select' },
+            ...rows,
+          ];
+          if (rows.length > 0) {
             this.selectedGovernmentId = JSON.parse(
               localStorage.getItem('ls.authorizationData')
             ).user.govenmentId;
@@ -430,27 +430,22 @@ export class FastSearchComponent implements OnInit {
   }
   governmentSelected() {
     this.selectedAdministrationId = -1;
-    this.incidentSources = [];
+    this.filter.incidentHealthAdministrationId = null;
+    this.selectedIncidentSourcesId = -1;
+    this.filter.incidentSourceId = null;
+    this.healthAdministration = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
+    this.incidentSources = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
     this.generalReportForm.value.incidentGovernmentId =
       this.selectedGovernmentId;
     this.filter.incidentGovernmentId =
       this.selectedGovernmentId == -1 ? null : this.selectedGovernmentId;
-    if (
-      this.generalReportForm.value.incidentGovernmentId != null &&
-      this.generalReportForm.value.incidentGovernmentId != -1
-    )
-      this.getHealthAdministration(
-        this.generalReportForm.value.incidentGovernmentId
-      );
-
-      if(this.organizationId == 4 || this.organizationId == 5) {
-        this.getIncidentSourceHospital({
-          organizationId:this.organizationId,
-          governmentsIds:[this.selectedGovernmentId],
-          forSystemUser:true
-        })
-      }
-    //this.getAreas()
+    if (this.selectedGovernmentId == null || this.selectedGovernmentId == -1)
+      return;
+    if (this.activeUSerService.getAccessibleParts?.showDepartments) {
+      this.getHealthAdministration(this.selectedGovernmentId);
+    } else {
+      this.getIncidentSources(null, this.selectedGovernmentId);
+    }
   }
   governmentDSelected() {
     this.generalReportForm.value.incidentGovernmentId = null;
@@ -509,14 +504,9 @@ export class FastSearchComponent implements OnInit {
       this.selectedAdministrationId == -1
         ? null
         : this.selectedAdministrationId;
-    if (
-      this.generalReportForm.value.incidentHealthAdministrationId != null &&
-      this.generalReportForm.value.incidentHealthAdministrationId != -1
-    ) {
-      this.getIncidentSources(
-        this.generalReportForm.value.incidentHealthAdministrationId
-      );
-    }
+    this.selectedIncidentSourcesId = -1;
+    this.filter.incidentSourceId = null;
+    this.getIncidentSources(this.selectedAdministrationId);
   }
   healthAdministrationDSelected() {
     this.generalReportForm.value.incidentHealthAdministrationId = null;
@@ -525,15 +515,19 @@ export class FastSearchComponent implements OnInit {
     this.selectedIncidentSourcesId = -1;
     this.incidentSources = null;
   }
-  getIncidentSources(healthAdministrationID: any) {
+  getIncidentSources(healthAdministrationID: any, governmentID: number = null) {
+    const adminId = Number(healthAdministrationID ?? this.selectedAdministrationId);
     this.incidentSourcesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
-        healthAdministrationID: this.selectedAdministrationId,
+        healthAdministrationID: adminId > 0 ? adminId : -1,
         branchId: this.activeUSerService.getAccessibleParts?.showAreas
           ? null
           : this.SelectedbranchId,
         areaId: this.SelectedareaId,
+        governmentID: governmentID,
+        forSystemUser: governmentID ? true : null,
+        forHome: false,
       })
       .subscribe(
         (result: any) => {
@@ -644,7 +638,7 @@ export class FastSearchComponent implements OnInit {
       // this.healthAdministrations = [];
       // this.getHealthAdministrationsForUsers(this.user.branchId);
       this.getAreas();
-      this.getIncidentSources(this.SelectedbranchId);
+      this.getIncidentSources(this.selectedAdministrationId);
     }
   }
 
@@ -735,8 +729,15 @@ export class FastSearchComponent implements OnInit {
     }
   }
 
+  newSearch() {
+    if (this.searching) return;
+    this.filter.pageIndex = 0;
+    this.patient.pageIndex = 0;
+    this.first = 0;
+    this.search(false);
+  }
+
   search(firstTime?: boolean, skipCount?: boolean) {
-    //console.log((this.startDate).toString());
     if (!this.validate()) {
       this.translateService
         .get('NEDSS.COMMON.FILL_INVALID')
@@ -754,7 +755,8 @@ export class FastSearchComponent implements OnInit {
     );
     this.filter.startDate = this.generalReportForm.value.startDate;
     this.filter.endDate = this.generalReportForm.value.endDate;
-    this.filter.nationalId = this.generalReportForm.value.nationalId;
+    this.filter.nationalId = this.generalReportForm.value.nationalId?.trim() || null;
+    this.filter.passportNo = this.generalReportForm.value.passportNo?.trim() || null;
     this.levelId = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     )?.user?.levelId;
@@ -816,6 +818,7 @@ export class FastSearchComponent implements OnInit {
 
     this.Delay();
     this.loadError = false;
+    this.searching = true;
     this.searchService.getAll(dts).subscribe(
       (result: any) => {
         this.loadError = false;
@@ -840,10 +843,12 @@ export class FastSearchComponent implements OnInit {
             if (!skipCount) this.fetchCount(dts);
           }
         }
+        this.searching = false;
         this.delay = false;
         this.loadingPanel = false;
       },
       (error) => {
+        this.searching = false;
         this.loadingPanel = false;
         this.delay = false;
         this.RemoveDelay();
@@ -1208,7 +1213,7 @@ export class FastSearchComponent implements OnInit {
     );
   }
   areaSelected() {
-    this.getIncidentSources(this.SelectedareaId);
+    this.getIncidentSources(this.selectedAdministrationId);
     // this.governmentDeSelected();
     // if (this.SelectedareaId) {
     //   this.user.areaId = this.SelectedareaId;

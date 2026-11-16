@@ -2292,5 +2292,13 @@ export class LookupsGetterService {
   updatePasswordExpiryEnabled(enabledEntity: any) {
     return this.APIs.create(this.appSettingsApiUrl + 'SetPasswordExpiryEnabled', enabledEntity);
   }
+
+  getNotificationsEnabled() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/14');
+  }
+
+  updateNotificationsEnabled(enabledEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetNotificationsEnabled', enabledEntity);
+  }
   //end region
 }
