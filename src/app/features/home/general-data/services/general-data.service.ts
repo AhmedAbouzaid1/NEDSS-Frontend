@@ -1284,6 +1284,7 @@ export class GeneralDataService {
     return ageTypeId;
   }
   onDigitsKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     if (!/^\d$/.test(event.key)) {
       event.preventDefault();
     }
@@ -1295,6 +1296,7 @@ export class GeneralDataService {
   }
 
   onIdentityCardKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     let inputKey = event.key;
     if (
       (inputKey !== 'Backspace' && isNaN(Number(inputKey))) ||
@@ -1387,6 +1389,7 @@ export class GeneralDataService {
   }
 
   onPhoneNumberKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     let inputKey = event.key;
     if (
       inputKey !== '+' &&
@@ -1405,6 +1408,7 @@ export class GeneralDataService {
   }
 
   onLocalPhoneKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     const input = event.target as HTMLInputElement;
     if (!/^\d$/.test(event.key)) {
       event.preventDefault();
@@ -1417,6 +1421,7 @@ export class GeneralDataService {
   }
 
   onInternationalPhoneKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     const input = event.target as HTMLInputElement;
     const inputKey = event.key;
     const atStart = input.selectionStart === 0 && !input.value.includes('+');
@@ -1452,6 +1457,7 @@ export class GeneralDataService {
   }
 
   onSearchNameKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     if (!/^[A-Za-z0-9؀-ۿ \-]$/.test(event.key)) {
       event.preventDefault();
       return;
@@ -1564,6 +1570,7 @@ export class GeneralDataService {
   }
 
   onNameKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     let inputKey = event.key;
     let namePattern = /^[A-Za-z\u0600-\u06FF ]$/;
     if (!namePattern.test(inputKey)) {

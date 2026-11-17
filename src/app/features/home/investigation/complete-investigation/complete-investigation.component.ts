@@ -4,6 +4,14 @@ import { InvestigationComponent } from '../investigation.component';
 import { Router } from '@angular/router';
 import { FormTemplateExportService } from 'src/app/core/services/form-template-export.service';
 import { PagePermissionService } from 'src/app/core/services/page-permission.service';
+import { ENTOMOLOGICAL_ROUTES } from './entomological/entomological.constants';
+
+interface InvestigationTab {
+  diseaseGroupId: number;
+  router: string;
+  arabicName: string;
+  entomological: boolean;
+}
 
 @Component({
   selector: 'app-complete-investigation',
@@ -14,7 +22,7 @@ export class CompleteInvestigationComponent implements OnInit {
   @ViewChild('investigationContainer', { read: ElementRef })
   investigationContainer?: ElementRef<HTMLElement>;
 
-  patientDiseases: any[];
+  patientDiseases: InvestigationTab[];
   hiddenDiseasesCount = 0;
   currentId: any;
   constructor(
@@ -28,18 +36,31 @@ export class CompleteInvestigationComponent implements OnInit {
   ngOnInit() {
     this.currentId = this.InvestigationService.currentid;
     const allDiseases = this.InvestigationService.patientDiseases || [];
-    this.patientDiseases = allDiseases.filter((d) =>
-      this.pagePermission.canAccessInvestigationForm(d?.diseaseGroupId)
-    );
-    this.hiddenDiseasesCount = allDiseases.length - this.patientDiseases.length;
+    this.patientDiseases = this.buildTabs(allDiseases);
+    this.hiddenDiseasesCount = this.patientDiseases.length ? 0 : allDiseases.length;
     const firstDisease = this.patientDiseases[0];
     if (firstDisease && firstDisease.router) {
-      this.InvestigationService.diseaseGroupID = firstDisease.diseaseGroupId;
-      this.Router.navigateByUrl(
-        '/home/investigations/compelete-investigation/' + firstDisease.router,
-        { replaceUrl: true }
-      );
+      this.setDesiese(firstDisease);
     }
+  }
+
+  private buildTabs(diseases: any[]): InvestigationTab[] {
+    const tabs: InvestigationTab[] = [];
+    diseases.forEach((d) => {
+      if (d?.router && this.pagePermission.canAccessInvestigationForm(d?.diseaseGroupId)) {
+        tabs.push({ diseaseGroupId: d.diseaseGroupId, router: d.router, arabicName: d.arabicName, entomological: false });
+      }
+      const entomologicalRoute = ENTOMOLOGICAL_ROUTES[Number(d?.entomologicalFormType)];
+      if (entomologicalRoute && this.pagePermission.canAccessEntomologicalForm(d?.diseaseGroupId)) {
+        tabs.push({
+          diseaseGroupId: d.diseaseGroupId,
+          router: entomologicalRoute,
+          arabicName: 'تقصي حشرى - ' + d.arabicName,
+          entomological: true,
+        });
+      }
+    });
+    return tabs;
   }
   ngOnDestroy(): void {
     if (this.Router.url == '/home/investigations/compelete-investigation') {
@@ -48,14 +69,20 @@ export class CompleteInvestigationComponent implements OnInit {
       this.InvestigationService.view = true;
     }
   }
-  isSelected(item: any): boolean {
-    return item?.diseaseGroupId != null && item.diseaseGroupId == this.InvestigationService.diseaseGroupID;
+  isSelected(item: InvestigationTab): boolean {
+    const isEntomologicalUrl = Object.values(ENTOMOLOGICAL_ROUTES).some((r) => this.Router.url.includes('/' + r));
+    return (
+      item?.diseaseGroupId != null &&
+      item.diseaseGroupId == this.InvestigationService.diseaseGroupID &&
+      item.entomological === isEntomologicalUrl
+    );
   }
 
-  setDesiese(item: any) {
+  setDesiese(item: InvestigationTab) {
     this.InvestigationService.diseaseGroupID = item.diseaseGroupId;
     this.Router.navigateByUrl(
-      '/home/investigations/compelete-investigation/' + item.router,
+      '/home/investigations/compelete-investigation/' + item.router +
+        (item.entomological ? '?diseaseGroupId=' + item.diseaseGroupId : ''),
       { replaceUrl: true }
     );
   }

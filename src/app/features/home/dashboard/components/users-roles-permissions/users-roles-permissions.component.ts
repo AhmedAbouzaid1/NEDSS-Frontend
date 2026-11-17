@@ -12,7 +12,7 @@ import { DiseaseFormService } from '../disease-special-symptoms/services/disease
 import { Organiztion } from '../../../chat/Models/organiztion';
 import { Result } from 'src/app/features/Result';
 import { finalize } from 'rxjs/operators';
-import { INVESTIGATION_FORM_PAGE_OFFSET } from 'src/app/core/services/page-permission.service';
+import { ENTOMOLOGICAL_FORM_PAGE_OFFSET, INVESTIGATION_FORM_PAGE_OFFSET } from 'src/app/core/services/page-permission.service';
 
 @Component({
   selector: 'app-users-roles-permissions',
@@ -39,6 +39,7 @@ export class UsersRolesPermissionsComponent {
   selectedDiseases!: any[];
   systemPages!: any[];
   investigationFormPages: any[] = [];
+  entomologicalFormPages: any[] = [];
   // systemPageIds!: any[];
   systemPageIds: Array<number> = [];
   diseaseIds: Array<number> = [];
@@ -181,7 +182,8 @@ export class UsersRolesPermissionsComponent {
           if (result != null && result != undefined) {
             const pages: any[] = result.data ?? [];
             this.systemPages = pages.filter((p) => p.id < INVESTIGATION_FORM_PAGE_OFFSET);
-            this.investigationFormPages = pages.filter((p) => p.id >= INVESTIGATION_FORM_PAGE_OFFSET);
+            this.investigationFormPages = pages.filter((p) => p.id >= INVESTIGATION_FORM_PAGE_OFFSET && p.id < ENTOMOLOGICAL_FORM_PAGE_OFFSET);
+            this.entomologicalFormPages = pages.filter((p) => p.id >= ENTOMOLOGICAL_FORM_PAGE_OFFSET);
           }
           this.loadingPanel = false;
         },

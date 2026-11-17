@@ -465,6 +465,12 @@ export class InvestigationService {
   getByIdVisceralLeishmania(id: any, diseaseGroupId: number) {
     return this.APIs.get(this.controllerURL + "GetVisceralLeishmaniaPatientId?id=" + id + "&diseaseGroupId=" + diseaseGroupId);
   }
+  getEntomologicalInvestigation(id: any, diseaseGroupId: number) {
+    return this.APIs.get(environment.baseApiUrl + "EntomologicalInvestigation/GetByPatientId?id=" + id + "&diseaseGroupId=" + diseaseGroupId);
+  }
+  saveEntomologicalInvestigation(investigation: any) {
+    return this.APIs.post(environment.baseApiUrl + "EntomologicalInvestigation/Save", investigation);
+  }
   //leper
   addInvestigationleper(ivestigation: any) {
     return this.APIs.post(this.controllerURL + "AddLeper", ivestigation);

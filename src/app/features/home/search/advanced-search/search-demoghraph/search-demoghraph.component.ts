@@ -165,6 +165,7 @@ export class SearchDemoghraphComponent implements OnInit, OnDestroy {
   }
 
   onNumberKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     if (event.key !== 'Backspace' && isNaN(Number(event.key))) {
       event.preventDefault();
     }

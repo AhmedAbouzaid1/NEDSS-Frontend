@@ -17,6 +17,7 @@ import { NoFutureDateDirective } from './directives/no-future-date.directive';
 import { NoFutureNativeDateDirective } from './directives/no-future-native-date.directive';
 import { ClearInvalidMinDateDirective } from './directives/clear-invalid-min-date.directive';
 import { ScrollIntoViewOnResultsDirective } from './directives/scroll-into-view-on-results.directive';
+import { EnterSearchDirective } from './directives/enter-search.directive';
 import { DropdownLoadingDirective } from './directives/dropdown-loading.directive';
 import { DropdownNoAutofocusFilterDirective } from './directives/dropdown-no-autofocus-filter.directive';
 import { DropdownArabicFilterDirective } from './directives/dropdown-arabic-filter.directive';
@@ -43,6 +44,7 @@ import { RespiratoryDiagnosisPickerComponent } from './components/respiratory-di
     NoFutureNativeDateDirective,
     ClearInvalidMinDateDirective,
     ScrollIntoViewOnResultsDirective,
+    EnterSearchDirective,
     DropdownLoadingDirective,
     DropdownNoAutofocusFilterDirective,
     DropdownArabicFilterDirective,
@@ -67,6 +69,7 @@ import { RespiratoryDiagnosisPickerComponent } from './components/respiratory-di
     NoFutureNativeDateDirective,
     ClearInvalidMinDateDirective,
     ScrollIntoViewOnResultsDirective,
+    EnterSearchDirective,
     DropdownLoadingDirective,
     DropdownNoAutofocusFilterDirective,
     DropdownArabicFilterDirective,

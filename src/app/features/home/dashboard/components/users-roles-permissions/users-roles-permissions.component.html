@@ -274,6 +274,39 @@
               </label>
             </div>
           </section>
+          <section class="perm-block" *ngIf="entomologicalFormPages.length">
+            <header class="perm-block-header">
+              <span class="perm-block-title">{{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ENTOMOLOGICAL_FORMS" | translate
+              }}</span>
+              <label class="perm-select-all" for="chkAllEntomologicalFormPage">
+                <input
+                  type="checkbox"
+                  (change)="chkAllSystemPageChange($event, 'entomologicalFormPages')"
+                  name="chkAllEntomologicalFormPage"
+                  id="chkAllEntomologicalFormPage"
+                />
+                {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL" | translate }}
+              </label>
+            </header>
+            <div class="perm-block-body">
+              <label
+                class="perm-item"
+                *ngFor="let option of entomologicalFormPages"
+                for="EntForm{{ option.id }}"
+              >
+                <input
+                  type="checkbox"
+                  [checked]="option.isSelected"
+                  (change)="chkSystemPageChange($event)"
+                  [value]="option.id"
+                  name="entomologicalFormPages"
+                  id="EntForm{{ option.id }}"
+                />
+                <span>{{ option.name }}</span>
+              </label>
+            </div>
+          </section>
           <section class="perm-block">
             <header class="perm-block-header">
               <span class="perm-block-title">{{

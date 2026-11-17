@@ -68,6 +68,7 @@ import { HepatitisVirusesComponent } from './investigation/complete-investigatio
 import { HivComponent } from './investigation/complete-investigation/hiv/hiv.component';
 import { LeishmaniaComponent } from './investigation/complete-investigation/leishmania/leishmania.component';
 import { VisceralLeishmaniaComponent } from './investigation/complete-investigation/visceral-leishmania/visceral-leishmania.component';
+import { EntomologicalComponent } from './investigation/complete-investigation/entomological/entomological.component';
 import { LeperComponent } from './investigation/complete-investigation/leper/leper.component';
 import { MersComponent } from './investigation/complete-investigation/mers/mers.component';
 import { MumbariPoisoningComponent } from './investigation/complete-investigation/mumbari-poisoning/mumbari-poisoning.component';
@@ -562,6 +563,8 @@ const routes: Routes = [
               { path: 'trachoma', component: TrachomaComponent },
               { path: 'leishmania', component: LeishmaniaComponent },
               { path: 'visceral-leishmania', component: VisceralLeishmaniaComponent },
+              { path: 'entomological-mosquito', component: EntomologicalComponent, data: { entomological: true, vectorType: 1 } },
+              { path: 'entomological-sandfly', component: EntomologicalComponent, data: { entomological: true, vectorType: 2 } },
               { path: 'tuberculosis', component: TuberculosisComponent },
               { path: 'bloodyDiarrhea', component: BloodyDiarrheaComponent },
               { path: 'cholera', component: CholeraComponent },
