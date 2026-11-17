@@ -207,6 +207,22 @@
             </div>
           </div>
         </div>
+        <div class="row role-fields" *ngIf="isGlobalAdmin">
+          <div class="col-12">
+            <label class="perm-select-all" for="isHiddenFromNonAdmins">
+              <input
+                type="checkbox"
+                id="isHiddenFromNonAdmins"
+                name="isHiddenFromNonAdmins"
+                [(ngModel)]="usersRolesPermission.isHiddenFromNonAdmins"
+              />
+              {{
+                "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.HIDE_FROM_OTHERS"
+                  | translate
+              }}
+            </label>
+          </div>
+        </div>
         <div class="perm-grid">
           <section class="perm-block">
             <header class="perm-block-header">
@@ -274,7 +290,7 @@
               </label>
             </div>
           </section>
-          <section class="perm-block" *ngIf="entomologicalFormPages.length">
+          <section class="perm-block" *ngIf="isGlobalAdmin && entomologicalFormPages.length">
             <header class="perm-block-header">
               <span class="perm-block-title">{{
                 "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ENTOMOLOGICAL_FORMS" | translate

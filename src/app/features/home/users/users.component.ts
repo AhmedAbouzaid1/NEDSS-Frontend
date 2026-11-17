@@ -809,6 +809,10 @@ export class UsersComponent {
     this.getUsers();
   }
 
+  isGlobalAdmin(item: any): boolean {
+    return (item?.userName ?? '').toString().trim().toLowerCase() === 'admin@admin.com';
+  }
+
   delete(id: number) {
     this.userService.deleteUser(id).subscribe(
       (result: any) => {
@@ -824,11 +828,19 @@ export class UsersComponent {
         }
       },
       (error) => {
-        this.translateService
-          .get('NEDSS.COMMON.DELETED_FAILED')
-          .subscribe((res: string) => {
+        const code = error?.error?.messages?.[0];
+        const key = code
+          ? 'NEDSS.HOME.USERS.ADD_USER.ERRORS.' + code
+          : 'NEDSS.COMMON.DELETED_FAILED';
+        this.translateService.get(key).subscribe((res: string) => {
+          if (res && res !== key) {
             this.userMsg.error(res);
-          });
+          } else {
+            this.translateService
+              .get('NEDSS.COMMON.DELETED_FAILED')
+              .subscribe((fallback: string) => this.userMsg.error(fallback));
+          }
+        });
       }
     );
   }
