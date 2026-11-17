@@ -170,7 +170,7 @@ export class BuildFormComponent implements OnInit, OnChanges {
             :
             element?.diseaseGroupQuestionType == this.diseaseGroupQuestionType.RadioButton ||
               element?.diseaseGroupQuestionType == this.diseaseGroupQuestionType.DropDownList ?
-              element.patientAnswers ? [+element.patientAnswers] : element.patientAnswers
+              ([] as any[]).concat(element.patientAnswers ?? []).map(x => +x).filter(x => x > 0).slice(0, 1)
               : element?.patientAnswers
       }
     }
