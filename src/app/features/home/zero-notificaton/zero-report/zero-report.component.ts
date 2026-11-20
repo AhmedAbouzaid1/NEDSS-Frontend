@@ -137,7 +137,7 @@ export class ZeroReportComponent {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.levelId = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     )?.user?.levelId;
@@ -191,9 +191,20 @@ export class ZeroReportComponent {
       });
   }
 
+  private tableSearchTimer?: ReturnType<typeof setTimeout>;
+  private lastTableSearch = '';
+
   Tablesearch(e) {
-    this.zeroInstantNotificationFilter.searchText = e.target.value;
-    this.getZeroInstantNotifications(false);
+    const value = e.target.value ?? '';
+    clearTimeout(this.tableSearchTimer);
+    this.tableSearchTimer = setTimeout(() => {
+      if (value === this.lastTableSearch) {
+        return;
+      }
+      this.lastTableSearch = value;
+      this.zeroInstantNotificationFilter.searchText = value;
+      this.getZeroInstantNotifications(false);
+    }, 400);
     // if (e.target.value.toLowerCase().length == 0) {
     //   this.search();
     // }
@@ -926,6 +937,8 @@ export class ZeroReportComponent {
   }
 
   clearSearch() {
+    clearTimeout(this.tableSearchTimer);
+    this.lastTableSearch = '';
     this.zeroInstantNotificationFilter.searchText = '';
     this.search();
   }

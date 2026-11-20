@@ -9,11 +9,12 @@ import {
 import { NavigationStart, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, throwError, TimeoutError } from 'rxjs';
-import { catchError, filter, finalize, timeout } from 'rxjs/operators';
+import { catchError, filter, finalize, tap, timeout } from 'rxjs/operators';
 import { SessionService } from '../services/session.service';
 import { UserMessageService } from '../services/user.message.service';
 import { PartialLoadingService } from '../components/partial-loading/partial-loading.service';
 import { BACKGROUND_REQUEST } from './background-request';
+import { LookupCacheService } from '../services/lookup-cache.service';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
@@ -27,7 +28,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private router: Router,
     private translate: TranslateService,
     private userMessage: UserMessageService,
-    private loading: PartialLoadingService
+    private loading: PartialLoadingService,
+    private lookupCache: LookupCacheService
   ) {
     this.router.events
       .pipe(filter((e) => e instanceof NavigationStart))
@@ -60,6 +62,12 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     if (!isLongTransfer) {
       stream$ = stream$.pipe(
         timeout({ each: HttpErrorInterceptor.REQUEST_TIMEOUT_MS })
+      );
+    }
+
+    if (this.lookupCache.isLookupWrite(req.method, req.url)) {
+      stream$ = stream$.pipe(
+        tap({ complete: () => this.lookupCache.clear() })
       );
     }
 
@@ -121,6 +129,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       case this.isFutureDateRejection(error):
         this.surfaceBackendMessage(error, 'NEDSS.COMMON.FutureDateNotAllowed');
         break;
+      case this.isReportDateRangeRejection(error):
+        this.surfaceBackendMessage(error, 'NEDSS.COMMON.ReportDateRangeExceeded');
+        break;
       case this.isInvestigationSave(error):
         this.surfaceBackendMessage(error, 'NEDSS.COMMON.SENT_FAILD');
         break;
@@ -133,6 +144,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   private isFutureDateRejection(error: HttpErrorResponse): boolean {
     return error.status === 400 && this.extractBackendMessage(error) === 'FutureDateNotAllowed';
+  }
+
+  private isReportDateRangeRejection(error: HttpErrorResponse): boolean {
+    return error.status === 400 && (this.extractBackendMessage(error) ?? '').startsWith('ReportDateRange');
   }
 
   private isInvestigationSave(error: HttpErrorResponse): boolean {

@@ -1,12 +1,13 @@
 import { IncidentSourceHospitalDTO } from './../../features/home/chat/Models/incident-source-hospital-dto';
 import { BaseAPIService } from 'src/app/core/services/BaseAPI.service';
+import { LookupCacheService } from 'src/app/core/services/lookup-cache.service';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ChatFilter } from 'src/app/models/chat-filter';
 import { Result } from 'src/app/features/Result';
 import { Observable } from 'rxjs/internal/Observable';
-import { Subject } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
+import { orderFinalDiagnoses } from 'src/app/core/shared/utilis/final-diagnoses';
 import { dispatch } from '../../../../node_modules/@types/d3';
 import { SystemUserMainDataFilter } from 'src/app/features/home/epidemiological-thresholds/epidemiological-thresholds-users/Model/system-user-main-data-filter';
 
@@ -94,9 +95,8 @@ export class LookupsGetterService {
   private NewDashboardApiUrl: string = environment.baseApiUrl + 'Dashboard/';
   private appSettingsApiUrl: string = environment.baseApiUrl + 'AppSettings/';
 
-  public $ConnectedUsersCount: Subject<string> = new Subject<string>();
 
-  constructor(private APIs: BaseAPIService) {}
+  constructor(private APIs: BaseAPIService, private lookupCache: LookupCacheService) {}
 
   getChronicDiseases() {
     return this.APIs.get(this.ChronicDiseaseApiUrl + 'GetAll');
@@ -635,7 +635,7 @@ export class LookupsGetterService {
   ///#endregion ReportReport
   ///#region  GovernmentLookup
   getAllGovernments() {
-    return this.APIs.get(this.GovernmentControllerURL + 'GetAll');
+    return this.lookupCache.get('governments', () => this.APIs.get(this.GovernmentControllerURL + 'GetAll'));
     if (navigator.onLine) {
       var data = this.APIs.get(this.GovernmentControllerURL + 'GetAll');
       data.subscribe((result: any) => {
@@ -652,21 +652,15 @@ export class LookupsGetterService {
   }
 
   getAllGovernmentsExplicit(forSystemUser: boolean = false, dedupeKey?: string) {
-    const k =
-      dedupeKey != null && dedupeKey !== ''
-        ? '&_k=' + encodeURIComponent(dedupeKey)
-        : '';
-    return this.APIs.get(
-      this.GovernmentControllerURL +
-        'GetAll?forSystemUser=' +
-        (forSystemUser ? 'true' : 'false') +
-        k,
+    const flag = forSystemUser ? 'true' : 'false';
+    return this.lookupCache.get('governments:' + flag, () =>
+      this.APIs.get(this.GovernmentControllerURL + 'GetAll?forSystemUser=' + flag)
     );
   }
 
   getAllGovernmentsForUser(forSystemUser: boolean) {
-    return this.APIs.get(
-      this.GovernmentControllerURL + 'GetAll?forSystemUser=' + true
+    return this.lookupCache.get('governments:true', () =>
+      this.APIs.get(this.GovernmentControllerURL + 'GetAll?forSystemUser=true')
     );
     if (navigator.onLine) {
       var data = this.APIs.get(
@@ -914,7 +908,7 @@ export class LookupsGetterService {
 
   ///#region  DepartmentLookup
   getAllDepartments() {
-    return this.APIs.get(this.DepartmentControllerURL + 'GetAll');
+    return this.lookupCache.get('departments', () => this.APIs.get(this.DepartmentControllerURL + 'GetAll'));
     if (navigator.onLine) {
       var data = this.APIs.get(this.DepartmentControllerURL + 'GetAll');
       data.subscribe((result: any) => {
@@ -1018,7 +1012,12 @@ export class LookupsGetterService {
 
   ///#region  DiseaseLookup
   getAllDiseases() {
-    return this.APIs.get(this.DiseaseControllerURL + 'GetAll');
+    return this.lookupCache.get('diseases', () => this.APIs.get(this.DiseaseControllerURL + 'GetAll'));
+  }
+  getFinalDiagnoses(): Observable<any[]> {
+    return this.getAllDiseases().pipe(
+      map((result: any) => orderFinalDiagnoses(result?.data))
+    );
   }
   getPageDiseases(DiseaseFilter: any) {
     return this.APIs.create(
@@ -1120,14 +1119,8 @@ export class LookupsGetterService {
   ///#endregion
 
   ///#region  DiseaseGroupLookup
-  private _diseaseGroupsCache$: Observable<any>;
   getAllDiseaseGroups() {
-    if (!this._diseaseGroupsCache$) {
-      this._diseaseGroupsCache$ = this.APIs.get(
-        this.DiseaseGroupControllerURL + 'GetAll'
-      ).pipe(shareReplay(1));
-    }
-    return this._diseaseGroupsCache$;
+    return this.lookupCache.get('diseaseGroups', () => this.APIs.get(this.DiseaseGroupControllerURL + 'GetAll'));
     if (navigator.onLine) {
       var data = this.APIs.get(this.DiseaseGroupControllerURL + 'GetAll');
       data.subscribe((result: any) => {
@@ -1429,15 +1422,13 @@ export class LookupsGetterService {
     }
   }
   getIncidentSourceHospitalsByAdminID(administrationID: number) {
-    return this.APIs.get(
-      this.IncidentSourceHospitalControllerURL +
-        'GetByAdminID?id=' +
-        administrationID
+    return this.lookupCache.get('incidentSources:admin:' + administrationID, () =>
+      this.APIs.get(this.IncidentSourceHospitalControllerURL + 'GetByAdminID?id=' + administrationID)
     );
   }
   getIncidentSourceHospitalsByGovID(govID: number) {
-    return this.APIs.get(
-      this.IncidentSourceHospitalControllerURL + 'GetByGovID?id=' + govID
+    return this.lookupCache.get('incidentSources:gov:' + govID, () =>
+      this.APIs.get(this.IncidentSourceHospitalControllerURL + 'GetByGovID?id=' + govID)
     );
   }
   getIncidentSourceHospitalsByOrgID(orgID: number) {
@@ -1642,7 +1633,7 @@ export class LookupsGetterService {
 
   ///#region  NationalityLookup
   getAllNationalitys() {
-    return this.APIs.get(this.NationalityControllerURL + 'GetAll');
+    return this.lookupCache.get('nationalities', () => this.APIs.get(this.NationalityControllerURL + 'GetAll'));
     if (navigator.onLine) {
       var data = this.APIs.get(this.NationalityControllerURL + 'GetAll');
       data.subscribe((result: any) => {
@@ -2010,7 +2001,7 @@ export class LookupsGetterService {
 
   ///#region  HealthAdministrationLookup
   getAllHealthAdministrations() {
-    return this.APIs.get(this.HealthAdministrationControllerURL + 'GetAll');
+    return this.lookupCache.get('healthAdministrations', () => this.APIs.get(this.HealthAdministrationControllerURL + 'GetAll'));
     if (navigator.onLine) {
       var data = this.APIs.get(
         this.HealthAdministrationControllerURL + 'GetAll'
@@ -2033,7 +2024,7 @@ export class LookupsGetterService {
     }
   }
   getAllHealthAdministrationsByGovernment() {
-    return this.APIs.get(this.HealthAdministrationControllerURL + 'GetAll');
+    return this.lookupCache.get('healthAdministrations', () => this.APIs.get(this.HealthAdministrationControllerURL + 'GetAll'));
   }
   getHealthAdministrationsByGovernmentsIds(
     HealthAdministrationByGovernments: any
@@ -2254,6 +2245,22 @@ export class LookupsGetterService {
     return this.APIs.create(this.appSettingsApiUrl + 'SetDataDaysLimit', daysLimitEntity);
   }
 
+  getReportsMaxDateRangeDays() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/12');
+  }
+
+  updateReportsMaxDateRangeDays(daysLimitEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetReportsMaxDateRangeDays', daysLimitEntity);
+  }
+
+  getAuditRetentionDays() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/13');
+  }
+
+  updateAuditRetentionDays(daysLimitEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetAuditRetentionDays', daysLimitEntity);
+  }
+
   getNationalIdSearchDaysLimit() {
     return this.APIs.get(this.appSettingsApiUrl + 'Get/9');
   }
@@ -2284,6 +2291,14 @@ export class LookupsGetterService {
 
   updatePasswordExpiryEnabled(enabledEntity: any) {
     return this.APIs.create(this.appSettingsApiUrl + 'SetPasswordExpiryEnabled', enabledEntity);
+  }
+
+  getNotificationsEnabled() {
+    return this.APIs.get(this.appSettingsApiUrl + 'Get/14');
+  }
+
+  updateNotificationsEnabled(enabledEntity: any) {
+    return this.APIs.create(this.appSettingsApiUrl + 'SetNotificationsEnabled', enabledEntity);
   }
   //end region
 }

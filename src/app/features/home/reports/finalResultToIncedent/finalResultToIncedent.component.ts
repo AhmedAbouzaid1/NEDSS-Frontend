@@ -1,3 +1,5 @@
+import { isFinalDiagnosisResult } from 'src/app/core/shared/utilis/final-diagnoses';
+import { finalize } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
@@ -20,6 +22,8 @@ export class FinalResultToIncedentComponent implements OnInit {
 
   Categories: any;
   diseases: any;
+  finalDiseases: any[] = [];
+  finalDiseasesLoading = true;
   selectedDiseases: any[] = [];
   selectedyears;
   years = [
@@ -116,11 +120,19 @@ export class FinalResultToIncedentComponent implements OnInit {
     this.levelId = JSON.parse(localStorage.getItem('ls.authorizationData'))?.user?.levelId;
 
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.getCaseCategories();
     this.getDiseases();
+    this.lookUpsService
+      .getFinalDiagnoses()
+      .pipe(finalize(() => (this.finalDiseasesLoading = false)))
+      .subscribe((diseases) => (this.finalDiseases = diseases));
     this.getAllFinalResults();
   }
+  get isFinalResult(): boolean {
+    return isFinalDiagnosisResult(this.resultType);
+  }
+
   getDiseases() {
     this.lookUpsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
@@ -469,9 +481,6 @@ export class FinalResultToIncedentComponent implements OnInit {
       .subscribe(() => { });
   }
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     this.filterdData = this.myData.filter((m) =>
       m.incidentHealthAr.toLowerCase().includes(e.target.value.toLowerCase())
     );

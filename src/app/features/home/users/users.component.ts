@@ -158,7 +158,7 @@ export class UsersComponent {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.primengConfig.ripple = true;
     this.currentLang =
       localStorage.getItem('ls.currentLang') !== undefined &&
@@ -322,7 +322,9 @@ export class UsersComponent {
     this.rolesLoading = true;
     this.userService.getPageRoles({
       organizationId:this.userFilter.organizationId,
-      levelId:this.userFilter.levelId
+      levelId:this.userFilter.levelId,
+      pageIndex: 0,
+      pageSize: 1000
     }).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
@@ -807,6 +809,10 @@ export class UsersComponent {
     this.getUsers();
   }
 
+  isGlobalAdmin(item: any): boolean {
+    return (item?.userName ?? '').toString().trim().toLowerCase() === 'admin@admin.com';
+  }
+
   delete(id: number) {
     this.userService.deleteUser(id).subscribe(
       (result: any) => {
@@ -822,11 +828,19 @@ export class UsersComponent {
         }
       },
       (error) => {
-        this.translateService
-          .get('NEDSS.COMMON.DELETED_FAILED')
-          .subscribe((res: string) => {
+        const code = error?.error?.messages?.[0];
+        const key = code
+          ? 'NEDSS.HOME.USERS.ADD_USER.ERRORS.' + code
+          : 'NEDSS.COMMON.DELETED_FAILED';
+        this.translateService.get(key).subscribe((res: string) => {
+          if (res && res !== key) {
             this.userMsg.error(res);
-          });
+          } else {
+            this.translateService
+              .get('NEDSS.COMMON.DELETED_FAILED')
+              .subscribe((fallback: string) => this.userMsg.error(fallback));
+          }
+        });
       }
     );
   }

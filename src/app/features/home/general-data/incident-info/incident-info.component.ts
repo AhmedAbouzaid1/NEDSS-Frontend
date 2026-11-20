@@ -305,6 +305,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
         if (this.patient.relationShipDegreeId == null)
           this.patient.relationShipDegreeId = 0;
         if (
+          !this.patient.isMigrated &&
           this.patient.nationalId != null &&
           this.patient.relationShipDegreeId == RelativeEnum.Himself
         ) {

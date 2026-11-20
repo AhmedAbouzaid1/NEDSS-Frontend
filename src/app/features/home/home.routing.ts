@@ -23,7 +23,6 @@ import { PopulationIncreaseCoefficientComponent } from './population-data/popula
 import { SearchPopulationExpectationComponent } from './population-data/search-populationExpectation/search-populationExpectation.component';
 import { DuplicationViewComponent } from './repeated-records/duplicationView/duplicationView.component';
 import { DuplicationReviewComponent } from './repeated-records/duplicationReview/duplicationReview.component';
-import { ChatComponent } from './chat/chat.component';
 import { AddUserComponent } from './users/components/add-user/add-user.component';
 import { UserApprovalsComponent } from './users/components/user-approvals/user-approvals.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
@@ -69,6 +68,7 @@ import { HepatitisVirusesComponent } from './investigation/complete-investigatio
 import { HivComponent } from './investigation/complete-investigation/hiv/hiv.component';
 import { LeishmaniaComponent } from './investigation/complete-investigation/leishmania/leishmania.component';
 import { VisceralLeishmaniaComponent } from './investigation/complete-investigation/visceral-leishmania/visceral-leishmania.component';
+import { EntomologicalComponent } from './investigation/complete-investigation/entomological/entomological.component';
 import { LeperComponent } from './investigation/complete-investigation/leper/leper.component';
 import { MersComponent } from './investigation/complete-investigation/mers/mers.component';
 import { MumbariPoisoningComponent } from './investigation/complete-investigation/mumbari-poisoning/mumbari-poisoning.component';
@@ -120,7 +120,7 @@ import { MonitorUnitsTeamMembersReportComponent } from './reports/monitor-units-
 import { MonitorUnitsTeamMembersDetailsReportComponent } from './reports/monitor-units-team-members-details-report/monitor-units-team-members-details-report.component';
 const routes: Routes = [
   {
-    path: 'home',
+    path: '',
     component: HomeComponent,
     canActivate: [AuthGuard],
     data: { types: [3] },
@@ -563,6 +563,8 @@ const routes: Routes = [
               { path: 'trachoma', component: TrachomaComponent },
               { path: 'leishmania', component: LeishmaniaComponent },
               { path: 'visceral-leishmania', component: VisceralLeishmaniaComponent },
+              { path: 'entomological-mosquito', component: EntomologicalComponent, data: { entomological: true, vectorType: 1 } },
+              { path: 'entomological-sandfly', component: EntomologicalComponent, data: { entomological: true, vectorType: 2 } },
               { path: 'tuberculosis', component: TuberculosisComponent },
               { path: 'bloodyDiarrhea', component: BloodyDiarrheaComponent },
               { path: 'cholera', component: CholeraComponent },
@@ -879,9 +881,8 @@ const routes: Routes = [
       },
       {
         path: 'chat',
-        component: ChatComponent,
-        canActivate: [AuthGuard, NavigationGuard],
-        data: { types: [1, 2, 3] },
+        redirectTo: 'welcome',
+        pathMatch: 'full',
       },
       //Remove this FOR TESTING ONLY
       {

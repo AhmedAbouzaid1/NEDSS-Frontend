@@ -238,7 +238,7 @@ export class AddLabPatientComponent {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.loadingPanel = true;
     this.labChecksCount = 0;
     this.getLookups();

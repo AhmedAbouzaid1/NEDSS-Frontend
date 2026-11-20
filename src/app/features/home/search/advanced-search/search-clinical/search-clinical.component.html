@@ -1,0 +1,161 @@
+<div class="card-body bg-dark-mode">
+  <div class="row">
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.HAS_FEVER" | translate }}
+        </label>
+        <p-dropdown
+          [options]="yesNoOptions"
+          [(ngModel)]="patient.hasFever"
+          optionValue="value"
+          [optionLabel]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="hasFever"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-xl-5 col-md-6 mb-2">
+      <label class="form-label">
+        {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_DATE" | translate }}
+      </label>
+      <div class="row g-2">
+        <div class="col-6">
+          <small class="text-muted">{{ "NEDSS.COMMON.FROM" | translate }}</small>
+          <app-date-field name="feverDateFrom" [max]="patient.feverDateTo" [(ngModel)]="patient.feverDateFrom"></app-date-field>
+        </div>
+        <div class="col-6">
+          <small class="text-muted">{{ "NEDSS.COMMON.TO" | translate }}</small>
+          <app-date-field name="feverDateTo" [min]="patient.feverDateFrom" [(ngModel)]="patient.feverDateTo"></app-date-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NOUR.word143" | translate }} ({{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.DAYS" | translate }})
+        </label>
+        <input
+          type="number"
+          inputmode="numeric"
+          min="0"
+          step="1"
+          pInputText
+          class="form-control w-100"
+          name="feverDuration"
+          [(ngModel)]="patient.feverDuration"
+        />
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-6 mb-2">
+      <label class="form-label">
+        {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER_MAX_TEMP" | translate }}
+      </label>
+      <div class="row g-2">
+        <div class="col-6">
+          <small class="text-muted">{{ "NEDSS.COMMON.FROM" | translate }}</small>
+          <input
+            type="number"
+            inputmode="decimal"
+            step="0.1"
+            min="35"
+            max="43"
+            pInputText
+            class="form-control w-100"
+            name="feverMaxTempFrom"
+            [(ngModel)]="patient.feverMaxTempFrom"
+          />
+        </div>
+        <div class="col-6">
+          <small class="text-muted">{{ "NEDSS.COMMON.TO" | translate }}</small>
+          <input
+            type="number"
+            inputmode="decimal"
+            step="0.1"
+            min="35"
+            max="43"
+            pInputText
+            class="form-control w-100"
+            name="feverMaxTempTo"
+            [(ngModel)]="patient.feverMaxTempTo"
+          />
+        </div>
+      </div>
+      <small class="form-text text-muted d-block">{{ "NEDSS.COMMON.FEVER_TEMPERATURE_HINT" | translate }}</small>
+    </div>
+
+    <div class="col-12 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.EXISTING_SYMPTOMS" | translate }}
+        </label>
+        <p-multiSelect
+          [appDropdownLoading]="clinicalSymptomsLoading"
+          [options]="clinicalSymptoms"
+          [(ngModel)]="patient.clinicalSymptomIds"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          display="chip"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="clinicalSymptomIds"
+        ></p-multiSelect>
+        <small class="form-text text-muted d-block">{{ "NEDSS.SEARCH.ANY_OF_NOTE" | translate }}</small>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.AreThereChronicDiseases" | translate }}
+        </label>
+        <p-dropdown
+          [options]="yesNoOptions"
+          [(ngModel)]="patient.haveChronicDisease"
+          optionValue="value"
+          [optionLabel]="optionLabel"
+          [showClear]="true"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="haveChronicDisease"
+        ></p-dropdown>
+      </div>
+    </div>
+    <div class="col-xl-9 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.ChronicDiseases" | translate }}
+        </label>
+        <p-multiSelect
+          [appDropdownLoading]="chronicDiseasesLoading"
+          [options]="chronicDiseases"
+          [(ngModel)]="patient.chronicDiseaseIds"
+          [optionLabel]="optionLabel"
+          optionValue="id"
+          [filter]="true"
+          [filterBy]="optionLabel"
+          [showClear]="true"
+          display="chip"
+          [placeholder]="selectPlaceholder"
+          [style]="{ width: '100%' }"
+          name="chronicDiseaseIds"
+        ></p-multiSelect>
+        <small class="form-text text-muted d-block">{{ "NEDSS.SEARCH.ANY_OF_NOTE" | translate }}</small>
+      </div>
+    </div>
+    <div class="col-12 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.AnotherChronicDiseases" | translate }}
+        </label>
+        <input type="text" pInputText class="w-100" name="anotherChronicDisease" [(ngModel)]="patient.anotherChronicDisease" />
+        <small class="form-text text-muted d-block">{{ "NEDSS.SEARCH.PARTIAL_MATCH_NOTE" | translate }}</small>
+      </div>
+    </div>
+  </div>
+</div>

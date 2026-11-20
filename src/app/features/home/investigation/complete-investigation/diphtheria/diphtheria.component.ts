@@ -5,6 +5,13 @@ import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { calculateCompletionStats } from '../shared/investigation-summary.utils';
+import {
+  DIPHTHERIA_DOSE_KEYS,
+  DiphtheriaContact,
+  newDiphtheriaContact,
+  parseDiphtheriaContacts,
+  serializeDiphtheriaContacts,
+} from './diphtheria-contact';
 @Component({
   selector: 'app-diphtheria',
   host: { class: 'investigation-form' },
@@ -24,6 +31,8 @@ export class DiphtheriaComponent implements OnInit {
   allControllesCount: number = 0;
   patientName: string;
   diseaseGroupID: any;
+  contacts: DiphtheriaContact[] = [];
+  readonly doseKeys = DIPHTHERIA_DOSE_KEYS;
   constructor(
     private investigationService: InvestigationService,
     private translateService: TranslateService,
@@ -58,87 +67,7 @@ export class DiphtheriaComponent implements OnInit {
       numberIndirectContacts: new FormControl(),
       contactUnknownDisease: new FormControl(),
       casePartEpidemic: new FormControl(),
-
-      followD1Name: new FormControl(),
-      followD1Age: new FormControl(),
-      followD1Phone: new FormControl(),
-      followD1Type: new FormControl(),
-      followD1MixingType: new FormControl(),
-      followD1RelationshipSituation: new FormControl(),
-      followD1DateOfSymptoms: new FormControl(),
-      followD1Fever: new FormControl(),
-      followD1DryCough: new FormControl(),
-      followD1CoughingWithSpitting: new FormControl(),
-      followD1SoreThroat: new FormControl(),
-      followD1DifficultyBreathing: new FormControl(),
-      followD1JointPain: new FormControl(),
-      followD1vomit: new FormControl(),
-      followD1Diarrhea: new FormControl(),
-      followD1Other: new FormControl(),
-      followD1OtherSymptoms: new FormControl(),
-      followD1SampleTaken: new FormControl(),
-      followD1DateSampleTaken: new FormControl(),
-      followD1SampleResult: new FormControl(),
-      followD2Name: new FormControl(),
-      followD2Age: new FormControl(),
-      followD2Phone: new FormControl(),
-      followD2Type: new FormControl(),
-      followD2MixingType: new FormControl(),
-      followD2RelationshipSituation: new FormControl(),
-      followD2DateOfSymptoms: new FormControl(),
-      followD2Fever: new FormControl(),
-      followD2DryCough: new FormControl(),
-      followD2CoughingWithSpitting: new FormControl(),
-      followD2SoreThroat: new FormControl(),
-      followD2DifficultyBreathing: new FormControl(),
-      followD2JointPain: new FormControl(),
-      followD2vomit: new FormControl(),
-      followD2Diarrhea: new FormControl(),
-      followD2Other: new FormControl(),
-      followD2OtherSymptoms: new FormControl(),
-      followD2SampleTaken: new FormControl(),
-      followD2DateSampleTaken: new FormControl(),
-      followD2SampleResult: new FormControl(),
-      followD7Name: new FormControl(),
-      followD7Age: new FormControl(),
-      followD7Phone: new FormControl(),
-      followD7Type: new FormControl(),
-      followD7MixingType: new FormControl(),
-      followD7RelationshipSituation: new FormControl(),
-      followD7DateOfSymptoms: new FormControl(),
-      followD7Fever: new FormControl(),
-      followD7DryCough: new FormControl(),
-      followD7CoughingWithSpitting: new FormControl(),
-      followD7SoreThroat: new FormControl(),
-      followD7DifficultyBreathing: new FormControl(),
-      followD7JointPain: new FormControl(),
-      followD7vomit: new FormControl(),
-      followD7Diarrhea: new FormControl(),
-      followD7Other: new FormControl(),
-      followD7OtherSymptoms: new FormControl(),
-      followD7SampleTaken: new FormControl(),
-      followD7DateSampleTaken: new FormControl(),
-      followD7SampleResult: new FormControl(),
-      followD14Name: new FormControl(),
-      followD14Age: new FormControl(),
-      followD14Phone: new FormControl(),
-      followD14Type: new FormControl(),
-      followD14MixingType: new FormControl(),
-      followD14RelationshipSituation: new FormControl(),
-      followD14DateOfSymptoms: new FormControl(),
-      followD14Fever: new FormControl(),
-      followD14DryCough: new FormControl(),
-      followD14CoughingWithSpitting: new FormControl(),
-      followD14SoreThroat: new FormControl(),
-      followD14DifficultyBreathing: new FormControl(),
-      followD14JointPain: new FormControl(),
-      followD14vomit: new FormControl(),
-      followD14Diarrhea: new FormControl(),
-      followD14Other: new FormControl(),
-      followD14OtherSymptoms: new FormControl(),
-      followD14SampleTaken: new FormControl(),
-      followD14DateSampleTaken: new FormControl(),
-      followD14SampleResult: new FormControl(),
+      contactFollowUpsJson: new FormControl(null),
 
       firstDose: new FormControl(),
       firstDoseDate: new FormControl(),
@@ -177,64 +106,8 @@ export class DiphtheriaComponent implements OnInit {
         }
 
         this.diphtriaForm.patchValue(v);
+        this.contacts = parseDiphtheriaContacts(v.contactFollowUpsJson);
         console.log(v);
-        this.diphtriaForm.controls['followD1DateOfSymptoms'].setValue(
-          this.datePipe.transform(
-            this.diphtriaForm.value.followD1DateOfSymptoms,
-            DiphtheriaComponent.DATE_FORMAT
-          )
-        );
-        this.diphtriaForm.controls['followD1SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD1SampleTaken));
-        this.diphtriaForm.controls['followD1DateSampleTaken'].setValue(
-          this.datePipe.transform(
-            this.diphtriaForm.value.followD1DateSampleTaken,
-            DiphtheriaComponent.DATE_FORMAT
-          )
-        );
-        this.diphtriaForm.controls['followD1SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD1SampleResult));
-        this.diphtriaForm.controls['followD2DateOfSymptoms'].setValue(
-          this.datePipe.transform(
-            this.diphtriaForm.value.followD2DateOfSymptoms,
-            DiphtheriaComponent.DATE_FORMAT
-          )
-        );
-        this.diphtriaForm.controls['followD2SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD2SampleTaken));
-        this.diphtriaForm.controls['followD2DateSampleTaken'].setValue(
-          this.datePipe.transform(
-            this.diphtriaForm.value.followD2DateSampleTaken,
-            DiphtheriaComponent.DATE_FORMAT
-          )
-        );
-        this.diphtriaForm.controls['followD2SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD2SampleResult));
-
-        this.diphtriaForm.controls['followD7DateOfSymptoms'].setValue(
-          this.datePipe.transform(
-            this.diphtriaForm.value.followD7DateOfSymptoms,
-            DiphtheriaComponent.DATE_FORMAT
-          )
-        );
-        this.diphtriaForm.controls['followD7SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD7SampleTaken));
-        this.diphtriaForm.controls['followD7DateSampleTaken'].setValue(
-          this.datePipe.transform(
-            this.diphtriaForm.value.followD7DateSampleTaken,
-            DiphtheriaComponent.DATE_FORMAT
-          )
-        );
-        this.diphtriaForm.controls['followD7SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD7SampleResult));
-        this.diphtriaForm.controls['followD14DateOfSymptoms'].setValue(
-          this.datePipe.transform(
-            this.diphtriaForm.value.followD14DateOfSymptoms,
-            DiphtheriaComponent.DATE_FORMAT
-          )
-        );
-        this.diphtriaForm.controls['followD14SampleTaken'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD14SampleTaken));
-        this.diphtriaForm.controls['followD14DateSampleTaken'].setValue(
-          this.datePipe.transform(
-            this.diphtriaForm.value.followD14DateSampleTaken,
-            DiphtheriaComponent.DATE_FORMAT
-          )
-        );
-        this.diphtriaForm.controls['followD14SampleResult'].setValue(this.toStringOrNull(this.diphtriaForm.value.followD14SampleResult));
         this.diphtriaForm.controls['firstDoseDate'].setValue(
           this.datePipe.transform(
             this.diphtriaForm.value.firstDoseDate,
@@ -306,6 +179,7 @@ export class DiphtheriaComponent implements OnInit {
     });
 
     this.diphtriaForm.controls['diseaseGroupId'].setValue(this.diseaseGroupID);
+    this.diphtriaForm.controls['contactFollowUpsJson'].setValue(serializeDiphtheriaContacts(this.contacts));
     this.calculateCompletionPercentage();
     this.diphtriaForm.controls['investigationCompletePercentage'].setValue(
       this.allControllesCount === 0
@@ -352,8 +226,18 @@ export class DiphtheriaComponent implements OnInit {
     }
   }
 
-  private toStringOrNull(value: any): string | null {
-    return value == null ? null : value + '';
+  addContact(): void {
+    this.contacts.push(newDiphtheriaContact());
+    this.syncContacts();
+  }
+
+  removeContact(index: number): void {
+    this.contacts.splice(index, 1);
+    this.syncContacts();
+  }
+
+  syncContacts(): void {
+    this.diphtriaForm.controls['contactFollowUpsJson'].setValue(serializeDiphtheriaContacts(this.contacts));
   }
 
   calculateCompletionPercentage() {

@@ -71,7 +71,7 @@ export class GeneralDataService {
       ['clinicalSymptomIds', 'ClinicalSymptomIds'],
       ['patientDiseases', 'PatientDiseases'],
       ['finalDiagonisticsData', 'FinalDiagonisticsData'],
-      ['finalDiagonistics', 'FinalDiagonistics'],
+      ['finalDiagnosisOtherText', 'FinalDiagnosisOtherText'],
       ['finalDiagonisticsByTicket', 'FinalDiagonisticsByTicket'],
       ['feverSymptoms', 'FeverSymptoms'],
       ['chronicDiseasesIds', 'ChronicDiseasesIds'],
@@ -426,65 +426,113 @@ export class GeneralDataService {
   getAllSentinels() {
     return this.APIs.get(this.sentinelControllerURL + 'GetAllSentinels');
   }
+  private syncingOffline = false;
+
   syncData() {
-    let tempD = JSON.parse(localStorage.getItem('Temp_DB.Patients'));
-    let isSending: boolean = false;
-    if (tempD != null && tempD != undefined && tempD.length > 0) {
-      for (let i = 0; i < tempD.length; i++) {
-        if (isSending == false) {
-          tempD[0].patient.id = null;
-          this.APIs.post(
-            this.controllerURL + 'Add',
-            tempD[0].patient
-          ).subscribe({
-            next: (result) => {
-              tempD[0].patient.id = result.data.id;
-              isSending = true;
-            },
-            error: (err) => {
-              console.error(err);
-              isSending = true;
-            },
-            complete: () => {
-              if (tempD[0].sentinel != null && tempD[0].sentinel != undefined) {
-                tempD[0].sentinel.patientID = tempD[0].patient.id;
-                tempD[0].sentinel.id = null;
-                this.APIs.post(
-                  this.sentinelControllerURL + 'AddSentinel',
-                  tempD[0].sentinel
-                ).subscribe({
-                  next: () => {
-                    isSending = true;
-                  },
-                  error: () => {
-                    isSending = true;
-                  },
-                  complete: () => {
-                    this.userMsg.success('تم اضافة ' + (i + 1) + ' مريض');
-                    tempD.splice(0, 1);
-                    localStorage.setItem(
-                      'Temp_DB.Patients',
-                      JSON.stringify(tempD)
-                    );
-                    isSending = false;
-                  },
-                });
-              } else {
-                this.userMsg.success('تم اضافة ' + (i + 1) + ' مريض');
-                tempD.splice(0, 1);
-                localStorage.setItem('Temp_DB.Patients', JSON.stringify(tempD));
-                isSending = false;
-              }
-            },
-          });
-        } else {
-          i--;
-        }
-        if (i + 1 == tempD.length) {
-          this.userMsg.success(' تم اضافة كل المرضى  ');
-        }
-      }
+    if (this.syncingOffline) {
+      return;
     }
+    const queue = this.readOfflineQueue();
+    if (!queue.length) {
+      return;
+    }
+    this.syncingOffline = true;
+    this.sendNextOffline(0);
+  }
+
+  private readOfflineQueue(): any[] {
+    try {
+      const queue = JSON.parse(localStorage.getItem('Temp_DB.Patients'));
+      return Array.isArray(queue) ? queue : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private writeOfflineQueue(queue: any[]) {
+    localStorage.setItem('Temp_DB.Patients', JSON.stringify(queue));
+  }
+
+  private parkFailedOffline(item: any, err: any) {
+    let failed: any[] = [];
+    try {
+      const stored = JSON.parse(localStorage.getItem('Temp_DB.FailedPatients'));
+      failed = Array.isArray(stored) ? stored : [];
+    } catch {}
+    failed.push({ ...item, failedAt: new Date().toISOString(), failureStatus: err?.status ?? err?.statusCode ?? null });
+    localStorage.setItem('Temp_DB.FailedPatients', JSON.stringify(failed));
+  }
+
+  private sendNextOffline(sent: number) {
+    const queue = this.readOfflineQueue();
+    if (!queue.length) {
+      this.syncingOffline = false;
+      if (sent > 0) {
+        this.userMsg.success(' تم اضافة كل المرضى  ');
+      }
+      return;
+    }
+    const item = queue[0];
+    const finishItem = () => {
+      const remaining = this.readOfflineQueue();
+      remaining.splice(0, 1);
+      this.writeOfflineQueue(remaining);
+      this.userMsg.success('تم اضافة ' + (sent + 1) + ' مريض');
+      this.sendNextOffline(sent + 1);
+    };
+    const park = (err: any) => {
+      console.error(err);
+      const remaining = this.readOfflineQueue();
+      const [failed] = remaining.splice(0, 1);
+      this.writeOfflineQueue(remaining);
+      this.parkFailedOffline(failed ?? item, err);
+      this.userMsg.error('تعذر إرسال مريض محفوظ دون اتصال، تم نقله إلى قائمة الفشل');
+      this.sendNextOffline(sent);
+    };
+    const stop = (err: any) => {
+      const status = err?.status ?? 0;
+      if (status >= 400 && status < 500 && ![401, 403, 408, 429].includes(status)) {
+        park(err);
+        return;
+      }
+      console.error(err);
+      this.syncingOffline = false;
+    };
+    const sendSentinel = () => {
+      if (item.sentinel == null) {
+        finishItem();
+        return;
+      }
+      item.sentinel.patientID = item.savedPatientId;
+      item.sentinel.id = null;
+      this.APIs.post(this.sentinelControllerURL + 'AddSentinel', item.sentinel).subscribe({
+        next: () => finishItem(),
+        error: stop,
+      });
+    };
+
+    if (item.savedPatientId) {
+      sendSentinel();
+      return;
+    }
+    item.patient.id = null;
+    this.APIs.post(this.controllerURL + 'Add', item.patient).subscribe({
+      next: (result: any) => {
+        if (!result?.data?.id) {
+          park(result);
+          return;
+        }
+        item.savedPatientId = result.data.id;
+        item.patient.id = item.savedPatientId;
+        const current = this.readOfflineQueue();
+        if (current.length) {
+          current[0] = item;
+          this.writeOfflineQueue(current);
+        }
+        sendSentinel();
+      },
+      error: stop,
+    });
   }
 
   showValidationErrors: boolean = false;
@@ -1235,7 +1283,20 @@ export class GeneralDataService {
     }
     return ageTypeId;
   }
+  onDigitsKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
+    if (!/^\d$/.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  parsePatientId(value: any): number | null {
+    const id = Number(String(value ?? '').trim());
+    return Number.isInteger(id) && id > 0 ? id : null;
+  }
+
   onIdentityCardKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     let inputKey = event.key;
     if (
       (inputKey !== 'Backspace' && isNaN(Number(inputKey))) ||
@@ -1328,6 +1389,7 @@ export class GeneralDataService {
   }
 
   onPhoneNumberKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     let inputKey = event.key;
     if (
       inputKey !== '+' &&
@@ -1346,6 +1408,7 @@ export class GeneralDataService {
   }
 
   onLocalPhoneKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     const input = event.target as HTMLInputElement;
     if (!/^\d$/.test(event.key)) {
       event.preventDefault();
@@ -1358,6 +1421,7 @@ export class GeneralDataService {
   }
 
   onInternationalPhoneKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     const input = event.target as HTMLInputElement;
     const inputKey = event.key;
     const atStart = input.selectionStart === 0 && !input.value.includes('+');
@@ -1371,8 +1435,8 @@ export class GeneralDataService {
     }
   }
 
-  validateFirstName(name: string, isRequired: boolean): boolean {
-    this.firstNameValidationMessage = this.validateFirstNamePattern(name, isRequired);
+  validateFirstName(name: string, isRequired: boolean, forSearch: boolean = false): boolean {
+    this.firstNameValidationMessage = this.validateFirstNamePattern(name, isRequired, forSearch);
     return this.firstNameValidationMessage === '';
   }
 
@@ -1380,8 +1444,28 @@ export class GeneralDataService {
     if (!this.validateEmptyField(name)) {
       return !isRequired;
     }
-    const namePattern = /^[A-Za-z؀-ۿ ]{3,25}$/;
-    return namePattern.test(name);
+    return this.isValidSearchName(name, 3);
+  }
+
+  isValidSearchName(name: string, minChars: number = 2): boolean {
+    const value = (name ?? '').trim();
+    return (
+      value.length <= 60 &&
+      /^[A-Za-z0-9؀-ۿ \-]+$/.test(value) &&
+      value.replace(/\s/g, '').length >= minChars
+    );
+  }
+
+  onSearchNameKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
+    if (!/^[A-Za-z0-9؀-ۿ \-]$/.test(event.key)) {
+      event.preventDefault();
+      return;
+    }
+    const input = event.target as HTMLInputElement;
+    if (event.key === ' ' && (input.selectionStart === 0 || !input.value)) {
+      event.preventDefault();
+    }
   }
   validateBirthDate(birthDate: string, isRequired: boolean): boolean {
     this.birthDateValidationMessage = this.validBirthDate(
@@ -1391,18 +1475,18 @@ export class GeneralDataService {
     return this.birthDateValidationMessage === '';
   }
 
-  validateSecondName(name: string, isRequired: boolean): boolean {
-    this.secondNameValidationMessage = this.validateFirstNamePattern(name, isRequired);
+  validateSecondName(name: string, isRequired: boolean, forSearch: boolean = false): boolean {
+    this.secondNameValidationMessage = this.validateFirstNamePattern(name, isRequired, forSearch);
     return this.secondNameValidationMessage === '';
   }
 
-  validateThirdName(name: string, isRequired: boolean): boolean {
-    this.thirdNameValidationMessage = this.validateFirstNamePattern(name, isRequired);
+  validateThirdName(name: string, isRequired: boolean, forSearch: boolean = false): boolean {
+    this.thirdNameValidationMessage = this.validateFirstNamePattern(name, isRequired, forSearch);
     return this.thirdNameValidationMessage === '';
   }
 
-  validateFamilyName(name: string, isRequired: boolean): boolean {
-    this.familyNameValidationMessage = this.validateTwoCharsPattern(name);
+  validateFamilyName(name: string, isRequired: boolean, forSearch: boolean = false): boolean {
+    this.familyNameValidationMessage = this.validateTwoCharsPattern(name, forSearch);
     return this.familyNameValidationMessage === '';
   }
 
@@ -1442,7 +1526,7 @@ export class GeneralDataService {
     return '';
   }
 
-  validateFirstNamePattern(name: string, isRequired: boolean): string {
+  validateFirstNamePattern(name: string, isRequired: boolean, forSearch: boolean = false): string {
     if (!this.validateEmptyField(name)) {
       if (isRequired) {
         return 'NEDSS.COMMON.FILEDREQUIRED';
@@ -1451,15 +1535,18 @@ export class GeneralDataService {
     }
 
 
-    return this.validateTwoCharsPattern(name);
+    return this.validateTwoCharsPattern(name, forSearch);
 
   }
-  validateTwoCharsPattern(name: string) {
-    let namePattern = /^[A-Za-z\u0600-\u06FF ]{2,15}$/;
+  validateTwoCharsPattern(name: string, forSearch: boolean = false) {
+    let namePattern = /^[A-Za-z؀-ۿ ]{2,15}$/;
     if (name) {
-      if (!namePattern.test(name) || name.split('')?.filter(x => x != ' ')?.length < 2) {
+      const valid = forSearch
+        ? this.isValidSearchName(name)
+        : namePattern.test(name) && name.split('')?.filter(x => x != ' ')?.length >= 2;
+      if (!valid) {
         return this.translate.instant('NEDSS.COMMON.INVALID_NAME_CHARACTERS_TWO', {
-          maxLength: 15,
+          maxLength: forSearch ? 60 : 15,
         });
       }
     }
@@ -1483,6 +1570,7 @@ export class GeneralDataService {
   }
 
   onNameKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
     let inputKey = event.key;
     let namePattern = /^[A-Za-z\u0600-\u06FF ]$/;
     if (!namePattern.test(inputKey)) {

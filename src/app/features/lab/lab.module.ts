@@ -75,18 +75,7 @@ export const DATE_FORMATS = {
     NgMultiSelectDropDownModule.forRoot(),
     MultiSelectModule,
     // ngx-translate and the loader module
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-      defaultLanguage:
-        localStorage.getItem('ls.currentLang') !== undefined &&
-          localStorage.getItem('ls.currentLang') !== 'undefined'
-          ? localStorage.getItem('ls.currentLang')
-          : 'ar',
-    }),
+    TranslateModule.forChild({ extend: true }),
     InputTextareaModule
   ],
   providers: [DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],

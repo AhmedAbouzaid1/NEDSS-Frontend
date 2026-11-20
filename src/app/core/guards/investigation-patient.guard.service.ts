@@ -40,8 +40,11 @@ export class InvestigationPatientGuard implements CanActivate, CanActivateChild 
     return of(false);
   }
 
-  canActivateChild() {
-    if (this.pagePermission.canAccessInvestigationForm(this.investigation.diseaseGroupID)) {
+  canActivateChild(childRoute: ActivatedRouteSnapshot) {
+    const allowed = childRoute.data?.['entomological']
+      ? this.pagePermission.canAccessEntomologicalForm(this.investigation.diseaseGroupID)
+      : this.pagePermission.canAccessInvestigationForm(this.investigation.diseaseGroupID);
+    if (allowed) {
       return of(true);
     }
     this.userMsg.error('انت ليس لديك صلاحية الدخول لنموذج التقصي لهذا المرض');

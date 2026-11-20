@@ -129,7 +129,7 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
     this.moreDetails = this.currentLang == 'ar' ? 'المزيد من التفاصيل >' : 'More Details >';
 
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.getCaseCategories();
     this.getDiseases();
     this.getDepartments();
@@ -518,9 +518,6 @@ export class IncidentSourceToDepartmentReportComponent implements OnInit {
     this.exportService.exportTemplateAsPdf(document.getElementById(this.currentConfig), ' عدد الحالات حسب قسم ومصادر الابلاغ', [selectedGov, selectedAdm, selectedIncs, selectedDep], [sDate, eDate]);
   }
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     this.filterdData = this.myData.filter((m) =>
       m.incidentHealthAr.toLowerCase().includes(e.target.value.toLowerCase())
     );

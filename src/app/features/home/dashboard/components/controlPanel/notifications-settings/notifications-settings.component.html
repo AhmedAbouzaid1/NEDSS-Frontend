@@ -1,0 +1,46 @@
+<h2 class="titles">
+  {{ "NEDSS.HOME.CONTROL_PANEL.SYSTEM_NOTIFICATIONS" | translate }}
+</h2>
+
+<form (ngSubmit)="save()" #notificationsForm="ngForm" novalidate>
+  <div class="card shadow color settings-card">
+    <div class="card-body bg-dark-mode">
+      <div class="setting-row">
+        <div class="setting-icon" [class.is-off]="!enabled">
+          <i class="bi" [ngClass]="enabled ? 'bi-bell' : 'bi-bell-slash'"></i>
+        </div>
+
+        <div class="setting-info">
+          <label class="setting-title" for="notificationsEnabled">
+            {{ "NEDSS.HOME.CONTROL_PANEL.SYSTEM_NOTIFICATIONS_ENABLED_LABEL" | translate }}
+          </label>
+          <p class="setting-hint">
+            {{ "NEDSS.HOME.CONTROL_PANEL.SYSTEM_NOTIFICATIONS_HINT" | translate }}
+          </p>
+        </div>
+
+        <div class="setting-control">
+          <span class="status-badge" [class.is-off]="!enabled">
+            {{
+              (enabled
+                ? "NEDSS.HOME.CONTROL_PANEL.SYSTEM_NOTIFICATIONS_STATUS_ON"
+                : "NEDSS.HOME.CONTROL_PANEL.SYSTEM_NOTIFICATIONS_STATUS_OFF"
+              ) | translate
+            }}
+          </span>
+          <label class="toggle">
+            <input type="checkbox" id="notificationsEnabled" name="notificationsEnabled" role="switch"
+              [attr.aria-checked]="enabled" [(ngModel)]="enabled" />
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-footer">
+        <button type="submit" class="btn bg text-white rounded-2 px-4">
+          {{ "NEDSS.COMMON.SAVE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -12,6 +12,9 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
 export class SidebarComponent implements OnDestroy {
   isCollapsed: Boolean = true;
   private readonly mobileNavQuery = '(max-width: 991.98px)';
+  private readonly hoverDeviceQuery = '(hover: hover) and (pointer: fine)';
+  private hoverTooltip?: HTMLElement;
+  private hoveredLink?: HTMLElement;
   private routerEventsSub?: Subscription;
 
   forms: any = [];
@@ -63,19 +66,86 @@ export class SidebarComponent implements OnDestroy {
     this.loadChartsTabVisibility();
     this.routerEventsSub = this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
-      .subscribe(() => this.closeMobileDrawer());
+      .subscribe(() => {
+        this.hideHoverTooltip();
+        this.closeMobileDrawer();
+      });
   }
 
   ngOnDestroy(): void {
     this.routerEventsSub?.unsubscribe();
+    this.hoverTooltip?.remove();
   }
 
   @HostListener('click', ['$event'])
   onSidebarClick(event: MouseEvent): void {
     const target = event.target as HTMLElement | null;
     if (target?.closest('nav a')) {
+      this.hideHoverTooltip();
       this.closeMobileDrawer();
     }
+  }
+
+  @HostListener('mouseover', ['$event'])
+  onSidebarMouseOver(event: MouseEvent): void {
+    const link = (event.target as HTMLElement | null)?.closest('nav a') as HTMLElement | null;
+    if (!link || link === this.hoveredLink) {
+      return;
+    }
+    if (!this.isDesktopPointer()) {
+      this.hideHoverTooltip();
+      return;
+    }
+    const title = (link.querySelector('.menu-text')?.textContent ?? link.textContent ?? '').replace(/\s+/g, ' ').trim();
+    if (!title) {
+      this.hideHoverTooltip();
+      return;
+    }
+    this.hoveredLink = link;
+    this.showHoverTooltip(link, title);
+  }
+
+  @HostListener('mouseout', ['$event'])
+  onSidebarMouseOut(event: MouseEvent): void {
+    const next = event.relatedTarget as Node | null;
+    if (this.hoveredLink && next && this.hoveredLink.contains(next)) {
+      return;
+    }
+    this.hideHoverTooltip();
+  }
+
+  @HostListener('window:resize')
+  onSidebarScroll(): void {
+    this.hideHoverTooltip();
+  }
+
+  private isDesktopPointer(): boolean {
+    return window.matchMedia(this.hoverDeviceQuery).matches && !window.matchMedia(this.mobileNavQuery).matches;
+  }
+
+  private showHoverTooltip(link: HTMLElement, title: string): void {
+    if (!this.hoverTooltip) {
+      this.hoverTooltip = document.createElement('div');
+      this.hoverTooltip.className = 'sidebar-hover-tooltip';
+      this.hoverTooltip.setAttribute('role', 'tooltip');
+      document.body.appendChild(this.hoverTooltip);
+    }
+    const tooltip = this.hoverTooltip;
+    tooltip.textContent = title;
+    tooltip.dir = this.lang === 'en' ? 'ltr' : 'rtl';
+    const linkRect = link.getBoundingClientRect();
+    const sidebarRect = (link.closest('aside') ?? link).getBoundingClientRect();
+    const sidebarOnRight = sidebarRect.left + sidebarRect.width / 2 > window.innerWidth / 2;
+    tooltip.classList.toggle('from-right', sidebarOnRight);
+    tooltip.style.top = `${linkRect.top + linkRect.height / 2}px`;
+    tooltip.style.left = sidebarOnRight ? '' : `${sidebarRect.right + 10}px`;
+    tooltip.style.right = sidebarOnRight ? `${window.innerWidth - sidebarRect.left + 10}px` : '';
+    tooltip.classList.add('visible');
+  }
+
+  private hideHoverTooltip(): void {
+    this.hoveredLink = undefined;
+    this.hoverTooltip?.classList.remove('visible');
   }
 
   private closeMobileDrawer(): void {

@@ -158,7 +158,7 @@ export class RepeatedRecordsComponent implements OnInit {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
 
     this.repeatedRecordsForm = this.fb.group({
       fromDate: [
@@ -840,6 +840,7 @@ export class RepeatedRecordsComponent implements OnInit {
         if (data.length > 0) {
           this.repeatedDataCount = 0;
           this.repeatedData = data;
+          this.repeatedDataAll = data;
           // ?.filter((p: any) =>
           //   this.lookupsService.incidentsForOrg.includes(p.incidentSourceId)
           // );
@@ -868,6 +869,7 @@ export class RepeatedRecordsComponent implements OnInit {
         this.loadError = true;
         this.noData = false;
         this.repeatedData = [];
+        this.repeatedDataAll = [];
         this.repeatedDataCount = 0;
         this.translateService
           .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
@@ -941,12 +943,11 @@ export class RepeatedRecordsComponent implements OnInit {
     );
   }
 
+  repeatedDataAll: any[] = [];
+
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getRepeatedData();
-    }
-    this.repeatedData = this.repeatedData.filter((m) =>
-      m.firstName.toLowerCase().includes(e.target.value.toLowerCase())
+    this.repeatedData = (this.repeatedDataAll ?? []).filter((m) =>
+      (m.firstName ?? '').toLowerCase().includes((e.target.value ?? '').toLowerCase())
     );
   }
 

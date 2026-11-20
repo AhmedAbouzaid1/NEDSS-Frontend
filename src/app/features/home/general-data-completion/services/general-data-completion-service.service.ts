@@ -22,4 +22,11 @@ export class GeneralDataCompletionServiceService {
       GeneralDataCompletionFilter
     );
   }
+
+  getGeneralDataCompletionsCount(GeneralDataCompletionFilter: any) {
+    return this.APIs.create(this.PathApiUrl + 'GetFollowUpPage2', {
+      ...GeneralDataCompletionFilter,
+      countOnly: true,
+    });
+  }
 }

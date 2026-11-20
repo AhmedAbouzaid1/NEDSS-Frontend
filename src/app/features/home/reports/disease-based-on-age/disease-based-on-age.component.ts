@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { orderFinalDiagnoses } from 'src/app/core/shared/utilis/final-diagnoses';
+import { Component, OnInit, inject } from '@angular/core';
+import { ReportDateRangeService } from 'src/app/core/services/report-date-range.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
 import {
@@ -25,6 +27,7 @@ import { DiagnosisType } from '../enums/DiagnosisType';
   styleUrls: ['./disease-based-on-age.component.css'],
 })
 export class DiseaseBasedOnAgeComponent implements OnInit {
+  private readonly reportDateRange = inject(ReportDateRangeService);
   maxDate = new Date();
   minDate = new Date(1900, 0, 1);
   currentLang: string;
@@ -220,7 +223,7 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.getCaseCategories();
     this.getDiseases();
     this.getPrimaryDiseases();
@@ -350,7 +353,7 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
     this.lookUpsService.getAllDiseases().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
-          this.diseases = result.data;
+          this.diseases = orderFinalDiagnoses(result.data);
         }
         this.diseasesLoading = false;
         this.loadingPanel = false;
@@ -842,9 +845,6 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
   }
 
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     this.filterdData = this.myData.filter((m) =>
       m.incidentHealthAr.toLowerCase().includes(e.target.value.toLowerCase())
     );
@@ -861,6 +861,9 @@ export class DiseaseBasedOnAgeComponent implements OnInit {
   }
 
   getReportResult() {
+    if (!this.reportDateRange.validate(this.fromDate, this.toDate)) {
+      return;
+    }
     this.lookUpsService
       .GetDiseasesReport({
         governmentsIds: this.selectedgovernment?.map((x) => x.id),

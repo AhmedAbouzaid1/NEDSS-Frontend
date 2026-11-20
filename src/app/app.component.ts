@@ -9,6 +9,7 @@ import { PartialLoadingService } from './core/components/partial-loading/partial
 import { UiLoadingService } from './core/services/ui-loading.service';
 import { PwaUpdateService } from './core/services/pwa-update.service';
 import { FieldRowAlignService } from './core/services/field-row-align.service';
+import { InvSectionCollapseService } from './core/services/inv-section-collapse.service';
 import { SessionService } from './core/services/session.service';
 import { UserMessageService } from './core/services/user.message.service';
 import { ChangePasswordComponent } from './features/auth/change-password/change-password.component';
@@ -46,6 +47,10 @@ export class AppComponent {
   private pwGateSkipped = false;
   @ViewChild(ChangePasswordComponent) pwGateForm: ChangePasswordComponent;
 
+  private applyDocumentLang(lang: string): void {
+    document.documentElement.lang = lang === 'en' ? 'en' : 'ar';
+  }
+
   constructor(
     private translate: TranslateService,
     private idle: Idle,
@@ -56,17 +61,21 @@ export class AppComponent {
     private uiLoadingService: UiLoadingService,
     private pwaUpdateService: PwaUpdateService,
     private fieldRowAlign: FieldRowAlignService,
+    private invSectionCollapse: InvSectionCollapseService,
     private session: SessionService,
     private userMsg: UserMessageService,
     private ngZone: NgZone
   ) {
     this.pwaUpdateService.init();
     this.fieldRowAlign.init();
+    this.invSectionCollapse.init();
     this.lang =
       localStorage.getItem('ls.currentLang') != undefined
         ? localStorage.getItem('ls.currentLang')
         : 'ar';
     this.translate.setDefaultLang(this.lang);
+    this.applyDocumentLang(this.lang);
+    this.translate.onLangChange.subscribe(({ lang }) => this.applyDocumentLang(lang));
     translate.use(this.lang);
 
     idle.setIdle(this.idleSeconds);

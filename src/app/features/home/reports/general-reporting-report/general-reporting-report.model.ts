@@ -2,6 +2,7 @@ import { ReportLocationType } from '../enums/ReportLocationType';
 
 export interface GeneralReportingReportFilter {
   diseaseGroupsIds: number[];
+  finalDiseasesIds: number[];
   reportLocationType: ReportLocationType;
   governmentsIds: number[];
   healthAdministrationsIds: number[];

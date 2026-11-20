@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 export const INVESTIGATION_FORM_PAGE_OFFSET = 500;
+export const ENTOMOLOGICAL_FORM_PAGE_OFFSET = 1000;
 
 @Injectable({ providedIn: 'root' })
 export class PagePermissionService {
@@ -16,7 +17,8 @@ export class PagePermissionService {
   }
 
   isAdmin(): boolean {
-    return this.getAuthData().userName === this.ADMIN_USERNAME;
+    const auth = this.getAuthData();
+    return auth.emailId === this.ADMIN_USERNAME || auth.userName === this.ADMIN_USERNAME;
   }
 
   private permittedPageIds(): Set<string> {
@@ -45,5 +47,13 @@ export class PagePermissionService {
       return false;
     }
     return this.canAccessPage(INVESTIGATION_FORM_PAGE_OFFSET + id);
+  }
+
+  canAccessEntomologicalForm(diseaseGroupId: number | string): boolean {
+    const id = Number(diseaseGroupId);
+    if (!id) {
+      return false;
+    }
+    return this.canAccessPage(ENTOMOLOGICAL_FORM_PAGE_OFFSET + id);
   }
 }

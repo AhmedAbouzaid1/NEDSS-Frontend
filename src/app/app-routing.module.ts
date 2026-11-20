@@ -19,7 +19,7 @@ const routes: Routes = [
       import('./features/home/home.module').then((m) => m.HomeModule),
   },
   {
-    path: '',
+    path: 'lab',
     loadChildren: () =>
       import('./features/lab/lab.module').then((m) => m.LabModule),
   },

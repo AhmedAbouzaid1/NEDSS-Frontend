@@ -127,7 +127,7 @@ export class NotInferringComponent {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.primengConfig.ripple = true;
     this.levelId = JSON.parse(
       localStorage.getItem('ls.authorizationData')
@@ -491,10 +491,8 @@ export class NotInferringComponent {
 
   getNotInferrings() {
     if (
-      this.generalDataService.validateName(
-        this.notInferringFilter.fullName,
-        false
-      ) !== ''
+      this.notInferringFilter.fullName &&
+      !this.generalDataService.isValidSearchName(this.notInferringFilter.fullName)
     ) {
       this.translateService
         .get('NEDSS.COMMON.FILL_INVALID')

@@ -1,297 +1,225 @@
-<div>
-  <div class="card-body bg-dark-mode">
-    <div class="row">
-      <div class="col-lg-3 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.CASE_NAME" | translate }}
-          </label>
-          <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.firstName" (blur)="
-              generalDataService.isFirstNameValid =
-                generalDataService.validateFirstName(fullnameInput.value, false)
-            " (keypress)="generalDataService.onNameKeyPress($event)" (input)="generalDataService.normalizeNameInput($event)" #fullnameInput />
-          <small *ngIf="!generalDataService.isFirstNameValid" class="form-text text-danger mess-color">
-            {{ generalDataService.firstNameValidationMessage | translate }}
-          </small>
-        </div>
+<div class="card-body bg-dark-mode">
+  <div class="row">
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.FIRST_NAME" | translate }}</label>
+        <input type="text" name="firstName" class="w-100" pInputText [(ngModel)]="patient.firstName"
+          (keypress)="generalDataService.onSearchNameKeyPress($event)"
+          (input)="generalDataService.normalizeNameInput($event)"
+          (blur)="generalDataService.isFirstNameValid = generalDataService.validateFirstName(patient.firstName, false, true)" />
+        <small *ngIf="!generalDataService.isFirstNameValid" class="form-text text-danger mess-color d-block">
+          {{ generalDataService.firstNameValidationMessage | translate }}
+        </small>
       </div>
+    </div>
 
-      <div class="col-lg-3 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.SECOND_NAME" | translate }}
-          </label>
-          <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.secondName" (blur)="
-              generalDataService.isSecondNameValid =
-                generalDataService.validateSecondName(patient.secondName, false)
-            " (keypress)="generalDataService.onNameKeyPress($event)" (input)="generalDataService.normalizeNameInput($event)" />
-          <small *ngIf="!generalDataService.isSecondNameValid" class="form-text text-danger mess-color">
-            {{ generalDataService.secondNameValidationMessage | translate }}
-          </small>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.SECOND_NAME" | translate }}</label>
+        <input type="text" name="secondName" class="w-100" pInputText [(ngModel)]="patient.secondName"
+          (keypress)="generalDataService.onSearchNameKeyPress($event)"
+          (input)="generalDataService.normalizeNameInput($event)"
+          (blur)="generalDataService.isSecondNameValid = generalDataService.validateSecondName(patient.secondName, false, true)" />
+        <small *ngIf="!generalDataService.isSecondNameValid" class="form-text text-danger mess-color d-block">
+          {{ generalDataService.secondNameValidationMessage | translate }}
+        </small>
       </div>
+    </div>
 
-      <div class="col-lg-3 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.GRAND_NAME" | translate }}
-          </label>
-          <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.thirdName" (blur)="
-              generalDataService.isThirdNameValid =
-                generalDataService.validateThirdName(patient.thirdName, false)
-            " (keypress)="generalDataService.onNameKeyPress($event)" (input)="generalDataService.normalizeNameInput($event)" />
-          <small *ngIf="!generalDataService.isThirdNameValid" class="form-text text-danger mess-color">
-            {{ generalDataService.thirdNameValidationMessage | translate }}
-          </small>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.THIRD_NAME" | translate }}</label>
+        <input type="text" name="thirdName" class="w-100" pInputText [(ngModel)]="patient.thirdName"
+          (keypress)="generalDataService.onSearchNameKeyPress($event)"
+          (input)="generalDataService.normalizeNameInput($event)"
+          (blur)="generalDataService.isThirdNameValid = generalDataService.validateThirdName(patient.thirdName, false, true)" />
+        <small *ngIf="!generalDataService.isThirdNameValid" class="form-text text-danger mess-color d-block">
+          {{ generalDataService.thirdNameValidationMessage | translate }}
+        </small>
       </div>
+    </div>
 
-      <div class="col-lg-3 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.FAMILY_NAME" | translate }}
-          </label>
-          <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.familyName" (blur)="
-              generalDataService.isFamilyNameValid =
-                generalDataService.validateFamilyName(patient.familyName, false)
-            " (keypress)="generalDataService.onNameKeyPress($event)" (input)="generalDataService.normalizeNameInput($event)" />
-          <small *ngIf="!generalDataService.isFamilyNameValid" class="form-text text-danger mess-color">
-            {{ generalDataService.familyNameValidationMessage | translate }}
-          </small>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.FAMILY_NAME" | translate }}</label>
+        <input type="text" name="familyName" class="w-100" pInputText [(ngModel)]="patient.familyName"
+          (keypress)="generalDataService.onSearchNameKeyPress($event)"
+          (input)="generalDataService.normalizeNameInput($event)"
+          (blur)="generalDataService.isFamilyNameValid = generalDataService.validateFamilyName(patient.familyName, false, true)" />
+        <small *ngIf="!generalDataService.isFamilyNameValid" class="form-text text-danger mess-color d-block">
+          {{ generalDataService.familyNameValidationMessage | translate }}
+        </small>
       </div>
+    </div>
 
-      <div class="col-lg-4 mb-4">
-        <div class="form-group">
-          <label for="nationalty">
-            {{ "NEDSS.SEARCH.NATIONALITY" | translate }}
-          </label>
-          <div *ngIf="currentLang == 'ar'">
-            <!-- <select
-              class="form-control select2 select2-hidden-accessible"
-              (change)="setValue()"
-              tabindex="-1"
-              [(ngModel)]="national"
-              aria-hidden="true"
-              [ngModelOptions]="{ standalone: true }"
-            >
-              <option
-                value="item.id"
-                *ngFor="let item of nationalities"
-                [ngValue]="item.id"
-              >
-                {{ item.arabicName }}
-              </option>
-            </select> -->
-            <p-dropdown (onChange)="setValue()" [appDropdownLoading]="nationalitiesLoading" [options]="nationalities" [(ngModel)]="national"
-              optionLabel="arabicName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
-              name="nationalities" [filter]="true" filterBy="arabicName">
-            </p-dropdown>
-          </div>
-          <div *ngIf="currentLang == 'en'">
-            <p-dropdown (onChange)="setValue()" [appDropdownLoading]="nationalitiesLoading" [options]="nationalities" [(ngModel)]="national"
-              optionLabel="englishName" optionValue="id" autoWidth="false" [style]="{ width: '100%' }"
-              name="nationalities" [filter]="true" filterBy="englishName">
-            </p-dropdown>
-          </div>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.CASE_ID" | translate }}</label>
+        <input type="text" inputmode="numeric" maxlength="10" name="patientId" class="w-100" pInputText
+          [(ngModel)]="patient.patientId" (keypress)="generalDataService.onDigitsKeyPress($event)" />
       </div>
+    </div>
 
-      <div class="col-lg-4 mb-4" *ngIf="patient.nationalityId == NationalityEnum.Egyptian">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.NATIONAL_ID" | translate }}
-          </label>
-          <input type="text" name="" id="" class="w-100" pInputText (ngModelChange)="onNationalIdChanged($event)"
-            [(ngModel)]="patient.nationalId" (keypress)="generalDataService.onIdentityCardKeyPress($event)" (blur)="
-              generalDataService.isCardIdValid =
-                generalDataService.validateNationalID(patient.nationalId, false)
-            " />
-          <div *ngIf="!generalDataService.isCardIdValid" class="form-text text-danger mess-color">
-            {{ generalDataService.cardIdValidationMessage | translate }}
-          </div>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO1" | translate }}</label>
+        <input type="text" inputmode="tel" name="phoneNo1" class="w-100" maxlength="16" pInputText
+          [ngModel]="patient.phoneNo1" (ngModelChange)="onPhoneChanged('phoneNo1', $event)"
+          (keypress)="generalDataService.onPhoneNumberKeyPress($event)"
+          (blur)="generalDataService.isPhoneNumber1Valid = generalDataService.validatePhoneNumber1(patient.phoneNo1, false)" />
+        <small *ngIf="!generalDataService.isPhoneNumber1Valid" class="form-text text-danger mess-color d-block">
+          {{ generalDataService.phoneNo1ValidationMessage | translate }}
+        </small>
       </div>
+    </div>
 
-      <div class="col-lg-4 mb-4" *ngIf="patient.nationalityId != NationalityEnum.Egyptian &&
-      patient.nationalityId != NationalityEnum.NotSelected &&
-      patient.nationalityId">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.PASSPORT_NUMBER" | translate }}
-          </label>
-          <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.passportNo" />
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.PHONENO2" | translate }}</label>
+        <input type="text" inputmode="tel" name="phoneNo2" class="w-100" maxlength="16" pInputText
+          [ngModel]="patient.phoneNo2" (ngModelChange)="onPhoneChanged('phoneNo2', $event)"
+          (keypress)="generalDataService.onPhoneNumberKeyPress($event)"
+          (blur)="generalDataService.isPhoneNumber2Valid = generalDataService.validatePhoneNumber2(patient.phoneNo2, false)" />
+        <small *ngIf="!generalDataService.isPhoneNumber2Valid" class="form-text text-danger mess-color d-block">
+          {{ generalDataService.phoneNo2ValidationMessage | translate }}
+        </small>
       </div>
+    </div>
 
-      <div class="col-lg-6 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.PHONE1" | translate }}
-          </label>
-          <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.phoneNo1"
-            (keypress)="generalDataService.onPhoneNumberKeyPress($event)" (blur)="
-              generalDataService.isPhoneNumber1Valid =
-                generalDataService.validatePhoneNumber1(patient.phoneNo1, false)
-            " />
-          <small *ngIf="!generalDataService.isPhoneNumber1Valid" class="form-text text-danger mess-color">
-            {{ generalDataService.phoneNo1ValidationMessage | translate }}
-          </small>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.GENDER" | translate }}</label>
+        <p-dropdown [options]="genders" [(ngModel)]="patient.genderId"
+          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+          [style]="{ width: '100%' }" name="genderId" [filter]="true"
+          [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
+        </p-dropdown>
       </div>
+    </div>
 
-      <div class="col-lg-6 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.PHONE2" | translate }}
-          </label>
-          <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.phoneNo2"
-            (keypress)="generalDataService.onPhoneNumberKeyPress($event)" />
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.BIRTHDATE" | translate }}
+          ({{ "NEDSS.COMMON.FROM" | translate }})
+        </label>
+        <app-date-field [(ngModel)]="patient.birthDateFrom" name="birthDateFrom"></app-date-field>
       </div>
+    </div>
 
-      <div class="col-lg-6 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">{{
-            "NEDSS.SEARCH.GENDER" | translate
-            }}</label>
-          <div *ngIf="currentLang == 'ar'">
-            <!-- <select
-              [disabled]="disableFieldsDueToNationalId()"
-              [(ngModel)]="patient.genderId"
-              class="form-control"
-              (blur)="
-                generalDataService.isGenderValid =
-                  generalDataService.checkGenderValid(patient.genderId)
-              "
-            >
-              <option *ngFor="let relation of genders" [value]="relation.id">
-                {{ relation.arabicName }}
-              </option>
-            </select> -->
-            <p-dropdown [options]="genders" [(ngModel)]="patient.genderId" optionLabel="arabicName" optionValue="id"
-              autoWidth="false" [style]="{ width: '100%' }" name="genders" [filter]="true" filterBy="arabicName"
-              [disabled]="disableFieldsDueToNationalId()">
-            </p-dropdown>
-          </div>
-          <div *ngIf="currentLang == 'en'">
-            <p-dropdown [options]="genders" [(ngModel)]="patient.genderId" optionLabel="englishName" optionValue="id"
-              autoWidth="false" [style]="{ width: '100%' }" name="genders" [filter]="true" filterBy="englishName"
-              [disabled]="disableFieldsDueToNationalId()">
-            </p-dropdown>
-          </div>
-          <small *ngIf="!generalDataService.isGenderValid" class="form-text text-danger mess-color">
-            {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
-          </small>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.BIRTHDATE" | translate }}
+          ({{ "NEDSS.COMMON.TO" | translate }})
+        </label>
+        <app-date-field [min]="patient.birthDateFrom" [(ngModel)]="patient.birthDateTo" name="birthDateTo"></app-date-field>
       </div>
+    </div>
 
-      <div class="col-lg-6 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">{{ "NEDSS.SEARCH.BIRTH_DAY" | translate }}
-          </label>
-
-          <mat-form-field appearance="fill">
-            <mat-label>
-              {{
-              "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
-              }}</mat-label>
-            <input matInput style="color: black" [disabled]="disableFieldsDueToNationalId()" [min]="minDate"
-              [max]="maxDate" [matDatepicker]="picker" [(ngModel)]="patient.birthDate" />
-
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGE" | translate }}</label>
+        <input type="text" inputmode="numeric" name="age" class="w-100" maxlength="3" pInputText
+          [ngModel]="patient.age" (ngModelChange)="onAgeChanged($event)" (keypress)="onNumberKeyPress($event)"
+          (blur)="generalDataService.isAgeValid = generalDataService.validateAge(patient.age)" />
+        <small *ngIf="!generalDataService.isAgeValid" class="form-text text-danger mess-color d-block">
+          {{ "NEDSS.COMMON.AGE_VALIDATION" | translate }}
+        </small>
       </div>
+    </div>
 
-      <div class="col-lg-6 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">{{
-            "NEDSS.SEARCH.AGE" | translate
-            }}</label>
-          <input type="number" name="" id="" [disabled]="disableFieldsDueToNationalId()" class="w-100" pInputText
-            [(ngModel)]="patient.age" (blur)="
-              generalDataService.isAgeValid = generalDataService.validateAge(
-                patient.age
-              )
-            " />
-          <small *ngIf="!generalDataService.isAgeValid" class="form-text text-danger mess-color">
-            {{ "NEDSS.COMMON.AGE_VALIDATION" | translate }}
-          </small>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGETYPE" | translate }}</label>
+        <p-dropdown [options]="ageTypes" [(ngModel)]="patient.ageTypeId"
+          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+          [style]="{ width: '100%' }" name="ageTypeId" [filter]="true"
+          [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
+        </p-dropdown>
       </div>
+    </div>
 
-      <div class="col-lg-6 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">{{ "NEDSS.SEARCH.MARITAL_STATUS" | translate }}
-          </label>
-          <select name="" id="" class="w-100" pInputText [(ngModel)]="patient.maritalStatusId">
-            <option *ngFor="let marital of maritalStatus" [value]="marital.id">
-              {{ marital.arabicName }}
-            </option>
-          </select>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.MARITALSTATUS" | translate }}</label>
+        <p-dropdown [options]="maritalStatus" [(ngModel)]="patient.maritalStatusId"
+          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+          [style]="{ width: '100%' }" name="maritalStatusId" [filter]="true"
+          [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
+        </p-dropdown>
       </div>
+    </div>
 
-      <div class="col-lg-6 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.JOB_CATEGORY" | translate }}
-          </label>
-          <select name="" id="" class="w-100" pInputText [appDropdownLoading]="jobsLoading" [(ngModel)]="patient.patientJobName">
-            <option *ngFor="let job of jobs" [value]="job.id">
-              {{ job.arabicName }}
-            </option>
-          </select>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.JOBCATEGORY" | translate }}</label>
+        <p-dropdown [appDropdownLoading]="jobCategoriesLoading" (onChange)="onJobCategoryChanged()"
+          [options]="jobCategories" [(ngModel)]="patient.patientJobCategoryId"
+          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+          [style]="{ width: '100%' }" name="patientJobCategoryId" [filter]="true"
+          [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
+        </p-dropdown>
       </div>
+    </div>
 
-      <div class="col-lg-6 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.EDUCATION_LEVEL" | translate }}
-            <span class="text-muted">
-              ( {{ "NEDSS.SEARCH.JOB_STUDENT" | translate }} )
-            </span>
-          </label>
-          <select name="" id="" class="w-100" pInputText [(ngModel)]="patient.educationPhaseId">
-            <option *ngFor="let phase of educationPhase" [value]="phase.id">
-              {{ phase.arabicName }}
-            </option>
-          </select>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.JOB" | translate }}</label>
+        <p-dropdown [appDropdownLoading]="jobsLoading" [options]="jobs" [(ngModel)]="patient.patientJobId"
+          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+          [style]="{ width: '100%' }" name="patientJobId" [filter]="true"
+          [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
+        </p-dropdown>
       </div>
+    </div>
 
-      <div class="col-lg-6 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.SCHOOL_CATEGORY" | translate }}
-            <span class="text-muted">({{ "NEDSS.SEARCH.SCHOOL_STUDENT" | translate }})</span>
-          </label>
-          <select name="" id="" class="w-100" pInputText [(ngModel)]="patient.schoolCategoryId">
-            <option *ngFor="let schoolCategory of schoolCategorys" [value]="schoolCategory.id">
-              {{ schoolCategory.arabicName }}
-            </option>
-          </select>
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.JOBNAME" | translate }}</label>
+        <input type="text" name="patientJobName" class="w-100" pInputText [ngModel]="patient.patientJobName"
+          (ngModelChange)="onTextChanged('patientJobName', $event)" />
       </div>
+    </div>
 
-      <div class="col-lg-6 mb-4">
-        <div class="form-group">
-          <label for="" class="form-label">
-            {{ "NEDSS.SEARCH.SCHOOL_NAME" | translate }}
-          </label>
-          <input type="text" name="" id="" class="w-100" pInputText [(ngModel)]="patient.workAddress" />
-        </div>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.STUDENTSTATUS" | translate }}</label>
+        <p-dropdown [options]="educationPhases" [(ngModel)]="patient.educationPhaseId"
+          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+          [style]="{ width: '100%' }" name="educationPhaseId" [filter]="true"
+          [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
+        </p-dropdown>
       </div>
+    </div>
 
-      <div class="col-lg-12 d-flex justify-content-end">
-        <button type="button" class="btn btn-lg bg text-light" (click)="clearAll()">
-          <span class="pi pi-times"></span>
-          {{ "NEDSS.SEARCH.CLEAR_ALL" | translate }}
-        </button>
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">{{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.SCHOOLCATEGORY" | translate }}</label>
+        <p-dropdown [options]="schoolCategories" [(ngModel)]="patient.schoolCategoryId"
+          [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id" autoWidth="false"
+          [style]="{ width: '100%' }" name="schoolCategoryId" [filter]="true"
+          [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'">
+        </p-dropdown>
       </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-2">
+      <div class="form-group">
+        <label class="form-label">
+          {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.JOBPLACE" | translate }} /
+          {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.SCHOOLNAME" | translate }}
+        </label>
+        <input type="text" name="workAddress" class="w-100" pInputText [ngModel]="patient.workAddress"
+          (ngModelChange)="onTextChanged('workAddress', $event)" />
+      </div>
+    </div>
+
+    <div class="col-12 d-flex justify-content-end mt-1">
+      <button type="button" class="btn btn-outline-secondary" (click)="clearAll()">
+        <span class="pi pi-times"></span>
+        {{ "NEDSS.SEARCH.CLEAR_ALL" | translate }}
+      </button>
     </div>
   </div>
 </div>
