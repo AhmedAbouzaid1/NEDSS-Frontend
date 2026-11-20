@@ -774,6 +774,15 @@ export class GeneralDataService {
   birthDateValidationMessage: string;
   ageValidationMessage: string;
 
+  prisonerJobCategoryIds: number[] = [];
+
+  isPhoneRequiredFor(patient: any): boolean {
+    return (
+      isInternalLikeDepartment(patient?.incidentDepartmentId) &&
+      !this.prisonerJobCategoryIds.includes(Number(patient?.patientJobCategoryId))
+    );
+  }
+
   validateDemographicInfo(patient): any {
     this.isFirstNameValid = this.checkFirstNameValid(patient.firstName, true);
     this.isSecondNameValid = this.checkSecondNameValid(
@@ -785,7 +794,7 @@ export class GeneralDataService {
       patient.familyName,
       false
     );
-    const phoneRequired = isInternalLikeDepartment(patient.incidentDepartmentId);
+    const phoneRequired = this.isPhoneRequiredFor(patient);
     this.isPhoneNumber1Valid = this.validatePhoneNumber1(
       patient.phoneNo1,
       phoneRequired,
