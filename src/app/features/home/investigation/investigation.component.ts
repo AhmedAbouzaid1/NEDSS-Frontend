@@ -684,9 +684,11 @@ export class InvestigationComponent implements OnInit {
           this.diseases = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
           ];
-          result.data.forEach((nat) => {
-            this.diseases.push(nat);
-          });
+          result.data
+            .filter((g) => g.hasInvestigation !== false)
+            .forEach((nat) => {
+              this.diseases.push(nat);
+            });
           if (
             this.patient.patientDiseases != null &&
             this.patient.patientDiseases.length > 0

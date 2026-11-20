@@ -250,7 +250,7 @@
         <div class="form-group">
           <label for="nationalityId" class="form-label">
             {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONAL_ID" | translate }}
-            <span *ngIf="patient.incidentDepartmentId == departmentEnum.Internal || patient.incidentDepartmentId == departmentEnum.ICU"
+            <span *ngIf="isInternalLike"
               class="text-danger mess-color">*</span>
           </label>
           <input
@@ -291,7 +291,7 @@
           <label for="" class="form-label">
             {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.PASSPOR_NO" | translate }}
 
-            <span *ngIf="patient.incidentDepartmentId == departmentEnum.Internal"
+            <span *ngIf="isInternalLike"
               class="text-danger mess-color">*</span>
           </label>
           <!-- <input
@@ -316,7 +316,7 @@
                 generalDataService.checkPassportIdValid(
                   patient.nationalityId,
                   patient.passportNo,
-                  patient.incidentDepartmentId == departmentEnum.Internal
+                  isInternalLike
                 )
             " />
           <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isPassportIdValid" class="form-text text-danger">

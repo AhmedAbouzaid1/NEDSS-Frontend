@@ -27,7 +27,7 @@
     </h6>
   </ng-template>
 
-  <form #diseaseFieldForm="ngForm">
+  <form appReadOnlyForm #diseaseFieldForm="ngForm">
     <div class="row">
       <div class="col-12">
         <div class="form-group">
@@ -155,14 +155,14 @@
         </div>
       </div> -->
       <div class="col-lg-12 d-flex justify-content-end mt-5">
-        <p-button
+        <p-button appWriteAction
           (onClick)="save()"
           *ngIf="!isEdit"
           [disabled]="!diseaseFieldForm.valid"
         >
           {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
         </p-button>
-        <p-button
+        <p-button appWriteAction
           (onClick)="edit()"
           *ngIf="isEdit"
           [disabled]="!diseaseFieldForm.valid"
@@ -269,7 +269,7 @@
                 class="text-primary pi pi-pencil"
               ></a>
               &nbsp;&nbsp;
-              <a
+              <a appWriteAction
                 data-bs-target="#exampleModal2"
                 data-bs-toggle="modal"
                 (click)="nameToDelete(item)"
@@ -353,7 +353,7 @@
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
           {{ "NEDSS.COMMON.CANCEL" | translate }}
         </button>
-        <button
+        <button appWriteAction
           type="button"
           class="btn btn-secondary"
           (click)="delete(underDeleting.id)"

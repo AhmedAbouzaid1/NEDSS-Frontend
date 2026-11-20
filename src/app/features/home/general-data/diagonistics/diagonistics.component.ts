@@ -9,7 +9,7 @@ import { DiseaseSpecialSymptomsService } from '../../dashboard/components/diseas
 import { GeneralDataService } from '../services/general-data.service';
 import { map, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { DepartmentEnum } from '../models/department-enum';
+import { DepartmentEnum, isInternalLikeDepartment } from '../models/department-enum';
 
 @Component({
   selector: 'app-diagonistics',
@@ -211,6 +211,10 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     limitSelection: 3,
   };
   DepartmentEnum = DepartmentEnum;
+
+  get isInternalLike(): boolean {
+    return isInternalLikeDepartment(this.patient?.incidentDepartmentId);
+  }
   HealthAdmins:any[] = [];
   private governorateUserScopeFallbackDone = false;
   private destroy$ = new Subject<void>();
@@ -778,8 +782,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
 
     const departmentId = Number(this.patient?.incidentDepartmentId);
     const hideBirdFlu =
-      departmentId !== DepartmentEnum.Internal &&
-      departmentId !== DepartmentEnum.ICU;
+      !isInternalLikeDepartment(departmentId);
 
     this.diseases = hideBirdFlu
       ? this.allDiseases.filter((disease) =>

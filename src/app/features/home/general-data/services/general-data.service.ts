@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActiveUserService } from 'src/app/core/services/active-user.service';
 import { NationalityEnum } from '../models/nationality-enum';
 import { PatientModel } from '../models/patient-model';
-import { DepartmentEnum } from '../models/department-enum';
+import { DepartmentEnum, isInternalLikeDepartment } from '../models/department-enum';
 import { normalizeArabicNameChars } from 'src/app/core/shared/utilis/arabic-text';
 
 @Injectable({
@@ -682,7 +682,7 @@ export class GeneralDataService {
     this.isPassportIdValid = this.checkPassportIdValid(
       patient.nationalityId,
       patient.passportNo,
-      patient.incidentDepartmentId == DepartmentEnum.Internal
+      isInternalLikeDepartment(patient.incidentDepartmentId)
     );
 
     var validationResults = [
@@ -734,7 +734,7 @@ export class GeneralDataService {
     if (nationalityId == NationalityEnum.Egyptian) {
       return this.validateNationalID(
         nationalId,
-        incidentDepartmentId == DepartmentEnum.Internal || incidentDepartmentId == DepartmentEnum.ICU
+        isInternalLikeDepartment(incidentDepartmentId)
       );
     }
     return true;
@@ -785,7 +785,7 @@ export class GeneralDataService {
       patient.familyName,
       false
     );
-    const phoneRequired = patient.incidentDepartmentId == DepartmentEnum.Internal;
+    const phoneRequired = isInternalLikeDepartment(patient.incidentDepartmentId);
     this.isPhoneNumber1Valid = this.validatePhoneNumber1(
       patient.phoneNo1,
       phoneRequired,
@@ -821,8 +821,7 @@ export class GeneralDataService {
       this.isAgeTypeValid,
       this.isPassportValid ||
       this.isNationalValid ||
-      (patient.incidentDepartmentId != DepartmentEnum.Internal &&
-        patient.incidentDepartmentId != DepartmentEnum.ICU),
+      !isInternalLikeDepartment(patient.incidentDepartmentId),
     ];
 
     return validationResults.findIndex((result) => result == false);
@@ -1062,14 +1061,14 @@ export class GeneralDataService {
       patient.patientDiseases.length > 0;
     this.isInfectionDateValid =
       this.validateField(patient.infectionDate) ||
-      patient.incidentDepartmentId != 1;
+      !isInternalLikeDepartment(patient.incidentDepartmentId);
     this.isInfectionDateNotAfterDiscoveryValid = this.checkFeverDateNotAfterDiscovery(
       patient.infectionDate,
       patient.caseDiscoveryDate
     );
     this.isHospitalEntryDateValid =
       this.validateField(patient.hospitalEntryDate) ||
-      patient.incidentDepartmentId != 1;
+      !isInternalLikeDepartment(patient.incidentDepartmentId);
     this.isInfectionDateAfterBirthValid = this.isDateOnOrAfter(
       patient.infectionDate,
       patient.birthDate
@@ -1078,7 +1077,7 @@ export class GeneralDataService {
       patient.feverSymptoms?.feverDate,
       patient.infectionDate
     );
-    const isInternal = patient.incidentDepartmentId == DepartmentEnum.Internal;
+    const isInternal = isInternalLikeDepartment(patient.incidentDepartmentId);
     this.isHospitalEntryDateOrderValid =
       !isInternal ||
       (this.isDateOnOrAfter(patient.hospitalEntryDate, patient.birthDate) &&
@@ -1639,8 +1638,7 @@ export class GeneralDataService {
     const idsOk =
       this.isPassportValid ||
       this.isNationalValid ||
-      (patient?.incidentDepartmentId != DepartmentEnum.Internal &&
-        patient?.incidentDepartmentId != DepartmentEnum.ICU);
+      !isInternalLikeDepartment(patient?.incidentDepartmentId);
     if (!idsOk) {
       return patient?.nationalityId == NationalityEnum.Egyptian
         ? 'NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONAL_ID'
@@ -1710,7 +1708,7 @@ export class GeneralDataService {
   }
 
   birthDateUpperBound(patient: any): Date | null {
-    const isInternal = patient?.incidentDepartmentId == DepartmentEnum.Internal;
+    const isInternal = isInternalLikeDepartment(patient?.incidentDepartmentId);
     return this.earliestDateBound(
       new Date(),
       patient?.caseDiscoveryDate,

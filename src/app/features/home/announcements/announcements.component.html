@@ -2,7 +2,7 @@
   {{ "NEDSS.ANNOUNCEMENTS.ANNOUNCEMENTS_NOTES" | translate }}
 </h2>
 
-<form *ngIf="isSuperAdminAndCentral" [formGroup]="addAnounceForm" (ngSubmit)="addAnnouncment()">
+<form appReadOnlyForm *ngIf="isSuperAdminAndCentral" [formGroup]="addAnounceForm" (ngSubmit)="addAnnouncment()">
   <div class="card shadow color rounded bg-dark-mode">
     <div class="card-body">
       <div class="row">
@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="col-lg-8">
-          <button (click)="fileInput.click()" type="button" class="btn bg text-white rounded-1 mt-4 d-inline-block">
+          <button appWriteAction (click)="fileInput.click()" type="button" class="btn bg text-white rounded-1 mt-4 d-inline-block">
             {{ "NEDSS.ANNOUNCEMENTS.FILE_UPLOAD" | translate }}
           </button>
           <input style="display: none" #attachments type="file" (change)="onFileChanged($event.target)" #fileInput />
@@ -99,7 +99,7 @@
         </div>
         <div class="col-12 mt-5">
           <div class="d-flex justify-content-end">
-            <button type="submit" class="btn bg btn-lg text-white rounded-2 mt-1">
+            <button appWriteAction type="submit" class="btn bg btn-lg text-white rounded-2 mt-1">
               {{ "NEDSS.ANNOUNCEMENTS.SAVE" | translate }}
             </button>
           </div>
@@ -163,7 +163,7 @@
               </div>
             </td>
             <td *ngIf="isSuperAdminAndCentral" class="exclude-pdf mw-xc">
-              <a (click)="EditAnnoun(annon)" class="text-primary pi pi-pencil px-3"></a>
+              <a appWriteAction (click)="EditAnnoun(annon)" class="text-primary pi pi-pencil px-3"></a>
               <a data-bs-target="#exampleModal2" data-bs-toggle="modal" (click)="nameToDelete(annon)"
                 class="text-danger mess-color bi bi-trash-fill"></a>
             </td>
@@ -213,7 +213,7 @@
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
           {{ "NEDSS.COMMON.CANCEL" | translate }}
         </button>
-        <button type="button" class="btn btn-secondary" (click)="DeletAnnon(underDeleting.id)" data-bs-dismiss="modal">
+        <button appWriteAction type="button" class="btn btn-secondary" (click)="DeletAnnon(underDeleting.id)" data-bs-dismiss="modal">
           {{ "NEDSS.COMMON.DELETE" | translate }}
         </button>
       </div>

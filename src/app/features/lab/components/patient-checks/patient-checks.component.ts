@@ -515,9 +515,11 @@ export class PatientChecksComponent implements OnInit {
           this.diseases = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
           ];
-          result.data.forEach((nat) => {
-            this.diseases.push(nat);
-          });
+          result.data
+            .filter((g) => g.hasLab !== false)
+            .forEach((nat) => {
+              this.diseases.push(nat);
+            });
         }
         this.diseasesLoading = false;
         this.loadingPanel = false;

@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmitForm()" #formEntity="ngForm">
+<form appReadOnlyForm (ngSubmit)="onSubmitForm()" #formEntity="ngForm">
   <section class="content">
     <div class="container-fluid">
       <div class="row mt-2 form-section">
@@ -16,7 +16,7 @@
         <div class="col-8">
           <div class="row justify.content-around">
             <div class="col-6">
-              <button (click)="OnAddMainContainer()" type="button" class="btn btn-success  " data-container="body"
+              <button appWriteAction (click)="OnAddMainContainer()" type="button" class="btn btn-success  " data-container="body"
                 title="print"> {{
                 "NEDSS.HOME.USERS.AUDIT-TRIAL.Adding a new Section" | translate }}
                 <i class="bi bi-plus"></i>
@@ -35,21 +35,21 @@
               <ng-container *ngFor="let item of form;let mainIndex=index; trackBy: trackByFn">
                 <div [ngStyle]=" getDynamicStyles(item.id)" id=" {{item.id}}" class="main-container">
                   <div class="main-actions" title="الرئيسى">
-                    <i (click)="deleteMainContainer(item.id )"
+                    <i appWriteAction (click)="deleteMainContainer(item.id )"
                       class="text-danger mess-color bi bi-trash action-icon fa-3x"></i>
                     <i (click)="openMainContainer(item.id,templateMainContainer)"
                       class="text-info  bi bi-eye action-icon   "></i>
-                    <i (click)="addSubContainer(item.id)" class="text-succes  bi bi-plus action-icon  "></i>
+                    <i appWriteAction (click)="addSubContainer(item.id)" class="text-succes  bi bi-plus action-icon  "></i>
                   </div>
                   <ng-container *ngFor="let container of item.subContainers;let index=index; trackBy: trackByFn">
                     <div (dragover)="allowDrop($event)" (drop)="dropControl($event)" id="{{container.id}}"
                       [ngStyle]=container.properties class="sub-container">
                       <div class="actions">
-                        <i (click)="deleteSubContainer(container.id )"
+                        <i appWriteAction (click)="deleteSubContainer(container.id )"
                           class="text-danger mess-color bi bi-trash action-icon  "></i>
                         <i (click)="openContainer(container.id,templateSubContainer)"
                           class="text-info  bi bi-eye action-icon  "></i>
-                        <i (click)="addControl(container.id)" class="text-success bi bi-plus action-icon "></i>
+                        <i appWriteAction (click)="addControl(container.id)" class="text-success bi bi-plus action-icon "></i>
                       </div>
                       <ng-container *ngFor="let control of container.controls; trackBy: trackByFn">
                         <build-control (onControlDelete)="onControlDelete($event)"

@@ -12,6 +12,7 @@ import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { environment } from 'src/environments/environment';
 import { GeneralDataCompletionServiceService } from './services/general-data-completion-service.service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { SharedDataService } from '../general-data/services/shared-data.service';
 // import { ExportService } from '../../../core/services/export.service';
 import { ExportService } from 'src/app/core/services/export.service';
@@ -133,7 +134,8 @@ export class GeneralDataCompletionComponent {
     private data: SharedDataService,
     private router: Router,
     private lookupsService: LookupsGetterService,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -686,8 +688,12 @@ export class GeneralDataCompletionComponent {
   }
 
   getById(id: number) {
-    this.data.patientId = id;
-    this.router.navigateByUrl('/home/general-data');
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/home/general-data'], {
+        queryParams: { pid: id },
+      })
+    );
+    window.open(this.location.prepareExternalUrl(url), '_blank');
   }
   exportPatiantsAsExcel() {
     this.exportService.exportTableAsExcel(this.tableElement, this.screenName);

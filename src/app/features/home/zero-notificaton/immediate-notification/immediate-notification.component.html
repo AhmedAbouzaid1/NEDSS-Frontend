@@ -1,5 +1,5 @@
 <div class="col-12 color-d-2">
-  <form (ngSubmit)="save()" #generalDataCompletionForm="ngForm" novalidate>
+  <form appReadOnlyForm (ngSubmit)="save()" #generalDataCompletionForm="ngForm" novalidate>
     <nav class="d-flex gap-4 mx-sm-4">
       <a
         routerLink="../zero-report"
@@ -1059,7 +1059,7 @@
         <span class="mess-color text-danger">
           <ng-container *ngIf="TotalValid">يجب ان يكون مجموع الأعداد يساوي عدد الحالات الإجمالي</ng-container>
         </span>
-        <button type="submit" class="btn btn-lg bg text-light">
+        <button appWriteAction type="submit" class="btn btn-lg bg text-light">
           <span class="bi bi-check2-circle"></span> {{ "NEDSS.COMMON.SAVE" | translate }}
         </button>
       </div>
@@ -1189,7 +1189,7 @@
                   class="text-primary pi pi-pencil"
                 ></a>
                 &nbsp;
-                <a
+                <a appWriteAction
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                   (click)="delete(item.id)"

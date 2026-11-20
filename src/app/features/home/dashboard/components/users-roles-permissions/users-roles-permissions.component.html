@@ -1,6 +1,6 @@
 <app-loader *ngIf="loadingPanel"></app-loader>
 <div class="col-8 col-lg-12 color-d-2">
-  <form (ngSubmit)="save()" #usersRolesPermissionForm="ngForm" novalidate>
+  <form appReadOnlyForm (ngSubmit)="save()" #usersRolesPermissionForm="ngForm" novalidate>
     <div class="form-titles">
       {{
         "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.PERMISSIONS" | translate
@@ -238,23 +238,43 @@
                 />
                 {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL" | translate }}
               </label>
-            </header>
-            <div class="perm-block-body">
-              <label
-                class="perm-item"
-                *ngFor="let option of systemPages"
-                for="{{ option.name }}"
-              >
+              <label class="perm-select-all perm-readonly-all">
                 <input
                   type="checkbox"
-                  [checked]="option.isSelected"
-                  (change)="chkSystemPageChange($event)"
-                  [value]="option.id"
-                  name="systemPages"
-                  id="{{ option.name }}"
+                  [checked]="isAllReadOnly(systemPages)"
+                  (change)="setAllReadOnly(systemPages, $event)"
                 />
-                <span>{{ option.name }}</span>
+                {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ALL_READ_ONLY" | translate }}
               </label>
+            </header>
+            <div class="perm-block-body">
+              <div class="perm-row" *ngFor="let option of systemPages">
+                <label class="perm-item" for="{{ option.name }}">
+                  <input
+                    type="checkbox"
+                    [checked]="option.isSelected"
+                    (change)="chkSystemPageChange($event)"
+                    [value]="option.id"
+                    name="systemPages"
+                    id="{{ option.name }}"
+                  />
+                  <span>{{ option.name }}</span>
+                </label>
+                <label
+                  class="perm-readonly"
+                  *ngIf="isPageSelected(option.id)"
+                  [class.perm-readonly-locked]="isReadOnlyLocked(option.id)"
+                  [title]="isReadOnlyLocked(option.id) ? ('NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.READ_ONLY_LOCKED' | translate) : ''"
+                >
+                  <input
+                    type="checkbox"
+                    [checked]="isPageReadOnly(option.id)"
+                    [disabled]="isReadOnlyLocked(option.id)"
+                    (change)="toggleReadOnly(option.id, $event)"
+                  />
+                  {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.READ_ONLY" | translate }}
+                </label>
+              </div>
             </div>
           </section>
           <section class="perm-block" *ngIf="investigationFormPages.length">
@@ -271,23 +291,43 @@
                 />
                 {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL" | translate }}
               </label>
-            </header>
-            <div class="perm-block-body">
-              <label
-                class="perm-item"
-                *ngFor="let option of investigationFormPages"
-                for="InvForm{{ option.id }}"
-              >
+              <label class="perm-select-all perm-readonly-all">
                 <input
                   type="checkbox"
-                  [checked]="option.isSelected"
-                  (change)="chkSystemPageChange($event)"
-                  [value]="option.id"
-                  name="investigationFormPages"
-                  id="InvForm{{ option.id }}"
+                  [checked]="isAllReadOnly(investigationFormPages)"
+                  (change)="setAllReadOnly(investigationFormPages, $event)"
                 />
-                <span>{{ option.name }}</span>
+                {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ALL_READ_ONLY" | translate }}
               </label>
+            </header>
+            <div class="perm-block-body">
+              <div class="perm-row" *ngFor="let option of investigationFormPages">
+                <label class="perm-item" for="InvForm{{ option.id }}">
+                  <input
+                    type="checkbox"
+                    [checked]="option.isSelected"
+                    (change)="chkSystemPageChange($event)"
+                    [value]="option.id"
+                    name="investigationFormPages"
+                    id="InvForm{{ option.id }}"
+                  />
+                  <span>{{ option.name }}</span>
+                </label>
+                <label
+                  class="perm-readonly"
+                  *ngIf="isPageSelected(option.id)"
+                  [class.perm-readonly-locked]="isReadOnlyLocked(option.id)"
+                  [title]="isReadOnlyLocked(option.id) ? ('NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.READ_ONLY_LOCKED' | translate) : ''"
+                >
+                  <input
+                    type="checkbox"
+                    [checked]="isPageReadOnly(option.id)"
+                    [disabled]="isReadOnlyLocked(option.id)"
+                    (change)="toggleReadOnly(option.id, $event)"
+                  />
+                  {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.READ_ONLY" | translate }}
+                </label>
+              </div>
             </div>
           </section>
           <section class="perm-block" *ngIf="isGlobalAdmin && entomologicalFormPages.length">
@@ -304,23 +344,43 @@
                 />
                 {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.SELECT_ALL" | translate }}
               </label>
-            </header>
-            <div class="perm-block-body">
-              <label
-                class="perm-item"
-                *ngFor="let option of entomologicalFormPages"
-                for="EntForm{{ option.id }}"
-              >
+              <label class="perm-select-all perm-readonly-all">
                 <input
                   type="checkbox"
-                  [checked]="option.isSelected"
-                  (change)="chkSystemPageChange($event)"
-                  [value]="option.id"
-                  name="entomologicalFormPages"
-                  id="EntForm{{ option.id }}"
+                  [checked]="isAllReadOnly(entomologicalFormPages)"
+                  (change)="setAllReadOnly(entomologicalFormPages, $event)"
                 />
-                <span>{{ option.name }}</span>
+                {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.ALL_READ_ONLY" | translate }}
               </label>
+            </header>
+            <div class="perm-block-body">
+              <div class="perm-row" *ngFor="let option of entomologicalFormPages">
+                <label class="perm-item" for="EntForm{{ option.id }}">
+                  <input
+                    type="checkbox"
+                    [checked]="option.isSelected"
+                    (change)="chkSystemPageChange($event)"
+                    [value]="option.id"
+                    name="entomologicalFormPages"
+                    id="EntForm{{ option.id }}"
+                  />
+                  <span>{{ option.name }}</span>
+                </label>
+                <label
+                  class="perm-readonly"
+                  *ngIf="isPageSelected(option.id)"
+                  [class.perm-readonly-locked]="isReadOnlyLocked(option.id)"
+                  [title]="isReadOnlyLocked(option.id) ? ('NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.READ_ONLY_LOCKED' | translate) : ''"
+                >
+                  <input
+                    type="checkbox"
+                    [checked]="isPageReadOnly(option.id)"
+                    [disabled]="isReadOnlyLocked(option.id)"
+                    (change)="toggleReadOnly(option.id, $event)"
+                  />
+                  {{ "NEDSS.HOME.CONTROL_PANEL.USER_ROLE_PERMISSION.READ_ONLY" | translate }}
+                </label>
+              </div>
             </div>
           </section>
           <section class="perm-block">
@@ -424,7 +484,7 @@
           </section>
         </div>
         <div class="card-footer text-start">
-          <button type="submit" class="btn btn-lg bg text-light">
+          <button appWriteAction type="submit" class="btn btn-lg bg text-light">
             <span class="bi bi-check2-circle"></span>
             {{ "NEDSS.COMMON.SAVE" | translate }}
           </button>

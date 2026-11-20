@@ -24,7 +24,7 @@ import { SharedDataService } from '../services/shared-data.service';
 import { GeneralDataService } from '../services/general-data.service';
 import { RelativeEnum } from '../models/relative-enum';
 import { NationalityEnum } from '../models/nationality-enum';
-import { DepartmentEnum } from '../models/department-enum';
+import { DepartmentEnum, isInternalLikeDepartment } from '../models/department-enum';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { isConscriptOrPrisonerCategory } from '../models/job-category';
@@ -107,7 +107,7 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
   }
 
   get isPhoneRequired(): boolean {
-    return this.patient?.incidentDepartmentId == DepartmentEnum.Internal;
+    return isInternalLikeDepartment(this.patient?.incidentDepartmentId);
   }
 
 

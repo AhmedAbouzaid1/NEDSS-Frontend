@@ -39,6 +39,8 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
   savedPatientId: number | null = null;
   canEnterLabSample = false;
   canFillInvestigation = false;
+  private postSaveLabApplicable = true;
+  private postSaveInvestigationApplicable = true;
   canEnterAnotherPatient = false;
 
   @ViewChildren('gdSection') sectionEls: QueryList<ElementRef<HTMLElement>>;
@@ -66,6 +68,14 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
   ) {
     this.activeTab = this.generalDataEnum.IncidentInfo;
     this.generalDataService.resetValidationState();
+
+    const pidParam = parseInt(
+      this.routerActive.snapshot.queryParamMap.get('pid') ?? '',
+      10
+    );
+    if (Number.isFinite(pidParam) && pidParam > 0) {
+      this.sharedDataService.patientId = pidParam;
+    }
 
     if (
       this.sharedDataService.patientId == null ||
@@ -280,7 +290,7 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
   private patientObjectSub?: Subscription;
   ngOnInit() {
     this.routerSubscription = this.router.events.subscribe((event: any) => {
-      this.currentTab = event.url?.replace('?clear=1', '') ?? this.currentTab;
+      this.currentTab = event.url?.split('?')[0] ?? this.currentTab;
     });
 
     this.getDiseases();
@@ -578,6 +588,7 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
             : null;
 
         this.normalizeFeverSymptomsForApi(this.patient);
+        this.capturePostSaveApplicability();
 
         if (this.patient.id == null) {
           this.generalDataService.add(this.patient).subscribe(
@@ -701,13 +712,32 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  private capturePostSaveApplicability() {
+    const p = this.patient;
+    const groupIds = (p?.patientDiseases || [])
+      .map((d) => d?.diseaseGroupId)
+      .filter((id) => id != null);
+    const groups = (this.diseases || []).filter((g) => groupIds.includes(g.id));
+    const anyGroup = (flag: string) =>
+      groups.length == 0 || groups.some((g) => g[flag] !== false);
+    const hasLabPlace = !!(
+      p?.isCentralLabLab ||
+      p?.isHospitalLab ||
+      p?.isGovernmentLab ||
+      p?.isMalariaLab ||
+      p?.isSpecialLabLab
+    );
+    this.postSaveLabApplicable = hasLabPlace && anyGroup('hasLab');
+    this.postSaveInvestigationApplicable = anyGroup('hasInvestigation');
+  }
+
   private openPostSaveDialog() {
-    this.canEnterLabSample = this.pagePermission.canAccessPage(
-      this.LAB_SAMPLE_PAGE_IDS
-    );
-    this.canFillInvestigation = this.pagePermission.canAccessPage(
-      this.INVESTIGATION_PAGE_ID
-    );
+    this.canEnterLabSample =
+      this.postSaveLabApplicable &&
+      this.pagePermission.canAccessPage(this.LAB_SAMPLE_PAGE_IDS);
+    this.canFillInvestigation =
+      this.postSaveInvestigationApplicable &&
+      this.pagePermission.canAccessPage(this.INVESTIGATION_PAGE_ID);
     this.canEnterAnotherPatient = this.pagePermission.canAccessPage(
       this.GENERAL_DATA_PAGE_ID
     );

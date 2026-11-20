@@ -41,6 +41,34 @@ export class PagePermissionService {
     return ids.some((id) => permitted.has(String(id)));
   }
 
+  private editablePageIds(): Set<string> {
+    const pages: any[] = this.getAuthData().pages || [];
+    return new Set(pages.filter((p) => !p?.isReadOnly).map((p) => String(p?.id)));
+  }
+
+  canEditPage(pageId: number | string | Array<number | string>): boolean {
+    if (this.isAdmin()) {
+      return true;
+    }
+    const editable = this.editablePageIds();
+    const ids = Array.isArray(pageId) ? pageId : [pageId];
+    return ids.some((id) => editable.has(String(id)));
+  }
+
+  isReadOnlyPage(pageId: number | string | Array<number | string>): boolean {
+    return this.canAccessPage(pageId) && !this.canEditPage(pageId);
+  }
+
+  canEditInvestigationForm(diseaseGroupId: number | string): boolean {
+    const id = Number(diseaseGroupId);
+    return !!id && this.canEditPage(INVESTIGATION_FORM_PAGE_OFFSET + id);
+  }
+
+  canEditEntomologicalForm(diseaseGroupId: number | string): boolean {
+    const id = Number(diseaseGroupId);
+    return !!id && this.canEditPage(ENTOMOLOGICAL_FORM_PAGE_OFFSET + id);
+  }
+
   canAccessInvestigationForm(diseaseGroupId: number | string): boolean {
     const id = Number(diseaseGroupId);
     if (!id) {

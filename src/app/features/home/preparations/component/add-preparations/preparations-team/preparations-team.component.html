@@ -1,4 +1,4 @@
-<form (ngSubmit)="save()" #preparationsTeamForm="ngForm" novalidate>
+<form appReadOnlyForm (ngSubmit)="save()" #preparationsTeamForm="ngForm" novalidate>
   <div class="card shadow rounded mt-4">
     <div class="card-body color">
       <div class="row">
@@ -223,7 +223,7 @@
     </div>
   </div>
   <div class="card-footer d-flex justify-content-end">
-    <button
+    <button appWriteAction
       type="submit"
       class="btn bg pr-4 pl-4 btn-lg text-white rounded-3 btn-light mt-4"
     >
@@ -329,7 +329,7 @@
                 class="text-primary pi pi-pencil"
               ></a>
               &nbsp;&nbsp;
-              <a
+              <a appWriteAction
                 data-bs-target="#exampleModal2"
                 data-bs-toggle="modal"
                 (click)="nameToDelete(item)"
@@ -407,7 +407,7 @@
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
           {{ "NEDSS.COMMON.CANCEL" | translate }}
         </button>
-        <button
+        <button appWriteAction
           type="button"
           class="btn btn-secondary"
           (click)="delete(underDeleting2.id)"

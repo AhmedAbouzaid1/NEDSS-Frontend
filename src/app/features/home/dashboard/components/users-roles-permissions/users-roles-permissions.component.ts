@@ -25,6 +25,7 @@ export class UsersRolesPermissionsComponent {
     arabicName: null,
     englishName: null,
     systemPageIds: null,
+    readOnlyPageIds: null,
     diseaseIds: null,
     selectedDiseaseIds: null,
     diseaseFieldIds: null,
@@ -43,6 +44,7 @@ export class UsersRolesPermissionsComponent {
   entomologicalFormPages: any[] = [];
   // systemPageIds!: any[];
   systemPageIds: Array<number> = [];
+  readOnlyPageIds: Array<number> = [];
   diseaseIds: Array<number> = [];
   selectedDiseaseIds: Array<number> = [];
   diseaseFieldIds: Array<number> = [];
@@ -219,6 +221,7 @@ export class UsersRolesPermissionsComponent {
       checkbox.checked = e.target.checked;
       if (e.target.checked && index < 0) this.systemPageIds.push(id);
       if (!e.target.checked && index >= 0) this.systemPageIds.splice(index, 1);
+      if (!e.target.checked) this.clearReadOnly(id);
     }
   }
   chkSystemPageChange(e) {
@@ -226,6 +229,37 @@ export class UsersRolesPermissionsComponent {
     const index = this.systemPageIds.indexOf(id);
     if (e.target.checked && index < 0) this.systemPageIds.push(id);
     else if (!e.target.checked && index >= 0) this.systemPageIds.splice(index, 1);
+    if (!e.target.checked) this.clearReadOnly(id);
+  }
+  isPageSelected(id: number | string): boolean {
+    return this.systemPageIds.includes(Number(id));
+  }
+  isReadOnlyLocked(id: number | string): boolean {
+    return !this.isGlobalAdmin && this.pagePermission.isReadOnlyPage(id);
+  }
+  isPageReadOnly(id: number | string): boolean {
+    return this.isReadOnlyLocked(id) || this.readOnlyPageIds.includes(Number(id));
+  }
+  toggleReadOnly(id: number | string, e) {
+    const pageId = Number(id);
+    if (e.target.checked) {
+      if (!this.readOnlyPageIds.includes(pageId)) this.readOnlyPageIds.push(pageId);
+    } else {
+      this.clearReadOnly(pageId);
+    }
+  }
+  setAllReadOnly(pages: any[], e) {
+    (pages ?? [])
+      .filter((p) => this.isPageSelected(p.id) && !this.isReadOnlyLocked(p.id))
+      .forEach((p) => this.toggleReadOnly(p.id, e));
+  }
+  isAllReadOnly(pages: any[]): boolean {
+    const selected = (pages ?? []).filter((p) => this.isPageSelected(p.id));
+    return selected.length > 0 && selected.every((p) => this.isPageReadOnly(p.id));
+  }
+  private clearReadOnly(id: number) {
+    const index = this.readOnlyPageIds.indexOf(Number(id));
+    if (index >= 0) this.readOnlyPageIds.splice(index, 1);
   }
   chkAllDiseaseChange(e) {
     let checkbox = document.getElementsByName('chkdiseases');
@@ -373,6 +407,10 @@ export class UsersRolesPermissionsComponent {
 
         if (result.data.rolePermissions != null)
           this.systemPageIds = result.data.rolePermissions.map((a) => Number(a.pageId));
+        if (result.data.rolePermissions != null)
+          this.readOnlyPageIds = result.data.rolePermissions
+            .filter((a) => a.canUpdate === false)
+            .map((a) => Number(a.pageId));
 
         if (result.data.organizationId != null){
           this.selectedOrganizationId = result.data.organizationId;
@@ -416,6 +454,7 @@ export class UsersRolesPermissionsComponent {
       this.userMsg.error('يجب اختيار مرض واحد علي الاقل');
     } else {
       this.usersRolesPermission.systemPageIds = this.systemPageIds;
+      this.usersRolesPermission.readOnlyPageIds = this.systemPageIds.filter((id) => this.isPageReadOnly(id));
       this.usersRolesPermission.diseaseIds = this.diseaseIds;
       this.usersRolesPermission.selectedDiseaseIds = this.selectedDiseaseIds;
       this.usersRolesPermission.diseaseFieldIds = this.diseaseFieldIds;
@@ -439,6 +478,7 @@ export class UsersRolesPermissionsComponent {
                   arabicName: null,
                   englishName: null,
                   systemPageIds: null,
+                  readOnlyPageIds: null,
                   diseaseIds: null,
                   selectedDiseaseIds: null,
                   isSelectedSubject: null,
@@ -453,7 +493,8 @@ export class UsersRolesPermissionsComponent {
               if (
                 error.error?.messages?.includes('DuplicatedCode') ||
                 error?.error?.messages?.includes('DuplicatedEnglishName') ||
-                error.error?.messages?.includes('DuplicatedArabicName')
+                error.error?.messages?.includes('DuplicatedArabicName') ||
+                error.error?.messages?.includes('CannotGrantPage')
               ) {
                 this.translateService
                   .get('NEDSS.COMMON.' + error.error.messages[0])
@@ -491,6 +532,7 @@ export class UsersRolesPermissionsComponent {
               arabicName: null,
               englishName: null,
               systemPageIds: null,
+              readOnlyPageIds: null,
               diseaseIds: null,
               selectedDiseaseIds: null,
               isSelectedSubject: null,
@@ -505,7 +547,8 @@ export class UsersRolesPermissionsComponent {
           if (
             error.error?.messages?.includes('DuplicatedCode') ||
             error?.error?.messages?.includes('DuplicatedEnglishName') ||
-            error.error?.messages?.includes('DuplicatedArabicName')
+            error.error?.messages?.includes('DuplicatedArabicName') ||
+                error.error?.messages?.includes('CannotGrantPage')
           ) {
             this.translateService
               .get('NEDSS.COMMON.' + error.error.messages[0])

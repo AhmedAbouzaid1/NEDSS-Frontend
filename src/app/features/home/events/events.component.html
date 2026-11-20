@@ -530,7 +530,7 @@
       <span class="pi pi-user-plus px-2"></span>
       {{ "NEDSS.EVENTS.ADD_TO_EVENT" | translate }}
     </button>
-    <button
+    <button appWriteAction
       class="btn btn-lg bg text-light"
       data-bs-toggle="modal"
       data-bs-target="#AddEvent"
@@ -733,7 +733,7 @@
                 <span [innerHTML]="op.eventDiscoveryTime"></span>
               </td>
               <td class="exclude-pdf">
-                <a
+                <a appWriteAction
                   (click)="editEvent(op)"
                   data-bs-toggle="modal"
                   data-bs-target="#AddEvent"
@@ -741,7 +741,7 @@
                 >
                   <i class="pi pi-pencil"></i>
                 </a>
-                <a
+                <a appWriteAction
                   class="text-primary fzs"
                   data-bs-target="#exampleModal2"
                   data-bs-toggle="modal"
@@ -843,7 +843,7 @@
               </td>
               <td>{{ op.eventDiscoveryTime }}</td>
               <td class="exclude-pdf">
-                <a
+                <a appWriteAction
                   (click)="editEvent(op)"
                   data-bs-toggle="modal"
                   data-bs-target="#AddEvent"
@@ -851,7 +851,7 @@
                 >
                   <i class="pi pi-pencil"></i>
                 </a>
-                <a
+                <a appWriteAction
                   class="text-primary fzs"
                   data-bs-target="#exampleModal2"
                   data-bs-toggle="modal"
@@ -919,7 +919,7 @@
   aria-hidden="true"
 >
   <div class="modal-dialog bord-round color" role="document">
-    <form [formGroup]="patientToEventForm">
+    <form appReadOnlyForm [formGroup]="patientToEventForm">
       <div class="modal-content bg-dark-mode">
         <div class="modal-header">
           <h5 class="modal-title" id="modalTitleId">
@@ -1058,7 +1058,7 @@
               {{ "NEDSS.EVENTS.END" | translate }}
             </button>
 
-            <button
+            <button appWriteAction
               type="button"
               class="btn bg text-light rounded-5 pr-3 pl-3 btn-lg"
               (click)="AddpatientToEvent()"
@@ -1101,7 +1101,7 @@
           aria-label="Close"
         ></button>
       </div>
-      <form [formGroup]="AddEventForm">
+      <form appReadOnlyForm [formGroup]="AddEventForm">
         <div class="modal-body">
           <section class="event-section">
             <h6 class="event-section-title">
@@ -1518,7 +1518,7 @@
           >
             {{ "NEDSS.EVENTS.END" | translate }}
           </button>
-          <button
+          <button appWriteAction
             *ngIf="!updatingEvent"
             type="submit"
             id="addEventButton"
@@ -1529,7 +1529,7 @@
             <i class="pi pi-check"></i>
             {{ "NEDSS.EVENTS.SAVE" | translate }}
           </button>
-          <button
+          <button appWriteAction
             *ngIf="updatingEvent"
             type="button"
             id="updateEventButton"
@@ -1576,7 +1576,7 @@
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
           {{ "NEDSS.COMMON.CANCEL" | translate }}
         </button>
-        <button
+        <button appWriteAction
           type="button"
           class="btn btn-secondary"
           (click)="deleteEvent(underDeleting.id)"
@@ -1631,7 +1631,7 @@
                   <td>{{ ep.patientName }}</td>
                   <td>{{ ep.patientIncidentSource }}</td>
                   <td>
-                    <a
+                    <a appWriteAction
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
                       (click)="nameToDelete(ep)"
@@ -1678,7 +1678,7 @@
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
           {{ "NEDSS.COMMON.CANCEL" | translate }}
         </button>
-        <button
+        <button appWriteAction
           type="button"
           class="btn btn-secondary"
           (click)="delete(underDeleting.id)"

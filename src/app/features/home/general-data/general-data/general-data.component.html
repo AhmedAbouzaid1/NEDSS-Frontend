@@ -13,6 +13,7 @@
     <button
       type="button"
       *ngIf="patient?.id != null"
+      appWriteAction
       class="btn btn-primary d-inline-flex align-items-center gap-2"
       (click)="registerNewCase()"
     >
@@ -24,7 +25,7 @@
   </div>
 </div>
 
-<div class="general-data-form w-100" *ngIf="!isLoadingData">
+<div class="general-data-form w-100" *ngIf="!isLoadingData" appReadOnlyForm>
   <nav class="gd-nav" aria-label="sections">
     <button
       type="button"
@@ -213,7 +214,7 @@
     </section>
   </div>
 
-  <div class="save-button-bar w-100" *ngIf="sectionsReady[4]">
+  <div class="save-button-bar w-100" *ngIf="sectionsReady[4]" appWriteAction>
     <div class="save-button-bar__inner">
       <span class="save-button-bar__hint">
         {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.REQUIRED_LEGEND" | translate }}

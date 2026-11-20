@@ -23,6 +23,9 @@ import { DropdownNoAutofocusFilterDirective } from './directives/dropdown-no-aut
 import { DropdownArabicFilterDirective } from './directives/dropdown-arabic-filter.directive';
 import { NoNegativeNumberDirective } from './directives/no-negative-number.directive';
 import { ShowIfDirective } from './directives/show-if.directive';
+import { WriteActionDirective } from './directives/write-action.directive';
+import { ReadOnlyFormDirective } from './directives/read-only-form.directive';
+import { ReadOnlyBannerComponent } from './components/read-only-banner/read-only-banner.component';
 import { RecentDaysNoteComponent } from './components/recent-days-note/recent-days-note.component';
 import { MaterialModule } from './material-module';
 import { DateFieldComponent } from './components/date-field/date-field.component';
@@ -50,6 +53,9 @@ import { RespiratoryDiagnosisPickerComponent } from './components/respiratory-di
     DropdownArabicFilterDirective,
     NoNegativeNumberDirective,
     ShowIfDirective,
+    WriteActionDirective,
+    ReadOnlyFormDirective,
+    ReadOnlyBannerComponent,
     DateFieldComponent,
     RespiratoryDiagnosisPickerComponent,
   ],
@@ -75,6 +81,9 @@ import { RespiratoryDiagnosisPickerComponent } from './components/respiratory-di
     DropdownArabicFilterDirective,
     NoNegativeNumberDirective,
     ShowIfDirective,
+    WriteActionDirective,
+    ReadOnlyFormDirective,
+    ReadOnlyBannerComponent,
     DateFieldComponent,
     RespiratoryDiagnosisPickerComponent,
   ],
