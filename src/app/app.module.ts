@@ -1,4 +1,3 @@
-import { LabModule } from './features/lab/lab.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
@@ -29,14 +28,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MaterialModule } from './core/shared/material-module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import {
-  CommonModule,
-  HashLocationStrategy,
-  LocationStrategy,
-} from '@angular/common';
+import { CommonModule, HashLocationStrategy, LocationStrategy, DatePipe } from '@angular/common';
 
 //import { StringConverterPipe } from './core/Pipes/string-converter.pipe';
-import { HomeModule } from './features/home/home.module';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgDropdownSinglComponent } from './core/components/ng-dropdown-singl/ng-dropdown-singl.component';
@@ -56,6 +50,7 @@ import {
 } from 'angular-connection-service';
 import { RouteReuseStrategy } from '@angular/router';
 import { AppRouteReuseStrategy } from './core/strategies/app-route-reuse.strategy';
+import { ExportAsModule } from 'ngx-export-as';
 
 export const DATE_FORMATS = {
   parse: {
@@ -82,12 +77,11 @@ export const DATE_FORMATS = {
     NgbAccordionModule,
     BrowserModule,
     BrowserAnimationsModule,
+    ExportAsModule,
     AppRoutingModule,
     HttpClientModule,
     AuthModule,
     MaterialModule,
-    HomeModule,
-    LabModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
@@ -124,6 +118,7 @@ export const DATE_FORMATS = {
   ],
 
   providers: [
+    DatePipe,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     {
       provide: ConnectionServiceOptionsToken,

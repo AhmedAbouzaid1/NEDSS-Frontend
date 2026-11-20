@@ -77,7 +77,7 @@ export class ReportsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
     if (incidentInfoLink) {
-      incidentInfoLink.classList.remove('active');
+      incidentInfoLink?.classList.remove('active');
     }
 
     this.reports = this.reports.filter((r) => r.pageId == null || this.pagePermission.canAccessPage(r.pageId));

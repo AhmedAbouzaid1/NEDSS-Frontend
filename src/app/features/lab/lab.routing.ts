@@ -7,7 +7,7 @@ import { AddLabTestComponent } from './components/add-lab-test/add-lab-test.comp
 import { AuthGuard } from 'src/app/core/guards/auth.guard.service';
 
 const routes: Routes = [
-  { path: 'lab', component: LabViewComponent ,canActivate: [AuthGuard] , data: { types: [1,2] } ,
+  { path: '', component: LabViewComponent ,canActivate: [AuthGuard] , data: { types: [1,2] } ,
   children:[
     { path: 'add-patient', component: AddLabPatientComponent ,canActivate: [AuthGuard] , data: { types: [1,2] } } ,
     { path: 'patient-checks', component: PatientChecksComponent ,canActivate: [AuthGuard] , data: { types: [1,2] } } ,

@@ -56,14 +56,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     InputTextModule,
     InputTextareaModule,
     MultiSelectModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-      defaultLanguage: localStorage.getItem("ls.currentLang")!==undefined && localStorage.getItem("ls.currentLang")!=="undefined"?localStorage.getItem("ls.currentLang"):"ar",
-    }),
+    TranslateModule.forChild({ extend: true }),
   ]
 })
 export class PreparationsModule { }

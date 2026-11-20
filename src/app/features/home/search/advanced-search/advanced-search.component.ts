@@ -1,4 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 import { SharedDataService } from '../../general-data/services/shared-data.service';
 import { Patient } from '../models/patient';
@@ -40,7 +42,8 @@ import { SortEvent } from 'primeng/api';
     ]),
   ],
 })
-export class AdvancedSearchComponent implements OnInit {
+export class AdvancedSearchComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @ViewChild('myTableElementId', { static: false }) tableElement: ElementRef;
   screenName: string;
 
@@ -100,6 +103,7 @@ export class AdvancedSearchComponent implements OnInit {
   ngOnInit() {
     this.sharedDataService
       .getPatientObject()
+      .pipe(takeUntil(this.destroy$))
       .subscribe((patientObject: any) => {
         this.patient = patientObject;
       });
@@ -125,6 +129,16 @@ export class AdvancedSearchComponent implements OnInit {
         icon: 'pi pi-fw pi-building',
         routerLink: ['./place-residence'],
       },
+      {
+        label: 'التشخيص',
+        icon: 'pi pi-fw pi-heart',
+        routerLink: ['./search-diagnostics'],
+      },
+      {
+        label: 'الأعراض الإكلينيكية',
+        icon: 'pi pi-fw pi-list',
+        routerLink: ['./search-clinical'],
+      },
     ];
     this.items2 = [
       {
@@ -141,6 +155,16 @@ export class AdvancedSearchComponent implements OnInit {
         label: 'residence',
         icon: 'pi pi-fw pi-building',
         routerLink: ['./place-residence'],
+      },
+      {
+        label: 'Diagnostics',
+        icon: 'pi pi-fw pi-heart',
+        routerLink: ['./search-diagnostics'],
+      },
+      {
+        label: 'Clinical symptoms',
+        icon: 'pi pi-fw pi-list',
+        routerLink: ['./search-clinical'],
       },
     ];
 
@@ -190,6 +214,12 @@ export class AdvancedSearchComponent implements OnInit {
     ];
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+    clearTimeout(this.timer);
+  }
+
   onActiveItemChange(event) {
     this.activeItem = event;
   }
@@ -198,7 +228,57 @@ export class AdvancedSearchComponent implements OnInit {
     document.getElementById('confName').innerText = patient.firstName;
   }
   clearAll() {
-    this.patient = {};
+    const fresh: Patient = {
+      pageIndex: 0,
+      pageSize: this.patient?.pageSize ?? 10,
+      filterType: 1,
+    };
+    this.first = 0;
+    this.sharedDataService.setPatientObject(fresh);
+  }
+
+  freshSearch() {
+    if (this.loadingPanel) return;
+    this.patient.pageIndex = 0;
+    this.first = 0;
+    this.search();
+  }
+
+  private buildPayload(): Patient {
+    const payload: any = {};
+    Object.keys(this.patient ?? {}).forEach((key) => {
+      const value = (this.patient as any)[key];
+      if (value === null || value === undefined || value === -1) return;
+      if (typeof value === 'string' && value.trim() === '') return;
+      if (Array.isArray(value)) {
+        const items = value.filter((v) => v !== null && v !== undefined && v !== -1);
+        if (items.length) payload[key] = items;
+        return;
+      }
+      if (value === false && AdvancedSearchComponent.LAB_FLAG_KEYS.includes(key)) return;
+      payload[key] = value;
+    });
+    const patientId = this.searchService.parsePatientId(this.patient?.patientId);
+    if (patientId != null) payload.patientId = patientId;
+    else delete payload.patientId;
+    payload.pageIndex = this.patient?.pageIndex ?? 0;
+    payload.pageSize = this.patient?.pageSize ?? 10;
+    payload.filterType = this.patient?.filterType ?? 1;
+    return payload;
+  }
+
+  private static readonly LAB_FLAG_KEYS = [
+    'isCentralLabLab',
+    'isHospitalLab',
+    'isGovernmentLab',
+    'isMalariaLab',
+    'isRegionalLab',
+    'isSpecialLabLab',
+  ];
+
+  private stopWaitMessage() {
+    this.delay = false;
+    clearTimeout(this.timer);
   }
   sort(event: SortEvent) {
     if (
@@ -220,74 +300,64 @@ export class AdvancedSearchComponent implements OnInit {
     }
   }
   search(firstTime?: boolean, skipCount?: boolean) {
+    if (this.loadingPanel || !this.isValidPatient()) return;
+
     this.loadingPanel = true;
-
-    if (this.isValidPatient()) {
-      this.delay = true;
-      this.timer = setTimeout(() => {
-        if (this.delay) {
-          this.translateService
-            .get('NOUR.WaitPlease')
-            .subscribe((msg) => this.userMsg.info(msg));
-        }
-      }, 500);
-      this.loadError = false;
-      this.searchService.getAll(this.patient).subscribe(
-        (result: any) => {
-          this.loadError = false;
-          if (result != null && result != undefined) {
-            this.patients = result?.data ?? [];
-            // ?.filter((p: any) =>
-            //   this.lookupsService.incidentsForOrg.includes(p.incidentSourceId)
-            // );
-            if (this.patients != undefined && this.patients.length == 0) {
-              setTimeout(() => {
-                this.delay = false;
-                clearTimeout(this.timer);
-              }, 0);
-
-              this.noData = true;
-              this.pages = 0;
-              this.translateService
-                .get('NOUR.NO_RESULTS')
-                .subscribe((msg) => this.userMsg.warn(msg));
-            } else {
-              setTimeout(() => {
-                this.delay = false;
-                clearTimeout(this.timer);
-              }, 0);
-
-              this.noData = false;
-              this.hasNextPage =
-                result.data[0].hasNextPage === true &&
-                result.data.length >= this.patient.pageSize;
-              this.last = this.patient.pageIndex * this.patient.pageSize;
-              if (!skipCount) this.fetchCount(this.patient);
-            }
+    this.delay = true;
+    this.timer = setTimeout(() => {
+      if (this.delay) {
+        this.translateService
+          .get('NOUR.WaitPlease')
+          .subscribe((msg) => this.userMsg.info(msg));
+      }
+    }, 500);
+    this.loadError = false;
+    const payload = this.buildPayload();
+    this.searchService.getAll(payload).subscribe(
+      (result: any) => {
+        this.stopWaitMessage();
+        this.loadError = false;
+        if (result != null && result != undefined) {
+          this.patients = result?.data ?? [];
+          if (this.patients.length == 0) {
+            this.noData = true;
+            this.pages = 0;
+            this.hasNextPage = false;
+            this.totalCount = null;
+            this.translateService
+              .get('NOUR.NO_RESULTS')
+              .subscribe((msg) => this.userMsg.warn(msg));
+          } else {
+            this.noData = false;
+            this.hasNextPage = result.data[0]?.hasNextPage === true;
+            this.last = payload.pageIndex * payload.pageSize;
+            if (!skipCount && payload.pageIndex === 0) this.fetchCount(payload);
           }
-          this.loadingPanel = false;
-        },
-        (error) => {
-          this.loadingPanel = false;
-          this.loadError = true;
-          this.noData = false;
-          this.patients = [];
-          this.pages = 0;
-          this.totalCount = null;
-          this.translateService
-            .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
-            .subscribe((res: string) => this.userMsg.error(res));
         }
-      );
-    }
+        this.loadingPanel = false;
+      },
+      (error) => {
+        this.stopWaitMessage();
+        this.loadingPanel = false;
+        this.loadError = true;
+        this.noData = false;
+        this.patients = [];
+        this.pages = 0;
+        this.hasNextPage = false;
+        this.totalCount = null;
+        this.translateService
+          .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
+          .subscribe((res: string) => this.userMsg.error(res));
+      }
+    );
   }
 
   isValidPatient() {
     if (
-      this.searchService.validateFirstName(this.patient.firstName, false) &&
-      this.searchService.validateSecondName(this.patient.secondName, false) &&
-      this.searchService.validateThirdName(this.patient.thirdName, false) &&
-      this.searchService.validateFamilyName(this.patient.familyName, false) &&
+      this.searchService.validateFirstName(this.patient.firstName, false, true) &&
+      this.searchService.validateSecondName(this.patient.secondName, false, true) &&
+      this.searchService.validateThirdName(this.patient.thirdName, false, true) &&
+      this.searchService.validateFamilyName(this.patient.familyName, false, true) &&
       this.searchService.validatePhoneNumber1(this.patient.phoneNo1, false) &&
       this.searchService.validatePhoneNumber2(this.patient.phoneNo2, false) &&
       this.searchService.validateNationalID(this.patient.nationalId, false) &&
@@ -299,7 +369,7 @@ export class AdvancedSearchComponent implements OnInit {
   }
 
   previousPage() {
-    if (this.patient.pageIndex > 0) {
+    if (!this.loadingPanel && this.patient.pageIndex > 0) {
       this.patient.pageIndex--;
       this.first = this.patient.pageIndex * this.patient.pageSize;
       this.search(false, true);
@@ -307,7 +377,7 @@ export class AdvancedSearchComponent implements OnInit {
   }
 
   nextPage() {
-    if (this.hasNextPage) {
+    if (!this.loadingPanel && this.hasNextPage) {
       this.patient.pageIndex++;
       this.first = this.patient.pageIndex * this.patient.pageSize;
       this.search(false, true);
@@ -315,6 +385,7 @@ export class AdvancedSearchComponent implements OnInit {
   }
 
   onPageSizeChange(newSize: number) {
+    if (this.loadingPanel) return;
     this.patient.pageSize = newSize;
     this.patient.pageIndex = 0;
     this.first = 0;
@@ -322,7 +393,7 @@ export class AdvancedSearchComponent implements OnInit {
   }
   private fetchCount(filter: any) {
     const skip = ['pageSize', 'pageIndex', 'sortColumn', 'sortOrder', 'searchText', 'filterType'];
-    const hasFilter = Object.keys(filter).some(k => !skip.includes(k) && filter[k] != null && filter[k] !== '' && filter[k] !== false);
+    const hasFilter = Object.keys(filter).some(k => !skip.includes(k) && filter[k] != null && filter[k] !== '');
     if (!hasFilter) {
       this.totalCount = null;
       return;

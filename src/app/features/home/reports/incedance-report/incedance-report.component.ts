@@ -1,3 +1,4 @@
+import { finalize } from 'rxjs/operators';
 import { formatDate } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -65,6 +66,8 @@ export class IncedanceReportComponent implements OnInit {
   craiteraHidden: boolean;
   Categories: any;
   diseases: any;
+  finalDiseases: any[] = [];
+  finalDiseasesLoading = true;
   selectedDiseases: any = 0;
   selectedyears;
   levelId: any;
@@ -128,9 +131,13 @@ export class IncedanceReportComponent implements OnInit {
     this.levelId = JSON.parse(localStorage.getItem('ls.authorizationData'))?.user?.levelId;
 
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.getCaseCategories();
     this.getDiseases();
+    this.lookUpsService
+      .getFinalDiagnoses()
+      .pipe(finalize(() => (this.finalDiseasesLoading = false)))
+      .subscribe((diseases) => (this.finalDiseases = diseases));
     this.getAllFinalResults();
     this.getDepartments();
   }
@@ -381,7 +388,7 @@ export class IncedanceReportComponent implements OnInit {
       StartSelectedDiseaseIds = StartSelectedDiseaseIds.slice(0, -1);
 
       let EndSelectedDiseaseIds = "";
-      this.StartselectedDiseases.forEach(element => {
+      this.EndselectedDiseases.forEach(element => {
         EndSelectedDiseaseIds = EndSelectedDiseaseIds + element.id + ","
       });
       if (EndSelectedDiseaseIds == "") { EndSelectedDiseaseIds = '-1,'; }
@@ -557,9 +564,6 @@ export class IncedanceReportComponent implements OnInit {
   }
 
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     this.filterdData = this.myData.filter((m) =>
       m.arabicName.toLowerCase().includes(e.target.value.toLowerCase())
     );

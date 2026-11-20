@@ -1,3 +1,4 @@
+import { orderFinalDiagnoses } from 'src/app/core/shared/utilis/final-diagnoses';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
@@ -99,7 +100,7 @@ export class PrevalenceRateToDiseaseFinalComponent implements OnInit {
     this.moreDetails = this.currentLang == 'ar' ? 'المزيد من التفاصيل >' : 'More Details >';
 
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.getCaseCategories();
     this.getDiseases();
 
@@ -109,7 +110,7 @@ export class PrevalenceRateToDiseaseFinalComponent implements OnInit {
     this.lookUpsService.getAllDiseases().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
-          this.diseases = result.data;
+          this.diseases = orderFinalDiagnoses(result.data);
 
           // if (this.patient.patientDiseases !=null && this.patient.patientDiseases.length > 0) {
           //   this.selectedDiseases = this.diseases.filter(
@@ -373,9 +374,6 @@ export class PrevalenceRateToDiseaseFinalComponent implements OnInit {
       .subscribe(() => { });
   }
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     this.filterdData = this.myData.filter((m) =>
       m.resultAr.toLowerCase().includes(e.target.value.toLowerCase())
     );

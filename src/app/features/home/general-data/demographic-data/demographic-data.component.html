@@ -152,7 +152,7 @@
           <p-dropdown [options]="gender" [(ngModel)]="patient.genderId"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
             autoWidth="false" [style]="{ width: '100%' }" name="gender"
-            [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
+            [disabled]="disableFieldsDueToNationalId()"
             [filter]="true" [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'" (onBlur)="
               generalDataService.isGenderValid =
                 generalDataService.checkGenderValid(patient.genderId)
@@ -187,7 +187,7 @@
               }}</mat-label>
             <input [max]="birthDateMaxDate" matInput [matDatepicker]="picker" [(ngModel)]="patient.birthDate"
               style="color: black"
-              [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
+              [disabled]="disableFieldsDueToNationalId()"
               (ngModelChange)="
                 onBirthDateChanged();
                 generalDataService.isBirthDateValid =
@@ -214,8 +214,8 @@
             {{ "NEDSS.HOME.GENERAL_DATA_DEMOGRAPHICINFO.AGE" | translate }}
             <span class="text-danger mess-color">*</span>
           </label>
-          <input type="text" inputmode="numeric" name="age" [disabled]="disableFieldsDueToNationalId()"
-            [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
+          <input type="text" inputmode="numeric" name="age"
+            [disabled]="disableFieldsDueToNationalId()"
             [(ngModel)]="patient.age" #age="ngModel" pInputText class="w-100" (keypress)="onNumberKeyPress($event)"
             (blur)="
               generalDataService.isAgeValid = generalDataService.validateAge(
@@ -239,7 +239,7 @@
           <p-dropdown [options]="ageType" [(ngModel)]="patient.ageTypeId"
             [optionLabel]="currentLang === 'ar' ? 'arabicName' : 'englishName'" optionValue="id"
             autoWidth="false" [style]="{ width: '100%' }" name="ageType"
-            [disabled]="patient?.relationShipDegreeId === relativeEnum.Himself && patient.nationalityId == nationalityEnum.Egyptian && !!patient.nationalId"
+            [disabled]="disableFieldsDueToNationalId()"
             [filter]="true" [filterBy]="currentLang === 'ar' ? 'arabicName' : 'englishName'" (onBlur)="
               generalDataService.isAgeTypeValid =
                 generalDataService.checkAgeTypeValid(patient.ageTypeId)

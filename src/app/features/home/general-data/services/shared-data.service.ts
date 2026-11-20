@@ -100,7 +100,6 @@ export class SharedDataService {
     labPlaceId: null,
     caseResultCategoryId: null,
     diseaseSeverityId: null,
-    labPrimaryDiagonistics: null,
     caseDiscoveryDate: null,
     firstName: null,
     secondName: null,

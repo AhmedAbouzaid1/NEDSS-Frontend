@@ -1,45 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { PatientModel } from '../../../general-data/models/patient-model';
-import { SharedDataService } from '../../../general-data/services/shared-data.service';
-import { Patient } from '../../models/patient';
-import { SearchSharedDataService } from '../../services/search-shared-data.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
-import { SingleDropdownSettings } from 'src/app/core/constants';
+import { SearchSharedDataService } from '../../services/search-shared-data.service';
+import { Patient } from '../../models/patient';
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
+
+type LookupOption = { id: number | null; arabicName: string; englishName: string };
 
 @Component({
   selector: 'app-place-of-residence',
   templateUrl: './place-of-residence.component.html',
   styleUrls: ['./place-of-residence.component.css'],
 })
-export class PlaceOfResidenceComponent implements OnInit {
-  patient: Patient;
-  placeResidenceForm: FormGroup;
-  governments: any;
-  loadingPanel: boolean;
-  healthAdministration: any;
-  Principalities: any;
-  healthOfficcies: any;
-  cities: any;
-  selectedgovernment: number = -1;
-  selectedhealthAdministration: number = -1;
-  selectedhealthOfficcie: number = -1;
-  Selectedcity: number = -1;
-  selectedhomePrincipaly: number = -1;
-  levelId: any;
-  currentLang: string;
-  dir: string;
-  delay: boolean = false;
-  timer: any;
-  governmentsLoading: boolean = false;
-  healthAdministrationLoading: boolean = false;
-  healthOfficciesLoading: boolean = false;
-  citiesLoading: boolean = false;
-  PrincipalitiesLoading: boolean = false;
-  singleDropdownSettings = SingleDropdownSettings;
+export class PlaceOfResidenceComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  currentLang: string = 'ar';
+  patient: Patient = {};
+
+  governments: LookupOption[] = [this.placeholder()];
+  healthAdministrations: LookupOption[] = [this.placeholder()];
+  healthOffices: LookupOption[] = [this.placeholder()];
+  cities: LookupOption[] = [this.placeholder()];
+  principalities: LookupOption[] = [this.placeholder()];
+
+  governmentsLoading = false;
+  healthAdministrationsLoading = false;
+  healthOfficesLoading = false;
+  citiesLoading = false;
+  principalitiesLoading = false;
+
   constructor(
     private sharedDataService: SearchSharedDataService,
     private lookupsService: LookupsGetterService,
@@ -49,296 +42,228 @@ export class PlaceOfResidenceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.currentLang =
-      localStorage.getItem('ls.currentLang') !== undefined &&
-      localStorage.getItem('ls.currentLang') !== 'undefined'
-        ? localStorage.getItem('ls.currentLang')
-        : 'ar';
+    const savedLang = localStorage.getItem('ls.currentLang');
+    this.currentLang = savedLang && savedLang !== 'undefined' ? savedLang : 'ar';
+    const link = document.getElementById('fastSearch') as HTMLElement;
+    link?.classList.add('active');
 
-    this.sharedDataService.getPatientObject().subscribe((patientObject) => {
-      this.patient = patientObject;
-    });
-    this.levelId = JSON.parse(
-      localStorage.getItem('ls.authorizationData')
-    )?.user?.levelId;
-    let link = document.getElementById('fastSearch') as HTMLElement;
-    link.classList.add('active');
-    this.getLookUps();
+    this.sharedDataService
+      .getPatientObject()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((patientObject) => {
+        this.patient = patientObject;
+      });
+
+    this.generalDataService.isAdressValid = true;
+    this.getGovernments();
   }
 
   ngOnDestroy() {
-    let link = document.getElementById('fastSearch') as HTMLElement;
-    link.classList.remove('active');
+    const link = document.getElementById('fastSearch') as HTMLElement;
+    link?.classList.remove('active');
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  getLookUps() {
-    this.getGovernments();
-    // this.getHealthAdministration();
-    // this.getPrincipality();
-    // this.getHealthOffice();
-    // this.gethomeCity();
+  private placeholder(): LookupOption {
+    return { id: null, arabicName: 'إختر', englishName: 'Select' };
+  }
+
+  private extractApiDataArray(result: any): any[] {
+    if (!result) {
+      return [];
+    }
+    const tryArray = (d: any): any[] | null => {
+      if (Array.isArray(d)) return d;
+      if (d && typeof d === 'object') {
+        if (Array.isArray(d.items)) return d.items;
+        if (Array.isArray(d.data)) return d.data;
+        if (Array.isArray(d.Data)) return d.Data;
+        if (Array.isArray(d.records)) return d.records;
+      }
+      return null;
+    };
+    for (const d of [result.data, result.Data, result.result, result.items]) {
+      const arr = tryArray(d);
+      if (arr) return arr;
+    }
+    if (Array.isArray(result)) return result;
+    return [];
+  }
+
+  private toOptions(result: any): LookupOption[] {
+    const mapped = this.extractApiDataArray(result)
+      .map((row) => {
+        const n = Number(row?.id ?? row?.Id);
+        if (!Number.isFinite(n) || n <= 0) return null;
+        return {
+          id: n,
+          arabicName: String(row?.arabicName ?? row?.ArabicName ?? ''),
+          englishName: String(row?.englishName ?? row?.EnglishName ?? ''),
+        };
+      })
+      .filter((o): o is LookupOption => o != null);
+    return [this.placeholder(), ...mapped];
+  }
+
+  private keepIfPresent(list: LookupOption[], id: number | null | undefined): number | null {
+    return id != null && list.some((o) => o.id === id) ? id : null;
+  }
+
+  private showError() {
+    this.translateService
+      .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+      .subscribe((res: string) => this.userMsg.error(res));
   }
 
   getGovernments() {
     this.governmentsLoading = true;
-    this.lookupsService.getAllGovernments().subscribe(
-      (result: any) => {
-        if (result != null && result != undefined) {
-          this.governments = [
-            { id: -1, arabicName: 'إختر', englishName: 'Select' },
-          ];
-          result.data.forEach((he) => {
-            this.governments.push(he);
-          });
-          if (this.patient.homeGovernmentId > 0) {
-            this.selectedgovernment = this.patient.homeGovernmentId;
-            this.getHealthAdministration(this.patient.homeGovernmentId);
-            this.gethomeCity(this.patient.homeGovernmentId);
-          } else {
-            this.selectedgovernment = -1;
-          }
-        }
+    this.lookupsService.getAllGovernmentsExplicit(false, 'residence-home').subscribe(
+      (result: any) => this.applyGovernments(result, true),
+      () => {
         this.governmentsLoading = false;
-        this.loadingPanel = false;
-      },
-      (error) => {
-        this.governmentsLoading = false;
-        this.loadingPanel = false;
-        this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
+        this.showError();
       }
     );
   }
 
-  governmentSelected() {
-    this.patient.homeGovernmentId = this.selectedgovernment;
-    if (
-      this.patient.homeGovernmentId != null &&
-      this.patient.homeGovernmentId != -1
-    ) {
+  private applyGovernments(result: any, allowUserScopeFallback: boolean) {
+    const options = this.toOptions(result);
+    if (options.length === 1 && allowUserScopeFallback) {
+      this.lookupsService.getAllGovernmentsForUser(true).subscribe(
+        (r2: any) => this.applyGovernments(r2, false),
+        () => {
+          this.governmentsLoading = false;
+          this.showError();
+        }
+      );
+      return;
+    }
+    this.governments = options;
+    this.governmentsLoading = false;
+    if (this.patient.homeGovernmentId != null) {
       this.getHealthAdministration(this.patient.homeGovernmentId);
-      this.gethomeCity(this.patient.homeGovernmentId);
+      this.getCities(this.patient.homeGovernmentId);
     }
   }
 
-  governmentDSelected() {
-    this.patient.homeGovernmentId = null;
-    this.healthAdministration = null;
-    this.selectedhealthAdministration = null;
-    //city
-    this.cities = null;
+  onGovernmentChanged() {
+    this.patient.homeHealthAdministrationId = null;
+    this.patient.homeHealthOfficeId = null;
     this.patient.homeCityId = null;
-    this.Selectedcity = null;
-    this.healthOfficcies = null;
-    this.selectedhealthOfficcie = null;
-    this.homeCityDeselected();
+    this.patient.homePrincipalityId = null;
+    this.healthAdministrations = [this.placeholder()];
+    this.healthOffices = [this.placeholder()];
+    this.cities = [this.placeholder()];
+    this.principalities = [this.placeholder()];
+    if (this.patient.homeGovernmentId != null) {
+      this.getCities(this.patient.homeGovernmentId);
+      this.getHealthAdministration(this.patient.homeGovernmentId);
+    }
   }
 
-  getHealthAdministration(governmentID: any) {
-    this.healthAdministrationLoading = true;
+  getHealthAdministration(governmentID: number) {
+    this.healthAdministrationsLoading = true;
     this.lookupsService
       .getPageHealthAdministrations({ governmentID: governmentID })
+      .pipe(finalize(() => (this.healthAdministrationsLoading = false)))
       .subscribe(
         (result: any) => {
-          if (result != null && result != undefined) {
-            this.healthAdministration = [
-              { id: -1, arabicName: 'إختر', englishName: 'Select' },
-            ];
-            result.data.forEach((nat) => {
-              this.healthAdministration.push(nat);
-            });
-            if (this.patient.homeHealthAdministrationId > 0) {
-              this.selectedhealthAdministration =
-                this.patient.homeHealthAdministrationId;
-              // this.patient.homeCityId=this.collectedObj?.cityID;
-              this.getIncidentSources(this.patient.homeHealthAdministrationId);
-            } else {
-              this.selectedhealthAdministration = -1;
-            }
+          this.healthAdministrations = this.toOptions(result);
+          this.patient.homeHealthAdministrationId = this.keepIfPresent(
+            this.healthAdministrations,
+            this.patient.homeHealthAdministrationId
+          );
+          if (this.patient.homeHealthAdministrationId != null) {
+            this.getHealthOffices(this.patient.homeHealthAdministrationId);
           }
-          this.healthAdministrationLoading = false;
-          this.loadingPanel = false;
         },
-        (error) => {
-          this.healthAdministrationLoading = false;
-          this.loadingPanel = false;
-          this.translateService
-            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
+        () => this.showError()
       );
   }
 
-  healthAdministrationSelected() {
-    this.patient.homeHealthAdministrationId =
-      this.selectedhealthAdministration != -1
-        ? this.selectedhealthAdministration
-        : null;
-    if (
-      this.patient.homeHealthAdministrationId != null &&
-      this.patient.homeHealthAdministrationId != -1
-    ) {
-      this.getIncidentSources(this.patient.homeHealthAdministrationId);
+  onHealthAdministrationChanged() {
+    this.patient.homeHealthOfficeId = null;
+    this.healthOffices = [this.placeholder()];
+    if (this.patient.homeHealthAdministrationId != null) {
+      this.getHealthOffices(this.patient.homeHealthAdministrationId);
     }
   }
-  healthAdministrationDSelected() {
-    this.patient.homeHealthAdministrationId = null;
-    this.selectedhealthOfficcie = null;
-    this.healthOfficcies = null;
-    // this.getIncidentSources(this.patient.homeHealthAdministrationId);
-  }
-  getIncidentSources(healthAdministrationID: any) {
-    //, reportingOrResidence: 2
-    this.healthOfficciesLoading = true;
+
+  getHealthOffices(healthAdministrationId: number) {
+    this.healthOfficesLoading = true;
     this.lookupsService
       .getPageIncidentSourceHospitals({
-        healthAdministrationID: healthAdministrationID,
+        healthAdministrationID: healthAdministrationId,
+        forHome: true,
       })
+      .pipe(finalize(() => (this.healthOfficesLoading = false)))
       .subscribe(
         (result: any) => {
-          if (result != null && result != undefined) {
-            this.healthOfficcies = [
-              { id: -1, arabicName: 'إختر', englishName: 'Select' },
-            ];
-            result.data.forEach((nat) => {
-              this.healthOfficcies.push(nat);
-            });
-
-            if (this.patient.homeHealthOfficeId > 0) {
-              this.selectedhealthOfficcie = this.patient.homeHealthOfficeId;
-              // this.patient.homeCityId=this.collectedObj?.cityID;
-            } else {
-              this.selectedhealthOfficcie = -1;
-            }
-          }
-          this.healthOfficciesLoading = false;
-          this.loadingPanel = false;
+          this.healthOffices = this.toOptions(result);
+          this.patient.homeHealthOfficeId = this.keepIfPresent(
+            this.healthOffices,
+            this.patient.homeHealthOfficeId
+          );
         },
-        (error) => {
-          this.healthOfficciesLoading = false;
-          this.loadingPanel = false;
-          this.translateService
-            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
+        () => this.showError()
       );
   }
 
-  gethomeCity(governmentID: any) {
+  getCities(governmentID: number) {
     this.citiesLoading = true;
-    this.lookupsService.getPageCitys({ governmentID: governmentID }).subscribe(
-      (result: any) => {
-        if (result != null && result != undefined) {
-          this.cities = [{ id: -1, arabicName: 'إختر', englishName: 'Select' }];
-          result.data.forEach((nat) => {
-            this.cities.push(nat);
-          });
-
-          if (this.patient.homeCityId > 0) {
-            this.Selectedcity = this.patient.homeCityId;
-            // this.patient.homeCityId=this.collectedObj?.cityID;
-            this.getPrincipality(this.patient.homeCityId);
-          } else {
-            this.Selectedcity = -1;
+    this.lookupsService
+      .getPageCitys({ governmentID: governmentID })
+      .pipe(finalize(() => (this.citiesLoading = false)))
+      .subscribe(
+        (result: any) => {
+          this.cities = this.toOptions(result);
+          this.patient.homeCityId = this.keepIfPresent(this.cities, this.patient.homeCityId);
+          if (this.patient.homeCityId != null) {
+            this.getPrincipalities(this.patient.homeCityId);
           }
-        }
-        this.citiesLoading = false;
-        this.loadingPanel = false;
-      },
-      (error) => {
-        this.citiesLoading = false;
-        this.loadingPanel = false;
-        this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
-    );
+        },
+        () => this.showError()
+      );
   }
-  healthAdministrationDeSelected() {
-    this.cities = null;
-    this.patient.homeCityId = null;
-    this.Selectedcity = null;
-    this.healthOfficcies = null;
-    this.selectedhealthOfficcie = null;
-    this.homeCityDeselected();
-  }
-  homeCitySelected() {
-    this.patient.homeCityId =
-      this.Selectedcity != -1 ? this.Selectedcity : null;
-    this.getPrincipality(this.patient.homeCityId);
-  }
-  homeCityDeselected() {
-    this.patient.homeCityId = null;
 
-    this.Principalities = null;
+  onCityChanged() {
     this.patient.homePrincipalityId = null;
-    this.selectedhomePrincipaly = null;
+    this.principalities = [this.placeholder()];
+    if (this.patient.homeCityId != null) {
+      this.getPrincipalities(this.patient.homeCityId);
+    }
   }
-  homeHealthOfficeSelected() {
-    this.patient.homeHealthOfficeId =
-      this.selectedhealthOfficcie != -1 ? this.selectedhealthOfficcie : null;
-    // this.getPrincipality(this.patient.homeHealthOfficeId);
+
+  getPrincipalities(cityID: number) {
+    this.principalitiesLoading = true;
+    this.lookupsService
+      .getPagePrincipalitys({ cityID: cityID })
+      .pipe(finalize(() => (this.principalitiesLoading = false)))
+      .subscribe(
+        (result: any) => {
+          this.principalities = this.toOptions(result);
+          this.patient.homePrincipalityId = this.keepIfPresent(
+            this.principalities,
+            this.patient.homePrincipalityId
+          );
+        },
+        () => this.showError()
+      );
   }
+
+  onLivingAddressChanged(value: string) {
+    const trimmed = (value ?? '').trim();
+    this.patient.livingAddress = trimmed ? value : null;
+  }
+
   clearAll() {
-    this.patient = {};
-    this.patient.pageIndex = 0;
-    this.patient.pageSize = 10;
-    this.patient.filterType = 1;
+    this.patient = { pageIndex: 0, pageSize: 10, filterType: 1 };
     this.sharedDataService.setPatientObject(this.patient);
-    this.selectedgovernment = null;
-    this.selectedhealthAdministration = null;
-    this.Selectedcity = null;
-    this.selectedhealthOfficcie = null;
-    this.selectedhomePrincipaly = null;
-  }
-  homeHealthOfficeDeSelected() {
-    this.Principalities = null;
-    this.patient.homePrincipalityId = null;
-    this.selectedhomePrincipaly = null;
-  }
-  homePrincipalitySelected() {
-    this.patient.homePrincipalityId =
-      this.selectedhomePrincipaly != -1 ? this.selectedhomePrincipaly : null;
-  }
-  getPrincipality(homeCityId: any) {
-    this.PrincipalitiesLoading = true;
-    this.lookupsService.getPagePrincipalitys({ cityID: homeCityId }).subscribe(
-      (result: any) => {
-        if (result != null && result != undefined) {
-          this.Principalities = [
-            { id: -1, arabicName: 'إختر', englishName: 'Select' },
-          ];
-          result.data.forEach((nat) => {
-            this.Principalities.push(nat);
-          });
-
-          if (this.patient.homePrincipalityId > 0) {
-            this.selectedhomePrincipaly = this.patient.homePrincipalityId;
-          } else {
-            this.selectedhomePrincipaly = -1;
-          }
-        }
-        this.PrincipalitiesLoading = false;
-        this.loadingPanel = false;
-      },
-      (error) => {
-        this.PrincipalitiesLoading = false;
-        this.loadingPanel = false;
-        this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
-    );
+    this.healthAdministrations = [this.placeholder()];
+    this.healthOffices = [this.placeholder()];
+    this.cities = [this.placeholder()];
+    this.principalities = [this.placeholder()];
+    this.generalDataService.isAdressValid = true;
   }
 }

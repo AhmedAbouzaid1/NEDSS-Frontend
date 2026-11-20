@@ -1,3 +1,5 @@
+import { isFinalDiagnosisResult } from 'src/app/core/shared/utilis/final-diagnoses';
+import { finalize } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
@@ -21,6 +23,8 @@ export class DiseaseByMonthReportComponent implements OnInit {
 
   Categories: any;
   diseases: any;
+  finalDiseases: any[] = [];
+  finalDiseasesLoading = true;
   selectedDiseases: any[] = [];
   selectedyears;
   years = YEARS
@@ -129,13 +133,21 @@ export class DiseaseByMonthReportComponent implements OnInit {
     this.dir = this.currentLang == 'ar' ? 'rtl' : 'ltr';
 
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.moreDetails = this.currentLang == 'ar' ? 'المزيد من التفاصيل >' : 'More Details >';
 
     this.getCaseCategories();
     this.getDiseases();
+    this.lookUpsService
+      .getFinalDiagnoses()
+      .pipe(finalize(() => (this.finalDiseasesLoading = false)))
+      .subscribe((diseases) => (this.finalDiseases = diseases));
     this.getAllFinalResults();
   }
+  get isFinalResult(): boolean {
+    return isFinalDiagnosisResult(this.resultType);
+  }
+
   getDiseases() {
     this.diseasesLoading = true;
     this.lookUpsService.getAllDiseaseGroups().subscribe(
@@ -295,6 +307,7 @@ export class DiseaseByMonthReportComponent implements OnInit {
             ids_Disease: this.Diseaseids,
             from_Date: (this.selectedYear[0].arabicName).toString(),
             numOfMonth: this.monthesids,
+            result: this.resultType?.[0]?.id,
           }
         )
         .subscribe(
@@ -438,9 +451,6 @@ export class DiseaseByMonthReportComponent implements OnInit {
       .subscribe(() => { });
   }
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     this.filterdData = this.myData.filter((m) =>
       m.resultAr.toLowerCase().includes(e.target.value.toLowerCase())
     );

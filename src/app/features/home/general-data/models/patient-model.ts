@@ -1,6 +1,7 @@
 import { Patient } from './../../search/models/patient';
 export class PatientModel {
   id!: number;
+  isMigrated?: boolean;
   incidentGovernmentId?: number;
   incidentHealthAdministrationId?: number;
   incidentSourceId?: number;
@@ -27,7 +28,6 @@ export class PatientModel {
   labPlaceId!: number;
   caseResultCategoryId!: number;
   diseaseSeverityId!: number;
-  labPrimaryDiagonistics!: number;
   caseDiscoveryDate!: string;
   caseDiscoveryTime!: string;
   firstName!: string;
@@ -76,7 +76,7 @@ export class PatientModel {
   relationShipDegreeId!: number;
   patientDiseases!: PatientDiseases[];
   finalDiagonisticsData!: FinalDiagonistics[];
-  finalDiagonistics?: string;
+  finalDiagnosisOtherText?: string;
   finalDiagonisticsByTicket?: string;
   feverSymptoms?: FeverSymptoms;
   clinicalSymptomIds?: number[];

@@ -95,7 +95,7 @@ export class EpidemiologicalThresholdsComponent implements OnInit, OnDestroy {
     this.getCasesRatio();
     this.getStandardDeviation();
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.currentId = this.router.snapshot.paramMap.get("id")
     if (this.currentId != null) {
       this.getById(this.currentId);

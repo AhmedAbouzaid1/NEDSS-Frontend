@@ -6956,1364 +6956,96 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "followD1Name",
+      "key": "name",
       "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.NAME",
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.NO_CONTACTS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.TITLE"
       ]
     },
     {
-      "key": "followD1Age",
+      "key": "age",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.AGE"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.AGE",
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.NO_CONTACTS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.TITLE"
       ]
     },
     {
-      "key": "followD1Phone",
+      "key": "relationship",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.PHONE_NUMBER"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.RELATIONSHIP",
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.NO_CONTACTS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.TITLE"
       ]
     },
     {
-      "key": "followD1Type",
+      "key": "fever",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.GENDER"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.FEVER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.TITLE"
       ],
       "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.MALE"
+        "true": [
+          "NEDSS.COMMON.YES"
         ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.FEMALE"
+        "false": [
+          "NEDSS.COMMON.NO"
         ]
       }
     },
     {
-      "key": "followD1MixingType",
+      "key": "throatInflammation",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.THROAT_INFLAMMATION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.TITLE"
       ],
       "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_HOME"
+        "true": [
+          "NEDSS.COMMON.YES"
         ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_OTHER"
+        "false": [
+          "NEDSS.COMMON.NO"
         ]
       }
     },
     {
-      "key": "followD1RelationshipSituation",
+      "key": "grayMembrane",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.RELATIONSHIP_TO_CASE"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.GRAY_MEMBRANE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.TITLE"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "actionsTaken",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.VACCINATION_STATUS",
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.DOSE_2",
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.NO_CONTACTS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA_CONTACTS.TITLE"
       ]
-    },
-    {
-      "key": "followD1DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SYMPTOM_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD1Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD1SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD1DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ]
-    },
-    {
-      "key": "followD1SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
-        ]
-      }
-    },
-    {
-      "key": "followD2Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.PHONE_NUMBER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD2MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_OTHER"
-        ]
-      }
-    },
-    {
-      "key": "followD2RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.RELATIONSHIP_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SYMPTOM_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD2Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD2SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD2DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ]
-    },
-    {
-      "key": "followD2SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
-        ]
-      }
-    },
-    {
-      "key": "followD7Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.PHONE_NUMBER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD7MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_OTHER"
-        ]
-      }
-    },
-    {
-      "key": "followD7RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.RELATIONSHIP_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SYMPTOM_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD7Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD7SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD7DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ]
-    },
-    {
-      "key": "followD7SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
-        ]
-      }
-    },
-    {
-      "key": "followD14Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.PHONE_NUMBER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD14MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_TYPE_OTHER"
-        ]
-      }
-    },
-    {
-      "key": "followD14RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.RELATIONSHIP_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SYMPTOM_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD14Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD14SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD14DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ]
-    },
-    {
-      "key": "followD14SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "2": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.NOT_RECEIVED"
-        ]
-      }
     },
     {
       "key": "firstDose",
@@ -8321,7 +7053,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.FIRST_DOSE_QUESTION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ],
       "options": {
@@ -8342,7 +7073,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DOSE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ]
     },
@@ -8352,7 +7082,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SECOND_DOSE_QUESTION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ],
       "options": {
@@ -8373,7 +7102,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DOSE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ]
     },
@@ -8383,7 +7111,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.OTHER_DOSES_QUESTION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ],
       "options": {
@@ -8404,7 +7131,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DOSE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ]
     },
@@ -8414,7 +7140,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.FIRST_BOOSTER_QUESTION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ],
       "options": {
@@ -8435,7 +7160,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DOSE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ]
     },
@@ -8445,7 +7169,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.SECOND_BOOSTER_QUESTION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ],
       "options": {
@@ -8466,7 +7189,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DOSE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ]
     },
@@ -8476,7 +7198,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.THIRD_BOOSTER_QUESTION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ],
       "options": {
@@ -8497,7 +7218,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DOSE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ]
     },
@@ -8507,7 +7227,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.H5N1.INVESTIGATION_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ]
     },
@@ -8517,7 +7236,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.H5N1.HEALTH_OBSERVER_NAME"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ]
     },
@@ -8527,7 +7245,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.H5N1.SURVEILLANCE_OFFICER"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ]
     },
@@ -8537,7 +7254,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.H5N1.APPROVED_BY_ADMIN_DIRECTOR"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ]
     }
@@ -15173,32 +13889,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
           "لا أعلم"
         ]
       }
-    },
-    {
-      "key": "malariaRdtResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.MALARIA_RDT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.LAB_RESULTS"
-      ],
-      "options": {
-        "1": [
-          "Negative"
-        ],
-        "2": [
-          "Positive"
-        ]
-      }
-    },
-    {
-      "key": "surveillanceOfficerName",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SURVEILLANCE_OFFICER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.HEMORRHAGIC.SURVEILLANCE_OFFICER"
-      ]
     }
   ],
   "hepatitis-viruses": [
@@ -15401,6 +14091,429 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "التعرض فى الفترة من 2-6 أسابيع قبل ظهور الأعراض (فى حالة الإلتهاب الكبدى A أو الإلتهاب الكبدى E)"
       ],
       "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "waterSourceHouse",
+      "label": [
+        "نوع مصدر المياه بالمنزل"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "optionsRef": "waterSource"
+    },
+    {
+      "key": "anotherCase",
+      "label": [
+        "في حالة أخرى"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ]
+    },
+    {
+      "key": "waterStored",
+      "label": [
+        "هل يتم تخزين المياه"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "optionsRef": "AnswerOptions2"
+    },
+    {
+      "key": "tankType",
+      "label": [
+        "في حالة نعم. نوع الخزان"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ]
+    },
+    {
+      "key": "sewageSystem",
+      "label": [
+        "نوع نظام المجارى المستخدم بمنزل المريض"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "optionsRef": "sewageSystem"
+    },
+    {
+      "key": "distanceWaterSourcesSewage",
+      "label": [
+        "ما هى المسافه بين مصادر المياه والمجارى؟"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "optionsRef": "distanceWaterSourcesSewage"
+    },
+    {
+      "key": "maintenanceSewerSystem",
+      "label": [
+        "هل توجد صيانه جيده لنظام المجارى الموجود؟"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "breakPipesDrinkingWater",
+      "label": [
+        "هل تعلم بوجود كسر فى مواسير شبكه مياه الشرب خلال الثلاث أسابيع الماضية ؟"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "overflowSewerSystem",
+      "label": [
+        "هل تعلم بوجود طفح من شبكه المجارى خلال الثلاث أسابيع الماضية ؟"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "changeTasteColorSmellwater",
+      "label": [
+        "هل لوحظ تغير في طعم أو لون أو رائحة في مياه الشرب خلال أسبوع من ظهور الأعراض؟"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "reportsContaminationWater",
+      "label": [
+        "هل توجد تقارير عن تلوث مصادر المياه بالمجارى فى هذه المنطقة؟"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "samplesAnalysisPatienhome",
+      "label": [
+        "هل تم أخذ عينات مياه للتحليل من منزل المريض / من المنطقة؟"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "optionsRef": "AnswerOptions"
+    },
+    {
+      "key": "entamoebaHistolytica",
+      "label": [
+        "Entamoeba Histolytica"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "shigellaSpecies",
+      "label": [
+        "Shigella species"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "campylobacter",
+      "label": [
+        "Campylobacter"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "salmonellaSpecies",
+      "label": [
+        "Salmonella species"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "pathogenicColi",
+      "label": [
+        "Pathogenic E. coli"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "salmonellaTyphi",
+      "label": [
+        "Salmonella Typhi"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "vibrioCholera",
+      "label": [
+        "Vibrio Cholera"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "otherSamplesAnalysisPatienhome",
+      "label": [
+        "أخرى"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ]
+    },
+    {
+      "key": "filteredWater",
+      "label": [
+        "مياة مرشحة"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "wells",
+      "label": [
+        "أبار"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "ethiopianPump",
+      "label": [
+        "طلمبة حبشى"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "canal",
+      "label": [
+        "قناة / ترعة"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "storedWater",
+      "label": [
+        "مياه مخزنة"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "sampledSewerSystemTaken",
+      "label": [
+        "هل تم أخذ عينه من نظام المجارى؟"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ],
+      "options": {
+        "0": [
+          "نعم"
+        ],
+        "1": [
+          "لا"
+        ],
+        "2": [
+          "غير معروف"
+        ]
+      }
+    },
+    {
+      "key": "sampleResult",
+      "label": [
+        "فى حاله نعم، ماذا كانت نتيجة العينة ؟"
+      ],
+      "section": [
+        "التقصي الوبائي",
+        "التقصي البيئي"
+      ]
     },
     {
       "key": "enteringHospital",
@@ -16884,436 +15997,13 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
-      "key": "waterSourceHouse",
-      "label": [
-        "نوع مصدر المياه بالمنزل"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "optionsRef": "waterSource"
-    },
-    {
-      "key": "anotherCase",
-      "label": [
-        "في حالة أخرى"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ]
-    },
-    {
-      "key": "waterStored",
-      "label": [
-        "هل يتم تخزين المياه"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "optionsRef": "AnswerOptions2"
-    },
-    {
-      "key": "tankType",
-      "label": [
-        "في حالة نعم. نوع الخزان"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ]
-    },
-    {
-      "key": "sewageSystem",
-      "label": [
-        "نوع نظام المجارى المستخدم بمنزل المريض"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "optionsRef": "sewageSystem"
-    },
-    {
-      "key": "distanceWaterSourcesSewage",
-      "label": [
-        "ما هى المسافه بين مصادر المياه والمجارى؟"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "optionsRef": "distanceWaterSourcesSewage"
-    },
-    {
-      "key": "maintenanceSewerSystem",
-      "label": [
-        "هل توجد صيانه جيده لنظام المجارى الموجود؟"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breakPipesDrinkingWater",
-      "label": [
-        "هل تعلم بوجود كسر فى مواسير شبكه مياه الشرب خلال الثلاث أسابيع الماضية ؟"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "overflowSewerSystem",
-      "label": [
-        "هل تعلم بوجود طفح من شبكه المجارى خلال الثلاث أسابيع الماضية ؟"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "changeTasteColorSmellwater",
-      "label": [
-        "هل لوحظ تغير في طعم أو لون أو رائحة في مياه الشرب خلال أسبوع من ظهور الأعراض؟"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "reportsContaminationWater",
-      "label": [
-        "هل توجد تقارير عن تلوث مصادر المياه بالمجارى فى هذه المنطقة؟"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "samplesAnalysisPatienhome",
-      "label": [
-        "هل تم أخذ عينات مياه للتحليل من منزل المريض / من المنطقة؟"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "entamoebaHistolytica",
-      "label": [
-        "Entamoeba Histolytica"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "shigellaSpecies",
-      "label": [
-        "Shigella species"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "campylobacter",
-      "label": [
-        "Campylobacter"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "salmonellaSpecies",
-      "label": [
-        "Salmonella species"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "pathogenicColi",
-      "label": [
-        "Pathogenic E. coli"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "salmonellaTyphi",
-      "label": [
-        "Salmonella Typhi"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "vibrioCholera",
-      "label": [
-        "Vibrio Cholera"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "otherSamplesAnalysisPatienhome",
-      "label": [
-        "أخرى"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ]
-    },
-    {
-      "key": "filteredWater",
-      "label": [
-        "مياة مرشحة"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "wells",
-      "label": [
-        "أبار"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "ethiopianPump",
-      "label": [
-        "طلمبة حبشى"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "canal",
-      "label": [
-        "قناة / ترعة"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "storedWater",
-      "label": [
-        "مياه مخزنة"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "sampledSewerSystemTaken",
-      "label": [
-        "هل تم أخذ عينه من نظام المجارى؟"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ],
-      "options": {
-        "0": [
-          "نعم"
-        ],
-        "1": [
-          "لا"
-        ],
-        "2": [
-          "غير معروف"
-        ]
-      }
-    },
-    {
-      "key": "sampleResult",
-      "label": [
-        "فى حاله نعم، ماذا كانت نتيجة العينة ؟"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "التقصي البيئي"
-      ]
-    },
-    {
       "key": "investigationDate",
       "label": [
         "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.INVESTIGATION_DATE"
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التقصي البيئي"
+        "المعمل"
       ]
     },
     {
@@ -17323,7 +16013,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التقصي البيئي"
+        "المعمل"
       ]
     },
     {
@@ -17333,7 +16023,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التقصي البيئي"
+        "المعمل"
       ]
     },
     {
@@ -17343,7 +16033,7 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ],
       "section": [
         "متابعة بعد 14 يوم",
-        "التقصي البيئي"
+        "المعمل"
       ]
     }
   ],
@@ -27511,1364 +26201,113 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       ]
     },
     {
-      "key": "followD1Name",
+      "key": "name",
       "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.NAME",
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.NO_CONTACTS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.TITLE"
       ]
     },
     {
-      "key": "followD1Age",
+      "key": "age",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.AGE"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.AGE",
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.NO_CONTACTS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.TITLE"
       ]
     },
     {
-      "key": "followD1Phone",
+      "key": "relationship",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.PHONE_NUMBER"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.RELATIONSHIP",
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.NO_CONTACTS"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.TITLE"
       ]
     },
     {
-      "key": "followD1Type",
+      "key": "persistentCough",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.GENDER"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.PERSISTENT_COUGH"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.TITLE"
       ],
       "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.MALE"
+        "true": [
+          "NEDSS.COMMON.YES"
         ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.FEMALE"
+        "false": [
+          "NEDSS.COMMON.NO"
         ]
       }
     },
     {
-      "key": "followD1MixingType",
+      "key": "breathingDifficulty",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.BREATHING_DIFFICULTY"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.TITLE"
       ],
       "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_HOME"
+        "true": [
+          "NEDSS.COMMON.YES"
         ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_OTHER"
+        "false": [
+          "NEDSS.COMMON.NO"
         ]
       }
     },
     {
-      "key": "followD1RelationshipSituation",
+      "key": "cyanosisApnea",
       "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.RELATIONSHIP_TO_CASE"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.CYANOSIS_APNEA"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.TITLE"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "vomiting",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.VOMITING"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.TITLE"
+      ],
+      "options": {
+        "true": [
+          "NEDSS.COMMON.YES"
+        ],
+        "false": [
+          "NEDSS.COMMON.NO"
+        ]
+      }
+    },
+    {
+      "key": "actionsTaken",
+      "label": [
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.VACCINATION_STATUS",
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.DOSE_2",
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.NO_CONTACTS"
+      ],
+      "section": [
+        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH_CONTACTS.TITLE"
       ]
-    },
-    {
-      "key": "followD1DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SYMPTOM_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD1Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD1OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD1SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD1DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ]
-    },
-    {
-      "key": "followD1SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_1_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.NO_RESULT_YET"
-        ]
-      }
-    },
-    {
-      "key": "followD2Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.PHONE_NUMBER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD2MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_OTHER"
-        ]
-      }
-    },
-    {
-      "key": "followD2RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.RELATIONSHIP_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD2DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SYMPTOM_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD2Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD2OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD2SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD2DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ]
-    },
-    {
-      "key": "followD2SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_2_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.NO_RESULT_YET"
-        ]
-      }
-    },
-    {
-      "key": "followD7Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.PHONE_NUMBER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD7MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_OTHER"
-        ]
-      }
-    },
-    {
-      "key": "followD7RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.RELATIONSHIP_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD7DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SYMPTOM_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD7Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD7OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD7SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD7DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ]
-    },
-    {
-      "key": "followD7SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_7_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.NO_RESULT_YET"
-        ]
-      }
-    },
-    {
-      "key": "followD14Name",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Age",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.AGE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Phone",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.PHONE_NUMBER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14Type",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.GENDER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.MALE"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.FEMALE"
-        ]
-      }
-    },
-    {
-      "key": "followD14MixingType",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_HOME"
-        ],
-        "2": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_WORK"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_VISIT"
-        ],
-        "4": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_TYPE_OTHER"
-        ]
-      }
-    },
-    {
-      "key": "followD14RelationshipSituation",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.RELATIONSHIP_TO_CASE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.CONTACT_CASE_DATA"
-      ]
-    },
-    {
-      "key": "followD14DateOfSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SYMPTOM_ONSET_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD14Fever",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14DryCough",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DRY_COUGH"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14CoughingWithSpitting",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.COUGH_WITH_SPUTUM"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14SoreThroat",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SORE_THROAT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14DifficultyBreathing",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DIFFICULTY_BREATHING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14JointPain",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.JOINT_PAIN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14vomit",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VOMITING"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14Diarrhea",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DIARRHEA"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14Other",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.OTHER"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.REPORTS.UnKnown"
-        ]
-      }
-    },
-    {
-      "key": "followD14OtherSymptoms",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.OTHER_SYMPTOMS"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.IF_SYMPTOMS_APPEAR"
-      ]
-    },
-    {
-      "key": "followD14SampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_TAKEN"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ]
-      }
-    },
-    {
-      "key": "followD14DateSampleTaken",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_DATE"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ]
-    },
-    {
-      "key": "followD14SampleResult",
-      "label": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SAMPLE_RESULT"
-      ],
-      "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.LAB"
-      ],
-      "options": {
-        "1": [
-          "NEDSS.COMMON.YES"
-        ],
-        "2": [
-          "NEDSS.COMMON.NO"
-        ],
-        "3": [
-          "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.NO_RESULT_YET"
-        ]
-      }
     },
     {
       "key": "firstDose",
@@ -28876,7 +26315,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.FIRST_DOSE_QUESTION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VACCINATION_STATUS"
       ],
       "options": {
@@ -28897,7 +26335,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DOSE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VACCINATION_STATUS"
       ]
     },
@@ -28907,7 +26344,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.SECOND_DOSE_QUESTION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VACCINATION_STATUS"
       ],
       "options": {
@@ -28928,7 +26364,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DOSE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VACCINATION_STATUS"
       ]
     },
@@ -28938,7 +26373,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.THIRD_DOSE_QUESTION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VACCINATION_STATUS"
       ],
       "options": {
@@ -28959,7 +26393,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DOSE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VACCINATION_STATUS"
       ]
     },
@@ -28969,7 +26402,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.BOOSTER_DOSE_QUESTION"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VACCINATION_STATUS"
       ],
       "options": {
@@ -28990,7 +26422,6 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DOSE_DATE"
       ],
       "section": [
-        "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.DAY_14_FOLLOW_UP",
         "NEDSS.COMPLETE_INVESTEGATION.WHOOPING_COUGH.VACCINATION_STATUS"
       ]
     }

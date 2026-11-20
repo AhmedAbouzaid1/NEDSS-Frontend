@@ -4,7 +4,6 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 
-import { ControlPanelModule } from './dashboard/controlPanel.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -87,6 +86,7 @@ import { FilariasisComponent } from './investigation/complete-investigation/fila
 import { TrachomaComponent } from './investigation/complete-investigation/trachoma/trachoma.component';
 import { LeishmaniaComponent } from './investigation/complete-investigation/leishmania/leishmania.component';
 import { VisceralLeishmaniaComponent } from './investigation/complete-investigation/visceral-leishmania/visceral-leishmania.component';
+import { EntomologicalComponent } from './investigation/complete-investigation/entomological/entomological.component';
 import { PatientVisitHistoryComponent } from './investigation/complete-investigation/shared/patient-visit-history/patient-visit-history.component';
 import { LocalTravelHistoryComponent } from './investigation/complete-investigation/shared/local-travel-history/local-travel-history.component';
 import { InternationalTravelHistoryComponent } from './investigation/complete-investigation/shared/international-travel-history/international-travel-history.component';
@@ -184,7 +184,7 @@ import { MonitorUnitsTeamMembersReportPDFComponent } from './reports/monitor-uni
 import { MonitorUnitsTeamMembersDetailsReportPDFComponent } from './reports/monitor-units-team-members-details-report/monitor-units-team-members-details-report-pdf/monitor-units-team-members-details-report-pdf.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http);
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 @NgModule({
   declarations: [
@@ -274,6 +274,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     TrachomaComponent,
     LeishmaniaComponent,
     VisceralLeishmaniaComponent,
+    EntomologicalComponent,
     PatientVisitHistoryComponent,
     LocalTravelHistoryComponent,
     InternationalTravelHistoryComponent,
@@ -344,7 +345,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MaterialModule,
     NgbPaginationModule,
     ReactiveFormsModule,
-    ControlPanelModule,
     GeneralDataModule,
     TableModule,
     MatIconModule,
@@ -359,13 +359,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     NgMultiSelectDropDownModule.forRoot(),
     // ngx-translate and the loader module
     HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
+    TranslateModule.forChild({ extend: true }),
     TabMenuModule,
     MultiSelectModule,
     InputTextModule,

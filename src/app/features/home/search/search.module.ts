@@ -17,6 +17,10 @@ import { FastSearchComponent } from './fast-search/fast-search.component';
 import { generalreportFormComponent } from './advanced-search/general-report-form/general-report-form.component';
 import { PlaceOfResidenceComponent } from './advanced-search/place-of-residence/place-of-residence.component';
 import { SearchDemoghraphComponent } from './advanced-search/search-demoghraph/search-demoghraph.component';
+import { SearchDiagnosticsComponent } from './advanced-search/search-diagnostics/search-diagnostics.component';
+import { SearchClinicalComponent } from './advanced-search/search-clinical/search-clinical.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownModule } from 'primeng/dropdown';
 import { MaterialModule } from 'src/app/core/shared/material-module';
 import { PaginatorModule } from 'primeng/paginator';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -26,7 +30,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http);
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
@@ -37,6 +41,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     generalreportFormComponent,
     PlaceOfResidenceComponent,
     SearchDemoghraphComponent,
+    SearchDiagnosticsComponent,
+    SearchClinicalComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +62,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SharedModule,
     CalendarModule,
     InputTextModule,
+    DropdownModule,
+    MultiSelectModule,
     // ngx-translate and the loader module
     TranslateModule.forChild({
       loader: {

@@ -6,6 +6,8 @@ import { AdvancedSearchComponent } from './advanced-search/advanced-search.compo
 import { generalreportFormComponent } from './advanced-search/general-report-form/general-report-form.component';
 import { PlaceOfResidenceComponent } from './advanced-search/place-of-residence/place-of-residence.component';
 import { SearchDemoghraphComponent } from './advanced-search/search-demoghraph/search-demoghraph.component';
+import { SearchDiagnosticsComponent } from './advanced-search/search-diagnostics/search-diagnostics.component';
+import { SearchClinicalComponent } from './advanced-search/search-clinical/search-clinical.component';
 import { FastSearchComponent } from './fast-search/fast-search.component';
 import { SearchComponent } from './search.component';
 import { AuthGuard } from 'src/app/core/guards/auth.guard.service';
@@ -20,6 +22,8 @@ const routes: Routes = [
       { path: 'general-report', component: generalreportFormComponent } ,
        { path: 'place-residence', component: PlaceOfResidenceComponent } ,
         { path: 'search-demograth', component: SearchDemoghraphComponent } ,
+        { path: 'search-diagnostics', component: SearchDiagnosticsComponent } ,
+        { path: 'search-clinical', component: SearchClinicalComponent } ,
     ] }
 
 ];

@@ -1,3 +1,5 @@
+import { isFinalDiagnosisResult } from 'src/app/core/shared/utilis/final-diagnoses';
+import { finalize } from 'rxjs/operators';
 import { MultipleDropdownSettings, SingleDropdownSettings, WEAKS, YEARS } from './../../../../core/constants';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -21,6 +23,8 @@ export class DiseaseByWeekReportComponent implements OnInit {
 
   Categories: any;
   diseases: any;
+  finalDiseases: any[] = [];
+  finalDiseasesLoading = true;
   selectedDiseases: any[] = [];
   selectedyears;
   years = YEARS
@@ -126,12 +130,20 @@ export class DiseaseByWeekReportComponent implements OnInit {
     this.dir = this.currentLang == 'ar' ? 'rtl' : 'ltr';
 
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.moreDetails = this.currentLang == 'ar' ? 'المزيد من التفاصيل >' : 'More Details >';
     this.getAllFinalResults();
     this.getCaseCategories();
     this.getDiseases();
+    this.lookUpsService
+      .getFinalDiagnoses()
+      .pipe(finalize(() => (this.finalDiseasesLoading = false)))
+      .subscribe((diseases) => (this.finalDiseases = diseases));
   }
+  get isFinalResult(): boolean {
+    return isFinalDiagnosisResult(this.resultType);
+  }
+
   getDiseases() {
     this.diseasesLoading = true;
     this.lookUpsService.getAllDiseaseGroups().subscribe(
@@ -293,6 +305,7 @@ export class DiseaseByWeekReportComponent implements OnInit {
             from_Date: this.currentLang == 'ar' ? (this.selectedYear[0].arabicName).toString() : (this.selectedYear[0].englishName).toString(),
 
             numOfWeek: this.weakids,
+            result: this.resultType?.[0]?.id,
 
           }
 
@@ -442,9 +455,6 @@ export class DiseaseByWeekReportComponent implements OnInit {
       .subscribe(() => { });
   }
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     this.filterdData = this.myData.filter((m) =>
       m.resultAr.toLowerCase().includes(e.target.value.toLowerCase())
     );

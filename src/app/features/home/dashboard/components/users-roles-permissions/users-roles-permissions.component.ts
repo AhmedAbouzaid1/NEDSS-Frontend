@@ -12,7 +12,7 @@ import { DiseaseFormService } from '../disease-special-symptoms/services/disease
 import { Organiztion } from '../../../chat/Models/organiztion';
 import { Result } from 'src/app/features/Result';
 import { finalize } from 'rxjs/operators';
-import { INVESTIGATION_FORM_PAGE_OFFSET } from 'src/app/core/services/page-permission.service';
+import { ENTOMOLOGICAL_FORM_PAGE_OFFSET, INVESTIGATION_FORM_PAGE_OFFSET, PagePermissionService } from 'src/app/core/services/page-permission.service';
 
 @Component({
   selector: 'app-users-roles-permissions',
@@ -31,6 +31,7 @@ export class UsersRolesPermissionsComponent {
     isSelectedSubject: false,
     organizationId: null,
     levelsIds: null,
+    isHiddenFromNonAdmins: false,
   };
   selectlist: any;
   selectedFieldlist: any;
@@ -39,6 +40,7 @@ export class UsersRolesPermissionsComponent {
   selectedDiseases!: any[];
   systemPages!: any[];
   investigationFormPages: any[] = [];
+  entomologicalFormPages: any[] = [];
   // systemPageIds!: any[];
   systemPageIds: Array<number> = [];
   diseaseIds: Array<number> = [];
@@ -71,7 +73,9 @@ export class UsersRolesPermissionsComponent {
   levels: any[] = [];
   levelsLoading: boolean = false;
   selectedLevelId: number[] = [];
+  isGlobalAdmin: boolean = false;
   constructor(
+    private pagePermission: PagePermissionService,
     private lookupsService: LookupsGetterService,
     private translateService: TranslateService,
     private userMsg: UserMessageService,
@@ -89,6 +93,7 @@ export class UsersRolesPermissionsComponent {
   }
 
   ngOnInit() {
+    this.isGlobalAdmin = this.pagePermission.isAdmin();
     this.currentId = this.route.snapshot.paramMap.get('id');
     if (this.currentId != null) this.getById(this.currentId);
     this.getUsersRolesPermissions();
@@ -181,7 +186,8 @@ export class UsersRolesPermissionsComponent {
           if (result != null && result != undefined) {
             const pages: any[] = result.data ?? [];
             this.systemPages = pages.filter((p) => p.id < INVESTIGATION_FORM_PAGE_OFFSET);
-            this.investigationFormPages = pages.filter((p) => p.id >= INVESTIGATION_FORM_PAGE_OFFSET);
+            this.investigationFormPages = pages.filter((p) => p.id >= INVESTIGATION_FORM_PAGE_OFFSET && p.id < ENTOMOLOGICAL_FORM_PAGE_OFFSET);
+            this.entomologicalFormPages = pages.filter((p) => p.id >= ENTOMOLOGICAL_FORM_PAGE_OFFSET);
           }
           this.loadingPanel = false;
         },
@@ -439,6 +445,7 @@ export class UsersRolesPermissionsComponent {
                   diseaseFieldIds: null,
                   organizationId: null,
                   levelsIds: null,
+                  isHiddenFromNonAdmins: false,
                 };
               }
             },
@@ -490,6 +497,7 @@ export class UsersRolesPermissionsComponent {
               diseaseFieldIds: null,
               organizationId: null,
               levelsIds: null,
+              isHiddenFromNonAdmins: false,
             };
           }
         },

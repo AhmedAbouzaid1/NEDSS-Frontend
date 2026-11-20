@@ -1,3 +1,4 @@
+import { finalDiagnosisOptionsWithOther } from 'src/app/core/shared/utilis/final-diagnoses';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { InvestigationService } from './services/investigation.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -124,7 +125,7 @@ export class InvestigationComponent implements OnInit {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
 
     if (
       this.router.url.includes('/home/investigations/investigation-detailes')
@@ -145,6 +146,7 @@ export class InvestigationComponent implements OnInit {
       homeHealthAdministrationId: new FormControl(),
       department: new FormControl(),
       fullName: new FormControl(),
+      patientId: new FormControl(),
       nationalId: new FormControl(),
       patientDiseases: new FormControl(),
       //
@@ -257,6 +259,7 @@ export class InvestigationComponent implements OnInit {
       }
 
       formObj = this.investigationForm.value;
+      formObj.patientId = this.generalDataService.parsePatientId(formObj.patientId);
       if (this.selectedDiseaseId != null && this.selectedDiseaseId != -1) {
         formObj.diseaseId = this.selectedDiseaseId;
       }
@@ -279,11 +282,11 @@ export class InvestigationComponent implements OnInit {
         formObj.homeHealthAdministrationId = null;
       }
 
-      if (this.selectedDepartment != null && this.selectedDepartment != -1) {
-        formObj.department = this.selectedDepartment;
-      } else {
-        formObj.department = null;
-      }
+      delete formObj.department;
+      formObj.incidentDepartmentId =
+        this.selectedDepartment != null && this.selectedDepartment > 0
+          ? this.selectedDepartment
+          : null;
 
       if (
         this.selectedDiseaseGroupId != null &&
@@ -722,7 +725,7 @@ export class InvestigationComponent implements OnInit {
           this.finalDiagnostics = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
           ];
-          result.data.forEach((nat) => {
+          finalDiagnosisOptionsWithOther(result.data).forEach((nat) => {
             this.finalDiagnostics.push(nat);
           });
         }

@@ -3,28 +3,41 @@
 </h2>
 
 <form (ngSubmit)="save()" #userForm="ngForm" novalidate>
-  <div class="card shadow color">
+  <div class="card shadow color settings-card">
     <div class="card-body bg-dark-mode">
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label>
-              {{ "NEDSS.HOME.CONTROL_PANEL.CHARTS_TAB_VISIBILITY" | translate }}
-              <span class="text-muted">{{ "NEDSS.HOME.CONTROL_PANEL.CHARTS_TAB_VISIBILITY_HINT" | translate }}</span>
-            </label>
-            <div class="form-check form-switch">
-              <input type="checkbox" class="form-check-input" id="chartsTabEnabled" name="chartsTabEnabled"
-                [(ngModel)]="enabled" />
-              <label class="form-check-label" for="chartsTabEnabled">
-                {{ "NEDSS.HOME.CONTROL_PANEL.CHARTS_TAB_ENABLED_LABEL" | translate }}
-              </label>
-            </div>
-          </div>
+      <div class="setting-row">
+        <div class="setting-icon" [class.is-off]="!enabled">
+          <i class="bi" [ngClass]="enabled ? 'bi-bar-chart-line' : 'bi-eye-slash'"></i>
+        </div>
+
+        <div class="setting-info">
+          <label class="setting-title" for="chartsTabEnabled">
+            {{ "NEDSS.HOME.CONTROL_PANEL.CHARTS_TAB_ENABLED_LABEL" | translate }}
+          </label>
+          <p class="setting-hint">
+            {{ "NEDSS.HOME.CONTROL_PANEL.CHARTS_TAB_VISIBILITY_HINT" | translate }}
+          </p>
+        </div>
+
+        <div class="setting-control">
+          <span class="status-badge" [class.is-off]="!enabled">
+            {{
+              (enabled
+                ? "NEDSS.HOME.CONTROL_PANEL.CHARTS_TAB_STATUS_ON"
+                : "NEDSS.HOME.CONTROL_PANEL.CHARTS_TAB_STATUS_OFF"
+              ) | translate
+            }}
+          </span>
+          <label class="toggle">
+            <input type="checkbox" id="chartsTabEnabled" name="chartsTabEnabled" role="switch"
+              [attr.aria-checked]="enabled" [(ngModel)]="enabled" />
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
         </div>
       </div>
 
-      <div class="card-footer text-start" style="text-align:center !important">
-        <button type="submit" class="btn bg text-white rounded-2">
+      <div class="settings-footer">
+        <button type="submit" class="btn bg text-white rounded-2 px-4">
           {{ "NEDSS.COMMON.SAVE" | translate }}
         </button>
       </div>

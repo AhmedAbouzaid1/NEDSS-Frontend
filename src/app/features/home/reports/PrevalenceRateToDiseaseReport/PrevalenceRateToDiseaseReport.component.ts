@@ -99,7 +99,7 @@ export class PrevalenceRateToDiseaseReportComponent implements OnInit {
     this.moreDetails = this.currentLang == 'ar' ? 'المزيد من التفاصيل >' : 'More Details >';
 
     let incidentInfoLink = document.getElementById('incidentInfo') as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.getCaseCategories();
     this.getDiseases();
   }
@@ -372,9 +372,6 @@ export class PrevalenceRateToDiseaseReportComponent implements OnInit {
       .subscribe(() => { });
   }
   Tablesearch(e) {
-    if (e.target.value.toLowerCase().length == 0) {
-      this.getReport();
-    }
     this.filterdData = this.myData.filter((m) =>
       m.resultAr.toLowerCase().includes(e.target.value.toLowerCase())
     );

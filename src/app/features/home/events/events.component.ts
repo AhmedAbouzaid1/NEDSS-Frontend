@@ -48,12 +48,13 @@ export class EventsComponent {
 
   maxDateE: any = new Date();
   minDateE: any = new Date(1900, 0, 1);
-  startDDate: any;
   levelId: any;
   organizationId: any;
   currentLang: string;
   dir: string;
   delay: boolean = false;
+  showEbsSignalDialog: boolean = false;
+  ebsSignalIds: number[] = [];
   timer: any;
   AlreadyExist: boolean = false;
   notadded: any[] = [];
@@ -91,7 +92,7 @@ export class EventsComponent {
   @ViewChild('myTableElementId', { static: false }) tableElement: ElementRef;
   screenName: string;
   events;
-  event: boolean = false;
+  event: boolean = true;
   periods = [
     {
       name: 1,
@@ -255,7 +256,7 @@ export class EventsComponent {
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
     ) as HTMLElement;
-    incidentInfoLink.classList.remove('active');
+    incidentInfoLink?.classList.remove('active');
     this.generalReportForm = new FormGroup({
       homeGovernmentId: new FormControl(),
       homeHealthAdministrationId: new FormControl(),
@@ -268,7 +269,7 @@ export class EventsComponent {
       endDate: new FormControl(),
       pageSize: new FormControl(10),
       pageIndex: new FormControl(0),
-      sortColumn: new FormControl('FullName'),
+      sortColumn: new FormControl('Name'),
       sortOrder: new FormControl(SortOrder.asc),
       searchText: new FormControl(''),
       FilterType: new FormControl(2),
@@ -286,7 +287,7 @@ export class EventsComponent {
       endDate: null,
       pageSize: null,
       pageIndex: null,
-      sortColumn: 'FullName',
+      sortColumn: 'Name',
       sortOrder: SortOrder.asc,
       searchText: null,
       FilterType: 2,
@@ -448,13 +449,11 @@ export class EventsComponent {
           this.noData = true;
           this.noDatap = true;
           this.pages = 0;
-          this.event = true;
-          this.findEvent(this.generalReportForm.value);
-          if (this.noDatap == true && this.noDatae == false) {
-            this.translateService
-              .get('NOUR.NO_RESULTS')
-              .subscribe((msg) => this.userMsg.warn(msg));
-          }
+          this.totalCount = null;
+          this.hasNextPage = false;
+          this.translateService
+            .get('NOUR.NO_RESULTS')
+            .subscribe((msg) => this.userMsg.warn(msg));
         } else {
           setTimeout(() => {
             this.delay = false;
@@ -463,7 +462,6 @@ export class EventsComponent {
 
           this.noData = false;
           this.noDatap = false;
-          this.event = false;
           this.hasNextPage =
             res.data[0].hasNextPage === true &&
             res.data.length >= this.generalReportFormfilter.pageSize;
@@ -552,10 +550,7 @@ export class EventsComponent {
           JSON.parse(localStorage.getItem('ls.authorizationData')).user
             .healthAdministrationId,
         ];
-        this.addhomeHealthOffice = [
-          JSON.parse(localStorage.getItem('ls.authorizationData')).user
-            .incidentSourceId,
-        ];
+        this.addhomeHealthOffice = [];
       }
       if (this.addSelectedhealthAdministration) {
         this.getIncidentSourceHospitalsByGovernment();
@@ -614,22 +609,11 @@ export class EventsComponent {
 
             this.noData = true;
             this.noDatae = true;
-            this.event = false;
             this.pages = 0;
             this.hasNextPage = false;
-            if (this.noDatae == true && this.noDatap == false) {
-              this.translateService
-                .get('NOUR.NO_RESULTSEvent')
-                .subscribe((msg) => this.userMsg.warn(msg));
-            }
-            if (this.noDatae == true && this.noDatap == true) {
-              this.translateService
-                .get('NOUR.NO_RESULTS')
-                .subscribe((msg) => this.userMsg.warn(msg));
-              this.translateService
-                .get('NOUR.NO_RESULTSEvent')
-                .subscribe((msg) => this.userMsg.warn(msg));
-            }
+            this.translateService
+              .get('NOUR.NO_RESULTSEvent')
+              .subscribe((msg) => this.userMsg.warn(msg));
           } else {
             setTimeout(() => {
               this.delay = false;
@@ -638,7 +622,6 @@ export class EventsComponent {
 
             this.noData = false;
             this.noDatae = false;
-            this.event = true;
             this.pages = res.data[0].totalCount;
             this.hasNextPage =
               (this.generalReportFormfilter.pageIndex + 1) *
@@ -1355,43 +1338,31 @@ export class EventsComponent {
   }
 
   getAllEvents() {
-    // if (this.generalReportForm.value != null) {
-    //   this.findEvent(this.generalReportForm.value);
-    // }
-    // else {
-    //   this.findEvent();
-    // }
-    // this.event = true;
-    this.generalReportForm.patchValue({ sortColumn: 'Name' });
-    this.generalReportFormfilter.sortColumn = 'Name';
-    if (this.generalReportForm.value.homeGovernmentId != null) {
-      if (this.generalReportForm.value.homeGovernmentId != -1) {
-        this.generalReportForm.value.pageIndex = 0;
-        this.findEvent(this.generalReportForm.value);
-      } else {
-        this.findEvent();
-      }
-    } else {
-      this.findEvent();
-    }
+    this.switchTab(true);
   }
 
   getAllPaitents() {
-    this.generalReportForm.patchValue({ sortColumn: 'FullName' });
-    this.generalReportFormfilter.sortColumn = 'FullName';
-    this.governmentSelected();
+    this.switchTab(false);
+  }
 
-    if (
-      this.generalReportForm.value.homeGovernmentId != null ||
-      this.generalReportForm.value.homeGovernmentId != -1
-    ) {
-      this.generalReportForm.value.pageIndex = 0;
-      this.findPatient(this.generalReportForm.value);
-    } else {
-      this.findPatient();
+  private switchTab(showEvents: boolean) {
+    const tabChanged = this.event !== showEvents;
+    this.event = showEvents;
+    const sortColumn = showEvents ? 'Name' : 'FullName';
+    if (tabChanged) {
+      this.dataSource = [];
+      this.select_all = false;
+      this.patientsIdsToAdd = [];
+      this.disAbledAddToEvent = true;
+      this.totalCount = null;
+      this.generalReportFormfilter.sortColumn = sortColumn;
+      this.generalReportFormfilter.sortOrder = SortOrder.asc;
+      this.generalReportForm.patchValue({ sortColumn, sortOrder: SortOrder.asc });
     }
-
-    //this.event = false;
+    this.generalReportFormfilter.pageIndex = 0;
+    this.generalReportForm.patchValue({ pageIndex: 0 });
+    this.first = 0;
+    this.search();
   }
 
   sort(event: SortEvent) {
@@ -1505,6 +1476,11 @@ export class EventsComponent {
                 .subscribe((res: string) => {
                   this.userMsg.success(res);
                 });
+              const signalIds: number[] = result?.data?.createdEBSSignalIds || [];
+              if (signalIds.length) {
+                this.ebsSignalIds = signalIds;
+                this.showEbsSignalDialog = true;
+              }
               this.AddEventForm.reset();
             }
           },
@@ -1792,9 +1768,20 @@ export class EventsComponent {
     this.underDeleting.pname = ele.patientName;
   }
 
+  private tableSearchTimer?: ReturnType<typeof setTimeout>;
+  private lastTableSearch = '';
+
   Tablesearch(e) {
-    this.searchText = e.target.value;
-    this.search();
+    const value = e.target.value ?? '';
+    clearTimeout(this.tableSearchTimer);
+    this.tableSearchTimer = setTimeout(() => {
+      if (value === this.lastTableSearch) {
+        return;
+      }
+      this.lastTableSearch = value;
+      this.searchText = value;
+      this.search();
+    }, 400);
     // if (e.target.value.toLowerCase()?.length ) {
     //   this.search();
     // }
@@ -1872,6 +1859,8 @@ export class EventsComponent {
       (result: any) => {
         if (result != null && result != undefined) {
           this.eventCheckResult = result.data;
+          this.checkIncidentSource = [];
+          this.getIncidentSourceHospitalsByGovernment();
         }
       },
       (error) => {
@@ -1937,6 +1926,9 @@ export class EventsComponent {
             } else {
               this.addhealthAdministrationId = -1;
             }
+            if (!this.eventCheckResult?.displayHealthAdministrations) {
+              this.getIncidentSourceHospitalsByGovernment();
+            }
           }
           this.addHealthAdministrationsLoading = false;
           this.loadingPanel = false;
@@ -1987,21 +1979,44 @@ export class EventsComponent {
 
   //IncidentSource
   getIncidentSourceHospitalsByGovernment() {
+    const level = this.eventCheckResult;
+    const filter = {
+      governmentsIds: level?.displayHealthAdministrations
+        ? []
+        : this.eventGovernment,
+      healthAdministrationsIds: this.eventHealthAdministration,
+      branchsIds: level?.displayAreas ? [] : this.eventBranch,
+      areasIds: this.eventArea,
+      forSystemUser: true,
+    };
+    const hasParentFilter = [
+      filter.governmentsIds,
+      filter.healthAdministrationsIds,
+      filter.branchsIds,
+      filter.areasIds,
+    ].some((ids) => ids?.length);
+    const needsParent =
+      level?.displayGovernments ||
+      level?.displayHealthAdministrations ||
+      level?.displayBranchs ||
+      level?.displayAreas ||
+      level?.displayUniversities;
+    const ownSourceOnly =
+      !this.activeUSerService.getAccessibleParts?.enableSources;
+    if (
+      !level?.displayIncidentSources ||
+      (needsParent && !hasParentFilter && !ownSourceOnly)
+    ) {
+      this.checkIncidentSource = [];
+      this.addIncidentSourcesLoading = false;
+      return;
+    }
     this.addIncidentSourcesLoading = true;
     this.lookupsService
-      .getIncidentSourceHospitalsByGovernmentsIds({
-        governmentsIds: this.eventCheckResult?.displayHealthAdministrations
-          ? []
-          : this.eventGovernment,
-        healthAdministrationsIds: this.eventHealthAdministration,
-        branchsIds: this.eventCheckResult?.displayAreas ? [] : this.eventBranch,
-        areasIds: this.eventArea,
-      })
+      .getIncidentSourceHospitalsByGovernmentsIds(filter)
       .subscribe(
         (result: any) => {
-          if (result != null && result != undefined) {
-            this.checkIncidentSource = result.data;
-          }
+          this.checkIncidentSource = result?.data ?? [];
           if (this.updatedObject?.incidentSourcesIds?.length) {
             this.addhomeHealthOffice = this.checkIncidentSource?.filter(
               (x) =>
@@ -2245,7 +2260,6 @@ export class EventsComponent {
             });
         }
         this.getAllEvents();
-        this.findEvent(true);
       },
       (error) => {
         this.loadingPanel = false;

@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+﻿import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AnswerOptions, contactsBeenDosed } from 'src/app/core/constants';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
@@ -60,8 +60,8 @@ export class LeperComponent implements OnInit {
             patientID: v.patientID ?? this.currentId,
             id: v.id ?? null,
             investigationCompletePercentage: v.investigationCompletePercentage ?? null,
-            numberContacts: v.numberContacts ?? 0,
-            contactsBeenDosed: v.contactsBeenDosed ?? 1,
+            numberContacts: v.numberContacts ?? null,
+            contactsBeenDosed: v.contactsBeenDosed ?? null,
             dateDoseContacts: this.datePipe.transform(v.dateDoseContacts, 'yyyy-MM-dd'),
             vaccinatedBcgVaccine: v.vaccinatedBcgVaccine ?? null,
           };

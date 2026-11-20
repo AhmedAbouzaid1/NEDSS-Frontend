@@ -1,46 +1,44 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 import {
+  AgeType,
   EducationPhase,
   Gender,
   MaritalStatus,
   SchoolCategory,
-  SingleDropdownSettings,
 } from 'src/app/core/constants';
-import { Component, OnInit } from '@angular/core';
-import { SearchSharedDataService } from '../../services/search-shared-data.service';
-import { Patient } from '../../models/patient';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
-import { TranslateService } from '@ngx-translate/core';
+import { SearchSharedDataService } from '../../services/search-shared-data.service';
+import { Patient } from '../../models/patient';
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
-import { NationalityEnum } from '../../../general-data/models/nationality-enum';
+
+type LookupOption = { id: number | null; arabicName: string; englishName?: string };
 
 @Component({
   selector: 'app-search-demoghraph',
   templateUrl: './search-demoghraph.component.html',
   styleUrls: ['./search-demoghraph.component.css'],
 })
-export class SearchDemoghraphComponent implements OnInit {
-  currentLang: string;
-  dir: string;
-  delay: boolean = false;
-  timer: any;
+export class SearchDemoghraphComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
-  maxDate: any;
-  minDate = new Date(1900, 0, 1);
-  patient: Patient;
-  nationalities: any;
-  loadingPanel: boolean;
-  genders = Gender;
-  educationPhase = EducationPhase;
-  maritalStatus = MaritalStatus;
-  schoolCategorys = SchoolCategory;
-  jobs: any;
-  nationalitiesLoading: boolean = false;
-  jobsLoading: boolean = false;
-  national: number = -1;
-  singleDropdownSettings = SingleDropdownSettings;
-  singleDropdownSettingsnationality = SingleDropdownSettings;
-  NationalityEnum = NationalityEnum;
+  currentLang: string = 'ar';
+  patient: Patient = {};
+
+  genders = this.withPlaceholder(Gender);
+  ageTypes = this.withPlaceholder(AgeType);
+  maritalStatus = this.withPlaceholder(MaritalStatus);
+  educationPhases = this.withPlaceholder(EducationPhase);
+  schoolCategories = this.withPlaceholder(SchoolCategory);
+
+  jobCategories: LookupOption[] = [this.placeholder()];
+  jobs: LookupOption[] = [this.placeholder()];
+  jobCategoriesLoading = false;
+  jobsLoading = false;
+
   constructor(
     private sharedDataService: SearchSharedDataService,
     private lookupsService: LookupsGetterService,
@@ -50,159 +48,139 @@ export class SearchDemoghraphComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.currentLang =
-      localStorage.getItem('ls.currentLang') !== undefined &&
-      localStorage.getItem('ls.currentLang') !== 'undefined'
-        ? localStorage.getItem('ls.currentLang')
-        : 'ar';
-    this.maxDate = Date.now;
-    let link = document.getElementById('fastSearch') as HTMLElement;
-    link.classList.add('active');
-    this.getAllLookups();
+    const savedLang = localStorage.getItem('ls.currentLang');
+    this.currentLang = savedLang && savedLang !== 'undefined' ? savedLang : 'ar';
+    const link = document.getElementById('fastSearch') as HTMLElement;
+    link?.classList.add('active');
 
-    this.sharedDataService.getPatientObject().subscribe((patientObject) => {
-      this.patient = patientObject;
-    });
+    this.sharedDataService
+      .getPatientObject()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((patientObject) => {
+        this.patient = patientObject;
+      });
 
-    this.generalDataService.cardIdValidationMessage = '';
-  }
+    this.generalDataService.isFirstNameValid = true;
+    this.generalDataService.isSecondNameValid = true;
+    this.generalDataService.isThirdNameValid = true;
+    this.generalDataService.isFamilyNameValid = true;
+    this.generalDataService.isPhoneNumber1Valid = true;
+    this.generalDataService.isPhoneNumber2Valid = true;
+    this.generalDataService.isAgeValid = true;
 
-  getAllLookups() {
-    this.getNationalties();
-    this.getjobNames();
+    this.getJobCategories();
+    if (this.patient.patientJobCategoryId != null) {
+      this.getJobs(this.patient.patientJobCategoryId);
+    }
   }
 
   ngOnDestroy() {
-    let link = document.getElementById('fastSearch') as HTMLElement;
-    link.classList.remove('active');
+    const link = document.getElementById('fastSearch') as HTMLElement;
+    link?.classList.remove('active');
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private placeholder(): LookupOption {
+    return { id: null, arabicName: 'إختر', englishName: 'Select' };
+  }
+
+  private withPlaceholder(list: LookupOption[]): LookupOption[] {
+    return [this.placeholder(), ...list.filter((o) => o.id != null)];
+  }
+
+  private toOptions(result: any): LookupOption[] {
+    const rows: any[] = Array.isArray(result?.data) ? result.data : [];
+    return [
+      this.placeholder(),
+      ...rows
+        .filter((r) => Number(r?.id) > 0)
+        .map((r) => ({
+          id: Number(r.id),
+          arabicName: String(r.arabicName ?? ''),
+          englishName: String(r.englishName ?? ''),
+        })),
+    ];
+  }
+
+  private showError() {
+    this.translateService
+      .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+      .subscribe((res: string) => this.userMsg.error(res));
+  }
+
+  getJobCategories() {
+    this.jobCategoriesLoading = true;
+    this.lookupsService
+      .getAllPatientJobCategorys()
+      .pipe(finalize(() => (this.jobCategoriesLoading = false)))
+      .subscribe(
+        (result: any) => {
+          this.jobCategories = this.toOptions(result);
+        },
+        () => this.showError()
+      );
+  }
+
+  onJobCategoryChanged() {
+    this.patient.patientJobId = null;
+    this.jobs = [this.placeholder()];
+    if (this.patient.patientJobCategoryId != null) {
+      this.getJobs(this.patient.patientJobCategoryId);
+    }
+  }
+
+  getJobs(jobCategoryId: number) {
+    this.jobsLoading = true;
+    this.lookupsService
+      .getPagePatientJobs({ patientJobCategoryID: jobCategoryId })
+      .pipe(finalize(() => (this.jobsLoading = false)))
+      .subscribe(
+        (result: any) => {
+          this.jobs = this.toOptions(result);
+          if (
+            this.patient.patientJobId != null &&
+            !this.jobs.some((j) => j.id === this.patient.patientJobId)
+          ) {
+            this.patient.patientJobId = null;
+          }
+        },
+        () => this.showError()
+      );
+  }
+
+  onTextChanged(field: 'patientJobName' | 'workAddress', value: string) {
+    const trimmed = (value ?? '').trim();
+    this.patient[field] = trimmed ? value : null;
+  }
+
+  onPhoneChanged(field: 'phoneNo1' | 'phoneNo2', value: string) {
+    const cleaned = (value ?? '').replace(/(?!^\+)[^\d]/g, '');
+    this.patient[field] = cleaned ? cleaned : null;
+  }
+
+  onAgeChanged(value: string) {
+    const n = value === '' || value == null ? null : Number(value);
+    this.patient.age = n != null && Number.isFinite(n) ? n : null;
+  }
+
+  onNumberKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') return;
+    if (event.key !== 'Backspace' && isNaN(Number(event.key))) {
+      event.preventDefault();
+    }
   }
 
   clearAll() {
-    this.patient = {};
-    this.patient.pageIndex = 0;
-    this.patient.pageSize = 10;
-    this.patient.filterType = 1;
+    this.patient = { pageIndex: 0, pageSize: 10, filterType: 1 };
     this.sharedDataService.setPatientObject(this.patient);
-    this.national = -1;
-  }
-
-  getNationalties() {
-    this.nationalitiesLoading = true;
-    this.lookupsService.getAllNationalitys().subscribe(
-      (result: any) => {
-        if (result != null && result != undefined) {
-          this.nationalities = [
-            { id: -1, arabicName: 'إختر', englishName: 'Select' },
-          ];
-          result.data.forEach((nat) => {
-            this.nationalities.push(nat);
-          });
-          if (this.patient.nationalityId > 0) {
-            let filteredNationality = this.nationalities.filter(
-              (item) => item.id === this.patient.nationalityId
-            );
-            this.national = this.patient.nationalityId;
-          } else {
-            this.national = -1;
-          }
-        }
-        this.nationalitiesLoading = false;
-        this.loadingPanel = false;
-      },
-      (error) => {
-        this.nationalitiesLoading = false;
-        this.loadingPanel = false;
-        this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
-    );
-  }
-
-  getjobNames() {
-    this.jobsLoading = true;
-    this.lookupsService.getAllPatientJobs().subscribe(
-      (result: any) => {
-        if (result != null && result != undefined) {
-          this.jobs = result.data;
-        }
-        this.jobsLoading = false;
-        this.loadingPanel = false;
-      },
-      (error) => {
-        this.jobsLoading = false;
-        this.loadingPanel = false;
-        this.translateService
-          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
-    );
-  }
-
-  onNationalIdChanged(value: any) {
-    if (value == '') {
-      this.patient.age = null;
-      this.patient.birthDate == null;
-      this.patient.genderId = null;
-      this.patient.ageTypeId = null;
-    }
-  }
-
-  setValue() {
-    this.patient.nationalityId = this.national != -1 ? this.national : null;
-  }
-  setDValue() {
-    this.patient.nationalityId = null;
-  }
-  setgenderValue(event) {
-    this.patient.genderId = event.id;
-  }
-  setgenderDValue() {
-    this.patient.genderId = null;
-  }
-  setmaritalValue(event) {
-    this.patient.maritalStatusId = event.id;
-  }
-  setmaritalDValue() {
-    this.patient.maritalStatusId = null;
-  }
-  seteducationValue(event) {
-    this.patient.educationPhaseId = event.id;
-  }
-  setschoolCategoryValue(event) {
-    this.patient.schoolCategoryId = event.id;
-  }
-  jobSelected(event) {
-    this.patient.patientJobName = event.id;
-  }
-  jobDSelected() {
-    this.patient.patientJobName = null;
-  }
-
-  disableFieldsDueToNationalId(): boolean {
-    var isValid =
-      this.patient.nationalityId == NationalityEnum.Egyptian &&
-      (this.patient.incidentDepartmentId == 1 ||
-        (this.generalDataService.validateEmptyField(this.patient.nationalId) &&
-          this.generalDataService.isCardIdValid));
-    if (isValid) {
-      this.patient.birthDate = this.generalDataService.getBirthDate(
-        this.patient.nationalId
-      );
-      this.patient.age = this.generalDataService.getAge(
-        this.patient.nationalId
-      );
-      this.patient.genderId = this.generalDataService.getGender(
-        this.patient.nationalId
-      );
-      this.patient.ageTypeId = this.generalDataService.getAgeTypeId(
-        this.patient.nationalId
-      );
-    }
-    return isValid;
+    this.jobs = [this.placeholder()];
+    this.generalDataService.isFirstNameValid = true;
+    this.generalDataService.isSecondNameValid = true;
+    this.generalDataService.isThirdNameValid = true;
+    this.generalDataService.isFamilyNameValid = true;
+    this.generalDataService.isPhoneNumber1Valid = true;
+    this.generalDataService.isPhoneNumber2Valid = true;
+    this.generalDataService.isAgeValid = true;
   }
 }

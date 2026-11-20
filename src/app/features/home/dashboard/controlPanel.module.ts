@@ -57,9 +57,10 @@ import { DiseaseClinicalSymptomsMappingComponent } from './components/controlPan
 import { DataFetchDaysComponent } from './components/controlPanel/data-fetch-days/data-fetch-days.component';
 import { ChartsTabVisibilityComponent } from './components/controlPanel/charts-tab-visibility/charts-tab-visibility.component';
 import { PasswordExpiryDaysComponent } from './components/controlPanel/password-expiry-days/password-expiry-days.component';
+import { NotificationsSettingsComponent } from './components/controlPanel/notifications-settings/notifications-settings.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
-  return new TranslateHttpLoader(http);
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
@@ -97,6 +98,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     DataFetchDaysComponent,
     ChartsTabVisibilityComponent,
     PasswordExpiryDaysComponent,
+    NotificationsSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -128,18 +130,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     InputTextModule,
     MultiSelectModule,
     NgMultiSelectDropDownModule.forRoot(),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-      defaultLanguage:
-        localStorage.getItem('ls.currentLang') !== undefined &&
-        localStorage.getItem('ls.currentLang') !== 'undefined'
-          ? localStorage.getItem('ls.currentLang')
-          : 'ar',
-    }),
+    TranslateModule.forChild({ extend: true }),
   ],
 })
 export class ControlPanelModule {}

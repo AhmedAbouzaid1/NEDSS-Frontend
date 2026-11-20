@@ -12,7 +12,7 @@ import { UserMessageService } from 'src/app/core/services/user.message.service';
   styleUrls: ['./notifications.component.css'],
 })
 export class NotificationsComponent implements OnInit, OnDestroy {
-  readonly pageSize = 20;
+  readonly pageSize = 10;
   notifications: any[] = [];
   NotificationsTypesEnum = NotificationTypesEnum;
   loading = false;

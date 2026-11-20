@@ -3253,7 +3253,7 @@ export class ChartsDashboardComponent {
             }
             if (element.id == 7) {
               this.generalDataCompletionServiceService
-                .getPageGeneralDataCompletions2({
+                .getGeneralDataCompletionsCount({
                   pageSize: 10,
                   pageIndex: 0,
                   sortColumn: '',

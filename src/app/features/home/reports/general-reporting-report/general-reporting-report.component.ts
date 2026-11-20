@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ReportDateRangeService } from 'src/app/core/services/report-date-range.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,6 +11,7 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { PagePermissionService } from 'src/app/core/services/page-permission.service';
 import { ReportLocationType } from '../enums/ReportLocationType';
+import { FinalDiagnosisOption, finalDiagnosisOptionsWithOther } from 'src/app/core/shared/utilis/final-diagnoses';
 import {
   GeneralReportingDiseaseGroup,
   GeneralReportingReportData,
@@ -28,6 +30,7 @@ export const GENERAL_REPORTING_EXPORT_PAGE_ID = 101;
   providers: [DatePipe],
 })
 export class GeneralReportingReportComponent implements OnInit, OnDestroy {
+  private readonly reportDateRange = inject(ReportDateRangeService);
   readonly reportLocationType = ReportLocationType;
   readonly pageSizes = [10, 25, 50, 100];
   readonly multipleDropdownSettings = { ...MultipleDropdownSettings, enableCheckAll: false };
@@ -40,6 +43,9 @@ export class GeneralReportingReportComponent implements OnInit, OnDestroy {
   diseaseGroups: GeneralReportingDiseaseGroup[] = [];
   diseaseGroupsLoading = false;
   selectedDiseaseGroups: GeneralReportingDiseaseGroup[] = [];
+  finalDiagnoses: FinalDiagnosisOption[] = [];
+  finalDiagnosesLoading = false;
+  selectedFinalDiagnoses: FinalDiagnosisOption[] = [];
 
   fromDate: Date | null = null;
   toDate: Date | null = null;
@@ -86,6 +92,7 @@ export class GeneralReportingReportComponent implements OnInit, OnDestroy {
     this.dir = this.isArabic ? 'rtl' : 'ltr';
     this.canExport = this.pagePermission.canAccessPage(GENERAL_REPORTING_EXPORT_PAGE_ID);
     this.loadDiseaseGroups();
+    this.loadFinalDiagnoses();
     this.loadGovernments();
   }
 
@@ -132,8 +139,7 @@ export class GeneralReportingReportComponent implements OnInit, OnDestroy {
   }
 
   search(): void {
-    if (this.fromDate && this.toDate && this.fromDate > this.toDate) {
-      this.userMsg.warn(this.t('INVALID_DATE_RANGE'));
+    if (!this.reportDateRange.validate(this.fromDate, this.toDate)) {
       return;
     }
     this.appliedFilter = this.buildFilter();
@@ -203,6 +209,7 @@ export class GeneralReportingReportComponent implements OnInit, OnDestroy {
   private buildFilter(): GeneralReportingReportFilter {
     return {
       diseaseGroupsIds: (this.selectedDiseaseGroups ?? []).map((x) => x.id),
+      finalDiseasesIds: (this.selectedFinalDiagnoses ?? []).map((x) => x.id),
       reportLocationType: this.locationType,
       governmentsIds: (this.selectedGovernments ?? []).map((x) => x.id),
       healthAdministrationsIds: (this.selectedHealthAdministrations ?? []).map((x) => x.id),
@@ -221,6 +228,7 @@ export class GeneralReportingReportComponent implements OnInit, OnDestroy {
       [this.t('FROM_DATE'), this.formatDate(this.fromDate) || all],
       [this.t('TO_DATE'), this.formatDate(this.toDate) || all],
       [this.t('DISEASE'), names(this.selectedDiseaseGroups) || all],
+      [this.t('FINAL_DIAGNOSIS'), names(this.selectedFinalDiagnoses) || all],
       [this.t('LOCATION_TYPE'), this.t(this.locationSuffix)],
       [this.t('GOVERNMENT_' + this.locationSuffix), names(this.selectedGovernments) || all],
       [this.t('ADMINISTRATION_' + this.locationSuffix), names(this.selectedHealthAdministrations) || all],
@@ -235,6 +243,17 @@ export class GeneralReportingReportComponent implements OnInit, OnDestroy {
       .pipe(finalize(() => (this.diseaseGroupsLoading = false)))
       .subscribe({
         next: (res) => (this.diseaseGroups = res?.data ?? []),
+        error: (err) => this.handleError(err),
+      });
+  }
+
+  private loadFinalDiagnoses(): void {
+    this.finalDiagnosesLoading = true;
+    this.lookups
+      .getAllDiseases()
+      .pipe(finalize(() => (this.finalDiagnosesLoading = false)))
+      .subscribe({
+        next: (res: any) => (this.finalDiagnoses = finalDiagnosisOptionsWithOther(res?.data ?? [])),
         error: (err) => this.handleError(err),
       });
   }

@@ -83,7 +83,7 @@
         <!-- <select name="" id="" class="form-control" tCategoryId">
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <option *ngFor="let category of Categories" [value]="category.id">{{ category.arabicName}}</option>
       </select> -->
-        <ng-multiselect-dropdown [settings]="singleDropdownSettings" [data]="tashKhesType" [(ngModel)]="resultType">
+        <ng-multiselect-dropdown [settings]="singleDropdownSettings" [data]="tashKhesType" [(ngModel)]="resultType" (ngModelChange)="selectedDiseases = []">
         </ng-multiselect-dropdown>
       </div>
     </div>
@@ -135,7 +135,7 @@
       <div class="col-lg-3 mt-2">
         <div class="form-group">
           <label for="">{{ "NEDSS.REPORTS.Diseases" | translate }}</label>
-          <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="diseases"
+          <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="isFinalResult ? finalDiseases : diseases"
             [(ngModel)]="selectedDiseases">
           </ng-multiselect-dropdown>
         </div>
@@ -181,7 +181,7 @@
       <div class="col-lg-3 mt-2">
         <div class="form-group">
           <label for=""> {{ "NEDSS.REPORTS.TheFinalDiagnosis" | translate }}</label>
-          <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="diseases"
+          <ng-multiselect-dropdown [settings]="multipleDropdownSettings" [data]="finalDiseases"
             [(ngModel)]="EndselectedDiseases">
           </ng-multiselect-dropdown>
         </div>
@@ -265,20 +265,20 @@
           <a class="btn btn-default dt-button buttons-excel buttons-html5 btn-excel" (click)="exportPatiantsAsExcel()"
             tabindex="0" aria-controls="DataTables_Table_0" title="Excel">
             <span>
-              <img src="../../../../../assets/images/excel.png" alt="Exel" />
+              <img src="assets/images/excel.png" alt="Exel" />
             </span>
           </a>
           <a class="btn btn-default dt-button buttons-pdf buttons-html5 btn-pdf" (click)="exportPatientsAsPdf()"
             tabindex="0" aria-controls="DataTables_Table_0" title="PDF">
             <span>
-              <img src="../../../../../assets/images/pdf.png" alt="ExportPdf" />
+              <img src="assets/images/pdf.png" alt="ExportPdf" />
             </span>
           </a>
           <button class="btn btn-default dt-button buttons-print btn-print" [useExistingCss]="true" [printSectionId]="
               reportType == 1 ? 'myTableElementId' : 'chartReport'
             " ngxPrint tabindex="0" aria-controls="DataTables_Table_0" href="#" title="Print">
             <span>
-              <img src="../../../../../assets/images/printer.png" alt="print" />
+              <img src="assets/images/printer.png" alt="print" />
             </span>
           </button>
         </div>
@@ -295,7 +295,7 @@
       <div *ngIf="nodata" class="mt-4">
         <div align="center" class="color">
           {{"NEDSS.REPORTS.NothingToPreview" | translate }} <br />
-          <br /><img width="100%" height="100%" src="../../../../../assets/images/no-data.png"
+          <br /><img width="100%" height="100%" src="assets/images/no-data.png"
             width="150" /><br /><br />
           <span class="color hover bolds">
             <i class="fa fa-arrow-left"></i> {{ "NEDSS.REPORTS.DoSearch" | translate }}
@@ -356,7 +356,7 @@
           (pageChange)="refreshCountries()"></ngb-pagination>
       </div>
       <!-- <div *ngIf="nodata">
-    <div align="center" class="color">لا يوجد بيانات لعرضها بالجدول <br> <br><img width="100%" height="100%" src="../../../../../assets/images/no-data.png" width="150"><br><br> <span class=" color hover bolds"><i class="fa fa-arrow-left"></i> قم بإستخدام البحث لعرض النتائج</span><div></div></div>
+    <div align="center" class="color">لا يوجد بيانات لعرضها بالجدول <br> <br><img width="100%" height="100%" src="assets/images/no-data.png" width="150"><br><br> <span class=" color hover bolds"><i class="fa fa-arrow-left"></i> قم بإستخدام البحث لعرض النتائج</span><div></div></div>
   </div> -->
       <div class="text-center float-center svg-scroll" id="chartReport">
         <div class="text-center float-center svg-scroll-div" id="chartElementId"></div>

@@ -1,0 +1,399 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow mt-4 color mb-4">
+        <div class="card-body">
+          <h5 class="text-center border p-2"><i class="bi bi-clipboard2-pulse inv-heading-icon" aria-hidden="true"></i>{{ title }}</h5>
+          <div class="text-center fwb mb-3" *ngIf="patientName">{{ patientName }}</div>
+
+          <h3 class="fs-5 text-success fwb"><i class="bi bi-person-vcard inv-heading-icon" aria-hidden="true"></i>{{ label('بيانات الحالة', 'Case data') }}</h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <small class="text-muted d-block mb-2">{{ label('الحقول الرمادية من البيانات العامة ويتم تعديلها من هناك فقط', 'Greyed fields come from General Data and can only be edited there') }}</small>
+            <div class="row">
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('الاسم', 'Name') }}</label>
+                <input class="form-control" [value]="patientName" readonly disabled />
+              </div>
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('السن', 'Age') }}</label>
+                <input class="form-control" [value]="patientAge" readonly disabled />
+              </div>
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('التليفون', 'Phone') }}</label>
+                <input class="form-control" dir="ltr" [value]="patient?.phoneNo1 ?? ''" readonly disabled />
+              </div>
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('تاريخ مغادرة مصر', 'Departure from Egypt date') }}</label>
+                <app-date-field formControlName="departureFromEgyptDate"></app-date-field>
+              </div>
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('تاريخ العودة', 'Return date') }}</label>
+                <app-date-field class="date-with-note" formControlName="returnToEgyptDate"></app-date-field>
+                <small class="form-text text-danger d-block mt-0" *ngIf="returnDateError">{{ returnDateError }}</small>
+              </div>
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('الجنسية', 'Nationality') }}</label>
+                <input class="form-control" [value]="patient?.nationalityName ?? ''" readonly disabled />
+              </div>
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('البلد الوافد منها', 'Country arrived from') }}</label>
+                <select class="form-control" [appDropdownLoading]="countriesLoading" formControlName="arrivedFromCountryId">
+                  <option [ngValue]="null"></option>
+                  <option *ngFor="let item of countries" [ngValue]="item.id">{{ lookupName(item) }}</option>
+                </select>
+              </div>
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('مكان العزل', 'Isolation place') }}</label>
+                <input class="form-control" type="text" formControlName="isolationPlace" />
+              </div>
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('العنوان بمصر', 'Address in Egypt') }}</label>
+                <input class="form-control" [value]="patientAddress" [title]="patientAddress" readonly disabled />
+              </div>
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('تاريخ دخوله المستشفى', 'Hospital admission date') }}</label>
+                <input class="form-control" [value]="formatDate(patient?.hospitalEntryDate)" readonly disabled />
+              </div>
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('تاريخ الابلاغ', 'Notification date') }}</label>
+                <input class="form-control" [value]="formatDate(patient?.caseDiscoveryDate)" readonly disabled />
+              </div>
+              <div class="col-lg-4 mt-2 inv-field-cell">
+                <label>{{ label('تاريخ اجراء التقصي الحشري', 'Entomological survey date') }} <span class="text-danger">*</span></label>
+                <app-date-field class="date-with-note" formControlName="surveyDate"></app-date-field>
+                <small class="form-text text-danger d-block mt-0" *ngIf="surveyDateError">{{ surveyDateError }}</small>
+              </div>
+            </div>
+          </div>
+
+          <ng-container *ngIf="isMosquito">
+            <h3 class="fs-5 text-success fwb"><i class="bi bi-bug inv-heading-icon" aria-hidden="true"></i>{{ label('استكشاف يرقات البعوض', 'Mosquito larvae exploration') }}</h3>
+            <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('عدد الوحدات المستكشفة', 'Explored units') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="larvaeExploredUnits" />
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('عدد الغرفات', 'Number of dips') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="larvaeDipsCount" />
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('عدد اليرقات المجموعة', 'Collected larvae') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="larvaeCollectedCount" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 title fs-6 fwb mt-3"><i class="bi bi-bar-chart inv-heading-icon" aria-hidden="true"></i>{{ label('عدد الوحدات الايجابية', 'Positive units') }}</div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('كيولسيني', 'Culicini') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="positiveUnitsCulicini" />
+                  <small class="form-text text-danger d-block mt-0" *ngIf="positiveError('positiveUnitsCulicini', 'larvaeExploredUnits') as err">{{ err }}</small>
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('آيدس ايجبتاي', 'Aedes aegypti') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="positiveUnitsAedesAegypti" />
+                  <small class="form-text text-danger d-block mt-0" *ngIf="positiveError('positiveUnitsAedesAegypti', 'larvaeExploredUnits') as err">{{ err }}</small>
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('أنوفليس', 'Anopheles') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="positiveUnitsAnopheles" />
+                  <small class="form-text text-danger d-block mt-0" *ngIf="positiveError('positiveUnitsAnopheles', 'larvaeExploredUnits') as err">{{ err }}</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 title fs-6 fwb mt-3"><i class="bi bi-geo-alt inv-heading-icon" aria-hidden="true"></i>{{ label('وصف أماكن التوالد (أعداد)', 'Breeding sites (counts)') }}</div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('صرف صحي', 'Sewage') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="breedingSiteSewage" />
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('صرف زراعي', 'Agricultural drainage') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="breedingSiteAgriculturalDrain" />
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('برك مياه', 'Water ponds') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="breedingSitePonds" />
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('أزيار', 'Clay water jars') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="breedingSiteJars" />
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('خزانات بلاستيك / حديد', 'Plastic / iron tanks') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="breedingSitePlasticIronTanks" />
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('خزانات أسمنتية / أرضية', 'Cement / ground tanks') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="breedingSiteCementGroundTanks" />
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('أخرى (عدد)', 'Other (count)') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="breedingSiteOther" />
+                </div>
+                <div class="col-lg-8 mt-2 inv-field-cell" [appShowIf]="(form.get('breedingSiteOther')?.value ?? 0) > 0">
+                  <label>{{ label('أخرى (تذكر)', 'Other (specify)') }}</label>
+                  <input class="form-control" type="text" formControlName="breedingSiteOtherDetails" />
+                </div>
+              </div>
+            </div>
+
+            <h3 class="fs-5 text-success fwb"><i class="bi bi-bug inv-heading-icon" aria-hidden="true"></i>{{ label('استكشاف البعوض البالغ', 'Adult mosquito exploration') }}</h3>
+            <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('عدد المنازل', 'Houses') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="adultHousesCount" />
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('عدد الغرف أو المصائد', 'Rooms or traps') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="adultRoomsOrTrapsCount" />
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('عدد البعوض البالغ', 'Adult mosquitoes') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="adultMosquitoCount" />
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="!isMosquito">
+            <h3 class="fs-5 text-success fwb"><i class="bi bi-bug inv-heading-icon" aria-hidden="true"></i>{{ label('استكشاف ذبابة الرمل', 'Sand fly exploration') }}</h3>
+            <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+              <div class="row">
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('عدد المصائد الموزعة', 'Traps distributed') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="sandFlyTrapsDistributed" />
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('عدد المصائد الإيجابية', 'Positive traps') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="sandFlyTrapsPositive" />
+                  <small class="form-text text-danger d-block mt-0" *ngIf="positiveError('sandFlyTrapsPositive', 'sandFlyTrapsDistributed') as err">{{ err }}</small>
+                </div>
+                <div class="col-lg-4 mt-2 inv-field-cell">
+                  <label>{{ label('عدد ذباب الرمل', 'Sand flies') }}</label>
+                  <input class="form-control" type="number" min="0" step="1" formControlName="sandFlyCount" />
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <h3 class="fs-5 text-success fwb"><i class="bi bi-bug inv-heading-icon" aria-hidden="true"></i>
+            {{ isMosquito ? label('التصنيف الحشري (يرقات – حشرات بالغة)', 'Entomological classification (larvae – adults)') : label('التصنيف الحشري (حشرات بالغة)', 'Entomological classification (adults)') }}
+          </h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="table-scroll">
+              <table class="table table-bordered align-middle mb-0" formGroupName="species">
+                <thead>
+                  <tr>
+                    <th>{{ label('النوع', 'Species') }}</th>
+                    <th *ngIf="isMosquito">{{ label('عدد اليرقات', 'Larvae') }}</th>
+                    <th>{{ label('عدد البالغ', 'Adults') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let genus of genera">
+                    <tr class="table-light">
+                      <th [attr.colspan]="isMosquito ? 3 : 2">{{ label(genus.ar, genus.en) }}</th>
+                    </tr>
+                    <tr *ngFor="let sp of genus.species" [formGroupName]="sp.key">
+                      <td>{{ label(sp.ar, sp.en) }}</td>
+                      <td *ngIf="isMosquito">
+                        <input class="form-control" type="number" min="0" step="1" formControlName="larvae" [attr.aria-label]="label(sp.ar, sp.en) + ' - ' + label('عدد اليرقات', 'Larvae')" />
+                      </td>
+                      <td>
+                        <input class="form-control" type="number" min="0" step="1" formControlName="adults" [attr.aria-label]="label(sp.ar, sp.en) + ' - ' + label('عدد البالغ', 'Adults')" />
+                      </td>
+                    </tr>
+                    <tr *ngIf="isMosquito && genus.key !== 'other'" class="fwb">
+                      <td>{{ label('إجمالي ', 'Total ') + label(genus.ar, genus.en) }}</td>
+                      <td>{{ genusTotal(genus.key, 'larvae') }}</td>
+                      <td>{{ genusTotal(genus.key, 'adults') }}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="title fs-6 fwb mt-3"><i class="bi bi-list-check inv-heading-icon" aria-hidden="true"></i>{{ label('أنواع أخرى', 'Other species') }}</div>
+            <div class="table-scroll" *ngIf="otherSpecies.length">
+              <table class="table table-bordered align-middle mb-0" formArrayName="otherSpecies">
+                <thead>
+                  <tr>
+                    <th *ngIf="isMosquito">{{ label('الجنس', 'Genus') }}</th>
+                    <th>{{ label('النوع', 'Species') }}</th>
+                    <th *ngIf="isMosquito">{{ label('عدد اليرقات', 'Larvae') }}</th>
+                    <th>{{ label('عدد البالغ', 'Adults') }}</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of otherSpecies.controls; let i = index" [formGroupName]="i">
+                    <td *ngIf="isMosquito">
+                      <select class="form-control" formControlName="genus" [attr.aria-label]="label('الجنس', 'Genus')">
+                        <option [ngValue]="null"></option>
+                        <option *ngFor="let g of mosquitoGenusOptions" [ngValue]="g.key">{{ label(g.ar, g.en) }}</option>
+                      </select>
+                    </td>
+                    <td><input class="form-control" type="text" formControlName="name" [attr.aria-label]="label('النوع', 'Species')" /></td>
+                    <td *ngIf="isMosquito"><input class="form-control" type="number" min="0" step="1" formControlName="larvae" [attr.aria-label]="label('عدد اليرقات', 'Larvae')" /></td>
+                    <td><input class="form-control" type="number" min="0" step="1" formControlName="adults" [attr.aria-label]="label('عدد البالغ', 'Adults')" /></td>
+                    <td>
+                      <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeOtherSpecies(i)" [title]="label('حذف', 'Remove')">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mt-2">
+              <button type="button" class="btn btn-primary" (click)="addOtherSpecies()">
+                <i class="bi bi-plus-lg"></i>
+                {{ label('إضافة نوع آخر', 'Add other species') }}
+              </button>
+            </div>
+          </div>
+
+          <h3 class="fs-5 text-success fwb"><i class="bi bi-bar-chart inv-heading-icon" aria-hidden="true"></i>{{ label('المؤشرات', 'Indicators') }}</h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <small class="text-muted d-block mb-2">{{ label('تُحسب تلقائياً من الأعداد المدخلة', 'Calculated automatically from the entered counts') }}</small>
+            <div class="table-scroll">
+              <table class="table table-bordered align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>{{ label('المؤشر', 'Indicator') }}</th>
+                    <th>{{ label('طريقة الحساب', 'Formula') }}</th>
+                    <th>{{ label('القيمة', 'Value') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ind of indicators">
+                    <td class="fwb">{{ ind.label }}</td>
+                    <td class="text-muted">{{ ind.formula }}</td>
+                    <td class="fwb" dir="ltr">{{ ind.value }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h3 class="fs-5 text-success fwb"><i class="bi bi-shield-check inv-heading-icon" aria-hidden="true"></i>{{ label('بيان استهلاك المبيدات المستخدمة في مكافحة الطور اليرقي', 'Pesticides used for larval control') }}</h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <ng-container *ngTemplateOutlet="pesticideTable; context: { kind: 'larvicides', coordinateLabel: label('إحداثيات بؤرة التوالد', 'Breeding focus coordinates') }"></ng-container>
+          </div>
+
+          <h3 class="fs-5 text-success fwb"><i class="bi bi-shield-check inv-heading-icon" aria-hidden="true"></i>{{ label('بيان استهلاك المبيدات في مكافحة الطور البالغ (أعمال الدهان)', 'Pesticides used for adult control (residual spraying)') }}</h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <ng-container *ngTemplateOutlet="pesticideTable; context: { kind: 'residualSpraying', coordinateLabel: label('إحداثيات منطقة العمل', 'Work area coordinates') }"></ng-container>
+          </div>
+
+          <h3 class="fs-5 text-success fwb"><i class="bi bi-shield-check inv-heading-icon" aria-hidden="true"></i>{{ label('بيان استهلاك المبيدات في مكافحة الأطوار البالغة (جهاز ضباب – جهاز رذاذ)', 'Pesticides used for adult control (fogger – mist blower)') }}</h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <ng-container *ngTemplateOutlet="pesticideTable; context: { kind: 'spaceSpraying', coordinateLabel: label('إحداثيات منطقة العمل', 'Work area coordinates') }"></ng-container>
+          </div>
+
+          <h3 class="fs-5 text-success fwb"><i class="bi bi-geo-alt inv-heading-icon" aria-hidden="true"></i>{{ label('بيان تفصيلي بعنوان منطقة العمل', 'Detailed work area address') }}</h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <textarea class="form-control" rows="3" formControlName="workAreaAddressDetails" [attr.aria-label]="label('بيان تفصيلي بعنوان منطقة العمل', 'Detailed work area address')"></textarea>
+          </div>
+
+          <h3 class="fs-5 text-success fwb"><i class="bi bi-person-badge inv-heading-icon" aria-hidden="true"></i>{{ label('بيانات القائمين بالترصد', 'Surveillance team') }}</h3>
+          <div class="card card-body bg-dark-mode rounded-2 mx-2 mb-4 card-alt">
+            <div class="row">
+              <div class="col-lg-6 mt-2 inv-field-cell">
+                <label>{{ label('القائم بالترصد الحشري', 'Entomological surveillance officer') }}</label>
+                <input class="form-control" type="text" formControlName="surveillanceOfficerName" />
+              </div>
+              <div class="col-lg-6 mt-2 inv-field-cell">
+                <label>{{ label('مدير إدارة مكافحة ناقلات الأمراض', 'Vector control department manager') }}</label>
+                <input class="form-control" type="text" formControlName="vectorControlManagerName" />
+              </div>
+              <div class="col-lg-6 mt-2 inv-field-cell">
+                <label>{{ label('مدير عام المتوطنة', 'Endemic diseases general director') }}</label>
+                <input class="form-control" type="text" formControlName="endemicDiseasesDirectorName" />
+              </div>
+              <div class="col-lg-6 mt-2 inv-field-cell">
+                <label>{{ label('اسم الوحدة القائمة بالترصد الحشري', 'Entomological surveillance unit name') }}</label>
+                <input class="form-control" type="text" formControlName="surveillanceUnitName" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-start">
+          <button type="submit" class="btn bg rounded-2 text-light" [disabled]="saving">
+            {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template #pesticideTable let-kind="kind" let-coordinateLabel="coordinateLabel">
+  <ng-container [formGroup]="form">
+    <div class="table-scroll">
+      <table class="table table-bordered align-middle mb-0 pesticide-table" [formArrayName]="kind">
+        <thead>
+          <tr>
+            <th>{{ label('اسم المبيد', 'Pesticide') }}</th>
+            <th>{{ label('المادة الفعالة', 'Active ingredient') }}</th>
+            <th>{{ label('نسبة الخلط', 'Mix ratio') }}</th>
+            <th *ngIf="kind !== 'spaceSpraying'">{{ label('عدد الرشاشات (سعة 10 لتر)', 'Sprayers (10 L)') }}</th>
+            <th *ngIf="kind === 'spaceSpraying'">{{ label('كمية السولار / الماء (لتر)', 'Diesel / water (L)') }}</th>
+            <th>{{ label('كمية المبيد', 'Pesticide quantity') }} ({{ quantityUnit(kind) }})</th>
+            <th>{{ coordinateLabel }} N</th>
+            <th>{{ coordinateLabel }} E</th>
+            <th *ngIf="kind === 'residualSpraying'">{{ label('عدد المنازل', 'Houses') }}</th>
+            <th *ngIf="kind === 'spaceSpraying'">{{ label('نوع الجهاز', 'Device type') }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of pesticideRows(kind).controls; let i = index" [formGroupName]="i">
+            <td>
+              <select class="form-control" formControlName="pesticide" [attr.aria-label]="label('اسم المبيد', 'Pesticide')">
+                <option [ngValue]="null"></option>
+                <option *ngFor="let p of pesticides[kind]" [ngValue]="p.key">{{ p.name }}</option>
+                <option [ngValue]="otherPesticide">{{ label('أخرى', 'Other') }}</option>
+              </select>
+              <input *ngIf="row.get('pesticide')?.value === otherPesticide" class="form-control mt-1" type="text" formControlName="pesticideName"
+                [placeholder]="label('اسم المبيد', 'Pesticide name')" [attr.aria-label]="label('اسم المبيد', 'Pesticide name')" />
+            </td>
+            <td><input class="form-control" type="text" formControlName="activeIngredient" [readonly]="isKnownPesticide(row)" [attr.aria-label]="label('المادة الفعالة', 'Active ingredient')" /></td>
+            <td><input class="form-control" type="text" formControlName="mixRatio" [readonly]="isKnownPesticide(row)" [attr.aria-label]="label('نسبة الخلط', 'Mix ratio')" /></td>
+            <td *ngIf="kind !== 'spaceSpraying'"><input class="form-control" type="number" min="0" step="1" formControlName="sprayersCount" [attr.aria-label]="label('عدد الرشاشات', 'Sprayers')" /></td>
+            <td *ngIf="kind === 'spaceSpraying'"><input class="form-control" type="number" min="0" step="any" formControlName="solventQuantity" [attr.aria-label]="label('كمية السولار / الماء', 'Diesel / water')" /></td>
+            <td><input class="form-control" type="number" min="0" step="any" formControlName="quantity" [attr.aria-label]="label('كمية المبيد', 'Pesticide quantity')" /></td>
+            <td>
+              <input class="form-control" type="number" step="any" dir="ltr" formControlName="latitude" placeholder="N" [attr.aria-label]="coordinateLabel + ' N'" />
+              <small class="form-text text-danger d-block mt-0" *ngIf="coordinateError(row, 'latitude') as err">{{ err }}</small>
+            </td>
+            <td>
+              <input class="form-control" type="number" step="any" dir="ltr" formControlName="longitude" placeholder="E" [attr.aria-label]="coordinateLabel + ' E'" />
+              <small class="form-text text-danger d-block mt-0" *ngIf="coordinateError(row, 'longitude') as err">{{ err }}</small>
+            </td>
+            <td *ngIf="kind === 'residualSpraying'"><input class="form-control" type="number" min="0" step="1" formControlName="housesCount" [attr.aria-label]="label('عدد المنازل', 'Houses')" /></td>
+            <td *ngIf="kind === 'spaceSpraying'">
+              <select class="form-control" formControlName="deviceType" [attr.aria-label]="label('نوع الجهاز', 'Device type')">
+                <option [ngValue]="null"></option>
+                <option *ngFor="let d of spaceDevices" [ngValue]="d.value">{{ label(d.ar, d.en) }}</option>
+              </select>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-danger" (click)="removePesticideRow(kind, i)" [title]="label('حذف', 'Remove')">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-2">
+      <button type="button" class="btn btn-primary" (click)="addPesticideRow(kind)">
+        <i class="bi bi-plus-lg"></i>
+        {{ label('إضافة مبيد', 'Add pesticide') }}
+      </button>
+    </div>
+  </ng-container>
+</ng-template>
