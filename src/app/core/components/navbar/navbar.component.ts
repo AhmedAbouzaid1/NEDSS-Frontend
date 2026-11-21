@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription, finalize } from 'rxjs';
 import { UiLoadingService } from '../../services/ui-loading.service';
 import { SessionService } from '../../services/session.service';
+import { NavDrawerService } from '../../services/nav-drawer.service';
 
 @Component({
   selector: 'app-navbar',
@@ -46,7 +47,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private generalDataService: GeneralDataService,
     private translate: TranslateService,
     private uiLoadingService: UiLoadingService,
-    private session: SessionService
+    private session: SessionService,
+    public drawer: NavDrawerService
   ) {
     this.username = JSON.parse(
       localStorage.getItem('ls.authorizationData')
