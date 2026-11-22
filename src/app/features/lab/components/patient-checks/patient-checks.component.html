@@ -545,11 +545,20 @@
         [style.direction]="dir"
         [value]="patientsForLab"
         [paginator]="false"
+        (sortFunction)="sort($event)"
+        [customSort]="true"
+        [sortField]="patientsFilter.sortColumn"
+        [sortOrder]="patientsFilter.sortOrder == 'desc' ? -1 : 1"
       >
         <ng-template pTemplate="header">
           <tr>
-            <th>
+            <th pSortableColumn="fullName">
               {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.PATIENT_NAME" | translate }}
+              <p-sortIcon field="fullName"></p-sortIcon>
+            </th>
+            <th pSortableColumn="createdDate">
+              {{ "NEDSS.EVENTS.CREATED_DATE" | translate }}
+              <p-sortIcon field="createdDate"></p-sortIcon>
             </th>
             <!-- <th>
               {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.CHECK" | translate }}
@@ -557,28 +566,33 @@
             <th>
               {{ "NEDSS.INVESTIGATIONS.PATIENTDISEASES" | translate }}
             </th>
-            <th>
+            <th pSortableColumn="homeGovernmentName">
               {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.GOVERBMENT" | translate }}
+              <p-sortIcon field="homeGovernmentName"></p-sortIcon>
             </th>
-            <th>
+            <th pSortableColumn="homeHealthAdministrationName">
               {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.HEALTHADMIN" | translate }}
+              <p-sortIcon field="homeHealthAdministrationName"></p-sortIcon>
             </th>
-            <th>
+            <th pSortableColumn="homeHealthOfficeName">
               {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.HEALTH_OFFICE" | translate }}
+              <p-sortIcon field="homeHealthOfficeName"></p-sortIcon>
             </th>
-            <th>
+            <th pSortableColumn="homeCityName">
               {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.CITY" | translate }}
+              <p-sortIcon field="homeCityName"></p-sortIcon>
             </th>
-            <th>
+            <th pSortableColumn="incidentSourceName">
               {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.INCIDENT_SOURCE" | translate }}
+              <p-sortIcon field="incidentSourceName"></p-sortIcon>
             </th>
-            <th>
-              {{
-                "NEDSS.LAB_VIEW.PATIENT_CHECKS.CASE_DICAVARY_DATE" | translate
-              }}
+            <th pSortableColumn="caseDiscoveryDate">
+              {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.CASE_DICAVARY_DATE" | translate }}
+              <p-sortIcon field="caseDiscoveryDate"></p-sortIcon>
             </th>
-            <th>
+            <th pSortableColumn="nationality">
               {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.NATIONALITY" | translate }}
+              <p-sortIcon field="nationality"></p-sortIcon>
             </th>
             <th>
               {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.MOBILE" | translate }}
@@ -591,6 +605,7 @@
         <ng-template pTemplate="body" let-item>
           <tr>
             <td><span [innerHTML]="item.fullName"> </span></td>
+            <td>{{ item.createdDate | date : 'dd/MM/yyyy' }}</td>
             <!-- <td><span [innerHTML]="item.labChecksExistance"> </span></td> -->
             <td>
               <span

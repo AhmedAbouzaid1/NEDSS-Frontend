@@ -63,18 +63,6 @@ export class AuthComponent {
       this.hasInternetAccess = currentState.hasInternetAccess;
     });
 
-    let userDataObject = JSON.parse(
-      localStorage.getItem('ls.authorizationData')
-    );
-    let userData =
-      userDataObject != null || userDataObject != undefined
-        ? userDataObject.userName
-        : null;
-
-    if (userData != null) {
-      this.router.navigateByUrl(this.getReturnUrl() || 'home/welcome');
-    }
-    // window.location.reload()
   }
 
   private getReturnUrl(): string {

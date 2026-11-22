@@ -71,6 +71,7 @@ export class InvestigationComponent implements OnInit {
   generalReportForm: any;
 
   investigationFormfilter: any;
+  reportingScopes: { id: number; label: string }[] = [];
   notInferringFilter = {
     pageSize: 10,
     pageIndex: 0,
@@ -163,6 +164,7 @@ export class InvestigationComponent implements OnInit {
       isInvistegationDone: new FormControl(null),
       filterType: new FormControl(2),
       InvestigationStatus: new FormControl(),
+      reportingScope: new FormControl(null),
       firstTime: new FormControl(false),
     });
     this.investigationFormfilter = {
@@ -192,6 +194,15 @@ export class InvestigationComponent implements OnInit {
     this.translateService
       .get('NEDSS.INVESTIGATIONS.ITEM_INVESTIGATIONS')
       .subscribe((res) => (this.screenName = res));
+
+    this.translateService
+      .get(['NEDSS.INVESTIGATIONS.REPORTING_SCOPE_INSIDE', 'NEDSS.INVESTIGATIONS.REPORTING_SCOPE_OUTSIDE'])
+      .subscribe((res) => {
+        this.reportingScopes = [
+          { id: 1, label: res['NEDSS.INVESTIGATIONS.REPORTING_SCOPE_INSIDE'] },
+          { id: 2, label: res['NEDSS.INVESTIGATIONS.REPORTING_SCOPE_OUTSIDE'] },
+        ];
+      });
 
     this.generalDataService.cardIdValidationMessage = '';
     this.disableControls();

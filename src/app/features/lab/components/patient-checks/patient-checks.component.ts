@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { GeneralDataService } from '../../../home/general-data/services/general-data.service';
 import { debounce } from 'rxjs-compat/operator/debounce';
 import { NationalityEnum } from '../../../home/general-data/models/nationality-enum';
+import { SortEvent } from 'primeng/api';
 @Component({
   selector: 'app-patient-checks',
   templateUrl: './patient-checks.component.html',
@@ -24,8 +25,8 @@ export class PatientChecksComponent implements OnInit {
   patientsFilter = {
     pageSize: 10,
     pageIndex: 0,
-    sortColumn: '',
-    sortOrder: '',
+    sortColumn: 'createdDate',
+    sortOrder: 'desc',
     searchText: '',
     id: null,
     patientId: null,
@@ -129,8 +130,8 @@ export class PatientChecksComponent implements OnInit {
         this.patientsFilter = {
           pageSize: 10,
           pageIndex: 0,
-          sortColumn: '',
-          sortOrder: '',
+          sortColumn: 'createdDate',
+          sortOrder: 'desc',
           searchText: '',
           id: null,
           patientId: null,
@@ -156,8 +157,8 @@ export class PatientChecksComponent implements OnInit {
         this.patientsFilter = {
           pageSize: 10,
           pageIndex: 0,
-          sortColumn: '',
-          sortOrder: '',
+          sortColumn: 'createdDate',
+          sortOrder: 'desc',
           searchText: '',
           id: null,
           patientId: null,
@@ -304,6 +305,22 @@ export class PatientChecksComponent implements OnInit {
           });
       }
     );
+  }
+
+  sort(event: SortEvent) {
+    const order = event.order == -1 ? 'desc' : 'asc';
+    if (
+      this.patientsFilter.sortOrder == order &&
+      this.patientsFilter.sortColumn == event.field
+    )
+      return;
+    this.patientsFilter.sortOrder = order;
+    this.patientsFilter.sortColumn = event.field;
+    if (this.patientsForLab?.length) {
+      this.patientsFilter.pageIndex = 0;
+      this.first = 0;
+      this.getPatients(false, true);
+    }
   }
 
   previousPage() {
