@@ -29,7 +29,6 @@ export const INVESTIGATION_FORM_BY_ROUTER: Record<string, string> = {
   "monkeypox": "monkeypox",
   "mumbariPoisoning": "mumbari-poisoning",
   "mumps": "mumps",
-  "NfalseChickenpoxULL": "false-chickenpox",
   "plague": "plague",
   "rabies": "rabies",
   "rift-valley": "rift-valley",

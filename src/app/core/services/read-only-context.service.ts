@@ -73,7 +73,7 @@ export class ReadOnlyContextService {
       };
     }
 
-    const shellIndex = segments.indexOf('compelete-investigation');
+    const shellIndex = segments.indexOf('complete-investigation');
     const formSegment = shellIndex >= 0 ? segments[shellIndex + 1] : undefined;
     const diseaseGroupId = Number(this.investigation.diseaseGroupID);
     if (formSegment && diseaseGroupId > 0) {

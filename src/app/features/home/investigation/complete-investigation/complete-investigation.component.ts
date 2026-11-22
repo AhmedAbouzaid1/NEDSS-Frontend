@@ -85,7 +85,7 @@ export class CompleteInvestigationComponent implements OnInit {
   }
   ngOnDestroy(): void {
     this.routerSub?.unsubscribe();
-    if (this.Router.url == '/home/investigations/compelete-investigation') {
+    if (this.Router.url == '/home/investigations/complete-investigation') {
       this.InvestigationService.view = false;
     } else {
       this.InvestigationService.view = true;
@@ -103,7 +103,7 @@ export class CompleteInvestigationComponent implements OnInit {
   setDesiese(item: InvestigationTab) {
     this.InvestigationService.diseaseGroupID = item.diseaseGroupId;
     this.Router.navigateByUrl(
-      '/home/investigations/compelete-investigation/' + item.router +
+      '/home/investigations/complete-investigation/' + item.router +
         (item.entomological ? '?diseaseGroupId=' + item.diseaseGroupId : ''),
       { replaceUrl: true }
     );

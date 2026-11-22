@@ -314,7 +314,7 @@ export class ContainerFieldComponent {
     );
   }
   goToQuestionForm(questionId?: number) {
-    this.router.navigateByUrl('home/control-panel/qustion-form/' + this.FormContainerId + '/' + this.diseaseFormContainerId + (questionId ? `/${questionId}` : ''))
+    this.router.navigateByUrl('home/control-panel/question-form/' + this.FormContainerId + '/' + this.diseaseFormContainerId + (questionId ? `/${questionId}` : ''))
   }
 
 

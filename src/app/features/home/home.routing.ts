@@ -370,9 +370,7 @@ const routes: Routes = [
       },
       {
         path: 'NfalseChickenpoxULL/:id/diseaseId/:diseaseId',
-        component: FalseChickenpoxComponent,
-        canActivate: [AuthGuard, NavigationGuard, InvestigationPatientGuard],
-        data: { types: [3] },
+        redirectTo: 'falseChickenpox/:id/diseaseId/:diseaseId',
       },
       {
         path: 'severeFoodPoisoning/:id/diseaseId/:diseaseId',
@@ -509,11 +507,19 @@ const routes: Routes = [
         data: { types: [3] },
         children: [
           {
-            path: 'investigation-detailes/:id',
+            path: 'investigation-details/:id',
             component: InvestigationDetailesComponent,
           },
           {
+            path: 'investigation-detailes/:id',
+            redirectTo: 'investigation-details/:id',
+          },
+          {
             path: 'compelete-investigation',
+            redirectTo: 'complete-investigation',
+          },
+          {
+            path: 'complete-investigation',
             component: CompleteInvestigationComponent,
             canActivate: [InvestigationPatientGuard],
             canActivateChild: [InvestigationPatientGuard],
@@ -551,7 +557,7 @@ const routes: Routes = [
               { path: 'cholera', component: CholeraComponent },
               {
                 path: 'NfalseChickenpoxULL',
-                component: FalseChickenpoxComponent,
+                redirectTo: 'falseChickenpox',
               },
               {
                 path: 'severeFoodPoisoning',
@@ -630,10 +636,14 @@ const routes: Routes = [
         data: { types: [3] },
         children: [
           {
-            path: 'increase-coeffiecnt',
+            path: 'increase-coefficient',
             component: PopulationIncreaseCoefficientComponent,
             canActivate: [AuthGuard, NavigationGuard],
             data: { types: [3] },
+          },
+          {
+            path: 'increase-coeffiecnt',
+            redirectTo: 'increase-coefficient',
           },
           {
             path: 'populationExpectation',
@@ -732,24 +742,40 @@ const routes: Routes = [
         component: NotInferringReportComponent,
       },
       {
-        path: 'monitorUnitsPeparations-report',
+        path: 'monitorUnitsPreparations-report',
         component: MonitorUnitsPeparationsReportComponent,
+      },
+      {
+        path: 'monitorUnitsPeparations-report',
+        redirectTo: 'monitorUnitsPreparations-report',
       },
       {
         path: 'epidemiologicalThresholds-report',
         component: EpidemiologicalThresholdsReportComponent,
       },
       {
-        path: 'caseResultCatesgReport',
+        path: 'caseResultCategoryReport',
         component: CaseResultCategoryComponent,
       },
       {
-        path: 'incedentSourceToCase',
+        path: 'caseResultCatesgReport',
+        redirectTo: 'caseResultCategoryReport',
+      },
+      {
+        path: 'incidentSourceToCase',
         component: IncedentSourceToCaseComponent,
       },
       {
-        path: 'finalResultToDiseasReport',
+        path: 'incedentSourceToCase',
+        redirectTo: 'incidentSourceToCase',
+      },
+      {
+        path: 'finalResultToDiseasesReport',
         component: FinalResultToDiseasesComponent,
+      },
+      {
+        path: 'finalResultToDiseasReport',
+        redirectTo: 'finalResultToDiseasesReport',
       },
       {
         path: 'ageCategoriesReport',
@@ -800,8 +826,12 @@ const routes: Routes = [
         component: PrevalenceRateToDeathReportComponent,
       },
       {
-        path: 'finalResultToIncedentReport',
+        path: 'finalResultToIncidentReport',
         component: FinalResultToIncedentComponent,
+      },
+      {
+        path: 'finalResultToIncedentReport',
+        redirectTo: 'finalResultToIncidentReport',
       },
       {
         path: 'user-report',

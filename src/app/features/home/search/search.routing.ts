@@ -21,7 +21,8 @@ const routes: Routes = [
       { path: '', component: generalreportFormComponent } ,
       { path: 'general-report', component: generalreportFormComponent } ,
        { path: 'place-residence', component: PlaceOfResidenceComponent } ,
-        { path: 'search-demograth', component: SearchDemoghraphComponent } ,
+        { path: 'search-demographic', component: SearchDemoghraphComponent } ,
+        { path: 'search-demograth', redirectTo: 'search-demographic' } ,
         { path: 'search-diagnostics', component: SearchDiagnosticsComponent } ,
         { path: 'search-clinical', component: SearchClinicalComponent } ,
     ] }

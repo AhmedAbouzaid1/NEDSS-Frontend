@@ -105,7 +105,7 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (
       this.Router.url.includes(
-        '/home/investigations/compelete-investigation'
+        '/home/investigations/complete-investigation'
       ) ||
       this.Router.url.includes('/home/investigations')
     ) {

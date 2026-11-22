@@ -122,7 +122,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
       {
         label: 'البيانات الديموجرافية ',
         icon: 'pi pi-fw pi-id-card',
-        routerLink: ['./search-demograth'],
+        routerLink: ['./search-demographic'],
       },
       {
         label: 'محل الاقامة',
@@ -149,7 +149,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
       {
         label: 'Demographic data ',
         icon: 'pi pi-fw pi-id-card',
-        routerLink: ['./search-demograth'],
+        routerLink: ['./search-demographic'],
       },
       {
         label: 'residence',

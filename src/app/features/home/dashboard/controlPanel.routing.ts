@@ -64,10 +64,11 @@ const routes: Routes = [
     canActivate: [NavigationGuard],
   },
   {
-    path: 'audit-trial',
+    path: 'audit-trail',
     component: AuditTrialComponent,
     canActivate: [NavigationGuard],
   },
+  { path: 'audit-trial', redirectTo: 'audit-trail' },
   {
     path: 'disease-symptoms',
     component: DiseaseSpecialSymptomsComponent,
@@ -165,14 +166,22 @@ const routes: Routes = [
     canActivate: [NavigationGuard],
   },
   {
-    path: 'qustion-form/:id/:containerId',
+    path: 'question-form/:id/:containerId',
     component: AddUpdateContainerFieldComponent,
     canActivate: [NavigationGuard],
   },
   {
-    path: 'qustion-form/:id/:containerId/:questionId',
+    path: 'question-form/:id/:containerId/:questionId',
     component: AddUpdateContainerFieldComponent,
     canActivate: [NavigationGuard],
+  },
+  {
+    path: 'qustion-form/:id/:containerId',
+    redirectTo: 'question-form/:id/:containerId',
+  },
+  {
+    path: 'qustion-form/:id/:containerId/:questionId',
+    redirectTo: 'question-form/:id/:containerId/:questionId',
   },
   {
     path: 'view-form/:id',
@@ -186,7 +195,8 @@ const routes: Routes = [
     canActivate: [NavigationGuard],
     data: { types: [3] },
   },
-  { path: 'Visit-new-review', component: VisitNewReviewComponent },
+  { path: 'visit-new-review', component: VisitNewReviewComponent },
+  { path: 'Visit-new-review', redirectTo: 'visit-new-review' },
   { path: 'period-of-cards', component: PeriodOfCardsComponent },
   {
     path: 'data-fetch-days',

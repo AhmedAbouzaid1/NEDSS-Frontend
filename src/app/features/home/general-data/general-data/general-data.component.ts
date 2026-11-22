@@ -409,7 +409,7 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
     '/home/general-data/demographic-info',
     '/home/general-data/residence-info',
     '/home/general-data/clinical-symptoms',
-    '/home/general-data/diagonistic-info',
+    '/home/general-data/diagnostic-info',
     '/home/general-data/special-symptoms',
     '/home/general-data/sentinel',
   ];
@@ -752,7 +752,7 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
   goToInvestigation() {
     this.postSaveDialogVisible = false;
     this.router.navigate([
-      '/home/investigations/investigation-detailes',
+      '/home/investigations/investigation-details',
       this.savedPatientId,
     ]);
   }

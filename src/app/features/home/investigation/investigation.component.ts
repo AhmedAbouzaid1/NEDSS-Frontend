@@ -129,9 +129,9 @@ export class InvestigationComponent implements OnInit {
     incidentInfoLink?.classList.remove('active');
 
     if (
-      this.router.url.includes('/home/investigations/investigation-detailes')
+      this.router.url.includes('/home/investigations/investigation-details')
       ||
-      this.router.url.includes('/home/investigations/compelete-investigation')
+      this.router.url.includes('/home/investigations/complete-investigation')
     ) {
       this.investigation.view = false;
     } else {

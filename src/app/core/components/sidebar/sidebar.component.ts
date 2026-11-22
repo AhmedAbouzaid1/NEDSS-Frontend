@@ -38,7 +38,7 @@ export class SidebarComponent implements OnDestroy {
     '/home/roles-report',
     '/home/notInferring-report',
     '/home/populations-report',
-    '/home/monitorUnitsPeparations-report',
+    '/home/monitorUnitsPreparations-report',
     '/home/epidemiologicalThresholds-report',
     '/home/monitor-units-report',
     '/home/monitor-units-team-members-report',
