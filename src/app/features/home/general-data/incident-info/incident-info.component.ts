@@ -985,6 +985,20 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
     const isEgyptianNationality =
       this.patient.nationalityId == NationalityEnum.Egyptian;
 
+    if (isManualChange) {
+      const digits = this.generalDataService.normalizeNationalIdDigits(value);
+      if (digits !== (value ?? '').toString()) {
+        this.patient.nationalId = digits || null;
+      }
+      value = this.patient.nationalId;
+      this.generalDataService.isCardIdValid =
+        this.generalDataService.checkCardIdValid(
+          this.patient.incidentDepartmentId,
+          this.patient.nationalityId,
+          this.patient.nationalId
+        );
+    }
+
     if (
       value != null &&
       value.toString().length === 14 &&

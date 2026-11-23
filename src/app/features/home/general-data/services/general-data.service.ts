@@ -1304,14 +1304,26 @@ export class GeneralDataService {
   }
 
   onIdentityCardKeyPress(event: KeyboardEvent): void {
-    if (event.key === 'Enter') return;
-    let inputKey = event.key;
-    if (
-      (inputKey !== 'Backspace' && isNaN(Number(inputKey))) ||
-      (event.target as HTMLInputElement).value.length >= 14
-    ) {
+    if (event.key === 'Enter' || event.ctrlKey || event.metaKey) return;
+    if (event.key === 'Backspace') return;
+    if (!/^[0-9٠-٩۰-۹]$/.test(event.key)) {
+      event.preventDefault();
+      return;
+    }
+    const input = event.target as HTMLInputElement;
+    const selected = Math.abs((input.selectionEnd ?? 0) - (input.selectionStart ?? 0));
+    if (input.value.length - selected >= 14) {
       event.preventDefault();
     }
+  }
+
+  normalizeNationalIdDigits(value: unknown): string {
+    if (value === null || value === undefined) return '';
+    return String(value)
+      .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+      .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
+      .replace(/\D/g, '')
+      .slice(0, 14);
   }
 
   validatePhoneNumber1(phoneNo, isRequired, mode: 'international' | 'local' | null = null) {
