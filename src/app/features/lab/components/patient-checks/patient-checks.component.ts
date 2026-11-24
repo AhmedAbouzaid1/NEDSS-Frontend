@@ -307,6 +307,12 @@ export class PatientChecksComponent implements OnInit {
     );
   }
 
+  search() {
+    this.patientsFilter.pageIndex = 0;
+    this.first = 0;
+    this.getPatients();
+  }
+
   sort(event: SortEvent) {
     const order = event.order == -1 ? 'desc' : 'asc';
     if (
