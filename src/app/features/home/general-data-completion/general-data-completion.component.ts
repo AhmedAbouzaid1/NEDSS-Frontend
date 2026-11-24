@@ -17,6 +17,13 @@ import { SharedDataService } from '../general-data/services/shared-data.service'
 // import { ExportService } from '../../../core/services/export.service';
 import { ExportService } from 'src/app/core/services/export.service';
 import { ExportAsConfig } from 'ngx-export-as';
+
+enum UserAccessLevel {
+  Central = 1,
+  Governorate = 3,
+  Administration = 4,
+}
+
 @Component({
   selector: 'app-general-data-completion',
   templateUrl: './general-data-completion.component.html',
@@ -24,6 +31,9 @@ import { ExportAsConfig } from 'ngx-export-as';
 })
 export class GeneralDataCompletionComponent {
   levelId: any;
+  canSelectGovernment = false;
+  canSelectHealthAdministration = false;
+  canSelectIncidentSource = false;
   maxDate = new Date();
   currentLang: string;
   dir: string;
@@ -150,6 +160,12 @@ export class GeneralDataCompletionComponent {
     this.levelId = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     )?.user?.levelId;
+    this.canSelectGovernment = this.levelId == UserAccessLevel.Central;
+    this.canSelectHealthAdministration =
+      this.canSelectGovernment || this.levelId == UserAccessLevel.Governorate;
+    this.canSelectIncidentSource =
+      this.canSelectHealthAdministration ||
+      this.levelId == UserAccessLevel.Administration;
 
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
