@@ -46,6 +46,10 @@ export class AuthService {
     return this.APIs.post(this.AuthControllerURL + "ChangePassword", data)
   }
 
+  completeProfile(data: { nationalId: string; phoneNo: string }) {
+    return this.APIs.post(this.AuthControllerURL + "CompleteProfile", data);
+  }
+
   forgotPassword(username) {
     var model: ForgotPasswordModel = {
       username: username.value,

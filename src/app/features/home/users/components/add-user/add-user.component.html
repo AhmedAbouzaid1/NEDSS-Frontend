@@ -83,26 +83,70 @@
           <div class="form-group">
             <label for="phoneNo">
               {{ "NEDSS.HOME.USERS.ADD_USER.MOBILE" | translate }}
+              <span class="text-danger mess-color">*</span>
             </label>
             <input
               type="text"
+              id="phoneNo"
               name="phoneNo"
               [(ngModel)]="user.phoneNo"
               #phoneNo="ngModel"
               class="w-100"
+              inputmode="tel"
+              maxlength="14"
+              required
               (keypress)="generalDataService.onPhoneNumberKeyPress($event)"
-              (blur)="
-                generalDataService.isPhoneNumber1Valid =
-                  generalDataService.validatePhoneNumber1(user.phoneNo, false)
-              "
+              (blur)="phoneTouched = true; validatePhone()"
+              (ngModelChange)="phoneTouched && validatePhone()"
               pInputText
             />
             <small
-              *ngIf="!generalDataService.isPhoneNumber1Valid"
+              *ngIf="phoneTouched && phoneError"
               class="form-text text-danger mess-color"
             >
-              {{ generalDataService.phoneNo1ValidationMessage | translate }}
+              {{ phoneError | translate }}
             </small>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!inviteMode">
+          <div class="form-group">
+            <label for="nationalId">
+              {{ "NEDSS.HOME.USERS.ADD_USER.NATIONAL_ID" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <input
+              type="text"
+              id="nationalId"
+              name="nationalId"
+              [(ngModel)]="user.nationalId"
+              class="w-100"
+              inputmode="numeric"
+              maxlength="14"
+              required
+              (keypress)="onNationalIdKeyPress($event)"
+              (blur)="nationalIdTouched = true; validateNationalId()"
+              (ngModelChange)="nationalIdTouched && validateNationalId()"
+              pInputText
+            />
+            <small
+              *ngIf="nationalIdTouched && nationalIdError"
+              class="form-text text-danger mess-color"
+            >
+              {{ nationalIdError | translate }}
+            </small>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!inviteMode">
+          <div class="form-group">
+            <label>
+              {{ "NEDSS.HOME.USERS.ADD_USER.HIRING_DATE" | translate }}
+            </label>
+            <app-date-field
+              name="hiringDate"
+              [(ngModel)]="user.hiringDate"
+            ></app-date-field>
           </div>
         </div>
 

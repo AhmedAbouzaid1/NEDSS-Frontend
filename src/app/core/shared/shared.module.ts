@@ -13,6 +13,7 @@ import { BuildFormContainerComponent } from '../components/build-form-container/
 import { SidebarModule } from 'primeng/sidebar';
 import { RedirectComponent } from './components/redirect/redirect.component';
 import { AttachemntNamePipe } from '../Pipes/attachemnt-name.pipe';
+import { DateTime12hPipe } from '../Pipes/date-time-12h.pipe';
 import { NoFutureDateDirective } from './directives/no-future-date.directive';
 import { NoFutureNativeDateDirective } from './directives/no-future-native-date.directive';
 import { ClearInvalidMinDateDirective } from './directives/clear-invalid-min-date.directive';
@@ -43,6 +44,7 @@ import { RespiratoryDiagnosisPickerComponent } from './components/respiratory-di
     BuildFormContainerComponent,
     RedirectComponent,
     AttachemntNamePipe,
+    DateTime12hPipe,
     NoFutureDateDirective,
     NoFutureNativeDateDirective,
     ClearInvalidMinDateDirective,
@@ -71,6 +73,7 @@ import { RespiratoryDiagnosisPickerComponent } from './components/respiratory-di
     BuildFormContainerComponent,
     BuildFormComponent,
     AttachemntNamePipe,
+    DateTime12hPipe,
     NoFutureDateDirective,
     NoFutureNativeDateDirective,
     ClearInvalidMinDateDirective,

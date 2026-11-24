@@ -12,6 +12,12 @@ import { GeneralDataService } from '../../../general-data/services/general-data.
 import { ExportService } from '../../../../../core/services/export.service';
 import { ActiveUserService } from 'src/app/core/services/active-user.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import {
+  normalizeIdentityDigits,
+  onNationalIdKeyPress,
+  userNationalIdError,
+  userPhoneError,
+} from 'src/app/core/utils/user-identity-rules';
 
 @Component({
   selector: 'app-add-user',
@@ -46,6 +52,8 @@ export class AddUserComponent {
     branchId: null,
     fullName: null,
     phoneNo: null,
+    nationalId: null,
+    hiringDate: null,
     email: null,
     address: null,
     password: '123',
@@ -118,6 +126,11 @@ export class AddUserComponent {
   isEvaluationValid: boolean = true;
 
   usernameValidationMsg: string = '';
+  phoneError: string = '';
+  nationalIdError: string = '';
+  phoneTouched: boolean = false;
+  nationalIdTouched: boolean = false;
+  onNationalIdKeyPress = onNationalIdKeyPress;
   emailValidationMsg: string = '';
 
   currentLang: string = 'ar';
@@ -1021,6 +1034,8 @@ export class AddUserComponent {
                 departmentId: null,
                 fullName: null,
                 phoneNo: null,
+                nationalId: null,
+                hiringDate: null,
                 email: null,
                 profilePic: '',
                 organizationId: null,
@@ -1138,6 +1153,8 @@ export class AddUserComponent {
             departmentId: null,
             fullName: null,
             phoneNo: null,
+            nationalId: null,
+            hiringDate: null,
             email: null,
             address: null,
             password: '123',
@@ -1198,7 +1215,27 @@ export class AddUserComponent {
     );
   }
 
+  validatePhone(): boolean {
+    this.phoneError = userPhoneError(this.user.phoneNo);
+    return this.phoneError === '';
+  }
+
+  validateNationalId(): boolean {
+    this.nationalIdError = userNationalIdError(this.user.nationalId);
+    return this.nationalIdError === '';
+  }
+
   validate(): boolean {
+    let identityValid = true;
+    if (!this.inviteMode) {
+      this.user.phoneNo = normalizeIdentityDigits(this.user.phoneNo) || null;
+      this.user.nationalId = normalizeIdentityDigits(this.user.nationalId) || null;
+      this.phoneTouched = true;
+      this.nationalIdTouched = true;
+      const phoneValid = this.validatePhone();
+      const nationalIdValid = this.validateNationalId();
+      identityValid = phoneValid && nationalIdValid;
+    }
     this.isOrganizationValid = this.checkOrganizationValid();
     this.isGovernmentValid = this.checkGovernmentValid();
     this.isAreaValid = this.checkAreaValid();
@@ -1214,7 +1251,8 @@ export class AddUserComponent {
       !this.isHealthAdminValid ||
       !this.isIncidentSourceValid ||
       !this.isRoleValid ||
-      !this.isEvaluationValid
+      !this.isEvaluationValid ||
+      !identityValid
     ) {
       return false;
     }
@@ -1309,6 +1347,12 @@ export class AddUserComponent {
           this.usernameValidationMsg = translated || msg;
         } else if (msg.includes('Email')) {
           this.emailValidationMsg = translated || msg;
+        } else if (msg.startsWith('NationalId')) {
+          this.nationalIdTouched = true;
+          this.nationalIdError = translated || msg;
+        } else if (msg.startsWith('Phone')) {
+          this.phoneTouched = true;
+          this.phoneError = translated || msg;
         }
         this.userMsg.error(translated || msg);
       });
