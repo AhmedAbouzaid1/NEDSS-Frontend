@@ -3,8 +3,8 @@ import { GeneralDataService } from './../services/general-data.service';
 import { AfterViewInit, Component, ElementRef, HostListener, Input, NgZone, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
-import { SharedDataService } from '../services/shared-data.service';
-import { PatientModel, SentinelData } from '../models/patient-model';
+import { SharedDataService, SiblingCaseSeed } from '../services/shared-data.service';
+import { FeverSymptoms, PatientModel, SentinelData } from '../models/patient-model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from 'src/app/core/services/notificationService.service';
 import { DatePipe } from '@angular/common';
@@ -42,6 +42,12 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
   private postSaveLabApplicable = true;
   private postSaveInvestigationApplicable = true;
   canEnterAnotherPatient = false;
+  canAddAnotherDiagnosis = false;
+  private lastSavedInitialDiagnosisIds: number[] = [];
+
+  siblingProgressVisible = false;
+  siblingProgressStep = 0;
+  siblingSourceCaseId: number | null = null;
 
   @ViewChildren('gdSection') sectionEls: QueryList<ElementRef<HTMLElement>>;
   activeSection = 'incident';
@@ -68,6 +74,15 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
   ) {
     this.activeTab = this.generalDataEnum.IncidentInfo;
     this.generalDataService.resetValidationState();
+
+    const siblingSeed = this.sharedDataService.pendingSiblingCase;
+    this.sharedDataService.pendingSiblingCase = null;
+    this.generalDataService.excludedInitialDiagnosisIds =
+      siblingSeed?.usedInitialDiagnosisIds ?? [];
+    if (siblingSeed) {
+      this.startSiblingCase(siblingSeed);
+      return;
+    }
 
     const pidParam = parseInt(
       this.routerActive.snapshot.queryParamMap.get('pid') ?? '',
@@ -102,6 +117,134 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
       this.revealSections();
       this.sharedDataService.isEditMode = false;
     }
+  }
+
+  private startSiblingCase(seed: SiblingCaseSeed): void {
+    this.siblingSourceCaseId = seed.sourceCaseId;
+    this.siblingProgressStep = 2;
+    this.siblingProgressVisible = true;
+    localStorage.removeItem('patientId');
+    this.sharedDataService.patientId = seed.sourceCaseId;
+    this.sharedDataService.isEditMode = true;
+    this.sharedDataService.ShowSentinel = false;
+    this.sharedDataService.resetSentinelData();
+    this.sharedDataService.setPatientObject(seed.patient);
+    this.patient = seed.patient;
+    this.activeAllTabs = true;
+    this.isLoadingData = false;
+    this.revealSections();
+    setTimeout(() => {
+      this.siblingProgressStep = 3;
+      setTimeout(() => {
+        this.siblingProgressVisible = false;
+        this.scrollToSection('diagnostics');
+      }, 550);
+    }, 1000);
+  }
+
+  get siblingUsedNames(): string {
+    const used = this.generalDataService.excludedInitialDiagnosisIds;
+    return (this.diseases || [])
+      .filter((d) => used.includes(Number(d.id)))
+      .map((d) => d.arabicName)
+      .join(' ، ');
+  }
+
+  addAnotherDiagnosis(): void {
+    const sourceId = this.savedPatientId;
+    if (!sourceId) return;
+    const used = Array.from(
+      new Set<number>([
+        ...this.generalDataService.excludedInitialDiagnosisIds,
+        ...this.lastSavedInitialDiagnosisIds,
+      ])
+    );
+    this.postSaveDialogVisible = false;
+    this.siblingSourceCaseId = sourceId;
+    this.siblingProgressStep = 1;
+    this.siblingProgressVisible = true;
+    const startedAt = Date.now();
+    setTimeout(() => {
+      this.siblingProgressStep = 2;
+      this.generalDataService.getBy(sourceId).subscribe(
+        (result: any) => {
+          if (!result?.data) {
+            this.failSiblingCase();
+            return;
+          }
+          const seed: SiblingCaseSeed = {
+            patient: this.buildSiblingPatient(result.data),
+            sourceCaseId: sourceId,
+            usedInitialDiagnosisIds: used,
+          };
+          const wait = Math.max(0, 1400 - (Date.now() - startedAt));
+          setTimeout(() => {
+            this.sharedDataService.pendingSiblingCase = seed;
+            this.router
+              .navigateByUrl('/home/redirect', { skipLocationChange: true })
+              .then(() => this.router.navigate(['/home/general-data']));
+          }, wait);
+        },
+        () => this.failSiblingCase()
+      );
+    }, 700);
+  }
+
+  private failSiblingCase(): void {
+    this.siblingProgressVisible = false;
+    this.siblingProgressStep = 0;
+    this.translateService
+      .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+      .subscribe((res: string) => this.userMsg.error(res));
+    this.postSaveDialogVisible = true;
+  }
+
+  private buildSiblingPatient(data: any): PatientModel {
+    this.preparePatientPayload(data);
+    const p: any = Object.assign(new PatientModel(), data);
+    const clearedKeys = [
+      'id', 'createdBy', 'createdDate', 'totalCount',
+      'mandatoryDataCompleted', 'insertedByLabId',
+      'labOrganizationId', 'labGovernateId', 'labHealthAdministrationId',
+      'labIncidentSourceId', 'labBranchId', 'labAreaId', 'labTypeId',
+      'misInvistegationType', 'misInvistegationReason',
+      'caseResultCategoryId', 'caseResultCategory', 'patientDiseasesNames',
+      'finalDiagonistics', 'finalDiagnosisOtherText', 'finalDiagonisticsByTicket',
+      'finalResult', 'finalResultId', 'diseaseSeverityId',
+      'transferGovernmentId', 'transferHealthAdministrationId',
+      'transferIncidentSourceId', 'transferIncidentSourceName',
+      'hospitalLabSelection', 'otherHospitalLabName', 'regionalLabId',
+      'specialLabId', 'specialLabSourceId', 'specialLabName',
+      'specialLabGovernmentId', 'specialLabHealthAdministrationId',
+      'respiratoryDiagnosisTypes', 'infectionDate',
+      'haveChronicDisease', 'haveAnotherChronicDisease', 'anotherChronicDisease',
+      'questionAnswers', 'patientDiseaseGroupQuestionAnswers', 'patientAnswers',
+      'answerQuuetionForm',
+    ];
+    clearedKeys.forEach((key) => delete p[key]);
+    p.isMigrated = false;
+    p.insertedByLab = false;
+    p.isHospitalLab = false;
+    p.isCentralLabLab = false;
+    p.isGovernmentLab = false;
+    p.isMalariaLab = false;
+    p.isRegionalLab = false;
+    p.isSpecialLabLab = false;
+    p.respiratoryChoiceAvailable = false;
+    p.patientDiseases = [];
+    p.patientDiseasesGroups = [];
+    p.finalDiagonisticsData = [];
+    p.fields = [];
+    p.feverSymptoms = new FeverSymptoms();
+    p.clinicalSymptomIds = [];
+    p.chronicDiseasesIds = [];
+    return p as PatientModel;
+  }
+
+  private preparePatientPayload(data: any): void {
+    this.generalDataService.normalizePatientApiPayload(data);
+    ['caseDiscoveryDate', 'hospitalEntryDate', 'hospitalLeaveDate', 'incidentDate', 'infectionDate']
+      .forEach((key) => (data[key] = this.datePipe.transform(data[key], 'yyyy-MM-dd')));
   }
 
   registerNewCase(): void {
@@ -339,27 +482,7 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
     this.generalDataService.getBy(id).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
-          this.generalDataService.normalizePatientApiPayload(result.data);
-          result.data.caseDiscoveryDate = this.datePipe.transform(
-            result.data.caseDiscoveryDate,
-            'yyyy-MM-dd',
-          );
-          result.data.hospitalEntryDate = this.datePipe.transform(
-            result.data.hospitalEntryDate,
-            'yyyy-MM-dd',
-          );
-          result.data.hospitalLeaveDate = this.datePipe.transform(
-            result.data.hospitalLeaveDate,
-            'yyyy-MM-dd',
-          );
-          result.data.incidentDate = this.datePipe.transform(
-            result.data.incidentDate,
-            'yyyy-MM-dd',
-          );
-          result.data.infectionDate = this.datePipe.transform(
-            result.data.infectionDate,
-            'yyyy-MM-dd',
-          );
+          this.preparePatientPayload(result.data);
           this.sharedDataService.setPatientObject(result.data);
           this.patient = result.data;
           this.activeAllTabs = true;
@@ -591,8 +714,11 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
         this.capturePostSaveApplicability();
 
         if (this.patient.id == null) {
+          const savedInitialDiagnosisIds =
+            this.generalDataService.initialDiagnosisIdsOf(this.patient);
           this.generalDataService.add(this.patient).subscribe(
             (response: any) => {
+              this.lastSavedInitialDiagnosisIds = savedInitialDiagnosisIds;
               if (response) {
                 this.translateService
                   .get('NEDSS.COMMON.SENT_SUCESSFULLY')
@@ -741,6 +867,8 @@ export class GeneralDataComponent implements AfterViewInit, OnDestroy {
     this.canEnterAnotherPatient = this.pagePermission.canAccessPage(
       this.GENERAL_DATA_PAGE_ID
     );
+    this.canAddAnotherDiagnosis =
+      this.canEnterAnotherPatient && this.savedPatientId != null;
     this.postSaveDialogVisible = true;
   }
 

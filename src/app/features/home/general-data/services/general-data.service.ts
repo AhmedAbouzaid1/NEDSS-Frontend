@@ -576,6 +576,8 @@ export class GeneralDataService {
     this.isPatientHospitalNoValid = true;
     this.isDoctorNameValid = true;
     this.isPatientDiseasesValid = true;
+    this.isSingleInitialDiagnosisValid = true;
+    this.isInitialDiagnosisNotRepeatedValid = true;
     this.isInfectionDateValid = true;
     this.isInfectionDateNotAfterDiscoveryValid = true;
     this.isHospitalEntryDateValid = true;
@@ -1047,6 +1049,9 @@ export class GeneralDataService {
   isPatientHospitalNoValid: boolean = true;
   isDoctorNameValid: boolean = true;
   isPatientDiseasesValid: boolean = true;
+  isSingleInitialDiagnosisValid: boolean = true;
+  isInitialDiagnosisNotRepeatedValid: boolean = true;
+  excludedInitialDiagnosisIds: number[] = [];
   isInfectionDateValid: boolean = true;
   isInfectionDateNotAfterDiscoveryValid: boolean = true;
   isHospitalEntryDateValid: boolean = true;
@@ -1060,6 +1065,13 @@ export class GeneralDataService {
 
   doctorNameValidationMessage: string;
 
+  initialDiagnosisIdsOf(patient: any): number[] {
+    const ids = (patient?.patientDiseases ?? [])
+      .filter((d: any) => d?.diseaseGroupId != null && d?.diseaseId == null && d?.caseResultCategoryId == null)
+      .map((d: any) => Number(d.diseaseGroupId));
+    return Array.from(new Set<number>(ids));
+  }
+
   validateDiagnostics(patient): any {
     this.isPatientHospitalNoValid = this.validatePatientHospitalNo(
       patient.patientHospitalNo
@@ -1068,6 +1080,11 @@ export class GeneralDataService {
     this.isPatientDiseasesValid =
       this.validateField(patient.patientDiseases) &&
       patient.patientDiseases.length > 0;
+    const initialDiagnosisIds = this.initialDiagnosisIdsOf(patient);
+    this.isSingleInitialDiagnosisValid = initialDiagnosisIds.length <= 1;
+    this.isInitialDiagnosisNotRepeatedValid = !initialDiagnosisIds.some((id) =>
+      this.excludedInitialDiagnosisIds.includes(id)
+    );
     this.isInfectionDateValid =
       this.validateField(patient.infectionDate) ||
       !isInternalLikeDepartment(patient.incidentDepartmentId);
@@ -1111,6 +1128,8 @@ export class GeneralDataService {
       this.isPatientHospitalNoValid,
       this.isDoctorNameValid,
       this.isPatientDiseasesValid,
+      this.isSingleInitialDiagnosisValid,
+      this.isInitialDiagnosisNotRepeatedValid,
       this.isInfectionDateValid,
       this.isInfectionDateNotAfterDiscoveryValid,
       this.isInfectionDateAfterBirthValid,
@@ -1769,6 +1788,10 @@ export class GeneralDataService {
   getDiagnosticsInvalidFieldLabel(patient: any): string | null {
     return this.pickInvalidField([
       [this.isPatientDiseasesValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES'],
+      [this.isSingleInitialDiagnosisValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES',
+        'يجب اختيار تشخيص مبدئي واحد فقط للحالة'],
+      [this.isInitialDiagnosisNotRepeatedValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES',
+        'هذا التشخيص المبدئي مسجل بالفعل لنفس المريض، اختر تشخيصًا مختلفًا'],
       [this.isInfectionDateValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE'],
       [this.isInfectionDateNotAfterDiscoveryValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE',
         `تاريخ بداية الأعراض يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة (${this.formatDateLabel(patient?.caseDiscoveryDate)})`],

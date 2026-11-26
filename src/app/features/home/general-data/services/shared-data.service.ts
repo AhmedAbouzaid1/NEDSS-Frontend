@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { PatientModel, SentinelData, FeverSymptoms } from '../models/patient-model';
 import { LookupsGetterService } from './../../../../core/services/lookups-getter.service';
+export interface SiblingCaseSeed {
+  patient: PatientModel;
+  sourceCaseId: number;
+  usedInitialDiagnosisIds: number[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -51,6 +57,38 @@ export class SharedDataService {
   ShowSentinel = false;
   inSential = false;
   duplicateNationalIdMatchCount = 0;
+  pendingSiblingCase: SiblingCaseSeed | null = null;
+
+  resetSentinelData(): void {
+    this.sentinelData.next(this.blankSentinelData());
+  }
+
+  private blankSentinelData(): SentinelData {
+    return {
+      id: 0,
+      patientName: '',
+      patientID: 0,
+      sariCaseDefinition: 0,
+      patientMeetSARI: 0,
+      patientMeetExtendedSARI: 0,
+      pneumoniaCaseDefinition: 0,
+      causesPneumonia: 0,
+      doesCase: 0,
+      wardAdmission: 0,
+      vapOrHap: 0,
+      otherPneumonia: '',
+      patientReceiveInfluenzaAntiviral: 0,
+      antibioticsTakenWithInLastWeek: 0,
+      antibioticsIsTaken: 0,
+      antibioticsName: '',
+      dateFirstDose: null,
+      dateLastDose: null,
+      dateSpecimenCollection: null,
+      dateSpecimenShipment: null,
+      surveyDate: null,
+    };
+  }
+
   private sentinelData = new BehaviorSubject<SentinelData>({
     id: 0,
     patientName: '',

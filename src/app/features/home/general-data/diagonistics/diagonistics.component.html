@@ -68,6 +68,17 @@
               <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isPatientDiseasesValid" class="form-text text-danger mess-color">
                 {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
               </small>
+              <small *ngIf="legacyInitialDiagnosisNames && !selectedDiseases?.length"class="form-text text-danger mess-color d-block">
+                <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                هذه الحالة مسجلة بأكثر من تشخيص مبدئي ({{ legacyInitialDiagnosisNames }}). اختر تشخيصًا واحدًا فقط قبل الحفظ.
+              </small>
+              <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isInitialDiagnosisNotRepeatedValid" class="form-text text-danger mess-color d-block">
+                هذا التشخيص المبدئي مسجل بالفعل لنفس المريض، اختر تشخيصًا مختلفًا
+              </small>
+              <small *ngIf="usedInitialDiagnosisNames" class="form-text text-muted d-block">
+                <i class="bi bi-info-circle" aria-hidden="true"></i>
+                مسجل سابقًا لهذا المريض: {{ usedInitialDiagnosisNames }}
+              </small>
             </div>
           </div>
           <div class="col-lg-4 mt-2">
