@@ -9,7 +9,7 @@
 
     <div class="d-flex align-items-center gap-3">
       <a
-        [routerLink]="canContinueInvestigation() ? '../../compelete-investigation' : null"
+        [routerLink]="canContinueInvestigation() ? '../../complete-investigation' : null"
         [replaceUrl]="true"
         [attr.aria-disabled]="canContinueInvestigation() ? null : true"
         [class.disabled]="!canContinueInvestigation()"
@@ -73,7 +73,7 @@
             | translate
             }}
           </div>
-          <div class="col-6 col-md-2 fw-14 mb-3">{{ data.incidentDate }}</div>
+          <div class="col-6 col-md-2 fw-14 mb-3">{{ data.caseDiscoveryDate | date: "dd/MM/yyyy" }}</div>
           <div class="col-6 col-md-2 text-primary fw-14 mb-3">
             {{
             "NEDSS.INVESTIGATIONS.INVESTIGATIONS_DETAILES.INCIDENTDEPARTMENT"
@@ -83,8 +83,13 @@
           <div class="col-6 col-md-2 fw-14 mb-3">
             {{ data.incidentDepartmentName }}
           </div>
-          <div class="col-6 col-md-2 text-primary fw-14 mb-3"></div>
-          <div class="col-6 col-md-2"></div>
+          <div class="col-6 col-md-2 text-primary fw-14 mb-3">
+            {{
+            "NEDSS.INVESTIGATIONS.INVESTIGATIONS_DETAILES.ONSETDATE"
+            | translate
+            }}
+          </div>
+          <div class="col-6 col-md-2 fw-14 mb-3">{{ data.infectionDate | date: "dd/MM/yyyy" }}</div>
           <div class="col-6 col-md-2 text-primary fw-14 mb-3">
             {{
             "NEDSS.INVESTIGATIONS.INVESTIGATIONS_DETAILES.FIRSTNAME"
@@ -158,6 +163,15 @@
           </div>
           <div class="col-6 col-md-2 fw-14 mb-3">
             <a class="text-dark">{{ data.phoneNo2 }}</a>
+          </div>
+          <div class="col-6 col-md-2 text-primary fw-14 mb-3">
+            {{
+            "NEDSS.INVESTIGATIONS.INVESTIGATIONS_DETAILES.AGE"
+            | translate
+            }}
+          </div>
+          <div class="col-6 col-md-2 fw-14 mb-3">
+            {{ data.age }} {{ ageTypeName }}
           </div>
           <br />
           <hr />

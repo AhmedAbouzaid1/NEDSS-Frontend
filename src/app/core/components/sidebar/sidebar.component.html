@@ -5,9 +5,22 @@
   #sidebar
   (scroll)="onSidebarScroll()"
 >
+  <div class="nd-drawer-head">
+    <img class="nd-drawer-logo" src="Content/Images/logo.png" alt="" />
+    <span class="nd-drawer-user">{{ username }}</span>
+    <button
+      type="button"
+      class="nd-drawer-close"
+      (click)="drawer.close()"
+      [attr.aria-label]="'NEDSS.COMMON.CLOSE' | translate"
+    >
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
   <a
     style="position: relative; min-height: 54px; z-index: 2"
     id="menuToggle"
+    (click)="drawer.toggle()"
     class="menu-toggles text-dark d-block mb-1 d-flex justify-content-center gap-2 position-sticky top-0 py-4 shadow-sm w-100"
   >
     <span class="menu-text">
@@ -94,7 +107,7 @@
         style="display: none"
       >
         <a
-          routerLink="./zero-notification//zero-report"
+          routerLink="./zero-notification/zero-report"
           routerLinkActive="active"
         >
           <i class="nav-icon bi bi-bell-slash"></i>

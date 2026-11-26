@@ -1,6 +1,6 @@
 import { Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PatientModel, FeverSymptoms } from '../models/patient-model';
-import { DepartmentEnum } from '../models/department-enum';
+import { DepartmentEnum, isInternalLikeDepartment } from '../models/department-enum';
 import { SharedDataService } from '../services/shared-data.service';
 import { TranslateService } from '@ngx-translate/core';
 import { GeneralDataService } from '../services/general-data.service';
@@ -318,7 +318,7 @@ export class ClinicalSymptomsComponent implements OnInit, OnDestroy, DoCheck {
           const selectedIds = new Set<number>();
           const isExternal =
             this.patient?.incidentDepartmentId != null &&
-            this.patient?.incidentDepartmentId !== DepartmentEnum.Internal;
+            !isInternalLikeDepartment(this.patient?.incidentDepartmentId);
 
           responses.forEach((response: any, index: number) => {
             const mappings = Array.isArray(response?.data) ? response.data : [];

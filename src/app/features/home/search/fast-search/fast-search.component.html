@@ -936,7 +936,7 @@
           (click)="element.expanded = !element.expanded"
         >
           <td>{{ element.fullName }}</td>
-          <td>{{ element?.createdDate | date : "dd/MM/yyy" }}</td>
+          <td class="text-nowrap">{{ element?.createdDate | dateTime12h : currentLang }}</td>
           <td>{{ element.nationality }}</td>
           <td>{{ element.nationalId }}</td>
           <td>{{ element.incidentGovernmentName }}</td>
@@ -944,13 +944,13 @@
           <td>{{ element.incidentSourceName }}</td>
           <td>{{ element.phoneNo1 }}</td>
           <td>{{ element.caseDiscoveryDate | date : "dd/MM/yyy" }}</td>
-          <td>{{ element.diseaseGroupArabicName }}</td>
+          <td class="nd-col-wide">{{ element.diseaseGroupArabicName }}</td>
           <td class="exclude-pdf mw-xc">
             <a
               (click)="GetById(element.id)"
               class="text-primary pi pi-pencil"
             ></a>
-            <a
+            <a appWriteAction
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
               (click)="nameToDelete(element)"
@@ -1034,7 +1034,7 @@
 
               <td class="exclude-pdf mw-xc" *ngIf="i == 9">
                 <a *ngIf="i == 9" (click)="GetById(element.id)" class="text-primary pi pi-pencil"></a>
-                <a data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="nameToDelete(element)" *ngIf="i == 9"
+                <a appWriteAction data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="nameToDelete(element)" *ngIf="i == 9"
                   class="text-danger mess-color pi pi-trash"></a>
               </td>
             </ng-container>
@@ -1139,6 +1139,7 @@
         <button
           type="button"
           class="btn btn-secondary"
+          appWriteAction
           (click)="delete(underDeleting.id)"
           data-bs-dismiss="modal"
         >

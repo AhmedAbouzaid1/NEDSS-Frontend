@@ -32,6 +32,7 @@ export class UserService {
     code: string;
     userName?: string;
     email?: string;
+    nationalId?: string;
   }) {
     return this.APIs.post(this.InviteUrl + 'CheckAvailability', payload);
   }

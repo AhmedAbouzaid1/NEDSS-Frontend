@@ -303,7 +303,9 @@ export class AddLabPatientComponent {
     this.lookupsService.getAllDiseaseGroups().subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
-          this.Diseasies = result.data;
+          this.Diseasies = result.data.filter(
+            (g) => g.hasLab !== false || g.id == this.patientAddCheck.diseaseGroupId
+          );
           this.Diseasies.unshift({
             id: null,
             arabicName: 'إختر',

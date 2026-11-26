@@ -3,6 +3,7 @@ import { Component, ElementRef, HostListener, Input, OnDestroy, ViewChild } from
 import { Subscription, filter } from 'rxjs';
 import { DiseaseFormService } from 'src/app/features/home/dashboard/components/disease-special-symptoms/services/disease-form.service';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
+import { NavDrawerService } from 'src/app/core/services/nav-drawer.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -37,7 +38,7 @@ export class SidebarComponent implements OnDestroy {
     '/home/roles-report',
     '/home/notInferring-report',
     '/home/populations-report',
-    '/home/monitorUnitsPeparations-report',
+    '/home/monitorUnitsPreparations-report',
     '/home/epidemiologicalThresholds-report',
     '/home/monitor-units-report',
     '/home/monitor-units-team-members-report',
@@ -46,7 +47,8 @@ export class SidebarComponent implements OnDestroy {
   constructor(
     private router: Router,
     private diseaseFormService: DiseaseFormService,
-    private lookupsService: LookupsGetterService
+    private lookupsService: LookupsGetterService,
+    public drawer: NavDrawerService
   ) {
     this.lang =
       localStorage.getItem('ls.currentLang') != undefined
@@ -149,13 +151,7 @@ export class SidebarComponent implements OnDestroy {
   }
 
   private closeMobileDrawer(): void {
-    if (!window.matchMedia(this.mobileNavQuery).matches) {
-      return;
-    }
-    document.querySelector('.main-container')?.classList.add('nav-collapsed');
-    document
-      .querySelectorAll('.menu-toggles .bi')
-      .forEach((icon) => icon.classList.remove('bi-x-circle'));
+    this.drawer.closeOnMobile();
   }
 
   loadChartsTabVisibility(): void {

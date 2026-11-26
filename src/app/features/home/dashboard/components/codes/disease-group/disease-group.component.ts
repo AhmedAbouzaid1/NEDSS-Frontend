@@ -28,6 +28,8 @@ export class DiseaseGroupComponent {
     arabicName: null,
     englishName: null,
     isSentinel: false,
+    hasInvestigation: true,
+    hasLab: true,
   };
   diseaseGroups!: any[];
   diseaseGroupFilter = {
@@ -159,6 +161,8 @@ export class DiseaseGroupComponent {
               arabicName: null,
               englishName: null,
               isSentinel: false,
+              hasInvestigation: true,
+              hasLab: true,
             };
           }
         },
@@ -277,6 +281,8 @@ export class DiseaseGroupComponent {
             arabicName: null,
             englishName: null,
             isSentinel: false,
+            hasInvestigation: true,
+            hasLab: true,
           };
         }
       },

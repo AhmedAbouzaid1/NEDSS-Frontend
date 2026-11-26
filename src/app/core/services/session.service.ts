@@ -119,6 +119,25 @@ export class SessionService {
     } catch {}
   }
 
+  isProfileIncomplete(): boolean {
+    return this.getSession()?.profileIncomplete === true;
+  }
+
+  markProfileCompleted(nationalId: string, phoneNo: string): void {
+    const s = this.getSession();
+    if (!s) {
+      return;
+    }
+    s.profileIncomplete = false;
+    if (s.user) {
+      s.user.nationalId = nationalId;
+      s.user.phoneNo = phoneNo;
+    }
+    try {
+      localStorage.setItem(SessionService.AUTH_KEY, JSON.stringify(s));
+    } catch {}
+  }
+
   clearSession(): void {
     localStorage.removeItem(SessionService.AUTH_KEY);
   }

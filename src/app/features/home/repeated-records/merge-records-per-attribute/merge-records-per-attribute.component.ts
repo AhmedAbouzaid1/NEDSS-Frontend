@@ -71,7 +71,7 @@ export class MergeRecordsPerAttributeComponent {
   goToInvestigation(patientId: number, diseaseGroupId: number, routerLink: string) {
     this.InvestigationService.currentid = patientId;
     this.InvestigationService.diseaseGroupID = diseaseGroupId;
-    this.router.navigate(['/home/investigations/compelete-investigation', routerLink]);
+    this.router.navigate(['/home/investigations/complete-investigation', routerLink]);
   }
 
 

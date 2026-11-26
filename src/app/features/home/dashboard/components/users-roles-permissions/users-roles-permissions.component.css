@@ -87,6 +87,64 @@
   margin-top: 0.15rem;
 }
 
+.perm-block-header {
+  flex-wrap: wrap;
+}
+
+.perm-block-title {
+  margin-inline-end: auto;
+}
+
+.perm-block-body:has(.perm-row) {
+  grid-template-columns: repeat(auto-fill, minmax(min(16rem, 100%), 1fr));
+}
+
+.perm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.perm-row .perm-item {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.perm-readonly {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: var(--nd-help-fs, 0.75rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--nd-text-muted, #667085);
+  background: var(--nd-surface-subtle, #f8fafc);
+  border: 1px solid var(--nd-border-subtle, #e4e7ec);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.perm-readonly input {
+  margin: 0;
+}
+
+.perm-readonly:has(input:checked) {
+  color: #92400e;
+  background: #fff7ed;
+  border-color: #fdba74;
+}
+
+.perm-readonly-locked {
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
 @media (max-width: 991.98px) {
   .perm-grid {
     grid-template-columns: minmax(0, 1fr);

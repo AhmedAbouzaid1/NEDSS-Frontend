@@ -1,7 +1,8 @@
 import { InvestigationService } from './../services/investigation.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { InvestigationComponent } from '../investigation.component';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription, filter } from 'rxjs';
 import { FormTemplateExportService } from 'src/app/core/services/form-template-export.service';
 import { PagePermissionService } from 'src/app/core/services/page-permission.service';
 import { ENTOMOLOGICAL_ROUTES } from './entomological/entomological.constants';
@@ -21,6 +22,9 @@ interface InvestigationTab {
 export class CompleteInvestigationComponent implements OnInit {
   @ViewChild('investigationContainer', { read: ElementRef })
   investigationContainer?: ElementRef<HTMLElement>;
+  @ViewChild('diseaseStrip', { read: ElementRef })
+  diseaseStrip?: ElementRef<HTMLElement>;
+  private routerSub?: Subscription;
 
   patientDiseases: InvestigationTab[];
   hiddenDiseasesCount = 0;
@@ -42,6 +46,23 @@ export class CompleteInvestigationComponent implements OnInit {
     if (firstDisease && firstDisease.router) {
       this.setDesiese(firstDisease);
     }
+    this.routerSub = this.Router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => setTimeout(() => this.revealActiveDisease()));
+  }
+
+  private revealActiveDisease(): void {
+    const strip = this.diseaseStrip?.nativeElement;
+    const active = strip?.querySelector('.disease-tab.active') as HTMLElement | null;
+    if (!strip || !active || strip.scrollWidth <= strip.clientWidth) {
+      return;
+    }
+    const stripRect = strip.getBoundingClientRect();
+    const activeRect = active.getBoundingClientRect();
+    strip.scrollTo({
+      left: strip.scrollLeft + activeRect.left - stripRect.left - (stripRect.width - activeRect.width) / 2,
+      behavior: 'smooth',
+    });
   }
 
   private buildTabs(diseases: any[]): InvestigationTab[] {
@@ -63,7 +84,8 @@ export class CompleteInvestigationComponent implements OnInit {
     return tabs;
   }
   ngOnDestroy(): void {
-    if (this.Router.url == '/home/investigations/compelete-investigation') {
+    this.routerSub?.unsubscribe();
+    if (this.Router.url == '/home/investigations/complete-investigation') {
       this.InvestigationService.view = false;
     } else {
       this.InvestigationService.view = true;
@@ -81,7 +103,7 @@ export class CompleteInvestigationComponent implements OnInit {
   setDesiese(item: InvestigationTab) {
     this.InvestigationService.diseaseGroupID = item.diseaseGroupId;
     this.Router.navigateByUrl(
-      '/home/investigations/compelete-investigation/' + item.router +
+      '/home/investigations/complete-investigation/' + item.router +
         (item.entomological ? '?diseaseGroupId=' + item.diseaseGroupId : ''),
       { replaceUrl: true }
     );

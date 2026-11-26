@@ -20,7 +20,8 @@ const routes: Routes = [
           { path: '', component: PreparationsDataComponent },
           { path: 'edit-preparations-data/:id', component: PreparationsDataComponent },
           { path: 'preparations-data', component: PreparationsDataComponent },
-          { path: 'preparations-teem', component: PreparationsTeamComponent },
+          { path: 'preparations-team', component: PreparationsTeamComponent },
+          { path: 'preparations-teem', redirectTo: 'preparations-team' },
           { path: 'preparations-devices', component: PreparationsDevicesComponent },
         ]
       },

@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, HostListener, NgZone, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from '../../core/services/notificationService.service';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { ConnectionService } from 'angular-connection-service';
 import { LookupsGetterService } from 'src/app/core/services/lookups-getter.service';
 import { UiLoadingService } from 'src/app/core/services/ui-loading.service';
 import { ActiveUserService } from 'src/app/core/services/active-user.service';
+import { NavDrawerService } from 'src/app/core/services/nav-drawer.service';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,8 @@ export class HomeComponent implements OnInit {
     private notificationService: NotificationService,
     private connectionService: ConnectionService,
     private activeUSerService: ActiveUserService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    public drawer: NavDrawerService
   ) {
     this.ngZone.runOutsideAngular(() => {
       this.connectionService.monitor().subscribe((currentState: any) => {
@@ -50,6 +52,11 @@ export class HomeComponent implements OnInit {
     }
     this.activeUSerService.setAccessibleParts();
   }
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.drawer.closeOnMobile();
+  }
+
   public isOnline() {
     return this.hasNetworkConnection;
   }

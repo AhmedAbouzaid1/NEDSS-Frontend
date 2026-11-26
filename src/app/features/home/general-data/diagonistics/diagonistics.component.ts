@@ -9,7 +9,7 @@ import { DiseaseSpecialSymptomsService } from '../../dashboard/components/diseas
 import { GeneralDataService } from '../services/general-data.service';
 import { map, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { DepartmentEnum } from '../models/department-enum';
+import { DepartmentEnum, isInternalLikeDepartment } from '../models/department-enum';
 
 @Component({
   selector: 'app-diagonistics',
@@ -183,7 +183,9 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
 
   singleDropdownSettings = {};
   diagnosticsMultipleDropdownSettings = {
-    singleSelection: false,
+    singleSelection: true,
+    closeDropDownOnSelection: true,
+    disabledField: 'isDisabled',
     idField: 'id',
     textField:
       localStorage.getItem('ls.currentLang') == 'ar'
@@ -208,9 +210,39 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     itemsShowLimit: 3,
     allowSearchFilter: true,
     enableCheckAll: false,
-    limitSelection: 3,
   };
+
+  legacyInitialDiagnosisNames = '';
+
+  private applyInitialSelectionFromPatient(): void {
+    const groupIds = this.patient.patientDiseases.map((a) => a.diseaseGroupId);
+    const matches = this.diseases.filter((item) => groupIds.includes(item.id));
+    this.diseasesInitializedFromPatient = true;
+    if (matches.length > 1) {
+      this.legacyInitialDiagnosisNames = matches
+        .map((d) => (this.currentLang === 'ar' ? d.arabicName : d.englishName))
+        .join(' ، ');
+      this.selectedDiseases = [];
+    } else {
+      this.legacyInitialDiagnosisNames = '';
+      this.selectedDiseases = matches;
+    }
+    this.onDiseasesChanged();
+  }
+
+  get usedInitialDiagnosisNames(): string {
+    const used = this.generalDataService.excludedInitialDiagnosisIds;
+    return this.allDiseases
+      .filter((d) => used.includes(Number(d.id)))
+      .map((d) => (this.currentLang === 'ar' ? d.arabicName : d.englishName))
+      .filter((x) => !!x)
+      .join(' ، ');
+  }
   DepartmentEnum = DepartmentEnum;
+
+  get isInternalLike(): boolean {
+    return isInternalLikeDepartment(this.patient?.incidentDepartmentId);
+  }
   HealthAdmins:any[] = [];
   private governorateUserScopeFallbackDone = false;
   private destroy$ = new Subject<void>();
@@ -269,11 +301,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
         this.diseases?.length > 0 &&
         this.patient?.patientDiseases?.length > 0
       ) {
-        this.selectedDiseases = this.diseases.filter((item) =>
-          this.patient.patientDiseases.map((a) => a.diseaseGroupId).includes(item.id)
-        );
-        this.diseasesInitializedFromPatient = true;
-        this.onDiseasesChanged();
+        this.applyInitialSelectionFromPatient();
       }
     });
     this.getLookups();
@@ -750,13 +778,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
           this.patient.patientDiseases.length > 0 &&
           this.diseases.length > 0
         ) {
-          this.selectedDiseases = this.diseases.filter((item) =>
-            this.patient.patientDiseases
-              .map((a) => a.diseaseGroupId)
-              .includes(item.id)
-          );
-          this.diseasesInitializedFromPatient = true;
-          this.onDiseasesChanged();
+          this.applyInitialSelectionFromPatient();
         }
         this.loadingPanel = false;
       },
@@ -778,14 +800,25 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
 
     const departmentId = Number(this.patient?.incidentDepartmentId);
     const hideBirdFlu =
-      departmentId !== DepartmentEnum.Internal &&
-      departmentId !== DepartmentEnum.ICU;
+      !isInternalLikeDepartment(departmentId);
 
-    this.diseases = hideBirdFlu
+    const used = this.generalDataService.excludedInitialDiagnosisIds;
+    const usedSuffix = this.currentLang === 'ar' ? ' (مسجل للمريض)' : ' (already registered)';
+    this.diseases = (hideBirdFlu
       ? this.allDiseases.filter((disease) =>
           String(disease?.router ?? '').trim().toLowerCase() !== 'h5n1'
         )
-      : [...this.allDiseases];
+      : [...this.allDiseases]
+    ).map((disease) =>
+      used.includes(Number(disease.id))
+        ? {
+            ...disease,
+            isDisabled: true,
+            arabicName: disease.arabicName + usedSuffix,
+            englishName: disease.englishName + usedSuffix,
+          }
+        : disease
+    );
 
     if (!hideBirdFlu || !Array.isArray(this.selectedDiseases)) {
       return;

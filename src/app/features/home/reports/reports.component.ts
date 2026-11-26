@@ -19,6 +19,7 @@ import { MonitorUnitsPeparationsReportComponent } from './monitor-units-peparati
 import { MonitorUnitsReportComponent } from './monitor-units-report/monitor-units-report.component';
 import { MonitorUnitsTeamMembersReportComponent } from './monitor-units-team-members-report/monitor-units-team-members-report.component';
 import { GeneralReportingReportComponent, GENERAL_REPORTING_REPORT_PAGE_ID } from './general-reporting-report/general-reporting-report.component';
+import { SchoolsReportComponent } from './schools-report/schools-report.component';
 import { PagePermissionService } from 'src/app/core/services/page-permission.service';
 import { MonitorUnitsTeamMembersDetailsReportComponent } from './monitor-units-team-members-details-report/monitor-units-team-members-details-report.component';
 
@@ -47,6 +48,7 @@ export class ReportsComponent implements OnInit, OnDestroy {
     { key: 'disease-based-on-age', labelKey: 'NEDSS.REPORTS_LABELS.DiseseBasedOnAge', component: DiseaseBasedOnAgeComponent },
     { key: 'disease-based-on-patient', labelKey: 'NEDSS.REPORTS_LABELS.DiseseBasedOnPatient', component: DiseaseBasedOnPatientComponent },
     { key: 'general-reporting-report', labelKey: 'NEDSS.REPORTS_LABELS.GeneralReportingReport', component: GeneralReportingReportComponent, pageId: GENERAL_REPORTING_REPORT_PAGE_ID },
+    { key: 'schools-report', labelKey: 'NEDSS.REPORTS_LABELS.SchoolsReport', component: SchoolsReportComponent },
     { key: 'investigation-forms-report', labelKey: 'NEDSS.REPORTS_LABELS.InvestigationFormsReport', component: InvestigationFormsReportComponent },
     { key: 'user-report', labelKey: 'NEDSS.REPORTS_LABELS.UserReports', component: UserReportComponent },
     { key: 'zero-reporting-report', labelKey: 'NEDSS.REPORTS_LABELS.ZeroReportingReport', component: ZeroReportingReportComponent },
@@ -55,7 +57,7 @@ export class ReportsComponent implements OnInit, OnDestroy {
     { key: 'roles-report', labelKey: 'NEDSS.REPORTS_LABELS.RulesReport', component: RolesReportComponent },
     { key: 'notInferring-report', labelKey: 'NEDSS.REPORTS_LABELS.NotInferringReport', component: NotInferringReportComponent },
     { key: 'populations-report', labelKey: 'NEDSS.REPORTS_LABELS.POPULATIONS_REPORT', component: PopulationsReportComponent },
-    { key: 'monitorUnitsPeparations-report', labelKey: 'NEDSS.REPORTS_LABELS.MonitorUnitsPeparationsReport', component: MonitorUnitsPeparationsReportComponent },
+    { key: 'monitorUnitsPreparations-report', labelKey: 'NEDSS.REPORTS_LABELS.MonitorUnitsPeparationsReport', component: MonitorUnitsPeparationsReportComponent },
     { key: 'monitor-units-report', labelKey: 'NEDSS.REPORTS_LABELS.MonitorUnitsReport', component: MonitorUnitsReportComponent },
     { key: 'monitor-units-team-members-report', labelKey: 'NEDSS.REPORTS_LABELS.MonitorUnitsTeamMembers', component: MonitorUnitsTeamMembersReportComponent },
     { key: 'monitor-units-team-members-details-report', labelKey: 'NEDSS.REPORTS_LABELS.MonitorUnitsTeamDetailsMembers', component: MonitorUnitsTeamMembersDetailsReportComponent },
@@ -85,7 +87,8 @@ export class ReportsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.translate.onLangChange.subscribe(() => this.buildOptions()));
     this.subscriptions.add(
       this.route.queryParamMap.subscribe((params) => {
-        const key = params.get('report');
+        const requested = params.get('report');
+        const key = requested === 'monitorUnitsPeparations-report' ? 'monitorUnitsPreparations-report' : requested;
         this.selectedReport = this.reports.find((r) => r.key === key) ?? null;
         this.selectedKey = this.selectedReport?.key ?? null;
       })

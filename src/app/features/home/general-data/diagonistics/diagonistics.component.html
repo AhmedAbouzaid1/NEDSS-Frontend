@@ -8,7 +8,7 @@
       <div class="col-lg-12">
         <div class="row mt-3">
           <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->
-          <div *ngIf="patient.incidentDepartmentId === DepartmentEnum.Internal" class="col-lg-4 mt-2">
+          <div *ngIf="isInternalLike" class="col-lg-4 mt-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -28,7 +28,7 @@
             </div>
           </div>
           <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->
-          <div *ngIf="patient.incidentDepartmentId === DepartmentEnum.Internal" class="col-lg-4 mt-2">
+          <div *ngIf="isInternalLike" class="col-lg-4 mt-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -68,6 +68,17 @@
               <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isPatientDiseasesValid" class="form-text text-danger mess-color">
                 {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
               </small>
+              <small *ngIf="legacyInitialDiagnosisNames && !selectedDiseases?.length"class="form-text text-danger mess-color d-block">
+                <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                هذه الحالة مسجلة بأكثر من تشخيص مبدئي ({{ legacyInitialDiagnosisNames }}). اختر تشخيصًا واحدًا فقط قبل الحفظ.
+              </small>
+              <small *ngIf="generalDataService.showValidationErrors && !generalDataService.isInitialDiagnosisNotRepeatedValid" class="form-text text-danger mess-color d-block">
+                هذا التشخيص المبدئي مسجل بالفعل لنفس المريض، اختر تشخيصًا مختلفًا
+              </small>
+              <small *ngIf="usedInitialDiagnosisNames" class="form-text text-muted d-block">
+                <i class="bi bi-info-circle" aria-hidden="true"></i>
+                مسجل سابقًا لهذا المريض: {{ usedInitialDiagnosisNames }}
+              </small>
             </div>
           </div>
           <div class="col-lg-4 mt-2">
@@ -77,7 +88,7 @@
                 "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE"
                 | translate
                 }}
-                <span *ngIf="patient.incidentDepartmentId == 1" class="text-danger mess-color">*</span>
+                <span *ngIf="isInternalLike" class="text-danger mess-color">*</span>
               </label>
               <mat-form-field appearance="fill" class="date-with-note">
                 <mat-label>
@@ -89,7 +100,7 @@
                   [(ngModel)]="patient.infectionDate" (blur)="
                     generalDataService.isInfectionDateValid =
                       generalDataService.validateField(patient.infectionDate) ||
-                      patient.incidentDepartmentId != 1
+                      !isInternalLike
                   " />
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
@@ -112,14 +123,14 @@
             </div>
           </div>
           <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->
-          <div *ngIf="patient.incidentDepartmentId === DepartmentEnum.Internal" class="col-lg-4 mt-2">
+          <div *ngIf="isInternalLike" class="col-lg-4 mt-2">
             <div class="form-group">
               <label for="">
                 {{
                 "NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.HOSPITALENTRYDATE"
                 | translate
                 }}
-                <span *ngIf="patient.incidentDepartmentId == 1" class="text-danger mess-color">*</span>
+                <span *ngIf="isInternalLike" class="text-danger mess-color">*</span>
               </label>
 
               <mat-form-field appearance="fill">
@@ -132,7 +143,7 @@
                     generalDataService.isHospitalEntryDateValid =
                       generalDataService.validateField(
                         patient.hospitalEntryDate
-                      ) || patient.incidentDepartmentId != 1
+                      ) || !isInternalLike
                   " />
 
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -147,7 +158,7 @@
             </div>
           </div>
           <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->
-          <div *ngIf="patient.incidentDepartmentId === DepartmentEnum.Internal" class="col-lg-4 mt-2">
+          <div *ngIf="isInternalLike" class="col-lg-4 mt-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -173,7 +184,7 @@
             </div>
           </div>
           <!-- <div *ngIf="!patient.hiddenInsideDepartment" class="col-lg-4 mt-2"> -->
-          <div *ngIf="patient.incidentDepartmentId === DepartmentEnum.Internal" class="col-lg-4 mt-2">
+          <div *ngIf="isInternalLike" class="col-lg-4 mt-2">
             <div class="form-group">
               <label for="">
                 {{
@@ -199,7 +210,7 @@
             </div>
           </div>
           <!-- <ng-container *ngIf="!patient.hiddenInsideDepartment"> -->
-          <ng-container *ngIf="patient.incidentDepartmentId === DepartmentEnum.Internal">
+          <ng-container *ngIf="isInternalLike">
             <div class="col-lg-4 mt-2" *ngIf="isPatientTransfered">
               <div class="form-group">
                 <label for="">
@@ -227,7 +238,7 @@
               </div>
             </div>
           </ng-container>
-          <ng-container *ngIf="patient.incidentDepartmentId === DepartmentEnum.Internal">
+          <ng-container *ngIf="isInternalLike">
             <div class="col-lg-4 mt-2" *ngIf="isPatientTransfered">
               <div class="form-group">
                 <label for="">
@@ -256,7 +267,7 @@
             </div>
           </ng-container>
           <!-- <ng-container *ngIf="!patient.hiddenInsideDepartment"> -->
-          <ng-container *ngIf="patient.incidentDepartmentId === DepartmentEnum.Internal">
+          <ng-container *ngIf="isInternalLike">
             <div class="col-lg-4 mt-2" *ngIf="isPatientTransfered">
               <div class="form-group">
                 <label for="">

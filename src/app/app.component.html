@@ -83,3 +83,47 @@
     </button>
   </div>
 </p-dialog>
+
+<p-dialog [visible]="profileGateVisible" [draggable]="false" [resizable]="false" [showHeader]="false"
+  [closable]="false" [closeOnEscape]="false" [modal]="true" styleClass="pw-change-dialog"
+  [style]="{ width: '440px', maxWidth: '94vw' }" [breakpoints]="{ '600px': '94vw' }">
+  <div class="pw-change" [dir]="lang === 'ar' ? 'rtl' : 'ltr'">
+    <div class="pw-change__icon">
+      <i class="pi pi-id-card"></i>
+    </div>
+    <h3 class="pw-change__title">{{ 'NEDSS.HOME.USERS.ADD_USER.PROFILE_GATE_TITLE' | translate }}</h3>
+    <p class="pw-change__msg">{{ 'NEDSS.HOME.USERS.ADD_USER.PROFILE_GATE_MSG' | translate }}</p>
+    <form (ngSubmit)="onProfileGateSubmit()" novalidate>
+      <div class="mb-3">
+        <label for="profileGateNationalId" class="form-label">
+          {{ 'NEDSS.HOME.USERS.ADD_USER.NATIONAL_ID' | translate }} <span class="text-danger">*</span>
+        </label>
+        <input id="profileGateNationalId" name="nationalId" type="text" pInputText class="w-100"
+          inputmode="numeric" maxlength="14" autocomplete="off"
+          [(ngModel)]="profileGateData.nationalId" (keypress)="onNationalIdKeyPress($event)"
+          (ngModelChange)="profileGateTouched && validateProfileGate()" />
+        <small *ngIf="profileGateTouched && profileGateNationalIdError" class="form-text text-danger d-block">
+          {{ profileGateNationalIdError | translate }}
+        </small>
+      </div>
+      <div class="mb-3">
+        <label for="profileGatePhone" class="form-label">
+          {{ 'NEDSS.HOME.USERS.ADD_USER.MOBILE' | translate }} <span class="text-danger">*</span>
+        </label>
+        <input id="profileGatePhone" name="phoneNo" type="text" pInputText class="w-100"
+          inputmode="tel" maxlength="14" autocomplete="tel"
+          [(ngModel)]="profileGateData.phoneNo"
+          (ngModelChange)="profileGateTouched && validateProfileGate()" />
+        <small *ngIf="profileGateTouched && profileGatePhoneError" class="form-text text-danger d-block">
+          {{ profileGatePhoneError | translate }}
+        </small>
+      </div>
+      <button type="submit" class="btn bg text-white w-100 rounded-2 pw-change__submit" [disabled]="profileGateSaving">
+        {{ "NEDSS.COMMON.SAVE" | translate }}
+      </button>
+    </form>
+    <button type="button" class="btn w-100 rounded-2 mt-2 pw-change__logout" (click)="logoutFromProfileGate()">
+      {{ "NEDSS.HOME.NAV_BAR.LOGOUT" | translate }}
+    </button>
+  </div>
+</p-dialog>

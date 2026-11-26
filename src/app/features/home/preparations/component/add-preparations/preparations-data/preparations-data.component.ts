@@ -522,7 +522,7 @@ export class PreparationsDataComponent implements OnDestroy {
 
                 this.data.setUnitId(response.data.id);
                 this.router.navigate([
-                  'home/preparations/add-preparations/preparations-teem',
+                  'home/preparations/add-preparations/preparations-team',
                 ]);
               }
             },

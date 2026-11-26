@@ -13,6 +13,7 @@
     <button
       type="button"
       *ngIf="patient?.id != null"
+      appWriteAction
       class="btn btn-primary d-inline-flex align-items-center gap-2"
       (click)="registerNewCase()"
     >
@@ -24,7 +25,26 @@
   </div>
 </div>
 
-<div class="general-data-form w-100" *ngIf="!isLoadingData">
+<div class="sibling-banner" *ngIf="siblingSourceCaseId && patient?.id == null && !postSaveDialogVisible" role="status">
+  <span class="sibling-banner__icon"><i class="bi bi-person-lines-fill" aria-hidden="true"></i></span>
+  <div class="sibling-banner__text">
+    <strong>حالة جديدة لنفس المريض بتشخيص مبدئي مختلف</strong>
+    <span>
+      تم نسخ بيانات المريض من الحالة رقم
+      <span class="sibling-banner__case">{{ siblingSourceCaseId }}</span>.
+      اختر التشخيص المبدئي الجديد وأكمل البيانات المرتبطة به ثم احفظ.
+    </span>
+    <span *ngIf="siblingUsedNames" class="sibling-banner__used">
+      التشخيصات المسجلة سابقًا: {{ siblingUsedNames }}
+    </span>
+  </div>
+  <button type="button" class="sibling-banner__action" (click)="scrollToSection('diagnostics')">
+    <i class="bi bi-clipboard2-pulse" aria-hidden="true"></i>
+    <span>الذهاب للتشخيص</span>
+  </button>
+</div>
+
+<div class="general-data-form w-100" *ngIf="!isLoadingData" appReadOnlyForm>
   <nav class="gd-nav" aria-label="sections">
     <button
       type="button"
@@ -213,7 +233,7 @@
     </section>
   </div>
 
-  <div class="save-button-bar w-100" *ngIf="sectionsReady[4]">
+  <div class="save-button-bar w-100" *ngIf="sectionsReady[4]" appWriteAction>
     <div class="save-button-bar__inner">
       <span class="save-button-bar__hint">
         {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.REQUIRED_LEGEND" | translate }}
@@ -320,6 +340,22 @@
 
       <button
         type="button"
+        *ngIf="canAddAnotherDiagnosis"
+        class="post-save__option post-save__option--featured"
+        (click)="addAnotherDiagnosis()"
+      >
+        <span class="post-save__icon post-save__icon--diag">
+          <i class="bi bi-plus-square-dotted"></i>
+        </span>
+        <span class="post-save__text">
+          <span class="post-save__option-title">إضافة تشخيص مبدئي آخر لنفس المريض</span>
+          <span class="post-save__option-desc">تسجيل حالة جديدة ببيانات المريض نفسها وتشخيص مبدئي مختلف</span>
+        </span>
+        <i class="bi bi-chevron-left post-save__chevron"></i>
+      </button>
+
+      <button
+        type="button"
         *ngIf="canEnterAnotherPatient"
         class="post-save__option"
         (click)="enterAnotherPatient()"
@@ -358,6 +394,44 @@
         </span>
         <i class="bi bi-chevron-left post-save__chevron"></i>
       </button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="siblingProgressVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="false"
+  [closable]="false"
+  [closeOnEscape]="false"
+  [showHeader]="false"
+  [style]="{ width: '26rem', 'max-width': '92vw' }"
+  styleClass="post-save-dialog"
+>
+  <div class="sibling-progress" role="status" aria-live="polite">
+    <div class="sibling-progress__step" [class.is-active]="siblingProgressStep === 1" [class.is-done]="siblingProgressStep > 1">
+      <span class="sibling-progress__marker">
+        <span *ngIf="siblingProgressStep <= 1" class="sibling-progress__spinner"></span>
+        <i *ngIf="siblingProgressStep > 1" class="bi bi-check-lg"></i>
+      </span>
+      <span class="sibling-progress__text">
+        <span class="sibling-progress__title">{{ siblingProgressStep > 1 ? 'تم حفظ الحالة' : 'جاري حفظ الحالة...' }}</span>
+        <span class="sibling-progress__desc">الحالة رقم {{ siblingSourceCaseId }}</span>
+      </span>
+    </div>
+    <div class="sibling-progress__line" [class.is-done]="siblingProgressStep > 1"></div>
+    <div class="sibling-progress__step" [class.is-active]="siblingProgressStep === 2" [class.is-done]="siblingProgressStep > 2">
+      <span class="sibling-progress__marker">
+        <span *ngIf="siblingProgressStep === 2" class="sibling-progress__spinner"></span>
+        <i *ngIf="siblingProgressStep > 2" class="bi bi-check-lg"></i>
+        <span *ngIf="siblingProgressStep < 2" class="sibling-progress__dot"></span>
+      </span>
+      <span class="sibling-progress__text">
+        <span class="sibling-progress__title">{{ siblingProgressStep > 2 ? 'تم تجهيز بيانات الحالة' : 'جاري إعادة تعبئة بيانات الحالة...' }}</span>
+        <span class="sibling-progress__desc">نسخ بيانات المريض بدون التشخيص المبدئي والبيانات المرتبطة به</span>
+      </span>
     </div>
   </div>
 </p-dialog>

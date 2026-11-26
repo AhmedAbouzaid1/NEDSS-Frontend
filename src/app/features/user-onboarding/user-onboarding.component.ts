@@ -3,6 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../home/users/Services/user.service';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
+import {
+  isValidUserNationalId,
+  normalizeIdentityDigits,
+  onNationalIdKeyPress,
+  userNationalIdError,
+} from 'src/app/core/utils/user-identity-rules';
 
 @Component({
   selector: 'app-user-onboarding',
@@ -17,12 +23,16 @@ export class UserOnboardingComponent {
   errorMsg: string = '';
   usernameError: string = '';
   emailError: string = '';
+  nationalIdError: string = '';
+  onNationalIdKeyPress = onNationalIdKeyPress;
 
   data = {
     fullName: '',
     userName: '',
     email: '',
     phoneNo: '',
+    nationalId: '',
+    hiringDate: null as string | null,
     address: '',
     profilePic: '',
     password: '',
@@ -99,8 +109,34 @@ export class UserOnboardingComponent {
       });
   }
 
+  checkNationalId() {
+    const nationalId = normalizeIdentityDigits(this.data.nationalId);
+    if (!nationalId || !this.nationalIdValid) {
+      this.nationalIdError = '';
+      return;
+    }
+    this.userService
+      .checkInvitationAvailability({ token: this.token, code: this.code.trim(), nationalId })
+      .subscribe((response: any) => {
+        if (response?.data?.nationalIdTaken) {
+          this.translateService
+            .get('NEDSS.HOME.USERS.INVITE.NATIONAL_ID_TAKEN')
+            .subscribe((m: string) => (this.nationalIdError = m));
+        } else {
+          this.nationalIdError = '';
+        }
+      });
+  }
+
   private applySubmitError(msg: string) {
-    if (/username/i.test(msg)) {
+    if (/^(NationalId|Phone)/.test(msg)) {
+      this.translateService
+        .get('NEDSS.HOME.USERS.ADD_USER.ERRORS.' + msg)
+        .subscribe((m: string) => {
+          if (msg.startsWith('NationalId')) this.nationalIdError = m;
+          else this.errorMsg = m;
+        });
+    } else if (/username/i.test(msg)) {
       this.translateService
         .get('NEDSS.HOME.USERS.INVITE.USERNAME_TAKEN')
         .subscribe((m: string) => (this.usernameError = m));
@@ -117,6 +153,7 @@ export class UserOnboardingComponent {
     this.errorMsg = '';
     this.usernameError = '';
     this.emailError = '';
+    this.nationalIdError = '';
     if (!this.formValid()) return;
     this.loading = true;
     this.userService
@@ -126,7 +163,9 @@ export class UserOnboardingComponent {
         fullName: this.data.fullName,
         userName: this.data.userName,
         email: this.data.email,
-        phoneNo: this.data.phoneNo,
+        phoneNo: normalizeIdentityDigits(this.data.phoneNo),
+        nationalId: normalizeIdentityDigits(this.data.nationalId),
+        hiringDate: this.data.hiringDate || null,
         address: this.data.address,
         profilePic: this.data.profilePic,
         password: this.data.password,
@@ -169,7 +208,13 @@ export class UserOnboardingComponent {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((this.data.email || '').trim());
   }
   get phoneValid(): boolean {
-    return /^01[0125]\d{8}$/.test((this.data.phoneNo || '').trim());
+    return /^01[0125]\d{8}$/.test(normalizeIdentityDigits(this.data.phoneNo));
+  }
+  get nationalIdValid(): boolean {
+    return isValidUserNationalId(this.data.nationalId);
+  }
+  get nationalIdFormatError(): string {
+    return userNationalIdError(this.data.nationalId);
   }
   get pwLengthOk(): boolean {
     return (this.data.password || '').length >= 8;
@@ -195,6 +240,8 @@ export class UserOnboardingComponent {
       this.emailValid &&
       !this.emailError &&
       this.phoneValid &&
+      this.nationalIdValid &&
+      !this.nationalIdError &&
       this.passwordValid &&
       this.passwordsMatch
     );

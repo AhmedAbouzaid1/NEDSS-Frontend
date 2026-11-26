@@ -5,7 +5,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { GeneralDataService } from '../../general-data/services/general-data.service';
-import { SingleDropdownSettings } from 'src/app/core/constants';
+import { AgeType, SingleDropdownSettings } from 'src/app/core/constants';
 import { firstValueFrom } from 'rxjs';
 import { NationalityEnum } from '../../general-data/models/nationality-enum';
 
@@ -91,6 +91,13 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
     }
   }
 
+  get ageTypeName(): string {
+    if (this.data?.age == null || this.data?.ageTypeId == null) return '';
+    const type = AgeType.find((t) => t.id == this.data.ageTypeId);
+    if (!type) return '';
+    return this.currentLang == 'ar' ? type.arabicName : type.englishName;
+  }
+
   canContinueInvestigation(): boolean {
     return !this.isLoadingInvestigationData && this.hasLoadedPatientData;
   }
@@ -98,7 +105,7 @@ export class InvestigationDetailesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (
       this.Router.url.includes(
-        '/home/investigations/compelete-investigation'
+        '/home/investigations/complete-investigation'
       ) ||
       this.Router.url.includes('/home/investigations')
     ) {

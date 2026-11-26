@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActiveUserService } from 'src/app/core/services/active-user.service';
 import { NationalityEnum } from '../models/nationality-enum';
 import { PatientModel } from '../models/patient-model';
-import { DepartmentEnum } from '../models/department-enum';
+import { DepartmentEnum, isInternalLikeDepartment } from '../models/department-enum';
 import { normalizeArabicNameChars } from 'src/app/core/shared/utilis/arabic-text';
 
 @Injectable({
@@ -576,6 +576,8 @@ export class GeneralDataService {
     this.isPatientHospitalNoValid = true;
     this.isDoctorNameValid = true;
     this.isPatientDiseasesValid = true;
+    this.isSingleInitialDiagnosisValid = true;
+    this.isInitialDiagnosisNotRepeatedValid = true;
     this.isInfectionDateValid = true;
     this.isInfectionDateNotAfterDiscoveryValid = true;
     this.isHospitalEntryDateValid = true;
@@ -682,7 +684,7 @@ export class GeneralDataService {
     this.isPassportIdValid = this.checkPassportIdValid(
       patient.nationalityId,
       patient.passportNo,
-      patient.incidentDepartmentId == DepartmentEnum.Internal
+      isInternalLikeDepartment(patient.incidentDepartmentId)
     );
 
     var validationResults = [
@@ -734,7 +736,7 @@ export class GeneralDataService {
     if (nationalityId == NationalityEnum.Egyptian) {
       return this.validateNationalID(
         nationalId,
-        incidentDepartmentId == DepartmentEnum.Internal || incidentDepartmentId == DepartmentEnum.ICU
+        isInternalLikeDepartment(incidentDepartmentId)
       );
     }
     return true;
@@ -774,6 +776,15 @@ export class GeneralDataService {
   birthDateValidationMessage: string;
   ageValidationMessage: string;
 
+  prisonerJobCategoryIds: number[] = [];
+
+  isPhoneRequiredFor(patient: any): boolean {
+    return (
+      isInternalLikeDepartment(patient?.incidentDepartmentId) &&
+      !this.prisonerJobCategoryIds.includes(Number(patient?.patientJobCategoryId))
+    );
+  }
+
   validateDemographicInfo(patient): any {
     this.isFirstNameValid = this.checkFirstNameValid(patient.firstName, true);
     this.isSecondNameValid = this.checkSecondNameValid(
@@ -785,7 +796,7 @@ export class GeneralDataService {
       patient.familyName,
       false
     );
-    const phoneRequired = patient.incidentDepartmentId == DepartmentEnum.Internal;
+    const phoneRequired = this.isPhoneRequiredFor(patient);
     this.isPhoneNumber1Valid = this.validatePhoneNumber1(
       patient.phoneNo1,
       phoneRequired,
@@ -821,8 +832,7 @@ export class GeneralDataService {
       this.isAgeTypeValid,
       this.isPassportValid ||
       this.isNationalValid ||
-      (patient.incidentDepartmentId != DepartmentEnum.Internal &&
-        patient.incidentDepartmentId != DepartmentEnum.ICU),
+      !isInternalLikeDepartment(patient.incidentDepartmentId),
     ];
 
     return validationResults.findIndex((result) => result == false);
@@ -1039,6 +1049,9 @@ export class GeneralDataService {
   isPatientHospitalNoValid: boolean = true;
   isDoctorNameValid: boolean = true;
   isPatientDiseasesValid: boolean = true;
+  isSingleInitialDiagnosisValid: boolean = true;
+  isInitialDiagnosisNotRepeatedValid: boolean = true;
+  excludedInitialDiagnosisIds: number[] = [];
   isInfectionDateValid: boolean = true;
   isInfectionDateNotAfterDiscoveryValid: boolean = true;
   isHospitalEntryDateValid: boolean = true;
@@ -1052,6 +1065,13 @@ export class GeneralDataService {
 
   doctorNameValidationMessage: string;
 
+  initialDiagnosisIdsOf(patient: any): number[] {
+    const ids = (patient?.patientDiseases ?? [])
+      .filter((d: any) => d?.diseaseGroupId != null && d?.diseaseId == null && d?.caseResultCategoryId == null)
+      .map((d: any) => Number(d.diseaseGroupId));
+    return Array.from(new Set<number>(ids));
+  }
+
   validateDiagnostics(patient): any {
     this.isPatientHospitalNoValid = this.validatePatientHospitalNo(
       patient.patientHospitalNo
@@ -1060,16 +1080,21 @@ export class GeneralDataService {
     this.isPatientDiseasesValid =
       this.validateField(patient.patientDiseases) &&
       patient.patientDiseases.length > 0;
+    const initialDiagnosisIds = this.initialDiagnosisIdsOf(patient);
+    this.isSingleInitialDiagnosisValid = initialDiagnosisIds.length <= 1;
+    this.isInitialDiagnosisNotRepeatedValid = !initialDiagnosisIds.some((id) =>
+      this.excludedInitialDiagnosisIds.includes(id)
+    );
     this.isInfectionDateValid =
       this.validateField(patient.infectionDate) ||
-      patient.incidentDepartmentId != 1;
+      !isInternalLikeDepartment(patient.incidentDepartmentId);
     this.isInfectionDateNotAfterDiscoveryValid = this.checkFeverDateNotAfterDiscovery(
       patient.infectionDate,
       patient.caseDiscoveryDate
     );
     this.isHospitalEntryDateValid =
       this.validateField(patient.hospitalEntryDate) ||
-      patient.incidentDepartmentId != 1;
+      !isInternalLikeDepartment(patient.incidentDepartmentId);
     this.isInfectionDateAfterBirthValid = this.isDateOnOrAfter(
       patient.infectionDate,
       patient.birthDate
@@ -1078,7 +1103,7 @@ export class GeneralDataService {
       patient.feverSymptoms?.feverDate,
       patient.infectionDate
     );
-    const isInternal = patient.incidentDepartmentId == DepartmentEnum.Internal;
+    const isInternal = isInternalLikeDepartment(patient.incidentDepartmentId);
     this.isHospitalEntryDateOrderValid =
       !isInternal ||
       (this.isDateOnOrAfter(patient.hospitalEntryDate, patient.birthDate) &&
@@ -1103,6 +1128,8 @@ export class GeneralDataService {
       this.isPatientHospitalNoValid,
       this.isDoctorNameValid,
       this.isPatientDiseasesValid,
+      this.isSingleInitialDiagnosisValid,
+      this.isInitialDiagnosisNotRepeatedValid,
       this.isInfectionDateValid,
       this.isInfectionDateNotAfterDiscoveryValid,
       this.isInfectionDateAfterBirthValid,
@@ -1296,14 +1323,26 @@ export class GeneralDataService {
   }
 
   onIdentityCardKeyPress(event: KeyboardEvent): void {
-    if (event.key === 'Enter') return;
-    let inputKey = event.key;
-    if (
-      (inputKey !== 'Backspace' && isNaN(Number(inputKey))) ||
-      (event.target as HTMLInputElement).value.length >= 14
-    ) {
+    if (event.key === 'Enter' || event.ctrlKey || event.metaKey) return;
+    if (event.key === 'Backspace') return;
+    if (!/^[0-9٠-٩۰-۹]$/.test(event.key)) {
+      event.preventDefault();
+      return;
+    }
+    const input = event.target as HTMLInputElement;
+    const selected = Math.abs((input.selectionEnd ?? 0) - (input.selectionStart ?? 0));
+    if (input.value.length - selected >= 14) {
       event.preventDefault();
     }
+  }
+
+  normalizeNationalIdDigits(value: unknown): string {
+    if (value === null || value === undefined) return '';
+    return String(value)
+      .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+      .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
+      .replace(/\D/g, '')
+      .slice(0, 14);
   }
 
   validatePhoneNumber1(phoneNo, isRequired, mode: 'international' | 'local' | null = null) {
@@ -1639,8 +1678,7 @@ export class GeneralDataService {
     const idsOk =
       this.isPassportValid ||
       this.isNationalValid ||
-      (patient?.incidentDepartmentId != DepartmentEnum.Internal &&
-        patient?.incidentDepartmentId != DepartmentEnum.ICU);
+      !isInternalLikeDepartment(patient?.incidentDepartmentId);
     if (!idsOk) {
       return patient?.nationalityId == NationalityEnum.Egyptian
         ? 'NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONAL_ID'
@@ -1710,7 +1748,7 @@ export class GeneralDataService {
   }
 
   birthDateUpperBound(patient: any): Date | null {
-    const isInternal = patient?.incidentDepartmentId == DepartmentEnum.Internal;
+    const isInternal = isInternalLikeDepartment(patient?.incidentDepartmentId);
     return this.earliestDateBound(
       new Date(),
       patient?.caseDiscoveryDate,
@@ -1750,6 +1788,10 @@ export class GeneralDataService {
   getDiagnosticsInvalidFieldLabel(patient: any): string | null {
     return this.pickInvalidField([
       [this.isPatientDiseasesValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES'],
+      [this.isSingleInitialDiagnosisValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES',
+        'يجب اختيار تشخيص مبدئي واحد فقط للحالة'],
+      [this.isInitialDiagnosisNotRepeatedValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.START_DISEASES',
+        'هذا التشخيص المبدئي مسجل بالفعل لنفس المريض، اختر تشخيصًا مختلفًا'],
       [this.isInfectionDateValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE'],
       [this.isInfectionDateNotAfterDiscoveryValid, 'NEDSS.HOME.GENERAL_DATA_DIAGONOSISTIC_INFO.INFECTIONDATE',
         `تاريخ بداية الأعراض يجب أن يكون قبل أو في نفس يوم تاريخ اكتشاف الحالة (${this.formatDateLabel(patient?.caseDiscoveryDate)})`],

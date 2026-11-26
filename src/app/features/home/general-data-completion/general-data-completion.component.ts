@@ -12,10 +12,18 @@ import { UserMessageService } from 'src/app/core/services/user.message.service';
 import { environment } from 'src/environments/environment';
 import { GeneralDataCompletionServiceService } from './services/general-data-completion-service.service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { SharedDataService } from '../general-data/services/shared-data.service';
 // import { ExportService } from '../../../core/services/export.service';
 import { ExportService } from 'src/app/core/services/export.service';
 import { ExportAsConfig } from 'ngx-export-as';
+
+enum UserAccessLevel {
+  Central = 1,
+  Governorate = 3,
+  Administration = 4,
+}
+
 @Component({
   selector: 'app-general-data-completion',
   templateUrl: './general-data-completion.component.html',
@@ -23,6 +31,9 @@ import { ExportAsConfig } from 'ngx-export-as';
 })
 export class GeneralDataCompletionComponent {
   levelId: any;
+  canSelectGovernment = false;
+  canSelectHealthAdministration = false;
+  canSelectIncidentSource = false;
   maxDate = new Date();
   currentLang: string;
   dir: string;
@@ -133,7 +144,8 @@ export class GeneralDataCompletionComponent {
     private data: SharedDataService,
     private router: Router,
     private lookupsService: LookupsGetterService,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -148,6 +160,12 @@ export class GeneralDataCompletionComponent {
     this.levelId = JSON.parse(
       localStorage.getItem('ls.authorizationData')
     )?.user?.levelId;
+    this.canSelectGovernment = this.levelId == UserAccessLevel.Central;
+    this.canSelectHealthAdministration =
+      this.canSelectGovernment || this.levelId == UserAccessLevel.Governorate;
+    this.canSelectIncidentSource =
+      this.canSelectHealthAdministration ||
+      this.levelId == UserAccessLevel.Administration;
 
     let incidentInfoLink = document.getElementById(
       'incidentInfo'
@@ -686,8 +704,12 @@ export class GeneralDataCompletionComponent {
   }
 
   getById(id: number) {
-    this.data.patientId = id;
-    this.router.navigateByUrl('/home/general-data');
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/home/general-data'], {
+        queryParams: { pid: id },
+      })
+    );
+    window.open(this.location.prepareExternalUrl(url), '_blank');
   }
   exportPatiantsAsExcel() {
     this.exportService.exportTableAsExcel(this.tableElement, this.screenName);

@@ -11,6 +11,8 @@ export const INVESTIGATION_FORM_BY_ROUTER: Record<string, string> = {
   "cholera": "cholera",
   "diarrhea": "diarrhea",
   "diphtheria": "diphtheria",
+  "entomological-mosquito": "entomological",
+  "entomological-sandfly": "entomological",
   "falseChickenpox": "false-chickenpox",
   "fasciola": "fasciola",
   "fever-rash": "fever-rash",
@@ -27,7 +29,6 @@ export const INVESTIGATION_FORM_BY_ROUTER: Record<string, string> = {
   "monkeypox": "monkeypox",
   "mumbariPoisoning": "mumbari-poisoning",
   "mumps": "mumps",
-  "NfalseChickenpoxULL": "false-chickenpox",
   "plague": "plague",
   "rabies": "rabies",
   "rift-valley": "rift-valley",
@@ -7256,6 +7257,239 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "section": [
         "NEDSS.COMPLETE_INVESTEGATION.DIPHTHERIA.VACCINATION_STATUS"
       ]
+    }
+  ],
+  "entomological": [
+    {
+      "key": "departureFromEgyptDate",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "returnToEgyptDate",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "arrivedFromCountryId",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "isolationPlace",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "surveyDate",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "larvaeExploredUnits",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "larvaeDipsCount",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "larvaeCollectedCount",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "positiveUnitsCulicini",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "positiveUnitsAedesAegypti",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "positiveUnitsAnopheles",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "breedingSiteSewage",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "breedingSiteAgriculturalDrain",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "breedingSitePonds",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "breedingSiteJars",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "breedingSitePlasticIronTanks",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "breedingSiteCementGroundTanks",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "breedingSiteOther",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "breedingSiteOtherDetails",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "adultHousesCount",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "adultRoomsOrTrapsCount",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "adultMosquitoCount",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "sandFlyTrapsDistributed",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "sandFlyTrapsPositive",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "sandFlyCount",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "larvae",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "adults",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "otherSpecies",
+      "label": [],
+      "section": [],
+      "array": true
+    },
+    {
+      "key": "genus",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "name",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "workAreaAddressDetails",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "surveillanceOfficerName",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "vectorControlManagerName",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "endemicDiseasesDirectorName",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "surveillanceUnitName",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "pesticide",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "pesticideName",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "activeIngredient",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "mixRatio",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "sprayersCount",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "solventQuantity",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "quantity",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "latitude",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "longitude",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "housesCount",
+      "label": [],
+      "section": []
+    },
+    {
+      "key": "deviceType",
+      "label": [],
+      "section": []
     }
   ],
   "false-chickenpox": [
@@ -15077,194 +15311,68 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       "optionsRef": "AnswerOptions"
     },
     {
-      "key": "nameDay1",
+      "key": "name",
       "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.CONTACT_NAME",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.NO_CONTACTS"
       ],
       "section": [
-        "متابعة اليوم الأول",
-        "بيانات الحالة المخالطة"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ]
     },
     {
-      "key": "ageDay1",
+      "key": "age",
       "label": [
-        "العمر"
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.AGE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.NO_CONTACTS"
       ],
       "section": [
-        "متابعة اليوم الأول",
-        "بيانات الحالة المخالطة"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ]
     },
     {
-      "key": "telephoneDay1",
+      "key": "telephone",
       "label": [
-        "رقم التليفون"
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.PHONE_NUMBER",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.NO_CONTACTS"
       ],
       "section": [
-        "متابعة اليوم الأول",
-        "بيانات الحالة المخالطة"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ]
     },
     {
-      "key": "genderDay1",
+      "key": "contactType",
       "label": [
-        "النوع"
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.CONTACT_TYPE"
       ],
       "section": [
-        "متابعة اليوم الأول",
-        "بيانات الحالة المخالطة"
-      ],
-      "optionsRef": "Gender"
-    },
-    {
-      "key": "contactTypeDay1",
-      "label": [
-        "نوع المخالطة"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "بيانات الحالة المخالطة"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ],
       "optionsRef": "contactType"
     },
     {
-      "key": "relationshipPatientDay1",
+      "key": "relationship",
       "label": [
-        "علاقته بالحالة"
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.RELATIONSHIP_TO_CASE",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.NO_CONTACTS"
       ],
       "section": [
-        "متابعة اليوم الأول",
-        "بيانات الحالة المخالطة"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ]
     },
     {
-      "key": "dateOnsetSymptomsDay1",
+      "key": "hasSymptoms",
       "label": [
-        "تاريخ ظهور الأعراض"
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.HAS_SYMPTOMS"
       ],
       "section": [
-        "متابعة اليوم الأول",
-        "في حالة ظهور أعراض"
-      ]
-    },
-    {
-      "key": "feverDay1",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "dryCoughDay1",
-      "label": [
-        "سعال جاف"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "coughingWithSpittingDay1",
-      "label": [
-        "سعال يصاحبه بصق"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay1",
-      "label": [
-        "التهاب بالحلق"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay1",
-      "label": [
-        "صعوبة بالتنفس"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay1",
-      "label": [
-        "آلام بالمفاصل"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay1",
-      "label": [
-        "قئ"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "diarrheaDay1",
-      "label": [
-        "إسهال"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherDay1",
-      "label": [
-        "أخرى"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherSymptomsDay1",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MENTION_OTHER_SYMPTOM"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "في حالة ظهور أعراض"
-      ]
-    },
-    {
-      "key": "isSampleTakenDay1",
-      "label": [
-        "تم اخذ العينة؟"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "المعمل"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ],
       "options": {
         "0": [
@@ -15276,723 +15384,74 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
       }
     },
     {
-      "key": "dateSampleTakenDay1",
+      "key": "lossOfAppetite",
       "label": [
-        "تاريخ أخذ العينة"
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.LOSS_OF_APPETITE"
       ],
       "section": [
-        "متابعة اليوم الأول",
-        "المعمل"
-      ]
-    },
-    {
-      "key": "sampleResultDay1",
-      "label": [
-        "نتيجة العينة"
-      ],
-      "section": [
-        "متابعة اليوم الأول",
-        "المعمل"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ],
       "options": {
-        "0": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "1": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "2": [
-          "لم ترد"
-        ]
-      }
-    },
-    {
-      "key": "nameDay2",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "ageDay2",
-      "label": [
-        "العمر"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "telephoneDay2",
-      "label": [
-        "رقم التليفون"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "genderDay2",
-      "label": [
-        "النوع"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "بيانات الحالة المخالطة"
-      ],
-      "optionsRef": "Gender"
-    },
-    {
-      "key": "contactTypeDay2",
-      "label": [
-        "نوع المخالطة"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "بيانات الحالة المخالطة"
-      ],
-      "optionsRef": "contactType"
-    },
-    {
-      "key": "relationshipPatientDay2",
-      "label": [
-        "علاقته بالحالة"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "dateOnsetSymptomsDay2",
-      "label": [
-        "تاريخ ظهور الأعراض"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "في حالة ظهور أعراض"
-      ]
-    },
-    {
-      "key": "feverDay2",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "dryCoughDay2",
-      "label": [
-        "سعال جاف"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "coughingWithSpittingDay2",
-      "label": [
-        "سعال يصاحبه بصق"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay2",
-      "label": [
-        "التهاب بالحلق"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay2",
-      "label": [
-        "صعوبة بالتنفس"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay2",
-      "label": [
-        "آلام بالمفاصل"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay2",
-      "label": [
-        "قئ"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "diarrheaDay2",
-      "label": [
-        "إسهال"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherDay2",
-      "label": [
-        "أخرى"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherSymptomsDay2",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MENTION_OTHER_SYMPTOM"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "في حالة ظهور أعراض"
-      ]
-    },
-    {
-      "key": "isSampleTakenDay2",
-      "label": [
-        "تم اخذ العينة؟"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "المعمل"
-      ],
-      "options": {
-        "0": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "1": [
+        "false": [
           "NEDSS.COMMON.NO"
         ]
       }
     },
     {
-      "key": "dateSampleTakenDay2",
+      "key": "jaundice",
       "label": [
-        "تاريخ أخذ العينة"
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.JAUNDICE"
       ],
       "section": [
-        "متابعة اليوم الثاني",
-        "المعمل"
-      ]
-    },
-    {
-      "key": "sampleResultDay2",
-      "label": [
-        "نتيجة العينة"
-      ],
-      "section": [
-        "متابعة اليوم الثاني",
-        "المعمل"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ],
       "options": {
-        "0": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "1": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "2": [
-          "لم ترد"
-        ]
-      }
-    },
-    {
-      "key": "nameDay7",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "ageDay7",
-      "label": [
-        "العمر"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "telephoneDay7",
-      "label": [
-        "رقم التليفون"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "genderDay7",
-      "label": [
-        "النوع"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "بيانات الحالة المخالطة"
-      ],
-      "optionsRef": "Gender"
-    },
-    {
-      "key": "contactTypeDay7",
-      "label": [
-        "نوع المخالطة"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "بيانات الحالة المخالطة"
-      ],
-      "optionsRef": "contactType"
-    },
-    {
-      "key": "relationshipPatientDay7",
-      "label": [
-        "علاقته بالحالة"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "dateOnsetSymptomsDay7",
-      "label": [
-        "تاريخ ظهور الأعراض"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "في حالة ظهور أعراض"
-      ]
-    },
-    {
-      "key": "feverDay7",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "dryCoughDay7",
-      "label": [
-        "سعال جاف"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "coughingWithSpittingDay7",
-      "label": [
-        "سعال يصاحبه بصق"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay7",
-      "label": [
-        "التهاب بالحلق"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay7",
-      "label": [
-        "صعوبة بالتنفس"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay7",
-      "label": [
-        "آلام بالمفاصل"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay7",
-      "label": [
-        "قئ"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "diarrheaDay7",
-      "label": [
-        "إسهال"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherDay7",
-      "label": [
-        "أخرى"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherSymptomsDay7",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MENTION_OTHER_SYMPTOM"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "في حالة ظهور أعراض"
-      ]
-    },
-    {
-      "key": "isSampleTakenDay7",
-      "label": [
-        "تم اخذ العينة؟"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "المعمل"
-      ],
-      "options": {
-        "0": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "1": [
+        "false": [
           "NEDSS.COMMON.NO"
         ]
       }
     },
     {
-      "key": "dateSampleTakenDay7",
+      "key": "darkUrine",
       "label": [
-        "تاريخ أخذ العينة"
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.DARK_URINE"
       ],
       "section": [
-        "متابعة بعد 7 ايام",
-        "المعمل"
-      ]
-    },
-    {
-      "key": "sampleResultDay7",
-      "label": [
-        "نتيجة العينة"
-      ],
-      "section": [
-        "متابعة بعد 7 ايام",
-        "المعمل"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ],
       "options": {
-        "0": [
-          "NEDSS.COMMON.POSITIVE"
-        ],
-        "1": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "2": [
-          "لم ترد"
-        ]
-      }
-    },
-    {
-      "key": "nameDay14",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "ageDay14",
-      "label": [
-        "العمر"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "telephoneDay14",
-      "label": [
-        "رقم التليفون"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "genderDay14",
-      "label": [
-        "النوع"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "بيانات الحالة المخالطة"
-      ],
-      "optionsRef": "Gender"
-    },
-    {
-      "key": "contactTypeDay14",
-      "label": [
-        "نوع المخالطة"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "بيانات الحالة المخالطة"
-      ],
-      "optionsRef": "contactType"
-    },
-    {
-      "key": "relationshipPatientDay14",
-      "label": [
-        "علاقته بالحالة"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "بيانات الحالة المخالطة"
-      ]
-    },
-    {
-      "key": "dateOnsetSymptomsDay14",
-      "label": [
-        "تاريخ ظهور الأعراض"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "في حالة ظهور أعراض"
-      ]
-    },
-    {
-      "key": "feverDay14",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.FEVER"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "dryCoughDay14",
-      "label": [
-        "سعال جاف"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "coughingWithSpittingDay14",
-      "label": [
-        "سعال يصاحبه بصق"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "soreThroatDay14",
-      "label": [
-        "التهاب بالحلق"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "breathingDifficultyDay14",
-      "label": [
-        "صعوبة بالتنفس"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "jointPainDay14",
-      "label": [
-        "آلام بالمفاصل"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "vomitDay14",
-      "label": [
-        "قئ"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "diarrheaDay14",
-      "label": [
-        "إسهال"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherDay14",
-      "label": [
-        "أخرى"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "في حالة ظهور أعراض"
-      ],
-      "optionsRef": "AnswerOptions"
-    },
-    {
-      "key": "otherSymptomsDay14",
-      "label": [
-        "NEDSS.HOME.GENERAL_DATA_CLINICAL_SYMPTOMS.MENTION_OTHER_SYMPTOM"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "في حالة ظهور أعراض"
-      ]
-    },
-    {
-      "key": "isSampleTakenDay14",
-      "label": [
-        "تم اخذ العينة؟"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "المعمل"
-      ],
-      "options": {
-        "0": [
+        "true": [
           "NEDSS.COMMON.YES"
         ],
-        "1": [
+        "false": [
           "NEDSS.COMMON.NO"
         ]
       }
     },
     {
-      "key": "dateSampleTakenDay14",
+      "key": "rightUpperQuadrantPain",
       "label": [
-        "تاريخ أخذ العينة"
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.RIGHT_UPPER_QUADRANT_PAIN"
       ],
       "section": [
-        "متابعة بعد 14 يوم",
-        "المعمل"
-      ]
-    },
-    {
-      "key": "sampleResultDay14",
-      "label": [
-        "نتيجة العينة"
-      ],
-      "section": [
-        "متابعة بعد 14 يوم",
-        "المعمل"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ],
       "options": {
-        "0": [
-          "NEDSS.COMMON.POSITIVE"
+        "true": [
+          "NEDSS.COMMON.YES"
         ],
-        "1": [
-          "NEDSS.COMMON.NEGATIVE"
-        ],
-        "2": [
-          "لم ترد"
+        "false": [
+          "NEDSS.COMMON.NO"
         ]
       }
     },
@@ -16002,8 +15461,8 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.INVESTIGATION_DATE"
       ],
       "section": [
-        "متابعة بعد 14 يوم",
-        "المعمل"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ]
     },
     {
@@ -16012,8 +15471,8 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.HEALTH_OBSERVER_NAME"
       ],
       "section": [
-        "متابعة بعد 14 يوم",
-        "المعمل"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ]
     },
     {
@@ -16022,8 +15481,8 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.SURVEILLANCE_OFFICER"
       ],
       "section": [
-        "متابعة بعد 14 يوم",
-        "المعمل"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ]
     },
     {
@@ -16032,8 +15491,8 @@ export const INVESTIGATION_FORM_FIELDS: Record<string, InvestigationFormField[]>
         "NEDSS.COMPLETE_INVESTEGATION.DIARRHEA.ADMINISTRATION_DIRECTOR"
       ],
       "section": [
-        "متابعة بعد 14 يوم",
-        "المعمل"
+        "التقصي الوبائي",
+        "NEDSS.COMPLETE_INVESTEGATION.HEPATITIS_CONTACTS.TITLE"
       ]
     }
   ],

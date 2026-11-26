@@ -292,13 +292,7 @@ export class DiseaseRulesComponent implements OnInit {
               this.getDiseaseRule();
             }
           },
-          (error) => {
-            this.translateService
-              .get('NEDSS.COMMON.SENT_FAILD')
-              .subscribe((res: string) => {
-                this.userMsg.error(res);
-              });
-          }
+          (error) => this.showSaveError(error, 'NEDSS.COMMON.SENT_FAILD')
         );
       } else this.update();
     } else {
@@ -319,14 +313,24 @@ export class DiseaseRulesComponent implements OnInit {
           this.getDiseaseRule();
         }
       },
-      (error) => {
-        this.translateService
-          .get('NEDSS.COMMON.UPDATE_FAILD')
-          .subscribe((res: string) => {
-            this.userMsg.error(res);
-          });
-      }
+      (error) => this.showSaveError(error, 'NEDSS.COMMON.UPDATE_FAILD')
     );
+  }
+
+  private showSaveError(error: any, fallbackKey: string) {
+    if (error?.status === 400) {
+      const msg = error?.error?.messages?.[0] || error?.error?.Messages?.[0];
+      if (msg) {
+        this.userMsg.error(msg);
+        return;
+      }
+    }
+    if (error?.status >= 500) return;
+    this.translateService
+      .get(fallbackKey)
+      .subscribe((res: string) => {
+        this.userMsg.error(res);
+      });
   }
 
   getById(id: number) {

@@ -23,7 +23,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgControl } from '@angular/forms';
 import { ActiveUserService } from 'src/app/core/services/active-user.service';
 import { NationalityEnum } from '../models/nationality-enum';
-import { DepartmentEnum } from '../models/department-enum';
+import { DepartmentEnum, isInternalLikeDepartment } from '../models/department-enum';
 import { RelativeEnum } from '../models/relative-enum';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
@@ -236,6 +236,10 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
     return DepartmentEnum;
   }
 
+  get isInternalLike(): boolean {
+    return isInternalLikeDepartment(this.patient?.incidentDepartmentId);
+  }
+
   ngOnInit() {
     queueMicrotask(() => {
       const link = document.getElementById('incidentInfo') as HTMLElement;
@@ -301,6 +305,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
           );
           this.selectedNationalityId = this.patient.nationalityId;
         }
+        this.applyDefaultNationality();
 
         if (this.patient.relationShipDegreeId == null)
           this.patient.relationShipDegreeId = 0;
@@ -418,6 +423,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
             (o) => o.id == incidentSourceId
           );
         this.patient.incidentSourceId = incidentSourceId;
+        this.applyDefaultNationality();
         this.onGovernmentChanged();
       }
     });
@@ -562,6 +568,20 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
     }
   }
 
+  applyDefaultNationality() {
+    if (this.sharedDataService.isEditMode || !this.patient) return;
+    const current = this.patient.nationalityId;
+    if (current != null && current != 0) return;
+    this.selectedNationalityId = NationalityEnum.Egyptian;
+    this.patient.nationalityId = NationalityEnum.Egyptian;
+    this.isForeign = false;
+    if (this.nationalities?.length > 0) {
+      this.selectedNationality = this.nationalities.filter(
+        (x) => x.id == NationalityEnum.Egyptian,
+      );
+    }
+  }
+
   checkInitNationality() {
     if (this.patient.nationalityId == 0 || this.patient.nationalityId == null) {
       this.isForeign = false;
@@ -637,7 +657,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
         this.patient.incidentDepartmentId = this.selectedDepartmentId;
       }
       this.patient.hiddenInsideDepartment =
-        this.selectedDepartmentId != DepartmentEnum.Internal;
+        !isInternalLikeDepartment(this.selectedDepartmentId);
     } else this.patient.incidentDepartmentId = null;
     if (this.patient.nationalId == null) {
       this.patient.age = null;
@@ -677,8 +697,7 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
           if (this.patient.nationalityId > 0) {
             this.selectedNationalityId = this.patient.nationalityId;
           } else {
-            this.selectedNationalityId = NationalityEnum.Egyptian;
-            this.onNationalityChanged();
+            this.applyDefaultNationality();
           }
         }
         this.loadingPanel = false;
@@ -965,6 +984,20 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
   onNationalIdChanged(value: any, isManualChange = false) {
     const isEgyptianNationality =
       this.patient.nationalityId == NationalityEnum.Egyptian;
+
+    if (isManualChange) {
+      const digits = this.generalDataService.normalizeNationalIdDigits(value);
+      if (digits !== (value ?? '').toString()) {
+        this.patient.nationalId = digits || null;
+      }
+      value = this.patient.nationalId;
+      this.generalDataService.isCardIdValid =
+        this.generalDataService.checkCardIdValid(
+          this.patient.incidentDepartmentId,
+          this.patient.nationalityId,
+          this.patient.nationalId
+        );
+    }
 
     if (
       value != null &&

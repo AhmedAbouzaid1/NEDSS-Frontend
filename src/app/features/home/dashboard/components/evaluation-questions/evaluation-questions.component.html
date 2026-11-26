@@ -19,7 +19,7 @@
       {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.EDIT_EVALUATION" | translate }}
     </h6>
   </ng-template>
-  <form #diseaseFieldForm="ngForm" id="evaluation-que">
+  <form appReadOnlyForm #diseaseFieldForm="ngForm" id="evaluation-que">
     <div class="row">
       <div class="col-12">
         <div class="form-group">
@@ -47,7 +47,7 @@
         <p-button *ngIf="isEdit" (onClick)="edit()" [disabled]="!diseaseFieldForm.valid">
           {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.EDIT" | translate }}
         </p-button>
-        <!-- <button
+        <!-- <button appWriteAction
           (click)="save()"
           *ngIf="!isEdit"
           [disabled]="!diseaseFieldForm.valid"
@@ -55,7 +55,7 @@
         >
           {{ "NEDSS.HOME.USERS.AUDIT-TRIAL.SAVE" | translate }}
         </button> -->
-        <!-- <button
+        <!-- <button appWriteAction
           (click)="edit()"
           *ngIf="isEdit"
           [disabled]="!diseaseFieldForm.valid"
@@ -129,7 +129,7 @@
             <td>
               <a (click)="getById(item.id)" class="text-primary pi pi-pencil"></a>
               &nbsp;&nbsp;
-              <a data-bs-target="#exampleModal2" data-bs-toggle="modal" (click)="nameToDelete(item)"
+              <a appWriteAction data-bs-target="#exampleModal2" data-bs-toggle="modal" (click)="nameToDelete(item)"
                 class="text-danger mess-color pi pi-trash px-2"></a>
 
               &nbsp;&nbsp;
@@ -187,7 +187,7 @@
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
           {{ "NEDSS.COMMON.CANCEL" | translate }}
         </button>
-        <button type="button" class="btn btn-secondary" (click)="delete(underDeleting.id)" data-bs-dismiss="modal">
+        <button appWriteAction type="button" class="btn btn-secondary" (click)="delete(underDeleting.id)" data-bs-dismiss="modal">
           {{ "NEDSS.COMMON.DELETE" | translate }}
         </button>
       </div>

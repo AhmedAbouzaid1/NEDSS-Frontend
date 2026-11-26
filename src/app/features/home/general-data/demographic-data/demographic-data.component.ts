@@ -24,10 +24,10 @@ import { SharedDataService } from '../services/shared-data.service';
 import { GeneralDataService } from '../services/general-data.service';
 import { RelativeEnum } from '../models/relative-enum';
 import { NationalityEnum } from '../models/nationality-enum';
-import { DepartmentEnum } from '../models/department-enum';
+import { DepartmentEnum, isInternalLikeDepartment } from '../models/department-enum';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { isConscriptOrPrisonerCategory } from '../models/job-category';
+import { isConscriptOrPrisonerCategory, isPrisonerCategory } from '../models/job-category';
 
 @Component({
   selector: 'app-demographic-data',
@@ -107,7 +107,7 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
   }
 
   get isPhoneRequired(): boolean {
-    return this.patient?.incidentDepartmentId == DepartmentEnum.Internal;
+    return this.generalDataService.isPhoneRequiredFor(this.patient);
   }
 
 
@@ -258,6 +258,11 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
       this.selectedJobId = -1;
       this.isConscriptOrPrisoner = false;
     }
+    this.generalDataService.isPhoneNumber1Valid = this.generalDataService.validatePhoneNumber1(
+      this.patient.phoneNo1,
+      this.isPhoneRequired,
+      this.generalDataService.phoneMode(this.patient.isPhoneNo1International)
+    );
   }
   onJobChanged() {
     this.showPatientJobName = false;
@@ -282,6 +287,9 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
           result.data.forEach((job) => {
             this.jobCategories.push(job);
           });
+          this.generalDataService.prisonerJobCategoryIds = result.data
+            .filter((c) => isPrisonerCategory(c))
+            .map((c) => c.id);
           this.syncJobCategoryFromPatient();
         }
         this.jobCategoriesLoading = false;

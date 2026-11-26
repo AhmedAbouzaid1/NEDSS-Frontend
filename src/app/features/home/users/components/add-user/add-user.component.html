@@ -10,7 +10,7 @@
     {{ "NEDSS.HOME.USERS.ADD_USER.Edit_USER" | translate }}
   </h2>
   <div class="d-flex align-items-center gap-2 flex-wrap">
-    <button
+    <button appWriteAction
       type="button"
       class="btn bg pr-2 pl-2 rounded-1 fwb mt-6 text-white bg"
       [disabled]="resettingPassword"
@@ -30,7 +30,7 @@
   </div>
 </div>
 
-<form (ngSubmit)="save()" #userForm="ngForm" novalidate>
+<form appReadOnlyForm (ngSubmit)="save()" #userForm="ngForm" novalidate>
   <div class="card shadow color mb-4">
     <div class="card-body">
       <div class="row" #myTableElementId>
@@ -83,26 +83,70 @@
           <div class="form-group">
             <label for="phoneNo">
               {{ "NEDSS.HOME.USERS.ADD_USER.MOBILE" | translate }}
+              <span class="text-danger mess-color">*</span>
             </label>
             <input
               type="text"
+              id="phoneNo"
               name="phoneNo"
               [(ngModel)]="user.phoneNo"
               #phoneNo="ngModel"
               class="w-100"
+              inputmode="tel"
+              maxlength="14"
+              required
               (keypress)="generalDataService.onPhoneNumberKeyPress($event)"
-              (blur)="
-                generalDataService.isPhoneNumber1Valid =
-                  generalDataService.validatePhoneNumber1(user.phoneNo, false)
-              "
+              (blur)="phoneTouched = true; validatePhone()"
+              (ngModelChange)="phoneTouched && validatePhone()"
               pInputText
             />
             <small
-              *ngIf="!generalDataService.isPhoneNumber1Valid"
+              *ngIf="phoneTouched && phoneError"
               class="form-text text-danger mess-color"
             >
-              {{ generalDataService.phoneNo1ValidationMessage | translate }}
+              {{ phoneError | translate }}
             </small>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!inviteMode">
+          <div class="form-group">
+            <label for="nationalId">
+              {{ "NEDSS.HOME.USERS.ADD_USER.NATIONAL_ID" | translate }}
+              <span class="text-danger mess-color">*</span>
+            </label>
+            <input
+              type="text"
+              id="nationalId"
+              name="nationalId"
+              [(ngModel)]="user.nationalId"
+              class="w-100"
+              inputmode="numeric"
+              maxlength="14"
+              required
+              (keypress)="onNationalIdKeyPress($event)"
+              (blur)="nationalIdTouched = true; validateNationalId()"
+              (ngModelChange)="nationalIdTouched && validateNationalId()"
+              pInputText
+            />
+            <small
+              *ngIf="nationalIdTouched && nationalIdError"
+              class="form-text text-danger mess-color"
+            >
+              {{ nationalIdError | translate }}
+            </small>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngIf="!inviteMode">
+          <div class="form-group">
+            <label>
+              {{ "NEDSS.HOME.USERS.ADD_USER.HIRING_DATE" | translate }}
+            </label>
+            <app-date-field
+              name="hiringDate"
+              [(ngModel)]="user.hiringDate"
+            ></app-date-field>
           </div>
         </div>
 
@@ -888,13 +932,13 @@
               </div>
             </div>
             <div class="avatar-actions">
-              <button type="button" class="avatar-link" (click)="userImg.click()">
+              <button appWriteAction type="button" class="avatar-link" (click)="userImg.click()">
                 {{
                   "NEDSS.HOME.USERS.EPIDEMIOLOGICAL-THRESHOLDS.ADDIMAGE"
                     | translate
                 }}
               </button>
-              <button
+              <button appWriteAction
                 type="button"
                 class="avatar-link avatar-link-muted"
                 *ngIf="hasUserImage"
@@ -914,7 +958,7 @@
         </div>
       </div>
       <div class="d-flex align-items-center justify-content-end gap-3 mt-4">
-        <button
+        <button appWriteAction
           type="submit"
           [disabled]="userForm.invalid || creatingInvite"
           class="btn bg text-white rounded-2"
@@ -1301,7 +1345,7 @@
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
           {{ "NEDSS.COMMON.CANCEL" | translate }}
         </button>
-        <button
+        <button appWriteAction
           type="button"
           class="btn btn-secondary"
           [disabled]="resettingPassword"

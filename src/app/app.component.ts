@@ -13,6 +13,12 @@ import { InvSectionCollapseService } from './core/services/inv-section-collapse.
 import { SessionService } from './core/services/session.service';
 import { UserMessageService } from './core/services/user.message.service';
 import { ChangePasswordComponent } from './features/auth/change-password/change-password.component';
+import {
+  normalizeIdentityDigits,
+  onNationalIdKeyPress,
+  userNationalIdError,
+  userPhoneError,
+} from './core/utils/user-identity-rules';
 
 @Component({
   selector: 'app-root',
@@ -46,6 +52,14 @@ export class AppComponent {
   pwGateDaysLeft: number | null = null;
   private pwGateSkipped = false;
   @ViewChild(ChangePasswordComponent) pwGateForm: ChangePasswordComponent;
+
+  profileGateVisible = false;
+  profileGateSaving = false;
+  profileGateTouched = false;
+  profileGateData = { nationalId: '', phoneNo: '' };
+  profileGateNationalIdError = '';
+  profileGatePhoneError = '';
+  onNationalIdKeyPress = onNationalIdKeyPress;
 
   private applyDocumentLang(lang: string): void {
     document.documentElement.lang = lang === 'en' ? 'en' : 'ar';
@@ -128,6 +142,7 @@ export class AppComponent {
         idle.stop();
         this.pwGateVisible = false;
         this.pwGateSkipped = false;
+        this.profileGateVisible = false;
       }
     });
 
@@ -147,12 +162,87 @@ export class AppComponent {
   private evaluatePasswordGate() {
     if (!this.session.isValid()) {
       this.pwGateVisible = false;
+      this.profileGateVisible = false;
       return;
     }
     const info = this.session.getPasswordChangeInfo();
     this.pwGateMode = info.mode;
     this.pwGateDaysLeft = info.daysLeft;
     this.pwGateVisible = info.mustChange && !(this.pwGateSkipped && info.mode === 'warning');
+    this.evaluateProfileGate();
+  }
+
+  private evaluateProfileGate() {
+    const show = !this.pwGateVisible && this.session.isProfileIncomplete();
+    if (show && !this.profileGateVisible) {
+      const user = this.session.getSession()?.user;
+      this.profileGateData = {
+        nationalId: user?.nationalId ?? '',
+        phoneNo: user?.phoneNo ?? '',
+      };
+      this.profileGateTouched = false;
+      this.profileGateNationalIdError = '';
+      this.profileGatePhoneError = '';
+    }
+    this.profileGateVisible = show;
+  }
+
+  validateProfileGate(): boolean {
+    this.profileGateNationalIdError = userNationalIdError(this.profileGateData.nationalId);
+    this.profileGatePhoneError = userPhoneError(this.profileGateData.phoneNo);
+    return !this.profileGateNationalIdError && !this.profileGatePhoneError;
+  }
+
+  onProfileGateSubmit() {
+    this.profileGateTouched = true;
+    if (this.profileGateSaving || !this.validateProfileGate()) return;
+    const payload = {
+      nationalId: normalizeIdentityDigits(this.profileGateData.nationalId),
+      phoneNo: normalizeIdentityDigits(this.profileGateData.phoneNo),
+    };
+    this.profileGateSaving = true;
+    this.authService.completeProfile(payload).subscribe(
+      (res: any) => {
+        this.profileGateSaving = false;
+        if (res?.statusCode && res.statusCode >= 400) {
+          this.applyProfileGateErrors(res?.messages ?? res?.Messages);
+          return;
+        }
+        this.session.markProfileCompleted(payload.nationalId, payload.phoneNo);
+        this.profileGateVisible = false;
+        this.translate
+          .get('NEDSS.HOME.USERS.ADD_USER.PROFILE_GATE_SAVED')
+          .subscribe((msg: string) => this.userMsg.success(msg));
+      },
+      (err: any) => {
+        this.profileGateSaving = false;
+        this.applyProfileGateErrors(err?.error?.messages ?? err?.error?.Messages);
+      }
+    );
+  }
+
+  private applyProfileGateErrors(messages: any) {
+    const codes: string[] = Array.isArray(messages) ? messages.filter((m) => !!m) : [];
+    if (!codes.length) {
+      this.translate
+        .get('NEDSS.COMMON.SENT_FAILD')
+        .subscribe((res: string) => this.userMsg.error(res));
+      return;
+    }
+    codes.forEach((code) => {
+      this.translate
+        .get('NEDSS.HOME.USERS.ADD_USER.ERRORS.' + code)
+        .subscribe((text: string) => {
+          if (code.startsWith('NationalId')) this.profileGateNationalIdError = text;
+          else if (code.startsWith('Phone')) this.profileGatePhoneError = text;
+          else this.userMsg.error(text);
+        });
+    });
+  }
+
+  logoutFromProfileGate() {
+    this.profileGateVisible = false;
+    this.finishLogout();
   }
 
   skipPasswordGate() {

@@ -66,6 +66,20 @@
           <span class="ob-field-error" *ngIf="data.phoneNo && !phoneValid">{{ "NEDSS.HOME.USERS.INVITE.PHONE_INVALID" | translate }}</span>
         </div>
 
+        <div class="ob-field">
+          <label>{{ "NEDSS.HOME.USERS.ADD_USER.NATIONAL_ID" | translate }} <span class="ob-req">*</span></label>
+          <input type="text" pInputText inputmode="numeric" maxlength="14"
+            [class.ob-invalid]="nationalIdError || (data.nationalId && !nationalIdValid)"
+            [(ngModel)]="data.nationalId" (keypress)="onNationalIdKeyPress($event)"
+            (ngModelChange)="nationalIdError = ''" (blur)="checkNationalId()" />
+          <span class="ob-field-error" *ngIf="data.nationalId && !nationalIdValid">{{ nationalIdFormatError | translate }}</span>
+          <span class="ob-field-error" *ngIf="nationalIdValid && nationalIdError">{{ nationalIdError }}</span>
+        </div>
+        <div class="ob-field">
+          <label>{{ "NEDSS.HOME.USERS.ADD_USER.HIRING_DATE" | translate }}</label>
+          <app-date-field [(ngModel)]="data.hiringDate"></app-date-field>
+        </div>
+
         <div class="ob-field ob-col-2">
           <label>{{ "NEDSS.HOME.USERS.ADD_USER.EMAIL" | translate }} <span class="ob-req">*</span></label>
           <input type="email" pInputText autocomplete="email"

@@ -33,7 +33,7 @@ export class AddPreparationsComponent {
       else {
         this.items = [
           { label: 'بيانات وحدة الترصد', icon: 'pi pi-fw pi-user', routerLink: ['./preparations-data'] },
-          { label: 'بيانات فريق الترصد', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-teem'] },
+          { label: 'بيانات فريق الترصد', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-team'] },
           { label: 'بيانات الاجهزة', icon: 'pi pi-fw pi-building', routerLink: ['./preparations-devices'] },
         ];
       }
@@ -49,12 +49,12 @@ export class AddPreparationsComponent {
     } else {
       this.items = [
         { label: 'بيانات وحدة الترصد', icon: 'pi pi-fw pi-user', routerLink: ['./preparations-data'] },
-        { label: 'بيانات فريق الترصد', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-teem'] },
+        { label: 'بيانات فريق الترصد', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-team'] },
         { label: 'بيانات الاجهزة', icon: 'pi pi-fw pi-building', routerLink: ['./preparations-devices'] },
       ];
       this.items2 = [
         { label: 'Data Monitoring Unit', icon: 'pi pi-fw pi-user', routerLink: ['./preparations-data'] },
-        { label: 'Monitoring Team Data', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-teem'] },
+        { label: 'Monitoring Team Data', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-team'] },
         { label: 'Devices Data', icon: 'pi pi-fw pi-building', routerLink: ['./preparations-devices'] },
       ];
     }
@@ -75,7 +75,7 @@ export class AddPreparationsComponent {
       else {
         this.items = [
           { label: 'بيانات وحدة الترصد', icon: 'pi pi-fw pi-user', routerLink: ['./preparations-data'] },
-          { label: 'بيانات فريق الترصد', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-teem'] },
+          { label: 'بيانات فريق الترصد', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-team'] },
           { label: 'بيانات الاجهزة', icon: 'pi pi-fw pi-building', routerLink: ['./preparations-devices'] },
         ];
       }
@@ -91,12 +91,12 @@ export class AddPreparationsComponent {
     } else {
       this.items = [
         { label: 'بيانات وحدة الترصد', icon: 'pi pi-fw pi-user', routerLink: ['./preparations-data'] },
-        { label: 'بيانات فريق الترصد', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-teem'] },
+        { label: 'بيانات فريق الترصد', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-team'] },
         { label: 'بيانات الاجهزة', icon: 'pi pi-fw pi-building', routerLink: ['./preparations-devices'] },
       ];
       this.items2 = [
         { label: 'Data Monitoring Unit', icon: 'pi pi-fw pi-user', routerLink: ['./preparations-data'] },
-        { label: 'Monitoring Team Data', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-teem'] },
+        { label: 'Monitoring Team Data', icon: 'pi pi-fw pi-id-card', routerLink: ['./preparations-team'] },
         { label: 'Devices Data', icon: 'pi pi-fw pi-building', routerLink: ['./preparations-devices'] },
       ];
     }

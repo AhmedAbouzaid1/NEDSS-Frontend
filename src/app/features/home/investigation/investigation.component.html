@@ -663,6 +663,23 @@
               </div>
             </div>
           </div>
+          <div class="col-xl-3 col-md-6 mb-2">
+            <div class="form-group">
+              <label for="">
+                {{ "NEDSS.INVESTIGATIONS.REPORTING_SCOPE" | translate }}
+              </label>
+              <p-dropdown
+                [options]="reportingScopes"
+                optionLabel="label"
+                optionValue="id"
+                [showClear]="true"
+                [placeholder]="'NEDSS.INVESTIGATIONS.ALL' | translate"
+                [style]="{ width: '100%' }"
+                formControlName="reportingScope"
+              >
+              </p-dropdown>
+            </div>
+          </div>
         </div>
       </div>
       <div class="card-footer d-flex flex-wrap align-items-center justify-content-between gap-3 mt-2 mb-0">
@@ -898,10 +915,9 @@
             <td class="exclude-pdf">
               <a
                 class="text-success"
-                data-bs-toggle="modal"
-                (click)="investigation.view = false"
-                routerLink="./investigation-detailes/{{ item.id }}"
-                data-bs-target="#modalId"
+                routerLink="./investigation-details/{{ item.id }}"
+                target="_blank"
+                rel="noopener"
               >
                 <span class="pi pi-eye"></span>
               </a>

@@ -48,6 +48,6 @@ export class InvestigationPatientGuard implements CanActivate, CanActivateChild 
       return of(true);
     }
     this.userMsg.error('انت ليس لديك صلاحية الدخول لنموذج التقصي لهذا المرض');
-    return of(this.router.parseUrl('/home/investigations/compelete-investigation'));
+    return of(this.router.parseUrl('/home/investigations/complete-investigation'));
   }
 }

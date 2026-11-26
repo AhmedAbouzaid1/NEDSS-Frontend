@@ -1,5 +1,5 @@
 <div class="col-12 titles">
-  <form (ngSubmit)="save()" #generalDataCompletionForm="ngForm" novalidate>
+  <form appReadOnlyForm (ngSubmit)="save()" #generalDataCompletionForm="ngForm" novalidate>
     <nav class="d-flex gap-4 mx-sm-4">
       <a
         routerLink="../zero-report"
@@ -634,7 +634,7 @@
         </div>
       </div>
       <div class="card-footer d-flex flex-wrap align-items-center justify-content-end gap-3 mt-2 mb-0">
-        <button type="submit" class="btn btn-lg bg text-light">
+        <button appWriteAction type="submit" class="btn btn-lg bg text-light">
           <span class="bi bi-check2-circle"></span> {{ "NEDSS.COMMON.SAVE" | translate }}
         </button>
       </div>
@@ -812,7 +812,7 @@
                   class="text-primary pi pi-pencil"
                 ></a>
                 &nbsp;&nbsp;
-                <a
+                <a appWriteAction
                   role="button"
                   data-bs-target="#exampleModal"
                   data-bs-toggle="modal"
@@ -938,7 +938,7 @@
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
           {{ "NEDSS.COMMON.CANCEL" | translate }}
         </button>
-        <button
+        <button appWriteAction
           type="button"
           class="btn btn-secondary"
           (click)="delete(underDeleting.id)"

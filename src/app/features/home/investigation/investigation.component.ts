@@ -71,6 +71,7 @@ export class InvestigationComponent implements OnInit {
   generalReportForm: any;
 
   investigationFormfilter: any;
+  reportingScopes: { id: number; label: string }[] = [];
   notInferringFilter = {
     pageSize: 10,
     pageIndex: 0,
@@ -128,9 +129,9 @@ export class InvestigationComponent implements OnInit {
     incidentInfoLink?.classList.remove('active');
 
     if (
-      this.router.url.includes('/home/investigations/investigation-detailes')
+      this.router.url.includes('/home/investigations/investigation-details')
       ||
-      this.router.url.includes('/home/investigations/compelete-investigation')
+      this.router.url.includes('/home/investigations/complete-investigation')
     ) {
       this.investigation.view = false;
     } else {
@@ -163,6 +164,7 @@ export class InvestigationComponent implements OnInit {
       isInvistegationDone: new FormControl(null),
       filterType: new FormControl(2),
       InvestigationStatus: new FormControl(),
+      reportingScope: new FormControl(null),
       firstTime: new FormControl(false),
     });
     this.investigationFormfilter = {
@@ -192,6 +194,15 @@ export class InvestigationComponent implements OnInit {
     this.translateService
       .get('NEDSS.INVESTIGATIONS.ITEM_INVESTIGATIONS')
       .subscribe((res) => (this.screenName = res));
+
+    this.translateService
+      .get(['NEDSS.INVESTIGATIONS.REPORTING_SCOPE_INSIDE', 'NEDSS.INVESTIGATIONS.REPORTING_SCOPE_OUTSIDE'])
+      .subscribe((res) => {
+        this.reportingScopes = [
+          { id: 1, label: res['NEDSS.INVESTIGATIONS.REPORTING_SCOPE_INSIDE'] },
+          { id: 2, label: res['NEDSS.INVESTIGATIONS.REPORTING_SCOPE_OUTSIDE'] },
+        ];
+      });
 
     this.generalDataService.cardIdValidationMessage = '';
     this.disableControls();
@@ -684,9 +695,11 @@ export class InvestigationComponent implements OnInit {
           this.diseases = [
             { id: -1, arabicName: 'إختر', englishName: 'Select' },
           ];
-          result.data.forEach((nat) => {
-            this.diseases.push(nat);
-          });
+          result.data
+            .filter((g) => g.hasInvestigation !== false)
+            .forEach((nat) => {
+              this.diseases.push(nat);
+            });
           if (
             this.patient.patientDiseases != null &&
             this.patient.patientDiseases.length > 0

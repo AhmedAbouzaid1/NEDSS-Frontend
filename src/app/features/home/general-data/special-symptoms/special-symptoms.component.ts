@@ -41,7 +41,7 @@ export class SpecialSymptomsComponent implements OnInit {
         this.Fields = res.data.fields;
         if (this.Fields.length <= 0) {
           this.userMsg.error('من فضلك أذهب لأضافه الأعراض الخاصه لذلك المرض ');
-          this.router.navigateByUrl('/home/general-data/diagonistic-info');
+          this.router.navigateByUrl('/home/general-data/diagnostic-info');
         }
 
         if (res.data.id > 0) this.isEdit = true;

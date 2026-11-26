@@ -1,7 +1,7 @@
-<div class="d-flex align-items-start justify-content-between gap-3 mt-4 mx-4">
-  <div class="d-flex flex-wrap align-items-center gap-3">
-    <button class="btn form-titles disease-tab" *ngFor="let item of patientDiseases" type="button"
-      [class.active]="isSelected(item)" [attr.aria-pressed]="isSelected(item)"
+<div class="inv-disease-bar d-flex align-items-start justify-content-between gap-3 mt-4 mx-4">
+  <div class="inv-disease-strip d-flex flex-wrap align-items-center gap-3" #diseaseStrip role="tablist">
+    <button class="btn form-titles disease-tab" data-readonly-keep *ngFor="let item of patientDiseases" type="button"
+      role="tab" [class.active]="isSelected(item)" [attr.aria-pressed]="isSelected(item)"
       (click)="setDesiese(item)">
       {{ item.arabicName }}
     </button>
@@ -9,8 +9,8 @@
       ليس لديك صلاحية على نماذج التقصي الخاصة بأمراض هذه الحالة
     </span>
   </div>
-  <button type="button" class="btn btn-sm form-titles" dir="auto" (click)="downloadFile()">
-    {{ "NEDSS.COMMON.DOWNLOAD_EXCEL_TEMPLATE" | translate }}
+  <button type="button" class="btn btn-sm inv-download-btn" data-readonly-keep dir="auto" (click)="downloadFile()">
+    <span class="inv-download-label">{{ "NEDSS.COMMON.DOWNLOAD_EXCEL_TEMPLATE" | translate }}</span>
     <span class="display-2 bi bi-download"></span>
   </button>
 </div>
