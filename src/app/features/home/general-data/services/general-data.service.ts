@@ -1067,7 +1067,7 @@ export class GeneralDataService {
 
   initialDiagnosisIdsOf(patient: any): number[] {
     const ids = (patient?.patientDiseases ?? [])
-      .filter((d: any) => d?.diseaseGroupId != null && d?.diseaseId == null && d?.caseResultCategoryId == null)
+      .filter((d: any) => d?.diseaseGroupId != null)
       .map((d: any) => Number(d.diseaseGroupId));
     return Array.from(new Set<number>(ids));
   }
