@@ -322,7 +322,7 @@
                   {{
                   "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
                   }}</mat-label>
-                <input [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker2"
+                <input [min]="minDate" [max]="caseDiscoveryMaxDate" matInput [matDatepicker]="picker2"
                   [(ngModel)]="patient.caseDiscoveryDate" (blur)="
                     generalDataService.isCaseDiscoveryDateValid =
                       generalDataService.validateField(
@@ -334,6 +334,9 @@
               </mat-form-field>
               <small *ngIf="!generalDataService.isCaseDiscoveryDateValid" class="form-text text-danger mess-color">
                 {{ "NEDSS.COMMON.FILEDREQUIRED" | translate }}
+              </small>
+              <small *ngIf="isCaseDiscoveryAfterCreated" class="form-text text-danger mess-color d-block">
+                تاريخ اكتشاف الحالة لا يمكن أن يكون بعد تاريخ تسجيل الحالة ({{ patientCreatedDateLabel }})
               </small>
             </div>
           </div>

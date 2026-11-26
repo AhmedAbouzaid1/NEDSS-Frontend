@@ -9,6 +9,7 @@ import { Relations } from 'src/app/core/constants';
 import { SearchSharedDataService } from '../../services/search-shared-data.service';
 import { Patient } from '../../models/patient';
 import { GeneralDataService } from '../../../general-data/services/general-data.service';
+import { isInternalLikeDepartment } from '../../../general-data/models/department-enum';
 
 type LookupOption = { id: number | null; arabicName: string; englishName: string };
 type IncidentFilter = Patient;
@@ -369,6 +370,11 @@ export class generalreportFormComponent implements OnInit, OnDestroy {
         },
         () => this.showError()
       );
+  }
+
+  onDepartmentChanged() {
+    const departmentId = Number(this.patient.incidentDepartmentId);
+    if (departmentId > 0 && !isInternalLikeDepartment(departmentId)) this.patient.finalResultId = null;
   }
 
   getDepartments() {

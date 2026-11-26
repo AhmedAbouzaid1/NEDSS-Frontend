@@ -101,6 +101,21 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
     return this.generalDataService.latestDateBound(this.minDate, this.patient?.birthDate) ?? this.minDate;
   }
 
+  get caseDiscoveryMaxDate(): Date {
+    return this.generalDataService.caseDiscoveryUpperBound(this.patient) ?? this.maxDate;
+  }
+
+  get caseCreatedDateLabel(): string | null {
+    return this.generalDataService.formatDateLabel(this.generalDataService.caseCreatedDate(this.patient));
+  }
+
+  get isCaseDiscoveryAfterCreated(): boolean {
+    return !this.generalDataService.isDateOnOrAfter(
+      this.generalDataService.caseCreatedDate(this.patient),
+      this.patient?.caseDiscoveryDate
+    );
+  }
+
   get birthDateLabel(): string | null {
     return this.generalDataService.formatDateLabel(this.patient?.birthDate);
   }
@@ -658,6 +673,12 @@ export class IncidentInfoComponent implements OnInit, OnDestroy {
       }
       this.patient.hiddenInsideDepartment =
         !isInternalLikeDepartment(this.selectedDepartmentId);
+      if (this.patient.hiddenInsideDepartment) {
+        this.patient.finalResultId = null;
+        this.patient.transferGovernmentId = null;
+        this.patient.transferHealthAdministrationId = null;
+        this.patient.transferIncidentSourceId = null;
+      }
     } else this.patient.incidentDepartmentId = null;
     if (this.patient.nationalId == null) {
       this.patient.age = null;

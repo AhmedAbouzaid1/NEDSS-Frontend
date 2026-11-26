@@ -28,6 +28,19 @@ import { BrucellaSerumIds, brucellaSecondSerumError, isBrucellaSecondSerum } fro
 })
 export class AddLabPatientComponent {
   maxDate = new Date();
+  patientCreatedDate: string | null = null;
+
+  get caseDiscoveryMaxDate(): Date {
+    return this.generalDataService.earliestDateBound(this.maxDate, this.patient?.id ? this.patientCreatedDate : null) ?? this.maxDate;
+  }
+
+  get patientCreatedDateLabel(): string | null {
+    return this.generalDataService.formatDateLabel(this.patientCreatedDate);
+  }
+
+  get isCaseDiscoveryAfterCreated(): boolean {
+    return !!this.patient?.id && !this.generalDataService.isDateOnOrAfter(this.patientCreatedDate, this.patient?.caseDiscoveryDate);
+  }
   minDate = new Date(1900, 0, 1);
   noData: boolean = true;
   currentLang =
@@ -1122,7 +1135,7 @@ export class AddLabPatientComponent {
 
     this.isCaseDiscoveryDateValid = this.generalDataService.validateField(
       this.patient.caseDiscoveryDate
-    );
+    ) && !this.isCaseDiscoveryAfterCreated;
 
     const validations = {
       firstName: this.isFirstNameValid,
@@ -1292,6 +1305,7 @@ export class AddLabPatientComponent {
         this.onHealthAdministrationChanged();
         this.patient.id = response.data.id;
         this.patient.caseDiscoveryDate = response.data.caseDiscoveryDate;
+        this.patientCreatedDate = response.data.createdDate ?? null;
         this.patient.familyName = response.data.familyName;
         this.patient.homeCityId = response.data.homeCityId;
         this.patient.homeGovernmentId = response.data.homeGovernmentId;

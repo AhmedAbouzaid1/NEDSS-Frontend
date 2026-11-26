@@ -18,8 +18,8 @@ import { DepartmentEnum, isInternalLikeDepartment } from '../models/department-e
 })
 export class DiagonisticsComponent implements OnInit, OnDestroy {
   readonly hospitalLabOptions = [
-    { id: 1, arabicName: 'مستشفى محل الإبلاغ', englishName: 'Reporting hospital' },
-    { id: 2, arabicName: 'مستشفى أخرى', englishName: 'Other hospital' },
+    { id: 1, arabicName: 'محل الإبلاغ', englishName: 'Reporting place' },
+    { id: 2, arabicName: 'أخرى', englishName: 'Other' },
   ];
   minDate = new Date(1900, 0, 1);
   maxDate = new Date();
@@ -109,7 +109,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
     if (data && data.length) {
       return data.map((d) => d.finalResult).filter((x) => !!x).join(' , ');
     }
-    return this.selectedInitialDiagnosisNames();
+    return '';
   }
 
   get suspectedLabel(): string {
@@ -618,6 +618,7 @@ export class DiagonisticsComponent implements OnInit, OnDestroy {
         this.selectedTransferIncidentSourceId = -1;
       }
     } else {
+      this.patient.finalResultId = null;
       this.isPatientTransfered = false;
         this.HealthAdmins=[];
         this.incidentSources=[];

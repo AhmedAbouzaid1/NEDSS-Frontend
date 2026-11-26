@@ -21,6 +21,14 @@ import { ActiveUserService } from 'src/app/core/services/active-user.service';
 })
 export class RepeatedRecordsComponent implements OnInit {
   @ViewChild('myTableElementId', { static: false }) tableElement: ElementRef;
+  @ViewChild('searchInput', { static: false }) searchInput: ElementRef;
+  repeatedPageIndex = 1;
+  repeatedPageSize = 50;
+  repeatedFirst = 0;
+  repeatedTotalGroups = 0;
+  repeatedSearchText = '';
+  repeatedLoading = false;
+  private repeatedSearchTimer: any;
   screenName: string;
   maxDate = new Date();
   minDate = new Date(1900, 0, 1);
@@ -720,42 +728,15 @@ export class RepeatedRecordsComponent implements OnInit {
     });
     this.generalDataCompletionFilter.diseaseIds = selectedDeseaiesIds;
 
-    this.loadingPanel = true;
-
-    this.generalDataCompletionServiceService
-      .getPageGeneralDataCompletions2(this.generalDataCompletionFilter)
-      .subscribe(
-        (result: any) => {
-          if (result != null && result != undefined) {
-            if (
-              !this.repeatedRecordsForm.value.addressGroup &&
-              !this.repeatedRecordsForm.value.age &&
-              !this.repeatedRecordsForm.value.ageType &&
-              !this.repeatedRecordsForm.value.familyNameGroup &&
-              !this.repeatedRecordsForm.value.firstnameGroup &&
-              !this.repeatedRecordsForm.value.nationalId &&
-              !this.repeatedRecordsForm.value.secoundGroup &&
-              !this.repeatedRecordsForm.value.thirdNameGroup
-            ) {
-              this.pleaseComplete = true;
-            } else {
-              this.getRepeatedData();
-              this.pleaseComplete = false;
-            }
-          }
-          this.filteration.fromDate = this.repeatedRecordsForm.value.fromDate;
-          this.filteration.toDate = this.repeatedRecordsForm.value.toDate;
-          this.loadingPanel = false;
-        },
-        (error) => {
-          this.loadingPanel = false;
-          this.translateService
-            .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
-            .subscribe((res: string) => {
-              this.userMsg.error(res);
-            });
-        }
-      );
+    this.filteration.fromDate = this.repeatedRecordsForm.value.fromDate;
+    this.filteration.toDate = this.repeatedRecordsForm.value.toDate;
+    this.repeatedSearchText = '';
+    if (this.searchInput?.nativeElement) {
+      this.searchInput.nativeElement.value = '';
+    }
+    this.repeatedFirst = 0;
+    this.repeatedPageIndex = 1;
+    this.getRepeatedData();
 
     // const diverr = document.getElementById("smallMess");
     // this.isSubmitted  = true;
@@ -798,7 +779,18 @@ export class RepeatedRecordsComponent implements OnInit {
 
   public repeatedDataCount = 0;
 
+  hasRepeatFieldSelected(): boolean {
+    const v = this.repeatedRecordsForm.value;
+    return !!(v.firstnameGroup || v.secoundGroup || v.thirdNameGroup || v.familyNameGroup ||
+      v.nationalId || v.age || v.ageType || v.addressGroup);
+  }
+
   getRepeatedData() {
+    if (!this.hasRepeatFieldSelected()) {
+      this.pleaseComplete = true;
+      return;
+    }
+    this.pleaseComplete = false;
     var selectedDeseaiesIds = [];
     this.selectedDeseaiesIds.forEach((element) => {
       selectedDeseaiesIds.push(element.id);
@@ -814,7 +806,8 @@ export class RepeatedRecordsComponent implements OnInit {
       universityId: this.activeUSerService.getAccessibleParts?.showUniversities ? this.SelectedbranchId : null,
       areaId: this.SelectedareaId,
       reportSource: this.incidentSourcesId,
-      diseaseIds: this.selectedDeseaiesIds,
+      sourceId: this.incidentSourcesId,
+      diseaseIds: selectedDeseaiesIds,
       firstnameGroup: this.repeatedRecordsForm.controls?.["firstnameGroup"]?.value,
       secoundGroup: this.repeatedRecordsForm.controls?.["secoundGroup"]?.value,
       thirdNameGroup: this.repeatedRecordsForm.controls?.["thirdNameGroup"]?.value,
@@ -823,8 +816,12 @@ export class RepeatedRecordsComponent implements OnInit {
       nationalId: this.repeatedRecordsForm.controls?.["nationalId"]?.value,
       age: this.repeatedRecordsForm.controls?.["age"]?.value,
       ageType: this.repeatedRecordsForm.controls?.["ageType"]?.value,
+      pageIndex: this.repeatedPageIndex,
+      pageSize: this.repeatedPageSize,
+      searchText: this.repeatedSearchText,
     }
     this.loadError = false;
+    this.repeatedLoading = true;
     this.delay = true;
     this.timer = setTimeout(() => {
       if (this.delay) {
@@ -836,28 +833,25 @@ export class RepeatedRecordsComponent implements OnInit {
     this.repearedService.getRepeated(obj).subscribe(
       (result: any) => {
         this.loadError = false;
+        this.repeatedLoading = false;
         const data = result?.data ?? [];
-        if (data.length > 0) {
-          this.repeatedDataCount = 0;
+        if (data.length > 0 || this.repeatedSearchText) {
           this.repeatedData = data;
           this.repeatedDataAll = data;
-          // ?.filter((p: any) =>
-          //   this.lookupsService.incidentsForOrg.includes(p.incidentSourceId)
-          // );
-          this.repeatedData.forEach((r) => {
-            this.repeatedDataCount += r.totalRepeatedRecourds;
-          });
+          this.repeatedDataCount = data[0]?.totalRepeatedPatients ?? 0;
+          this.repeatedTotalGroups = data[0]?.totalCount ?? 0;
           setTimeout(() => {
             this.delay = false;
             clearTimeout(this.timer);
           }, 0);
-          this.noData = this.repeatedData.length == 0;
+          this.noData = false;
         } else {
           setTimeout(() => {
             this.delay = false;
             clearTimeout(this.timer);
           }, 0);
           this.noData = true;
+          this.repeatedTotalGroups = 0;
           this.translateService
             .get('NOUR.NO_RESULTS')
             .subscribe((msg) => this.userMsg.warn(msg));
@@ -865,12 +859,14 @@ export class RepeatedRecordsComponent implements OnInit {
       },
       (error) => {
         this.delay = false;
+        this.repeatedLoading = false;
         clearTimeout(this.timer);
         this.loadError = true;
-        this.noData = false;
+        this.noData = true;
         this.repeatedData = [];
         this.repeatedDataAll = [];
         this.repeatedDataCount = 0;
+        this.repeatedTotalGroups = 0;
         this.translateService
           .get('NEDSS.COMMON.COULD_NOT_LOAD_RESULTS')
           .subscribe((res: string) => {
@@ -946,55 +942,59 @@ export class RepeatedRecordsComponent implements OnInit {
   repeatedDataAll: any[] = [];
 
   Tablesearch(e) {
-    this.repeatedData = (this.repeatedDataAll ?? []).filter((m) =>
-      (m.firstName ?? '').toLowerCase().includes((e.target.value ?? '').toLowerCase())
-    );
+    const text = (e.target.value ?? '').trim();
+    clearTimeout(this.repeatedSearchTimer);
+    this.repeatedSearchTimer = setTimeout(() => {
+      if (text === this.repeatedSearchText) {
+        return;
+      }
+      this.repeatedSearchText = text;
+      this.repeatedFirst = 0;
+      this.repeatedPageIndex = 1;
+      this.getRepeatedData();
+    }, 400);
   }
 
-  // passRepeated(item) {
-  //   console.log('selected Ids',item.repeatedPatientIds);
-  //   //this.repearedService.passedObj = this.repeatedRecordsForm.value;
-  // }
+  repeatedColumns = [
+    { key: 'count', label: 'NEDSS.REPEATED_RECORDS.CASES_COUNT', visible: true },
+    { key: 'firstName', label: 'NEDSS.REPEATED_RECORDS.NAME', visible: true },
+    { key: 'secondName', label: 'NEDSS.REPEATED_RECORDS.FATHER_NAME', visible: true },
+    { key: 'nationalId', label: 'NEDSS.REPEATED_RECORDS.NATIONAL_ID', visible: true },
+    { key: 'government', label: 'NEDSS.REPEATED_RECORDS.GOVERNMENT', visible: true },
+    { key: 'healthAdministration', label: 'NEDSS.REPEATED_RECORDS.HEALTH_ADMINISTRATION', visible: true },
+    { key: 'caseDiscoveryDate', label: 'NEDSS.REPEATED_RECORDS.CASE_DISCOVERY_DATE', visible: true },
+    { key: 'createdDate', label: 'NEDSS.REPEATED_RECORDS.REGISTRATION_DATE', visible: true },
+    { key: 'diseaseCategory', label: 'NEDSS.REPEATED_RECORDS.DISEASE_CATEGORY', visible: true },
+    { key: 'disease', label: 'NEDSS.REPEATED_RECORDS.DISEASE', visible: true },
+    { key: 'age', label: 'NEDSS.REPEATED_RECORDS.AGE', visible: true },
+    { key: 'ageType', label: 'NEDSS.REPEATED_RECORDS.AGE_CATEGORY', visible: true },
+  ];
 
-  hidColCount: boolean = false;
-  hidColNAME: boolean = false;
-  hidColFATHERNAME: boolean = false;
-  hidColNATIONALID: boolean = false;
-  hidColGOVERNMENT: boolean = false;
-  hidColHEALTHADMINISTRATION: boolean = false;
-  hidColDISEASECATEGORY: boolean = false;
-  hidColDISEASE: boolean = false;
-  hidColAGE: boolean = false;
-  hidColAGECATEGORY: boolean = false;
+  get visibleColumnCount(): number {
+    return this.repeatedColumns.filter((c) => c.visible).length;
+  }
 
-  toHidColCount() {
-    this.hidColCount = !this.hidColCount;
+  get repeatedTotalPages(): number {
+    return Math.max(1, Math.ceil(this.repeatedTotalGroups / this.repeatedPageSize));
   }
-  toHhidColNAME() {
-    this.hidColNAME = !this.hidColNAME;
+
+  splitNames(names: string): string[] {
+    return (names ?? '').split(',').map((n) => n.trim()).filter((n) => n);
   }
-  toHidColFATHERNAME() {
-    this.hidColFATHERNAME = !this.hidColFATHERNAME;
+
+  goToRepeatedPage(page: number) {
+    if (page < 1 || page > this.repeatedTotalPages || this.repeatedLoading) {
+      return;
+    }
+    this.repeatedPageIndex = page;
+    this.repeatedFirst = (page - 1) * this.repeatedPageSize;
+    this.getRepeatedData();
   }
-  toHidColNATIONALID() {
-    this.hidColNATIONALID = !this.hidColNATIONALID;
-  }
-  toHidColGOVERNMENT() {
-    this.hidColGOVERNMENT = !this.hidColGOVERNMENT;
-  }
-  toHidColHEALTHADMINISTRATION() {
-    this.hidColHEALTHADMINISTRATION = !this.hidColHEALTHADMINISTRATION;
-  }
-  toHidColDISEASECATEGORY() {
-    this.hidColDISEASECATEGORY = !this.hidColDISEASECATEGORY;
-  }
-  toHidColDISEASE() {
-    this.hidColDISEASE = !this.hidColDISEASE;
-  }
-  toHidColAGE() {
-    this.hidColAGE = !this.hidColAGE;
-  }
-  toHidColAGECATEGORY() {
-    this.hidColAGECATEGORY = !this.hidColAGECATEGORY;
+
+  onRepeatedPageSizeChange(size: number) {
+    this.repeatedPageSize = size;
+    this.repeatedPageIndex = 1;
+    this.repeatedFirst = 0;
+    this.getRepeatedData();
   }
 }

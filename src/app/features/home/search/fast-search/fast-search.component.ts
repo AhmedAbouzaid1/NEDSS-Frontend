@@ -7,6 +7,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -156,7 +157,8 @@ export class FastSearchComponent implements OnInit {
     private elementRef: ElementRef,
     private renderer: Renderer2,
     public activeUSerService: ActiveUserService,
-    private lookupsGetterService: LookupsGetterService
+    private lookupsGetterService: LookupsGetterService,
+    private location: Location
   ) {
     this.translateService.setDefaultLang(this.currentLang);
   }
@@ -919,9 +921,12 @@ export class FastSearchComponent implements OnInit {
   }
 
   GetById(id: number) {
-    this.data.patientId = id;
-    this.router.navigateByUrl('/home/general-data');
-    // window.open('/home/general-data', '_blank');
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/home/general-data'], {
+        queryParams: { pid: id },
+      })
+    );
+    window.open(this.location.prepareExternalUrl(url), '_blank');
   }
   nameToDelete(ele) {
     this.underDeleting.id = ele.id;

@@ -5,6 +5,7 @@ import { LookupsGetterService } from 'src/app/core/services/lookups-getter.servi
 import { finalDiagnosisOptionsWithOther } from 'src/app/core/shared/utilis/final-diagnoses';
 import { Patient } from '../../models/patient';
 import { SearchSharedDataService } from '../../services/search-shared-data.service';
+import { isInternalLikeDepartment } from '../../../general-data/models/department-enum';
 
 interface LookupOption {
   id: number;
@@ -19,8 +20,8 @@ interface LookupOption {
 })
 export class SearchDiagnosticsComponent implements OnInit, OnDestroy {
   readonly hospitalLabOptions: LookupOption[] = [
-    { id: 1, arabicName: 'مستشفى محل الإبلاغ', englishName: 'Reporting hospital' },
-    { id: 2, arabicName: 'مستشفى أخرى', englishName: 'Other hospital' },
+    { id: 1, arabicName: 'محل الإبلاغ', englishName: 'Reporting place' },
+    { id: 2, arabicName: 'أخرى', englishName: 'Other' },
   ];
   private static readonly EXCLUDED_FINAL_RESULT_NAMES = ['Blank', 'غير معروف', 'Unknown'];
 
@@ -60,6 +61,11 @@ export class SearchDiagnosticsComponent implements OnInit, OnDestroy {
     return this.currentLang === 'ar' ? 'arabicName' : 'englishName';
   }
 
+  get showFinalResult(): boolean {
+    const departmentId = Number((this.patient as any)?.incidentDepartmentId);
+    return !(departmentId > 0) || isInternalLikeDepartment(departmentId);
+  }
+
   get selectPlaceholder(): string {
     return this.currentLang === 'ar' ? 'إختر' : 'Select';
   }
@@ -74,6 +80,7 @@ export class SearchDiagnosticsComponent implements OnInit, OnDestroy {
       .subscribe((patientObject) => {
         if (patientObject === this.patient) return;
         this.patient = patientObject;
+        if (!this.showFinalResult && this.patient) this.patient.finalResultId = null;
         this.hydrateCascades();
       });
 

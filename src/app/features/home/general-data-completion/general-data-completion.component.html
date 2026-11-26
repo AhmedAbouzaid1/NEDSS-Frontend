@@ -267,6 +267,7 @@
                   filterBy="arabicName"
                   [(ngModel)]="incidentDepartmentId"
                   [appDropdownLoading]="departmentsLoading"
+                  (onChange)="onIncidentDepartmentChanged()"
                 >
                 </p-dropdown>
                 <!-- <select
@@ -297,6 +298,7 @@
                   filterBy="englishName"
                   [(ngModel)]="incidentDepartmentId"
                   [appDropdownLoading]="departmentsLoading"
+                  (onChange)="onIncidentDepartmentChanged()"
                 >
                 </p-dropdown>
 
@@ -387,30 +389,11 @@
                 {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.DATE_FROM" | translate }}
               </label>
 
-              <mat-form-field appearance="fill">
-                <mat-label>
-                  {{
-                    "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
-                  }}</mat-label
-                >
-                <input
-                  matInput
-                  [matDatepicker]="picker"
-                  name="caseDiscoveryFromDate"
-                  [class]="'form-control-' + currentLang"
-                  [max]="maxDate"
-                  [(ngModel)]="
-                    generalDataCompletionFilter.caseDiscoveryFromDate
-                  "
-                  (dateInput)="fromDateSelected($event)"
-                />
-
-                <mat-datepicker-toggle
-                  matIconSuffix
-                  [for]="picker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
+              <app-date-field
+                [max]="generalDataCompletionFilter.caseDiscoveryToDate"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="generalDataCompletionFilter.caseDiscoveryFromDate"
+              ></app-date-field>
             </div>
           </div>
           <div class="col-xl-3 col-md-6 mb-2">
@@ -419,29 +402,11 @@
                 {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.DATE_TO" | translate }}
               </label>
 
-              <mat-form-field appearance="fill">
-                <mat-label>
-                  {{
-                    "NEDSS.GENERAL_DATA_SIDEMENU.DATEPLACEHOLDER" | translate
-                  }}</mat-label
-                >
-                <input
-                  matInput
-                  [matDatepicker]="picker1"
-                  name="caseDiscoveryToDate"
-                  [min]="generalDataCompletionFilter.caseDiscoveryFromDate"
-                  [max]="maxDate"
-                  [class]="'form-control-' + currentLang"
-                  [(ngModel)]="generalDataCompletionFilter.caseDiscoveryToDate"
-                  (dateInput)="toDateSelected($event)"
-                />
-
-                <mat-datepicker-toggle
-                  matIconSuffix
-                  [for]="picker1"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-              </mat-form-field>
+              <app-date-field
+                [min]="generalDataCompletionFilter.caseDiscoveryFromDate"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="generalDataCompletionFilter.caseDiscoveryToDate"
+              ></app-date-field>
             </div>
           </div>
         </div>
@@ -626,7 +591,7 @@
                   </label>
                 </div>
               </div>
-              <div class="col-xl-3 col-md-6 pb-2">
+              <div class="col-xl-3 col-md-6 pb-2" *ngIf="showInternalOnlyFields">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -648,7 +613,7 @@
                   </label>
                 </div>
               </div>
-              <div class="col-xl-3 col-md-6 pb-2">
+              <div class="col-xl-3 col-md-6 pb-2" *ngIf="showInternalOnlyFields">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -670,7 +635,7 @@
                   </label>
                 </div>
               </div>
-              <div class="col-xl-3 col-md-6 pb-2">
+              <div class="col-xl-3 col-md-6 pb-2" *ngIf="showInternalOnlyFields">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -887,20 +852,22 @@
             [style.direction]="dir"
             [value]="generalDataCompletions"
             [paginator]="false"
+            [customSort]="true"
+            (sortFunction)="sort($event)"
           >
             <ng-template pTemplate="header">
               <tr>
                 <th
-                  pSortableColumn="code"
+                  pSortableColumn="firstName"
                   [class]="hidColName ? 'hiddenCol' : 'showCol'"
                 >
                   <span>
                     {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.NAME" | translate }}
                   </span>
-                  <!-- <p-sortIcon field="code"></p-sortIcon> -->
+                  <p-sortIcon field="firstName" class="exclude-pdf"></p-sortIcon>
                 </th>
                 <th
-                  pSortableColumn="firstName"
+                  pSortableColumn="secondName"
                   [class]="hidColFather ? 'hiddenCol' : 'showCol'"
                 >
                   {{
@@ -913,13 +880,21 @@
                 </th>
 
                 <th
-                  pSortableColumn="englishName"
+                  pSortableColumn="caseDiscoveryDate"
                   [class]="hidColAdress ? 'hiddenCol' : 'showCol'"
                 >
                   <span>
                     {{ "NEDSS.HOME.GENERAL_DATA_COMPLETION.DATE" | translate }}
                   </span>
-                  <!-- <p-sortIcon field="caseDiscoveryDate"></p-sortIcon> -->
+                  <p-sortIcon field="caseDiscoveryDate" class="exclude-pdf"></p-sortIcon>
+                </th>
+                <th>
+                  <span>
+                    {{
+                      "NEDSS.HOME.GENERAL_DATA_COMPLETION.INITIAL_DIAGNOSIS"
+                        | translate
+                    }}
+                  </span>
                 </th>
                 <th
                   style="text-align: center"
@@ -987,6 +962,7 @@
                     "
                   ></span>
                 </td>
+                <td>{{ item.initialDiagnosisName }}</td>
                 <td
                   style="text-align: right"
                   [class]="hidColDate ? 'hiddenCol' : 'showCol'"

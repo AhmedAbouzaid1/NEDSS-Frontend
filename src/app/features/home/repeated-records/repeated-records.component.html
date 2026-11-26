@@ -419,7 +419,7 @@
     </div>
     <div class="card-footer d-flex flex-wrap align-items-center justify-content-between gap-3 mt-2 mb-0">
       <span class="mess-color text-danger">
-        <ng-container *ngIf="pleaseComplete">{{ "NOUR.Please-select-one-of-the-fields" | translate }}</ng-container>
+        <ng-container *ngIf="pleaseComplete">{{ "NEDSS.REPEATED_RECORDS.SELECT_REPEAT_FIELD" | translate }}</ng-container>
       </span>
       <button type="submit" class="btn btn-lg bg text-light">
         <span class="pi pi-search"></span> {{ "NEDSS.REPEATED_RECORDS.SEARCH" | translate }}
@@ -439,178 +439,126 @@
   </div>
 </div>
 
-<div class="mt-4 shadow border rounded" *ngIf="!noData" [appScrollIntoViewOnResults]="repeatedData">
-  <div class="d-block d-md-flex flex-wrap gap-2 justify-content-between">
-    <div class="fwb p-4 pb-0">
-      {{ "NEDSS.REPEATED_RECORDS.CASES_COUNT" | translate }} ({{
-      repeatedDataCount
-      }})
+<div class="mt-4 shadow border rounded repeated-results" *ngIf="!noData" [appScrollIntoViewOnResults]="repeatedData">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 px-3 pt-3 pb-2">
+    <div class="d-flex align-items-center flex-wrap gap-2">
+      <h6 class="fw-bold mb-0">
+        {{ "NEDSS.REPEATED_RECORDS.CASES_COUNT" | translate }}
+        (<span *ngIf="repeatedLoading"><i class="pi pi-spin pi-spinner"></i></span><span *ngIf="!repeatedLoading">{{ repeatedDataCount | number }}</span>)
+      </h6>
+      <span class="repeated-groups-badge" *ngIf="!repeatedLoading">
+        {{ "NEDSS.REPEATED_RECORDS.GROUPS_COUNT" | translate }}: {{ repeatedTotalGroups | number }}
+      </span>
     </div>
-    <div class="d-block d-md-flex gap-2 flex-wrap mb-3 mt-2">
-      <div class="px-0 px-md-2 ms-3 mb-0 pb-0 mt-2">
-        <input type="search" class="form-control" (keyup)="Tablesearch($event)"
-          placeholder="{{ 'NEDSS.COMMON.SEARCH' | translate }}" #searchInput />
-      </div>
-
-      <details class="dropdown px-0 px-md-2 ms-3 mb-0 pb-0 mt-2">
-        <summary role="button">
-          <a class="button fs-7 btn-sm">{{
-            "NOUR.REMOVE_COLUMNS" | translate
-            }}</a>
-        </summary>
-        <ul>
-          <li>
-            <button ng-click="toHidColCount()">
-              {{ "NEDSS.REPEATED_RECORDS.CASES_COUNT" | translate }}
-            </button>
-          </li>
-          <li>
-            <button (click)="toHhidColNAME()">
-              {{ "NEDSS.REPEATED_RECORDS.NAME" | translate }}
-            </button>
-          </li>
-          <li>
-            <button (click)="toHidColFATHERNAME()">
-              {{ "NEDSS.REPEATED_RECORDS.FATHER_NAME" | translate }}
-            </button>
-          </li>
-          <li>
-            <button (click)="toHidColNATIONALID()">
-              {{ "NEDSS.REPEATED_RECORDS.NATIONAL_ID" | translate }}
-            </button>
-          </li>
-          <li>
-            <button (click)="toHidColGOVERNMENT()">
-              {{ "NEDSS.REPEATED_RECORDS.GOVERNMENT" | translate }}
-            </button>
-          </li>
-          <li>
-            <button (click)="toHidColHEALTHADMINISTRATION()">
-              {{ "NEDSS.REPEATED_RECORDS.HEALTH_ADMINISTRATION" | translate }}
-            </button>
-          </li>
-          <li>
-            <button (click)="toHidColDISEASECATEGORY()">
-              {{ "NEDSS.REPEATED_RECORDS.DISEASE_CATEGORY" | translate }}
-            </button>
-          </li>
-          <li>
-            <button (click)="toHidColDISEASE()">
-              {{ "NEDSS.REPEATED_RECORDS.DISEASE" | translate }}
-            </button>
-          </li>
-          <li>
-            <button (click)="toHidColAGE()">
-              {{ "NEDSS.REPEATED_RECORDS.AGE" | translate }}
-            </button>
-          </li>
-          <li>
-            <button (click)="toHidColAGE()">
-              {{ "NEDSS.REPEATED_RECORDS.AGE_CATEGORY" | translate }}
-            </button>
-          </li>
-          <li>
-            <button (click)="toHidColAGECATEGORY()">
-              {{ "NEDSS.REPEATED_RECORDS.OPERATIONS" | translate }}
-            </button>
+    <div class="d-flex align-items-center flex-wrap gap-2">
+      <input type="search" class="form-control repeated-search" (keyup)="Tablesearch($event)"
+        placeholder="{{ 'NEDSS.REPEATED_RECORDS.SEARCH_RESULTS' | translate }}" #searchInput />
+      <div class="dropdown">
+        <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle repeated-columns-toggle"
+          data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+          <i class="pi pi-sliders-h"></i>
+          {{ "NOUR.REMOVE_COLUMNS" | translate }}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end repeated-columns-menu">
+          <li *ngFor="let column of repeatedColumns">
+            <label class="dropdown-item d-flex align-items-center gap-2 mb-0">
+              <input type="checkbox" class="form-check-input mt-0" [checked]="column.visible"
+                (change)="column.visible = !column.visible" />
+              {{ column.label | translate }}
+            </label>
           </li>
         </ul>
-      </details>
-
-      <div class="px-1 px-md-2 ms-3 mb-0 pb-0 mt-2 border-0">
+      </div>
+      <span class="d-flex gap-2">
         <a (click)="exportPatientsAsPdf()"><span class="bi bi-filetype-pdf button-export"></span></a>
         <button style="border: none; background: none" [useExistingCss]="true"
-          [printStyle]="{ '.exclude-pdf': { display: 'none' } }" printTitle="{{
-            'NEDSS.REPEATED_RECORDS.FIND_AND_DELETE' | translate
-          }}" printSectionId="myTableElementId" ngxPrint>
+          [printStyle]="{ '.exclude-pdf': { display: 'none' } }"
+          printTitle="{{ 'NEDSS.REPEATED_RECORDS.FIND_AND_DELETE' | translate }}" printSectionId="myTableElementId"
+          ngxPrint>
           <span class="bi bi-printer-fill button-export"></span>
         </button>
         <a (click)="exportPatiantsAsExcel()"><span class="bi bi-file-earmark-excel-fill button-export"></span></a>
-      </div>
+      </span>
     </div>
   </div>
-  <div id="myTableElementId" #myTableElementId>
-    <div class="table-responsive table-none-scroll table_report mb-5 px-2">
-      <table [style.direction]="dir" class="table table-bordered">
-        <thead>
-          <tr>
-            <th [class]="hidColCount ? 'hiddenCol' : 'showCol'">
-              {{ "NEDSS.REPEATED_RECORDS.CASES_COUNT" | translate }}
-            </th>
-            <th [class]="hidColNAME ? 'hiddenCol' : 'showCol'">
-              {{ "NEDSS.REPEATED_RECORDS.NAME" | translate }}
-            </th>
-            <th [class]="hidColFATHERNAME ? 'hiddenCol' : 'showCol'">
-              {{ "NEDSS.REPEATED_RECORDS.FATHER_NAME" | translate }}
-            </th>
-            <th [class]="hidColNATIONALID ? 'hiddenCol' : 'showCol'">
-              {{ "NEDSS.REPEATED_RECORDS.NATIONAL_ID" | translate }}
-            </th>
-            <th [class]="hidColGOVERNMENT ? 'hiddenCol' : 'showCol'">
-              {{ "NEDSS.REPEATED_RECORDS.GOVERNMENT" | translate }}
-            </th>
-            <th [class]="hidColHEALTHADMINISTRATION ? 'hiddenCol' : 'showCol'">
-              {{ "NEDSS.REPEATED_RECORDS.HEALTH_ADMINISTRATION" | translate }}
-            </th>
-            <th [class]="hidColDISEASECATEGORY ? 'hiddenCol' : 'showCol'">
-              {{ "NEDSS.REPEATED_RECORDS.DISEASE_CATEGORY" | translate }}
-            </th>
-            <th [class]="hidColDISEASE ? 'hiddenCol' : 'showCol'">
-              {{ "NEDSS.REPEATED_RECORDS.DISEASE" | translate }}
-            </th>
-            <th [class]="hidColAGE ? 'hiddenCol' : 'showCol'">
-              {{ "NEDSS.REPEATED_RECORDS.AGE" | translate }}
-            </th>
-            <th [class]="hidColAGECATEGORY ? 'hiddenCol' : 'showCol'">
-              {{ "NEDSS.REPEATED_RECORDS.AGE_CATEGORY" | translate }}
-            </th>
-            <th class="exclude-pdf">
-              {{ "NEDSS.REPEATED_RECORDS.OPERATIONS" | translate }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of repeatedData">
-            <td [class]="hidColCount ? 'hiddenCol' : 'showCol'">
-              {{ item.totalRepeatedRecourds }}
+
+  <div class="table-responsive table-none-scroll" id="myTableElementId" #myTableElementId>
+    <p-table class="table" [style.direction]="dir" [value]="repeatedData" [paginator]="false">
+      <ng-template pTemplate="header">
+        <tr>
+          <ng-container *ngFor="let column of repeatedColumns">
+            <th *ngIf="column.visible">{{ column.label | translate }}</th>
+          </ng-container>
+          <th class="exclude-pdf repeated-actions">{{ "NEDSS.REPEATED_RECORDS.OPERATIONS" | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <ng-container *ngFor="let column of repeatedColumns">
+            <td *ngIf="column.visible" [ngSwitch]="column.key">
+              <span *ngSwitchCase="'count'" class="repeated-count">{{ item.totalRepeatedRecourds }}</span>
+              <span *ngSwitchCase="'firstName'" class="repeated-name">{{ item.firstName || "—" }}</span>
+              <span *ngSwitchCase="'secondName'" class="repeated-name">{{ item.secondName || "—" }}</span>
+              <span *ngSwitchCase="'nationalId'" class="repeated-nid">{{ item.nationalId || "—" }}</span>
+              <span *ngSwitchCase="'government'">{{ item.governmentName || "—" }}</span>
+              <span *ngSwitchCase="'healthAdministration'">{{ item.healthAdministrationName || "—" }}</span>
+              <span *ngSwitchCase="'caseDiscoveryDate'" class="text-nowrap">{{ (item.caseDiscoveryDate | date: "dd/MM/yyyy") || "—" }}</span>
+              <span *ngSwitchCase="'createdDate'" class="text-nowrap">{{ (item.createdDate | date: "dd/MM/yyyy") || "—" }}</span>
+              <span *ngSwitchCase="'diseaseCategory'" class="repeated-categories">
+                <span *ngFor="let name of splitNames(item.diseasesCategory)" class="repeated-chip">{{ name }}</span>
+                <span *ngIf="!splitNames(item.diseasesCategory).length" class="text-muted">—</span>
+              </span>
+              <span *ngSwitchCase="'disease'" class="repeated-disease">{{ item.diseasesName || "—" }}</span>
+              <span *ngSwitchCase="'age'">{{ item.age ?? "—" }}</span>
+              <span *ngSwitchCase="'ageType'">{{ item.ageTypeName || "—" }}</span>
             </td>
-            <td [class]="hidColNAME ? 'hiddenCol' : 'showCol'">
-              {{ item.firstName }}
-            </td>
-            <td [class]="hidColFATHERNAME ? 'hiddenCol' : 'showCol'">
-              {{ item.secondName }}
-            </td>
-            <td [class]="hidColNATIONALID ? 'hiddenCol' : 'showCol'">
-              {{ item.nationalId }}
-            </td>
-            <td [class]="hidColGOVERNMENT ? 'hiddenCol' : 'showCol'">
-              {{ item.governmentName }}
-            </td>
-            <td [class]="hidColHEALTHADMINISTRATION ? 'hiddenCol' : 'showCol'">
-              {{ item.healthAdministrationName }}
-            </td>
-            <td [class]="hidColDISEASECATEGORY ? 'hiddenCol' : 'showCol'">
-              {{ item.diseasesCategory }}
-            </td>
-            <td [class]="hidColDISEASE ? 'hiddenCol' : 'showCol'">
-              {{ item.diseasesName }}
-            </td>
-            <td [class]="hidColAGE ? 'hiddenCol' : 'showCol'">
-              {{ item.age }}
-            </td>
-            <td [class]="hidColAGECATEGORY ? 'hiddenCol' : 'showCol'">
-              {{ item.ageTypeName }}
-            </td>
-            <td class="exclude-pdf">
-              <a [routerLink]="['/home/duplication-view', item.repeatedPatientIds.join(',')]"
-                class="bi bi-eye color">
-                {{ "NEDSS.REPEATED_RECORDS.VIEW" | translate }}
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+          </ng-container>
+          <td class="exclude-pdf repeated-actions">
+            <a [routerLink]="['/home/duplication-view', item.repeatedPatientIds.join(',')]"
+              class="btn btn-sm bg text-white text-nowrap">
+              <i class="pi pi-eye"></i>
+              {{ "NEDSS.REPEATED_RECORDS.VIEW" | translate }}
+            </a>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td [attr.colspan]="visibleColumnCount + 1">
+            <div class="no-data content-center">
+              <img src="Content/Images/svg/no-data.svg" />
+              <span>{{ "NEDSS.COMMON.NO_CONTENT" | translate }}</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
+
   <app-recent-days-note></app-recent-days-note>
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 px-3 py-3 border-top"
+    *ngIf="repeatedTotalGroups > 0">
+    <div class="d-flex align-items-center gap-2">
+      <label class="mb-0 text-muted">{{ "NEDSS.COMMON.ROWS_PER_PAGE" | translate }}:</label>
+      <select class="form-select" style="width: 90px" [ngModel]="repeatedPageSize"
+        (ngModelChange)="onRepeatedPageSizeChange($event)" [ngModelOptions]="{ standalone: true }">
+        <option *ngFor="let size of [20, 50, 100, 200]" [ngValue]="size">{{ size }}</option>
+      </select>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <span class="fw-bold">{{ "NEDSS.COMMON.PAGE" | translate }} {{ repeatedPageIndex | number }} / {{ repeatedTotalPages | number }}</span>
+      <button type="button" class="btn"
+        [ngClass]="repeatedPageIndex <= 1 || repeatedLoading ? 'btn-light text-muted' : 'btn-outline-secondary'"
+        [disabled]="repeatedPageIndex <= 1 || repeatedLoading" (click)="goToRepeatedPage(repeatedPageIndex - 1)">
+        <i class="pi pi-angle-{{ currentLang === 'ar' ? 'right' : 'left' }}"></i>
+        {{ "NEDSS.COMMON.PREV" | translate }}
+      </button>
+      <button type="button" class="btn"
+        [ngClass]="repeatedPageIndex >= repeatedTotalPages || repeatedLoading ? 'btn-light text-muted' : 'btn-primary'"
+        [disabled]="repeatedPageIndex >= repeatedTotalPages || repeatedLoading" (click)="goToRepeatedPage(repeatedPageIndex + 1)">
+        {{ "NEDSS.COMMON.NEXT" | translate }}
+        <i class="pi pi-angle-{{ currentLang === 'ar' ? 'left' : 'right' }}"></i>
+      </button>
+    </div>
+  </div>
 </div>

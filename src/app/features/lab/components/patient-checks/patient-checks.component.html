@@ -401,6 +401,27 @@
       <div class="col-xl-3 col-md-6 mb-2">
         <div class="form-group">
           <label for="">
+            {{ "NEDSS.REPORTS.Department" | translate }}
+          </label>
+          <p-dropdown
+            [appDropdownLoading]="departmentsLoading"
+            (onChange)="setDepartmentValue()"
+            [options]="departments"
+            [(ngModel)]="selectedDepartmentId"
+            [optionLabel]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+            optionValue="id"
+            autoWidth="false"
+            [style]="{ width: '100%' }"
+            name="incidentDepartment"
+            [filter]="true"
+            [filterBy]="currentLang == 'ar' ? 'arabicName' : 'englishName'"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 mb-2">
+        <div class="form-group">
+          <label for="">
             {{ "NEDSS.LAB_VIEW.PATIENT_CHECKS.MOBILE" | translate }}
           </label>
           <input

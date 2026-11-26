@@ -198,6 +198,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         'الرقم القومي',
         'محافظه السكن',
         'رقم التليفون',
+        'تاريخ إكتشاف الحالة',
         'التشخيص الابتدائي',
         'الاجراءات',
       ];

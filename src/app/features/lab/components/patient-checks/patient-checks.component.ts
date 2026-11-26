@@ -44,6 +44,7 @@ export class PatientChecksComponent implements OnInit {
     fromDate: null,
     toDate: null,
     diseaseGroupId: null,
+    incidentDepartmentId: null,
     insertedByLab: null,
     firstTime: false,
     hasLabChecks: null,
@@ -68,6 +69,10 @@ export class PatientChecksComponent implements OnInit {
 
   diseases!: any[];
   selectedDiseaseId: number = -1;
+
+  departments: any[] = [];
+  selectedDepartmentId: number = -1;
+  departmentsLoading: boolean = false;
 
   loadingPanel: boolean = false;
   nationalitiesLoading: boolean = false;
@@ -149,6 +154,7 @@ export class PatientChecksComponent implements OnInit {
           fromDate: null,
           toDate: null,
           diseaseGroupId: null,
+    incidentDepartmentId: null,
           insertedByLab: null,
           hasLabChecks: null,
           firstTime: false,
@@ -176,6 +182,7 @@ export class PatientChecksComponent implements OnInit {
           fromDate: null,
           toDate: null,
           diseaseGroupId: null,
+    incidentDepartmentId: null,
           insertedByLab: null,
           hasLabChecks: this.toNullableBoolean(params.done),
           firstTime: true,
@@ -190,6 +197,7 @@ export class PatientChecksComponent implements OnInit {
     this.getNationalities();
     this.getGovernments();
     this.getAllDiseases();
+    this.getDepartments();
   }
 
   onItemSelect(item: any) {}
@@ -557,6 +565,32 @@ export class PatientChecksComponent implements OnInit {
           });
       }
     );
+  }
+
+  getDepartments() {
+    this.departmentsLoading = true;
+    this.lookupsService.getAllDepartments().subscribe(
+      (result: any) => {
+        this.departments = [
+          { id: -1, arabicName: 'إختر', englishName: 'Select' },
+          ...(result?.data ?? []),
+        ];
+        this.departmentsLoading = false;
+      },
+      (error) => {
+        this.departmentsLoading = false;
+        this.translateService
+          .get('NEDSS.COMMON.INTERNAL_SERVER_ERROR')
+          .subscribe((res: string) => {
+            this.userMsg.error(res);
+          });
+      }
+    );
+  }
+
+  setDepartmentValue() {
+    this.patientsFilter.incidentDepartmentId =
+      this.selectedDepartmentId == -1 ? null : this.selectedDepartmentId;
   }
 
   setDiseaseValue() {

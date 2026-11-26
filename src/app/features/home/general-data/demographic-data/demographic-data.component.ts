@@ -27,7 +27,7 @@ import { NationalityEnum } from '../models/nationality-enum';
 import { DepartmentEnum, isInternalLikeDepartment } from '../models/department-enum';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { isConscriptOrPrisonerCategory, isPrisonerCategory } from '../models/job-category';
+import { isNoJobCategory, isConscriptOrPrisonerCategory, isOtherCategory, isPrisonerCategory, isStudentCategory } from '../models/job-category';
 
 @Component({
   selector: 'app-demographic-data',
@@ -54,6 +54,7 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
   loadingPanel: boolean = false;
   isStudent: boolean = false;
   isOthers: boolean = false;
+  isNoJob: boolean = false;
   isConscriptOrPrisoner: boolean = false;
   singleDropdownSettings = {};
   multipleDropdownSettings = {};
@@ -236,14 +237,11 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
       this.patient.patientJobCategoryId = this.selectedJobCategoryId;
       this.getJobs(this.patient.patientJobCategoryId);
 
-      if (this.selectedJobCategoryId == 1) this.isStudent = true;
-      else this.isStudent = false;
-
-      this.isOthers = this.selectedJobCategoryId == 4 ? true : false;
-
-      this.isConscriptOrPrisoner = isConscriptOrPrisonerCategory(
-        this.jobCategories?.find((c) => c.id == this.selectedJobCategoryId)
-      );
+      const category = this.jobCategories?.find((c) => c.id == this.selectedJobCategoryId);
+      this.isStudent = isStudentCategory(category);
+      this.isOthers = isOtherCategory(category);
+      this.isNoJob = isNoJobCategory(category);
+      this.isConscriptOrPrisoner = isConscriptOrPrisonerCategory(category);
       if (this.isConscriptOrPrisoner) {
         this.patient.patientJobId = null;
         this.selectedJobId = -1;
@@ -257,6 +255,9 @@ export class DemographicDataComponent implements OnInit, OnDestroy {
       this.selectedJob = null;
       this.selectedJobId = -1;
       this.isConscriptOrPrisoner = false;
+      this.isStudent = false;
+      this.isOthers = false;
+      this.isNoJob = false;
     }
     this.generalDataService.isPhoneNumber1Valid = this.generalDataService.validatePhoneNumber1(
       this.patient.phoneNo1,

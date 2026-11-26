@@ -544,6 +544,7 @@ export class GeneralDataService {
     this.isIncidentSourceValid = true;
     this.isIncidentDepartmentValid = true;
     this.isCaseDiscoveryDateValid = true;
+    this.isCaseDiscoveryDateNotAfterCreatedValid = true;
     this.isNationalityValid = true;
     this.isCardIdValid = true;
     this.isPassportIdValid = true;
@@ -630,6 +631,7 @@ export class GeneralDataService {
   isIncidentDepartmentValid: boolean = true;
   isCaseDiscoveryDateValid: boolean = true;
   isCaseDiscoveryDateAfterBirthValid: boolean = true;
+  isCaseDiscoveryDateNotAfterCreatedValid: boolean = true;
   isNationalityValid: boolean = true;
   isCardIdValid: boolean = true;
   isPassportIdValid: boolean = true;
@@ -675,6 +677,10 @@ export class GeneralDataService {
       patient.caseDiscoveryDate,
       patient.birthDate
     );
+    this.isCaseDiscoveryDateNotAfterCreatedValid = this.isDateOnOrAfter(
+      this.caseCreatedDate(patient),
+      patient.caseDiscoveryDate
+    );
     this.isNationalityValid = this.checkNationalityValid(patient.nationalityId);
     this.isCardIdValid = this.checkCardIdValid(
       patient.incidentDepartmentId,
@@ -694,6 +700,7 @@ export class GeneralDataService {
       this.isIncidentDepartmentValid,
       this.isCaseDiscoveryDateValid,
       this.isCaseDiscoveryDateAfterBirthValid,
+      this.isCaseDiscoveryDateNotAfterCreatedValid,
       this.isNationalityValid,
       this.isCardIdValid,
       this.isPassportIdValid,
@@ -1646,6 +1653,8 @@ export class GeneralDataService {
       [this.isCaseDiscoveryDateValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.DATE_DISCOVER_STATUS'],
       [this.isCaseDiscoveryDateAfterBirthValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.DATE_DISCOVER_STATUS',
         this.beforeBirthMessage('تاريخ اكتشاف الحالة', patient)],
+      [this.isCaseDiscoveryDateNotAfterCreatedValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.DATE_DISCOVER_STATUS',
+        `تاريخ اكتشاف الحالة لا يمكن أن يكون بعد تاريخ تسجيل الحالة (${this.formatDateLabel(this.caseCreatedDate(patient))})`],
       [this.isNationalityValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONATILY'],
       [this.isCardIdValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.NATIONAL_ID'],
       [this.isPassportIdValid, 'NEDSS.HOME.GENERAL_DATA_COMPLETION.PASSPOR_NO'],
@@ -1710,6 +1719,14 @@ export class GeneralDataService {
     const fever = this.toYmdDate(feverDate);
     const discovery = this.toYmdDate(caseDiscoveryDate);
     return !fever || !discovery || fever <= discovery;
+  }
+
+  caseCreatedDate(patient: any): any {
+    return patient?.id ? patient?.createdDate ?? patient?.CreatedDate ?? null : null;
+  }
+
+  caseDiscoveryUpperBound(patient: any): Date | null {
+    return this.earliestDateBound(new Date(), this.caseCreatedDate(patient));
   }
 
   isDateOnOrAfter(date: any, reference: any): boolean {

@@ -137,6 +137,10 @@ export class AddUserComponent {
 
   levels: any[];
 
+  actorGovernmentId: number | null = null;
+  actorHealthAdministrationId: number | null = null;
+  actorIncidentSourceId: number | null = null;
+
   constructor(
     private userService: UserService,
     private translateService: TranslateService,
@@ -160,9 +164,15 @@ export class AddUserComponent {
     this.disableGovernment = true;
     this.disableAdmin = true;
     this.disableIncidentSrc = true;
-    this.adminBool = JSON.parse(
+    const actor = JSON.parse(
       localStorage.getItem('ls.authorizationData')
-    )?.user?.isSuperAdmin;
+    )?.user;
+    this.adminBool = actor?.isSuperAdmin;
+    this.actorGovernmentId = actor?.govenmentId > 0 ? actor.govenmentId : null;
+    this.actorHealthAdministrationId =
+      actor?.healthAdministrationId > 0 ? actor.healthAdministrationId : null;
+    this.actorIncidentSourceId =
+      actor?.incidentSourceId > 0 ? actor.incidentSourceId : null;
     this.user.isSuperAdmin = false;
 
     this.inviteMode = this.route.snapshot.queryParamMap.get('mode') === 'invite';
@@ -438,7 +448,10 @@ export class AddUserComponent {
     this.lookupsGetterService.getAllGovernmentsForUser(true).subscribe(
       (result: any) => {
         if (result != null && result != undefined) {
-          this.governments = result.data;
+          this.governments = [...(result.data || [])];
+          if (this.actorGovernmentId) {
+            this.user.govenmentId = this.actorGovernmentId;
+          }
           this.governments.unshift({
             id: null,
             arabicName: 'إختر',
@@ -545,6 +558,9 @@ export class AddUserComponent {
               arabicName: 'إختر',
               englishName: 'Select',
             });
+            if (this.actorHealthAdministrationId) {
+              this.user.healthAdministrationId = this.actorHealthAdministrationId;
+            }
             if (this.user.healthAdministrationId > 0) {
               if (this.user.healthAdministrationId > 0) {
                 this.SelectedhealthAdministrationId =
@@ -655,8 +671,8 @@ export class AddUserComponent {
     this.user.organizationId = null;
     this.user.levelId = null;
     // this.user.areaId = null;
-    this.user.healthAdministrationId = null;
-    this.SelectedhealthAdministrationId = null;
+    this.user.healthAdministrationId = this.actorHealthAdministrationId;
+    this.SelectedhealthAdministrationId = this.actorHealthAdministrationId;
     this.SelectedincidentSource = null;
     // this.SelectedareaId = null;
     this.isOrganizationValid = this.checkOrganizationValid();
@@ -681,11 +697,13 @@ export class AddUserComponent {
             : this.SelectedbranchId,
           areaId: this.SelectedareaId ? this.SelectedareaId : null,
           GovernmentID:
-            this.Selectedorganization ==
+            this.actorGovernmentId ||
+            (this.Selectedorganization ==
               OrganizationsEnum.General_Organization_For_Teaching_Hospitals_and_Institutes ||
-            this.Selectedorganization == OrganizationsEnum.Aman_Hospitals
+            this.Selectedorganization == OrganizationsEnum.Aman_Hospitals ||
+            !this.disableGovernments
               ? this.SelectedgovenmentId
-              : null,
+              : null),
         })
         .subscribe(
           (result: any) => {
@@ -696,6 +714,12 @@ export class AddUserComponent {
                 arabicName: 'إختر',
                 englishName: 'Select',
               });
+              if (
+                this.actorIncidentSourceId &&
+                this.incidentSources.some((x) => x.id == this.actorIncidentSourceId)
+              ) {
+                this.user.incidentSourceId = this.actorIncidentSourceId;
+              }
               if (this.user.incidentSourceId > 0) {
                 this.SelectedincidentSource = this.incidentSources.find(
                   (x) => x.id == this.user.incidentSourceId

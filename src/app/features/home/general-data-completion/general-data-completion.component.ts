@@ -14,6 +14,7 @@ import { GeneralDataCompletionServiceService } from './services/general-data-com
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SharedDataService } from '../general-data/services/shared-data.service';
+import { isInternalLikeDepartment } from '../general-data/models/department-enum';
 // import { ExportService } from '../../../core/services/export.service';
 import { ExportService } from 'src/app/core/services/export.service';
 import { ExportAsConfig } from 'ngx-export-as';
@@ -278,11 +279,12 @@ export class GeneralDataCompletionComponent {
     );
   }
   governmentSelected() {
-    console.log('governmentSelected', this.selectedGovernmentId);
     if (this.selectedGovernmentId != -1) {
       this.generalDataCompletionFilter.incidentGovernmentId =
         this.selectedGovernmentId;
     }
+    this.generalDataCompletionFilter.incidentHealthAdministrationId = null;
+    this.generalDataCompletionFilter.incidentSourceId = null;
     this.healthAdministrationId = -1;
     this.selectincidentSource = null;
     this.incidentSources = [];
@@ -347,6 +349,9 @@ export class GeneralDataCompletionComponent {
   }
 
   healthAdministrationSelected() {
+    this.generalDataCompletionFilter.incidentSourceId = null;
+    this.selectincidentSource = -1;
+    this.incidentSources = [];
     if (this.healthAdministrationId != -1) {
       this.generalDataCompletionFilter.incidentHealthAdministrationId =
         this.healthAdministrationId;
@@ -637,6 +642,7 @@ export class GeneralDataCompletionComponent {
     ) {
       this.generalDataCompletionFilter.sortOrder = SortOrder.desc;
       this.generalDataCompletionFilter.sortColumn = event.field as string;
+      this.resetToFirstPage();
       this.getGeneralDataCompletions(true);
     } else if (
       event.order == 1 &&
@@ -645,8 +651,14 @@ export class GeneralDataCompletionComponent {
     ) {
       this.generalDataCompletionFilter.sortOrder = SortOrder.asc;
       this.generalDataCompletionFilter.sortColumn = event.field as string;
+      this.resetToFirstPage();
       this.getGeneralDataCompletions(true);
     }
+  }
+
+  private resetToFirstPage() {
+    this.generalDataCompletionFilter.pageIndex = 0;
+    this.first = 0;
   }
 
   previousPage() {
@@ -719,29 +731,23 @@ export class GeneralDataCompletionComponent {
   // }
 
   exportPatientsAsPdf() {
-    let selectedGov = this.governments.filter(
-      (g) => g.id == this.selectedGovernmentId
+    let selectedGov = (this.governments ?? []).filter(
+      (g) => g.id > 0 && g.id == this.selectedGovernmentId
     );
 
     let tempSelectedAdm = [this.healthAdministrationId];
     let selectedAdm = this.healthAdministrations?.filter((g) =>
-      tempSelectedAdm.includes(g.id)
+      g.id > 0 && tempSelectedAdm.includes(g.id)
     );
     selectedAdm = selectedAdm?.map((g) => g.arabicName);
 
-    let tempSelectedIncs = this.incidentSources.map((g) => g.id);
-    let selectedIncs = this.incidentSources?.filter((g) =>
-      tempSelectedIncs.includes(g.id)
-    );
-    let s = selectedIncs.filter((g) => g.id == this.selectincidentSource);
-    let as = s.map((g) => g.arabicName);
-    // selectedIncs = selectedIncs?.map(g => g.arabicName)
+    let as = (this.incidentSources ?? [])
+      .filter((g) => g.id > 0 && g.id == this.selectincidentSource)
+      .map((g) => g.arabicName);
 
-    let tempSelectedDeps = this.selectedDepartment.map((g) => g.id);
-    let selectedDep = this.departments?.filter((g) =>
-      tempSelectedDeps.includes(g.id)
-    );
-    selectedDep = selectedDep?.map((g) => g.arabicName);
+    let selectedDep = (this.departments2 ?? [])
+      .filter((g) => g.id > 0 && g.id == this.incidentDepartmentId)
+      .map((g) => g.arabicName);
 
     let sDate, eDate;
     // console.log( (((new Date(this.generalDataCompletionFilter.caseDiscoveryFromDate))?.toISOString())?.split('T'))[0])
@@ -798,13 +804,6 @@ export class GeneralDataCompletionComponent {
     );
   }
 
-  fromDateSelected(event) {
-    this.generalDataCompletionFilter.caseDiscoveryFromDate = event.value;
-  }
-  toDateSelected(event) {
-    this.generalDataCompletionFilter.caseDiscoveryToDate = event.value;
-  }
-
   hidColName: boolean = false;
   hidColFather: boolean = false;
   hidColAdress: boolean = false;
@@ -845,6 +844,19 @@ export class GeneralDataCompletionComponent {
   }
 
 
+
+  get showInternalOnlyFields(): boolean {
+    const departmentId = Number(this.incidentDepartmentId);
+    return !(departmentId > 0) || isInternalLikeDepartment(departmentId);
+  }
+
+  onIncidentDepartmentChanged() {
+    if (!this.showInternalOnlyFields) {
+      this.generalDataCompletionFilter.isNullFinalResult = false;
+      this.generalDataCompletionFilter.isNullHospitalEntryDate = false;
+      this.generalDataCompletionFilter.isNullHospitalLeaveDate = false;
+    }
+  }
 
   getDepartments2() {
     this.departmentsLoading = true;
